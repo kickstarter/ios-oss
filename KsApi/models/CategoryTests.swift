@@ -146,8 +146,10 @@ class CategoryTests: XCTestCase {
     XCTAssertEqual(Category.art.root, Category.art)
     XCTAssertEqual(Category.art.isRoot, true)
     XCTAssertNil(
-      (Category.illustration
-        |> Category.lens.parent .~ nil).root,
+      (
+        Category.illustration
+          |> Category.lens.parent .~ nil
+      ).root,
       "A subcategory with no parent category present does not have a root."
     )
   }

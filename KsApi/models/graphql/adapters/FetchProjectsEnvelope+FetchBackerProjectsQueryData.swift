@@ -4,7 +4,7 @@ import ReactiveSwift
 extension FetchProjectsEnvelope {
   static func fetchProjectsEnvelope(from data: GraphAPI.FetchBackerProjectsQuery.Data)
     -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    guard let projects = data.projects?.nodes?.compactMap({ (node) -> Project? in
+    guard let projects = data.projects?.nodes?.compactMap({ node -> Project? in
       if let fragment = node?.fragments.projectFragment {
         return Project.project(from: fragment, currentUserChosenCurrency: nil)
       }

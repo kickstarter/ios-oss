@@ -39,8 +39,10 @@ extension Service {
     ).handle_combine_dataResponse(service: self)
   }
 
-  func requestWithAuthentication<Model: Decodable>(_ route: Route,
-                                                   oauthToken: String) -> AnyPublisher<Model, ErrorEnvelope> {
+  func requestWithAuthentication<Model: Decodable>(
+    _ route: Route,
+    oauthToken: String
+  ) -> AnyPublisher<Model, ErrorEnvelope> {
     let properties = route.requestProperties
 
     guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {

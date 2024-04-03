@@ -34,8 +34,10 @@ extension Category {
 
   // MARK: Helpers
 
-  private static func parentCategory(from parentCategory: GraphAPI.CategoryFragment
-    .ParentCategory) -> ParentCategory {
+  private static func parentCategory(
+    from parentCategory: GraphAPI.CategoryFragment
+      .ParentCategory
+  ) -> ParentCategory {
     ParentCategory(
       analyticsName: parentCategory.analyticsName,
       id: parentCategory.id,

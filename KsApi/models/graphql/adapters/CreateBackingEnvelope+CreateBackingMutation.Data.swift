@@ -10,8 +10,10 @@ extension CreateBackingEnvelope {
     return CreateBackingEnvelope(createBacking: CreateBacking(checkout: checkout))
   }
 
-  static func producer(from data: GraphAPI.CreateBackingMutation
-    .Data) -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.CreateBackingMutation
+      .Data
+  ) -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
     guard let envelope = CreateBackingEnvelope.from(data) else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }

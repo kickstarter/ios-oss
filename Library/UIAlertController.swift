@@ -357,8 +357,10 @@ public extension UIAlertController {
     return alertController
   }
 
-  static func blockUserAlert(username: String,
-                             blockUserHandler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+  static func blockUserAlert(
+    username: String,
+    blockUserHandler: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.Block_username(username: username),
       message: Strings.Blocked_user_confirmation(),

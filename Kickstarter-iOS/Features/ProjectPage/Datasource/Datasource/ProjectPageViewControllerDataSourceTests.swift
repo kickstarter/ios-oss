@@ -61,7 +61,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
   ]
 
-  private let storyViewableElements = ProjectStoryElements(htmlViewElements:
+  private let storyViewableElements = ProjectStoryElements(
+    htmlViewElements:
     [
       TextViewElement(components: [
         TextComponent(
@@ -90,7 +91,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         embeddedURLString: "https://externalsource.com",
         embeddedURLContentHeight: 123
       )
-    ])
+    ]
+  )
 
   private let overviewCreatorHeaderSection = ProjectPageViewControllerDataSource.Section.overviewCreatorHeader
     .rawValue
@@ -1244,16 +1246,18 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         )
 
       self.dataSource.updateAudioVideoViewElementSeektime(
-        with: expectedTime,
+        with: self.expectedTime,
         tableView: self.tableView,
         indexPath: audioVideoViewIndexPath
       )
       guard let updatedItem = self.dataSource
-        .items(in: audioVideoViewIndexPath
-          .section)[audioVideoViewIndexPath.row] as? (
+        .items(
+          in: audioVideoViewIndexPath
+            .section
+        )[audioVideoViewIndexPath.row] as? (
           value: (AudioVideoViewElement, AVPlayer, UIImage?),
-            reusableId: String
-          )
+          reusableId: String
+        )
       else {
         XCTFail("audio video view element should exist")
 
@@ -1262,7 +1266,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       XCTAssertEqual(
         updatedItem.value.0.seekPosition,
-        expectedTime
+        self.expectedTime
       )
     }
   }

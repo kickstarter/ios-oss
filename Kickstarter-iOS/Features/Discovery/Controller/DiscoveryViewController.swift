@@ -167,7 +167,7 @@ extension DiscoveryViewController: UIPageViewControllerDelegate {
     willTransitionTo pendingViewControllers: [UIViewController]
   ) {
     guard let dataSource = self.dataSource,
-      let idx = pendingViewControllers.first.flatMap(dataSource.indexFor(controller:)) else { return }
+          let idx = pendingViewControllers.first.flatMap(dataSource.indexFor(controller:)) else { return }
 
     self.viewModel.inputs.willTransition(toPage: idx)
   }

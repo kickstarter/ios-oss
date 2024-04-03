@@ -403,7 +403,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           return
         }
 
-        print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
+        print(
+          "🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)"
+        )
       }
   }
 
@@ -419,13 +421,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       let errorAsNSError = remoteConfigActivationError as NSError
 
       if errorAsNSError.domain == RemoteConfigErrorDomain,
-        errorAsNSError.code == RemoteConfigError.internalError.rawValue {
+         errorAsNSError.code == RemoteConfigError.internalError.rawValue {
         // This is (almost certainly) just a connection error; we won't log it.
       } else {
         Crashlytics.crashlytics().record(error: remoteConfigActivationError)
       }
 
-      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+      print(
+        "🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)"
+      )
 
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
     }

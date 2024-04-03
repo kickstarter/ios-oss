@@ -527,7 +527,7 @@ private func managePledgeSummaryViewData(
   backing: Backing
 ) -> ManagePledgeSummaryViewData? {
   guard let backer = backing.backer,
-    let deadline = project.dates.deadline else { return nil }
+        let deadline = project.dates.deadline else { return nil }
 
   let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
 

@@ -231,7 +231,7 @@ extension CommentRepliesViewController {
 
       self.viewModel.inputs.paginateOrErrorCellWasTapped()
     } else if let comment = self.dataSource.comment(at: indexPath),
-      self.dataSource.sectionForReplies(indexPath) {
+              self.dataSource.sectionForReplies(indexPath) {
       self.viewModel.inputs.didSelectComment(comment)
     }
   }
@@ -297,7 +297,9 @@ private let tableViewStyle: TableViewStyle = { tableView in
 
  - returns: A  `Bool, Bool` which tells the caller to insert a table row and if the table view should scroll
  */
-internal func commentRepliesRowBehaviour(for comment: Comment,
-                                         newComment: Bool) -> (insert: Bool, scroll: Bool) {
+internal func commentRepliesRowBehaviour(
+  for comment: Comment,
+  newComment: Bool
+) -> (insert: Bool, scroll: Bool) {
   (insert: newComment, scroll: newComment || comment.status == .failed)
 }

@@ -11,7 +11,7 @@ class UpdateActivityItemProviderTests: XCTestCase {
 
   func testProviderInitReturnsCorrectPlaceholderItem() {
     let provider: UpdateActivityItemProvider = UpdateActivityItemProvider(update: update)
-    XCTAssertEqual(update.title, provider.placeholderItem as? String)
+    XCTAssertEqual(self.update.title, provider.placeholderItem as? String)
   }
 
   func testItemForTwitterTypeReturnsTitleUpdateLink() {

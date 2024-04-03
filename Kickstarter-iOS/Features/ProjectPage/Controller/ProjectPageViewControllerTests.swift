@@ -21,7 +21,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     )],
     aiDisclosure: nil,
     risks: "These are the risks",
-    story: ProjectStoryElements(htmlViewElements:
+    story: ProjectStoryElements(
+      htmlViewElements:
       [
         TextViewElement(components: [
           TextComponent(
@@ -49,7 +50,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
           embeddedURLString: "https://not-a-real-url-dot-com",
           embeddedURLContentHeight: 123
         )
-      ]),
+      ]
+    ),
     minimumPledgeAmount: 1
   )
   private let emptyProjectProperties = ExtendedProjectProperties(
@@ -446,7 +448,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_Success() {
+  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_Success(
+  ) {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
@@ -498,7 +501,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_OmittingCurrencyCode_Success() {
+  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_OmittingCurrencyCode_Success(
+  ) {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
@@ -550,7 +554,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_NotOmittingCurrencyCode_Success() {
+  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_NotOmittingCurrencyCode_Success(
+  ) {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
@@ -602,7 +607,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_Success() {
+  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_Success(
+  ) {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
@@ -1074,7 +1080,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
       )],
       aiDisclosure: useOfAIDisclosure,
       risks: "These are the risks",
-      story: ProjectStoryElements(htmlViewElements:
+      story: ProjectStoryElements(
+        htmlViewElements:
         [
           TextViewElement(components: [
             TextComponent(
@@ -1102,7 +1109,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
             embeddedURLString: "https://source.com",
             embeddedURLContentHeight: 123
           )
-        ]),
+        ]
+      ),
       minimumPledgeAmount: 1
     )
 

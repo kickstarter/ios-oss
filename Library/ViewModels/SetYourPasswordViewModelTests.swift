@@ -52,8 +52,10 @@ final class SetYourPasswordViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.contextLabelText
-        .assertValue(Strings
-          .We_will_be_discontinuing_the_ability_to_log_in_via_FB(email: userEnvelope.me.email ?? ""))
+        .assertValue(
+          Strings
+            .We_will_be_discontinuing_the_ability_to_log_in_via_FB(email: userEnvelope.me.email ?? "")
+        )
       self.newPasswordLabel.assertValue(Strings.New_password())
       self.confirmPasswordLabel.assertValue(Strings.Confirm_password())
 

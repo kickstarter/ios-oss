@@ -505,7 +505,7 @@ private func shouldShowPersonalization() -> Bool {
 
 private func cachedCategories() -> [KsApi.Category]? {
   guard let data = AppEnvironment.current.userDefaults.onboardingCategories,
-    let categories = try? JSONDecoder().decode([KsApi.Category].self, from: data)
+        let categories = try? JSONDecoder().decode([KsApi.Category].self, from: data)
   else {
     return []
   }

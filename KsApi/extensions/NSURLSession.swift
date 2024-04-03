@@ -12,8 +12,8 @@ private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.
 internal extension URLSession {
   private func isValidResponse(response: HTTPURLResponse) -> Bool {
     guard (200..<300).contains(response.statusCode),
-      let headers = response.allHeaderFields as? [String: String],
-      let contentType = headers["Content-Type"], contentType.hasPrefix("application/json") else {
+          let headers = response.allHeaderFields as? [String: String],
+          let contentType = headers["Content-Type"], contentType.hasPrefix("application/json") else {
       return false
     }
 
@@ -57,11 +57,13 @@ internal extension URLSession {
       }
   }
 
-  func combine_dataResponse(_ request: URLRequest,
-                            uploading file: (url: URL, name: String)? = nil) -> AnyPublisher<
+  func combine_dataResponse(
+    _ request: URLRequest,
+    uploading file: (url: URL, name: String)? = nil
+  ) -> AnyPublisher<
     Data,
-                              ErrorEnvelope
-                            > {
+    ErrorEnvelope
+  > {
     let producer = file != nil ? self
       .combine_requestWithFileUpload(request, uploading: file!.url, named: file!.name) :
       DataTaskPublisher(request: request, session: self).eraseToAnyPublisher()
@@ -103,7 +105,7 @@ internal extension URLSession {
   ]
 
   // Strips sensitive materials from the request, e.g. oauth token, client id, fb token, password, etc...
-  fileprivate func sanitized(_ request: URLRequest) -> String {
+  private func sanitized(_ request: URLRequest) -> String {
     guard let urlString = request.url?.absoluteString else { return "" }
 
     return URLSession.sanitationRules.reduce(urlString) { accum, templateAndRule in
@@ -125,16 +127,21 @@ private let defaultSessionError =
 private let boundary = "k1ck574r73r154c0mp4ny"
 
 extension URLSession {
-  fileprivate func requestWithFileUpload(_ request: URLRequest, uploading file: URL,
-                                         named name: String) -> URLRequest {
+  private func requestWithFileUpload(
+    _ request: URLRequest,
+    uploading file: URL,
+    named name: String
+  ) -> URLRequest {
     var mutableRequest = request
 
     guard
       let data = try? Data(contentsOf: file),
       let mime = file.imageMime ?? data.imageMime,
-      let multipartHead = ("--\(boundary)\r\n"
-        + "Content-Disposition: form-data; name=\"\(name)\"; filename=\"\(file.lastPathComponent)\"\r\n"
-        + "Content-Type: \(mime)\r\n\r\n").data(using: .utf8),
+      let multipartHead = (
+        "--\(boundary)\r\n"
+          + "Content-Disposition: form-data; name=\"\(name)\"; filename=\"\(file.lastPathComponent)\"\r\n"
+          + "Content-Type: \(mime)\r\n\r\n"
+      ).data(using: .utf8),
       let multipartTail = "--\(boundary)--\r\n".data(using: .utf8)
     else { fatalError() }
 
@@ -150,7 +157,7 @@ extension URLSession {
   }
 
   // Returns a producer that will execute the given upload once for each invocation of start().
-  fileprivate func rac_requestWithFileUpload(_ request: URLRequest, uploading file: URL, named name: String)
+  private func rac_requestWithFileUpload(_ request: URLRequest, uploading file: URL, named name: String)
     -> SignalProducer<(Data, URLResponse), Error> {
     let finalRequest = self.requestWithFileUpload(request, uploading: file, named: name)
 
@@ -170,11 +177,14 @@ extension URLSession {
     }
   }
 
-  fileprivate func combine_requestWithFileUpload(_ request: URLRequest, uploading file: URL,
-                                                 named name: String) -> AnyPublisher<
+  private func combine_requestWithFileUpload(
+    _ request: URLRequest,
+    uploading file: URL,
+    named name: String
+  ) -> AnyPublisher<
     (data: Data, response: URLResponse),
-                                                   URLError
-                                                 > {
+    URLError
+  > {
     let finalRequest = self.requestWithFileUpload(request, uploading: file, named: name)
 
     let subject = PassthroughSubject<(Data, URLResponse), Error>()

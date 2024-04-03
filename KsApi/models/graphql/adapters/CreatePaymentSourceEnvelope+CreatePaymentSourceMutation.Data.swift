@@ -4,9 +4,10 @@ import ReactiveSwift
 extension CreatePaymentSourceEnvelope {
   static func from(_ data: GraphAPI.CreatePaymentSourceMutation.Data) -> CreatePaymentSourceEnvelope? {
     guard let createdPaymentSource = data.createPaymentSource,
-      createdPaymentSource.isSuccessful,
-      let rawCreditCardData = createdPaymentSource.paymentSource?.fragments.creditCardFragment.asCreditCard,
-      let rawCardType = CreditCardType(rawValue: rawCreditCardData.type.rawValue) else {
+          createdPaymentSource.isSuccessful,
+          let rawCreditCardData = createdPaymentSource.paymentSource?.fragments.creditCardFragment
+          .asCreditCard,
+          let rawCardType = CreditCardType(rawValue: rawCreditCardData.type.rawValue) else {
       return nil
     }
 
@@ -25,8 +26,10 @@ extension CreatePaymentSourceEnvelope {
     return CreatePaymentSourceEnvelope(createPaymentSource: paymentSource)
   }
 
-  static func producer(from data: GraphAPI.CreatePaymentSourceMutation
-    .Data) -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.CreatePaymentSourceMutation
+      .Data
+  ) -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     guard let envelope = CreatePaymentSourceEnvelope.from(data) else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }

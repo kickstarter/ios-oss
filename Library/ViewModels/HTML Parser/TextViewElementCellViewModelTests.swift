@@ -60,7 +60,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
     let boldTextElement = TextViewElement(components: [boldTextComponent])
 
-    expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.bolded
+    self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.bolded
 
     let expectedBoldAttributedText = NSAttributedString(
       string: expectedSampleString,
@@ -79,7 +79,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
     let italicTextElement = TextViewElement(components: [italicTextComponent])
 
-    expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.italicized
+    self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.italicized
 
     let expectedItalicAttributedText = NSAttributedString(
       string: expectedSampleString,
@@ -98,7 +98,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
     let italicTextElement = TextViewElement(components: [italicTextComponent])
 
-    expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
+    self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
 
     let expectedItalicAttributedText = NSAttributedString(
       string: expectedSampleString,
@@ -117,7 +117,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
     let linkWithStylesTextElement = TextViewElement(components: [linkWithStylesTextComponent])
 
-    expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
+    self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
     self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
@@ -170,7 +170,7 @@ internal final class TextElementCellViewModelTests: TestCase {
       let headerTextElement = TextViewElement(components: [headerTextComponent])
 
       self.expectedHeaderFont = UIFont.ksr_body(size: fontSize).bolded
-      expectedFontAttributes[NSAttributedString.Key.font] = self.expectedHeaderFont
+      self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedHeaderFont
       self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
       self.expectedParagraphStyle.minimumLineHeight = 25
       self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle

@@ -4,8 +4,10 @@ extension CategoryEnvelope {
   /**
    Returns a minimal `CategoryEnvelope` from a `FetchCategoryQuery.Data`
    */
-  static func envelopeProducer(from data: GraphAPI.FetchCategoryQuery
-    .Data) -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
+  static func envelopeProducer(
+    from data: GraphAPI.FetchCategoryQuery
+      .Data
+  ) -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
     guard let categoryNode = data.node?.asCategory else {
       return .empty
     }
@@ -25,8 +27,10 @@ extension CategoryEnvelope {
     return SignalProducer(value: envelope)
   }
 
-  private static func subcategoryConnection(from subcategories: GraphAPI.FetchCategoryQuery.Data.Node
-    .AsCategory.Subcategory?) -> Category.SubcategoryConnection? {
+  private static func subcategoryConnection(
+    from subcategories: GraphAPI.FetchCategoryQuery.Data.Node
+      .AsCategory.Subcategory?
+  ) -> Category.SubcategoryConnection? {
     let subcategoryConnection: Category.SubcategoryConnection? = subcategories
       .map { subcategory -> Category.SubcategoryConnection in
         let subcategoryNodes: [GraphAPI.FetchCategoryQuery.Data.Node.AsCategory.Subcategory.Node?] =
@@ -36,7 +40,7 @@ extension CategoryEnvelope {
         return Category
           .SubcategoryConnection(
             totalCount: subcategory.totalCount,
-            nodes: categories(from: subcategoryNodes)
+            nodes: self.categories(from: subcategoryNodes)
           )
       }
 

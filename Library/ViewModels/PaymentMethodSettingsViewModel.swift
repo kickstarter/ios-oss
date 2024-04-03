@@ -9,8 +9,10 @@ public protocol PaymentMethodSettingsViewModelInputs {
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
-  func paymentSheetDidAdd(newCard card: PaymentSheetPaymentOptionsDisplayData,
-                          setupIntent: String)
+  func paymentSheetDidAdd(
+    newCard card: PaymentSheetPaymentOptionsDisplayData,
+    setupIntent: String
+  )
   func shouldCancelPaymentSheetAppearance(state: Bool)
   func viewDidLoad()
 }
@@ -170,7 +172,7 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
 
     self.goToPaymentSheet = createSetupIntentEvent.values()
       .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
-      .map { (data, shouldCancel) -> PaymentSheetSetupData? in
+      .map { data, shouldCancel -> PaymentSheetSetupData? in
         shouldCancel ? nil : data
       }
       .skipNil()

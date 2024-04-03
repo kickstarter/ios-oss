@@ -277,7 +277,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsCreatorOrCollaborator_True_HasCommentComposer() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsCreatorOrCollaborator_True_HasCommentComposer(
+  ) {
     let project = Project.template
       |> \.personalization.isBacking .~ false
       |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
@@ -469,7 +470,9 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.showPaginationErrorState.assertDidNotEmitValue()
       self.showPaginationErrorState.assertValueCount(0)
 
-      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
+      withEnvironment(
+        apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))
+      ) {
         self.vm.inputs.paginateOrErrorCellWasTapped()
 
         self.scheduler.advance()
@@ -482,7 +485,9 @@ internal final class CommentRepliesViewModelTests: TestCase {
         self.showPaginationErrorState.assertDidEmitValue()
         self.showPaginationErrorState.assertValueCount(1)
 
-        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
+        withEnvironment(
+          apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))
+        ) {
           self.vm.inputs.paginateOrErrorCellWasTapped()
 
           self.scheduler.advance()

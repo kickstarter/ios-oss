@@ -63,10 +63,11 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api-dev.ksr.com/v1/test?key=value")!
     let request = URLRequest(url: url)
     XCTAssertFalse(self.anonAdHocService.isPrepared(request: request))
-    XCTAssertTrue(self.anonAdHocService.isPrepared(
-      request:
-      self.anonAdHocService.preparedRequest(forRequest: request)
-    )
+    XCTAssertTrue(
+      self.anonAdHocService.isPrepared(
+        request:
+        self.anonAdHocService.preparedRequest(forRequest: request)
+      )
     )
   }
 

@@ -5,8 +5,10 @@ extension ClientSecretEnvelope {
   /**
    Returns a minimal `ClientSecretEnvelope` from a `CreateSetupIntentMutation.Data`
    */
-  static func clientSecretEnvelope(from data: GraphAPI.CreateSetupIntentMutation
-    .Data) -> ClientSecretEnvelope? {
+  static func clientSecretEnvelope(
+    from data: GraphAPI.CreateSetupIntentMutation
+      .Data
+  ) -> ClientSecretEnvelope? {
     guard let clientSecret = data.createSetupIntent?.clientSecret
     else { return nil }
 

@@ -47,6 +47,7 @@ final class ConfirmDetailsContinueCTAView: UIView {
     )
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

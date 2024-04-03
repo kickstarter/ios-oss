@@ -37,13 +37,15 @@ struct TextInputFieldModifier: ViewModifier {
 }
 
 extension View {
-  func currentEmail(keyboardType: UIKeyboardType = .default,
-                    textColor: Color = Color(.ksr_support_700),
-                    submitLabel: SubmitLabel = .return,
-                    editable: Bool = false,
-                    titleText: String = Strings.Current_email(),
-                    autocorrectEnabled: Bool = false,
-                    autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
+  func currentEmail(
+    keyboardType: UIKeyboardType = .default,
+    textColor: Color = Color(.ksr_support_700),
+    submitLabel: SubmitLabel = .return,
+    editable: Bool = false,
+    titleText: String = Strings.Current_email(),
+    autocorrectEnabled: Bool = false,
+    autocapitalizeEnabled: UITextAutocapitalizationType = .none
+  ) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,
@@ -55,13 +57,15 @@ extension View {
     ))
   }
 
-  func newEmail(keyboardType: UIKeyboardType = .emailAddress,
-                textColor: Color = Color(.ksr_support_400),
-                submitLabel: SubmitLabel = .next,
-                editable: Bool = true,
-                titleText: String = Strings.New_email(),
-                autocorrectEnabled: Bool = false,
-                autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
+  func newEmail(
+    keyboardType: UIKeyboardType = .emailAddress,
+    textColor: Color = Color(.ksr_support_400),
+    submitLabel: SubmitLabel = .next,
+    editable: Bool = true,
+    titleText: String = Strings.New_email(),
+    autocorrectEnabled: Bool = false,
+    autocapitalizeEnabled: UITextAutocapitalizationType = .none
+  ) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,
@@ -73,13 +77,15 @@ extension View {
     ))
   }
 
-  func currentPassword(keyboardType: UIKeyboardType = .default,
-                       textColor: Color = Color(.ksr_support_400),
-                       submitLabel: SubmitLabel = .done,
-                       editable: Bool = true,
-                       titleText: String = Strings.Current_password(),
-                       autocorrectEnabled: Bool = false,
-                       autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
+  func currentPassword(
+    keyboardType: UIKeyboardType = .default,
+    textColor: Color = Color(.ksr_support_400),
+    submitLabel: SubmitLabel = .done,
+    editable: Bool = true,
+    titleText: String = Strings.Current_password(),
+    autocorrectEnabled: Bool = false,
+    autocapitalizeEnabled: UITextAutocapitalizationType = .none
+  ) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,

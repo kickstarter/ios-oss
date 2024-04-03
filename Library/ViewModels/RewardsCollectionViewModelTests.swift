@@ -161,7 +161,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
-  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludiongNonLocalBackedReward_ShowsAllRewards_Success() {
+  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludiongNonLocalBackedReward_ShowsAllRewards_Success(
+  ) {
     let rewards = Project.cosmicSurgery.rewards
 
     let lastRewardId = rewards.last?.id ?? -1

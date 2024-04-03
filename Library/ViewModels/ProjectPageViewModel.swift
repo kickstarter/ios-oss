@@ -608,7 +608,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.didSelectFAQsRowAtProperty.value = (row, values)
   }
 
-  fileprivate let didSelectCampaignImageLinkProperty = MutableProperty<(URL)?>(nil)
+  fileprivate let didSelectCampaignImageLinkProperty = MutableProperty<URL?>(nil)
   public func didSelectCampaignImageLink(url: URL) {
     self.didSelectCampaignImageLinkProperty.value = url
   }

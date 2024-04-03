@@ -7,7 +7,7 @@ struct ReportProjectLabelView: View {
   @SwiftUI.Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   var body: some View {
-    if flagged {
+    if self.flagged {
       AlreadyReportedView()
     } else {
       HStack {

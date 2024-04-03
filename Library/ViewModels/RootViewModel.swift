@@ -295,7 +295,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
     let prevSelectedTabBarItem = Signal
       .combineLatest(prevSelectedIndex, self.tabBarItemsData)
-      .map { (index, data) -> KSRAnalytics.TabBarItemLabel in
+      .map { index, data -> KSRAnalytics.TabBarItemLabel in
         guard index < data.items.count else { return tabBarItemLabel(for: data.items[0]) }
 
         return tabBarItemLabel(for: data.items[index])

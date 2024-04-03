@@ -24,16 +24,20 @@ let listItems =
       type: .parent,
       title: Strings.This_project_breaks(),
       subtitle: Strings
-        .Projects_may_not_offer(prohibited_items: HelpType.prohibitedItems
-          .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""),
+        .Projects_may_not_offer(
+          prohibited_items: HelpType.prohibitedItems
+            .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""
+        ),
       subItems: thisProjecBreaksSubListItems
     ),
     ReportProjectInfoListItem(
       type: .parent,
       title: Strings.Report_spam(),
       subtitle: Strings
-        .Our(community_guidelines: HelpType.prohibitedItems
-          .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""),
+        .Our(
+          community_guidelines: HelpType.prohibitedItems
+            .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""
+        ),
       subItems: reportSpamSubListItems
 
     ),

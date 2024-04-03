@@ -260,10 +260,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .map { ($0, .activity) }
 
     let surveyEvents = currentUser
-      .takeWhen(Signal.merge(
-        self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
-        self.surveyResponseViewControllerDismissedProperty.signal
-      )
+      .takeWhen(
+        Signal.merge(
+          self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
+          self.surveyResponseViewControllerDismissedProperty.signal
+        )
       )
       .filter { $0 != nil }
       .switchMap { _ in
@@ -321,7 +322,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     self.goToUpdate = self.tappedActivityProperty.signal.skipNil()
       .filter { $0.category == .update }
       .map { ($0.project, $0.update) }
-      .flatMap { (project, update) -> SignalProducer<(Project, Update), Never> in
+      .flatMap { project, update -> SignalProducer<(Project, Update), Never> in
         guard let project = project, let update = update else { return .empty }
         return SignalProducer(value: (project, update))
       }

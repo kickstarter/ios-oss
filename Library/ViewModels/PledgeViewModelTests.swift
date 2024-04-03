@@ -1386,7 +1386,8 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_US_ProjectCurrency_US_ProjectCountry() {
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_US_ProjectCurrency_US_ProjectCountry(
+  ) {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
@@ -1418,7 +1419,8 @@ final class PledgeViewModelTests: TestCase {
     self.showApplePayAlertTitle.assertValues(["Almost there!"])
   }
 
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_NonUS_ProjectCurrency_US_ProjectCountry() {
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_NonUS_ProjectCurrency_US_ProjectCountry(
+  ) {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode

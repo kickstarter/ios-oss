@@ -289,36 +289,36 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       |> \.isFriend .~ false
 
     withEnvironment(apiService: MockService(followFriendError: error)) {
-      hideFollowButton.assertValueCount(0)
-      hideUnfollowButton.assertValueCount(0)
-      enableFollowButton.assertValueCount(0)
-      enableUnfollowButton.assertValueCount(0)
+      self.hideFollowButton.assertValueCount(0)
+      self.hideUnfollowButton.assertValueCount(0)
+      self.enableFollowButton.assertValueCount(0)
+      self.enableUnfollowButton.assertValueCount(0)
 
-      vm.inputs.configureWith(friend: friend)
+      self.vm.inputs.configureWith(friend: friend)
 
-      hideFollowButton.assertValues([false], "Show Follow Button")
-      hideUnfollowButton.assertValues([true], "Hide Unfollow Button")
-      enableFollowButton.assertValues([true], "Enable Follow Button")
-      enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
+      self.hideFollowButton.assertValues([false], "Show Follow Button")
+      self.hideUnfollowButton.assertValues([true], "Hide Unfollow Button")
+      self.enableFollowButton.assertValues([true], "Enable Follow Button")
+      self.enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
 
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
-      vm.inputs.followButtonTapped()
+      self.vm.inputs.followButtonTapped()
 
-      hideFollowButton.assertValues([false], "Follow Button does not change")
-      hideUnfollowButton.assertValues([true], "Unfollow Button does not change")
-      enableFollowButton.assertValues(
+      self.hideFollowButton.assertValues([false], "Follow Button does not change")
+      self.hideUnfollowButton.assertValues([true], "Unfollow Button does not change")
+      self.enableFollowButton.assertValues(
         [true, false, true],
         "Enable Unfollow Button emits false/true with loader"
       )
-      enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
+      self.enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
 
       scheduler.advance()
 
-      hideFollowButton.assertValues([false], "Follow Button does not emit")
-      hideUnfollowButton.assertValues([true], "Unfollow Button does not emit")
-      enableFollowButton.assertValues([true, false, true], "Follow Button remains enabled")
-      enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
+      self.hideFollowButton.assertValues([false], "Follow Button does not emit")
+      self.hideUnfollowButton.assertValues([true], "Unfollow Button does not emit")
+      self.enableFollowButton.assertValues([true, false, true], "Follow Button remains enabled")
+      self.enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
     }
   }
 
@@ -336,36 +336,36 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       |> \.isFriend .~ true
 
     withEnvironment(apiService: MockService(unfollowFriendError: error)) {
-      hideFollowButton.assertValueCount(0)
-      hideUnfollowButton.assertValueCount(0)
-      enableFollowButton.assertValueCount(0)
-      enableUnfollowButton.assertValueCount(0)
+      self.hideFollowButton.assertValueCount(0)
+      self.hideUnfollowButton.assertValueCount(0)
+      self.enableFollowButton.assertValueCount(0)
+      self.enableUnfollowButton.assertValueCount(0)
 
-      vm.inputs.configureWith(friend: friend)
+      self.vm.inputs.configureWith(friend: friend)
 
-      hideFollowButton.assertValues([true], "Hide Follow Button")
-      hideUnfollowButton.assertValues([false], "Show Unfollow Button")
-      enableFollowButton.assertValues([false], "Disable Follow Button")
-      enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
+      self.hideFollowButton.assertValues([true], "Hide Follow Button")
+      self.hideUnfollowButton.assertValues([false], "Show Unfollow Button")
+      self.enableFollowButton.assertValues([false], "Disable Follow Button")
+      self.enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
 
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
-      vm.inputs.unfollowButtonTapped()
+      self.vm.inputs.unfollowButtonTapped()
 
-      hideFollowButton.assertValues([true], "Follow Button does not change")
-      hideUnfollowButton.assertValues([false], "Unfollow Button does not change")
-      enableFollowButton.assertValues([false], "Enable Follow Button does not emit")
-      enableUnfollowButton.assertValues(
+      self.hideFollowButton.assertValues([true], "Follow Button does not change")
+      self.hideUnfollowButton.assertValues([false], "Unfollow Button does not change")
+      self.enableFollowButton.assertValues([false], "Enable Follow Button does not emit")
+      self.enableUnfollowButton.assertValues(
         [true, false, true],
         "Enable Unfollow Button emits false/true with loader"
       )
 
       scheduler.advance()
 
-      hideFollowButton.assertValues([true], "Follow Button does not emit")
-      hideUnfollowButton.assertValues([false], "Unfollow Button does not emit")
-      enableFollowButton.assertValues([false], "Follow Button remains disabled")
-      enableUnfollowButton.assertValues([true, false, true], "Unfollow Button remains enabled")
+      self.hideFollowButton.assertValues([true], "Follow Button does not emit")
+      self.hideUnfollowButton.assertValues([false], "Unfollow Button does not emit")
+      self.enableFollowButton.assertValues([false], "Follow Button remains disabled")
+      self.enableUnfollowButton.assertValues([true, false, true], "Unfollow Button remains enabled")
     }
   }
 

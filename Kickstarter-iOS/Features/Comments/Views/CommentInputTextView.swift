@@ -13,6 +13,7 @@ final class CommentInputTextView: UITextView {
     super.init(frame: frame, textContainer: textContainer)
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

@@ -115,7 +115,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       self.codeProperty.signal.map { code in code?.count == 6 },
       self.viewWillAppearProperty.signal.mapConst(false)
     ])
-      .skipRepeats()
+    .skipRepeats()
 
     let codeMismatch = loginEvent.errors()
       .filter { $0.ksrCode == .TfaFailed }

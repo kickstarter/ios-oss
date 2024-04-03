@@ -68,12 +68,12 @@ extension Element {
     var href: String?
 
     if let parent = parent(),
-      parent.tag().getName() == HTMLRawText.Link.anchor.rawValue {
+       parent.tag().getName() == HTMLRawText.Link.anchor.rawValue {
       href = try? parent.attr(HTMLRawText.Link.link.rawValue)
     }
 
     guard let childValue = children().first,
-      let _ = childValue.children().first else {
+          let _ = childValue.children().first else {
       return nil
     }
 
@@ -104,8 +104,8 @@ extension Element {
     contentString = iFrameSourceString
 
     if let urlComponents = URLComponents(string: iFrameSourceString),
-      let srcQueryItemValue = urlComponents.queryItems?
-      .first(where: { $0.name == HTMLRawText.Link.source.rawValue })?.value {
+       let srcQueryItemValue = urlComponents.queryItems?
+       .first(where: { $0.name == HTMLRawText.Link.source.rawValue })?.value {
       contentString = srcQueryItemValue
     }
 
@@ -138,7 +138,7 @@ extension Element {
 
     // - if it's a gif collect attribute data-src instead
     if updatedSrc.contains(HTMLRawText.Image.gifExtension.rawValue),
-      let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue) {
+       let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue) {
       updatedSrc = dataSource
     }
 

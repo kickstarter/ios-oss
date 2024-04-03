@@ -128,14 +128,14 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
-      vm.inputs.codeChanged("454545")
-      vm.inputs.submitPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.codeChanged("454545")
+      self.vm.inputs.submitPressed()
 
-      isLoading.assertValues([true, false])
-      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
     }
   }
 
@@ -148,14 +148,14 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.facebookToken("2934ohhailisa")
-      vm.inputs.codeChanged("454545")
-      vm.inputs.submitPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.codeChanged("454545")
+      self.vm.inputs.submitPressed()
 
-      isLoading.assertValues([true, false])
-      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
     }
   }
 
@@ -168,14 +168,14 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
-      vm.inputs.codeChanged("454545")
-      vm.inputs.submitPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.codeChanged("454545")
+      self.vm.inputs.submitPressed()
 
-      isLoading.assertValues([true, false])
-      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      showError.assertValues(["Unable to login."], "Login errored")
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.showError.assertValues(["Unable to login."], "Login errored")
     }
   }
 
@@ -188,14 +188,14 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.facebookToken("2934ohhailisa")
-      vm.inputs.codeChanged("454545")
-      vm.inputs.submitPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.codeChanged("454545")
+      self.vm.inputs.submitPressed()
 
-      isLoading.assertValues([true, false])
-      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      showError.assertValues(["Unable to login."], "Errored user login")
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.showError.assertValues(["Unable to login."], "Errored user login")
     }
   }
 
@@ -208,13 +208,13 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resendCodeResponse: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
-      vm.inputs.resendPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.resendPressed()
 
-      isLoading.assertValues([true, false])
-      showError.assertValueCount(0, "No error was emitted")
-      resendSuccess.assertValueCount(1, "Code resent successfully")
+      self.isLoading.assertValues([true, false])
+      self.showError.assertValueCount(0, "No error was emitted")
+      self.resendSuccess.assertValueCount(1, "Code resent successfully")
     }
   }
 
@@ -227,13 +227,13 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resendCodeResponse: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.facebookToken("2934ohhailisa")
-      vm.inputs.resendPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.resendPressed()
 
-      isLoading.assertValues([true, false])
-      showError.assertValueCount(0, "No error was emitted")
-      resendSuccess.assertValueCount(1, "Code resent successfully")
+      self.isLoading.assertValues([true, false])
+      self.showError.assertValueCount(0, "No error was emitted")
+      self.resendSuccess.assertValueCount(1, "Code resent successfully")
     }
   }
 
@@ -246,13 +246,13 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resendCodeError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
-      vm.inputs.resendPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.resendPressed()
 
-      isLoading.assertValues([true, false])
-      showError.assertValueCount(0, "No error was emitted")
-      resendSuccess.assertValueCount(0, "Code was not resent")
+      self.isLoading.assertValues([true, false])
+      self.showError.assertValueCount(0, "No error was emitted")
+      self.resendSuccess.assertValueCount(0, "Code was not resent")
     }
   }
 
@@ -265,13 +265,13 @@ final class TwoFactorViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resendCodeError: error)) {
-      vm.inputs.viewWillAppear()
-      vm.inputs.facebookToken("2934ohhailisa")
-      vm.inputs.resendPressed()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.resendPressed()
 
-      isLoading.assertValues([true, false])
-      showError.assertValueCount(0, "No error was emitted")
-      resendSuccess.assertValueCount(0, "Code was not resent")
+      self.isLoading.assertValues([true, false])
+      self.showError.assertValueCount(0, "No error was emitted")
+      self.resendSuccess.assertValueCount(0, "Code was not resent")
     }
   }
 }

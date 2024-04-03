@@ -7,7 +7,7 @@ extension UIScrollView {
    */
   public func scrollToTop() {
     if let tableView = self as? UITableView,
-      tableView.numberOfSections > 0, tableView.numberOfRows(inSection: 0) > 0 {
+       tableView.numberOfSections > 0, tableView.numberOfRows(inSection: 0) > 0 {
       tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
 
     } else {

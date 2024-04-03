@@ -335,7 +335,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
-  func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US_NewRewardDoesNotHaveSelectedRule() {
+  func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US_NewRewardDoesNotHaveSelectedRule(
+  ) {
     let shippingRulesWithoutCanada = shippingRules.filter { $0.location != .canada }
 
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRulesWithoutCanada))
