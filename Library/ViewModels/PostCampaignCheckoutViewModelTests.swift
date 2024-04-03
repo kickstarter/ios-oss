@@ -15,12 +15,23 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   fileprivate let processingViewIsHidden = TestObserver<Bool, Never>()
   fileprivate let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
 
+  private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
+  private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
+  private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
+
   override func setUp() {
     super.setUp()
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
+
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
+      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
+      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
+      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
   }
 
   func testApplePayAuthorization_noReward_isCorrect() {
@@ -383,8 +394,14 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.viewDidLoad()
 
       let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+
       self.vm.inputs
         .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
+
       self.vm.inputs.submitButtonTapped()
 
       self.processingViewIsHidden.assertLastValue(false)
@@ -429,6 +446,11 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
       self.vm.inputs
         .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
+
       self.vm.inputs.submitButtonTapped()
 
       self.processingViewIsHidden.assertLastValue(false)
@@ -469,6 +491,11 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
       self.vm.inputs
         .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
+
       self.vm.inputs.submitButtonTapped()
 
       self.processingViewIsHidden.assertLastValue(false)
@@ -481,6 +508,38 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.checkoutComplete.assertDidNotEmitValue()
       self.processingViewIsHidden.assertLastValue(true)
+    }
+  }
+
+  func testPledgeViewCTA_LoggedIn_State() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.cosmicSurgery
+      let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .latePledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+      self.vm.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
     }
   }
 }
