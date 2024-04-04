@@ -140,6 +140,7 @@ final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 5
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -231,6 +232,7 @@ final class SharedFunctionsTests: TestCase {
       |> Reward.lens.remaining .~ 5
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
       |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
