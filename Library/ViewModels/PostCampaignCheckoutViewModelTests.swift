@@ -30,6 +30,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
+  private let showWebHelp = TestObserver<HelpType, Never>()
+
   override func setUp() {
     super.setUp()
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
@@ -61,7 +63,11 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       .observe(self.configureStripeIntegrationMerchantId.observer)
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
+
+    self.vm.outputs.showWebHelp.observe(self.showWebHelp.observer)
   }
+
+  // MARK: - Login/Signup
 
   func testLoginSignup_NoCardSelected_CTADisabled() {
     let project = Project.template
@@ -167,6 +173,26 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
+  // MARK: - Web Help
+
+  func testShowWebHelp() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.termsOfUseTapped(with: .terms)
+
+    self.showWebHelp.assertValues([HelpType.terms])
+  }
+
+  func testShowWebHelpLearnMore() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.pledgeDisclaimerViewDidTapLearnMore()
+
+    self.showWebHelp.assertValues([HelpType.trust])
+  }
+
+  // MARK: - Stripe
+
   func testStripeConfiguration_StagingEnvironment() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -227,6 +253,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.production])
     }
   }
+
+  // MARK: - Apple Pay
 
   func testApplePayAuthorization_noReward_isCorrect() {
     let project = Project.cosmicSurgery
