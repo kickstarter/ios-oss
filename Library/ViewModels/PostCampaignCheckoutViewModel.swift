@@ -159,15 +159,18 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     // MARK: - Validate Existing Cards
 
     /// Capture current users stored credit cards in the case that we need to validate an existing payment method
-    let storedCardsEvent = initialData.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUser(withStoredCards: true)
-          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-          .map { envelope in (envelope, false) }
-          .prefix(value: (nil, true))
-          .materialize()
-      }
+    let storedCardsEvent = Signal.merge(
+      initialData.ignoreValues(),
+      self.userSessionStartedSignal.ignoreValues()
+    )
+    .switchMap { _ in
+      AppEnvironment.current.apiService
+        .fetchGraphUser(withStoredCards: true)
+        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+        .map { envelope in (envelope, false) }
+        .prefix(value: (nil, true))
+        .materialize()
+    }
 
     let storedCardsValues = storedCardsEvent.values()
       .filter(second >>> isFalse)
