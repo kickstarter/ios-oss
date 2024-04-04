@@ -206,21 +206,21 @@ public enum HTMLParserTemplates {
 
   private var validImageWithCaption: String {
     """
-    <div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Viktor Pushkarev using lino-cutting to create the cover art.\" data-id=\"35418752\">\n<figure>\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/035/418/752/b1fe3dc3ff2aa64161aaf7cd6def0b97_original.jpg?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1635677740&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=6f32811c554177afaafc447642d83788\">\n<figcaption class=\"px2\">Viktor Pushkarev using lino-cutting to create the cover art.</figcaption>\n</figure>\n\n</div>\n\n\n
+    <div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Viktor Pushkarev using lino-cutting to create the cover art.\" data-id=\"35418752\">\n<figure>\n<img alt=\"\" class=\"fit\" src=\"https://i.kickstarter.com/assets/035/418/752/b1fe3dc3ff2aa64161aaf7cd6def0b97_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=CbBNSwu%2BsMK1m%2FEnXpMOHTkgyt4h%2Fj4YygsuaXNGsM4%3D\">\n<figcaption class=\"px2\">Viktor Pushkarev using lino-cutting to create the cover art.</figcaption>\n</figure>\n\n</div>\n\n\n
     """
   }
 
   private var validNonGIFImage: String {
     """
     <div class="template asset" contenteditable="false" data-alt-text="" data-caption="" data-id="33981078">\n
-      <figure>\n <img alt="" class="fit" src="https://ksr-qa-ugc.imgix.net/assets/033/981/078/6a3036d55ab3c3d6f271ab0b5c532912_original.png?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1624426643&amp;auto=format&amp;gif-q=50&amp;lossless=true&amp;s=aaa772a0ea57e4697c14311f1f2e0086">\n </figure>\n\n </div>\n\n\n
+      <figure>\n <img alt="" class="fit" src="https://i.kickstarter.com/assets/033/981/078/6a3036d55ab3c3d6f271ab0b5c532912_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=tS7R3YEpaZPz5IfYCA2FglR0pFGWr5ES%2Bj9MueF3X%2Bw%3D">\n </figure>\n\n </div>\n\n\n
     """
   }
 
   private var validGIFImage: String {
     """
     <div class="template asset" contenteditable="false" data-alt-text="" data-caption="" data-id="33915794">\n
-      <figure>\n <img alt="" class="fit js-lazy-image" data-src="https://ksr-qa-ugc.imgix.net/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1623894386&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=cde086d146601f4d9c6fe07e0d93bb84" src="https://ksr-qa-ugc.imgix.net/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1623894386&amp;auto=format&amp;frame=1&amp;q=92&amp;s=22f83142462421f48d7adca547d22367">\n </figure>\n\n </div>\n\n\n
+      <figure>\n <img alt="" class="fit js-lazy-image" data-src="https://i.kickstarter.com/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=mvrGEc9nin%2BeC%2BxQXeGi%2FNdePo9grkVoX5OXEADCH64%3D" src="https://i.kickstarter.com/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=iT%2BVSamgX6caoAeBCeHNM48K6Zfz9FHayNGbIH%2B7rmo%3D">\n </figure>\n\n </div>\n\n\n
     """
   }
 
@@ -228,7 +228,7 @@ public enum HTMLParserTemplates {
     """
     <a href="https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&amp;utm_medium=Banner&amp;utm_campaign=Homi" target="_blank" rel="noopener">
       <div class="template asset" contenteditable="false" data-alt-text="" data-caption=\"Viktor Pushkarev using lino-cutting to create the cover art.\" data-id="34488736">\n
-        <figure>\n <img alt="" class="fit js-lazy-image" data-src="https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1628654686&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=061483d5e8fac13bd635b67e2ae8a258" src="https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1628654686&amp;auto=format&amp;frame=1&amp;q=92&amp;s=463cb21e97dd89bd564e6fc898ea6075">\n </figure>\n\n </div>\n </a>\n\n
+        <figure>\n <img alt="" class="fit js-lazy-image" data-src="https://i.kickstarter.com/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=d1W1LoX9kZ07lXxteoCWiWFBPiGqf%2F6MfmGOppqCVzU%3D" src="https://i.kickstarter.com/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=vYaj3kkPZlSNSFpX8qNze0bvbDszIbEqztAQ4J%2Fmo2I%3D">\n </figure>\n\n </div>\n </a>\n\n
     """
   }
 

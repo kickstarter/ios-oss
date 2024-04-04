@@ -63,9 +63,9 @@ extension Project {
   )
 
   internal static let todayByScottThrift = Project.template
-    |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=560&h=315&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=bb3773aebc4ad41e145ed8735cb3a221"
-    |> Project.lens.photo.med .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=266&h=150&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=79a8051e6475e417ead9b0bfae63798b"
-    |> Project.lens.photo.small .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27"
+    |> Project.lens.photo.full .~ "https://i.kickstarter.com/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?fit=pad&height=315&origin=ugc&q=92&width=560&sig=xdjobguK6cfILWmRb%2FXg%2ByVslW9%2BhAwPsdUS1tPbsaE%3D"
+    |> Project.lens.photo.med .~ "https://i.kickstarter.com/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?fit=pad&height=150&origin=ugc&q=92&width=266&sig=bSHOMsIt4qZs4xu49aDtCHdvW5TY%2B56t%2FKsqzTcJ%2Fvg%3D"
+    |> Project.lens.photo.small .~ "https://i.kickstarter.com/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?fit=pad&height=90&origin=ugc&q=92&width=160&sig=rOHQ6Fif6TxwI%2BL8F9RQY0wUgN%2F4yusD%2FTGXhYW8w%2FQ%3D"
     |> Project.lens.name .~ "Today"
     |> Project.lens.blurb .~ "A 24-hour timepiece beautifully designed to change the way you see your day."
     |> \.category.name .~ "Product Design"
@@ -74,9 +74,9 @@ extension Project {
     |> Project.lens.stats.goal .~ 24_000
 
   internal static let cosmicSurgery = .template
-    |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?w=460&fit=max&v=1463756137&auto=format&q=92&s=98a6df348751e8b325e48eb8f802fa7e"
-    |> Project.lens.photo.med .~ "https://ksr-ugc.imgix.net/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?w=460&fit=max&v=1463756137&auto=format&q=92&s=98a6df348751e8b325e48eb8f802fa7e"
-    |> Project.lens.photo.small .~ "https://ksr-ugc.imgix.net/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?w=460&fit=max&v=1463756137&auto=format&q=92&s=98a6df348751e8b325e48eb8f802fa7e"
+    |> Project.lens.photo.full .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
+    |> Project.lens.photo.med .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
+    |> Project.lens.photo.small .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
     |> Project.lens.name .~ "Cosmic Surgery"
     |> Project.lens.blurb .~ "Cosmic Surgery is a photo book, set in the not too distant future where the world of cosmetic surgery is about to be transformed."
     |> \.category.name .~ "Photo Books"
@@ -93,17 +93,17 @@ extension Project {
       User.template
         |> \.id .~ "Alma Haser".hash
         |> \.name .~ "Alma Haser"
-        |> \.avatar.large .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> \.avatar.medium .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> \.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+        |> \.avatar.large .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
+        |> \.avatar.medium .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
+        |> \.avatar.small .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
     )
     |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
     |> Project.lens.rewardData.rewards .~ cosmicSurgeryRewards
     |> Project.lens.displayPrelaunch .~ false
 
   internal static let anomalisa = .template
-    |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/011/388/954/25e113da402393de9de995619428d10d_original.png?w=1024&h=576&fit=fill&bg=000000&v=1463681956&auto=format&q=92&s=2a9b6a90e1f52b96d7cbdcad28319f9d"
-    |> Project.lens.photo.med .~ "https://ksr-ugc.imgix.net/assets/005/055/025/6e0d27710c9ae20d661e2974e99fe239_original.jpg?w=460&fit=max&v=1449722467&auto=format&q=92&s=cd67034e3ee1f363be0df4f5d3b5f728"
+    |> Project.lens.photo.full .~ "https://i.kickstarter.com/assets/011/388/954/25e113da402393de9de995619428d10d_original.png?fit=pad&height=576&origin=ugc&q=92&width=1024&sig=QslMsLq5k%2FKSU14VswLzhLhPL2M9RueInm6bFBVb5EY%3D"
+    |> Project.lens.photo.med .~ "https://i.kickstarter.com/assets/005/055/025/6e0d27710c9ae20d661e2974e99fe239_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=C05wZhm%2Fm7cw9lbn9H05zOhA8ApoQ%2Bu%2FCAO%2FuGJDMo0%3D"
     |> Project.lens.name .~ "Charlie Kaufman's Anomalisa"
     |> Project.lens.blurb .~ "From writer Charlie Kaufman (Being John Malkovich, Eternal Sunshine of the Spotless Mind) and Duke Johnson (Moral Orel, Frankenhole) comes Anomalisa."
     |> \.category.name .~ "Animation"

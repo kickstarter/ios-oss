@@ -464,7 +464,7 @@ private func backingDictionary() -> [String: Any] {
       "optedOutOfRecommendations": true,
       "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
-      "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1476734758&auto=format&frame=1&q=92&s=81a3c902ee2131666a590702b71ba5c2",
+      "imageUrl": "https://i.kickstarter.com/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=R3eM4ky3JqjYS9y8bIqPAag33sV10pfZu16tveritQY%3D",
       "isAppleConnected": false,
       "isBlocked": false,
       "isCreator": false,
@@ -629,7 +629,7 @@ private func backingDictionary() -> [String: Any] {
         "email": "foo@bar.com",
         "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
-        "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
+        "imageUrl": "https://i.kickstarter.com/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=v0EstnCnzn%2F%2FVF1HWy%2BRt2T7TjtdDuhA2rkqG0fI8mU%3D",
         "isAppleConnected": false,
         "isBlocked": null,
         "isCreator": null,
@@ -705,7 +705,7 @@ private func backingDictionary() -> [String: Any] {
       "image": {
         "__typename": "Photo",
         "id": "UGhvdG8tMzI0NTYxMDE=",
-        "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
+        "url": "https://i.kickstarter.com/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=xkqkeOndzXnC81WHVjnuANuj0XnUuUhui33sxJ76v24%3D"
       },
       "isProjectWeLove": true,
       "isProjectOfTheDay": false,

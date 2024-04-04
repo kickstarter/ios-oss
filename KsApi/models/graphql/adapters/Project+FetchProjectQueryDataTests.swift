@@ -97,19 +97,19 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project Photo
     XCTAssertEqual(
       project.photo.size1024x768,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1623348736&auto=format&frame=1&q=92&s=a7b486e4831db1bcbf393201bc64a40a"
+      "https://i.kickstarter.com/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=8iRaaTqqHeMUUXIcSvaNxHjjeHO5pbqMMizjXnBn82c%3D"
     )
     XCTAssertEqual(
       project.photo.full,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1623348736&auto=format&frame=1&q=92&s=a7b486e4831db1bcbf393201bc64a40a"
+      "https://i.kickstarter.com/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=8iRaaTqqHeMUUXIcSvaNxHjjeHO5pbqMMizjXnBn82c%3D"
     )
     XCTAssertEqual(
       project.photo.med,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1623348736&auto=format&frame=1&q=92&s=a7b486e4831db1bcbf393201bc64a40a"
+      "https://i.kickstarter.com/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=8iRaaTqqHeMUUXIcSvaNxHjjeHO5pbqMMizjXnBn82c%3D"
     )
     XCTAssertEqual(
       project.photo.small,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1623348736&auto=format&frame=1&q=92&s=a7b486e4831db1bcbf393201bc64a40a"
+      "https://i.kickstarter.com/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=8iRaaTqqHeMUUXIcSvaNxHjjeHO5pbqMMizjXnBn82c%3D"
     )
 
     /// Project Category
@@ -135,15 +135,15 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project User
     XCTAssertEqual(
       project.creator.avatar.large,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd"
+      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
     )
     XCTAssertEqual(
       project.creator.avatar.medium,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd"
+      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
     )
     XCTAssertEqual(
       project.creator.avatar.small,
-      "https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd"
+      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
     )
     XCTAssertEqual(project.creator.erroredBackingsCount, 1)
     XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xNTMyMzU3OTk3"))
@@ -242,7 +242,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(firstImageElement.caption, "Viktor Pushkarev using lino-cutting to create the cover art.")
     XCTAssertEqual(
       firstImageElement.src,
-      "https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1628654686&auto=format&gif-q=50&q=92&s=061483d5e8fac13bd635b67e2ae8a258"
+      "https://i.kickstarter.com/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?fit=contain&origin=ugc-qa&q=92&width=700&sig=d1W1LoX9kZ07lXxteoCWiWFBPiGqf%2F6MfmGOppqCVzU%3D"
     )
     XCTAssertEqual(
       firstImageElement.href,

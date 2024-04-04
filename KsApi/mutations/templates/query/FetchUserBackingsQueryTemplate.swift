@@ -42,7 +42,7 @@ public enum FetchUserBackingsQueryTemplate {
                 "email": "singh.harichandan@gmail.com",
                 "hasPassword": true,
                 "id": "VXNlci0xNDcwOTUyNTQ1",
-                "imageUrl": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=&auto=format&frame=1&q=92&s=e17a7b6f853aa6320cfe67ee783eb3d8",
+                "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D",
                 "isAppleConnected": false,
                 "isCreator": false,
                 "isDeliverable": true,
@@ -96,7 +96,7 @@ public enum FetchUserBackingsQueryTemplate {
                   "email": "afees.olabisi@gmail.com",
                   "hasPassword": nil,
                   "id": "VXNlci03NDAzNzgwNzc=",
-                  "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/033/406/310/0643a06ea18a1462cc8466af5718d9ef_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1620659730&auto=format&frame=1&q=92&s=86608b67fc0b349026722388df683a89",
+                  "imageUrl": "https://i.kickstarter.com/assets/033/406/310/0643a06ea18a1462cc8466af5718d9ef_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=f65xrY5%2ByRh3HWkJK9bpJA485zuH0XK7iiIk2bOGjLw%3D",
                   "isAppleConnected": nil,
                   "isCreator": nil,
                   "isDeliverable": true,
@@ -122,7 +122,7 @@ public enum FetchUserBackingsQueryTemplate {
                 "image": [
                   "__typename": "Photo",
                   "id": "UGhvdG8tMTEyNTczMzY=",
-                  "url": "https://ksr-qa-ugc.imgix.net/assets/011/257/336/a371c892fb6e936dc1824774bea14a1b_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1463673674&auto=format&frame=1&q=92&s=87715e16f6e9b5a26afa42ea54a33fcc"
+                  "url": "https://i.kickstarter.com/assets/011/257/336/a371c892fb6e936dc1824774bea14a1b_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=gYjf1yGnIKXiZGrSDIM%2Bhsa4oy0JdYNXtxyj4fsepW4%3D"
                 ],
                 "isProjectWeLove": false,
                 "isWatched": false,
@@ -162,7 +162,7 @@ public enum FetchUserBackingsQueryTemplate {
             "totalCount": 1
           ],
           "id": "VXNlci0xNDcwOTUyNTQ1",
-          "imageUrl": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=&auto=format&frame=1&q=92&s=e17a7b6f853aa6320cfe67ee783eb3d8",
+          "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D",
           "name": "Hari Singh",
           "uid": "1470952545"
         ]

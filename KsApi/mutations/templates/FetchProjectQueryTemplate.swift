@@ -1282,7 +1282,7 @@ public enum FetchProjectQueryTemplate {
              "email":"theaschneider@gmx.net.ksr",
              "hasPassword":null,
              "id":"VXNlci0xNTMyMzU3OTk3",
-             "imageUrl":"https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd",
+             "imageUrl":"https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D",
              "isAppleConnected":null,
              "isCreator":true,
              "isDeliverable":null,
@@ -1313,7 +1313,7 @@ public enum FetchProjectQueryTemplate {
           "image":{
              "__typename":"Photo",
              "id":"UGhvdG8tMzM4NDYwNDQ=",
-             "url":"https://ksr-qa-ugc.imgix.net/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1623348736&auto=format&frame=1&q=92&s=a7b486e4831db1bcbf393201bc64a40a"
+             "url":"https://i.kickstarter.com/assets/033/846/044/7134a6f4504bd636327de703a1d2dd1c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=8iRaaTqqHeMUUXIcSvaNxHjjeHO5pbqMMizjXnBn82c%3D"
           },
           "isProjectWeLove":true,
           "isProjectOfTheDay":false,
