@@ -511,7 +511,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
-  func testPledgeViewCTA_LoggedIn_State() {
+  func testPledgeViewCTAEnabled_afterSelectingNewPaymentMethod_LoggedIn() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
@@ -540,6 +540,34 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
+    }
+  }
+
+  func testPledgeViewCTADisabled_onViewDidLoad_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.cosmicSurgery
+      let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .latePledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
     }
   }
 }

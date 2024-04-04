@@ -86,7 +86,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
-    let project = initialData.map(\.project)
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
@@ -109,28 +108,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
-
-    let shouldEnablePledgeButton = self.creditCardSelectedProperty.signal.skipNil().mapConst(true)
-
-    let pledgeButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      shouldEnablePledgeButton
-    )
-    .skipRepeats()
-
-    self.configurePledgeViewCTAContainerView = Signal.combineLatest(
-      isLoggedIn,
-      pledgeButtonEnabled,
-      context
-    )
-    .map { isLoggedIn, pledgeButtonEnabled, context in
-      PledgeViewCTAContainerViewData(
-        isLoggedIn: isLoggedIn,
-        isEnabled: pledgeButtonEnabled,
-        context: context,
-        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
-      )
-    }
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { isLoggedIn, context in
@@ -219,9 +196,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
       .map { $0.clientSecret }
 
+    let validateCheckoutExistingCardInput = Signal
+      .combineLatest(
+        checkoutId,
+        selectedCard,
+        paymentIntentClientSecretForExistingCards,
+        storedCardsValues
+      )
+
     // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
-    let validateCheckoutExistingCard = Signal
-      .combineLatest(checkoutId, selectedCard, paymentIntentClientSecretForExistingCards, storedCardsValues)
+    let validateCheckoutExistingCard = validateCheckoutExistingCardInput
       .takeWhen(self.submitButtonTappedProperty.signal)
       .filter { _, selectedCard, _, _ in
         selectedCard.isNewPaymentMethod == false
@@ -258,8 +242,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: - Validate New Cards
 
+    let validateCheckoutNewCardInput = Signal.combineLatest(checkoutId, selectedCard)
+
     // Runs validation for new cards that were created with payment intents.
-    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedCard)
+    let validateCheckoutNewCard = validateCheckoutNewCardInput
       .takeWhen(self.submitButtonTappedProperty.signal)
       .filter { _, selectedCard in
         selectedCard.isNewPaymentMethod == true
@@ -421,6 +407,41 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { $0 }
 
     self.checkoutError = checkoutCompleteSignal.signal.errors()
+
+    // MARK: - UI related to checkout flow
+
+    let newCardActivatesPledgeButton = validateCheckoutNewCardInput
+      .filter { _, selectedCard in
+        selectedCard.isNewPaymentMethod == true
+      }
+      .mapConst(true)
+
+    let existingCardActivatesPledgeButton = validateCheckoutExistingCardInput
+      .filter { _, selectedCard, _, _ in
+        selectedCard.isNewPaymentMethod == false
+      }
+      .mapConst(true)
+
+    let pledgeButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      newCardActivatesPledgeButton,
+      existingCardActivatesPledgeButton
+    )
+    .skipRepeats()
+
+    self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      isLoggedIn,
+      pledgeButtonEnabled,
+      context
+    )
+    .map { isLoggedIn, pledgeButtonEnabled, context in
+      PledgeViewCTAContainerViewData(
+        isLoggedIn: isLoggedIn,
+        isEnabled: pledgeButtonEnabled,
+        context: context,
+        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
+      )
+    }
 
     self.processingViewIsHidden = Signal.merge(
       // Processing view starts hidden, so show at the start of a pledge flow.
