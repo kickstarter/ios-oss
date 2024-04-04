@@ -11,13 +11,26 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     PostCampaignPaymentAuthorizationData,
     Never
   >()
-  fileprivate let checkoutComplete = TestObserver<ThanksPageData, Never>()
-  fileprivate let processingViewIsHidden = TestObserver<Bool, Never>()
-  fileprivate let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
+  private let checkoutComplete = TestObserver<ThanksPageData, Never>()
+  private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let processingViewIsHidden = TestObserver<Bool, Never>()
+  private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
+
+  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward?), Never>()
+
+  private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
+  private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
+  private let configurePaymentMethodsViewControllerWithReward = TestObserver<Reward, Never>()
+  private let configurePaymentMethodsViewControllerWithContext = TestObserver<PledgeViewContext, Never>()
 
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
+
+  private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
+  private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
+
+  private let showWebHelp = TestObserver<HelpType, Never>()
 
   override func setUp() {
     super.setUp()
@@ -26,13 +39,222 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
 
+    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
+
+    self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
+      .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.1 }
+      .observe(self.configurePaymentMethodsViewControllerWithProject.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.2 }
+      .observe(self.configurePaymentMethodsViewControllerWithReward.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.3 }
+      .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
+
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
       .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
       .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+
+    self.vm.outputs.configureStripeIntegration.map(first)
+      .observe(self.configureStripeIntegrationMerchantId.observer)
+    self.vm.outputs.configureStripeIntegration.map(second)
+      .observe(self.configureStripeIntegrationPublishableKey.observer)
+
+    self.vm.outputs.showWebHelp.observe(self.showWebHelp.observer)
   }
+
+  // MARK: - Login/Signup
+
+  func testLoginSignup_NoCardSelected_CTADisabled() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    withEnvironment(currentUser: nil) {
+      let data = PostCampaignCheckoutData(
+        project: .template,
+        baseReward: .template,
+        rewards: [.template],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .latePledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
+
+      self.paymentMethodsViewHidden.assertValues([true])
+
+      withEnvironment(currentUser: user) {
+        self.vm.inputs.userSessionStarted()
+
+        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
+        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+        self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+        self.configurePaymentMethodsViewControllerWithContext.assertValues([.latePledge])
+
+        self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, true])
+        self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false])
+        self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
+
+        self.paymentMethodsViewHidden.assertValues([true, false])
+      }
+    }
+  }
+
+  func testLoginSignup_CardSelected_CTAEnabled() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    withEnvironment(currentUser: nil) {
+      let data = PostCampaignCheckoutData(
+        project: .template,
+        baseReward: .template,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .latePledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
+
+      self.paymentMethodsViewHidden.assertValues([true])
+
+      withEnvironment(currentUser: user) {
+        self.vm.inputs.userSessionStarted()
+
+        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
+        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+        self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+        self.configurePaymentMethodsViewControllerWithContext.assertValues([.latePledge])
+
+        let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+        self.vm.inputs
+          .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+
+        self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, true, true])
+        self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
+        self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge, .latePledge])
+
+        self.paymentMethodsViewHidden.assertValues([true, false])
+      }
+    }
+  }
+
+  // MARK: - Web Help
+
+  func testShowWebHelp() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.termsOfUseTapped(with: .terms)
+
+    self.showWebHelp.assertValues([HelpType.terms])
+  }
+
+  func testShowWebHelpLearnMore() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.pledgeDisclaimerViewDidTapLearnMore()
+
+    self.showWebHelp.assertValues([HelpType.trust])
+  }
+
+  // MARK: - Stripe
+
+  func testStripeConfiguration_StagingEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        baseReward: reward,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .pledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+    }
+  }
+
+  func testStripeConfiguration_ProductionEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.production)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        baseReward: reward,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .pledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.production])
+    }
+  }
+
+  // MARK: - Apple Pay
 
   func testApplePayAuthorization_noReward_isCorrect() {
     let project = Project.cosmicSurgery
