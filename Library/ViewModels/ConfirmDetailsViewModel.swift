@@ -314,14 +314,22 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let pledgeDetailsData = Signal.combineLatest(
       project,
       rewards,
+      selectedQuantities,
       pledgeTotal,
       refTag
     )
 
     let createCheckoutEvents = pledgeDetailsData
       .takeWhen(self.continueCTATappedProperty.signal)
-      .map { project, rewards, pledgeTotal, refTag in
-        let rewardsIDs = rewards.first?.isNoReward == true ? [] : rewards.map { $0.graphID }
+      .map { project, rewards, selectedQuantities, pledgeTotal, refTag in
+        let rewardsIDs: [String] = rewards.first?.isNoReward == true
+          ? []
+          : rewards.flatMap { reward -> [String] in
+            guard let count = selectedQuantities[reward.id] else {
+              return []
+            }
+            return [String](repeating: reward.graphID, count: count)
+          }
 
         return CreateCheckoutInput(
           projectId: project.graphID,
