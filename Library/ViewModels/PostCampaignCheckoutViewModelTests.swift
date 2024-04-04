@@ -40,6 +40,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -80,6 +81,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [reward.id: 3],
       bonusAmount: 0,
@@ -121,6 +123,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [reward.id: 3],
       bonusAmount: 0,
@@ -169,6 +172,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward1,
       rewards: [reward1, reward2],
       selectedQuantities: [reward1.id: 1, reward2.id: 2],
       bonusAmount: 5,
@@ -216,6 +220,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -270,6 +275,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -320,6 +326,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -379,6 +386,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -429,6 +437,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -474,6 +483,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     let data = PostCampaignCheckoutData(
       project: project,
+      baseReward: reward,
       rewards: [reward],
       selectedQuantities: [:],
       bonusAmount: 0,
@@ -520,6 +530,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       let data = PostCampaignCheckoutData(
         project: project,
+        baseReward: reward,
         rewards: [reward],
         selectedQuantities: [:],
         bonusAmount: 0,
@@ -552,6 +563,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       let data = PostCampaignCheckoutData(
         project: project,
+        baseReward: reward,
         rewards: [reward],
         selectedQuantities: [:],
         bonusAmount: 0,

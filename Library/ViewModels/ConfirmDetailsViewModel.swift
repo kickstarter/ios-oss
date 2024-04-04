@@ -355,11 +355,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         initialData,
         bonusOrPledgeUpdatedAmount,
         optionalShippingSummaryData,
-        pledgeTotal
+        pledgeTotal,
+        baseReward
       )
     )
     .map { checkoutId, otherData -> PostCampaignCheckoutData in
-      let (initialData, bonusOrReward, shipping, pledgeTotal) = otherData
+      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -371,6 +372,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
       return PostCampaignCheckoutData(
         project: initialData.project,
+        baseReward: baseReward,
         rewards: rewards,
         selectedQuantities: initialData.selectedQuantities,
         bonusAmount: bonus == 0 ? nil : bonus,
