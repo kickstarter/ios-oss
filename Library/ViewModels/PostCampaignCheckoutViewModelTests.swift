@@ -563,6 +563,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       let data = PostCampaignCheckoutData(
         project: project,
+        baseReward: reward,
         rewards: [reward],
         selectedQuantities: [:],
         bonusAmount: 0,
