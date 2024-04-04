@@ -230,9 +230,11 @@ public final class NavigationTests: XCTestCase {
     return RefInfo(refTag, deeplinkUrl: url?.absoluteString)
   }
 
-  private func assertProjectMatch(path: String,
-                                  navigation: Navigation.Project,
-                                  refTag: RefTag? = nil) {
+  private func assertProjectMatch(
+    path: String,
+    navigation: Navigation.Project,
+    refTag: RefTag? = nil
+  ) {
     KSRAssertMatch(
       .project(.slug("project"), navigation, refInfo: self.refInfoFromPath(path, refTag: refTag)),
       path

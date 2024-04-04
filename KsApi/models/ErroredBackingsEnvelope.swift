@@ -13,13 +13,15 @@ extension ErroredBackingsEnvelope {
 
    - parameter from: The `GraphAPI.FetchUserBackingsQuery.Data` object that contains the backings and fragment details.
    */
-  static func producer(from data: GraphAPI.FetchUserBackingsQuery
-    .Data) -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.FetchUserBackingsQuery
+      .Data
+  ) -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
     guard let envelopes = data.me?.backings?.nodes?.compactMap({ backing -> ProjectAndBackingEnvelope? in
       guard let backingFragment = backing?.fragments.backingFragment,
-        let backing = Backing.backing(from: backingFragment),
-        let projectFragment = backingFragment.project?.fragments.projectFragment,
-        let project = Project.project(from: projectFragment, currentUserChosenCurrency: nil)
+            let backing = Backing.backing(from: backingFragment),
+            let projectFragment = backingFragment.project?.fragments.projectFragment,
+            let project = Project.project(from: projectFragment, currentUserChosenCurrency: nil)
       else { return nil }
 
       return ProjectAndBackingEnvelope(project: project, backing: backing)

@@ -3,8 +3,10 @@ import Prelude
 import XCTest
 
 final class RemoteConfigFeatureHelpersTests: TestCase {
-  func assert(featureFlagIsFalse checkFeatureFlag: () -> Bool,
-              whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature) {
+  func assert(
+    featureFlagIsFalse checkFeatureFlag: () -> Bool,
+    whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [feature.rawValue: false]
 
@@ -13,8 +15,10 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func assert(featureFlagIsTrue checkFeatureFlag: () -> Bool,
-              whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature) {
+  func assert(
+    featureFlagIsTrue checkFeatureFlag: () -> Bool,
+    whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [feature.rawValue: true]
 

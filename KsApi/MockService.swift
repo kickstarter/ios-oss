@@ -295,7 +295,7 @@
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
-      fetchUserProjectsBackedError: ErrorEnvelope? = nil,
+      fetchUserProjectsBackedError _: ErrorEnvelope? = nil,
       fetchUserResult: Result<User, ErrorEnvelope>? = nil,
       fetchUserSelfResponse: User? = nil,
       followFriendError: ErrorEnvelope? = nil,
@@ -666,14 +666,16 @@
         return .empty
       }
 
-      let mutation = GraphAPI.CreateCheckoutMutation(input: GraphAPI
-        .CreateCheckoutInput(
-          projectId: input.projectId,
-          amount: input.amount,
-          locationId: input.locationId,
-          rewardIds: input.rewardIds,
-          refParam: input.refParam
-        ))
+      let mutation = GraphAPI.CreateCheckoutMutation(
+        input: GraphAPI
+          .CreateCheckoutInput(
+            projectId: input.projectId,
+            amount: input.amount,
+            locationId: input.locationId,
+            rewardIds: input.rewardIds,
+            refParam: input.refParam
+          )
+      )
 
       return client.performWithResult(mutation: mutation, result: self.createCheckoutResult)
     }
@@ -1013,9 +1015,10 @@
       let project: (Int) -> Project = {
         .template |> Project.lens.id .~ ($0 + paginationUrl.hashValue)
       }
-      let envelope = self.fetchDiscoveryResponse ?? (.template
-        |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
-        |> DiscoveryEnvelope.lens.urls.api.moreProjects .~ (paginationUrl + "+1")
+      let envelope = self.fetchDiscoveryResponse ?? (
+        .template
+          |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
+          |> DiscoveryEnvelope.lens.urls.api.moreProjects .~ (paginationUrl + "+1")
       )
 
       return SignalProducer(value: envelope)
@@ -1030,8 +1033,9 @@
       let project: (Int) -> Project = {
         .template |> Project.lens.id %~ const($0 + params.hashValue)
       }
-      let envelope = self.fetchDiscoveryResponse ?? (.template
-        |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
+      let envelope = self.fetchDiscoveryResponse ?? (
+        .template
+          |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
       )
 
       return SignalProducer(value: envelope)
@@ -1151,11 +1155,13 @@
       return SignalProducer(value: result)
     }
 
-    public func fetchBackedProjects(cursor _: String? = nil,
-                                    limit _: Int? = nil) -> SignalProducer<
+    public func fetchBackedProjects(
+      cursor _: String? = nil,
+      limit _: Int? = nil
+    ) -> SignalProducer<
       FetchProjectsEnvelope,
-                                      ErrorEnvelope
-                                    > {
+      ErrorEnvelope
+    > {
       guard let result = self.fetchBackerBackedProjectsResponse else {
         return .empty
       }

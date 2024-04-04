@@ -57,10 +57,14 @@ class NotificationService: UNNotificationServiceExtension {
 
         guard let temporaryFileLocation = temporaryFileLocation, error == nil else {
           return self
-            .displayOriginalContent("Error fetching attachment, displaying content unaltered: \(String(describing: error?.localizedDescription))")
+            .displayOriginalContent(
+              "Error fetching attachment, displaying content unaltered: \(String(describing: error?.localizedDescription))"
+            )
         }
 
-        printDebug("[Appboy] Data fetched from server, processing with temporary file url \(temporaryFileLocation.absoluteString)")
+        printDebug(
+          "[Appboy] Data fetched from server, processing with temporary file url \(temporaryFileLocation.absoluteString)"
+        )
 
         let typedAttachmentURL = URL(fileURLWithPath: "\(temporaryFileLocation.path)\(fileSuffix)")
 

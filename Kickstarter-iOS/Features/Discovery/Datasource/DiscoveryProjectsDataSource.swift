@@ -27,8 +27,10 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func load(projects: [Project],
-            params: DiscoveryParams? = nil) {
+  func load(
+    projects: [Project],
+    params: DiscoveryParams? = nil
+  ) {
     self.clearValues(section: Section.projects.rawValue)
 
     let values = projects.map { DiscoveryProjectCellRowValue(

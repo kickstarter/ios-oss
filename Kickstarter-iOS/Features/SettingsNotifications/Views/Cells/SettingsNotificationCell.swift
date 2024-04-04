@@ -20,7 +20,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
   private let viewModel: SettingsNotificationCellViewModelType = SettingsNotificationCellViewModel()
   private lazy var tapGesture: UITapGestureRecognizer = {
-    UITapGestureRecognizer(target: self, action: #selector(cellBackgroundTapped))
+    UITapGestureRecognizer(target: self, action: #selector(self.cellBackgroundTapped))
   }()
 
   private var notificationType: SettingsNotificationCellType?

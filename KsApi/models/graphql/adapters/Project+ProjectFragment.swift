@@ -105,9 +105,11 @@ extension Project {
   }
 }
 
-private func projectPersonalization(isStarred: Bool,
-                                    backing: Backing?,
-                                    friends: [User]) -> Project.Personalization {
+private func projectPersonalization(
+  isStarred: Bool,
+  backing: Backing?,
+  friends: [User]
+) -> Project.Personalization {
   return Project.Personalization(
     backing: backing,
     friends: friends,
@@ -180,8 +182,10 @@ private func projectState(from projectState: GraphAPI.ProjectState) -> Project.S
 /**
  Returns a minimal `Project.Stats` from a `ProjectFragment`
  */
-private func projectStats(from projectFragment: GraphAPI.ProjectFragment,
-                          currentUserChosenCurrency: String?) -> Project.Stats {
+private func projectStats(
+  from projectFragment: GraphAPI.ProjectFragment,
+  currentUserChosenCurrency: String?
+) -> Project.Stats {
   let pledgedRawData = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
   let pledgedRawValue = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
   let pledgedValue = pledgedRawData != nil ? Int(pledgedRawValue) : 0
@@ -215,8 +219,8 @@ private func projectStats(from projectFragment: GraphAPI.ProjectFragment,
 
 private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Project.Video? {
   guard let video = projectFragment.video,
-    let videoId = decompose(id: video.id),
-    let high = video.videoSources?.high?.src else {
+        let videoId = decompose(id: video.id),
+        let high = video.videoSources?.high?.src else {
     return nil
   }
 
@@ -279,16 +283,18 @@ private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> Pr
  Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
  */
 
-private func extendedProjectFAQs(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ProjectFAQ] {
+private func extendedProjectFAQs(
+  from projectFragment: GraphAPI
+    .ProjectFragment
+) -> [ProjectFAQ] {
   var faqs = [ProjectFAQ]()
 
   if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
     for faq in allFaqs {
       guard let id = faq?.id,
-        let decomposedId = decompose(id: id),
-        let faqQuestion = faq?.question,
-        let faqAnswer = faq?.answer else {
+            let decomposedId = decompose(id: id),
+            let faqQuestion = faq?.question,
+            let faqAnswer = faq?.answer else {
         continue
       }
 
@@ -316,15 +322,17 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
  Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
  */
 
-private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ProjectTabCategoryDescription] {
+private func extendedProjectEnvironmentalCommitments(
+  from projectFragment: GraphAPI
+    .ProjectFragment
+) -> [ProjectTabCategoryDescription] {
   var environmentalCommitments = [ProjectTabCategoryDescription]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
       guard let id = commitment?.id,
-        let decomposedId = decompose(id: id),
-        let description = commitment?.description else {
+            let decomposedId = decompose(id: id),
+            let description = commitment?.description else {
         continue
       }
 
@@ -358,10 +366,12 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
   return environmentalCommitments
 }
 
-private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
-  .ProjectFragment) -> ProjectAIDisclosure? {
+private func extendedProjectAIDisclosure(
+  from projectFragment: GraphAPI
+    .ProjectFragment
+) -> ProjectAIDisclosure? {
   guard let aiDisclosureRawData = projectFragment.aiDisclosure,
-    let decomposedId = decompose(id: aiDisclosureRawData.id) else {
+        let decomposedId = decompose(id: aiDisclosureRawData.id) else {
     return nil
   }
 

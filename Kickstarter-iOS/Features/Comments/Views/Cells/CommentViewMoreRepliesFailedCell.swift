@@ -55,9 +55,7 @@ final class CommentViewMoreRepliesFailedCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value _: Void) {
-    return
-  }
+  internal func configureWith(value _: Void) {}
 
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)

@@ -10,7 +10,7 @@ class HTMLParser {
       var viewElements = [HTMLViewElement]()
 
       doc.body()?.children().forEach { element in
-        parse(element, viewElements: &viewElements)
+        self.parse(element, viewElements: &viewElements)
       }
 
       return viewElements
@@ -20,8 +20,10 @@ class HTMLParser {
     return []
   }
 
-  private func parse(_ child: Element,
-                     viewElements: inout [HTMLViewElement]) {
+  private func parse(
+    _ child: Element,
+    viewElements: inout [HTMLViewElement]
+  ) {
     let viewElementType = ViewElementType(element: child)
     var element: HTMLViewElement?
 
@@ -30,16 +32,16 @@ class HTMLParser {
       if let imageElement = child.parseImageElement() {
         element = imageElement
       } else if let childrenWithVideoTag = try? child.getElementsByTag(HTMLRawText.Base.video.rawValue),
-        let childWithVideoTag = childrenWithVideoTag.first {
+                let childWithVideoTag = childrenWithVideoTag.first {
         element = self.createVideoElement(childWithVideoTag)
       } else if let childrenWithAudioTag = try? child.getElementsByTag(HTMLRawText.Base.audio.rawValue),
-        let childWithAudioTag = childrenWithAudioTag.first {
+                let childWithAudioTag = childrenWithAudioTag.first {
         element = self.createAudioElement(childWithAudioTag)
       }
     case .text:
       var textComponents = [TextComponent]()
 
-      parseTextElement(element: child, textComponents: &textComponents)
+      self.parseTextElement(element: child, textComponents: &textComponents)
 
       let textViewElement = TextViewElement(components: textComponents)
       element = textViewElement
@@ -90,8 +92,10 @@ class HTMLParser {
     return audioVideoViewElement
   }
 
-  private func parseTextElement(element: Element,
-                                textComponents: inout [TextComponent]) {
+  private func parseTextElement(
+    element: Element,
+    textComponents: inout [TextComponent]
+  ) {
     for node in element.getChildNodes() {
       switch node {
       case let textNode as TextNode:

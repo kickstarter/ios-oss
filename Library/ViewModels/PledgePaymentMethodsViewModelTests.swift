@@ -110,9 +110,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 2)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       XCTAssertNil(self.reloadPaymentMethodsSelectedSetupIntent.lastValue!)
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -133,9 +135,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
@@ -261,9 +265,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 2)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       XCTAssertNil(self.reloadPaymentMethodsSelectedSetupIntent.lastValue!)
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -284,9 +290,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
@@ -374,9 +382,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertValues([[], []])
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 2)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], []])
       self.reloadPaymentMethodsIsSelected.assertValues([[], []])
       self.reloadPaymentMethodsProjectCountry.assertValues([[], []])
@@ -401,9 +411,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
+      )
       XCTAssertTrue(
-        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty)
+        self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
+      )
       XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,

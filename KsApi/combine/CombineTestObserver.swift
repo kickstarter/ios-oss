@@ -99,33 +99,51 @@ public final class CombineTestObserver<Value, Error: Swift.Error> {
     }
   }
 
-  public func assertDidComplete(_ message: String = "Should have completed.",
-                                file: StaticString = #file, line: UInt = #line) {
+  public func assertDidComplete(
+    _ message: String = "Should have completed.",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertTrue(self.didComplete, message, file: file, line: line)
   }
 
-  public func assertDidFail(_ message: String = "Should have failed.",
-                            file: StaticString = #file, line: UInt = #line) {
+  public func assertDidFail(
+    _ message: String = "Should have failed.",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertTrue(self.didFail, message, file: file, line: line)
   }
 
-  public func assertDidNotFail(_ message: String = "Should not have failed.",
-                               file: StaticString = #file, line: UInt = #line) {
+  public func assertDidNotFail(
+    _ message: String = "Should not have failed.",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertFalse(self.didFail, message, file: file, line: line)
   }
 
-  public func assertDidNotComplete(_ message: String = "Should not have completed",
-                                   file: StaticString = #file, line: UInt = #line) {
+  public func assertDidNotComplete(
+    _ message: String = "Should not have completed",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertFalse(self.didComplete, message, file: file, line: line)
   }
 
-  public func assertDidEmitValue(_ message: String = "Should have emitted at least one value.",
-                                 file: StaticString = #file, line: UInt = #line) {
+  public func assertDidEmitValue(
+    _ message: String = "Should have emitted at least one value.",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssert(self.values.count > 0, message, file: file, line: line)
   }
 
-  public func assertDidNotEmitValue(_ message: String = "Should not have emitted any values.",
-                                    file: StaticString = #file, line: UInt = #line) {
+  public func assertDidNotEmitValue(
+    _ message: String = "Should not have emitted any values.",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(0, self.values.count, message, file: file, line: line)
   }
 
@@ -143,8 +161,12 @@ public final class CombineTestObserver<Value, Error: Swift.Error> {
     XCTAssertTrue(!self.didFail && !self.didComplete, message, file: file, line: line)
   }
 
-  public func assertValueCount(_ count: Int, _ message: String? = nil,
-                               file: StaticString = #file, line: UInt = #line) {
+  public func assertValueCount(
+    _ count: Int,
+    _ message: String? = nil,
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(
       count,
       self.values.count,
@@ -156,8 +178,12 @@ public final class CombineTestObserver<Value, Error: Swift.Error> {
 }
 
 extension CombineTestObserver where Value: Equatable {
-  public func assertValue(_ value: Value, _ message: String? = nil,
-                          file: StaticString = #file, line: UInt = #line) {
+  public func assertValue(
+    _ value: Value,
+    _ message: String? = nil,
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(1, self.values.count, "A single item should have been emitted.", file: file, line: line)
     XCTAssertEqual(
       value,
@@ -168,8 +194,12 @@ extension CombineTestObserver where Value: Equatable {
     )
   }
 
-  public func assertLastValue(_ value: Value, _ message: String? = nil,
-                              file: StaticString = #file, line: UInt = #line) {
+  public func assertLastValue(
+    _ value: Value,
+    _ message: String? = nil,
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(
       value,
       self.lastValue,
@@ -179,15 +209,23 @@ extension CombineTestObserver where Value: Equatable {
     )
   }
 
-  public func assertValues(_ values: [Value], _ message: String = "",
-                           file: StaticString = #file, line: UInt = #line) {
+  public func assertValues(
+    _ values: [Value],
+    _ message: String = "",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(values, self.values, message, file: file, line: line)
   }
 }
 
 extension CombineTestObserver where Error: Equatable {
-  public func assertFailed(_ expectedError: Error, message: String = "",
-                           file: StaticString = #file, line: UInt = #line) {
+  public func assertFailed(
+    _ expectedError: Error,
+    message: String = "",
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
     XCTAssertEqual(expectedError, self.failedError, message, file: file, line: line)
   }
 }

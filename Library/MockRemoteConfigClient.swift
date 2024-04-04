@@ -8,8 +8,10 @@ private class MockRemoteConfigValue: RemoteConfigValue {
 }
 
 public class MockRemoteConfigClient: RemoteConfigClientType {
-  public func fetchAndActivate(completionHandler _: ((RemoteConfigFetchAndActivateStatus, Error?)
-      -> Void)?) {}
+  public func fetchAndActivate(completionHandler _: (
+    (RemoteConfigFetchAndActivateStatus, Error?)
+      -> Void
+  )?) {}
 
   public var features: [String: Bool]
 

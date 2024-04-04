@@ -475,12 +475,13 @@ final class PledgeViewControllerTests: TestCase {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
     let project = Project.template
-      |> Project.lens.personalization.backing .~ (Backing.template
-        |> Backing.lens.paymentSource .~
-        (.template |> \.id .~ "123")
-        |> Backing.lens.shippingAmount .~ 0
-        |> Backing.lens.bonusAmount .~ 2.0
-        |> Backing.lens.amount .~ 12.0
+      |> Project.lens.personalization.backing .~ (
+        Backing.template
+          |> Backing.lens.paymentSource .~
+          (.template |> \.id .~ "123")
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.bonusAmount .~ 2.0
+          |> Backing.lens.amount .~ 12.0
       )
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 

@@ -181,7 +181,7 @@ public struct Project {
      */
     public func duration(using calendar: Calendar = .current) -> Int? {
       guard let deadlineDateValue = self.deadline,
-        let launchedAtDateValue = self.launchedAt else {
+            let launchedAtDateValue = self.launchedAt else {
         return nil
       }
 

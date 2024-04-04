@@ -4,10 +4,12 @@ import AuthenticationServices
 import XCTest
 
 final class OAuthTests: XCTestCase {
-  func verifyRedirectAsync(redirectURL url: URL?,
-                           error: Error?,
-                           verifier: String,
-                           verify: @escaping (OAuthAuthorizationResult) -> Void) {
+  func verifyRedirectAsync(
+    redirectURL url: URL?,
+    error: Error?,
+    verifier: String,
+    verify: @escaping (OAuthAuthorizationResult) -> Void
+  ) {
     let expectation = XCTestExpectation(description: "OAuth completion block should be called asynchronously")
 
     OAuth.handleRedirect(redirectURL: url, error: error, verifier: verifier) { result in
@@ -59,7 +61,7 @@ final class OAuthTests: XCTestCase {
 
   func testHandleRedirect_cancellationError_cancels() {
     let cancelledError = ASWebAuthenticationSessionError(.canceledLogin)
-    verifyRedirectAsync(redirectURL: nil, error: cancelledError, verifier: "") { result in
+    self.verifyRedirectAsync(redirectURL: nil, error: cancelledError, verifier: "") { result in
       if case .canceled = result {
         // Success
       } else {
@@ -70,7 +72,7 @@ final class OAuthTests: XCTestCase {
 
   func testHandleRedirect_anotherError_fails() {
     let anotherError = ASWebAuthenticationSessionError(.presentationContextNotProvided)
-    verifyRedirectAsync(redirectURL: nil, error: anotherError, verifier: "") { result in
+    self.verifyRedirectAsync(redirectURL: nil, error: anotherError, verifier: "") { result in
       if case .failure = result {
         // Success
       } else {
@@ -92,7 +94,7 @@ final class OAuthTests: XCTestCase {
     let mockService = MockService(fetchUserSelfResponse: currentUser, tokenExchangeResponse: exchangeResponse)
 
     withEnvironment(apiService: mockService) {
-      verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
+      self.verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
         if case .loggedIn = result {
           XCTAssertNotNil(AppEnvironment.current.currentUser)
           XCTAssertEqual(AppEnvironment.current.currentUser?.id, currentUser.id)
@@ -125,7 +127,7 @@ final class OAuthTests: XCTestCase {
     let mockService = MockService(loginError: exchangeError)
 
     withEnvironment(apiService: mockService) {
-      verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
+      self.verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
         if case let .failure(errorMessage: errorMessage) = result {
           XCTAssertNil(AppEnvironment.current.currentUser)
           XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
@@ -156,7 +158,7 @@ final class OAuthTests: XCTestCase {
     let mockService = MockService(fetchUserSelfError: userError, tokenExchangeResponse: exchangeResponse)
 
     withEnvironment(apiService: mockService) {
-      verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
+      self.verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
         if case let .failure(errorMessage: errorMessage) = result {
           XCTAssertNil(AppEnvironment.current.currentUser)
           XCTAssertNil(AppEnvironment.current.apiService.oauthToken)

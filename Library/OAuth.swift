@@ -55,7 +55,7 @@ public struct OAuth {
         url: url,
         callbackURLScheme: OAuth.redirectScheme
       ) { url, error in
-        handleRedirect(redirectURL: url, error: error, verifier: verifier, onComplete: onComplete)
+        self.handleRedirect(redirectURL: url, error: error, verifier: verifier, onComplete: onComplete)
       }
 
       return session
@@ -74,7 +74,7 @@ public struct OAuth {
   ) {
     guard error == nil else {
       if let authenticationError = error as? ASWebAuthenticationSessionError,
-        authenticationError.code == .canceledLogin {
+         authenticationError.code == .canceledLogin {
         DispatchQueue.main.async {
           onComplete(.canceled)
         }

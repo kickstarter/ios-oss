@@ -198,7 +198,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.signupButtonPressedProperty.value = ()
   }
 
-  private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
+  private let tappedUrlProperty = MutableProperty<URL?>(nil)
   public func tapped(_ url: URL) {
     self.tappedUrlProperty.value = url
   }

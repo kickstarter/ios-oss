@@ -127,10 +127,10 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       }
 
     let updatedFriendToFollowed: Signal<User, Never> = followFriendEvent.values()
-      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: true) })
+      .on(value: { (friend: User) in cache(friend: friend, isFriend: true) })
 
     let updatedFriendToUnfollowed: Signal<User, Never> = unfollowFriendEvent.values()
-      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: false) })
+      .on(value: { (friend: User) in cache(friend: friend, isFriend: false) })
 
     let isFollowed: Signal<Bool, Never> = Signal.merge(
       friend, updatedFriendToFollowed, updatedFriendToUnfollowed

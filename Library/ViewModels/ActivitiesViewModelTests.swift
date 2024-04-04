@@ -122,8 +122,8 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
-      activitiesPresent.assertValues([], "Activities didn't emit.")
-      showEmptyStateIsLoggedIn.assertValues([false], "Logged out empty state emits.")
+      self.activitiesPresent.assertValues([], "Activities didn't emit.")
+      self.showEmptyStateIsLoggedIn.assertValues([false], "Logged out empty state emits.")
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
       self.vm.inputs.userSessionStarted()
@@ -131,18 +131,18 @@ final class ActivitiesViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      activitiesPresent.assertValues([false], "Activities emit an empty array.")
+      self.activitiesPresent.assertValues([false], "Activities emit an empty array.")
       // NB: Technically, it is correct that the logged-in empty state should emit here.
       // However, it would be better if the logged-out empty state could have dismissed first.
       // For now, the view controller won't present another empty state if this modal exists already.
-      showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state emits.")
-      hideEmptyState.assertValueCount(1, "Dismiss empty state emits on view load.")
+      self.showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state emits.")
+      self.hideEmptyState.assertValueCount(1, "Dismiss empty state emits on view load.")
 
       self.vm.inputs.viewWillAppear(animated: false)
 
-      activitiesPresent.assertValues([false], "Activities does not emit.")
-      showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state does not emit again.")
-      hideEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+      self.activitiesPresent.assertValues([false], "Activities does not emit.")
+      self.showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state does not emit again.")
+      self.hideEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
     }
   }
 
@@ -217,7 +217,11 @@ final class ActivitiesViewModelTests: TestCase {
       self.activitiesPresent.assertValues([true, true], "New activities emit on pagination.")
 
       // New fetchActivitiesResponse
-      withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2, activity3])) {
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: [
+        self.activity1,
+        self.activity2,
+        self.activity3
+      ])) {
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
@@ -346,7 +350,7 @@ final class ActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      showFacebookConnectSection.assertValues([true], "Show Facebook Connect Section after log in")
+      self.showFacebookConnectSection.assertValues([true], "Show Facebook Connect Section after log in")
 
       self.vm.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
 

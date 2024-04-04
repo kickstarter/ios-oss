@@ -491,9 +491,9 @@ private func filteredAddOns(
 
       if isAddOnLocalPickup {
         if let addOnLocationId = addOn.localPickup?.id,
-          let baseRewardLocationId = baseReward.localPickup?.id,
-          addOnLocationId ==
-          baseRewardLocationId {
+           let baseRewardLocationId = baseReward.localPickup?.id,
+           addOnLocationId ==
+           baseRewardLocationId {
           // if add on is local for local base, ensure locations are equal before displaying
           isValidAddonToDisplay = true
         } else {

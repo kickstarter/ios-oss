@@ -35,7 +35,7 @@ public final class SettingsNotificationCellViewModel: SettingsNotificationCellVi
     let cellType = self.cellTypeProperty.signal.skipNil().skipRepeats()
 
     let initialPushNotificationValue = Signal.zip(initialUser, cellType)
-      .map { (user, cellType) -> Bool? in
+      .map { user, cellType -> Bool? in
         guard let notification = SettingsNotificationCellViewModel
           .notificationFor(
             cellType: cellType,
@@ -50,7 +50,7 @@ public final class SettingsNotificationCellViewModel: SettingsNotificationCellVi
     let pushNotificationValueToggled = self.pushNotificationValueChangedProperty.signal.negate()
 
     let initialEmailNotificationsValue = Signal.zip(initialUser, cellType)
-      .map { (user, cellType) -> Bool? in
+      .map { user, cellType -> Bool? in
         guard let notification = SettingsNotificationCellViewModel
           .notificationFor(
             cellType: cellType,

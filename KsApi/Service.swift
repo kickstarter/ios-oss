@@ -88,24 +88,30 @@ public struct Service: ServiceType {
   public func addNewCreditCard(input: CreatePaymentSourceInput)
     -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
+      )
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
   public func addPaymentSheetPaymentSource(input: CreatePaymentSourceSetupIntentInput)
     -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
+      )
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
   public func triggerThirdPartyEventInput(input: TriggerThirdPartyEventInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .TriggerThirdPartyEventMutation(input: GraphAPI.TriggerThirdPartyEventInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .TriggerThirdPartyEventMutation(input: GraphAPI.TriggerThirdPartyEventInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -114,8 +120,10 @@ public struct Service: ServiceType {
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId)))
+      .perform(
+        mutation: GraphAPI
+          .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -124,8 +132,10 @@ public struct Service: ServiceType {
   public func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -134,8 +144,10 @@ public struct Service: ServiceType {
   public func changePassword(input: ChangePasswordInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -165,22 +177,26 @@ public struct Service: ServiceType {
   public func createCheckout(input: CreateCheckoutInput) ->
     SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI.CreateCheckoutMutation(input: GraphAPI
+      .perform(mutation: GraphAPI.CreateCheckoutMutation(
+        input: GraphAPI
           .CreateCheckoutInput(
             projectId: input.projectId,
             amount: input.amount,
             locationId: input.locationId,
             rewardIds: input.rewardIds,
             refParam: input.refParam
-          )))
+          )
+      ))
       .flatMap(CreateCheckoutEnvelope.producer(from:))
   }
 
   public func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -189,8 +205,10 @@ public struct Service: ServiceType {
   public func createFlaggingInputCombine(input: CreateFlaggingInput)
     -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
+      )
       .map { _ in
         EmptyResponseEnvelope()
       }
@@ -200,20 +218,24 @@ public struct Service: ServiceType {
   public func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
     .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
-          projectId: input.projectId,
-          amount: input.amountDollars,
-          digitalMarketingAttributed: input.digitalMarketingAttributed
-        )))
+      .perform(
+        mutation: GraphAPI
+          .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
+            projectId: input.projectId,
+            amount: input.amountDollars,
+            digitalMarketingAttributed: input.digitalMarketingAttributed
+          ))
+      )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
   }
 
   public func createPassword(input: CreatePasswordInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -222,32 +244,40 @@ public struct Service: ServiceType {
   public func createStripeSetupIntent(input: CreateSetupIntentInput) ->
     SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .CreateSetupIntentMutation(input: GraphAPI.CreateSetupIntentInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .CreateSetupIntentMutation(input: GraphAPI.CreateSetupIntentInput.from(input))
+      )
       .flatMap(ClientSecretEnvelope.envelopeProducer(from:))
   }
 
   public func clearUserUnseenActivity(input _: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput()))
+      .perform(
+        mutation: GraphAPI
+          .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput())
+      )
       .flatMap(ClearUserUnseenActivityEnvelope.producer(from:))
   }
 
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)
     -> SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input))
+      )
       .flatMap(DeletePaymentMethodEnvelope.producer(from:))
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input))
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -419,30 +449,34 @@ public struct Service: ServiceType {
 
   public func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    guard let status = GraphAPI.BackingState.from(status) else
-    { return SignalProducer(error: .couldNotParseJSON) }
+    guard let status = GraphAPI.BackingState.from(status)
+    else { return SignalProducer(error: .couldNotParseJSON) }
 
     return GraphQL.shared.client
-      .fetch(query: GraphAPI
-        .FetchUserBackingsQuery(
-          status: status,
-          withStoredCards: false,
-          includeShippingRules: true,
-          includeLocalPickup: false
-        ))
+      .fetch(
+        query: GraphAPI
+          .FetchUserBackingsQuery(
+            status: status,
+            withStoredCards: false,
+            includeShippingRules: true,
+            includeLocalPickup: false
+          )
+      )
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
   public func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI
-        .FetchBackingQuery(
-          id: "\(id)",
-          withStoredCards: withStoredCards,
-          includeShippingRules: true,
-          includeLocalPickup: true
-        ))
+      .fetch(
+        query: GraphAPI
+          .FetchBackingQuery(
+            id: "\(id)",
+            withStoredCards: withStoredCards,
+            includeShippingRules: true,
+            includeLocalPickup: true
+          )
+      )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
@@ -599,8 +633,10 @@ public struct Service: ServiceType {
       .flatMap(Project.projectProducer(from:))
   }
 
-  public func fetchBackedProjects(cursor: String? = nil,
-                                  limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+  public func fetchBackedProjects(
+    cursor: String? = nil,
+    limit: Int? = nil
+  ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
     let query = GraphAPI.FetchBackerProjectsQuery(backed: true, first: limit, after: cursor)
 
     return GraphQL.shared.client
@@ -608,8 +644,10 @@ public struct Service: ServiceType {
       .flatMap(FetchProjectsEnvelope.fetchProjectsEnvelope(from:))
   }
 
-  public func fetchSavedProjects(cursor: String? = nil,
-                                 limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+  public func fetchSavedProjects(
+    cursor: String? = nil,
+    limit: Int? = nil
+  ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
     let query = GraphAPI.FetchBackerProjectsQuery(starred: true, first: limit, after: cursor)
 
     return GraphQL.shared.client
@@ -718,8 +756,10 @@ public struct Service: ServiceType {
   public func postComment(input: PostCommentInput)
     -> SignalProducer<Comment, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input)))
+      .perform(
+        mutation: GraphAPI
+          .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input))
+      )
       .flatMap(PostCommentEnvelope.producer(from:))
   }
 
@@ -748,8 +788,10 @@ public struct Service: ServiceType {
   public func sendVerificationEmail(input _: EmptyInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI
-        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput()))
+      .perform(
+        mutation: GraphAPI
+          .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput())
+      )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }

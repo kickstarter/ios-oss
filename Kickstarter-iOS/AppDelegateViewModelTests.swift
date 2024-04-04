@@ -146,7 +146,7 @@ final class AppDelegateViewModelTests: TestCase {
     let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
 
     withEnvironment(mainBundle: alphaBundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -169,7 +169,7 @@ final class AppDelegateViewModelTests: TestCase {
       currentUser: .template,
       mainBundle: alphaBundle
     ) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -188,7 +188,7 @@ final class AppDelegateViewModelTests: TestCase {
     let debugBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue, lang: "en")
 
     withEnvironment(mainBundle: debugBundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -201,7 +201,7 @@ final class AppDelegateViewModelTests: TestCase {
     let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
 
     withEnvironment(mainBundle: betaBundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -222,7 +222,7 @@ final class AppDelegateViewModelTests: TestCase {
       currentUser: .template,
       mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
     ) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -240,7 +240,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfigureAppCenter_ProductionApp_LoggedOut() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
     withEnvironment(mainBundle: bundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -253,7 +253,7 @@ final class AppDelegateViewModelTests: TestCase {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
 
     withEnvironment(currentUser: .template, mainBundle: bundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -266,7 +266,7 @@ final class AppDelegateViewModelTests: TestCase {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
 
     withEnvironment(mainBundle: bundle) {
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
@@ -345,7 +345,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidEnterBackground()
     self.scheduler.advance(by: .seconds(5))
 
-    self.postNotificationName.assertValues([.ksr_applicationDidEnterBackground]
+    self.postNotificationName.assertValues(
+      [.ksr_applicationDidEnterBackground]
     )
   }
 
@@ -387,7 +388,7 @@ final class AppDelegateViewModelTests: TestCase {
       )
       self.scheduler.advance(by: .seconds(5))
 
-      updateCurrentUserInEnvironment.assertDidNotEmitValue()
+      self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
       self.forceLogout.assertValueCount(1)
     }
   }
@@ -605,8 +606,10 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(
+      CommentRepliesEnvelope
+        .successfulRepliesTemplate
+    ), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
 
@@ -627,8 +630,10 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(
+      CommentRepliesEnvelope
+        .successfulRepliesTemplate
+    ), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D&reply=deadbeef"
 
@@ -649,8 +654,10 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(
+      CommentRepliesEnvelope
+        .successfulRepliesTemplate
+    ), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
 
@@ -671,8 +678,10 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(
+      CommentRepliesEnvelope
+        .successfulRepliesTemplate
+    ), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D&reply=deadbeef"
 
@@ -877,7 +886,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToDiscovery.assertValues([])
 
       let url =
-        URL(string: "https://www.kickstarter.com/discover/advanced?category_id=1&sort=magic&seed=2714369&page=1")!
+        URL(
+          string: "https://www.kickstarter.com/discover/advanced?category_id=1&sort=magic&seed=2714369&page=1"
+        )!
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: url,
@@ -907,7 +918,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToDiscovery.assertValues([])
 
       let url =
-        URL(string: "https://www.kickstarter.com/discover/advanced?category_id=9999&sort=magic&seed=2714369&page=1")!
+        URL(
+          string: "https://www.kickstarter.com/discover/advanced?category_id=9999&sort=magic&seed=2714369&page=1"
+        )!
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: url,
@@ -946,7 +959,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToDiscovery.assertValues([])
 
       let url =
-        URL(string: "https://www.kickstarter.com/discover/advanced?category_id=34&sort=magic&seed=2714369&page=1")!
+        URL(
+          string: "https://www.kickstarter.com/discover/advanced?category_id=34&sort=magic&seed=2714369&page=1"
+        )!
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: url,
@@ -2263,7 +2278,8 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_ShowsConsentDialogAndUpdatesAdId() {
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_ShowsConsentDialogAndUpdatesAdId(
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
@@ -2291,7 +2307,8 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusFalse_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusFalse_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
@@ -2319,7 +2336,8 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestDenied_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestDenied_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
@@ -2347,7 +2365,8 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOff_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOff_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
@@ -2381,8 +2400,10 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(
+      CommentRepliesEnvelope
+        .successfulRepliesTemplate
+    ), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/"
 
@@ -2437,11 +2458,12 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testUserSessionStarted_fetchesUserEmail_andClearsOnLogout() {
     let fetchUserEmailQueryData = GraphAPI.FetchUserEmailQuery
-      .Data(unsafeResultMap: [
-        "me": [
-          "email": "nativesquad@ksr.com"
+      .Data(
+        unsafeResultMap: [
+          "me": [
+            "email": "nativesquad@ksr.com"
+          ]
         ]
-      ]
       )
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {

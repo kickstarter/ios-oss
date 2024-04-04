@@ -259,7 +259,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
     let filteredRewards = allRewards
-      .filter { (name, _) -> Bool in
+      .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
 
@@ -298,7 +298,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testNonLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
     let filteredRewards = allRewards
-      .filter { (name, _) -> Bool in
+      .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
 

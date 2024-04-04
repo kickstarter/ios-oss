@@ -93,19 +93,19 @@ internal final class VideoViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
 
       self.vm.inputs.playButtonTapped()
-      self.vm.inputs.durationChanged(toNew: duration)
-      self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+      self.vm.inputs.durationChanged(toNew: self.duration)
+      self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
       self.incrementVideoStart.assertValueCount(1, "Incremented video start count.")
 
-      self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
+      self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
       self.incrementVideoCompletion.assertValueCount(1, "Incremented video complete count.")
 
-      self.vm.inputs.rateChanged(toNew: pauseRate, atTime: startTime)
-      self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+      self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.startTime)
+      self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
       self.incrementVideoStart.assertValueCount(1, "Video start count not incremented again.")
 
-      self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
+      self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
       self.incrementVideoCompletion.assertValueCount(1, "Video complete count not incremented again.")
     }
   }

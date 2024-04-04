@@ -91,8 +91,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         let string: String
 
         if featurePostCampaignPledgeEnabled(),
-          project.isInPostCampaignPledgingPhase,
-          let email = AppEnvironment.current.currentUserEmail {
+           project.isInPostCampaignPledgingPhase,
+           let email = AppEnvironment.current.currentUserEmail {
           let formattedTotal = Format.formattedCurrency(pledgeTotal, country: project.country)
 
           string = Strings.You_have_successfully_pledged_to_project_post_campaign_html(

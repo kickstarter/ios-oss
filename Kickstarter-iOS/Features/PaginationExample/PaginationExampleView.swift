@@ -4,7 +4,7 @@ import SwiftUI
 private struct PaginationExampleProjectCell: View {
   let title: String
   var body: some View {
-    Text(title)
+    Text(self.title)
       .padding(.all, 10)
   }
 }
@@ -20,22 +20,22 @@ private struct PaginationExampleProjectList: View {
   var body: some View {
     HStack {
       Spacer()
-      Text("👉 \(statusText)")
+      Text("👉 \(self.statusText)")
       Spacer()
     }
     .padding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
     .background(.yellow)
     List {
-      ForEach(projectIdsAndTitles, id: \.0) {
+      ForEach(self.projectIdsAndTitles, id: \.0) {
         let title = $0.1
         PaginationExampleProjectCell(title: title)
       }
-      if showProgressView {
+      if self.showProgressView {
         HStack {
           Spacer()
           Text("Loading 😉")
             .onAppear {
-              onDidShowProgressView()
+              self.onDidShowProgressView()
             }
           Spacer()
         }
@@ -43,7 +43,7 @@ private struct PaginationExampleProjectList: View {
       }
     }
     .refreshable {
-      onRefresh()
+      self.onRefresh()
     }
   }
 }
@@ -56,14 +56,14 @@ public struct PaginationExampleView: View {
     // all the information it needs is passed in via bindings.
     // This makes it easy to write a preview!
     PaginationExampleProjectList(
-      projectIdsAndTitles: $viewModel.projectIdsAndTitles,
-      showProgressView: $viewModel.showProgressView,
-      statusText: $viewModel.statusText,
+      projectIdsAndTitles: self.$viewModel.projectIdsAndTitles,
+      showProgressView: self.$viewModel.showProgressView,
+      statusText: self.$viewModel.statusText,
       onRefresh: {
-        viewModel.didRefresh()
+        self.viewModel.didRefresh()
       },
       onDidShowProgressView: {
-        viewModel.didShowProgressView()
+        self.viewModel.didShowProgressView()
       }
     )
   }

@@ -63,7 +63,8 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
     _ = self.backerInfoContainerStackView
       |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
       |> backerInfoContainerStackViewStyle
 
     _ = self.backerNameLabel

@@ -234,9 +234,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.collectionView.topAnchor
-        .constraint(equalTo: featurePostCampaignPledgeEnabled()
-          ? self.headerView.bottomAnchor
-          : self.view.topAnchor
+        .constraint(
+          equalTo: featurePostCampaignPledgeEnabled()
+            ? self.headerView.bottomAnchor
+            : self.view.topAnchor
         )
     ])
 

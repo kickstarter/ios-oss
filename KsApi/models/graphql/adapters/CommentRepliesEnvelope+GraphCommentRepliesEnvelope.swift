@@ -9,8 +9,8 @@ extension CommentRepliesEnvelope {
     from data: GraphAPI.FetchCommentRepliesQuery.Data
   ) -> CommentRepliesEnvelope? {
     guard let parentCommentFragment = data.comment?.fragments.commentWithRepliesFragment,
-      let parentComment = Comment.comment(from: parentCommentFragment),
-      let repliesData = parentCommentFragment.replies else {
+          let parentComment = Comment.comment(from: parentCommentFragment),
+          let repliesData = parentCommentFragment.replies else {
       return nil
     }
 
@@ -27,8 +27,10 @@ extension CommentRepliesEnvelope {
     )
   }
 
-  static func envelopeProducer(from data: GraphAPI.FetchCommentRepliesQuery
-    .Data) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+  static func envelopeProducer(
+    from data: GraphAPI.FetchCommentRepliesQuery
+      .Data
+  ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
     guard let envelope = CommentRepliesEnvelope.commentRepliesEnvelope(from: data) else { return .empty }
 
     return SignalProducer(value: envelope)

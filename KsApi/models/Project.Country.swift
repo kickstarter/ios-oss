@@ -55,14 +55,14 @@ extension Project {
 extension Project.Country: Decodable {
   enum CodingKeys: String, CodingKey {
     case countryCode = "country",
-      currency,
-      currencyCode = "currency_code",
-      currencySymbol = "currency_symbol",
-      currencyTrailingCode = "currency_trailing_code",
-      maxPledge = "max_pledge",
-      minPledge = "min_pledge",
-      name,
-      trailingCode = "trailing_code"
+         currency,
+         currencyCode = "currency_code",
+         currencySymbol = "currency_symbol",
+         currencyTrailingCode = "currency_trailing_code",
+         maxPledge = "max_pledge",
+         minPledge = "min_pledge",
+         name,
+         trailingCode = "trailing_code"
   }
 
   public init(from decoder: Decoder) throws {

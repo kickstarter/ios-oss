@@ -171,7 +171,7 @@ public func projectCountry(
   env: Environment = AppEnvironment.current
 ) -> Project.Country? {
   guard let currencyCode = code,
-    let country = env.launchedCountries.countries.filter({ $0.currencyCode == currencyCode }).first else {
+        let country = env.launchedCountries.countries.filter({ $0.currencyCode == currencyCode }).first else {
     return nil
   }
   // return a hardcoded Country if it matches the country code
@@ -383,8 +383,8 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
  - returns: A Bool representing whether the reward has a start date prior to the current date/time.
  */
 public func isStartDateBeforeToday(for reward: Reward) -> Bool {
-  return (reward.startsAt == nil || (reward.startsAt ?? 0) <= AppEnvironment.current.dateType.init()
-    .timeIntervalSince1970)
+  return reward.startsAt == nil || (reward.startsAt ?? 0) <= AppEnvironment.current.dateType.init()
+    .timeIntervalSince1970
 }
 
 /**
@@ -395,8 +395,8 @@ public func isStartDateBeforeToday(for reward: Reward) -> Bool {
  - returns: A Bool representing whether the reward has an end date after to the current date/time.
  */
 public func isEndDateAfterToday(for reward: Reward) -> Bool {
-  return (reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
-    .timeIntervalSince1970)
+  return reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
+    .timeIntervalSince1970
 }
 
 /*
@@ -448,8 +448,8 @@ public func getBaseRewardShippingTotal(
 ) -> Double {
   // If digital or local pickup there is no shipping
   guard !isRewardDigital(baseReward),
-    !isRewardLocalPickup(baseReward),
-    baseReward != .noReward else { return 0.0 }
+        !isRewardLocalPickup(baseReward),
+        baseReward != .noReward else { return 0.0 }
   let backing = project.personalization.backing
 
   // If there is no `Backing` (new pledge), return the rewards shipping rule
@@ -515,8 +515,10 @@ func calculatePledgeTotal(
 
  - returns: A `Double` of all rewards add-ons total.
  */
-func calculateAllRewardsTotal(addOnRewards: [Reward],
-                              selectedQuantities: SelectedRewardQuantities) -> Double {
+func calculateAllRewardsTotal(
+  addOnRewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities
+) -> Double {
   addOnRewards.filter { !$0.isNoReward }
     .reduce(0.0) { total, reward -> Double in
       let totalForReward = reward.minimum

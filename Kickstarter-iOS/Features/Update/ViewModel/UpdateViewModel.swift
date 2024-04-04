@@ -115,7 +115,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     let projectAndRefTag = project
       .takePairWhen(goToProject)
       .map(unpack)
-      .switchMap { (project, action, projectParamAndRefTag)
+      .switchMap { project, action, projectParamAndRefTag
         -> SignalProducer<(WKNavigationActionData, Project, RefTag), Never> in
         guard let (projectParam, refTag) = projectParamAndRefTag else { return .empty }
 

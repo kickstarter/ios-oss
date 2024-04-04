@@ -19,8 +19,10 @@ extension PaymentIntentEnvelope {
   /**
    Returns a minimal `PaymentIntentEnvelope` from a `CreatePaymentIntentMutation.Data`
    */
-  static func clientSecretEnvelope(from data: GraphAPI.CreatePaymentIntentMutation
-    .Data) -> PaymentIntentEnvelope? {
+  static func clientSecretEnvelope(
+    from data: GraphAPI.CreatePaymentIntentMutation
+      .Data
+  ) -> PaymentIntentEnvelope? {
     guard let clientSecret = data.createPaymentIntent?.clientSecret
     else { return nil }
 

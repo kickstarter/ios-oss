@@ -34,16 +34,18 @@ extension UIImageView {
     )
   }
 
-  public static func ksr_cacheImageWith(_ url: URL,
-                                        serializer _: CacheSerializer = DefaultCacheSerializer(),
-                                        completionHandler: @escaping ((UIImage)?) -> Void) {
+  public static func ksr_cacheImageWith(
+    _ url: URL,
+    serializer _: CacheSerializer = DefaultCacheSerializer(),
+    completionHandler: @escaping (UIImage?) -> Void
+  ) {
     let prefetcher = ImagePrefetcher(
       resources: [url]
     ) { cachedImages, failedImages, downloadedImages in
-      var crossPlatformImage: (UIImage)?
+      var crossPlatformImage: UIImage?
 
       guard failedImages.isEmpty,
-        let image = (cachedImages + downloadedImages).first else {
+            let image = (cachedImages + downloadedImages).first else {
         completionHandler(crossPlatformImage)
 
         return

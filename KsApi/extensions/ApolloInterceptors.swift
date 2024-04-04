@@ -28,7 +28,8 @@ class HeadersInterceptor: ApolloInterceptor {
     chain: RequestChain,
     request: HTTPRequest<Operation>,
     response: HTTPResponse<Operation>?,
-    completion: @escaping (Swift.Result<GraphQLResult<Operation.Data>, Error>
+    completion: @escaping (
+      Swift.Result<GraphQLResult<Operation.Data>, Error>
     ) -> Void
   ) {
     self.additionalHeaders().forEach(request.addHeader)

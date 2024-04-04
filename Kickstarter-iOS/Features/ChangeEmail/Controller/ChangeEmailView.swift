@@ -24,7 +24,7 @@ struct ChangeEmailView: View {
     GeometryReader { proxy in
       List {
         Color(.ksr_support_100)
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
+          .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .center)
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
 
@@ -33,12 +33,12 @@ struct ChangeEmailView: View {
             titleText: Strings.Current_email(),
             secureField: false,
             placeholderText: "",
-            contentPadding: contentPadding,
-            valueText: $retrievedEmailText
+            contentPadding: self.contentPadding,
+            valueText: self.$retrievedEmailText
           )
           .currentEmail()
-          .onReceive(reactiveViewModel.retrievedEmailText) { newValue in
-            retrievedEmailText = newValue
+          .onReceive(self.reactiveViewModel.retrievedEmailText) { newValue in
+            self.retrievedEmailText = newValue
           }
 
           Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
@@ -46,26 +46,26 @@ struct ChangeEmailView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
-        if !reactiveViewModel.hideMessageLabel {
-          warningLabel(
-            text: reactiveViewModel.warningMessageWithAlert.0,
-            reactiveViewModel.warningMessageWithAlert.1
+        if !self.reactiveViewModel.hideMessageLabel {
+          self.warningLabel(
+            text: self.reactiveViewModel.warningMessageWithAlert.0,
+            self.reactiveViewModel.warningMessageWithAlert.1
           )
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
+          .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .leading)
           .background(Color(.ksr_support_100))
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
         }
 
-        if !reactiveViewModel.hideVerifyView {
+        if !self.reactiveViewModel.hideVerifyView {
           VStack(alignment: .leading, spacing: 0) {
-            Button(reactiveViewModel.verifyEmailButtonTitle) {
-              reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
+            Button(self.reactiveViewModel.verifyEmailButtonTitle) {
+              self.reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
             }
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_create_700))
-            .padding(contentPadding)
-            .disabled(showLoading)
+            .padding(self.contentPadding)
+            .disabled(self.showLoading)
 
             Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
           }
@@ -74,7 +74,7 @@ struct ChangeEmailView: View {
         }
 
         Color(.ksr_support_100)
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
+          .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .center)
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
 
@@ -83,38 +83,38 @@ struct ChangeEmailView: View {
             titleText: Strings.New_email(),
             secureField: false,
             placeholderText: Strings.login_placeholder_email(),
-            contentPadding: contentPadding,
-            valueText: $newEmailText
+            contentPadding: self.contentPadding,
+            valueText: self.$newEmailText
           )
-          .onReceive(reactiveViewModel.resetEditableText) { newValue in
+          .onReceive(self.reactiveViewModel.resetEditableText) { newValue in
             if newValue {
-              newEmailText = ""
+              self.newEmailText = ""
             }
           }
-          .onChange(of: newEmailText) { newValue in
-            reactiveViewModel.newEmailText.send(newValue)
+          .onChange(of: self.newEmailText) { newValue in
+            self.reactiveViewModel.newEmailText.send(newValue)
           }
-          .newEmail(editable: !showLoading)
-          .focused($focusField, equals: .newEmail)
+          .newEmail(editable: !self.showLoading)
+          .focused(self.$focusField, equals: .newEmail)
           .onSubmit {
-            focusField = .currentPassword
+            self.focusField = .currentPassword
           }
 
           InputFieldView(
             titleText: Strings.Current_password(),
             secureField: true,
             placeholderText: Strings.login_placeholder_password(),
-            contentPadding: contentPadding,
-            valueText: $newPasswordText
+            contentPadding: self.contentPadding,
+            valueText: self.$newPasswordText
           )
-          .onChange(of: newPasswordText) { newValue in
-            reactiveViewModel.currentPasswordText.send(newValue)
+          .onChange(of: self.newPasswordText) { newValue in
+            self.reactiveViewModel.currentPasswordText.send(newValue)
           }
-          .currentPassword(editable: !showLoading)
-          .focused($focusField, equals: .currentPassword)
-          .onReceive(reactiveViewModel.resetEditableText) { resetFlag in
+          .currentPassword(editable: !self.showLoading)
+          .focused(self.$focusField, equals: .currentPassword)
+          .onReceive(self.reactiveViewModel.resetEditableText) { resetFlag in
             if resetFlag {
-              newPasswordText = ""
+              self.newPasswordText = ""
             }
           }
           // FIXME: So "Done" on keyboard doesn't trigger Save --> in the future we might want to add this (was in the old `ChangeEmailViewController`)
@@ -130,23 +130,23 @@ struct ChangeEmailView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
-            saveEnabled: $saveEnabled,
-            showLoading: $showLoading,
+            saveEnabled: self.$saveEnabled,
+            showLoading: self.$showLoading,
             titleText: Strings.Save()
           ) {
-            focusField = nil
-            reactiveViewModel.didTapSaveButton()
+            self.focusField = nil
+            self.reactiveViewModel.didTapSaveButton()
           }
-          .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
-            saveEnabled = newValue
+          .onReceive(self.reactiveViewModel.saveButtonEnabled) { newValue in
+            self.saveEnabled = newValue
           }
-          .onReceive(reactiveViewModel.resetEditableText) { newValue in
-            showLoading = !newValue
+          .onReceive(self.reactiveViewModel.resetEditableText) { newValue in
+            self.showLoading = !newValue
           }
         }
       }
       .overlay(alignment: .bottom) {
-        MessageBannerView(viewModel: $bannerMessage)
+        MessageBannerView(viewModel: self.$bannerMessage)
           .frame(
             minWidth: proxy.size.width,
             idealWidth: proxy.size.width,
@@ -155,11 +155,11 @@ struct ChangeEmailView: View {
           )
           .animation(.easeInOut)
       }
-      .onReceive(reactiveViewModel.bannerMessage) { newValue in
-        bannerMessage = newValue
+      .onReceive(self.reactiveViewModel.bannerMessage) { newValue in
+        self.bannerMessage = newValue
       }
       .onAppear {
-        reactiveViewModel.inputs.viewDidLoad()
+        self.reactiveViewModel.inputs.viewDidLoad()
       }
     }
   }
@@ -173,7 +173,7 @@ struct ChangeEmailView: View {
 
     var body: some View {
       HStack {
-        Text(titleText)
+        Text(self.titleText)
           .frame(
             maxWidth: .infinity,
             alignment: .leading
@@ -183,14 +183,14 @@ struct ChangeEmailView: View {
         Spacer()
 
         InputFieldUserInputView(
-          secureField: secureField,
-          placeholderText: placeholderText,
-          valueText: valueText
+          secureField: self.secureField,
+          placeholderText: self.placeholderText,
+          valueText: self.valueText
         )
       }
-      .padding(contentPadding)
+      .padding(self.contentPadding)
       .accessibilityElement(children: .combine)
-      .accessibilityLabel(titleText)
+      .accessibilityLabel(self.titleText)
     }
   }
 
@@ -200,18 +200,18 @@ struct ChangeEmailView: View {
     var valueText: Binding<String>
 
     var body: some View {
-      if secureField {
+      if self.secureField {
         SecureField(
           "",
-          text: valueText,
-          prompt: Text(placeholderText).foregroundColor(Color(.ksr_support_400))
+          text: self.valueText,
+          prompt: Text(self.placeholderText).foregroundColor(Color(.ksr_support_400))
         )
       } else {
         TextField(
           "",
-          text: valueText,
+          text: self.valueText,
           prompt:
-          Text(placeholderText).foregroundColor(Color(.ksr_support_400))
+          Text(self.placeholderText).foregroundColor(Color(.ksr_support_400))
         )
       }
     }

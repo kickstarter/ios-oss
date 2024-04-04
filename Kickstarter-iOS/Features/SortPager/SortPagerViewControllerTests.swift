@@ -24,7 +24,7 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
-        controller.configureWith(sorts: sorts)
+        controller.configureWith(sorts: self.sorts)
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
@@ -40,7 +40,7 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
-        controller.configureWith(sorts: sorts)
+        controller.configureWith(sorts: self.sorts)
 
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
@@ -56,7 +56,7 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
-        controller.configureWith(sorts: sorts)
+        controller.configureWith(sorts: self.sorts)
 
         let (parent, _) = traitControllers(device: .pad, orientation: .landscape, child: controller)
         parent.view.frame.size.height = 50

@@ -120,8 +120,10 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testViewController_WithRootCommentAndSuccessFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
     let mockService =
-      MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-          .successFailedRetryingRetrySuccessRepliesTemplate))
+      MockService(fetchCommentRepliesEnvelopeResult: .success(
+        CommentRepliesEnvelope
+          .successFailedRetryingRetrySuccessRepliesTemplate
+      ))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
@@ -156,7 +158,8 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testViewController_WithRootCommentRepliesandViewMoreRepliesFailedCell() {
     let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate))
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate)
+    )
     let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
@@ -178,7 +181,9 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
+        withEnvironment(
+          apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))
+        ) {
           controller.viewModel.inputs.paginateOrErrorCellWasTapped()
 
           self.scheduler.advance()
@@ -195,7 +200,8 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testViewController_WithRootCommentAndFailureToRequestFirstPage() {
     let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))
+      fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON)
+    )
     let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {

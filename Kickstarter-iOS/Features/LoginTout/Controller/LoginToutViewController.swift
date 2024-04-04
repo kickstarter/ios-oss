@@ -625,7 +625,7 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
     guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
-      let authToken = credential.authorizationCode else {
+          let authToken = credential.authorizationCode else {
       return
     }
 

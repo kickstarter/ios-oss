@@ -66,7 +66,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = device == .pad ? 700 : 550
 
-        controller.change(filter: magicParams)
+        controller.change(filter: self.magicParams)
 
         self.scheduler.run()
 
@@ -103,7 +103,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = device == .pad ? 500 : 450
 
-          controller.change(filter: magicParams)
+          controller.change(filter: self.magicParams)
 
           self.scheduler.run()
 
@@ -134,7 +134,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = device == .pad ? 500 : 450
 
-        controller.change(filter: magicParams)
+        controller.change(filter: self.magicParams)
 
         self.scheduler.run()
 
@@ -172,7 +172,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = device == .pad ? 500 : 450
 
-          controller.change(filter: magicParams)
+          controller.change(filter: self.magicParams)
 
           self.scheduler.run()
 
@@ -237,7 +237,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 210
 
-        controller.change(filter: magicParams)
+        controller.change(filter: self.magicParams)
         self.scheduler.run()
 
         assertSnapshot(

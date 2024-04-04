@@ -552,31 +552,31 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       applePayParamsData,
       refTag
     )
-    .map { (
+    .map {
       project,
-      rewards,
-      pledgeTotal,
-      selectedQuantities,
-      selectedShippingRule,
-      selectedPaymentSource,
-      applePayParams,
-      refTag
-    ) -> CreateBackingData in
+        rewards,
+        pledgeTotal,
+        selectedQuantities,
+        selectedShippingRule,
+        selectedPaymentSource,
+        applePayParams,
+        refTag
+        -> CreateBackingData in
 
-    var paymentSourceId = selectedPaymentSource?.savedCreditCardId
-    var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
+      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
-    return (
-      project: project,
-      rewards: rewards,
-      pledgeTotal: pledgeTotal,
-      selectedQuantities: selectedQuantities,
-      shippingRule: selectedShippingRule,
-      paymentSourceId: paymentSourceId,
-      setupIntentClientSecret: setupIntentClientSecret,
-      applePayParams: applePayParams,
-      refTag: refTag
-    )
+      return (
+        project: project,
+        rewards: rewards,
+        pledgeTotal: pledgeTotal,
+        selectedQuantities: selectedQuantities,
+        shippingRule: selectedShippingRule,
+        paymentSourceId: paymentSourceId,
+        setupIntentClientSecret: setupIntentClientSecret,
+        applePayParams: applePayParams,
+        refTag: refTag
+      )
     }
 
     let createButtonTapped = Signal.combineLatest(
@@ -628,28 +628,28 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedPaymentSource,
       applePayParamsData
     )
-    .map { (
+    .map {
       backing,
-      rewards,
-      pledgeTotal,
-      selectedQuantities,
-      selectedShippingRule,
-      selectedPaymentSource,
-      applePayParams
-    ) -> UpdateBackingData in
-    var paymentSourceId = selectedPaymentSource?.savedCreditCardId
-    var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
+        rewards,
+        pledgeTotal,
+        selectedQuantities,
+        selectedShippingRule,
+        selectedPaymentSource,
+        applePayParams
+        -> UpdateBackingData in
+      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
-    return (
-      backing: backing,
-      rewards: rewards,
-      pledgeTotal: pledgeTotal,
-      selectedQuantities: selectedQuantities,
-      shippingRule: selectedShippingRule,
-      paymentSourceId: paymentSourceId,
-      setupIntentClientSecret: setupIntentClientSecret,
-      applePayParams: applePayParams
-    )
+      return (
+        backing: backing,
+        rewards: rewards,
+        pledgeTotal: pledgeTotal,
+        selectedQuantities: selectedQuantities,
+        shippingRule: selectedShippingRule,
+        paymentSourceId: paymentSourceId,
+        setupIntentClientSecret: setupIntentClientSecret,
+        applePayParams: applePayParams
+      )
     }
 
     let willUpdateApplePayBacking = Signal.combineLatest(

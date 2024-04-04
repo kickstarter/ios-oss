@@ -26,7 +26,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
      n.B. that every object in the response must also include a __typename.
      */
     guard let testBundle = Bundle(identifier: "com.kickstarter.KsApiTests"),
-      let jsonStringURL = testBundle.url(forResource: "FetchBackerProjectsQuery", withExtension: "json")
+          let jsonStringURL = testBundle.url(forResource: "FetchBackerProjectsQuery", withExtension: "json")
     else {
       return [:]
     }

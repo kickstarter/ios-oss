@@ -35,7 +35,7 @@ extension UserEnvelope {
    */
   static func user(from data: GraphAPI.FetchUserQuery.Data) -> UserEnvelope<User>? {
     guard let userFragment = data.me?.fragments.userFragment,
-      let user = User.user(from: userFragment) else { return nil }
+          let user = User.user(from: userFragment) else { return nil }
 
     return UserEnvelope<User>(me: user)
   }

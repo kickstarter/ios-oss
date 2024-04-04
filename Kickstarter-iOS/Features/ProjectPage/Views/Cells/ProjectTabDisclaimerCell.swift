@@ -4,8 +4,10 @@ import Prelude
 import UIKit
 
 protocol ProjectTabDisclaimerCellDelegate: AnyObject {
-  func projectTabDisclaimerCell(_ cell: ProjectTabDisclaimerCell,
-                                didTapURL: URL)
+  func projectTabDisclaimerCell(
+    _ cell: ProjectTabDisclaimerCell,
+    didTapURL: URL
+  )
 }
 
 final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
@@ -34,6 +36,7 @@ final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

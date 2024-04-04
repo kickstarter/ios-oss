@@ -21,11 +21,11 @@ struct MessageBannerView: View {
       .padding()
       .onAppear {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-          viewModel = nil
+          self.viewModel = nil
         }
       }
       .onTapGesture {
-        viewModel = nil
+        self.viewModel = nil
       }
     }
   }

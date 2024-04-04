@@ -12,7 +12,7 @@ private func swizzle(_ vc: UIViewController.Type) {
   .forEach { original, swizzled in
 
     guard let originalMethod = class_getInstanceMethod(vc, original),
-      let swizzledMethod = class_getInstanceMethod(vc, swizzled) else { return }
+          let swizzledMethod = class_getInstanceMethod(vc, swizzled) else { return }
 
     let didAddViewDidLoadMethod = class_addMethod(
       vc,

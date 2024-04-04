@@ -92,6 +92,6 @@ public func ksr_setContentCompressionResistancePriority(
   return { view in
     view.setContentCompressionResistancePriority(priority, for: axis)
 
-    return (view)
+    return view
   }
 }

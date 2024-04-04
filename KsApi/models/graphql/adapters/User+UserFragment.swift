@@ -13,7 +13,7 @@ extension User {
     var unseenUserActivityCount = 0
 
     if let hasUnseenActivity = userFragment.hasUnseenActivity,
-      hasUnseenActivity {
+       hasUnseenActivity {
       unseenUserActivityCount = 1
     }
 
@@ -44,8 +44,10 @@ extension User {
     )
   }
 
-  private static func newsletterSubscriptions(userFragment: GraphAPI
-    .UserFragment) -> NewsletterSubscriptions {
+  private static func newsletterSubscriptions(
+    userFragment: GraphAPI
+      .UserFragment
+  ) -> NewsletterSubscriptions {
     let newslettersSubscriptions = NewsletterSubscriptions(
       arts: userFragment.newsletterSubscriptions?
         .artsCultureNewsletter,
@@ -72,8 +74,10 @@ extension User {
     return newslettersSubscriptions
   }
 
-  private static func notifications(userFragment: GraphAPI
-    .UserFragment) -> Notifications {
+  private static func notifications(
+    userFragment: GraphAPI
+      .UserFragment
+  ) -> Notifications {
     guard let userNotifications = userFragment.notifications else {
       return Notifications()
     }

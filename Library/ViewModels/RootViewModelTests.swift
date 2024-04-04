@@ -361,7 +361,7 @@ final class RootViewModelTests: TestCase {
   func testSetViewControllers() {
     let viewControllerNames = TestObserver<[String], Never>()
 
-    vm.outputs.setViewControllers.map(extractRootNames)
+    self.vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
     self.vm.inputs.viewDidLoad()
@@ -410,7 +410,7 @@ final class RootViewModelTests: TestCase {
 
   func testViewControllersDontOverEmit() {
     let viewControllerNames = TestObserver<[String], Never>()
-    vm.outputs.setViewControllers.map(extractRootNames)
+    self.vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
     self.vm.inputs.viewDidLoad()
@@ -424,7 +424,7 @@ final class RootViewModelTests: TestCase {
 
   func testUpdateUserLocalePreferences() {
     let viewControllerNames = TestObserver<[String], Never>()
-    vm.outputs.setViewControllers.map(extractRootNames)
+    self.vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
     self.vm.inputs.viewDidLoad()
@@ -593,7 +593,7 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValueCount(0)
 
     let viewControllerNames = TestObserver<[String], Never>()
-    vm.outputs.setViewControllers.map(extractRootNames)
+    self.vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
     self.vm.inputs.viewDidLoad()
