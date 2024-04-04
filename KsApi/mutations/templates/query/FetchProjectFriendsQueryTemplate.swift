@@ -106,7 +106,7 @@ public enum FetchProjectFriendsQueryTemplate {
                    "storedCards":{
                       "__typename":"UserCreditCardTypeConnection",
                       "nodes":[
-                         
+
                       ],
                       "totalCount":0
                    }

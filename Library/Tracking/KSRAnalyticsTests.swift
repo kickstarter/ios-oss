@@ -305,9 +305,10 @@ final class KSRAnalyticsTests: TestCase {
     )
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [Reward.template, .noReward]
-      |> \.category .~ (.illustration
-        |> \.id .~ 123
-        |> \.parentId .~ 321
+      |> \.category .~ (
+        .illustration
+          |> \.id .~ 123
+          |> \.parentId .~ 321
       )
       |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
@@ -563,12 +564,13 @@ final class KSRAnalyticsTests: TestCase {
       <> DiscoveryParams.lens.starred .~ false
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
-      <> DiscoveryParams.lens.category .~ (Category.documentary
-        |> Category.lens.parent .~ .init(
-          analyticsName: Category.filmAndVideo.analyticsName,
-          id: Category.filmAndVideo.id,
-          name: Category.filmAndVideo.name
-        )
+      <> DiscoveryParams.lens.category .~ (
+        Category.documentary
+          |> Category.lens.parent .~ .init(
+            analyticsName: Category.filmAndVideo.analyticsName,
+            id: Category.filmAndVideo.id,
+            name: Category.filmAndVideo.name
+          )
       )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular

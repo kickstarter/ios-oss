@@ -144,7 +144,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configureNavigationHeader.assertValues([initialParams])
+      self.configureNavigationHeader.assertValues([self.initialParams])
     }
   }
 
@@ -193,7 +193,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
+        self.configureNavigationHeader.assertValues([recsInitialParams, self.initialParams])
       }
     }
   }

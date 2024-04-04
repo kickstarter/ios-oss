@@ -36,17 +36,17 @@ struct ReportProjectFormView: View {
         }
 
         SwiftUI.Section(Strings.Project_url()) {
-          Text(projectURL)
+          Text(self.projectURL)
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_support_400))
             .disabled(true)
         }
 
         SwiftUI.Section {
-          TextEditor(text: $viewModel.detailsText)
+          TextEditor(text: self.$viewModel.detailsText)
             .frame(minHeight: 75)
             .font(Font(UIFont.ksr_body()))
-            .focused($focusField, equals: .details)
+            .focused(self.$focusField, equals: .details)
             .padding()
         } header: {
           Text(Strings.Tell_us_more_details())
@@ -57,31 +57,31 @@ struct ReportProjectFormView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
-            saveEnabled: $viewModel.saveButtonEnabled,
-            showLoading: $viewModel.saveButtonLoading,
+            saveEnabled: self.$viewModel.saveButtonEnabled,
+            showLoading: self.$viewModel.saveButtonLoading,
             titleText: Strings.Send()
           ) {
-            viewModel.didTapSave()
+            self.viewModel.didTapSave()
           }
         }
       }
       .onAppear {
-        focusField = .details
+        self.focusField = .details
 
-        viewModel.projectID = projectID
-        viewModel.projectFlaggingKind = projectFlaggingKind
+        self.viewModel.projectID = self.projectID
+        self.viewModel.projectFlaggingKind = self.projectFlaggingKind
 
-        viewModel.inputs.viewDidLoad()
+        self.viewModel.inputs.viewDidLoad()
       }
-      .onReceive(viewModel.$bannerMessage) { newValue in
+      .onReceive(self.viewModel.$bannerMessage) { newValue in
         /// bannerMessage is set to nil when its done presenting. When it is done, and submit was successful,  dismiss this view.
-        if newValue == nil, viewModel.submitSuccess {
-          dismiss()
-          popToRoot = true
+        if newValue == nil, self.viewModel.submitSuccess {
+          self.dismiss()
+          self.popToRoot = true
         }
       }
       .overlay(alignment: .bottom) {
-        MessageBannerView(viewModel: $viewModel.bannerMessage)
+        MessageBannerView(viewModel: self.$viewModel.bannerMessage)
           .frame(
             minWidth: proxy.size.width,
             idealWidth: proxy.size.width,

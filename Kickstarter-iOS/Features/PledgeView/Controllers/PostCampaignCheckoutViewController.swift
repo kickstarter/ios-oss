@@ -228,7 +228,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] validation in
         guard let self else { return }
 
-        confirmPayment(with: validation)
+        self.confirmPayment(with: validation)
       }
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -455,7 +455,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     }
 
     guard let paymentDisplayName = payment.token.paymentMethod.displayName,
-      let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
+          let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
       completion(
         nil,
         PostCampaignCheckoutApplePayError

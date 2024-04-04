@@ -36,7 +36,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
     /// Only enable the save button if the user has entered detail text
     self.$detailsText
       .map { !$0.isEmpty }
-      .assign(to: &$saveButtonEnabled)
+      .assign(to: &self.$saveButtonEnabled)
 
     /// Load the current user's e-mail on page load
     self.viewDidLoadSubject
@@ -51,7 +51,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
       .catch { _ in
         CurrentValueSubject("")
       }
-      .assign(to: &$retrievedEmail)
+      .assign(to: &self.$retrievedEmail)
 
     /// Submits report on saveTriggered
     self.saveTriggeredSubject

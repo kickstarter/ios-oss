@@ -122,7 +122,8 @@ internal final class ProjectUpdatesViewController: WebViewController {
     decisionHandler(
       self.viewModel.inputs.decidePolicy(
         forNavigationAction: .init(navigationAction: navigationAction)
-      ))
+      )
+    )
   }
 
   func webView(_: WKWebView, didStartProvisionalNavigation _: WKNavigation!) {

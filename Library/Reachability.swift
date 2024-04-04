@@ -20,7 +20,7 @@ private let reachabilityProperty: MutableProperty<Reachability> = {
   else { return MutableProperty(.none) }
 
   guard SCNetworkReachabilitySetCallback(networkReachability, callback, nil),
-    SCNetworkReachabilitySetDispatchQueue(networkReachability, queue)
+        SCNetworkReachabilitySetDispatchQueue(networkReachability, queue)
   else { return MutableProperty(.none) }
 
   return MutableProperty(reachability(forFlags: reachabilityFlags))

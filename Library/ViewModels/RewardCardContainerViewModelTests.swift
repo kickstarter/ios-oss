@@ -53,15 +53,15 @@ final class RewardCardContainerViewModelTests: TestCase {
 
   private var allRewards: [Reward] {
     return [
-      availableHasAddOns,
-      availableLimitedReward,
-      availableTimebasedReward,
-      availableLimitedTimebasedReward,
-      availableNonLimitedReward,
-      unavailableLimitedReward,
-      unavailableTimebasedReward,
-      unavailableLimitedTimebasedReward,
-      availableLimitedUnavailableTimebasedReward,
+      self.availableHasAddOns,
+      self.availableLimitedReward,
+      self.availableTimebasedReward,
+      self.availableLimitedTimebasedReward,
+      self.availableNonLimitedReward,
+      self.unavailableLimitedReward,
+      self.unavailableTimebasedReward,
+      self.unavailableLimitedTimebasedReward,
+      self.availableLimitedUnavailableTimebasedReward,
       Reward.noReward
     ]
   }

@@ -20,10 +20,12 @@ extension ValidateCheckoutEnvelope {
   /**
    Returns a minimal `ValidateCheckoutEnvelope` from a `GraphAPI.ValidateCheckoutQuery.Data`
    */
-  static func validateCheckoutEnvelope(from data: GraphAPI.ValidateCheckoutQuery
-    .Data) -> ValidateCheckoutEnvelope? {
+  static func validateCheckoutEnvelope(
+    from data: GraphAPI.ValidateCheckoutQuery
+      .Data
+  ) -> ValidateCheckoutEnvelope? {
     guard let valid = data.checkout?.isValidForOnSessionCheckout.valid,
-      let messages = data.checkout?.isValidForOnSessionCheckout.messages
+          let messages = data.checkout?.isValidForOnSessionCheckout.messages
     else { return nil }
 
     return ValidateCheckoutEnvelope(valid: valid, messages: messages)

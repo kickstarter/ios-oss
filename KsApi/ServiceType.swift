@@ -584,7 +584,7 @@ extension ServiceType {
     return "\(app)/\(bundleVersion) (\(model); iOS \(systemVersion) Scale/\(scale))"
   }
 
-  fileprivate var oAuthAuthorizationHeader: String? {
+  private var oAuthAuthorizationHeader: String? {
     guard let token = self.oauthToken?.token else {
       return nil
     }
@@ -592,7 +592,7 @@ extension ServiceType {
     return "token \(token)"
   }
 
-  fileprivate var authorizationHeader: String? {
+  private var authorizationHeader: String? {
     if let header = oAuthAuthorizationHeader {
       return header
     } else {
@@ -600,14 +600,14 @@ extension ServiceType {
     }
   }
 
-  fileprivate var defaultQueryParams: [String: String] {
+  private var defaultQueryParams: [String: String] {
     var query: [String: String] = [:]
     query["client_id"] = self.serverConfig.apiClientAuth.clientId
     query["currency"] = self.currency
     return query
   }
 
-  fileprivate func queryComponents(_ key: String, _ value: Any) -> [(String, String)] {
+  private func queryComponents(_ key: String, _ value: Any) -> [(String, String)] {
     var components: [(String, String)] = []
 
     if let dictionary = value as? [String: Any] {

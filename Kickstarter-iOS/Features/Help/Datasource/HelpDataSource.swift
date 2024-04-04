@@ -5,7 +5,7 @@ import UIKit
 
 final class HelpDataSource: ValueCellDataSource {
   func configureRows() {
-    _ = HelpSectionType.allCases.map { section -> Void in
+    _ = HelpSectionType.allCases.map { section in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
       self.set(
         values: values,

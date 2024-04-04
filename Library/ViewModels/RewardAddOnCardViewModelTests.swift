@@ -491,7 +491,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_US_UserCurrency_US_Location_NonUS_Project_NonUS_ProjectCurrency_ConfiguredWithReward() {
+  func testConversionLabel_US_UserCurrency_US_Location_NonUS_Project_NonUS_ProjectCurrency_ConfiguredWithReward(
+  ) {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
@@ -547,7 +548,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_NonUSProjectCurrency_ConversionRoundedUp() {
+  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_NonUSProjectCurrency_ConversionRoundedUp(
+  ) {
     let project = .template
       |> Project.lens.country .~ .mx
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
@@ -575,7 +577,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_NonUS_ProjectCurrency_ConversionRoundedUp() {
+  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_NonUS_ProjectCurrency_ConversionRoundedUp(
+  ) {
     let project = .template
       |> Project.lens.country .~ .hk
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
@@ -603,7 +606,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_Unknown_Location_US_Project_US_ProjectCurrency_ConfiguredWithReward_WithoutUserCurrency() {
+  func testConversionLabel_Unknown_Location_US_Project_US_ProjectCurrency_ConfiguredWithReward_WithoutUserCurrency(
+  ) {
     let project = .template
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
@@ -628,7 +632,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_Unknown_Location_NonUS_Project_NonUS_ProjectCurrency_ConfiguredWithReward_WithoutUserCurrency() {
+  func testConversionLabel_Unknown_Location_NonUS_Project_NonUS_ProjectCurrency_ConfiguredWithReward_WithoutUserCurrency(
+  ) {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
@@ -690,7 +695,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_US_ProjectCurrency_ConfiguredWithReward_WithShippingRule() {
+  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_US_ProjectCurrency_ConfiguredWithReward_WithShippingRule(
+  ) {
     let project = .template
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
@@ -723,7 +729,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_NonUS_ProjectCurrency_ConfiguredWithReward_WithShippingRule() {
+  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_NonUS_ProjectCurrency_ConfiguredWithReward_WithShippingRule(
+  ) {
     let project = .template
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.es.currencyCode
@@ -756,7 +763,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_NonUS_Location_US_UserCurrency_US_Project_US_ProjectCurrency_ConfiguredWithReward() {
+  func testConversionLabel_NonUS_Location_US_UserCurrency_US_Project_US_ProjectCurrency_ConfiguredWithReward(
+  ) {
     let project = .template
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode

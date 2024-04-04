@@ -77,7 +77,7 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func updateServerConfig(_ config: ServerConfigType) {
     let service = Service(serverConfig: config)
 
-    replaceCurrentEnvironment(
+    self.replaceCurrentEnvironment(
       apiService: service
     )
   }
@@ -383,9 +383,9 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restoring the base urls for the api service
     if let apiBaseUrlString = data["apiService.serverConfig.apiBaseUrl"] as? String,
-      let apiBaseUrl = URL(string: apiBaseUrlString),
-      let webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
-      let webBaseUrl = URL(string: webBaseUrlString) {
+       let apiBaseUrl = URL(string: apiBaseUrlString),
+       let webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
+       let webBaseUrl = URL(string: webBaseUrlString) {
       service = Service(
         serverConfig: ServerConfig(
           apiBaseUrl: apiBaseUrl,
@@ -402,7 +402,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restoring the basic auth data for the api service
     if let username = data["apiService.serverConfig.basicHTTPAuth.username"] as? String,
-      let password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
+       let password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
       service = Service(
         serverConfig: ServerConfig(
           apiBaseUrl: service.serverConfig.apiBaseUrl,
@@ -419,7 +419,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restoring the environment
     if let environment = data["apiService.serverConfig.environment"] as? String,
-      let environmentType = EnvironmentType(rawValue: environment) {
+       let environmentType = EnvironmentType(rawValue: environment) {
       let serverConfig = ServerConfig.config(for: environmentType)
 
       service = Service(

@@ -55,7 +55,7 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
       caption: expectedSampleString
     )
 
-    expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+    self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.link] = URL(string: "https://link.com")!
     self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
 

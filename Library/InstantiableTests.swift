@@ -10,6 +10,7 @@ private class TestViewController: UIViewController {
     self.initWithNibNamedCalled = true
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

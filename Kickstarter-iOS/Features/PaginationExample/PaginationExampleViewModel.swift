@@ -30,7 +30,7 @@ internal class PaginationExampleViewModel: ObservableObject {
 
     self.paginator.$values.map { projects in
       projects.map { ($0.id, $0.name) }
-    }.assign(to: &$projectIdsAndTitles)
+    }.assign(to: &self.$projectIdsAndTitles)
 
     let canLoadMore = self.paginator.$state.map { state in
       state == .someLoaded || state == .unloaded
@@ -39,7 +39,7 @@ internal class PaginationExampleViewModel: ObservableObject {
     Publishers.CombineLatest(self.paginator.$isLoading, canLoadMore)
       .map { isLoading, canLoadMore in
         isLoading || canLoadMore
-      }.assign(to: &$showProgressView)
+      }.assign(to: &self.$showProgressView)
 
     self.paginator.$state.map { [weak self] state in
       switch state {
@@ -57,7 +57,7 @@ internal class PaginationExampleViewModel: ObservableObject {
         return "No results"
       }
     }
-    .assign(to: &$statusText)
+    .assign(to: &self.$statusText)
   }
 
   var searchParams: DiscoveryParams {

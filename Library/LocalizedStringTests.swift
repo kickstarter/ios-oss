@@ -94,18 +94,18 @@ class LocalizedStringTests: XCTestCase {
 
   func testLocalizingInGerman() {
     withEnvironment(language: .de) {
-      XCTAssertEqual("de_world", localizedString(key: "hello", bundle: mockBundle))
-      XCTAssertEqual("Hello", localizedString(key: "hello_", defaultValue: "Hello", bundle: mockBundle))
-      XCTAssertEqual("", localizedString(key: "hello_", bundle: mockBundle))
+      XCTAssertEqual("de_world", localizedString(key: "hello", bundle: self.mockBundle))
+      XCTAssertEqual("Hello", localizedString(key: "hello_", defaultValue: "Hello", bundle: self.mockBundle))
+      XCTAssertEqual("", localizedString(key: "hello_", bundle: self.mockBundle))
 
       XCTAssertEqual(
         "de_hello A B",
-        localizedString(key: "hello_format", substitutions: ["a": "A", "b": "B"], bundle: mockBundle)
+        localizedString(key: "hello_format", substitutions: ["a": "A", "b": "B"], bundle: self.mockBundle)
       )
 
       XCTAssertEqual(
         "",
-        localizedString(key: "echo", bundle: mockBundle),
+        localizedString(key: "echo", bundle: self.mockBundle),
         "When key/value are equal we should return an empty string"
       )
     }
@@ -113,29 +113,49 @@ class LocalizedStringTests: XCTestCase {
 
   func testLocalizedStringWithCount() {
     withEnvironment(language: .en, mainBundle: MockBundle()) {
-      XCTAssertEqual(localizedString(key: "test_count", count: 0, bundle: mockBundle), "zero")
+      XCTAssertEqual(localizedString(key: "test_count", count: 0, bundle: self.mockBundle), "zero")
 
-      XCTAssertEqual(localizedString(key: "test_count", count: 1, bundle: mockBundle), "one")
+      XCTAssertEqual(localizedString(key: "test_count", count: 1, bundle: self.mockBundle), "one")
 
-      XCTAssertEqual(localizedString(key: "test_count", count: 2, bundle: mockBundle), "two")
+      XCTAssertEqual(localizedString(key: "test_count", count: 2, bundle: self.mockBundle), "two")
 
       XCTAssertEqual(
-        localizedString(key: "test_count", count: 3, substitutions: ["the_count": "3"], bundle: mockBundle),
+        localizedString(
+          key: "test_count",
+          count: 3,
+          substitutions: ["the_count": "3"],
+          bundle: self.mockBundle
+        ),
         "3 few"
       )
 
       XCTAssertEqual(
-        localizedString(key: "test_count", count: 4, substitutions: ["the_count": "4"], bundle: mockBundle),
+        localizedString(
+          key: "test_count",
+          count: 4,
+          substitutions: ["the_count": "4"],
+          bundle: self.mockBundle
+        ),
         "4 few"
       )
 
       XCTAssertEqual(
-        localizedString(key: "test_count", count: 5, substitutions: ["the_count": "5"], bundle: mockBundle),
+        localizedString(
+          key: "test_count",
+          count: 5,
+          substitutions: ["the_count": "5"],
+          bundle: self.mockBundle
+        ),
         "5 few"
       )
 
       XCTAssertEqual(
-        localizedString(key: "test_count", count: 6, substitutions: ["the_count": "6"], bundle: mockBundle),
+        localizedString(
+          key: "test_count",
+          count: 6,
+          substitutions: ["the_count": "6"],
+          bundle: self.mockBundle
+        ),
         "6 many"
       )
     }
@@ -150,7 +170,7 @@ class LocalizedStringTests: XCTestCase {
           defaultValue: "%{count} backers",
           count: 10,
           substitutions: ["count": "10"],
-          bundle: mockBundle
+          bundle: self.mockBundle
         )
       )
     }

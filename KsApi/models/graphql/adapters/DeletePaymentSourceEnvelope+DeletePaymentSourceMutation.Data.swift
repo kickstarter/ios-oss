@@ -22,8 +22,10 @@ extension DeletePaymentMethodEnvelope {
     return DeletePaymentMethodEnvelope(storedCards: allCards)
   }
 
-  static func producer(from data: GraphAPI.DeletePaymentSourceMutation
-    .Data) -> SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.DeletePaymentSourceMutation
+      .Data
+  ) -> SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope> {
     guard let envelope = DeletePaymentMethodEnvelope.from(data) else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }

@@ -55,7 +55,7 @@ public final class AudioVideoViewElementCellViewModel:
     self.pauseAudioVideo = self.pausePlaybackProperty.signal.ignoreValues()
     self.thumbnailImage = self.audioVideoViewElementWithPlayerAndThumbnailProperty.signal
       .skipNil()
-      .switchMap { (element, _, thumbnailImage) -> SignalProducer<UIImage?, Never> in
+      .switchMap { element, _, thumbnailImage -> SignalProducer<UIImage?, Never> in
         guard element.seekPosition == .zero else {
           return SignalProducer(value: nil)
         }

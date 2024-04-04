@@ -153,10 +153,12 @@ final class CommentComposerViewTests: TestCase {
   }
 }
 
-private func composerView(avatarURL: URL?,
-                          canPostComment: Bool,
-                          composerViewHidden: Bool,
-                          textEntered: Bool) -> CommentComposerView {
+private func composerView(
+  avatarURL: URL?,
+  canPostComment: Bool,
+  composerViewHidden: Bool,
+  textEntered: Bool
+) -> CommentComposerView {
   let composer = CommentComposerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 

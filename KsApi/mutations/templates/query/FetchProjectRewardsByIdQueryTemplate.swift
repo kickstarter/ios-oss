@@ -73,7 +73,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "shippingPreference":"none",
                    "shippingSummary": "Ships worldwide",
                    "shippingRules":[
-                      
+
                    ],
                    "startsAt":null
                 },

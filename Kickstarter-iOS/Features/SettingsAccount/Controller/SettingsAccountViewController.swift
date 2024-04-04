@@ -168,7 +168,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
     let (shouldShowCreatePasswordFooter, anEmail) = data
 
     guard let email = anEmail, shouldShowCreatePasswordFooter,
-      section == SettingsAccountSectionType.createPassword.rawValue else {
+          section == SettingsAccountSectionType.createPassword.rawValue else {
       return nil
     }
 

@@ -35,7 +35,7 @@ extension DispatchTimeInterval {
     return self.scale(by: 0.5)
   }
 
-  fileprivate var nanoseconds: Int64 {
+  private var nanoseconds: Int64 {
     #if swift(>=3.2)
       switch self {
       case let .seconds(s):

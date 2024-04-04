@@ -321,8 +321,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testExpandingCategoryFilters() {
-    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
-        .defaultRootCategoriesTemplate))) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(
+      self
+        .defaultRootCategoriesTemplate
+    ))) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
       self.loadCategoryRows.assertValueCount(0)
@@ -397,8 +399,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
       ]
 
-    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
-        .defaultRootCategoriesTemplate))) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(
+      self
+        .defaultRootCategoriesTemplate
+    ))) {
       self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
       self.loadCategoryRows.assertValueCount(0)
@@ -480,8 +484,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites_Selected() {
-    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
-        .defaultRootCategoriesTemplate))) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(
+      self
+        .defaultRootCategoriesTemplate
+    ))) {
       self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
       self.vm.inputs.configureWith(selectedRow: artSelectableRow)

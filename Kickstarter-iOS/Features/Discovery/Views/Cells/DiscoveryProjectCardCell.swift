@@ -65,6 +65,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -489,9 +490,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
-        self?.watchProjectViewModel.inputs.projectFromNotification(
-          project: notification.userInfo?["project"] as? Project
-        )
+          self?.watchProjectViewModel.inputs.projectFromNotification(
+            project: notification.userInfo?["project"] as? Project
+          )
       }
 
     self.watchProjectViewModel.inputs.awakeFromNib()

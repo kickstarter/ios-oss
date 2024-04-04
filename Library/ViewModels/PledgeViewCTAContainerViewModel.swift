@@ -91,7 +91,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.submitButtonTappedProperty.value = ()
   }
 
-  private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
+  private let tappedUrlProperty = MutableProperty<URL?>(nil)
   public func tapped(_ url: URL) {
     self.tappedUrlProperty.value = url
   }

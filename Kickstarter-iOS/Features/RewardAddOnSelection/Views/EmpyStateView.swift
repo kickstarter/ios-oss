@@ -13,6 +13,7 @@ final class EmptyStateCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -47,6 +48,7 @@ final class EmptyStateView: UIView {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

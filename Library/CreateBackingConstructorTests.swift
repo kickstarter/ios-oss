@@ -121,7 +121,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.refParam, "discovery")
   }
 
-  func testCreateBackingInput_WithApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyApplePayIsValid_Success() {
+  func testCreateBackingInput_WithApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyApplePayIsValid_Success(
+  ) {
     let applePayParams = ApplePayParams(
       paymentInstrumentName: "paymentInstrumentName",
       paymentNetwork: "paymentNetwork",
@@ -148,7 +149,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.setupIntentClientSecret)
   }
 
-  func testCreateBackingInput_WithNoApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyPaymentSourceIsValid_Success() {
+  func testCreateBackingInput_WithNoApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyPaymentSourceIsValid_Success(
+  ) {
     let data: CreateBackingData = (
       project: .template,
       rewards: [.noReward],
@@ -168,7 +170,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.setupIntentClientSecret)
   }
 
-  func testCreateBackingInput_WithNoApplePay_NoPaymentSource_AndSetupIntentClientSecret_OnlySetupIntentClientSecretIsValid_Success() {
+  func testCreateBackingInput_WithNoApplePay_NoPaymentSource_AndSetupIntentClientSecret_OnlySetupIntentClientSecretIsValid_Success(
+  ) {
     let data: CreateBackingData = (
       project: .template,
       rewards: [.noReward],

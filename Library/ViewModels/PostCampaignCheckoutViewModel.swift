@@ -337,7 +337,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .signal
       .skipNil()
       .combineLatest(with: newPaymentIntentForApplePay)
-      .map { (data: PostCampaignCheckoutData, paymentIntent: String) -> PostCampaignPaymentAuthorizationData? in
+      .map { (
+        data: PostCampaignCheckoutData,
+        paymentIntent: String
+      ) -> PostCampaignPaymentAuthorizationData? in
         let baseReward = data.baseReward
 
         return PostCampaignPaymentAuthorizationData(
@@ -366,21 +369,25 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
       ) -> GraphAPI.CompleteOnSessionCheckoutInput in
 
-      GraphAPI
-        .CompleteOnSessionCheckoutInput(
-          checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
-          paymentIntentClientSecret: clientSecret,
-          paymentSourceId: selectedCard.isNewPaymentMethod ? nil : selectedCard.paymentMethodId,
-          paymentSourceReusable: true,
-          applePay: nil
-        )
+        GraphAPI
+          .CompleteOnSessionCheckoutInput(
+            checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+            paymentIntentClientSecret: clientSecret,
+            paymentSourceId: selectedCard.isNewPaymentMethod ? nil : selectedCard.paymentMethodId,
+            paymentSourceReusable: true,
+            applePay: nil
+          )
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
       .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal)
       .takeWhen(self.applePayContextDidCompleteSignal)
       .map {
-        (clientSecret: String, checkoutId: String, applePayParams: ApplePayParams) -> GraphAPI.CompleteOnSessionCheckoutInput in
+        (
+          clientSecret: String,
+          checkoutId: String,
+          applePayParams: ApplePayParams
+        ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
             checkoutId: encodeToBase64("Checkout-\(checkoutId)"),

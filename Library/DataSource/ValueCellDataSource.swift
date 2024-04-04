@@ -334,7 +334,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    */
   internal final func reusableId(item: Int, section: Int) -> String? {
     if !self.values.isEmpty, self.values.count >= section,
-      !self.values[section].isEmpty, self.values[section].count >= item {
+       !self.values[section].isEmpty, self.values[section].count >= item {
       return self.values[section][item].reusableId
     }
     return nil
@@ -351,7 +351,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
     let (item, section) = itemSection
 
     if !self.values.isEmpty, self.values.count >= section,
-      !self.values[section].isEmpty, self.values[section].count >= item {
+       !self.values[section].isEmpty, self.values[section].count >= item {
       return self.values[itemSection.section][itemSection.item].value
     }
     return nil

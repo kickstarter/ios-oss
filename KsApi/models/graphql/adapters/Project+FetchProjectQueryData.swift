@@ -30,8 +30,10 @@ extension Project {
     return SignalProducer(value: data)
   }
 
-  static func projectProducer(from data: GraphAPI.FetchProjectBySlugQuery.Data,
-                              configCurrency: String?) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
+  static func projectProducer(
+    from data: GraphAPI.FetchProjectBySlugQuery.Data,
+    configCurrency: String?
+  ) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
     let projectAndBackingId = Project.project(
       from: data,
       configCurrency: configCurrency
@@ -49,8 +51,10 @@ extension Project {
     return SignalProducer(value: data)
   }
 
-  static func project(from data: GraphAPI.FetchProjectByIdQuery.Data,
-                      configCurrency: String?) -> (Project?, Int?) {
+  static func project(
+    from data: GraphAPI.FetchProjectByIdQuery.Data,
+    configCurrency: String?
+  ) -> (Project?, Int?) {
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -72,8 +76,10 @@ extension Project {
     return (project, projectBackingId)
   }
 
-  static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data,
-                      configCurrency: String?) -> (Project?, Int?) {
+  static func project(
+    from data: GraphAPI.FetchProjectBySlugQuery.Data,
+    configCurrency: String?
+  ) -> (Project?, Int?) {
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {

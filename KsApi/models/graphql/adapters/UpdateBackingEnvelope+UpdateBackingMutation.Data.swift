@@ -16,8 +16,10 @@ extension UpdateBackingEnvelope {
   /**
    Return a signal producer containing `UpdateBackingEnvelope` or `ErrorEnvelope`
    */
-  static func producer(from data: GraphAPI.UpdateBackingMutation
-    .Data) -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.UpdateBackingMutation
+      .Data
+  ) -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
     guard let envelope = UpdateBackingEnvelope.from(data) else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }

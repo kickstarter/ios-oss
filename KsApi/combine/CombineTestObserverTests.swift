@@ -43,7 +43,7 @@ final class CombineTestObserverTests: XCTestCase {
     let msg = "failure :("
     let error = ConcreteError(message: msg)
 
-    publisher.send(completion: Subscribers.Completion.failure(error))
+    self.publisher.send(completion: Subscribers.Completion.failure(error))
 
     self.observer.assertDidFail()
     XCTAssertEqual(self.observer.failedError?.message, msg)

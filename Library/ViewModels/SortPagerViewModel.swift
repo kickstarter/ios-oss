@@ -77,7 +77,7 @@ public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewMode
       sorts,
       self.selectSortProperty.signal.skipNil()
     )
-    .map { (arg) -> (Int, Int) in
+    .map { arg -> (Int, Int) in
       let (sorts, sort) = arg
       return (sorts.firstIndex(of: sort) ?? 0, sorts.count)
     }

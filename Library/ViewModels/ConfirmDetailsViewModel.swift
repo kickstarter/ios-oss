@@ -294,17 +294,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Double?,
       PledgeSummaryViewData
     ) in
-    (
-      PostCampaignRewardsSummaryViewData(
-        rewards: rewards,
-        selectedQuantities: selectedQuantities,
-        projectCountry: project.country,
-        omitCurrencyCode: project.stats.omitUSCurrencyCode,
-        shipping: shippingSummaryData
-      ),
-      bonusOrPledgeUpdatedAmount,
-      pledgeTotalSummaryData
-    )
+      (
+        PostCampaignRewardsSummaryViewData(
+          rewards: rewards,
+          selectedQuantities: selectedQuantities,
+          projectCountry: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          shipping: shippingSummaryData
+        ),
+        bonusOrPledgeUpdatedAmount,
+        pledgeTotalSummaryData
+      )
     }
 
     self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)

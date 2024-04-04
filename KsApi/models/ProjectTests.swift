@@ -27,16 +27,20 @@ final class ProjectTests: XCTestCase {
 
   func testEndsIn48Hours_WithEndingSoonProject() {
     let endingSoon = Project.template
-      |> Project.lens.dates.deadline .~ (Date(timeIntervalSince1970: 1_475_361_315)
-        .timeIntervalSince1970 - 60.0 * 60.0)
+      |> Project.lens.dates.deadline .~ (
+        Date(timeIntervalSince1970: 1_475_361_315)
+          .timeIntervalSince1970 - 60.0 * 60.0
+      )
 
     XCTAssertEqual(true, endingSoon.endsIn48Hours(today: Date(timeIntervalSince1970: 1_475_361_315)))
   }
 
   func testEndsIn48Hours_WithTimeZoneEdgeCaseProject() {
     let edgeCase = Project.template
-      |> Project.lens.dates.deadline .~ (Date(timeIntervalSince1970: 1_475_361_315)
-        .timeIntervalSince1970 - 60.0 * 60.0 * 47.0)
+      |> Project.lens.dates.deadline .~ (
+        Date(timeIntervalSince1970: 1_475_361_315)
+          .timeIntervalSince1970 - 60.0 * 60.0 * 47.0
+      )
 
     XCTAssertEqual(true, edgeCase.endsIn48Hours(today: Date(timeIntervalSince1970: 1_475_361_315)))
   }

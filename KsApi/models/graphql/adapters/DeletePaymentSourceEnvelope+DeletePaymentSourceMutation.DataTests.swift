@@ -11,7 +11,7 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
     XCTAssertEqual(env?.storedCards.count, 2)
 
     guard let firstCard = env?.storedCards.first,
-      let secondCard = env?.storedCards.last else {
+          let secondCard = env?.storedCards.last else {
       XCTFail()
 
       return

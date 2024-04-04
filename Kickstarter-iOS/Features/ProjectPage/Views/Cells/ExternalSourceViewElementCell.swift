@@ -37,6 +37,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
 
   // MARK: Lifecycle
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -118,16 +119,18 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
 }
 
 extension ExternalSourceViewElementCell: WKUIDelegate {
-  func webView(_: WKWebView,
-               createWebViewWith _: WKWebViewConfiguration,
-               for navigationAction: WKNavigationAction,
-               windowFeatures _: WKWindowFeatures) -> WKWebView? {
+  func webView(
+    _: WKWebView,
+    createWebViewWith _: WKWebViewConfiguration,
+    for navigationAction: WKNavigationAction,
+    windowFeatures _: WKWindowFeatures
+  ) -> WKWebView? {
     let canOpenInNewWindow = navigationAction.targetFrame == nil || navigationAction.targetFrame?
       .isMainFrame == false
 
     if canOpenInNewWindow,
-      let urlToLoad = navigationAction.request.url,
-      AppEnvironment.current.application.canOpenURL(urlToLoad) {
+       let urlToLoad = navigationAction.request.url,
+       AppEnvironment.current.application.canOpenURL(urlToLoad) {
       AppEnvironment.current.application.open(urlToLoad, options: [:], completionHandler: nil)
     }
 

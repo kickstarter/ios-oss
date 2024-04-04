@@ -80,16 +80,16 @@ final class ThanksViewModelTests: TestCase {
       fetchGraphCategoryResult: .success(self.categoryEnvelope),
       fetchDiscoveryResponse: response
     )) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
-      showRecommendationsProjects.assertValueCount(1)
+      self.showRecommendationsProjects.assertValueCount(1)
 
-      vm.inputs.categoryCellTapped(.illustration)
+      self.vm.inputs.categoryCellTapped(.illustration)
 
-      goToDiscovery.assertValues([.illustration])
+      self.goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -141,13 +141,13 @@ final class ThanksViewModelTests: TestCase {
 
   func testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
-      showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
+      self.showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
-      self.vm.inputs.configure(with: thanksPageData())
+      self.vm.inputs.configure(with: self.thanksPageData())
       self.vm.inputs.viewDidLoad()
 
-      showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
-      showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
+      self.showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
+      self.showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
 
       XCTAssertEqual(
         ["Page Viewed"],
@@ -164,11 +164,11 @@ final class ThanksViewModelTests: TestCase {
       )
 
       let project = Project.template |> Project.lens.category .~ .games
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
-      showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
-      showGamesNewsletterAlert.assertValueCount(1, "Games alert shows on games project")
+      self.showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
+      self.showGamesNewsletterAlert.assertValueCount(1, "Games alert shows on games project")
       XCTAssertEqual(
         true, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
         "Newsletter pref saved"
@@ -180,7 +180,7 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), Never>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.configure(with: thanksPageData(project: project))
+      secondVM.inputs.configure(with: self.thanksPageData(project: project))
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on games project")
@@ -194,10 +194,10 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
-      showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on games project")
+      self.showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on games project")
     }
   }
 
@@ -205,26 +205,26 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
-      showGamesNewsletterAlert.assertValueCount(1)
+      self.showGamesNewsletterAlert.assertValueCount(1)
 
-      vm.inputs.gamesNewsletterSignupButtonTapped()
+      self.vm.inputs.gamesNewsletterSignupButtonTapped()
 
       scheduler.advance()
 
-      updateUserInEnvironment.assertValueCount(1)
-      showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
+      self.updateUserInEnvironment.assertValueCount(1)
+      self.showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
 
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
       )
 
-      vm.inputs.userUpdated()
+      self.vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues(
+      self.postUserUpdatedNotification.assertValues(
         [Notification.Name.ksr_userUpdated],
         "User updated notification emits"
       )
@@ -235,8 +235,8 @@ final class ThanksViewModelTests: TestCase {
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
-      vm.inputs.viewDidLoad()
-      postContextualNotification.assertDidEmitValue()
+      self.vm.inputs.viewDidLoad()
+      self.postContextualNotification.assertDidEmitValue()
     }
   }
 
@@ -244,8 +244,8 @@ final class ThanksViewModelTests: TestCase {
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
-      vm.inputs.viewDidLoad()
-      postContextualNotification.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+      self.postContextualNotification.assertDidNotEmitValue()
     }
   }
 
@@ -253,14 +253,17 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
-      showGamesNewsletterAlert.assertValueCount(1)
+      self.showGamesNewsletterAlert.assertValueCount(1)
 
-      vm.inputs.gamesNewsletterSignupButtonTapped()
+      self.vm.inputs.gamesNewsletterSignupButtonTapped()
 
-      showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
+      self.showGamesNewsletterOptInAlert.assertValues(
+        ["Kickstarter Loves Games"],
+        "Opt-in alert emits with title"
+      )
 
       XCTAssertEqual(
         ["Page Viewed"],
@@ -285,18 +288,18 @@ final class ThanksViewModelTests: TestCase {
         fetchDiscoveryResponse: response
       )
     ) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
-      showRecommendationsProjects.assertValueCount(1)
+      self.showRecommendationsProjects.assertValueCount(1)
 
-      vm.inputs.projectTapped(project)
+      self.vm.inputs.projectTapped(project)
 
-      goToProject.assertValues([project])
-      goToProjects.assertValueCount(1)
-      goToRefTag.assertValues([.thanks])
+      self.goToProject.assertValues([project])
+      self.goToProjects.assertValueCount(1)
+      self.goToRefTag.assertValues([.thanks])
 
       XCTAssertEqual(
         [
@@ -325,7 +328,7 @@ final class ThanksViewModelTests: TestCase {
       fetchGraphCategoryResult: .success(self.categoryEnvelope),
       fetchDiscoveryResponse: response
     )) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -339,7 +342,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.configure(with: thanksPageData(project: project))
+      self.vm.inputs.configure(with: self.thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()

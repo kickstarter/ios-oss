@@ -39,7 +39,7 @@ public final class ExternalSourceViewElementCellViewModel:
     self.contentHeight = self.externalSourceViewElement.signal.skipNil()
       .switchMap { element -> SignalProducer<Int?, Never> in
         guard let contentHeight = element.embeddedURLContentHeight,
-          !element.embeddedURLString.isEmpty else {
+              !element.embeddedURLString.isEmpty else {
           return SignalProducer(value: nil)
         }
 

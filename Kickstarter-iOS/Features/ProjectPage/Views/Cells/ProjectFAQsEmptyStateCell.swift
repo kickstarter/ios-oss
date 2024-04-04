@@ -19,6 +19,7 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
     self.configureViews()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -50,9 +51,7 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value _: Void) {
-    return
-  }
+  func configureWith(value _: Void) {}
 
   private func configureViews() {
     _ = (self.titleTextLabel, self.contentView)

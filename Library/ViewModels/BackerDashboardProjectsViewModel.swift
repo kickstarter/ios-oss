@@ -77,12 +77,13 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     .skipRepeats { $0 == $1 }
 
     let requestFirstPageWith = projectsTypeAndSort
-      .takeWhen(Signal.merge(
-        userUpdatedProjectsCount.ignoreValues(),
-        self.refreshProperty.signal
+      .takeWhen(
+        Signal.merge(
+          userUpdatedProjectsCount.ignoreValues(),
+          self.refreshProperty.signal
+        )
       )
-      )
-      .map { (pType, sort) -> DiscoveryParams in
+      .map { pType, sort -> DiscoveryParams in
         switch pType {
         case .backed:
           return DiscoveryParams.defaults

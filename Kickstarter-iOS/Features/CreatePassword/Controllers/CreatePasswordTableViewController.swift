@@ -41,9 +41,11 @@ protocol CreatePasswordTableViewControllerDelegate: AnyObject {
     setSaveButtonIsEnabled isEnabled: Bool
   )
   func createPasswordTableViewControllerStartAnimatingSaveButton(
-    _ viewController: CreatePasswordTableViewController)
+    _ viewController: CreatePasswordTableViewController
+  )
   func createPasswordTableViewControllerStopAnimatingSaveButton(
-    _ viewController: CreatePasswordTableViewController)
+    _ viewController: CreatePasswordTableViewController
+  )
   func createPasswordTableViewController(
     _ viewController: CreatePasswordTableViewController,
     showErrorMessage message: String

@@ -120,13 +120,15 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
 
   let font = UIFont.ksr_subhead()
 
-  let attributedText = NSMutableAttributedString(attributedString: string
-    .attributed(
-      with: font,
-      foregroundColor: .ksr_support_400,
-      attributes: [:],
-      bolding: [string.replacingOccurrences(of: dateString, with: "")]
-    ))
+  let attributedText = NSMutableAttributedString(
+    attributedString: string
+      .attributed(
+        with: font,
+        foregroundColor: .ksr_support_400,
+        attributes: [:],
+        bolding: [string.replacingOccurrences(of: dateString, with: "")]
+      )
+  )
 
   attributedText.setAttributes(
     [

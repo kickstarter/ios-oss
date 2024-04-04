@@ -20,8 +20,10 @@ public enum CreateBackingMutationTemplate {
 
   // MARK: Private Properties
 
-  private func createBackingMutationResultMap(checkoutState: GraphAPI.CheckoutState,
-                                              sca: Bool) -> [String: Any?] {
+  private func createBackingMutationResultMap(
+    checkoutState: GraphAPI.CheckoutState,
+    sca: Bool
+  ) -> [String: Any?] {
     [
       "createBacking": [
         "checkout": [

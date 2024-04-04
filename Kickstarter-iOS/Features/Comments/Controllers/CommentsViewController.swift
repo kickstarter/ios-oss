@@ -47,8 +47,10 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
 
   // MARK: - Accessors
 
-  internal static func configuredWith(project: Project? = nil,
-                                      update: Update? = nil) -> CommentsViewController {
+  internal static func configuredWith(
+    project: Project? = nil,
+    update: Update? = nil
+  ) -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
     vc.viewModel.inputs.configureWith(project: project, update: update)
 
@@ -257,7 +259,7 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 extension CommentsViewController {
   override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if self.dataSource.isInErrorState(indexPath: indexPath) {
-      return (self.view.safeAreaLayoutGuide.layoutFrame.height * Layout.ErrorState.cellHeightMuliplier)
+      return self.view.safeAreaLayoutGuide.layoutFrame.height * Layout.ErrorState.cellHeightMuliplier
     }
 
     return UITableView.automaticDimension
