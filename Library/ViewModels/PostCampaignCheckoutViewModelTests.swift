@@ -241,23 +241,6 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let completeSessionJsonString = """
-    {
-      "completeOnSessionCheckout": {
-        "__typename": "CompleteOnSessionCheckoutPayload",
-        "checkout": {
-          "__typename": "Checkout",
-          "id": "Q2hlY2tvdXQtMTk4MzM2OTIz",
-          "state": "successful",
-          "backing": {
-            "requiresAction": false,
-            "clientSecret": "super-secret",
-            "__typename": "Backing"
-          }
-        }
-      }
-    }
-    """
     let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
       .Data(jsonString: completeSessionJsonString)
     let mockService = MockService(
@@ -348,27 +331,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testPledge_completesCheckoutFlow() {
     // Mock data for API requests
     let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
-    let completeSessionJsonString = """
-    {
-      "completeOnSessionCheckout": {
-        "__typename": "CompleteOnSessionCheckoutPayload",
-        "checkout": {
-          "__typename": "Checkout",
-          "id": "Q2hlY2tvdXQtMTk4MzM2OTIz",
-          "state": "successful",
-          "backing": {
-            "requiresAction": false,
-            "clientSecret": "super-secret",
-            "__typename": "Backing"
-          }
-        }
-      }
-    }
-    """
-    let completeSessionJson = try! JSONSerialization
-      .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
     let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
-      .Data(jsonObject: completeSessionJson as! JSONObject)
+      .Data(jsonString: completeSessionJsonString)
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
       validateCheckoutResult: .success(validateCheckout)
@@ -571,3 +535,21 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 }
+
+private let completeSessionJsonString = """
+{
+  "completeOnSessionCheckout": {
+    "__typename": "CompleteOnSessionCheckoutPayload",
+    "checkout": {
+      "__typename": "Checkout",
+      "id": "Q2hlY2tvdXQtMTk4MzM2OTIz",
+      "state": "successful",
+      "backing": {
+        "requiresAction": false,
+        "clientSecret": "super-secret",
+        "__typename": "Backing"
+      }
+    }
+  }
+}
+"""
