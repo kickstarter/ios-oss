@@ -23,7 +23,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
-  var createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never> { get }
+  var confirmSuccess: Signal<PostCampaignCheckoutData, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
@@ -318,49 +318,15 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       refTag
     )
 
-    let createCheckoutEvents = pledgeDetailsData
-      .takeWhen(self.continueCTATappedProperty.signal)
-      .map { project, rewards, pledgeTotal, refTag in
-        let rewardsIDs = rewards.first?.isNoReward == true ? [] : rewards.map { $0.graphID }
-
-        return CreateCheckoutInput(
-          projectId: project.graphID,
-          amount: String(format: "%.2f", pledgeTotal),
-          locationId: "\(project.location.id)",
-          rewardIds: rewardsIDs,
-          refParam: refTag?.stringTag
-        )
-      }
-      .switchMap { input in
-        AppEnvironment.current.apiService
-          .createCheckout(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    let checkoutValues = createCheckoutEvents.values()
-      .map { values in
-        var checkoutId = values.checkout.id
-
-        if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
-          let id = decoded[range.upperBound...]
-          checkoutId = String(id)
-        }
-
-        return checkoutId
-      }
-
-    self.createCheckoutSuccess = checkoutValues.withLatestFrom(
-      Signal.combineLatest(
-        initialData,
-        bonusOrPledgeUpdatedAmount,
-        optionalShippingSummaryData,
-        pledgeTotal,
-        baseReward
-      )
+    self.confirmSuccess = Signal.combineLatest(
+      initialData,
+      bonusOrPledgeUpdatedAmount,
+      optionalShippingSummaryData,
+      pledgeTotal
     )
-    .map { checkoutId, otherData -> PostCampaignCheckoutData in
-      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
+    .takeWhen(self.continueCTATappedProperty.signal)
+    .map { data -> PostCampaignCheckoutData in
+      let (initialData, bonusOrReward, shipping, pledgeTotal) = data
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -379,14 +345,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         total: pledgeTotal,
         shipping: shipping,
         refTag: initialData.refTag,
-        context: initialData.context,
-        checkoutId: checkoutId
+        context: initialData.context
       )
     }
 
-    // TODO: [MBL-1217] Update string once translations are done
-    self.showErrorBannerWithMessage = createCheckoutEvents.errors()
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
+    self.showErrorBannerWithMessage = .never
   }
 
   // MARK: - Inputs
@@ -416,11 +379,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 
-  private let (submitButtonTappedSignal, submitButtonTappedObserver) = Signal<Void, Never>.pipe()
-  public func submitButtonTapped() {
-    self.submitButtonTappedObserver.send(value: ())
-  }
-
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -439,7 +397,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
-  public let createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never>
+  public let confirmSuccess: Signal<PostCampaignCheckoutData, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>

@@ -15,7 +15,6 @@ public struct PostCampaignCheckoutData: Equatable {
   public let shipping: PledgeShippingSummaryViewData?
   public let refTag: RefTag?
   public let context: PledgeViewContext
-  public let checkoutId: String
 }
 
 public struct PostCampaignPaymentAuthorizationData: Equatable {
@@ -87,8 +86,50 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
-    let checkoutId = initialData.map(\.checkoutId)
+
+    // MARK: Create checkout
+
+    let createCheckoutEvents = self.configureWithDataProperty.signal
+      .takeWhen(Signal.merge(self.viewDidLoadProperty.signal, self.userSessionStartedSignal))
+      .skipNil()
+      .map { data in
+        let rewards = data.rewards
+        let project = data.project
+        let pledgeTotal = data.total
+        let refTag = data.refTag
+
+        let rewardsIDs = rewards.first?.isNoReward == true ? [] : rewards.map { $0.graphID }
+
+        return CreateCheckoutInput(
+          projectId: project.graphID,
+          amount: String(format: "%.2f", pledgeTotal),
+          locationId: "\(project.location.id)",
+          rewardIds: rewardsIDs,
+          refParam: refTag?.stringTag
+        )
+      }
+      .switchMap { input in
+        AppEnvironment.current.apiService
+          .createCheckout(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let checkoutId = createCheckoutEvents.values()
+      .map { values in
+        var checkoutId = values.checkout.id
+
+        if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
+          let id = decoded[range.upperBound...]
+          checkoutId = String(id)
+        }
+
+        return checkoutId
+      }
+
     let baseReward = initialData.map(\.rewards).map(\.first)
+
+    // MARK: Configure Payment Methods
 
     let configurePaymentMethodsData = Signal.merge(
       initialData,
@@ -102,6 +143,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
         return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
+
+    // MARK: Configure CTA
 
     self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.project, $0.baseReward) }
@@ -137,24 +180,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         return (rewardsData, data.bonusAmount, pledgeData)
       }
 
-    self.configureStripeIntegration = Signal.combineLatest(
-      initialData,
-      context
-    )
-    .filter { !$1.paymentMethodsViewHidden }
-    .ignoreValues()
-    .map { _ in
-      (
-        Secrets.ApplePay.merchantIdentifier,
-        AppEnvironment.current.environmentType.stripePublishableKey
-      )
-    }
-
     // MARK: Validate Checkout Details On Submit
 
     let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
-
-    let processingViewIsHidden = MutableProperty<Bool>(true)
 
     // MARK: - Validate Existing Cards
 
@@ -279,7 +307,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
     let validateCheckoutError = Signal
-      .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+      .merge(
+        createCheckoutEvents.errors(),
+        validateCheckoutExistingCard.errors(),
+        validateCheckoutNewCard.errors()
+      )
 
     self.showErrorBannerWithMessage = validateCheckoutError
       .map { _ in Strings.Something_went_wrong_please_try_again() }
@@ -295,6 +327,19 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      4) Payment authorization form calls applePayContextDidCreatePayment with ApplePay params
      5) Payment authorization form calls paymentAuthorizationDidFinish
      */
+
+    self.configureStripeIntegration = Signal.combineLatest(
+      initialData,
+      context
+    )
+    .filter { !$1.paymentMethodsViewHidden }
+    .ignoreValues()
+    .map { _ in
+      (
+        Secrets.ApplePay.merchantIdentifier,
+        AppEnvironment.current.environmentType.stripePublishableKey
+      )
+    }
 
     let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
       self.configureWithDataProperty.signal
@@ -452,7 +497,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       newPaymentIntentForApplePayError.mapConst(true),
       validateCheckoutError.mapConst(true),
       self.checkoutTerminatedProperty.signal.mapConst(true),
-      checkoutCompleteSignal.signal.mapConst(true)
+      checkoutCompleteSignal.signal.mapConst(true),
+      createCheckoutEvents.errors().mapConst(true)
     )
 
     // MARK: - Tracking
@@ -511,7 +557,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       additionalPledgeAmount: data.bonusAmount ?? 0,
       pledgeTotal: data.total,
       shippingTotal: data.shipping?.total ?? 0,
-      checkoutId: data.checkoutId,
       isApplePay: isApplePay
     )
   }

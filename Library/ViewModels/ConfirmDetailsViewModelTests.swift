@@ -24,7 +24,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
   private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
   private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
-  private let createCheckoutSuccess = TestObserver<PostCampaignCheckoutData, Never>()
+  private let confirmSuccess = TestObserver<PostCampaignCheckoutData, Never>()
 
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
@@ -55,7 +55,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.0 }
       .observe(self.configurePledgeSummaryViewControllerWithDataProject.observer)
 
-    self.vm.outputs.createCheckoutSuccess.observe(self.createCheckoutSuccess.observer)
+    self.vm.outputs.confirmSuccess.observe(self.confirmSuccess.observer)
 
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
@@ -813,12 +813,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
     let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
 
-    let mockService = MockService(
-      createCheckoutResult:
-      Result.success(CreateCheckoutEnvelope(checkout: createCheckout))
-    )
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
+    withEnvironment(currentUser: .template) {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.shipping.preference .~ .unrestricted
@@ -863,7 +858,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.createCheckoutSuccess.assertDidEmitValue()
+      self.confirmSuccess.assertDidEmitValue()
       let expectedValue = PostCampaignCheckoutData(
         project: project,
         baseReward: reward,
@@ -873,53 +868,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
         total: 28,
         shipping: expectedShipping,
         refTag: nil,
-        context: .pledge,
-        checkoutId: "198336646"
-      )
-      self.createCheckoutSuccess.assertValue(expectedValue)
-    }
-  }
-
-  func testContinueButton_CallsCreateBackingMutation_Failure_ShowsErrorMessageBanner() {
-    let createCheckout = CreateCheckoutEnvelope.Checkout(id: "id", paymentUrl: "paymentUrl")
-    let errorUnknown = ErrorEnvelope(
-      errorMessages: ["Something went wrong yo."],
-      ksrCode: .UnknownCode,
-      httpCode: 400,
-      exception: nil
-    )
-
-    let mockService = MockService(createCheckoutResult: Result.failure(errorUnknown))
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-        |> Reward.lens.shipping.preference .~ .unrestricted
-        |> Reward.lens.localPickup .~ .losAngeles
-      let addOnReward1 = Reward.template
-        |> Reward.lens.id .~ 2
-      let project = Project.template
-        |> Project.lens.rewardData.rewards .~ [reward]
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward, addOnReward1],
-        selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-        selectedLocationId: ShippingRule.template.id,
-        refTag: nil,
         context: .pledge
       )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.continueCTATapped()
-
-      self.scheduler.run()
-
-      self.createCheckoutSuccess.assertDidNotEmitValue()
-
-      self.showErrorBannerWithMessage.assertValue(Strings.Something_went_wrong_please_try_again())
+      self.confirmSuccess.assertValue(expectedValue)
     }
   }
 }

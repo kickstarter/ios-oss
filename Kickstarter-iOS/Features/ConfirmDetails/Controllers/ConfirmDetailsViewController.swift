@@ -12,12 +12,10 @@ public enum ConfirmDetailsLayout {
 
 protocol ConfirmDetailsViewControllerDelegate: AnyObject {}
 
-final class ConfirmDetailsViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class ConfirmDetailsViewController: UIViewController {
   // MARK: - Properties
 
   public weak var delegate: ConfirmDetailsViewControllerDelegate?
-
-  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -123,8 +121,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> \.title .~ Strings.Back_this_project()
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
-
-    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -263,16 +259,10 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.viewModel.outputs.createCheckoutSuccess
+    self.viewModel.outputs.confirmSuccess
       .observeForUI()
       .observeValues { [weak self] data in
         self?.goToCheckout(data: data)
-      }
-
-    self.viewModel.outputs.showErrorBannerWithMessage
-      .observeForControllerAction()
-      .observeValues { [weak self] errorMessage in
-        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
