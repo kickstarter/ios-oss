@@ -15,9 +15,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
-  
+
   private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward?), Never>()
-  
+
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
   private let configurePaymentMethodsViewControllerWithReward = TestObserver<Reward, Never>()
@@ -26,7 +26,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
-  
+
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
@@ -36,11 +36,11 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
-    
+
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-    
+
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
-    
+
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.1 }
@@ -56,13 +56,13 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
-    
+
     self.vm.outputs.configureStripeIntegration.map(first)
       .observe(self.configureStripeIntegrationMerchantId.observer)
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
   }
-  
+
   func testLoginSignup_NoCardSelected_CTADisabled() {
     let project = Project.template
     let reward = Reward.template
@@ -70,8 +70,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     withEnvironment(currentUser: nil) {
       let data = PostCampaignCheckoutData(
-        project: project,
-        rewards: [reward],
+        project: .template,
+        baseReward: .template,
+        rewards: [.template],
         selectedQuantities: [:],
         bonusAmount: 0,
         total: 5,
@@ -111,7 +112,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       }
     }
   }
-  
+
   func testLoginSignup_CardSelected_CTAEnabled() {
     let project = Project.template
     let reward = Reward.template
@@ -119,7 +120,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     withEnvironment(currentUser: nil) {
       let data = PostCampaignCheckoutData(
-        project: project,
+        project: .template,
+        baseReward: .template,
         rewards: [reward],
         selectedQuantities: [:],
         bonusAmount: 0,
@@ -151,7 +153,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
         self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
         self.configurePaymentMethodsViewControllerWithContext.assertValues([.latePledge])
-        
+
         let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
         self.vm.inputs
           .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
@@ -165,6 +167,66 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
+  func testStripeConfiguration_StagingEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        baseReward: reward,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .pledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+    }
+  }
+
+  func testStripeConfiguration_ProductionEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.production)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PostCampaignCheckoutData(
+        project: project,
+        baseReward: reward,
+        rewards: [reward],
+        selectedQuantities: [:],
+        bonusAmount: 0,
+        total: 5,
+        shipping: nil,
+        refTag: nil,
+        context: .pledge,
+        checkoutId: "0"
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.production])
+    }
+  }
 
   func testApplePayAuthorization_noReward_isCorrect() {
     let project = Project.cosmicSurgery
