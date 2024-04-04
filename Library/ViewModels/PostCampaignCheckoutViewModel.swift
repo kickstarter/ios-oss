@@ -86,7 +86,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
-    let project = initialData.map(\.project)
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
