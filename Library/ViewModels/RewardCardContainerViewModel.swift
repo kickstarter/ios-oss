@@ -95,7 +95,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
 
   let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
-  let isRewardAvailable = rewardIsAvailable(project: project, reward: reward)
+  let isRewardAvailable = rewardIsAvailable(reward)
 
   switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
   case (.backedError, false, true):

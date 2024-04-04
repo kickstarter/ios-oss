@@ -98,6 +98,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .canada
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
@@ -123,6 +124,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .canada
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
@@ -148,6 +150,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .canada
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
