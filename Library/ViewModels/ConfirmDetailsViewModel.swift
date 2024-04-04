@@ -322,12 +322,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       initialData,
       bonusOrPledgeUpdatedAmount,
       optionalShippingSummaryData,
-      pledgeTotal
+      pledgeTotal,
+      baseReward
     )
     .takeWhen(self.continueCTATappedProperty.signal)
     .map { data -> PostCampaignCheckoutData in
-      let (initialData, bonusOrReward, shipping, pledgeTotal) = data
+      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = data
       var rewards = initialData.rewards
+
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
         rewards[0] = reward
