@@ -524,8 +524,12 @@ final class PledgeViewController: UIViewController,
     self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
   }
 
-  private func goToLoginSignup(with intent: LoginIntent, project _: Project, reward _: Reward) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     let navigationBarHeight = navigationController.navigationBar.bounds.height
