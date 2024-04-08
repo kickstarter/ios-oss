@@ -55,7 +55,12 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testLoginIntent_Pledge() {
-    self.vm.inputs.configureWith(.backProject)
+    let reward = Reward.template
+      |> Reward.lens.id .~ 10
+    let project = Project.template
+      |> Project.lens.id .~ 2
+
+    self.vm.inputs.configureWith(.backProject, project: project, reward: reward)
     self.vm.inputs.viewWillAppear()
 
     self.logInContextText.assertValues(
@@ -65,7 +70,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartLogin() {
-    self.vm.inputs.configureWith(.activity)
+    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.loginButtonPressed()
 
@@ -78,7 +83,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartLogin_PledgeIntent() {
-    self.vm.inputs.configureWith(.backProject)
+    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.loginButtonPressed()
 
@@ -91,7 +96,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartSignup() {
-    self.vm.inputs.configureWith(.activity)
+    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.signupButtonPressed()
 
@@ -104,7 +109,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartSignup_PledgeIntent() {
-    self.vm.inputs.configureWith(.backProject)
+    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.signupButtonPressed()
 
@@ -154,21 +159,21 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testHeadlineLabelHidden() {
-    self.vm.inputs.configureWith(.starProject)
+    self.vm.inputs.configureWith(.starProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([true])
   }
 
   func testHeadlineLabelShown() {
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([false])
   }
 
   func testLoginContextText() {
-    self.vm.inputs.configureWith(.starProject)
+    self.vm.inputs.configureWith(.starProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.logInContextText.assertValues(
@@ -202,7 +207,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -258,7 +263,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -305,7 +310,7 @@ final class LoginToutViewModelTests: TestCase {
       ]
     )
 
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -333,7 +338,7 @@ final class LoginToutViewModelTests: TestCase {
       userInfo: [:]
     )
 
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -383,7 +388,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
@@ -432,7 +437,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.vm.inputs.facebookLoginButtonPressed()
@@ -479,7 +484,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.vm.inputs.facebookLoginButtonPressed()
@@ -526,7 +531,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.vm.inputs.facebookLoginButtonPressed()
@@ -576,7 +581,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.vm.inputs.facebookLoginButtonPressed()
@@ -613,7 +618,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testDismissalWhenNotPresented() {
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: false)
     self.vm.inputs.userSessionStarted()
@@ -622,7 +627,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testDismissalWhenPresented() {
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: true)
     self.vm.inputs.userSessionStarted()
@@ -631,7 +636,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testShowAppleErrorAlert_DoesNotEmitWhen_CancellingSignInWithAppleModal() {
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.vm.inputs.appleAuthorizationDidFail(with: .canceled)
@@ -644,7 +649,7 @@ final class LoginToutViewModelTests: TestCase {
       domain: "notonlinesorry", code: -1_234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
     )
 
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.vm.inputs.appleAuthorizationDidFail(with: .other(error))
@@ -654,7 +659,7 @@ final class LoginToutViewModelTests: TestCase {
 
   func testShowAppleErrorAlert_SignInWithAppleMutationError() {
     withEnvironment(apiService: MockService(signInWithAppleResult: .failure(.couldNotParseJSON))) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       let data = SignInWithAppleData(
@@ -685,7 +690,7 @@ final class LoginToutViewModelTests: TestCase {
       fetchUserResult: .failure(.couldNotParseJSON),
       signInWithAppleResult: .success(envelope)
     )) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       let data = SignInWithAppleData(
@@ -722,7 +727,7 @@ final class LoginToutViewModelTests: TestCase {
       |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false]
 
     withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       let data = SignInWithAppleData(
@@ -762,7 +767,7 @@ final class LoginToutViewModelTests: TestCase {
       |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
 
     withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       let data = SignInWithAppleData(
@@ -791,7 +796,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testAttemptAppleLogin_Tracking() {
-    self.vm.inputs.configureWith(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.attemptAppleLogin.assertDidNotEmitValue()
