@@ -282,12 +282,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   // MARK: - Functions
 
-  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward?) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(
-      loginIntent: intent,
-      project: project,
-      reward: reward
-    )
+  private func goToLoginSignup(with intent: LoginIntent, project _: Project, reward _: Reward?) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
 

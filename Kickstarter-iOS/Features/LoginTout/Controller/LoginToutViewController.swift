@@ -62,12 +62,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   // MARK: - Configuration
 
   public static func configuredWith(
-    loginIntent intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
+    loginIntent intent: LoginIntent
   ) -> LoginToutViewController {
     let vc = LoginToutViewController.instantiate()
-    vc.viewModel.inputs.configureWith(intent, project: project, reward: reward)
+    vc.viewModel.inputs.configureWith(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc
