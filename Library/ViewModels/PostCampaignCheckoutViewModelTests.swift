@@ -12,11 +12,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     Never
   >()
   private let checkoutComplete = TestObserver<ThanksPageData, Never>()
-  private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
-
-  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward?), Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
@@ -38,10 +35,6 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
-
-    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-
-    self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
@@ -65,112 +58,6 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
     self.vm.outputs.showWebHelp.observe(self.showWebHelp.observer)
-  }
-
-  // MARK: - Login/Signup
-
-  func testLoginSignup_NoCardSelected_CTADisabled() {
-    let project = Project.template
-    let reward = Reward.template
-    let user = User.template
-
-    withEnvironment(currentUser: nil) {
-      let data = PostCampaignCheckoutData(
-        project: .template,
-        baseReward: .template,
-        rewards: [.template],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
-        refTag: nil,
-        context: .latePledge,
-        checkoutId: "0"
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
-
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
-
-      self.paymentMethodsViewHidden.assertValues([true])
-
-      withEnvironment(currentUser: user) {
-        self.vm.inputs.userSessionStarted()
-
-        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
-        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
-        self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
-        self.configurePaymentMethodsViewControllerWithContext.assertValues([.latePledge])
-
-        self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, true])
-        self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false])
-        self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge])
-
-        self.paymentMethodsViewHidden.assertValues([true, false])
-      }
-    }
-  }
-
-  func testLoginSignup_CardSelected_CTAEnabled() {
-    let project = Project.template
-    let reward = Reward.template
-    let user = User.template
-
-    withEnvironment(currentUser: nil) {
-      let data = PostCampaignCheckoutData(
-        project: .template,
-        baseReward: .template,
-        rewards: [reward],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
-        refTag: nil,
-        context: .latePledge,
-        checkoutId: "0"
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
-
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
-
-      self.paymentMethodsViewHidden.assertValues([true])
-
-      withEnvironment(currentUser: user) {
-        self.vm.inputs.userSessionStarted()
-
-        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
-        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
-        self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
-        self.configurePaymentMethodsViewControllerWithContext.assertValues([.latePledge])
-
-        let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
-        self.vm.inputs
-          .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
-
-        self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false, true, true])
-        self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
-        self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge, .latePledge, .latePledge])
-
-        self.paymentMethodsViewHidden.assertValues([true, false])
-      }
-    }
   }
 
   // MARK: - Web Help
@@ -840,7 +727,6 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         ),
         currentUser: .template
       ) {
-        self.vm.inputs.userSessionStarted()
         self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
 
         self.vm.inputs.creditCardSelected(

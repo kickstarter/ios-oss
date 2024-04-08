@@ -61,8 +61,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var sessionStartedObserver: Any?
-
   private let viewModel: PostCampaignCheckoutViewModelType = PostCampaignCheckoutViewModel()
 
   // MARK: - Lifecycle
@@ -97,7 +95,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   deinit {
     self.hideProcessingView()
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
@@ -210,12 +207,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
         self?.paymentMethodsViewController.configure(with: value)
       }
 
-    self.viewModel.outputs.goToLoginSignup
-      .observeForControllerAction()
-      .observeValues { [weak self] intent, project, reward in
-        self?.goToLoginSignup(with: intent, project: project, reward: reward)
-      }
-
     self.viewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
@@ -236,13 +227,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
-
-    self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
-      }
-
-    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
 
     self.viewModel.outputs.configureStripeIntegration
       .observeForUI()
@@ -281,14 +265,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
   }
 
   // MARK: - Functions
-
-  private func goToLoginSignup(with intent: LoginIntent, project _: Project, reward _: Reward?) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
-
-    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-
-    self.present(navigationController, animated: true)
-  }
 
   private func confirmPayment(with validation: PaymentSourceValidation) {
     guard validation.requiresConfirmation else {
@@ -349,7 +325,6 @@ extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
 extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
-    self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
