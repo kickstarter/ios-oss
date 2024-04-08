@@ -86,25 +86,18 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.backedProjectText = self.configureWithDataProperty.signal
       .skipNil()
-      .map { project, _, _, pledgeTotal in
+      .map { project, _, _, _ in
 
         let string: String
 
-        if featurePostCampaignPledgeEnabled(),
-           project.isInPostCampaignPledgingPhase,
-           let email = AppEnvironment.current.currentUserEmail {
-          let formattedTotal = Format.formattedCurrency(pledgeTotal, country: project.country)
+        /// Setting this to a an empty string for the late pledge beta release.
+        // TODO: [MBL-1351[(https://kickstarter.atlassian.net/browse/MBL-1350) Update as fast-follow when there is time to get translations in for a new more contextually accurate string.
+        let isInPostCampaignPledging = featurePostCampaignPledgeEnabled() && project
+          .isInPostCampaignPledgingPhase
 
-          string = Strings.You_have_successfully_pledged_to_project_post_campaign_html(
-            project_name: project.name,
-            pledge_total: formattedTotal,
-            user_email: email
-          )
-        } else {
-          string = Strings.You_have_successfully_backed_project_html(
-            project_name: project.name
-          )
-        }
+        string = isInPostCampaignPledging
+          ? ""
+          : Strings.You_have_successfully_backed_project_html(project_name: project.name)
 
         return string
           .simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
