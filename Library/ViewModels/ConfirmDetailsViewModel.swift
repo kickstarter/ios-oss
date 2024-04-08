@@ -25,7 +25,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never> { get }
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
@@ -64,10 +64,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    self.goToLoginSignup = isLoggedIn
+    self.goToLoginSignup = Signal.combineLatest(isLoggedIn, initialData)
       .takeWhen(self.continueCTATappedProperty.signal)
-      .filter { isLoggedIn in isLoggedIn == false }
-      .map { _ in LoginIntent.backProject }
+      .filter { isLoggedIn, _ in isLoggedIn == false }
+      .map { _, data in
+        let baseReward = data.rewards.first
+        return (LoginIntent.backProject, data.project, baseReward)
+      }
 
     // MARK: Pledge Amount
 
@@ -466,7 +469,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never>
-  public let goToLoginSignup: Signal<LoginIntent, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>

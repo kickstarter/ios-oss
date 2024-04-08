@@ -283,8 +283,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] intent in
-        self?.goToLoginSignup(with: intent)
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -318,8 +318,12 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
   // MARK: - Functions
 
-  private func goToLoginSignup(with intent: LoginIntent) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward?) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
 

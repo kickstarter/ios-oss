@@ -26,7 +26,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   private let createCheckoutSuccess = TestObserver<PostCampaignCheckoutData, Never>()
 
-  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
+  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward?), Never>()
 
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
@@ -87,7 +87,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.continueCTATapped()
 
-      self.goToLoginSignup.assertValues([.backProject])
+      self.goToLoginSignup.assertDidEmitValue()
       self.createCheckoutSuccess.assertDidNotEmitValue()
     }
   }
@@ -134,7 +134,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.goToLoginSignup.assertValues([])
+      self.goToLoginSignup.assertDidNotEmitValue()
 
       self.createCheckoutSuccess.assertDidEmitValue()
     }
