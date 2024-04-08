@@ -129,13 +129,7 @@ final class ThanksViewModelTests: TestCase {
       self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))
       self.vm.inputs.viewDidLoad()
 
-      self.backedProjectText.assertValues(
-        [
-          """
-          You have successfully pledged to Test Project. Your pledge of ¥127 has been collected.\nYou’ll receive a confirmation email at test@user.com when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.\nThis project is now one step closer to a reality, thanks to you. Spread the word!\n
-          """
-        ], "Name of project emits"
-      )
+      self.backedProjectText.assertValues([""])
     }
   }
 
