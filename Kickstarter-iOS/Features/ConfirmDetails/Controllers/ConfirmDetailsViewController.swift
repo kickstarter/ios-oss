@@ -102,6 +102,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var sessionStartedObserver: Any?
+
   private let viewModel: ConfirmDetailsViewModelType = ConfirmDetailsViewModel()
 
   // MARK: - Lifecycle
@@ -130,6 +132,10 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
@@ -275,6 +281,17 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
+      }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+      }
+
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
     self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
@@ -300,6 +317,14 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+
+    self.present(navigationController, animated: true)
+  }
 
   private func goToCheckout(data: PostCampaignCheckoutData) {
     let vc = PostCampaignCheckoutViewController.instantiate()
