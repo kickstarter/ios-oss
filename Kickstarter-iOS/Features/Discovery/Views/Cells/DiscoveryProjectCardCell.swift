@@ -124,8 +124,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> verticalStackViewStyle
       |> \.spacing .~ 0
 
-    _ = self.saveButton
-      |> saveButtonStyle
+    styleDiscoverySaveButton(self.saveButton)
 
     _ = self.cardContainerView
       |> cardContainerViewStyle
@@ -747,11 +746,6 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.insetsLayoutMarginsFromSafeArea .~ false
-}
-
-private let saveButtonStyle: ButtonStyle = { button in
-  button
-    |> discoverySaveButtonStyle
 }
 
 private let youreABackerViewStyle: ViewStyle = { view in
