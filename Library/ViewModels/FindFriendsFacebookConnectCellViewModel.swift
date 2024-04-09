@@ -207,8 +207,10 @@ extension FindFriendsFacebookConnectCellViewModel {
     let needsFreshFacebookToken = user?.needsFreshFacebookToken ?? false
 
     // Show section in "reconnect" state if facebook connected but requiring a new token
-    return !isFacebookConnected || (isFacebookConnected
-      && needsFreshFacebookToken)
+    return !isFacebookConnected || (
+      isFacebookConnected
+        && needsFreshFacebookToken
+    )
   }
 
   private static func connectionType(user: User?) -> FacebookConnectionType? {

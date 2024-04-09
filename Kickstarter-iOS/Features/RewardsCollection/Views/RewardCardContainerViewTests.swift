@@ -259,7 +259,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
     let filteredRewards = allRewards
-      .filter { (name, _) -> Bool in
+      .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
 
@@ -298,7 +298,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testNonLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
     let filteredRewards = allRewards
-      .filter { (name, _) -> Bool in
+      .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
 
@@ -428,29 +428,35 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.hasAddOns .~ true
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
+    |> Reward.lens.isAvailable .~ true
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.isAvailable .~ true
   let availableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.isAvailable .~ true
   let availableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.isAvailable .~ true
   let availableNonLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.isAvailable .~ true
   let availableShippingEnabledReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.isAvailable .~ true
     |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.shipping .~ (
       .template

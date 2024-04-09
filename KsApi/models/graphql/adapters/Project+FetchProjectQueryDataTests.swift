@@ -22,7 +22,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       }
 
     guard let projectDataById = MockGraphQLClient.shared.client.data(from: projectProducer),
-      let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
+          let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
       XCTFail()
 
       return
@@ -228,12 +228,12 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertTrue(firstReward.isNoReward)
 
     guard let extendedProjectProperties = project.extendedProjectProperties,
-      let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
-      let firstImageElement = extendedProjectProperties.story
-      .htmlViewElements[extendedProjectProperties.story.htmlViewElements.count - 2] as? ImageViewElement,
-      let firstAudioVideoElement = extendedProjectProperties.story.htmlViewElements
-      .last as? AudioVideoViewElement,
-      let firstTextComponent = firstTextElement.components.first else {
+          let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
+          let firstImageElement = extendedProjectProperties.story
+          .htmlViewElements[extendedProjectProperties.story.htmlViewElements.count - 2] as? ImageViewElement,
+          let firstAudioVideoElement = extendedProjectProperties.story.htmlViewElements
+          .last as? AudioVideoViewElement,
+          let firstTextComponent = firstTextElement.components.first else {
       XCTFail("extended project properties should exist.")
 
       return

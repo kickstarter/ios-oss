@@ -40,7 +40,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
 
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
@@ -61,7 +64,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "AU") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -86,7 +92,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -111,7 +120,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -147,7 +159,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -178,7 +193,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "SE") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -204,7 +222,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -230,7 +251,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
@@ -256,7 +280,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, countryCode: "XX") {
-      let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refInfo: nil)
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(self.cosmicSurgery),
+        refInfo: nil
+      )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 

@@ -68,14 +68,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.watchesCount, 18)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
-        extendedProjectProperties.story.htmlViewElements.count > 3,
-        let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
-        let imageViewElement = extendedProjectProperties.story.htmlViewElements[8] as? ImageViewElement,
-        let audioVideoViewElement = extendedProjectProperties.story
-        .htmlViewElements[11] as? AudioVideoViewElement,
-        let externalSourceViewElement = extendedProjectProperties.story
-        .htmlViewElements[17] as? ExternalSourceViewElement,
-        textElement.components.count > 5 else {
+            extendedProjectProperties.story.htmlViewElements.count > 3,
+            let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
+            let imageViewElement = extendedProjectProperties.story.htmlViewElements[8] as? ImageViewElement,
+            let audioVideoViewElement = extendedProjectProperties.story
+            .htmlViewElements[11] as? AudioVideoViewElement,
+            let externalSourceViewElement = extendedProjectProperties.story
+            .htmlViewElements[17] as? ExternalSourceViewElement,
+            textElement.components.count > 5 else {
         XCTFail("extended project properties should exist.")
 
         return
@@ -355,7 +355,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "storedCards":{
              "__typename":"UserCreditCardTypeConnection",
              "nodes":[
-                
+
              ],
              "totalCount":0
           }
@@ -368,7 +368,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "friends":{
           "__typename":"ProjectBackerFriendsConnection",
           "nodes":[
-             
+
           ]
        },
        "goal":{

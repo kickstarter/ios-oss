@@ -20,8 +20,10 @@ public enum UpdateBackingMutationTemplate {
 
   // MARK: Private Properties
 
-  private func updateBackingMutationResultMap(checkoutState: GraphAPI.CheckoutState,
-                                              sca: Bool) -> [String: Any?] {
+  private func updateBackingMutationResultMap(
+    checkoutState: GraphAPI.CheckoutState,
+    sca: Bool
+  ) -> [String: Any?] {
     [
       "updateBacking": [
         "checkout": [

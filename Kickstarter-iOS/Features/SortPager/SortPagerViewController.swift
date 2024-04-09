@@ -145,7 +145,7 @@ internal final class SortPagerViewController: UIViewController {
           |> UIButton.lens.backgroundColor .~ .ksr_white
           |> UIButton.lens.tag .~ idx
           |> UIButton.lens.targets .~ [
-            (self, #selector(sortButtonTapped(_:)), .touchUpInside)
+            (self, #selector(self.sortButtonTapped(_:)), .touchUpInside)
           ]
       }
   }

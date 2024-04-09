@@ -309,8 +309,8 @@ public enum FetchProjectQueryTemplate {
      */
 
     guard var projectResultMap = resultMap["project"] as? [String: Any],
-      let countryResultMap = projectResultMap["country"] as? [String: Any],
-      let creatorResultMap = projectResultMap["creator"] as? [String: Any] else {
+          let countryResultMap = projectResultMap["country"] as? [String: Any],
+          let creatorResultMap = projectResultMap["creator"] as? [String: Any] else {
       return resultMap
     }
 

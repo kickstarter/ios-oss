@@ -311,11 +311,12 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), nil)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
@@ -325,6 +326,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ (
@@ -333,7 +335,7 @@ internal final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), nil)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
@@ -343,11 +345,12 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limitPerBacker .~ nil
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
+      |> Reward.lens.isAvailable .~ false
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), false)
+    XCTAssertEqual(rewardIsAvailable(reward), false)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), 0)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
@@ -357,6 +360,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limitPerBacker .~ nil
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ (
@@ -366,7 +370,7 @@ internal final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), 1)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
@@ -376,6 +380,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limitPerBacker .~ 5
       |> Reward.lens.limit .~ 4
       |> Reward.lens.remaining .~ 0
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
       |> Project.lens.personalization.backing .~ (
@@ -384,7 +389,7 @@ internal final class SharedFunctionsTests: TestCase {
           |> Backing.lens.addOns .~ [reward, reward] // qty 2
       )
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), 2)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), 2)
   }
@@ -394,12 +399,12 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limitPerBacker .~ 5
       |> Reward.lens.limit .~ 15
       |> Reward.lens.remaining .~ 4
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
       |> Project.lens.personalization.backing .~ nil
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), 4)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), 4)
   }
@@ -410,11 +415,12 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
+      |> Reward.lens.isAvailable .~ true
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), true)
+    XCTAssertEqual(rewardIsAvailable(reward), true)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), nil)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
@@ -425,11 +431,12 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
+      |> Reward.lens.isAvailable .~ false
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
 
-    XCTAssertEqual(rewardIsAvailable(project: project, reward: reward), false)
+    XCTAssertEqual(rewardIsAvailable(reward), false)
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), nil)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }

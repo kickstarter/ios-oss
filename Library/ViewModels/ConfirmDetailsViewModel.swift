@@ -9,6 +9,7 @@ public protocol ConfirmDetailsViewModelInputs {
   func continueCTATapped()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -24,13 +25,14 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never> { get }
-  var showErrorBannerWithMessage: Signal<String, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var pledgeSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
 }
 
 public protocol ConfirmDetailsViewModelType {
@@ -57,6 +59,18 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let refTag = initialData.map(\.refTag)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
+
+    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
+
+    self.goToLoginSignup = Signal.combineLatest(isLoggedIn, initialData)
+      .takeWhen(self.continueCTATappedProperty.signal)
+      .filter { isLoggedIn, _ in isLoggedIn == false }
+      .map { _, data in
+        let baseReward = data.rewards.first
+        return (LoginIntent.backProject, data.project, baseReward)
+      }
 
     // MARK: Pledge Amount
 
@@ -294,17 +308,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Double?,
       PledgeSummaryViewData
     ) in
-    (
-      PostCampaignRewardsSummaryViewData(
-        rewards: rewards,
-        selectedQuantities: selectedQuantities,
-        projectCountry: project.country,
-        omitCurrencyCode: project.stats.omitUSCurrencyCode,
-        shipping: shippingSummaryData
-      ),
-      bonusOrPledgeUpdatedAmount,
-      pledgeTotalSummaryData
-    )
+      (
+        PostCampaignRewardsSummaryViewData(
+          rewards: rewards,
+          selectedQuantities: selectedQuantities,
+          projectCountry: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          shipping: shippingSummaryData
+        ),
+        bonusOrPledgeUpdatedAmount,
+        pledgeTotalSummaryData
+      )
     }
 
     self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
@@ -314,14 +328,29 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let pledgeDetailsData = Signal.combineLatest(
       project,
       rewards,
+      selectedQuantities,
       pledgeTotal,
       refTag
     )
 
-    let createCheckoutEvents = pledgeDetailsData
-      .takeWhen(self.continueCTATappedProperty.signal)
-      .map { project, rewards, pledgeTotal, refTag in
-        let rewardsIDs = rewards.first?.isNoReward == true ? [] : rewards.map { $0.graphID }
+    let isLoggedInAndContinueButtonTapped = Signal.merge(
+      self.continueCTATappedProperty.signal,
+      self.userSessionStartedSignal
+    )
+
+    let createCheckoutEvents = Signal.combineLatest(isLoggedIn, pledgeDetailsData)
+      .takeWhen(isLoggedInAndContinueButtonTapped)
+      .filter { isLoggedIn, _ in isLoggedIn }
+      .map { _, pledgeDetailsData in
+        let (project, rewards, selectedQuantities, pledgeTotal, refTag) = pledgeDetailsData
+        let rewardsIDs: [String] = rewards.first?.isNoReward == true
+          ? []
+          : rewards.flatMap { reward -> [String] in
+            guard let count = selectedQuantities[reward.id] else {
+              return []
+            }
+            return [String](repeating: reward.graphID, count: count)
+          }
 
         return CreateCheckoutInput(
           projectId: project.graphID,
@@ -355,11 +384,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         initialData,
         bonusOrPledgeUpdatedAmount,
         optionalShippingSummaryData,
-        pledgeTotal
+        pledgeTotal,
+        baseReward
       )
     )
     .map { checkoutId, otherData -> PostCampaignCheckoutData in
-      let (initialData, bonusOrReward, shipping, pledgeTotal) = otherData
+      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -371,6 +401,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
       return PostCampaignCheckoutData(
         project: initialData.project,
+        baseReward: baseReward,
         rewards: rewards,
         selectedQuantities: initialData.selectedQuantities,
         bonusAmount: bonus == 0 ? nil : bonus,
@@ -419,6 +450,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     self.submitButtonTappedObserver.send(value: ())
   }
 
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -438,13 +474,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never>
-  public let showErrorBannerWithMessage: Signal<String, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
   public let pledgeSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
 
   public var inputs: ConfirmDetailsViewModelInputs { return self }
   public var outputs: ConfirmDetailsViewModelOutputs { return self }

@@ -7,7 +7,7 @@ extension Comment {
 
   static func from(_ data: GraphAPI.PostCommentMutation.Data.CreateComment.Comment) -> Comment? {
     guard let author = data.author,
-      let decomposedAuthorId = decompose(id: author.id) else {
+          let decomposedAuthorId = decompose(id: author.id) else {
       return nil
     }
 

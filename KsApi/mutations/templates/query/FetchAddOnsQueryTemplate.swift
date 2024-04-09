@@ -623,7 +623,7 @@ public enum FetchAddsOnsQueryTemplate {
      */
 
     guard var projectResultMap = resultMap["project"] as? [String: Any],
-      let countryResultMap = projectResultMap["country"] as? [String: Any] else {
+          let countryResultMap = projectResultMap["country"] as? [String: Any] else {
       return resultMap
     }
 

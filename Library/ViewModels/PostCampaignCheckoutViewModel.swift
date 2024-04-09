@@ -7,6 +7,7 @@ import Stripe
 
 public struct PostCampaignCheckoutData: Equatable {
   public let project: Project
+  public let baseReward: Reward
   public let rewards: [Reward]
   public let selectedQuantities: SelectedRewardQuantities
   public let bonusAmount: Double?
@@ -39,11 +40,9 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
-  func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
-  func userSessionStarted()
   func viewDidLoad()
   func applePayButtonTapped()
   func applePayContextDidCreatePayment(params: ApplePayParams)
@@ -58,8 +57,6 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
-  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -89,42 +86,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
-    let configurePaymentMethodsData = Signal.merge(
-      initialData,
-      initialData.takeWhen(self.userSessionStartedSignal)
-    )
-
-    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsData
+    self.configurePaymentMethodsViewControllerWithValue = initialData
       .compactMap { data -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
-        guard let reward = data.rewards.first else { return nil }
+        let reward = data.baseReward
 
         return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
-      }
-
-    self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.project, $0.rewards.first) }
-
-    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
-      .map { _ in AppEnvironment.current.currentUser }
-      .map(isNotNil)
-
-    self.configurePledgeViewCTAContainerView = Signal.combineLatest(
-      isLoggedIn,
-      context
-    )
-    .map { isLoggedIn, context in
-      PledgeViewCTAContainerViewData(
-        isLoggedIn: isLoggedIn,
-        isEnabled: true, // Pledge button never needs to be disabled on checkout page.
-        context: context,
-        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
-      )
-    }
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { isLoggedIn, context in
-        !isLoggedIn || context.paymentMethodsViewHidden
       }
 
     self.showWebHelp = Signal.merge(
@@ -209,9 +176,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
       .map { $0.clientSecret }
 
+    let validateCheckoutExistingCardInput = Signal
+      .combineLatest(
+        checkoutId,
+        selectedCard,
+        paymentIntentClientSecretForExistingCards,
+        storedCardsValues
+      )
+
     // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
-    let validateCheckoutExistingCard = Signal
-      .combineLatest(checkoutId, selectedCard, paymentIntentClientSecretForExistingCards, storedCardsValues)
+    let validateCheckoutExistingCard = validateCheckoutExistingCardInput
       .takeWhen(self.submitButtonTappedProperty.signal)
       .filter { _, selectedCard, _, _ in
         selectedCard.isNewPaymentMethod == false
@@ -248,8 +222,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: - Validate New Cards
 
+    let validateCheckoutNewCardInput = Signal.combineLatest(checkoutId, selectedCard)
+
     // Runs validation for new cards that were created with payment intents.
-    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedCard)
+    let validateCheckoutNewCard = validateCheckoutNewCardInput
       .takeWhen(self.submitButtonTappedProperty.signal)
       .filter { _, selectedCard in
         selectedCard.isNewPaymentMethod == true
@@ -326,16 +302,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .signal
       .skipNil()
       .combineLatest(with: newPaymentIntentForApplePay)
-      .map { (data: PostCampaignCheckoutData, paymentIntent: String) -> PostCampaignPaymentAuthorizationData? in
-        guard let firstReward = data.rewards.first else {
-          // There should always be a reward - we create a special "no reward" reward if you make a monetary pledge
-          return nil
-        }
+      .map { (
+        data: PostCampaignCheckoutData,
+        paymentIntent: String
+      ) -> PostCampaignPaymentAuthorizationData? in
+        let baseReward = data.baseReward
 
         return PostCampaignPaymentAuthorizationData(
           project: data.project,
-          hasNoReward: firstReward.isNoReward,
-          subtotal: firstReward.isNoReward ? firstReward.minimum : calculateAllRewardsTotal(
+          hasNoReward: baseReward.isNoReward,
+          subtotal: baseReward.isNoReward ? baseReward.minimum : calculateAllRewardsTotal(
             addOnRewards: data.rewards,
             selectedQuantities: data.selectedQuantities
           ),
@@ -358,21 +334,25 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
       ) -> GraphAPI.CompleteOnSessionCheckoutInput in
 
-      GraphAPI
-        .CompleteOnSessionCheckoutInput(
-          checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
-          paymentIntentClientSecret: clientSecret,
-          paymentSourceId: selectedCard.isNewPaymentMethod ? nil : selectedCard.paymentMethodId,
-          paymentSourceReusable: true,
-          applePay: nil
-        )
+        GraphAPI
+          .CompleteOnSessionCheckoutInput(
+            checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+            paymentIntentClientSecret: clientSecret,
+            paymentSourceId: selectedCard.isNewPaymentMethod ? nil : selectedCard.paymentMethodId,
+            paymentSourceReusable: true,
+            applePay: nil
+          )
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
       .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal)
       .takeWhen(self.applePayContextDidCompleteSignal)
       .map {
-        (clientSecret: String, checkoutId: String, applePayParams: ApplePayParams) -> GraphAPI.CompleteOnSessionCheckoutInput in
+        (
+          clientSecret: String,
+          checkoutId: String,
+          applePayParams: ApplePayParams
+        ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
             checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
@@ -405,6 +385,40 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     self.checkoutError = checkoutCompleteSignal.signal.errors()
 
+    // MARK: - UI related to checkout flow
+
+    let newCardActivatesPledgeButton = validateCheckoutNewCardInput
+      .filter { _, selectedCard in
+        selectedCard.isNewPaymentMethod == true
+      }
+      .mapConst(true)
+
+    let existingCardActivatesPledgeButton = validateCheckoutExistingCardInput
+      .filter { _, selectedCard, _, _ in
+        selectedCard.isNewPaymentMethod == false
+      }
+      .mapConst(true)
+
+    let pledgeButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      newCardActivatesPledgeButton,
+      existingCardActivatesPledgeButton
+    )
+    .skipRepeats()
+
+    self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      pledgeButtonEnabled,
+      context
+    )
+    .map { pledgeButtonEnabled, context in
+      PledgeViewCTAContainerViewData(
+        isLoggedIn: true, // Users should always be logged in when they get to the Checkout screen.
+        isEnabled: pledgeButtonEnabled,
+        context: context,
+        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
+      )
+    }
+
     self.processingViewIsHidden = Signal.merge(
       // Processing view starts hidden, so show at the start of a pledge flow.
       self.submitButtonTappedProperty.signal.mapConst(false),
@@ -414,6 +428,66 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       validateCheckoutError.mapConst(true),
       self.checkoutTerminatedProperty.signal.mapConst(true),
       checkoutCompleteSignal.signal.mapConst(true)
+    )
+
+    // MARK: - Tracking
+
+    // Page viewed event
+    initialData
+      .observeValues { data in
+        AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
+          project: data.project,
+          reward: data.baseReward,
+          pledgeViewContext: data.context,
+          checkoutData: self.trackingDataFromCheckoutParams(data),
+          refTag: data.refTag
+        )
+      }
+
+    // Pledge button tapped event
+    initialData
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .observeValues { data in
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+          project: data.project,
+          reward: data.baseReward,
+          typeContext: .creditCard,
+          checkoutData: self.trackingDataFromCheckoutParams(data),
+          refTag: data.refTag
+        )
+      }
+
+    // Apple pay button tapped event
+    initialData
+      .takeWhen(self.applePayButtonTappedSignal)
+      .observeValues { data in
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+          project: data.project,
+          reward: data.baseReward,
+          typeContext: .applePay,
+          checkoutData: self.trackingDataFromCheckoutParams(data, isApplePay: true),
+          refTag: data.refTag
+        )
+      }
+  }
+
+  // MARK: - Helpers
+
+  private func trackingDataFromCheckoutParams(
+    _ data: PostCampaignCheckoutData,
+    isApplePay: Bool = false
+  )
+    -> KSRAnalytics.CheckoutPropertiesData {
+    return checkoutProperties(
+      from: data.project,
+      baseReward: data.baseReward,
+      addOnRewards: data.rewards,
+      selectedQuantities: data.selectedQuantities,
+      additionalPledgeAmount: data.bonusAmount ?? 0,
+      pledgeTotal: data.total,
+      shippingTotal: data.shipping?.total ?? 0,
+      checkoutId: data.checkoutId,
+      isApplePay: isApplePay
     )
   }
 
@@ -444,11 +518,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.creditCardSelectedProperty.value = (source, paymentMethodId, isNewPaymentMethod)
   }
 
-  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
-  public func goToLoginSignupTapped() {
-    self.goToLoginSignupObserver.send(value: ())
-  }
-
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
@@ -463,11 +532,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
   public func termsOfUseTapped(with helpType: HelpType) {
     self.termsOfUseTappedObserver.send(value: helpType)
-  }
-
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
-  public func userSessionStarted() {
-    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -501,8 +565,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
-  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>

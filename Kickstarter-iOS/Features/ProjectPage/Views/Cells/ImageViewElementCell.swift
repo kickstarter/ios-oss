@@ -39,6 +39,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -78,7 +79,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
       })
       .observeValues { [weak self] image in
         guard let strongSelf = self,
-          let viewableImage = image else { return }
+              let viewableImage = image else { return }
 
         strongSelf.imageAspectRatio = viewableImage.size.width / viewableImage.size.height
         strongSelf.imageViewAspectConstraint = NSLayoutConstraint(

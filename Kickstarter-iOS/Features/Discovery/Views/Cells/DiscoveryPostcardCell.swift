@@ -90,9 +90,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
-        self?.watchProjectViewModel.inputs.projectFromNotification(
-          project: notification.userInfo?["project"] as? Project
-        )
+          self?.watchProjectViewModel.inputs.projectFromNotification(
+            project: notification.userInfo?["project"] as? Project
+          )
       }
 
     self.watchProjectViewModel.inputs.awakeFromNib()
@@ -202,8 +202,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    _ = self.saveButton
-      |> discoverySaveButtonStyle
+    styleDiscoverySaveButton(self.saveButton)
 
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true

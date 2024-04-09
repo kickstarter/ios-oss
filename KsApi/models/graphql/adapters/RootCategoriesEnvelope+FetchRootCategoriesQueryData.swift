@@ -4,8 +4,10 @@ extension RootCategoriesEnvelope {
   /**
    Returns a minimal `RootCategoriesEnvelope` from a `FetchRootCategoriesQuery.Data`
    */
-  static func envelopeProducer(from data: GraphAPI.FetchRootCategoriesQuery
-    .Data) -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+  static func envelopeProducer(
+    from data: GraphAPI.FetchRootCategoriesQuery
+      .Data
+  ) -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
     let allCategories = data.rootCategories.map { rootCategory -> Category in
       Category(
         analyticsName: rootCategory.analyticsName,
@@ -23,8 +25,10 @@ extension RootCategoriesEnvelope {
     return SignalProducer(value: envelope)
   }
 
-  private static func subcategoryConnection(from subcategories: GraphAPI.FetchRootCategoriesQuery.Data
-    .RootCategory.Subcategory?) -> Category.SubcategoryConnection? {
+  private static func subcategoryConnection(
+    from subcategories: GraphAPI.FetchRootCategoriesQuery.Data
+      .RootCategory.Subcategory?
+  ) -> Category.SubcategoryConnection? {
     let subcategoryConnection: Category.SubcategoryConnection? = subcategories
       .map { subcategory -> Category.SubcategoryConnection in
         let subcategoryNodes: [GraphAPI.FetchRootCategoriesQuery.Data.RootCategory.Subcategory.Node?] =
@@ -34,7 +38,7 @@ extension RootCategoriesEnvelope {
         return Category
           .SubcategoryConnection(
             totalCount: subcategory.totalCount,
-            nodes: categories(from: subcategoryNodes)
+            nodes: self.categories(from: subcategoryNodes)
           )
       }
 

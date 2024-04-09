@@ -255,7 +255,7 @@ private func expandableRows(
       |> ExpandableRow.lens.selectableRows .~
       expandableRow.selectableRows.sorted { lhs, rhs in
         guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
-          lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+              lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
           return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
         }
         return lhsName < rhsName
@@ -279,8 +279,10 @@ private func toggleExpansion(
     .map { expandableRow in
 
       expandableRow
-        |> ExpandableRow.lens.isExpanded .~ (expandableRow.params == rowToToggle.params &&
-          !rowToToggle.isExpanded)
+        |> ExpandableRow.lens.isExpanded .~ (
+          expandableRow.params == rowToToggle.params &&
+            !rowToToggle.isExpanded
+        )
     }
 }
 
@@ -297,9 +299,10 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
 
   if user?.optedOutOfRecommendations != true {
-    filters.append(.defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.backed .~ false
+    filters.append(
+      .defaults
+        |> DiscoveryParams.lens.recommended .~ true
+        |> DiscoveryParams.lens.backed .~ false
     )
   }
 
@@ -341,7 +344,8 @@ private func cache(categories: [KsApi.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 
-private func typeContext(from discoveryParams: DiscoveryParams
+private func typeContext(
+  from discoveryParams: DiscoveryParams
 ) -> KSRAnalytics.TypeContext {
   if discoveryParams.staffPicks == true {
     return .pwl

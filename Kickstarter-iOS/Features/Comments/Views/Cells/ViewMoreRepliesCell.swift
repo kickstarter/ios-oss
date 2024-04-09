@@ -21,6 +21,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
     self.configureViews()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -50,9 +51,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value _: Void) {
-    return
-  }
+  func configureWith(value _: Void) {}
 
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)

@@ -49,7 +49,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertNil(addOn.shipping.type)
 
     guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first,
-      let hasALocalPickup = envelope.addOns?.first?.localPickup else {
+          let hasALocalPickup = envelope.addOns?.first?.localPickup else {
       XCTFail()
 
       return

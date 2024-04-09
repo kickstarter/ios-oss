@@ -207,7 +207,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -263,7 +263,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -310,7 +310,7 @@ final class LoginToutViewModelTests: TestCase {
       ]
     )
 
-    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -338,7 +338,7 @@ final class LoginToutViewModelTests: TestCase {
       userInfo: [:]
     )
 
-    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
@@ -388,20 +388,23 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      vm.inputs.viewWillAppear()
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
 
-      showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
+      self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
 
-      vm.inputs.facebookLoginButtonPressed()
-      vm.inputs.facebookLoginSuccess(result: result)
+      self.vm.inputs.facebookLoginButtonPressed()
+      self.vm.inputs.facebookLoginSuccess(result: result)
 
       self.isLoading.assertValues([true])
       // Wait enough time for API request to be made.
       scheduler.advance()
 
       self.isLoading.assertValues([true, false])
-      showFacebookErrorAlert.assertValues([AlertError.facebookTokenFail], "Show Facebook token fail error")
+      self.showFacebookErrorAlert.assertValues(
+        [AlertError.facebookTokenFail],
+        "Show Facebook token fail error"
+      )
     }
   }
 
@@ -434,18 +437,18 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      vm.inputs.viewWillAppear()
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
 
-      vm.inputs.facebookLoginButtonPressed()
-      vm.inputs.facebookLoginSuccess(result: result)
+      self.vm.inputs.facebookLoginButtonPressed()
+      self.vm.inputs.facebookLoginSuccess(result: result)
 
       self.isLoading.assertValues([true])
       // Wait enough time for API request to be made.
       scheduler.advance()
 
       self.isLoading.assertValues([true, false])
-      showFacebookErrorAlert.assertValues(
+      self.showFacebookErrorAlert.assertValues(
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
       )
@@ -481,18 +484,18 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      vm.inputs.viewWillAppear()
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
 
-      vm.inputs.facebookLoginButtonPressed()
-      vm.inputs.facebookLoginSuccess(result: result)
+      self.vm.inputs.facebookLoginButtonPressed()
+      self.vm.inputs.facebookLoginSuccess(result: result)
 
       self.isLoading.assertValues([true])
       // Wait enough time for API request to be made.
       scheduler.advance()
 
       self.isLoading.assertValues([true, false])
-      showFacebookErrorAlert.assertValues(
+      self.showFacebookErrorAlert.assertValues(
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
       )
@@ -528,13 +531,13 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      vm.inputs.viewWillAppear()
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
 
-      vm.inputs.facebookLoginButtonPressed()
-      vm.inputs.facebookLoginSuccess(result: result)
+      self.vm.inputs.facebookLoginButtonPressed()
+      self.vm.inputs.facebookLoginSuccess(result: result)
 
-      startTwoFactorChallenge.assertDidNotEmitValue()
+      self.startTwoFactorChallenge.assertDidNotEmitValue()
 
       self.isLoading.assertValues([true])
       // Wait enough time for API request to be made.
@@ -578,11 +581,11 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
-      vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      vm.inputs.viewWillAppear()
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
 
-      vm.inputs.facebookLoginButtonPressed()
-      vm.inputs.facebookLoginSuccess(result: result)
+      self.vm.inputs.facebookLoginButtonPressed()
+      self.vm.inputs.facebookLoginSuccess(result: result)
 
       self.isLoading.assertValues([true])
       // Wait enough time for API request to be made.
@@ -607,7 +610,7 @@ final class LoginToutViewModelTests: TestCase {
       scheduler.advance()
 
       self.isLoading.assertValues([true, false, true, false])
-      startFacebookConfirmation.assertValues(
+      self.startFacebookConfirmation.assertValues(
         ["12344566", "12344566"],
         "Start Facebook confirmation emitted with token"
       )

@@ -259,11 +259,11 @@ private func timeLeftString(project: Project, reward: Reward) -> RewardCardPillD
   let isUnlimitedOrAvailable = reward.limit == nil || reward.remaining ?? 0 > 0
 
   if project.state == .live,
-    let endsAt = reward.endsAt,
-    let deadline = project.dates.deadline,
-    endsAt > 0,
-    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
-    isUnlimitedOrAvailable {
+     let endsAt = reward.endsAt,
+     let deadline = project.dates.deadline,
+     endsAt > 0,
+     endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
+     isUnlimitedOrAvailable {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, deadline),
       abbreviate: true,
@@ -308,8 +308,8 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
 
 private func shippingSummaryString(project: Project, reward: Reward) -> RewardCardPillData? {
   if project.state == .live,
-    reward.shipping.enabled,
-    let shippingSummaryText = reward.shipping.summary {
+     reward.shipping.enabled,
+     let shippingSummaryText = reward.shipping.summary {
     return RewardCardPillData(
       backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
       text: shippingSummaryText,

@@ -92,6 +92,7 @@ final class PledgeCTAContainerView: UIView {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -186,9 +187,9 @@ final class PledgeCTAContainerView: UIView {
     self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
-        self?.viewModel.inputs.savedProjectFromNotification(
-          project: notification.userInfo?["project"] as? Project
-        )
+          self?.viewModel.inputs.savedProjectFromNotification(
+            project: notification.userInfo?["project"] as? Project
+          )
       }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden

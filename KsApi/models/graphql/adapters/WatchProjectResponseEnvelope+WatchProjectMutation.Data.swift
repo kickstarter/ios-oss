@@ -21,8 +21,10 @@ extension WatchProjectResponseEnvelope {
   /**
    Return a signal producer containing `WatchProjectResponseEnvelope` or `ErrorEnvelope`
    */
-  static func producer(from data: GraphAPI.WatchProjectMutation
-    .Data) -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
+  static func producer(
+    from data: GraphAPI.WatchProjectMutation
+      .Data
+  ) -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
     guard let envelope = WatchProjectResponseEnvelope.from(data) else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }

@@ -46,7 +46,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     self.showShareSheet = shareContextAndView
       .takeWhen(self.shareButtonTappedProperty.signal)
-      .map { (context, view) -> (UIActivityViewController, UIView?)? in
+      .map { context, view -> (UIActivityViewController, UIView?)? in
         guard let controller = activityController(forShareContext: context) else { return nil }
         return (controller, view)
       }

@@ -8,7 +8,7 @@ private func swizzle(_ v: UIView.Type) {
   .forEach { original, swizzled in
 
     guard let originalMethod = class_getInstanceMethod(v, original),
-      let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
+          let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
 
     let didAddViewDidLoadMethod = class_addMethod(
       v,

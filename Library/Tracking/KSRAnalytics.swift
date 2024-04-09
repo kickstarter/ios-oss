@@ -952,7 +952,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     switch pledgeViewContext {
-    case .pledge:
+    case .pledge, .latePledge:
       props = props.withAllValuesFrom(contextProperties(page: .checkout))
     case .changePaymentMethod:
       props = props.withAllValuesFrom(contextProperties(page: .changePayment))
@@ -1309,7 +1309,6 @@ private func projectProperties(
   props["category"] = project.category.parentAnalyticsName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.percentFunded
-  props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
   props["current_amount_pledged_usd"] = rounded(project.stats.totalAmountPledgedUsdCurrency ?? 0, places: 2)
   props["goal_usd"] = rounded(project.stats.goalUsdCurrency, places: 2)
@@ -1319,6 +1318,15 @@ private func projectProperties(
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
   props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
+
+  if featurePostCampaignPledgeEnabled() {
+    props["late_pledge_enabled"] = project.postCampaignPledgingEnabled
+    props["state"] = project.isInPostCampaignPledgingPhase
+      ? "post_campaign"
+      : project.state.rawValue
+  } else {
+    props["state"] = project.state.rawValue
+  }
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -1591,8 +1599,11 @@ private func userProperties(for user: User?, _ prefix: String = "user_") -> [Str
 
 // MARK: - Video Properties
 
-private func videoProperties(videoLength: Int, videoPosition: Int,
-                             prefix: String = "video_") -> [String: Any] {
+private func videoProperties(
+  videoLength: Int,
+  videoPosition: Int,
+  prefix: String = "video_"
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["length"] = videoLength

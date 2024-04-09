@@ -23,7 +23,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     self.clearValues()
 
-    self.filteredSections.forEach { section -> Void in
+    self.filteredSections.forEach { section in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
 
       self.filteredSections.append(section)

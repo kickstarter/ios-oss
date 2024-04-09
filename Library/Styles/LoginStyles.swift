@@ -200,7 +200,7 @@ public func attributedDisclaimerText(textView _: UITextView, useLargerText: Bool
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
 
   guard let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
-    let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString else { return nil }
+        let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString else { return nil }
 
   let string = Strings
     .By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy(

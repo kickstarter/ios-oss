@@ -247,8 +247,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
             .projectNavigationSelectorShadowVerticalOriginModifier
         ),
       self.projectNavigationShadowView.heightAnchor
-        .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout
-          .projectNavigationSelectorShadowViewHeight)
+        .constraint(
+          equalToConstant: ProjectPageViewControllerStyles.Layout
+            .projectNavigationSelectorShadowViewHeight
+        )
     ]
 
     NSLayoutConstraint.activate(projectNavigationShadowViewConstraints)
@@ -403,7 +405,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
           UIImageView.ksr_cacheImageWith(url) { [weak self] image in
             guard let dataSource = self?.dataSource,
-              let crossPlatformImage = image else { return }
+                  let crossPlatformImage = image else { return }
 
             dataSource.preloadCampaignImageViewElement(element, image: crossPlatformImage)
           }
@@ -513,9 +515,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
         tableView.indexPathsForVisibleRows?.forEach { indexPath in
           if let cell = tableView.cellForRow(at: indexPath) as? AudioVideoViewElementCell,
-            let isPlaying = cell.delegate?.isPlaying(),
-            isPlaying,
-            let seekTime = cell.delegate?.pausePlayback() {
+             let isPlaying = cell.delegate?.isPlaying(),
+             isPlaying,
+             let seekTime = cell.delegate?.pausePlayback() {
             self?.dataSource.updateAudioVideoViewElementSeektime(
               with: seekTime,
               tableView: tableView,
@@ -554,9 +556,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
-  private func prepareToPlayAudioVideoURL(audioVideoURL: URL,
-                                          thumbnailURL: URL?,
-                                          completionHandler: @escaping (AVPlayer?, UIImage?) -> Void) {
+  private func prepareToPlayAudioVideoURL(
+    audioVideoURL: URL,
+    thumbnailURL: URL?,
+    completionHandler: @escaping (AVPlayer?, UIImage?) -> Void
+  ) {
     // Fetch the thumbnail
     var cachedImage: UIImage?
 
@@ -574,7 +578,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       var tracksError: NSError?
 
       if asset.statusOfValue(forKey: "duration", error: &durationError) == .loaded,
-        asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
+         asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
         let playerItem = AVPlayerItem(
           asset: asset,
           automaticallyLoadedAssetKeys: ["duration", "tracks"]
@@ -712,13 +716,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     UIImageView.ksr_cacheImageWith(preexistingImageData.url) { [weak self] image in
       guard let imageData = image,
-        let tableView = self?.tableView,
-        let dataSource = self?.dataSource,
-        dataSource.isIndexPathAnImageViewElement(
-          tableView: tableView,
-          indexPath: indexPath,
-          section: .campaign
-        ) else { return }
+            let tableView = self?.tableView,
+            let dataSource = self?.dataSource,
+            dataSource.isIndexPathAnImageViewElement(
+              tableView: tableView,
+              indexPath: indexPath,
+              section: .campaign
+            ) else { return }
 
       dataSource
         .updateImageViewElementWith(
@@ -736,7 +740,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     )
 
     if let _ = tableView.cellForRow(at: mainCellIndexPath) as? ProjectPamphletMainCell,
-      navSection != .overview {
+       navSection != .overview {
       self.playbackDelegate?.pauseAudioVideoPlayback()
     }
   }
@@ -877,7 +881,7 @@ extension ProjectPageViewController: UITableViewDelegate {
     } else if let cell = cell as? ProjectPamphletMainCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletMainCell, playbackDelegate == nil {
-      playbackDelegate = cell
+      self.playbackDelegate = cell
     } else if let cell = cell as? ImageViewElementCell {
       cell.pinchToZoomDelegate = self
     }
@@ -895,7 +899,7 @@ extension ProjectPageViewController: UITableViewDelegate {
     forRowAt indexPath: IndexPath
   ) {
     if let cell = cell as? AudioVideoViewElementCell,
-      let seekTime = cell.delegate?.pausePlayback() {
+       let seekTime = cell.delegate?.pausePlayback() {
       self.dataSource
         .updateAudioVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
     }
@@ -1020,9 +1024,11 @@ private let tableViewStyle: TableViewStyle = { tableView in
 }
 
 extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting {
-  public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer,
-                                frame: CGRect,
-                                image: UIImage) {
+  public func pinchZoomDidBegin(
+    _ gestureRecognizer: UIPinchGestureRecognizer,
+    frame: CGRect,
+    image: UIImage
+  ) {
     if gestureRecognizer.scale > 1 {
       let imageView = UIImageView(image: image)
         |> \.contentMode .~ .scaleAspectFit
@@ -1041,10 +1047,12 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
     }
   }
 
-  func pinchZoomDidChange(_ gestureRecognizer: UIPinchGestureRecognizer,
-                          completionHandler: () -> Void) {
+  func pinchZoomDidChange(
+    _ gestureRecognizer: UIPinchGestureRecognizer,
+    completionHandler: () -> Void
+  ) {
     guard let data = self.pinchToZoomData,
-      let windowTransform = windowTransform else {
+          let windowTransform = windowTransform else {
       hideOverlayView()
 
       return
@@ -1080,8 +1088,10 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
     gestureRecognizer.scale = 1
   }
 
-  func pinchZoomDidEnd(_: UIPinchGestureRecognizer,
-                       completionHandler: @escaping () -> Void) {
+  func pinchZoomDidEnd(
+    _: UIPinchGestureRecognizer,
+    completionHandler: @escaping () -> Void
+  ) {
     UIView.animate(withDuration: 0.3, animations: {
       self.pinchToZoomData = nil
 

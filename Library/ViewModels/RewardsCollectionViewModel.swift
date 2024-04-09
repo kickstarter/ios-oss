@@ -69,7 +69,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
-        rewards.filter { reward in isStartDateBeforeToday(for: reward) }
+        rewards
+          .filter { reward in isStartDateBeforeToday(for: reward) }
           .map { reward in (project, reward, .pledge) }
       }
 
@@ -389,7 +390,7 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 }
 
 private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
-  let availableRewards = project.rewards.filter { rewardIsAvailable(project: project, reward: $0) }
-  let unAvailableRewards = project.rewards.filter { !rewardIsAvailable(project: project, reward: $0) }
+  let availableRewards = project.rewards.filter { rewardIsAvailable($0) }
+  let unAvailableRewards = project.rewards.filter { !rewardIsAvailable($0) }
   return availableRewards + unAvailableRewards
 }

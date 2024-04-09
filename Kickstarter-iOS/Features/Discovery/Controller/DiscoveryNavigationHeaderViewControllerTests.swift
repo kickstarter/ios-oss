@@ -36,7 +36,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: initialParams)
+        controller.configureWith(params: self.initialParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
@@ -51,7 +51,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: cultureParams)
+        controller.configureWith(params: self.cultureParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
@@ -66,7 +66,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: cultureSubParams)
+        controller.configureWith(params: self.cultureSubParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
@@ -81,7 +81,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: initialParams)
+        controller.configureWith(params: self.initialParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
@@ -96,7 +96,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: cultureParams)
+        controller.configureWith(params: self.cultureParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
@@ -111,7 +111,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         parent.view.frame.size.height = 65
 
         controller.viewDidLoad()
-        controller.configureWith(params: cultureSubParams)
+        controller.configureWith(params: self.cultureSubParams)
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }

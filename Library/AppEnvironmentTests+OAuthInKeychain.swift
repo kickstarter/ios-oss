@@ -221,8 +221,10 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
       forKey: AppEnvironment.environmentStorageKey
     )
 
-    XCTAssertNoThrow(try Keychain
-      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain))
+    XCTAssertNoThrow(
+      try Keychain
+        .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain)
+    )
 
     let env = AppEnvironment
       .fromStorage(
@@ -235,7 +237,8 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     XCTAssertNotEqual(env.apiService.oauthToken?.token, tokenInDefaults)
   }
 
-  func testFromStorage_featureUseKeychainEnabledIsTrue_hasTokenInDefaults_usesTokenAndMigratesToKeychainOnNextSave() {
+  func testFromStorage_featureUseKeychainEnabledIsTrue_hasTokenInDefaults_usesTokenAndMigratesToKeychainOnNextSave(
+  ) {
     self.setFeatureUseKeychainEnabled(true)
 
     let tokenInDefaults = "this is my token"
@@ -320,8 +323,10 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
       forKey: AppEnvironment.environmentStorageKey
     )
 
-    XCTAssertNoThrow(try Keychain
-      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain))
+    XCTAssertNoThrow(
+      try Keychain
+        .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain)
+    )
 
     let env = AppEnvironment
       .fromStorage(
@@ -334,7 +339,8 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     XCTAssertNotEqual(env.apiService.oauthToken?.token, tokenInKeychain)
   }
 
-  func testFromStorage_featureUseKeychainEnabledIsFalse_hasTokenInDefaults_usesTokenAndDoesntMigrateToKeychain() {
+  func testFromStorage_featureUseKeychainEnabledIsFalse_hasTokenInDefaults_usesTokenAndDoesntMigrateToKeychain(
+  ) {
     self.setFeatureUseKeychainEnabled(false)
 
     let tokenInDefaults = "this is my token"

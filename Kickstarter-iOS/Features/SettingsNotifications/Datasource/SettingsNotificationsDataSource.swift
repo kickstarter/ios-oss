@@ -8,9 +8,9 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
 
   func load(user: User) {
     _ = SettingsNotificationSectionType.allCases
-      .filter { filterCreatorForSection($0, user: user) }
+      .filter { self.filterCreatorForSection($0, user: user) }
       .enumerated()
-      .map { index, section -> Void in
+      .map { index, section in
 
         let values = section.cellRowsForSection.map { cellType in
           SettingsNotificationCellValue(cellType: cellType, user: user)
@@ -23,8 +23,10 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
         )
       }
 
-    let pledgeActivityEnabled = (user
-      |> UserAttribute.notification(.pledgeActivity).keyPath.view) ?? false
+    let pledgeActivityEnabled = (
+      user
+        |> UserAttribute.notification(.pledgeActivity).keyPath.view
+    ) ?? false
 
     if pledgeActivityEnabled {
       _ = self.insertEmailFrequencyCell(user: user)
@@ -48,7 +50,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     }
 
     let allSections = SettingsNotificationSectionType.allCases
-      .filter { filterCreatorForSection($0, user: user) }
+      .filter { self.filterCreatorForSection($0, user: user) }
 
     guard section < allSections.endIndex else {
       return nil

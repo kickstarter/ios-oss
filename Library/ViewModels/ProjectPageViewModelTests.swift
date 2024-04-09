@@ -429,7 +429,8 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil_CreatesNavigationSelector_Success() {
+  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil_CreatesNavigationSelector_Success(
+  ) {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(apiService: MockService(
@@ -492,8 +493,10 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertTrue(self.configureChildViewControllersWithProject.values.last!.personalization.friends!
-        .isEmpty)
+      XCTAssertTrue(
+        self.configureChildViewControllersWithProject.values.last!.personalization.friends!
+          .isEmpty
+      )
       self.configureChildViewControllersWithProject.assertValues([project, project])
     }
   }
@@ -524,7 +527,8 @@ final class ProjectPageViewModelTests: TestCase {
         .template
       )
       XCTAssertTrue(
-        self.configureChildViewControllersWithProject.values.last!.personalization.isBacking!)
+        self.configureChildViewControllersWithProject.values.last!.personalization.isBacking!
+      )
       self.configureChildViewControllersWithProject.assertValues([projectWithBacking, projectWithBacking])
     }
   }
@@ -995,7 +999,7 @@ final class ProjectPageViewModelTests: TestCase {
       apiService: mockService,
       apiDelayInterval: .seconds(1),
       config: config,
-      mainBundle: releaseBundle
+      mainBundle: self.releaseBundle
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()

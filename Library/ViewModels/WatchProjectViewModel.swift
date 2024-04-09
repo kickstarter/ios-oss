@@ -72,8 +72,8 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
     ])
-      .map { AppEnvironment.current.currentUser }
-      .skipRepeats(==)
+    .map { AppEnvironment.current.currentUser }
+    .skipRepeats(==)
 
     let loggedInUserTappedSaveButton = currentUser
       .takePairWhen(self.saveButtonTappedProperty.signal)

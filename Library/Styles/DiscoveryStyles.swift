@@ -24,10 +24,12 @@ public let discoveryNavTitleStackViewStyle =
 
   <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
-public let discoverySaveButtonStyle = saveButtonStyle
-  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline-circle")
-  <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart-circle")
-  <> UIButton.lens.tintColor .~ .ksr_white
+public func styleDiscoverySaveButton(_ button: UIButton) {
+  styleSaveButton(button)
+  button.setImage(image(named: "icon--heart-outline-circle"), for: .normal)
+  button.setImage(image(named: "icon--heart-circle"), for: .selected)
+  button.tintColor = .ksr_white
+}
 
 public func discoveryFilterLabelFontStyle<L: UILabelProtocol>(isSelected: Bool) -> ((L) -> L) {
   return L.lens.font %~~ { _, label in

@@ -14,7 +14,7 @@ class ProjectActivityItemProviderTests: XCTestCase {
 
   func testProviderInitReturnsCorrectPlaceholderItem() {
     let provider: ProjectActivityItemProvider = ProjectActivityItemProvider(project: project)
-    XCTAssertEqual(project.name, provider.placeholderItem as? String)
+    XCTAssertEqual(self.project.name, provider.placeholderItem as? String)
   }
 
   func testItemForActivityTypeReturnsCorrectValue() {

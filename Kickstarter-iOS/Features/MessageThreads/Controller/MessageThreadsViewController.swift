@@ -137,7 +137,7 @@ internal final class MessageThreadsViewController: UITableViewController {
 
   fileprivate func goToSearch() {
     guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchMessagesViewController"),
-      let search = vc as? SearchMessagesViewController else {
+          let search = vc as? SearchMessagesViewController else {
       fatalError("Could not instantiate SearchMessagesViewController.")
     }
 

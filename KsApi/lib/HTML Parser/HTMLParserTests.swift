@@ -258,7 +258,7 @@ final class HTMLParserTests: XCTestCase {
       .parse(bodyHtml: HTMLParserTemplates.validParagraphTextWithLinksAndStyles.data)
 
     guard let textElement1 = viewElements.first as? TextViewElement,
-      let textElement2 = viewElements.last as? TextViewElement else {
+          let textElement2 = viewElements.last as? TextViewElement else {
       XCTFail("text view elements should be created.")
 
       return

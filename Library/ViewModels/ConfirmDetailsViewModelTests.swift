@@ -26,6 +26,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   private let createCheckoutSuccess = TestObserver<PostCampaignCheckoutData, Never>()
 
+  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward?), Never>()
+
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
@@ -57,12 +59,85 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
     self.vm.outputs.createCheckoutSuccess.observe(self.createCheckoutSuccess.observer)
 
+    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
+
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.shippingSummaryViewHidden.observe(self.shippingSummaryViewHidden.observer)
 
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
+  }
+
+  // MARK: - Login/Signup
+
+  func testGoToLoginSignup_emitsWhenLoggedOut_createCheckoutSuccessDoesNotEmit() {
+    withEnvironment(currentUser: nil) {
+      let data = PledgeViewData(
+        project: Project.template,
+        rewards: [Reward.template],
+        selectedQuantities: [Reward.template.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .latePledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.continueCTATapped()
+
+      self.goToLoginSignup.assertDidEmitValue()
+      self.createCheckoutSuccess.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToLoginSignup_doesNotEmitWhenLoggedIn_createCheckoutIsSuccessful() {
+    let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
+    let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
+    let mockService = MockService(
+      createCheckoutResult:
+      Result.success(CreateCheckoutEnvelope(checkout: createCheckout))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      let data = PledgeViewData(
+        project: Project.template,
+        rewards: [Reward.template],
+        selectedQuantities: [Reward.template.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .latePledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.userSessionStarted()
+
+      let expectedShipping = PledgeShippingSummaryViewData(
+        locationName: "Los Angeles, CA",
+        omitUSCurrencyCode: true,
+        projectCountry: .us,
+        total: 3
+      )
+      self.vm.inputs.shippingRuleSelected(
+        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
+      )
+
+      let expectedBonus = 5.0
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: expectedBonus, min: 0, max: 100, isValid: true)
+      )
+
+      self.vm.inputs.continueCTATapped()
+
+      self.scheduler.run()
+
+      self.goToLoginSignup.assertDidNotEmitValue()
+
+      self.createCheckoutSuccess.assertDidEmitValue()
+    }
   }
 
   func testPledgeContext_LoggedIn() {
@@ -866,6 +941,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.createCheckoutSuccess.assertDidEmitValue()
       let expectedValue = PostCampaignCheckoutData(
         project: project,
+        baseReward: reward,
         rewards: expectedRewards,
         selectedQuantities: selectedQuantities,
         bonusAmount: expectedBonus,

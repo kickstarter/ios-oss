@@ -552,7 +552,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
         guard case let .commentThread(commentId, replyId) = subpage,
-          let commentId = commentId else {
+              let commentId = commentId else {
           return .empty
         }
 
@@ -641,7 +641,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
         guard case let .commentThread(commentId, replyId) = subpage,
-          let commentId = commentId else {
+              let commentId = commentId else {
           return .empty
         }
         return AppEnvironment.current.apiService
@@ -751,7 +751,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { _ in
         guard let _ = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier else {
           if AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus(),
-            featureConsentManagementDialogEnabled() {
+             featureConsentManagementDialogEnabled() {
             AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus()
           }
 
@@ -973,9 +973,11 @@ private func deepLinkCategories(rawParams: [String: String]) -> (Param?, Param?)
 }
 
 /// Will check id and name of category and subcategory against all available categories and subcategories inside envelope
-private func findCategoryFromRootCategories(envelope: RootCategoriesEnvelope,
-                                            categoryParam: Param,
-                                            subcategoryParam: Param?) -> KsApi.Category? {
+private func findCategoryFromRootCategories(
+  envelope: RootCategoriesEnvelope,
+  categoryParam: Param,
+  subcategoryParam: Param?
+) -> KsApi.Category? {
   let allRootCategoryIdsAndNames = envelope.rootCategories.compactMap { $0 }
 
   let allSubcategoryIdsAndNames = envelope.rootCategories.compactMap { $0.subcategories?.nodes }
@@ -985,12 +987,12 @@ private func findCategoryFromRootCategories(envelope: RootCategoriesEnvelope,
 
   let routableCategory = allCategoryIdsAndNames.first(where: { category in
     category.intID == categoryParam.id || category.name.lowercased() == categoryParam.slug?.lowercased()
-    })
+  })
 
   let routableSubcategory = routableCategory != nil ? allCategoryIdsAndNames.first(where: { category in
     category.intID == subcategoryParam?.id || category.name.lowercased() == subcategoryParam?.slug?
       .lowercased()
-    }) : nil
+  }) : nil
 
   return routableSubcategory ?? routableCategory
 }

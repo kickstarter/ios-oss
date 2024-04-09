@@ -49,21 +49,21 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
   func testNewsletterSwitch_whenViewDidLoad_German() {
     withEnvironment(countryCode: "DE") {
-      sendNewsletters.assertDidNotEmitValue("Newsletter toggle does not emit")
+      self.sendNewsletters.assertDidNotEmitValue("Newsletter toggle does not emit")
 
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
 
-      sendNewsletters.assertValues([false], "Newsletter toggle emits false")
+      self.sendNewsletters.assertValues([false], "Newsletter toggle emits false")
     }
   }
 
   func testNewsletterSwitch_whenViewDidLoad_UK() {
     withEnvironment(countryCode: "UK") {
-      sendNewsletters.assertDidNotEmitValue("Newsletter toggle does not emit")
+      self.sendNewsletters.assertDidNotEmitValue("Newsletter toggle does not emit")
 
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
 
-      sendNewsletters.assertValues([false], "Newsletter toggle emits false")
+      self.sendNewsletters.assertValues([false], "Newsletter toggle emits false")
 
       XCTAssertEqual(
         [], self.segmentTrackingClient.events,
@@ -127,14 +127,14 @@ final class FacebookConfirmationViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(signupError: error)) {
-      vm.inputs.viewDidLoad()
-      vm.inputs.facebookToken("Meowwwww4484848")
-      vm.inputs.createAccountButtonPressed()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.facebookToken("Meowwwww4484848")
+      self.vm.inputs.createAccountButtonPressed()
 
       scheduler.advance()
 
-      logIntoEnvironment.assertValueCount(0, "Did not emit log into environment")
-      showSignupError.assertValues(
+      self.logIntoEnvironment.assertValueCount(0, "Did not emit log into environment")
+      self.showSignupError.assertValues(
         ["Email address has an issue. If you are not sure why, please contact us."]
       )
     }
@@ -149,14 +149,14 @@ final class FacebookConfirmationViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(signupError: error)) {
-      vm.inputs.viewDidLoad()
-      vm.inputs.facebookToken("Meowwwww4484848")
-      vm.inputs.createAccountButtonPressed()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.facebookToken("Meowwwww4484848")
+      self.vm.inputs.createAccountButtonPressed()
 
       scheduler.advance()
 
-      logIntoEnvironment.assertValueCount(0, "Did not emit log into environment")
-      showSignupError.assertValues(
+      self.logIntoEnvironment.assertValueCount(0, "Did not emit log into environment")
+      self.showSignupError.assertValues(
         ["Couldn't log in with Facebook."]
       )
     }

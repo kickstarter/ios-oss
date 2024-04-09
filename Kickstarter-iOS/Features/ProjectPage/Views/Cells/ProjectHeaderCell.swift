@@ -25,6 +25,7 @@ final class ProjectHeaderCell: UITableViewCell, ValueCell {
     self.configureViews()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -60,7 +61,6 @@ final class ProjectHeaderCell: UITableViewCell, ValueCell {
   func configureWith(value: String) {
     _ = self.titleTextLabel
       |> \.text .~ value
-    return
   }
 
   private func configureViews() {

@@ -61,6 +61,7 @@ final class ProjectPageNavigationBarView: UIView {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -81,9 +82,8 @@ final class ProjectPageNavigationBarView: UIView {
       |> shareButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-    _ = self.navigationSaveButton
-      |> saveButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
+    styleSaveButton(self.navigationSaveButton)
+    self.navigationSaveButton.accessibilityLabel = Strings.Toggle_saving_this_project()
   }
 
   // MARK: - View Model

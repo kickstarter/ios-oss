@@ -121,7 +121,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testConfigureWithProject_LocalPickupRewards_IncludesBackedLocalPickup_ShowsAllRewards_Success() {
-    let rewards = Project.cosmicSurgery.rewards
+    let rewards = Project.cosmicSurgery.rewards.map { $0 |> Reward.lens.isAvailable .~ true }
 
     let lastRewardId = rewards.last?.id ?? -1
 
@@ -161,8 +161,9 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
-  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludiongNonLocalBackedReward_ShowsAllRewards_Success() {
-    let rewards = Project.cosmicSurgery.rewards
+  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludingNonLocalBackedReward_ShowsAllRewards_Success(
+  ) {
+    let rewards = Project.cosmicSurgery.rewards.map { $0 |> Reward.lens.isAvailable .~ true }
 
     let lastRewardId = rewards.last?.id ?? -1
 
@@ -172,6 +173,7 @@ final class RewardsCollectionViewModelTests: TestCase {
           |> Reward.lens.localPickup .~ .brooklyn
           |> Reward.lens.shipping.preference .~ .local
           |> Reward.lens.shipping.enabled .~ false
+          |> Reward.lens.isAvailable .~ true
 
         return updatedReward
       }
@@ -208,6 +210,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       let reward = rewards.first!
         |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.isAvailable .~ true
 
       rewards[0] = reward
 
@@ -308,8 +311,10 @@ final class RewardsCollectionViewModelTests: TestCase {
   func testGoToPledge_NotBacked() {
     withEnvironment(config: .template) {
       let firstReward = Project.cosmicSurgery.rewards[0]
+        |> Reward.lens.isAvailable .~ true
       let secondReward = Project.cosmicSurgery.rewards[1]
         |> Reward.lens.remaining .~ 5
+        |> Reward.lens.isAvailable .~ true
 
       let project = Project.cosmicSurgery
         |> Project.lens.rewardData.rewards .~ [firstReward, secondReward]
@@ -445,6 +450,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(config: .template) {
       let reward = Reward.template
         |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.isAvailable .~ true
 
       let backedReward = Reward.template
         |> Reward.lens.id .~ 55
@@ -505,6 +511,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(config: .template) {
       let reward = Reward.template
         |> Reward.lens.hasAddOns .~ false
+        |> Reward.lens.isAvailable .~ true
 
       let backedReward = Reward.template
         |> Reward.lens.id .~ 55

@@ -351,7 +351,7 @@ final class CreatePasswordViewModelTests: TestCase {
     let segmentClient = MockTrackingClient()
 
     withEnvironment(
-      apiService: successService,
+      apiService: self.successService,
       ksrAnalytics: KSRAnalytics(segmentClient: segmentClient)
     ) {
       XCTAssertEqual([], segmentClient.events)

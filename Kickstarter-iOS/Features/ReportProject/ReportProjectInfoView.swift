@@ -50,10 +50,10 @@ struct ReportProjectInfoView: View {
     }
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
-    .onChange(of: popToRoot) { newValue in
+    .onChange(of: self.popToRoot) { newValue in
       if newValue == true {
-        dismiss()
-        onSuccessfulSubmit()
+        self.dismiss()
+        self.onSuccessfulSubmit()
       }
     }
   }
@@ -76,19 +76,19 @@ private struct BaseRowView: View {
   var body: some View {
     HStack {
       VStack(spacing: 5) {
-        Text(item.title)
-          .font(item.type == .parent ? Font(UIFont.ksr_body()) : Font(UIFont.ksr_callout()))
+        Text(self.item.title)
+          .font(self.item.type == .parent ? Font(UIFont.ksr_body()) : Font(UIFont.ksr_callout()))
           .bold()
           .frame(maxWidth: .infinity, alignment: .leading)
 
         if let hyperLink = hyperLink(in: item.subtitle) {
-          Text(html: item.subtitle, with: [hyperLink.stringLiteral()])
-            .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
+          Text(html: self.item.subtitle, with: [hyperLink.stringLiteral()])
+            .font(self.item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
         } else {
-          Text(item.subtitle)
-            .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
+          Text(self.item.subtitle)
+            .font(self.item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
         }
@@ -96,11 +96,11 @@ private struct BaseRowView: View {
 
       Spacer()
 
-      Image(isExpanded ? "arrow-down" : "chevron-right")
+      Image(self.isExpanded ? "arrow-down" : "chevron-right")
         .resizable()
         .scaledToFit()
         .frame(width: 15, height: 15)
-        .foregroundColor(item.type == .parent ? Color(.ksr_create_700) : Color(.ksr_support_400))
+        .foregroundColor(self.item.type == .parent ? Color(.ksr_create_700) : Color(.ksr_support_400))
     }
   }
 }
@@ -119,15 +119,15 @@ struct RowView: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
-        BaseRowView(item: item, isExpanded: isExpanded)
+        BaseRowView(item: self.item, isExpanded: self.isExpanded)
 
-        if isExpanded {
-          ForEach(item.subItems ?? []) { item in
-            VStack(alignment: .leading, spacing: contentSpacing) {
+        if self.isExpanded {
+          ForEach(self.item.subItems ?? []) { item in
+            VStack(alignment: .leading, spacing: self.contentSpacing) {
               NavigationLink(
                 destination: {
                   ReportProjectFormView(
-                    popToRoot: $popToRoot,
+                    popToRoot: self.$popToRoot,
                     projectID: self.projectID,
                     projectURL: self.projectUrl,
                     projectFlaggingKind: item.flaggingKind ?? GraphAPI.NonDeprecatedFlaggingKind

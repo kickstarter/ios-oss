@@ -815,7 +815,7 @@
 "Your_message_has_been_sent" = "Se envió tu mensaje.";
 "Your_name_displayed" = "Tu nombre siempre se muestra en tu perfil.";
 "Your_payment_method_was_successfully_charged" = "Se efectuó el cargo a tu método de pago.";
-"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge <b>cannot be canceled or modified</b>.";
+"Your_payment_method_will_be_charged" = "Al hacer la contribución, <b>se hará el cargo inmediatamente</b> a tu método de pago. Tu contribución <b>no puede cancelarse ni modificarse</b>.";
 "Your_payment_method_will_be_charged_immediately" = "Al hacer la contribución, se hará el cargo inmediatamente a tu método de pago y recibirás un correo electrónico de confirmación en %{user_email}. Tu contribución no puede cancelarse ni modificarse.";
 "Your_pledge" = "Tu contribución";
 "Your_pledge_amount" = "Monto de tu contribución:";
