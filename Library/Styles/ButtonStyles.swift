@@ -111,12 +111,13 @@ public let fbFollowButtonStyle = facebookButtonStyle
 
 // MARK: - Save
 
-public let saveButtonStyle =
-  UIButton.lens.title(for: .normal) .~ nil
-    <> UIButton.lens.tintColor .~ .ksr_support_700
-    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
-    <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
-    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+public func styleSaveButton(_ button: UIButton) {
+  button.setTitle(nil, for: .normal)
+  button.tintColor = .ksr_support_700
+  button.setImage(image(named: "icon--heart-outline"), for: .normal)
+  button.setImage(image(named: "icon--heart"), for: .selected)
+  button.accessibilityLabel = Strings.Save_this_project()
+}
 
 // MARK: - Share
 
