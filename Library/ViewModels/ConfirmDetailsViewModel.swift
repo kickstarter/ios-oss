@@ -333,8 +333,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       refTag
     )
 
+    let isLoggedInAndContinueButtonTapped = Signal.merge(
+      self.continueCTATappedProperty.signal,
+      self.userSessionStartedSignal
+    )
+
     let createCheckoutEvents = Signal.combineLatest(isLoggedIn, pledgeDetailsData)
-      .takeWhen(self.continueCTATappedProperty.signal)
+      .takeWhen(isLoggedInAndContinueButtonTapped)
       .filter { isLoggedIn, _ in isLoggedIn }
       .map { _, pledgeDetailsData in
         let (project, rewards, selectedQuantities, pledgeTotal, refTag) = pledgeDetailsData
