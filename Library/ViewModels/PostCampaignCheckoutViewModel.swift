@@ -40,11 +40,9 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
-  func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
-  func userSessionStarted()
   func viewDidLoad()
   func applePayButtonTapped()
   func applePayContextDidCreatePayment(params: ApplePayParams)
@@ -59,8 +57,6 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
-  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -90,29 +86,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
-    let configurePaymentMethodsData = Signal.merge(
-      initialData,
-      initialData.takeWhen(self.userSessionStartedSignal)
-    )
-
-    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsData
+    self.configurePaymentMethodsViewControllerWithValue = initialData
       .compactMap { data -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
         let reward = data.baseReward
 
         return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
-      }
-
-    self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.project, $0.baseReward) }
-
-    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
-      .map { _ in AppEnvironment.current.currentUser }
-      .map(isNotNil)
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { isLoggedIn, context in
-        !isLoggedIn || context.paymentMethodsViewHidden
       }
 
     self.showWebHelp = Signal.merge(
@@ -159,18 +138,15 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     // MARK: - Validate Existing Cards
 
     /// Capture current users stored credit cards in the case that we need to validate an existing payment method
-    let storedCardsEvent = Signal.merge(
-      initialData.ignoreValues(),
-      self.userSessionStartedSignal.ignoreValues()
-    )
-    .switchMap { _ in
-      AppEnvironment.current.apiService
-        .fetchGraphUser(withStoredCards: true)
-        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-        .map { envelope in (envelope, false) }
-        .prefix(value: (nil, true))
-        .materialize()
-    }
+    let storedCardsEvent = initialData.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphUser(withStoredCards: true)
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .map { envelope in (envelope, false) }
+          .prefix(value: (nil, true))
+          .materialize()
+      }
 
     let storedCardsValues = storedCardsEvent.values()
       .filter(second >>> isFalse)
@@ -431,13 +407,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
-      isLoggedIn,
       pledgeButtonEnabled,
       context
     )
-    .map { isLoggedIn, pledgeButtonEnabled, context in
+    .map { pledgeButtonEnabled, context in
       PledgeViewCTAContainerViewData(
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: true, // Users should always be logged in when they get to the Checkout screen.
         isEnabled: pledgeButtonEnabled,
         context: context,
         willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
@@ -543,11 +518,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.creditCardSelectedProperty.value = (source, paymentMethodId, isNewPaymentMethod)
   }
 
-  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
-  public func goToLoginSignupTapped() {
-    self.goToLoginSignupObserver.send(value: ())
-  }
-
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
@@ -562,11 +532,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
   public func termsOfUseTapped(with helpType: HelpType) {
     self.termsOfUseTappedObserver.send(value: helpType)
-  }
-
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
-  public func userSessionStarted() {
-    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -600,8 +565,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
-  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
