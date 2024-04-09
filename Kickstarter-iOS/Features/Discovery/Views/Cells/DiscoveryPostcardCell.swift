@@ -202,8 +202,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    _ = self.saveButton
-      |> discoverySaveButtonStyle
+    styleDiscoverySaveButton(self.saveButton)
 
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
