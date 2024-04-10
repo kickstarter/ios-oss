@@ -160,11 +160,11 @@ private func items(
     guard let title = reward.title else { return nil }
 
     let quantity = selectedQuantities[reward.id] ?? 0
-
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
+    let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
     let amountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: reward.minimum, omitUSCurrencyCode: data.omitCurrencyCode
+      with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PostCampaignRewardsSummaryItem.reward((
