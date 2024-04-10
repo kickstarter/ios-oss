@@ -20,7 +20,7 @@ final class Project_FetchProjectFriendsQueryDataTests: XCTestCase {
     XCTAssertEqual(projectFriends[0].id, decompose(id: "VXNlci0xNzA1MzA0MDA2"))
     XCTAssertEqual(
       projectFriends[0].avatar.large,
-      "https://ksr-qa-ugc.imgix.net/assets/033/090/101/8667751e512228a62d426c77f6eb8a0b_original.jpg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1618227451&auto=format&frame=1&q=92&s=36de925b6797139e096d7b6219f743d0"
+      "https://i.kickstarter.com/assets/033/090/101/8667751e512228a62d426c77f6eb8a0b_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=rx0xtkeNd0nbjmCk7YUFmX6r9wC1ygRS%2BX8OkjVWg%2Bw%3D"
     )
   }
 }

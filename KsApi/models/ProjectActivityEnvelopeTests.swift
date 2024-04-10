@@ -15,7 +15,7 @@ final class ProjectActivityEnvelopeTests: XCTestCase {
           "id": 138_285_118,
           "category": "update",
           "project_id": 585_534_558,
-          "project_photo": "https://ksr-ugc.imgix.net/assets/013/633/871/f6903ec3876e23e596507f6f1839ac09_original.JPG?ixlib=rb-2.1.0&fill=crop&w=120&h=120&v=1473255769&auto=format&frame=1&q=92&s=2dc93a909b59883a6391785adadb3ff2",
+          "project_photo": "https://i.kickstarter.com/assets/013/633/871/f6903ec3876e23e596507f6f1839ac09_original.JPG?anim=false&height=120&origin=ugc&q=92&width=120&sig=2csAQU3sXsj8VBgpEtHrXft2yvyl7htuptyX4DoYm5A%3D",
           "update_id": 1_678_113,
           "created_at": 1_521_754_266,
           "user": [
@@ -27,9 +27,9 @@ final class ProjectActivityEnvelopeTests: XCTestCase {
             "chosen_currency": nil,
             "is_superbacker": nil,
             "avatar": [
-              "thumb": "https://ksr-ugc.imgix.net/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?ixlib=rb-2.1.0&w=40&h=40&fit=crop&v=1461511746&auto=format&frame=1&q=92&s=4f9153ea1cb719a4842cf795820acd25",
-              "small": "https://ksr-ugc.imgix.net/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?ixlib=rb-2.1.0&w=80&h=80&fit=crop&v=1461511746&auto=format&frame=1&q=92&s=89ae627aba2c664d513ab93ebbc28753",
-              "medium": "https://ksr-ugc.imgix.net/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?ixlib=rb-2.1.0&w=160&h=160&fit=crop&v=1461511746&auto=format&frame=1&q=92&s=6b5d8f08ea5e27cf225bd65e85b7744a"
+              "thumb": "https://i.kickstarter.com/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?anim=false&fit=crop&height=40&origin=ugc&q=92&width=40&sig=NkA974TJwGmfyemXcL6nRdJtxVRDsKlsCX85%2F2yqXzs%3D",
+              "small": "https://i.kickstarter.com/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?anim=false&fit=crop&height=80&origin=ugc&q=92&width=80&sig=htkJkInk%2B45yNoSnoGYzply6Vh2Y3IduXN13PYzNbEI%3D",
+              "medium": "https://i.kickstarter.com/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?anim=false&fit=crop&height=160&origin=ugc&q=92&width=160&sig=Yr9MKUdGLc8SCGrFBVvoz7t1hjOF2ZW0BCa5EQoj910%3D"
             ],
             "needs_password": true,
             "urls": [

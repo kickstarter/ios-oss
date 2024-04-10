@@ -17,7 +17,7 @@ final class PostCommentEnvelope_PostCommentMutationDataTests: XCTestCase {
     )
     XCTAssertEqual(
       createCommentEnvelope.author.imageUrl,
-      "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&w=200&h=200&fit=crop&v=&auto=format&frame=1&q=92&s=e5c4e9017b28bb95181ff20d61b17f99"
+      "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=200&origin=ugc-qa&q=92&width=200&sig=hCxjTNPjsj1RjnPaahuVIrBSb1iEgJHJ8g%2FyXiMpZWI%3D"
     )
     XCTAssertFalse(createCommentEnvelope.author.isCreator)
     XCTAssertEqual(createCommentEnvelope.author.name, "Some author")
