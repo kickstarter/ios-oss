@@ -36,6 +36,7 @@ $(PROJECT_DIR)/KsApi/mutations/DeletePaymentSource.graphql
 $(PROJECT_DIR)/KsApi/mutations/TriggerThirdPartyEvent.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectBySlugQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserEmail.graphql
+$(PROJECT_DIR)/KsApi/queries/FetchMySavedProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUser.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchBackingQuery.graphql
@@ -47,9 +48,9 @@ $(PROJECT_DIR)/KsApi/queries/FetchUserBackings.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsById.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectComments.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserStoredCards.graphql
+$(PROJECT_DIR)/KsApi/queries/FetchMyBackedProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsBySlug.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectRewardsByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchAddOnsQuery.graphql
-$(PROJECT_DIR)/KsApi/queries/FetchBackerProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCategory.graphql
 $(PROJECT_DIR)/KsApi/graphql-schema.json

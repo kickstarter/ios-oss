@@ -65,6 +65,9 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     _ = (self.tableView, self.tableViewContainer)
       |> ksr_addSubviewToParent()
 
+    self.addChild(self.pledgeTotalViewController)
+    self.pledgeTotalViewController.didMove(toParent: self)
+
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryHeaderCell.self)
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryCell.self)
   }

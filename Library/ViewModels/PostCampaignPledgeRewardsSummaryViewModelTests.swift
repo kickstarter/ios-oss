@@ -4,17 +4,16 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
-  internal let vm: PledgeExpandableRewardsHeaderViewModelType = PledgeExpandableRewardsHeaderViewModel()
+final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
+  internal let vm: PostCampaignPledgeRewardsSummaryViewModelType =
+    PostCampaignPledgeRewardsSummaryViewModel()
 
-  private let loadRewardsIntoDataSource = TestObserver<[PledgeExpandableRewardsHeaderItem], Never>()
-  private let expandRewards = TestObserver<Bool, Never>()
+  private let loadRewardsIntoDataSource = TestObserver<[PostCampaignRewardsSummaryItem], Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.loadRewardsIntoDataSource.observe(self.loadRewardsIntoDataSource.observer)
-    self.vm.outputs.expandRewards.observe(self.expandRewards.observer)
   }
 
   func testLoadRewardsIntoDataSource() {
@@ -38,14 +37,29 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
       |> Reward.lens.estimatedDeliveryOn .~ 1_475_561_315
       |> Reward.lens.minimum .~ 40
 
-    let data = PledgeExpandableRewardsHeaderViewData(
+    let bonus = 10.0
+    let total: Double = 60.0 + 2 * 20.0 + 3 * 40.0 + bonus
+
+    let rewardsData = PostCampaignRewardsSummaryViewData(
       rewards: [reward1, reward2, reward3],
       selectedQuantities: [reward1.id: 1, reward2.id: 2, reward3.id: 3],
       projectCountry: .us,
-      omitCurrencyCode: false
+      omitCurrencyCode: false,
+      shipping: nil
     )
 
-    self.vm.inputs.configure(with: data)
+    let pledgeData = PledgeSummaryViewData(
+      project: Project.template,
+      total: total,
+      confirmationLabelHidden: true
+    )
+
+    self.vm.inputs.configureWith(
+      rewardsData: rewardsData,
+      bonusAmount: bonus,
+      pledgeData: pledgeData
+    )
+
     self.vm.inputs.viewDidLoad()
 
     self.loadRewardsIntoDataSource.assertValueCount(1)
@@ -55,10 +69,10 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
       return
     }
 
-    XCTAssertEqual(itemData.count, 4)
+    XCTAssertEqual(itemData.count, 5)
 
     XCTAssertEqual(itemData[0].data.text, "Estimated delivery October 2016")
-    XCTAssertEqual(itemData[0].data.amount.string, " US$ 220")
+    XCTAssertEqual(itemData[0].data.amount.string, "")
     XCTAssertEqual(itemData[0].isHeader, true)
     XCTAssertEqual(itemData[0].isReward, false)
 
@@ -76,33 +90,10 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
     XCTAssertEqual(itemData[3].data.amount.string, "US$ 120")
     XCTAssertEqual(itemData[3].isHeader, false)
     XCTAssertEqual(itemData[3].isReward, true)
-  }
 
-  func testExpandRewards() {
-    self.expandRewards.assertDidNotEmitValue()
-
-    let data = PledgeExpandableRewardsHeaderViewData(
-      rewards: [.template, .template, .template],
-      selectedQuantities: [:],
-      projectCountry: .us,
-      omitCurrencyCode: false
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.expandRewards.assertDidNotEmitValue()
-
-    self.vm.inputs.expandButtonTapped()
-
-    self.expandRewards.assertValues([true])
-
-    self.vm.inputs.expandButtonTapped()
-
-    self.expandRewards.assertValues([true, false])
-
-    self.vm.inputs.expandButtonTapped()
-
-    self.expandRewards.assertValues([true, false, true])
+    XCTAssertEqual(itemData[4].data.text, "Bonus support")
+    XCTAssertEqual(itemData[4].data.amount.string, "US$ 10")
+    XCTAssertEqual(itemData[4].isHeader, false)
+    XCTAssertEqual(itemData[4].isReward, true)
   }
 }

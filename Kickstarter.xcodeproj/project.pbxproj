@@ -357,6 +357,7 @@
 		39B5E10E2B86C56600FFB720 /* RefInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10D2B86C56600FFB720 /* RefInfo.swift */; };
 		39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */; };
 		39B5E1122B89120F00FFB720 /* CreateAttributionEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */; };
+		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		470B771A26FCDC8900EBD5CA /* RiskMessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */; };
 		470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */; };
@@ -1507,8 +1508,8 @@
 		E10BE8E02B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */; };
 		E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */; };
 		E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */; };
-		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
-		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
+		E10D06632ACF385E00470B5C /* FetchMySavedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */; };
+		E10D06652AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test */; };
 		E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED2A2B686829009976D9 /* PKCETest.swift */; };
 		E113BD782B7D1B7700D3A809 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD762B7D1B7700D3A809 /* Keychain.swift */; };
 		E113BD842B7D255000D3A809 /* Library_Keychain_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */; };
@@ -1529,12 +1530,15 @@
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
 		E1972EA22BB4722D002517E6 /* PostCampaignCheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1972EA12BB4722D002517E6 /* PostCampaignCheckoutViewModelTests.swift */; };
-		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
 		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
 		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
+		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
+		E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */; };
+		E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */; };
+		E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */; };
 		E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */; };
 		E1C880AF2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
@@ -1949,6 +1953,7 @@
 		39B5E10D2B86C56600FFB720 /* RefInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfo.swift; sourceTree = "<group>"; };
 		39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfoTests.swift; sourceTree = "<group>"; };
 		39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreateAttributionEvent.graphql; sourceTree = "<group>"; };
+		39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
 		470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModel.swift; sourceTree = "<group>"; };
@@ -3135,8 +3140,8 @@
 		E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BlockUserInput+BlockUserInput.swift"; sourceTree = "<group>"; };
 		E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BlockUserInput+BlockUserInputTests.swift"; sourceTree = "<group>"; };
 		E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInputTests.swift; sourceTree = "<group>"; };
-		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
-		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
+		E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMySavedProjectsQuery.json; sourceTree = "<group>"; };
+		E10D06642AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E113BD762B7D1B7700D3A809 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-Keychain-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3155,11 +3160,14 @@
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
 		E1972EA12BB4722D002517E6 /* PostCampaignCheckoutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewModelTests.swift; sourceTree = "<group>"; };
-		E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchBackerProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
 		E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProjectsEnvelope.swift; sourceTree = "<group>"; };
 		E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift"; sourceTree = "<group>"; };
 		E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackerProjectsQueryDataTemplate.swift; sourceTree = "<group>"; };
+		E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQuery.graphql; sourceTree = "<group>"; };
+		E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
+		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
+		E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMyBackedProjectsQuery.json; sourceTree = "<group>"; };
 		E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Service.swift"; sourceTree = "<group>"; };
 		E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphQLSelectionSet+String.swift"; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
@@ -5766,7 +5774,8 @@
 				6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */,
 				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
 				0655C7292732FDE00087281F /* FetchCategory.graphql */,
-				E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */,
+				E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */,
+				E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */,
 				608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */,
 				E1A149252ACE060E00F49709 /* templates */,
 			);
@@ -6540,6 +6549,7 @@
 				395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */,
 				E1972EA12BB4722D002517E6 /* PostCampaignCheckoutViewModelTests.swift */,
 				6044532D2BA0905600B8F485 /* PostCampaignPledgeRewardsSummaryViewModel.swift */,
+				39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */,
 				A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */,
 				A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */,
@@ -7044,8 +7054,10 @@
 			isa = PBXGroup;
 			children = (
 				E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */,
-				E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */,
-				E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */,
+				E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */,
+				E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */,
+				E10D06642AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test */,
+				E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -7509,6 +7521,7 @@
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
 				06261603273B0E1500389981 /* PostComment.graphql in Resources */,
 				06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */,
+				E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
 				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
@@ -7525,10 +7538,10 @@
 				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
-				E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
 				0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */,
+				E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				6051C6612B600E6000514202 /* CreateCheckout.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
@@ -7554,8 +7567,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */,
-				E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */,
+				E10D06632ACF385E00470B5C /* FetchMySavedProjectsQuery.json in Resources */,
+				E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */,
+				E10D06652AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test in Resources */,
+				E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8151,6 +8166,7 @@
 				77C9122B23C5079200F3D2C9 /* MockApplePayCapable.swift in Sources */,
 				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
+				39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */,
 				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
 				194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
