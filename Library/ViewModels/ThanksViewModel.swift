@@ -86,7 +86,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.backedProjectText = self.configureWithDataProperty.signal
       .skipNil()
-      .map { project, _, _, _ in
+      .map { project, _, _, pledgeTotal in
 
         let string: String
 
@@ -95,8 +95,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         let isInPostCampaignPledging = featurePostCampaignPledgeEnabled() && project
           .isInPostCampaignPledgingPhase
 
+        let totalString = Format.currency(pledgeTotal, country: project.country)
+
         string = isInPostCampaignPledging
-          ? ""
+          ? Strings
+          .You_have_successfully_pledged_to_project_post_campaign_html_short(pledge_total: totalString)
           : Strings.You_have_successfully_backed_project_html(project_name: project.name)
 
         return string

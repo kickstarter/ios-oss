@@ -129,7 +129,10 @@ final class ThanksViewModelTests: TestCase {
       self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))
       self.vm.inputs.viewDidLoad()
 
-      self.backedProjectText.assertValues([""])
+      self.backedProjectText
+        .assertValues(
+          ["Your ¥127 pledge will help in bringing this project to life. Check your email for more details."]
+        )
     }
   }
 
