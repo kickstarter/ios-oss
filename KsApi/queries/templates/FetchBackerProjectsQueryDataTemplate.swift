@@ -8,26 +8,25 @@ public enum FetchBackerProjectsQueryDataTemplate {
   var savedProjectsData: GraphAPI.FetchMySavedProjectsQuery.Data {
     switch self {
     case .valid:
-      let json = resultsMap(fromFile: "FetchMySavedProjectsQuery")
+      let json = self.resultsMap(fromFile: "FetchMySavedProjectsQuery")
       return try! GraphAPI.FetchMySavedProjectsQuery.Data(
         jsonObject: json as JSONObject,
-        variables: ["withStoredCards":false]
-      )
-    }
-  }
-  
-  var backedProjectsData: GraphAPI.FetchMyBackedProjectsQuery.Data {
-    switch self {
-    case .valid:
-      let json = resultsMap(fromFile: "FetchMyBackedProjectsQuery")
-      return try! GraphAPI.FetchMyBackedProjectsQuery.Data(
-        jsonObject: json as JSONObject,
-        variables: ["withStoredCards":false]
+        variables: ["withStoredCards": false]
       )
     }
   }
 
-  
+  var backedProjectsData: GraphAPI.FetchMyBackedProjectsQuery.Data {
+    switch self {
+    case .valid:
+      let json = self.resultsMap(fromFile: "FetchMyBackedProjectsQuery")
+      return try! GraphAPI.FetchMyBackedProjectsQuery.Data(
+        jsonObject: json as JSONObject,
+        variables: ["withStoredCards": false]
+      )
+    }
+  }
+
   private func resultsMap(fromFile resource: String) -> [String: Any?] {
     /*
      These are very large response object, so load it from a file instead of putting it inline here.
