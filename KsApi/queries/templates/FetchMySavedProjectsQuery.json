@@ -1,0 +1,793 @@
+{
+  "data": {
+    "me": {
+      "__typename": "User",
+      "savedProjects": {
+        "__typename": "UserSavedProjectsConnection",
+        "nodes": [
+          {
+            "__typename": "Project",
+            "availableCardTypes": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX",
+              "DISCOVER",
+              "JCB",
+              "DINERS",
+              "UNION_PAY"
+            ],
+            "backersCount": 78,
+            "category": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMzEy",
+              "name": "Restaurants",
+              "analyticsName": "Restaurants",
+              "parentCategory": {
+                "__typename": "Category",
+                "id": "Q2F0ZWdvcnktMTA=",
+                "name": "Food",
+                "analyticsName": "Food"
+              }
+            },
+            "canComment": false,
+            "commentsCount": 1,
+            "country": {
+              "__typename": "Country",
+              "code": "US",
+              "name": "the United States"
+            },
+            "creator": {
+              "__typename": "User",
+              "backings": {
+                "__typename": "UserBackingsConnection",
+                "nodes": []
+              },
+              "backingsCount": 0,
+              "chosenCurrency": null,
+              "createdProjects": {
+                "__typename": "UserCreatedProjectsConnection",
+                "totalCount": 1
+              },
+              "email": "moonrisecafefm@gmail.com.ksr",
+              "hasPassword": null,
+              "hasUnreadMessages": null,
+              "hasUnseenActivity": null,
+              "id": "VXNlci02MTQ0ODAxNTI=",
+              "imageUrl": "https://i-dev.kickstarter.com/assets/042/049/622/97583dcebe9126c3128bf2c62d0e2104_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=7Fb8nwgltVjsHV1H8XuRIUpECC6RgUxEZEjHB33MP4M%3D",
+              "isAppleConnected": null,
+              "isBlocked": false,
+              "isCreator": true,
+              "isDeliverable": null,
+              "isEmailVerified": true,
+              "isFacebookConnected": false,
+              "isKsrAdmin": null,
+              "isFollowing": false,
+              "isSocializing": null,
+              "location": {
+                "__typename": "Location",
+                "country": "US",
+                "countryName": "United States",
+                "displayableName": "Fargo, ND",
+                "id": "TG9jYXRpb24tMjQwMjI5Mg==",
+                "name": "Fargo"
+              },
+              "name": "Emily Driscoll",
+              "needsFreshFacebookToken": null,
+              "newsletterSubscriptions": null,
+              "notifications": null,
+              "optedOutOfRecommendations": null,
+              "showPublicProfile": null,
+              "savedProjects": null,
+              "storedCards": {
+                "__typename": "UserCreditCardTypeConnection",
+                "nodes": [],
+                "totalCount": 0
+              },
+              "surveyResponses": null,
+              "uid": "614480152"
+            },
+            "currency": "USD",
+            "deadlineAt": 1696443047,
+            "description": "Gather around good scratch-made food, uplifting community, art, and comforting beverages at Moonrise Cafe.",
+            "environmentalCommitments": [],
+            "aiDisclosure": {
+              "__typename": "AiDisclosure",
+              "id": "QWlEaXNjbG9zdXJlLTE4NDQ=",
+              "fundingForAiAttribution": null,
+              "fundingForAiConsent": null,
+              "fundingForAiOption": null,
+              "generatedByAiConsent": null,
+              "generatedByAiDetails": null,
+              "involvesAi": false,
+              "involvesFunding": false,
+              "involvesGeneration": false,
+              "involvesOther": false,
+              "otherAiDetails": null
+            },
+            "faqs": {
+              "__typename": "ProjectFaqConnection",
+              "nodes": []
+            },
+            "finalCollectionDate": "2023-10-11T14:25:50-04:00",
+            "fxRate": 1,
+            "goal": {
+              "__typename": "Money",
+              "amount": "5000.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "image": {
+              "__typename": "Photo",
+              "id": "UGhvdG8tNDIwNDg1NTI=",
+              "url": "https://i-dev.kickstarter.com/assets/042/048/552/47ded625b15d0c4e4cf82328c0d63382_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=sm%2FvCJnDx%2BQfKROMOxW0ivTujfrNUc%2BeIN84abwbwZE%3D"
+            },
+            "isProjectWeLove": false,
+            "isProjectOfTheDay": false,
+            "isInPostCampaignPledgingPhase": false,
+            "isWatched": true,
+            "isLaunched": true,
+            "launchedAt": 1693851047,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Fargo, ND",
+              "id": "TG9jYXRpb24tMjQwMjI5Mg==",
+              "name": "Fargo"
+            },
+            "maxPledge": 10000,
+            "minPledge": 1,
+            "name": "Moonrise Cafe (home of Heart Cakes)",
+            "pid": 146011195,
+            "pledged": {
+              "__typename": "Money",
+              "amount": "5790.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "posts": {
+              "__typename": "PostConnection",
+              "totalCount": 1
+            },
+            "prelaunchActivated": false,
+            "postCampaignPledgingEnabled": false,
+            "risks": "We understand that there is always a risk with donating to a project like ours, but rest assured that we have signed a three-year lease at this location and we will be open for business Fall 2023 regardless of challenges.",
+            "sendMetaCapiEvents": false,
+            "slug": "614480152/moonrise-cafe-home-of-heart-cakes",
+            "state": "SUCCESSFUL",
+            "stateChangedAt": 1696443047,
+            "story": "<p><strong>Moonrise Cafe is an</strong> <strong>upcoming coffee shop and bakery with a cozy atmosphere, community room, and full</strong> <strong>kitchen that opens in late September to early October. </strong>Co-owners Alexa Eugenio and Emily Driscoll plan to offer fresh baked breakfast pastries daily, custom cakes available for pickup and custom order, and lunch options like homemade soups, sandwiches, and more. </p>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Alexa Eugenio (left) with Emily Driscoll (right) at Eugenio's wedding, featuring a three-tiered heart cake!\" data-id=\"42099979\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/099/979/6696f6d1053d64cc4e19dceab86b2a6b_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=3Ey4YQd6wG6O9DyPo5zzyG8DAaRJPCvLTbPTXDYp%2FgU%3D\">\n<figcaption class=\"px2\">Alexa Eugenio (left) with Emily Driscoll (right) at Eugenio's wedding, featuring a three-tiered heart cake!</figcaption>\n</figure>\n\n</div>\n\n\n<p><strong>Eugenio and Driscoll began collaborating at home in the kitchen making donuts and dreaming about opening a fresh donut stand in the fall of 2022. </strong>From cardamom sugared donuts filled with spiced apples, to blackberry basil compote filled Bismarcks, they had many successful (and unsuccessful) experiments. While we struggled to find a location for our donut dream, Emily forged ahead with a business model more suited to a home kitchen - custom cakes.</p>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Friends cookin' up donuts in the fall of 2022.\" data-id=\"42100005\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/100/005/db457c164ed2a0644ac9f276f0d0cc22_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=E7Ge5Viq4BfQK70dktRoMbsEF%2FWaNp0XHMN5whXOA08%3D\">\n<figcaption class=\"px2\">Friends cookin' up donuts in the fall of 2022.</figcaption>\n</figure>\n\n</div>\n\n\n<p>Driscoll took her 14+ years of food service experience and began operating a cottage bakery out of her apartment called Heart Cakes. Heart Cakes offers small custom cakes for occasions like birthdays, anniversaries, holidays, and more, as well as larger cakes for weddings, etc. These cakes will be offered at Moonrise. </p>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Cake by Heart Cakes for a birthday party in spring of 2023. \" data-id=\"42154923\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/154/923/dcdfe9f8d6becaf9c252cdb66e57fbb3_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=nqLgrWp%2BZ3UEuiSSQDnFtc6glXV3bRt3o8%2BCqn0WVyY%3D\">\n<figcaption class=\"px2\">Cake by Heart Cakes for a birthday party in spring of 2023. </figcaption>\n</figure>\n\n</div>\n\n\n<p>Eugenio has worked as an RN for many years, as a farmer, and in food service on and off. She will focus on sourcing ingredients locally when possible to create the cafe's savory menu.</p>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Eugenio holding a cabbage at an organic farm job in 2019. \" data-id=\"42154899\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/154/899/69f637e1e1e6d3e0d82f6ca290791350_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=Cnyfw6AJHTwopaqTYe0gGJ3zPI%2FQ9gLD7Onk0uMj6Qo%3D\">\n<figcaption class=\"px2\">Eugenio holding a cabbage at an organic farm job in 2019. </figcaption>\n</figure>\n\n</div>\n\n\n<p><strong>When</strong> <strong>the owners</strong> <strong>of a longtime</strong> <strong>local coffee shop decided to wrap up their coffee career, the opportunity to take over the partially built out space on Broadway was too great to pass up, and so the planning began for Moonrise Cafe. </strong>It only made sense to combine the dream of opening a coffee shop with Emily's existing cake business, and then adding some casual lunch options and a community room.</p>\n<p><strong>That being said, the building is old, and so are the appliances. We are faced with large repair costs in addition to basic startup costs like coffee beans, paper products, inventory, starting capital for wages, rent, licensing costs, insurance, etc.</strong> </p>\n<p>Money raised from our kickstarter would go towards a gas stove, a mop sink installation, espresso machine installation, and various health code updates like flooring for our walk-in cooler and updated dish washing area. </p>\n<p><strong>Downtown Fargo has enough coffee shops. Moonrise Cafe is something different!</strong> We serve up custom cakes, unique pastries, and down-to-earth breakfast staples focused on local ingredients and creative flavors. A community room to rent for events, nonprofits, craft clubs, cake decorating classes, and more, can be expected.</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42179256\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/179/256/61c9277c6665c5b7231b5bb9a3df3658_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=oTqEudWAw275qQZin%2FOlqW32dGl05s99BFA4ZQyU3HQ%3D\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42179190\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/179/190/e84c42938ffc27ea0407bae8cce2da94_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=zqUoeMsvMm4lQwjTQZU5k5gEE4J70sbskTcYD6u44dE%3D\">\n</figure>\n\n</div>\n\n\n<p>We're excited to be neighbors to awesome local businesses like Replay Games, Little Brother, Silver Lining Creamery, and many more.</p>\n<p>Our goal is to be a destination for breakfast, lunch with friends, a quick coffee break, business meeting, or date. </p>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption='Interior of cafe pre-redesign (consider this a \"before\" photo)' data-id=\"42100801\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/100/801/4528d024a91f8e4aca10ef264c09df45_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=XeytYZVreIaj6V60nf%2F8CwIDFEIM2Wk66lJtt1JCe5I%3D\">\n<figcaption class=\"px2\">Interior of cafe pre-redesign (consider this a \"before\" photo)</figcaption>\n</figure>\n\n</div>\n",
+            "tags": [],
+            "url": "https://staging.kickstarter.com/projects/614480152/moonrise-cafe-home-of-heart-cakes",
+            "usdExchangeRate": 1,
+            "video": null,
+            "watchesCount": 12
+          },
+          {
+            "__typename": "Project",
+            "availableCardTypes": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX",
+              "DISCOVER",
+              "JCB",
+              "DINERS",
+              "UNION_PAY"
+            ],
+            "backersCount": 5861,
+            "category": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMzQ=",
+              "name": "Tabletop Games",
+              "analyticsName": "Tabletop Games",
+              "parentCategory": {
+                "__typename": "Category",
+                "id": "Q2F0ZWdvcnktMTI=",
+                "name": "Games",
+                "analyticsName": "Games"
+              }
+            },
+            "canComment": false,
+            "commentsCount": 662,
+            "country": {
+              "__typename": "Country",
+              "code": "US",
+              "name": "the United States"
+            },
+            "creator": {
+              "__typename": "User",
+              "backings": {
+                "__typename": "UserBackingsConnection",
+                "nodes": []
+              },
+              "backingsCount": 77,
+              "chosenCurrency": null,
+              "createdProjects": {
+                "__typename": "UserCreatedProjectsConnection",
+                "totalCount": 11
+              },
+              "email": "roadtoinfamy@gmail.com.ksr",
+              "hasPassword": null,
+              "hasUnreadMessages": null,
+              "hasUnseenActivity": null,
+              "id": "VXNlci0yMDY3MzczOTQ4",
+              "imageUrl": "https://i-dev.kickstarter.com/assets/010/240/539/b81cba67690d68903de6c9238eae8d96_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=WRGwSGm93WvR%2BT%2FiTzsktu3P2UFEgoVnyM7J86l%2BmPI%3D",
+              "isAppleConnected": null,
+              "isBlocked": false,
+              "isCreator": true,
+              "isDeliverable": null,
+              "isEmailVerified": true,
+              "isFacebookConnected": true,
+              "isKsrAdmin": null,
+              "isFollowing": false,
+              "isSocializing": null,
+              "location": {
+                "__typename": "Location",
+                "country": "US",
+                "countryName": "United States",
+                "displayableName": "Chicago, IL",
+                "id": "TG9jYXRpb24tMjM3OTU3NA==",
+                "name": "Chicago"
+              },
+              "name": "Road To Infamy",
+              "needsFreshFacebookToken": null,
+              "newsletterSubscriptions": null,
+              "notifications": null,
+              "optedOutOfRecommendations": null,
+              "showPublicProfile": null,
+              "savedProjects": null,
+              "storedCards": {
+                "__typename": "UserCreditCardTypeConnection",
+                "nodes": [],
+                "totalCount": 0
+              },
+              "surveyResponses": null,
+              "uid": "2067373948"
+            },
+            "currency": "USD",
+            "deadlineAt": 1696946410,
+            "description": "Make, age, and sell artisan French cheeses in this simultaneous play, worker-placement game.",
+            "environmentalCommitments": [
+              {
+                "__typename": "EnvironmentalCommitment",
+                "commitmentCategory": "environmentally_friendly_factories",
+                "description": "Factory meets ISO, BSCI, and OHSAS standards for health, safety, and social compliance. Remote teams reduce carbon footprint.",
+                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjA4Mzgw"
+              },
+              {
+                "__typename": "EnvironmentalCommitment",
+                "commitmentCategory": "reusability_and_recyclability",
+                "description": "Our manufacturer, PandaGM, recycles all plastic and paper waste.",
+                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjA4Mzgy"
+              },
+              {
+                "__typename": "EnvironmentalCommitment",
+                "commitmentCategory": "sustainable_distribution",
+                "description": "PandaGM will produce replacement components so that damaged or missing pieces can be replaced with a small shipment instead of a second copy of the game, saving materials and fuel.",
+                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjA4Mzgx"
+              },
+              {
+                "__typename": "EnvironmentalCommitment",
+                "commitmentCategory": "sustainable_materials",
+                "description": "Box and punchboard made from 30% recycled materials. Cards sourced from FSC certified materials. Components use eco-friendly water-based ink and varnish. Packing cartons are 100% recycled paper pulp.",
+                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjA4Mzc5"
+              }
+            ],
+            "aiDisclosure": {
+              "__typename": "AiDisclosure",
+              "id": "QWlEaXNjbG9zdXJlLTc1Mw==",
+              "fundingForAiAttribution": null,
+              "fundingForAiConsent": null,
+              "fundingForAiOption": null,
+              "generatedByAiConsent": null,
+              "generatedByAiDetails": null,
+              "involvesAi": false,
+              "involvesFunding": false,
+              "involvesGeneration": false,
+              "involvesOther": false,
+              "otherAiDetails": null
+            },
+            "faqs": {
+              "__typename": "ProjectFaqConnection",
+              "nodes": [
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "What is the best way to reach you?",
+                  "answer": "If you have a question about your order, email us at roadtoinfamy@gmail.com. Do not post order questions in the comments; your comment may get buried in the other comments, plus it's difficult to do customer service in a public forum where personal information cannot be shared.\r\n\r\nIf you have a general question about the campaign that is not specific to your order, post in the comment section. That way, other backers benefit from seeing answers to common questions, and they may even be able to quickly answer the question for you.",
+                  "id": "UHJvamVjdEZhcS00NDM3ODY=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "Will there be a pledge manager after the campaign?",
+                  "answer": "Yes",
+                  "id": "UHJvamVjdEZhcS00NDM3ODc=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "If I pledge $1 will I have access to the pledge manager?",
+                  "answer": "Yes, but be aware that the game will cost $5 more in the pledge manager.",
+                  "id": "UHJvamVjdEZhcS00NDM3ODg=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "Are group pledges allowed?",
+                  "answer": "There's not a specific \"group pledge\" reward tier, however you'll save a TON on shipping if you add all the items into one pledge instead of having each person order it individually.",
+                  "id": "UHJvamVjdEZhcS00NDM3ODk=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "Can I get the Limited Edition after this campaign?",
+                  "answer": "After this campaign, Limited Editions will be sold at full price (no Kickstarter discount) on our website R2iGames.com, on our future crowdfunding campaigns, and by retailers who back this campaign.",
+                  "id": "UHJvamVjdEZhcS00NDM3OTA=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "Will Fromage be available in other languages?",
+                  "answer": "This Kickstarter is only for the English version. We do not yet have a list of languages or timelines for when other languages will be made available.",
+                  "id": "UHJvamVjdEZhcS00NDM3OTE=",
+                  "createdAt": 1694534781
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "What are the retailer terms and conditions?",
+                  "answer": "https://docs.google.com/document/d/17HkqCHUyVhoI_P1NM5BVoBq2uQvaE5V1/edit?usp=sharing&ouid=113189693325188553621&rtpof=true&sd=true",
+                  "id": "UHJvamVjdEZhcS00NDQ0OTA=",
+                  "createdAt": 1694614053
+                }
+              ]
+            },
+            "finalCollectionDate": "2023-10-17T10:15:39-04:00",
+            "fxRate": 1,
+            "goal": {
+              "__typename": "Money",
+              "amount": "10000.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "image": {
+              "__typename": "Photo",
+              "id": "UGhvdG8tNDIyNTcwOTM=",
+              "url": "https://i-dev.kickstarter.com/assets/042/257/093/5eadc68e798f9f04b0697691c13fcb09_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=XFjw3AQ%2FwJHRHEu6qFAXKnlOXhH1xSwNKXi%2Fr58ynR4%3D"
+            },
+            "isProjectWeLove": true,
+            "isProjectOfTheDay": false,
+            "isInPostCampaignPledgingPhase": false,
+            "isWatched": true,
+            "isLaunched": true,
+            "launchedAt": 1694527210,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Chicago, IL",
+              "id": "TG9jYXRpb24tMjM3OTU3NA==",
+              "name": "Chicago"
+            },
+            "maxPledge": 10000,
+            "minPledge": 1,
+            "name": "Fromage",
+            "pid": 353770200,
+            "pledged": {
+              "__typename": "Money",
+              "amount": "290082.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "posts": {
+              "__typename": "PostConnection",
+              "totalCount": 12
+            },
+            "prelaunchActivated": true,
+            "postCampaignPledgingEnabled": false,
+            "risks": "FULFILLMENT TIMELINE\nWhile delays are possible, we have a track record of delivering backer rewards on time. Our average time to deliver a game after a Kickstarter campaign is ~9 months.\n\nFINAL PRODUCT\nDesign, materials, and content are subject to change.\n\nLOST SHIPMENTS\nIf your order is lost or returned due to unforeseen circumstances, we will reship 1 time for free. Reshipment fee applies if incorrect address was given. If undeliverable, a refund will be issued.\n\nLATE SURVEYS\nReshipments and late orders will be sent about 2 months after fulfillment.\n\nThis campaign will close 6 months after fulfillment. If you do not provide shipping info by then, we can't fulfill your order and your pledge will be kept as a donation.\n\nREPLACEMENT PARTS\nTo request replacements parts, email roadtoinfamy@gmail.com. Box replacements are handled case by case. Minor cosmetic issues may not warrant free replacement.\n\nREFUND POLICY:\n• You can get a full refund within 2 weeks after campaign end.\n• After 2 weeks, you can get a refund minus 10% for crowdfunding/processing fees.\n• No refunds after pledge manager is locked.",
+            "sendMetaCapiEvents": false,
+            "slug": "roadtoinfamy/fromage",
+            "state": "SUCCESSFUL",
+            "stateChangedAt": 1696946410,
+            "story": "<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42616342\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/616/342/7c37490a2271fcedf4df8cbdc237ff26_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2FQrNp8pQ2PBS7Y%2FMjFQrNZ4a%2F1CMIRtlEEFeqNKJ7MU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42264178\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/264/178/bf6d890c7f73aa1c074ad9728e9e2266_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=p0jr80i%2BqlF%2Fo6oZy%2F3k1K6R0pO18qfVamAkjWWOFgU%3D\">\n</figure>\n\n</div>\n<p><em>Fromage</em> is a <strong>simultaneous worker-placement</strong> board game featuring a rotating board that ages your cheese. Carefully plan which cheeses to make to efficiently manage the availability of your workers. Since it's always your turn, <em>Fromage</em> <strong>condenses the feeling of a 2-hour Euro game into ~40 minutes.</strong></p><p><em>Fromage</em> is designed by Ben Rosset &amp; Matthew O'Malley <em><strong>(THE</strong></em> <em><strong>SEARCH FOR PLANET X)</strong></em> and developed and published by Jeffrey Chin &amp; Andrew Nerger <em><strong>(CANVAS)</strong></em></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143382\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/382/2e952c56d6ee4eac2a55b1c071d9e5f3_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=8x0ge61jMTd%2BgFfKfXHvEDe9%2BLjOx21rYmbsQwe4SB8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143252\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/143/252/a3cda51c2b5bdf4655b637bd59da12e9_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=L8tngUIsDIXDUu%2BFmwM6cOKua6u%2Fdc%2BRrLV7VrdLTnA%3D\" src=\"https://i-dev.kickstarter.com/assets/042/143/252/a3cda51c2b5bdf4655b637bd59da12e9_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=yzRhH9bhneabxS1c26FkjtrmtUyEPAN8mnMAgsPlsH0%3D\">\n</figure>\n\n</div>\n<p>The <strong>Tri-Layer Board</strong> can be configured in any order. Slot <strong>Inserts</strong> into each quadrant to mix up the cheese spaces. With 5,424 possible setups, the game will never go stale!</p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42123248\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/123/248/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=7zXsd8bxnFrFt%2B7H3aRjjfjuf%2B%2Bfm788eEjh2ifA0g8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42128667\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/128/667/07ab2100f58dde0f78121c8ce9b0e7b5_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=FyMlkBoxzHPOESKsnv9v%2F36di%2FnvsJcqOb2UeGnxac4%3D\" src=\"https://i-dev.kickstarter.com/assets/042/128/667/07ab2100f58dde0f78121c8ce9b0e7b5_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=5wGBK2wnHPXtlV%2FNCraLGkBK1FCcGHjqx8k96kdRB8E%3D\">\n</figure>\n\n</div>\n<p><strong>Custom Worker Meeples</strong> fit perfectly over your <strong>Wood Cheese Tokens.</strong> Cutout spaces keep pieces in place when the board rotates. </p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42123251\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/123/251/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=D9yH4klP0SsCeNirSNHIPxsr8IIo4vD4dRaTEZrdA1Q%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42207457\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/207/457/26f3e11d8b1073e44a676b08eec3398a_original.JPG?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=2GEGBeYJfu3YiFd53pDXzWowxYZ2TwJ25E1HPOB4F5I%3D\">\n</figure>\n\n</div>\n<p><strong>168 Wood Tokens.</strong> The Structures, Fruit, and Livestock tokens come in a variety of shapes <em><strong>(Limited Edition Only)</strong></em>.</p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42123244\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/123/244/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=Enoe6QxIlTOyIe0Knit447sQ8%2Fxa53mfPEJxn0DzqVQ%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42124386\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/124/386/3c2f2b4462a9d12b0fa59b2cc4ddb544_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=oklIDQh0rwmAsi6HuHjHJBZ1q4RRpH2H80645RdSe4Q%3D\" src=\"https://i-dev.kickstarter.com/assets/042/124/386/3c2f2b4462a9d12b0fa59b2cc4ddb544_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=41jUlr2IEmM58aowki0o%2Fn7rGWAq%2FV9CU0T1WNEmJ28%3D\">\n</figure>\n\n</div>\n<p>Use <strong>Asymmetric Player Boards</strong> or draft your own set of <strong>Structure Ability</strong> <strong>Tiles</strong>. There's so much to explore and the game only gets better with age!</p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42123259\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/123/259/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=2TPnJdaXzvC8guVmbjRx1cRMyk9cYk8kJoxwpcC%2B8oo%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42127759\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/127/759/7a889428b3ff145ab44db1c97fa274f9_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=ko4rhgj848jCweCPPDbO4OPkUqCQejiVFCJQltc20dE%3D\" src=\"https://i-dev.kickstarter.com/assets/042/127/759/7a889428b3ff145ab44db1c97fa274f9_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=I1YKaBtWxX5ujQ2RZtuqXvULJTQz1bXJaUX9Vw7m%2Fxw%3D\">\n</figure>\n\n</div>\n<p><strong>Neoprene</strong> <strong>Lazy Susan</strong> <strong>Mat</strong> <em><strong>(Limited Edition Only)</strong></em></p><p>If you choose the <strong>Standard Edition</strong>, you'll find it's quite easy to rotate the game board on its own by gripping the finger holds on each end.</p><p>If you back the <strong>Limited Edition</strong>, you'll get a play mat to put under the board. It allows for a one-finger push for an even smoother and more satisfying spin. A wood disc keeps the board centered on its axis (like the <a href=\"https://youtu.be/nv9yCvq5Ew0?si=V5_kMoxil3n3uKtD&amp;t=353\" target=\"_blank\" rel=\"noopener\"><em>The Search For Planet X</em></a> board). Also, the mat rolls up and <strong>fits in the game box!</strong></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143384\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/384/a1cfed3d0166b2131d59627ca5840229_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=GCrR2nWlybrq66hXYLNRFt0L2ZPck0SKspOZ8Sf0irU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42264217\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/264/217/4dd4ce95b50eadd00c4d60bcab46e5ca_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=bB%2Bd1Osts4%2FaVfpCtLE6WYtswAQhieXO5ncpq%2Fj3PsI%3D\">\n</figure>\n\n</div>\n<ul>\n<li>\n<strong>KICKSTARTER DISCOUNT:</strong> Kickstarter backers <strong>save 30%!</strong> It will be $5 more for late-pledgers in the pledge manager. After the campaign, it will be full price.</li>\n<li>\n<strong>LIMITED</strong> <strong>AVAILABILITY:</strong> After the campaign, Limited Editions will only be sold in limited supply from our webstore and from retailers that back this campaign.</li>\n<li>\n<strong>EARLY</strong> <strong>ACCESS: </strong>Backer orders ship 30+ days before retailer backers.</li>\n<li>\n<strong>SUPPORT SMALL BUSINESS:</strong> Jeff and Andrew offer personal and prompt customer service and have a proven track record of delivering on time.</li>\n<li>\n<strong>COLLABORATE:</strong> Share your ideas and leave your mark on the game. Details in the \"Stretch Goals\" section.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143389\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/389/0acfbbbd6e7fde10e6ea59c44d4db44d_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=BwJ6cw3H9piCpp8PhkpqUd5ZdMXbwz%2BLkhfADnRxpWU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42616167\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/616/167/a51c084f482e5e7a78238e69bd7a97de_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2BAFd8NYzQNshXc9tL12DKDWfrARlNNQ49PBnwrbr3So%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42258587\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/258/587/89a87396780e4be9db22599851194f12_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=pktAdZNC5aMlF9IAymF5ulBQjrf2AkSb5swHE3rk6EY%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143397\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/397/7ec026c76fcacc93412fbc73b6753a8a_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=nZwMLp1k%2F3EC7XB61KoT0p8GNxAQ8vttUycEosTHe8k%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42230643\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/230/643/11d9f9a445dfac236eaf673856479181_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=1SNsO2kVL0CGrzWXm3klqmPcE6zfYzbY5uGdgS8YKA8%3D\" src=\"https://i-dev.kickstarter.com/assets/042/230/643/11d9f9a445dfac236eaf673856479181_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=cc6k7ttCF5i5uXAZ6gHlmaR17bf2lXeRJfugRW3xvNU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41141659\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/041/141/659/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=KswQWZbKbAUGSTzyW73wtNDdHdc5KWedRW%2BaGIIPo6c%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42166957\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/166/957/acd40016c6113306df1b08339a25ce2b_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=1vgiLpmPECvybStpRE0aHbagAmq0mKROHJdoMbh4Pzo%3D\" src=\"https://i-dev.kickstarter.com/assets/042/166/957/acd40016c6113306df1b08339a25ce2b_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=QDrB9bc4zzoF0TrEntI6mZghYmZR7djzRqycQ0HQzCg%3D\">\n</figure>\n\n</div>\n<p>Each of the 4 quadrants features a different cheesemaking mini-game.</p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42166962\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/166/962/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=237xfu43YcQerCUsFYbfYuVT%2Br4iQIFj9rqbhQL6ZNI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42197473\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/197/473/ea4eef914cc20936f8d1d37917caff1b_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OIiCu7sgdYatdKYRtzVQnAxnclisk5OAegfYdkYWfU0%3D\" src=\"https://i-dev.kickstarter.com/assets/042/197/473/ea4eef914cc20936f8d1d37917caff1b_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=1agL1LvlMMRdYOc3kzOeaD9rO5VUlcTbhJ5CsaPI9cM%3D\">\n</figure>\n\n</div>\n<p>Build <strong>Structures</strong> 🏠🏘️🏚️ to improve your creamery and unlock one-of-a-kind abilities </p><p>Milk <strong>Livestock</strong> 🐄🐑🐐 to make more cheese.</p><p>Harvest <strong>Fruit</strong> 🍓🍒🍎 to make jams &amp; specialty cheeses.</p><p>Fulfill <strong>Orders</strong> 📋 to various locations to garner extra prestige.</p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42194445\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/194/445/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2F734o4ybYHGok5jipaTJKfRH8kv7aZQ%2BVbilXg67t%2FA%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Rulebook\" class=\"page-anchor\">Rulebook</h3><a href=\"https://drive.google.com/file/d/1Mnb1E_0Zqp916rEoBWp33n5waT_q65HJ/view?usp=sharing\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42260166\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/260/166/f017d4e006739ed42f335ef12ad14af5_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OEuHKc3tMDp4MgRpeFozbQJCHoJI%2FpIsWwUPliJMdHM%3D\">\n</figure>\n\n</div>\n</a><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42194445\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/194/445/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2F734o4ybYHGok5jipaTJKfRH8kv7aZQ%2BVbilXg67t%2FA%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Rules-Video\" class=\"page-anchor\">Rules Video</h3><div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/jWtD_Cwwm1E?si=Ei6Mbt-BPrbcR5Bd\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/jWtD_Cwwm1E?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Rahdo Learns How to Play►►► Fromage\"></iframe>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42194445\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/194/445/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2F734o4ybYHGok5jipaTJKfRH8kv7aZQ%2BVbilXg67t%2FA%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Play-Online\" class=\"page-anchor\">Play Online</h3><p>It's a lot of work to learn rules, and no amount of animated GIFs will give you the true experience. It's way easier to have someone explain the game to you.</p><p>So, what better way to learn the game than to have the creators teach and guide you as you play the game? Join the <a href=\"https://discord.com/invite/QeZP4RGC4a\" target=\"_blank\" rel=\"noopener\"><strong>R2i Games Discord channel</strong></a> and sign up for a session led by Jeff, Andrew, or one of our trained game teachers.</p><p><strong>Play sessions will be online using </strong><a href=\"https://store.steampowered.com/app/286160/Tabletop_Simulator/\" target=\"_blank\" rel=\"noopener\"><strong>Tabletop Simulator</strong></a><strong>.</strong> Once you have TTS installed you can <a href=\"https://steamcommunity.com/sharedfiles/filedetails/?id=3030970334\" target=\"_blank\" rel=\"noopener\"><strong>download Fromage</strong></a> for free.</p><a href=\"https://steamcommunity.com/sharedfiles/filedetails/?id=3030970334\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42260208\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/260/208/543c34d3d32ac5a4b58e9f2d76c377b0_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=vznBZFERuiZbGHotJGqy0JM53%2BRSNsCEKQHmdnGoYLQ%3D\">\n</figure>\n\n</div>\n</a><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143402\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/402/973fc6898aa0b3c5853c61f4614d27ec_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=c%2BM7Vgfg6ugKHKaZq6vnrXk5QssyoKevDKnqRV5rR6w%3D\">\n</figure>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/KTS6dfEJSDo?si=sTTZ0Fxl2K93CsFe\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/KTS6dfEJSDo?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Rahdo Previews►►► Fromage\"></iframe>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/Q0HsKSbrCQE\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/Q0HsKSbrCQE?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Fromage | Rahdo &amp; Alex's Prototype Thoughts\"></iframe>\n\n</div>\n<p>\"It does everything Tzolkin does in a fraction of the time, in a much more simple, streamlined way. Yet, it's got so much richness to the experience.\"</p><p><strong>-Richard Ham</strong><em><strong>(Rahdo Runs Through)</strong></em></p><div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/O2wShUpwVwU?si=QtXO3WBj8PKh5EwM\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/O2wShUpwVwU?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"My Cheesy, Worker Placement Filled Joy: Fromage by R2I Games\"></iframe>\n\n</div>\n<p>\"I'm a little obsessed with it! It's easy to get the table, has enough intrigue for me as an experienced gamer in strategy and play, all while being simple enough to teach to folks new to the game space.\" </p><p><strong>-Carley Reinhard </strong><em><strong>(Gnarly Carley)</strong></em></p><div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/NLljR8X0voc?si=rsoJ2Wm-R48dUQ3e\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/NLljR8X0voc?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Fromage\"></iframe>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/MxQaB3Lpm7w?t=80\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/MxQaB3Lpm7w?start=80&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"The Weekly Play/Back - Ep 76- Fromage!\"></iframe>\n\n</div>\n<p>\"I absolutely love this game! It's very unique. The artwork is just so freaking pretty.\"</p><p><strong>-Sarah Shah </strong><em><strong>(Board Games in a Minute)</strong></em></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42116032\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/116/032/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2FOrTTKe9ZLsNXSZNmkcAN3VX2Lj4Gj02h%2BXKMMye0Go%3D\">\n</figure>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/ZLCoJEmWyG8?si=CBG-2q2qain9beBb\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/ZLCoJEmWyG8?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"🌱Short Preview of Fromage\"></iframe>\n\n</div>\n<p>\"I love Euro games that are really, really well designed, but also bring in new ideas. This one is checking off all the boxes.\"</p><p><strong>-Adam</strong> <strong>Singer</strong><em><strong> (Shelf Clutter)</strong></em></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42116032\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/116/032/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2FOrTTKe9ZLsNXSZNmkcAN3VX2Lj4Gj02h%2BXKMMye0Go%3D\">\n</figure>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/lyR0aAamxxk?si=5ReMFLfY1Sb85RLl\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/lyR0aAamxxk?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Fromage | Simulatenous Worker Placement! Let's Make Cheese! (Board Game Overview &amp; Review #93)\"></iframe>\n\n</div>\n<p><br>\"I can foresee this being a game we get to the table and introduce a lot of people to. It's really easy to play. The actions aren't overly complicated. The games are quick. You'll come back to play it again and try different strategies.\"</p><p><strong>-Ilya Ushakov </strong><em><strong>(Kovray)</strong></em></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42116032\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/116/032/a91c20bd2ee1f84933b5f7520a133938_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2FOrTTKe9ZLsNXSZNmkcAN3VX2Lj4Gj02h%2BXKMMye0Go%3D\">\n</figure>\n\n</div>\n<div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/07DoTjhIldw?si=_0ca6BpdSCl7f5J0\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/07DoTjhIldw?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Initial thoughts on Fromage from @r2igames Coming to #kickstarter #boardgames\"></iframe>\n\n</div>\n<p>\"Everything about this game is a lot of fun! I would highly recommend.\"</p><p><strong>-Lance Goodwin</strong><em><strong>(Love 2 Hate)</strong></em></p><p><br> </p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143408\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/408/40ce73214a48834665d98fbe58cd2e48_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=V2iIp5LPp0n7cPKfQNGGw7ui%2BAJPRd9D%2B1P0ZiFHZ28%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42229555\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/229/555/92482062847145d2d0d2ec63ea2936ee_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=ctJuNh9XNUX87JTedOmJybaT5EFZndL%2Fqp5yoLqqFXs%3D\" src=\"https://i-dev.kickstarter.com/assets/042/229/555/92482062847145d2d0d2ec63ea2936ee_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RTcMuaDc3iKxnw4dF9EBN6Fez7FXvsZmoJ5caIw5Sv4%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Your-Ideas-Wanted-\" class=\"page-anchor\">Your Ideas Wanted!</h4><p>We're trying a different approach to stretch goals. Instead of unlocking pre-planned upgrades at arbitrary funding levels, <strong>we invite you to suggest upgrades in the comments.</strong> If we like the idea, and if there is strong support from backers, we'll get a quote from the manufacturer. If the price is reasonable, we'll add it to the game or make it available as an Add-On in the pledge manager.</p><p>Getting a quote from a manufacturer can take weeks, so it's possible that few stretch goals are unlocked during the campaign. Please manage your expectations accordingly.</p><p>We believe this more inclusive approach will give everyone a voice in what they would like to see in the game. We want to create the best game possible, and your feedback will help make that happen!</p><h3 id=\"h:Unlocked-Stretch-Goals\" class=\"page-anchor\">Unlocked Stretch Goals</h3><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42616205\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/616/205/d2b5147e995d1e129995611a2921ba23_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=b%2FnIblNOqtbbONrJxycqQt78%2FQME8%2BUh%2Ffd8fiy3wNU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42198870\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/198/870/d9055f8f0572839ed0e26f2aca6a1882_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=fpK5DNB%2FYP3qZJfvHblNZNXjxupANPXceMrLUCUkf0I%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42260898\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/260/898/219db8ec38678319f89d4d506d3ace1c_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=q9cD66D7UmQHw2tPSTg58IxcjJVTF6KqXTwOdBeVb3k%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143422\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/422/3e9aa9241393cd4ea42430a6eb190a1d_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=oMvBnm7WF7Mjz9f%2FijKihtLSgRFnvT5lJDD8J48K3oA%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Shipping\" class=\"page-anchor\">Shipping</h3><p><strong>Shipping will be charged after the campaign in the pledge manager. </strong>See the estimated shipping costs and availability in each country:</p><a href=\"https://docs.google.com/spreadsheets/d/1qDfGqyFjHPhTYFAdMso30TDPJrZdrUBtK1grNJeO5Jw/edit#gid=0\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42261537\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/261/537/ff9ed33420b4fe8f42e7cc7ae074e706_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=TUeuHoDgPx7WltC3W7tc0CEjwvnXf4486NpO8G9oFZc%3D\">\n</figure>\n\n</div>\n</a><h3 id=\"h:Tax\" class=\"page-anchor\">Tax</h3><p><strong>Sales Tax, VAT &amp; UK customs tax will be charged after the campaign in the pledge manager.</strong> Shipments to EU, US, Canada, Australia, UK and some countries in Asia will be shipped \"friendly\" and should not incur additional taxes upon receipt.</p><ul><li><a href=\"https://docs.google.com/spreadsheets/d/1sifAYnRmlDKnauvxRkPNOE3M_Pdko1Pr55pridN-CI0/edit?usp=sharing\" target=\"_blank\" rel=\"noopener\"><strong>VAT Lookup Spreadsheet</strong></a></li></ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41128534\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/041/128/534/586213b7ccc6f2711e3632337c9e1c0d_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=D2gthgx5dZukJU84jZ3Rx8huBYVkM7pkT11TggQg7K0%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42143424\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/143/424/d64b04c8ee0fafdea46ae9800624ad2f_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=Z%2BsMipNLX9EwrUOqvWSexNb%2BCwyA3Np9Hsb%2F8iMyAAw%3D\">\n</figure>\n\n</div>\n<p><strong>Only retail</strong> <strong>backers may sell</strong> <strong>Limited Editions. Limited Editions will not enter distribution.</strong></p><p>The \"Retailers Only\" level grants access to the pledge manager with reduced retail pricing. Your pledge is credited toward your order. Proof of retail status required. No refunds if unable to verify. </p><ul><li><a href=\"https://docs.google.com/document/d/17HkqCHUyVhoI_P1NM5BVoBq2uQvaE5V1/edit?usp=sharing&amp;ouid=113189693325188553621&amp;rtpof=true&amp;sd=true\" target=\"_blank\" rel=\"noopener\"><strong>Retailer Terms</strong></a></li></ul>",
+            "tags": [],
+            "url": "https://staging.kickstarter.com/projects/roadtoinfamy/fromage",
+            "usdExchangeRate": 1,
+            "video": {
+              "__typename": "Video",
+              "id": "VmlkZW8tMTI0Njg3Ng==",
+              "videoSources": {
+                "__typename": "VideoSources",
+                "high": {
+                  "__typename": "VideoSourceInfo",
+                  "src": "https://v2.kickstarter.com/1712855094-XzeTds6iw4iIVQcL%2Bk60xlWIl5uHytCWc%2B%2BHz%2BH8BQk%3D/projects/4588551/video-1246876-h264_high.mp4"
+                },
+                "hls": {
+                  "__typename": "VideoSourceInfo",
+                  "src": "https://v2.kickstarter.com/1712855094-XzeTds6iw4iIVQcL%2Bk60xlWIl5uHytCWc%2B%2BHz%2BH8BQk%3D/projects/4588551/video-1246876-hls_playlist.m3u8"
+                }
+              }
+            },
+            "watchesCount": 8153
+          },
+          {
+            "__typename": "Project",
+            "availableCardTypes": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX",
+              "DISCOVER",
+              "JCB",
+              "DINERS",
+              "UNION_PAY"
+            ],
+            "backersCount": 3005,
+            "category": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMzk2",
+              "name": "Toys",
+              "analyticsName": "Toys",
+              "parentCategory": {
+                "__typename": "Category",
+                "id": "Q2F0ZWdvcnktNw==",
+                "name": "Design",
+                "analyticsName": "Design"
+              }
+            },
+            "canComment": false,
+            "commentsCount": 505,
+            "country": {
+              "__typename": "Country",
+              "code": "US",
+              "name": "the United States"
+            },
+            "creator": {
+              "__typename": "User",
+              "backings": {
+                "__typename": "UserBackingsConnection",
+                "nodes": []
+              },
+              "backingsCount": 0,
+              "chosenCurrency": null,
+              "createdProjects": {
+                "__typename": "UserCreatedProjectsConnection",
+                "totalCount": 7
+              },
+              "email": "John@tentaclekitty.com.ksr",
+              "hasPassword": null,
+              "hasUnreadMessages": null,
+              "hasUnseenActivity": null,
+              "id": "VXNlci03MTM2OTk4Mzc=",
+              "imageUrl": "https://i-dev.kickstarter.com/assets/007/043/182/55824148a299195b08ed442aa4b47625_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=EscZIQ%2FmFfZTKEg85UCXyGzJfJeUuf9Hlq5siOX%2Fspk%3D",
+              "isAppleConnected": null,
+              "isBlocked": false,
+              "isCreator": true,
+              "isDeliverable": null,
+              "isEmailVerified": true,
+              "isFacebookConnected": false,
+              "isKsrAdmin": null,
+              "isFollowing": false,
+              "isSocializing": null,
+              "location": {
+                "__typename": "Location",
+                "country": "US",
+                "countryName": "United States",
+                "displayableName": "Kingwood, Houston, TX",
+                "id": "TG9jYXRpb24tMjQzMjg4Nw==",
+                "name": "Kingwood"
+              },
+              "name": "John Merritt",
+              "needsFreshFacebookToken": null,
+              "newsletterSubscriptions": null,
+              "notifications": null,
+              "optedOutOfRecommendations": null,
+              "showPublicProfile": null,
+              "savedProjects": null,
+              "storedCards": {
+                "__typename": "UserCreditCardTypeConnection",
+                "nodes": [],
+                "totalCount": 0
+              },
+              "surveyResponses": null,
+              "uid": "713699837"
+            },
+            "currency": "USD",
+            "deadlineAt": 1699546033,
+            "description": "Cats, tentacles, mushrooms, super cuddly softness. What more could you want in a plush? Oh, yeah. BIGFOOT and WITCH PLUSHIES!",
+            "environmentalCommitments": [
+              {
+                "__typename": "EnvironmentalCommitment",
+                "commitmentCategory": "long_lasting_design",
+                "description": "We make our plush with high quality fabrics and take the utmost care as we try to make toys that will last a lifetime.",
+                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI0MDU1"
+              }
+            ],
+            "aiDisclosure": {
+              "__typename": "AiDisclosure",
+              "id": "QWlEaXNjbG9zdXJlLTgyMjQ=",
+              "fundingForAiAttribution": null,
+              "fundingForAiConsent": null,
+              "fundingForAiOption": null,
+              "generatedByAiConsent": null,
+              "generatedByAiDetails": null,
+              "involvesAi": true,
+              "involvesFunding": false,
+              "involvesGeneration": false,
+              "involvesOther": true,
+              "otherAiDetails": "My project is not raising funds for AI tools, nor am I using content that was generated by AI. However I have used AI in the graphics used in \"Photography\" images to place the physical real world product into scenes using Photoshops generative AI function in conjunction with regular Photoshop design tools. AI tools will have 0 effect on the actual products being Kickstarted."
+            },
+            "faqs": {
+              "__typename": "ProjectFaqConnection",
+              "nodes": [
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "If I backed previously, do I need to add a Glow-In-The-Dark Mushroom Cap to get the free one?",
+                  "answer": "No. If you backed previously you'll automatically get one free one, but it won't be added until we get into the Backerkit pledge manager. If you want additional caps however, feel free to add as many as you want, just keep in mind you already have one waiting for you.",
+                  "id": "UHJvamVjdEZhcS00NjExMTk=",
+                  "createdAt": 1696952969
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "I'm not a particular fan of Mystery Bags. Is there a way to trade?",
+                  "answer": "Yes. We actually have a very active trading community. You can find the TK Bazaar on our Discord community, as well as on the Facebook Page: \"Tentacle Kitty Trading & Cuddle Keepers\". They will help you find what you're looking for, even if it's something rare!",
+                  "id": "UHJvamVjdEZhcS00NjExMjA=",
+                  "createdAt": 1696953106
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "What happens if I don't fill out the survey at the end of the Kickstarter?",
+                  "answer": "If we don't get the information from you that's needed from the survey at the end, we have no way of sending anything to you. No address, no delivery. \r\nWe've had to implement a new policy that if you do not fill out your survey by the time address lock occurs (Months out from the Kickstarter completion), you will forfeit your right to receive any pledge rewards. This does not mean that your pledge is going to be refunded. We will however do our best to fulfil any pledge after that point, but that is based on the availability of the products and is not guaranteed. \r\n\r\nWe will send out several reminders before the due date to ensure as many folks are able to complete their surveys on time before the deadline.",
+                  "id": "UHJvamVjdEZhcS00NjM0MzI=",
+                  "createdAt": 1697211197
+                },
+                {
+                  "__typename": "ProjectFaq",
+                  "question": "How to I add on additional items?",
+                  "answer": "In mobile: Go to the main Kickstarter pledge. Click Manage my pledge. Then select Choose another reward (this will be three stacked dots on the right hand side of the screen). From there, you select the reward you want (or the same reward you currently have). You are then taken to the add on section where you can add more things. Confirm the addons you want and click update pledge.",
+                  "id": "UHJvamVjdEZhcS00NzA5NDc=",
+                  "createdAt": 1698199944
+                }
+              ]
+            },
+            "finalCollectionDate": "2023-11-16T11:22:26-05:00",
+            "fxRate": 1,
+            "goal": {
+              "__typename": "Money",
+              "amount": "126000.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "image": {
+              "__typename": "Photo",
+              "id": "UGhvdG8tNDI4MTMwMDE=",
+              "url": "https://i-dev.kickstarter.com/assets/042/813/001/df515c1411b742a1b35f76bd379b17b9_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=vC3fxmc1s7fFm06lz5SRos7lBlnCB9QwNHQmOo49VVg%3D"
+            },
+            "isProjectWeLove": true,
+            "isProjectOfTheDay": false,
+            "isInPostCampaignPledgingPhase": false,
+            "isWatched": true,
+            "isLaunched": true,
+            "launchedAt": 1696950433,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Kingwood, Houston, TX",
+              "id": "TG9jYXRpb24tMjQzMjg4Nw==",
+              "name": "Kingwood"
+            },
+            "maxPledge": 10000,
+            "minPledge": 1,
+            "name": "Tentacle Kitty: CottageCore",
+            "pid": 534296078,
+            "pledged": {
+              "__typename": "Money",
+              "amount": "457068.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "posts": {
+              "__typename": "PostConnection",
+              "totalCount": 26
+            },
+            "prelaunchActivated": true,
+            "postCampaignPledgingEnabled": false,
+            "risks": "Here at Tentacle Kitty, we have been producing plushies for more than a decade. We are confident in what we have designed, as they have had lots of real world hugging... errrr, “testing.”\n\nThe two main risks for this Kickstarter are unexpected delays in manufacturing or shipping. With a project of this size, customs can sometimes also cause delays in shipping. If the project is highly successful, materials could also take longer for our manufacturer to obtain, although larger orders usually mean faster production. Overseas holidays can also cause a delay in either shipping or manufacturing.\n\nAt the same time there is unforeseen issues that can delay production, or ruin entire batches of products.\n\nHowever, we have completed 6 successful Kickstarters and are working with established manufacturers with whom we have worked many times.\nWe've done everything we can to learn and adapt to changing times and even when we run into trouble, we always find a way to finish our projects.\n\nIn any case, we will always keep everyone updated with all stages of production and shipping. \n\nNo matter what, we will always ensure you get your pledge, even if it takes a bit longer.",
+            "sendMetaCapiEvents": true,
+            "slug": "johnmerritt/tentacle-kitty-cottagecore",
+            "state": "SUCCESSFUL",
+            "stateChangedAt": 1699546033,
+            "story": "<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42900017\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/900/017/d62f326c347f6a4cf1d2bb579897a47a_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OvpjLE9rVAs2rpVarMmg90u3ivDh1njNvmeFERGAvGc%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42773889\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/773/889/5873bc8b8398c163868283cf7f61e5dd_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=O6mMR2Q8Xs5UufyGyS%2B7lbvpNxQoN9JU2g4t9T34zpM%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42819224\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/819/224/f6deb9e2aae7550a30402dae1a75adda_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=x5EeuilPIXCWnnGGTfnb7SR1LFC68GTA0gyWoMmEIrk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42771601\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/771/601/de9402428277d43837db093ff9ff33de_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=8q1EEMJq%2BT18WCGW1vslId5mZ7y3tb8lM8h2y8%2Fi8Pw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42625866\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Welcome-to-Our-Cozy-Glade\">Welcome to Our Cozy Glade</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/625/866/b6f05febe096adb38e373fe56415a8c6_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=PH9rTzjznpY4QNYx0sG%2FADQM0bdsIJgAodalUEmaXus%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42652349\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/652/349/06ea741c80c80f76a6093484aa195afa_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=c4eGcoYIOA7tsb%2BxOSZW1Cmhl8Xk9meri623ZUzIpI8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42771602\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Who-This-Kickstarter-Is-For\">Who This Kickstarter Is For</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/771/602/4bd76209e795388b153d1814e4162774_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=R8YRLSyKnckIUD9H8miP%2B%2Fl6l%2BjupX4enDxIjsezL4I%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42624733\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:What-is-Tentacle-Kitty\">What is Tentacle Kitty</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/624/733/37393c8395ad95dcd57b039830538858_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=D3mlP0SWfONTiNvGxq%2B7R1UvqzVOI5bv%2BNFYg8uh3LI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42625924\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Meet-The-Cuddle\">Meet The Cuddle</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/625/924/8bbb7f6eb7cbf90431f88ad96b0c0a12_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=Gto%2Fk%2BDHqoViQj8BJoa7LiAgsvsmzpo6b4LFW48Bgpk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42625935\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Kickstarter-Exclusive-Wyrm\">Kickstarter Exclusive Wyrm</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/625/935/49af88f8bbdc39ae5f1ee93b6aa71b13_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=3z%2F2LVe5juG77nIhE%2B4AR0F9bbZvsvTnKetHzB6qQBE%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42652149\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Large-Kitties\">Large Kitties</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/652/149/bedda98371aebdbb0f23a5cf63a7f4d4_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=sT%2FXX52vTBj5YoW7%2B235qkjqKdbGFyiXKF4lmX4D8UA%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42573338\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/573/338/011728077d1bc59a583a926c85545076_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=HK4ZaIJlC5XILxNV4pCv2dJAPJGBffvZH6a64QBtgi4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42630888\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/630/888/f800c969c34ad51fd5027f3e1db74bb4_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=bisWZFn9rajYy4iYL3%2BLosatz%2FT%2FWpa72wJjkFTx%2F98%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42652232\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/652/232/5a2aa862cd25bb3ae9c16e8c1205c762_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RBinAPW2XPe0RmmJyl0cMJXgL4IzDKGctGU5hA0%2FWGI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42652500\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/652/500/13a67968d1cd0d3c8dde8fdf5f112e6d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2FZO%2FgAiPF%2FDRcJfKU18JpJRF%2FPSECOH9%2BlB70OWFF9k%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42621876\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Jumbo\">Jumbo</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/621/876/7c15ef0bcf4b714ef79e2addbfbd80cc_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=uioNGg%2B1F9MvDohiV18YR395lEGM2VcyvWbElEZQjmg%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42625986\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/625/986/63c30c5927f0791a0980dd9e1e74eea4_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=68DTQcr1qoSJF58Vygbp3OXhkl4L02jhog1lJWIG0kw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42626027\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Misty\">Misty</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/626/027/1acfc5a1902836daceada7c661687ff2_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=jbveXs7q0Hwvg7mH6wZqgWFRVA4O2bl4Ycr6WJ95jyM%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42638243\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Mystery-Little-Ones\">Mystery Little Ones</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/638/243/c5f783b0632726bfe7e0f5b073c39577_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=t6NY5Iq6p9YWNPUGi7wMKebxzJXNBvAzdMyZSG2dCWI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42624542\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/624/542/28aa971317a629e16340a3b726a14bce_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=u0Oj%2F0uU3yHjTULAJd9P953PUglUmqcZCeL4tAycfe4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42773890\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Witchcore\">Witchcore</h3>\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/042/773/890/ff606f6e3dcdd58405de1f4f88c5cef9_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=AVe2X%2BxjMvoHzgud8doYpVMXCaD0uZDYP8POdat2ObY%3D\" src=\"https://i-dev.kickstarter.com/assets/042/773/890/ff606f6e3dcdd58405de1f4f88c5cef9_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=KD7uE7JwRmpvL7Q%2FjmBeWc7ongSRyRRTGjRVZ%2FXungw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42900028\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/900/028/4fada0cc6e51d797df2da06f194f547a_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=p4ydZsVQQFreHlODKgqK4E3ZMn1rnNc7%2BqgnJgCHn8U%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42774045\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:How-To-Get-The-Plush-Rewards-\">How To Get The Plush (Rewards)</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/774/045/96490c8b3d60dfeb698ff03bef6fecf9_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=SFMEAyAQ2V4LYU40dYeFz%2B1LWeYpQr3rUb5RbK%2BP1Wo%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42772100\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Fabled-Rewards\">Fabled Rewards</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/772/100/35824f02f778b176d1d8e2d7bed1440f_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=JTlujHWCdQeovRW6qxTwiNk9zN5A7zoktaQ97%2BOTrkY%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42606913\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:Why-Back-This-Kickstarter-\">Why Back This Kickstarter?</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/606/913/626187fe32fd40c5ac54f5debceaa23b_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OmVUrH%2FVNU%2BlI9knmBYg8R5C6qQFyrQUkzmUGXgFwg8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"42608397\">\n<figure class=\"image\">\n<h3 class=\"invisible page-anchor\" id=\"h:John-and-Raena\">John and Raena</h3>\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/042/608/397/75b919e1467028a7a8b01bb35a9d3424_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=9gpp8z%2F9E%2F94P7nBPc2twzcIu7pgbbHwRIYTQbfhmNw%3D\">\n</figure>\n\n</div>\n",
+            "tags": [
+              {
+                "__typename": "Tag",
+                "name": "Witchstarter"
+              }
+            ],
+            "url": "https://staging.kickstarter.com/projects/johnmerritt/tentacle-kitty-cottagecore",
+            "usdExchangeRate": 1,
+            "video": {
+              "__typename": "Video",
+              "id": "VmlkZW8tMTI1NTMyMQ==",
+              "videoSources": {
+                "__typename": "VideoSources",
+                "high": {
+                  "__typename": "VideoSourceInfo",
+                  "src": "https://v2.kickstarter.com/1712855094-lbCZzgYzwuqKn5wyMGqd%2FO4yUBtqSlVaeewa6869pFQ%3D/projects/4483038/video-1255321-h264_high.mp4"
+                },
+                "hls": {
+                  "__typename": "VideoSourceInfo",
+                  "src": "https://v2.kickstarter.com/1712855094-lbCZzgYzwuqKn5wyMGqd%2FO4yUBtqSlVaeewa6869pFQ%3D/projects/4483038/video-1255321-hls_playlist.m3u8"
+                }
+              }
+            },
+            "watchesCount": 3850
+          },
+          {
+            "__typename": "Project",
+            "availableCardTypes": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX",
+              "DISCOVER",
+              "JCB",
+              "DINERS",
+              "UNION_PAY"
+            ],
+            "backersCount": 39,
+            "category": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMzYx",
+              "name": "Web",
+              "analyticsName": "Web",
+              "parentCategory": {
+                "__typename": "Category",
+                "id": "Q2F0ZWdvcnktMTM=",
+                "name": "Journalism",
+                "analyticsName": "Journalism"
+              }
+            },
+            "canComment": true,
+            "commentsCount": 0,
+            "country": {
+              "__typename": "Country",
+              "code": "US",
+              "name": "the United States"
+            },
+            "creator": {
+              "__typename": "User",
+              "backings": null,
+              "backingsCount": 187,
+              "chosenCurrency": null,
+              "createdProjects": {
+                "__typename": "UserCreatedProjectsConnection",
+                "totalCount": 2
+              },
+              "email": "lance@cainlevy.net.ksr",
+              "hasPassword": null,
+              "hasUnreadMessages": null,
+              "hasUnseenActivity": null,
+              "id": "VXNlci0x",
+              "imageUrl": "https://i-dev.kickstarter.com/assets/005/760/137/822646ef2680de97e6fe8698561ee170_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=zTKJxaxA1Wt2cljBAHlk6lnpxVfiZFl2cjkPkON0wko%3D",
+              "isAppleConnected": null,
+              "isBlocked": false,
+              "isCreator": null,
+              "isDeliverable": null,
+              "isEmailVerified": true,
+              "isFacebookConnected": false,
+              "isKsrAdmin": null,
+              "isFollowing": false,
+              "isSocializing": null,
+              "location": {
+                "__typename": "Location",
+                "country": "US",
+                "countryName": "United States",
+                "displayableName": "Portland, OR",
+                "id": "TG9jYXRpb24tMjQ3NTY4Nw==",
+                "name": "Portland"
+              },
+              "name": "Lance Ivy",
+              "needsFreshFacebookToken": null,
+              "newsletterSubscriptions": null,
+              "notifications": null,
+              "optedOutOfRecommendations": null,
+              "showPublicProfile": null,
+              "savedProjects": null,
+              "storedCards": {
+                "__typename": "UserCreditCardTypeConnection",
+                "nodes": [],
+                "totalCount": 0
+              },
+              "surveyResponses": null,
+              "uid": "1"
+            },
+            "currency": "USD",
+            "deadlineAt": 1710196633,
+            "description": "test blurb",
+            "environmentalCommitments": [],
+            "aiDisclosure": {
+              "__typename": "AiDisclosure",
+              "id": "QWlEaXNjbG9zdXJlLTM4MTg0",
+              "fundingForAiAttribution": null,
+              "fundingForAiConsent": null,
+              "fundingForAiOption": null,
+              "generatedByAiConsent": null,
+              "generatedByAiDetails": null,
+              "involvesAi": false,
+              "involvesFunding": false,
+              "involvesGeneration": false,
+              "involvesOther": false,
+              "otherAiDetails": null
+            },
+            "faqs": {
+              "__typename": "ProjectFaqConnection",
+              "nodes": []
+            },
+            "finalCollectionDate": null,
+            "fxRate": 1,
+            "goal": {
+              "__typename": "Money",
+              "amount": "1000.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "image": {
+              "__typename": "Photo",
+              "id": "UGhvdG8t",
+              "url": "https://i-dev.kickstarter.com/missing_project_photo.png?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=mtxWHN34oWziTC9W1L2IsQI9T3gsd9J1j3cqDfYyzAQ%3D"
+            },
+            "isProjectWeLove": false,
+            "isProjectOfTheDay": false,
+            "isInPostCampaignPledgingPhase": true,
+            "isWatched": true,
+            "isLaunched": true,
+            "launchedAt": 1710800428,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "United States",
+              "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
+              "name": "United States"
+            },
+            "maxPledge": 10000,
+            "minPledge": 1,
+            "name": "Zan's Late Pledge Campaign",
+            "pid": 745600992,
+            "pledged": {
+              "__typename": "Money",
+              "amount": "343.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "posts": {
+              "__typename": "PostConnection",
+              "totalCount": 0
+            },
+            "prelaunchActivated": false,
+            "postCampaignPledgingEnabled": true,
+            "risks": "May not deliver",
+            "sendMetaCapiEvents": false,
+            "slug": "cainlevy/zans-late-pledge-campaign",
+            "state": "SUCCESSFUL",
+            "stateChangedAt": 1710800431,
+            "story": "This project is fantastic!",
+            "tags": [],
+            "url": "https://staging.kickstarter.com/projects/cainlevy/zans-late-pledge-campaign",
+            "usdExchangeRate": 1,
+            "video": null,
+            "watchesCount": 6
+          }
+        ],
+        "pageInfo": {
+          "__typename": "PageInfo",
+          "hasNextPage": false,
+          "endCursor": "NA==",
+          "hasPreviousPage": false,
+          "startCursor": "MQ=="
+        },
+        "totalCount": 4
+      }
+    }
+  }
+}

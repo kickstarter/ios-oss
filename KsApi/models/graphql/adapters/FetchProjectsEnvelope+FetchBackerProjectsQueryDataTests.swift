@@ -2,17 +2,32 @@
 import XCTest
 
 final class FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests: XCTestCase {
-  func testFetchProjectsEnvelope_withValidData_Success() {
+  func testFetchProjectsEnvelope_withValidSavedProjectsData_Success() {
     let envProducer = FetchProjectsEnvelope
-      .fetchProjectsEnvelope(from: FetchBackerProjectsQueryDataTemplate.valid.data)
+      .fetchProjectsEnvelope(from: FetchBackerProjectsQueryDataTemplate.valid.savedProjectsData)
 
     guard let env = MockGraphQLClient.shared.client.data(from: envProducer) else {
       XCTFail()
       return
     }
 
-    XCTAssertEqual(env.projects.count, 3)
-    XCTAssertEqual(env.projects.first?.name, "The After Death Book One")
-    XCTAssertEqual(env.totalCount, 3)
+    XCTAssertEqual(env.projects.count, 4)
+    XCTAssertEqual(env.projects.first?.name, "Moonrise Cafe (home of Heart Cakes)")
+    XCTAssertEqual(env.totalCount, 4)
   }
+  
+  func testFetchProjectsEnvelope_withValidBackedProjectsData_Success() {
+    let envProducer = FetchProjectsEnvelope
+      .fetchProjectsEnvelope(from: FetchBackerProjectsQueryDataTemplate.valid.backedProjectsData)
+
+    guard let env = MockGraphQLClient.shared.client.data(from: envProducer) else {
+      XCTFail()
+      return
+    }
+
+    XCTAssertEqual(env.projects.count, 25)
+    XCTAssertEqual(env.projects.first?.name, "Zan's Late Pledge Campaign")
+    XCTAssertEqual(env.totalCount, 59)
+  }
+
 }
