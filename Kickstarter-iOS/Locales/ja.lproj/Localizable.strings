@@ -801,6 +801,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p><b>%{project_name}</b>にプレッジしました。これに伴い、<b>%{pledge_total}</b>のプレッジが収集されました。</p>\n<p>リワード配送の準備が整い次第、%{user_email} 宛てに確認メールが届き、配送料と税金の最終確認とお支払いを行うことができます。</p>\n<p>あなたのプレッジのおかげで、このプロジェクトが実現へと一歩近づきました。ありがとうございます。ぜひこのプロジェクトを沢山の人に知ってもらいましょう！</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
 "You_launched_this_project_on_launch_date" = "%{launch_date} にこのプロジェクトをローンチしました。クリエイター向けツールにアクセスするには、Kickstarter ウェブサイトにアクセスしてください！";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "このリワードには、最低%{reward_minimum}のプレッジが必要です。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";

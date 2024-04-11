@@ -801,6 +801,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Du hast <b>%{project_name}</b> mit deinem Beitrag erfolgreich unterstützt. Dein Beitrag in Höhe von <b>%{pledge_total}</b> wurde eingezogen.</p>\n<p>Du erhältst eine E-Mail an %{user_email}, wenn deine Belohnungen zur Erfüllung bereit sind, damit du alles finalisieren und für Versand und Steuern zahlen kannst.</p>\n<p>Dank dir ist dieses Projekt seiner Realisierung einen Schritt nähergekommen. Erzähl auch deinen Freunden und Bekannten davon!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
 "You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
