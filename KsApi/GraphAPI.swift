@@ -7438,284 +7438,6 @@ public enum GraphAPI {
     }
   }
 
-  public final class FetchBackerProjectsQuery: GraphQLQuery {
-    /// The raw GraphQL definition of this operation.
-    public let operationDefinition: String =
-      """
-      query FetchBackerProjects($starred: Boolean, $backed: Boolean, $first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
-        projects(
-          starred: $starred
-          backed: $backed
-          first: $first
-          after: $after
-          sort: END_DATE
-        ) {
-          __typename
-          nodes {
-            __typename
-            ...ProjectFragment
-          }
-          pageInfo {
-            __typename
-            hasNextPage
-            endCursor
-            hasPreviousPage
-            startCursor
-          }
-          totalCount
-        }
-      }
-      """
-
-    public let operationName: String = "FetchBackerProjects"
-
-    public var queryDocument: String {
-      var document: String = operationDefinition
-      document.append("\n" + ProjectFragment.fragmentDefinition)
-      document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + CountryFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
-      document.append("\n" + MoneyFragment.fragmentDefinition)
-      return document
-    }
-
-    public var starred: Bool?
-    public var backed: Bool?
-    public var first: Int?
-    public var after: String?
-    public var withStoredCards: Bool?
-
-    public init(starred: Bool? = nil, backed: Bool? = nil, first: Int? = nil, after: String? = nil, withStoredCards: Bool? = nil) {
-      self.starred = starred
-      self.backed = backed
-      self.first = first
-      self.after = after
-      self.withStoredCards = withStoredCards
-    }
-
-    public var variables: GraphQLMap? {
-      return ["starred": starred, "backed": backed, "first": first, "after": after, "withStoredCards": withStoredCards]
-    }
-
-    public struct Data: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["Query"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("projects", arguments: ["starred": GraphQLVariable("starred"), "backed": GraphQLVariable("backed"), "first": GraphQLVariable("first"), "after": GraphQLVariable("after"), "sort": "END_DATE"], type: .object(Project.selections)),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(projects: Project? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Query", "projects": projects.flatMap { (value: Project) -> ResultMap in value.resultMap }])
-      }
-
-      /// Get some projects
-      public var projects: Project? {
-        get {
-          return (resultMap["projects"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "projects")
-        }
-      }
-
-      public struct Project: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["ProjectsConnectionWithTotalCount"]
-
-        public static var selections: [GraphQLSelection] {
-          return [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("nodes", type: .list(.object(Node.selections))),
-            GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
-            GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
-          ]
-        }
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(nodes: [Node?]? = nil, pageInfo: PageInfo, totalCount: Int) {
-          self.init(unsafeResultMap: ["__typename": "ProjectsConnectionWithTotalCount", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap, "totalCount": totalCount])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        /// A list of nodes.
-        public var nodes: [Node?]? {
-          get {
-            return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
-          }
-          set {
-            resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
-          }
-        }
-
-        /// Information to aid in pagination.
-        public var pageInfo: PageInfo {
-          get {
-            return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
-          }
-          set {
-            resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
-          }
-        }
-
-        public var totalCount: Int {
-          get {
-            return resultMap["totalCount"]! as! Int
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "totalCount")
-          }
-        }
-
-        public struct Node: GraphQLSelectionSet {
-          public static let possibleTypes: [String] = ["Project"]
-
-          public static var selections: [GraphQLSelection] {
-            return [
-              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLFragmentSpread(ProjectFragment.self),
-            ]
-          }
-
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public var __typename: String {
-            get {
-              return resultMap["__typename"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          public var fragments: Fragments {
-            get {
-              return Fragments(unsafeResultMap: resultMap)
-            }
-            set {
-              resultMap += newValue.resultMap
-            }
-          }
-
-          public struct Fragments {
-            public private(set) var resultMap: ResultMap
-
-            public init(unsafeResultMap: ResultMap) {
-              self.resultMap = unsafeResultMap
-            }
-
-            public var projectFragment: ProjectFragment {
-              get {
-                return ProjectFragment(unsafeResultMap: resultMap)
-              }
-              set {
-                resultMap += newValue.resultMap
-              }
-            }
-          }
-        }
-
-        public struct PageInfo: GraphQLSelectionSet {
-          public static let possibleTypes: [String] = ["PageInfo"]
-
-          public static var selections: [GraphQLSelection] {
-            return [
-              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
-              GraphQLField("endCursor", type: .scalar(String.self)),
-              GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
-              GraphQLField("startCursor", type: .scalar(String.self)),
-            ]
-          }
-
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public init(hasNextPage: Bool, endCursor: String? = nil, hasPreviousPage: Bool, startCursor: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "PageInfo", "hasNextPage": hasNextPage, "endCursor": endCursor, "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
-          }
-
-          public var __typename: String {
-            get {
-              return resultMap["__typename"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          /// When paginating forwards, are there more items?
-          public var hasNextPage: Bool {
-            get {
-              return resultMap["hasNextPage"]! as! Bool
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "hasNextPage")
-            }
-          }
-
-          /// When paginating forwards, the cursor to continue.
-          public var endCursor: String? {
-            get {
-              return resultMap["endCursor"] as? String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "endCursor")
-            }
-          }
-
-          /// When paginating backwards, are there more items?
-          public var hasPreviousPage: Bool {
-            get {
-              return resultMap["hasPreviousPage"]! as! Bool
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "hasPreviousPage")
-            }
-          }
-
-          /// When paginating backwards, the cursor to continue.
-          public var startCursor: String? {
-            get {
-              return resultMap["startCursor"] as? String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "startCursor")
-            }
-          }
-        }
-      }
-    }
-  }
-
   public final class FetchBackingQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -8671,6 +8393,629 @@ public enum GraphAPI {
             set {
               guard let newValue = newValue else { return }
               resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class FetchMyBackedProjectsQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchMyBackedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+        me {
+          __typename
+          backingsCount
+          backedProjects(first: $first, after: $after) {
+            __typename
+            nodes {
+              __typename
+              ...ProjectFragment
+            }
+            pageInfo {
+              __typename
+              hasNextPage
+              endCursor
+              hasPreviousPage
+              startCursor
+            }
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "FetchMyBackedProjects"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + ProjectFragment.fragmentDefinition)
+      document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + CountryFragment.fragmentDefinition)
+      document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      return document
+    }
+
+    public var first: Int?
+    public var after: String?
+    public var withStoredCards: Bool?
+
+    public init(first: Int? = nil, after: String? = nil, withStoredCards: Bool? = nil) {
+      self.first = first
+      self.after = after
+      self.withStoredCards = withStoredCards
+    }
+
+    public var variables: GraphQLMap? {
+      return ["first": first, "after": after, "withStoredCards": withStoredCards]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("me", type: .object(Me.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(me: Me? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "me": me.flatMap { (value: Me) -> ResultMap in value.resultMap }])
+      }
+
+      /// You.
+      public var me: Me? {
+        get {
+          return (resultMap["me"] as? ResultMap).flatMap { Me(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "me")
+        }
+      }
+
+      public struct Me: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("backingsCount", type: .nonNull(.scalar(Int.self))),
+            GraphQLField("backedProjects", arguments: ["first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .object(BackedProject.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(backingsCount: Int, backedProjects: BackedProject? = nil) {
+          self.init(unsafeResultMap: ["__typename": "User", "backingsCount": backingsCount, "backedProjects": backedProjects.flatMap { (value: BackedProject) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Number of backings for this user.
+        public var backingsCount: Int {
+          get {
+            return resultMap["backingsCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "backingsCount")
+          }
+        }
+
+        /// Projects a user has backed.
+        public var backedProjects: BackedProject? {
+          get {
+            return (resultMap["backedProjects"] as? ResultMap).flatMap { BackedProject(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "backedProjects")
+          }
+        }
+
+        public struct BackedProject: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["UserBackedProjectsConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("nodes", type: .list(.object(Node.selections))),
+              GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(nodes: [Node?]? = nil, pageInfo: PageInfo) {
+            self.init(unsafeResultMap: ["__typename": "UserBackedProjectsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// A list of nodes.
+          public var nodes: [Node?]? {
+            get {
+              return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+            }
+          }
+
+          /// Information to aid in pagination.
+          public var pageInfo: PageInfo {
+            get {
+              return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            }
+          }
+
+          public struct Node: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["Project"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLFragmentSpread(ProjectFragment.self),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var fragments: Fragments {
+              get {
+                return Fragments(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+
+            public struct Fragments {
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var projectFragment: ProjectFragment {
+                get {
+                  return ProjectFragment(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+            }
+          }
+
+          public struct PageInfo: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PageInfo"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("endCursor", type: .scalar(String.self)),
+                GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("startCursor", type: .scalar(String.self)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(hasNextPage: Bool, endCursor: String? = nil, hasPreviousPage: Bool, startCursor: String? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PageInfo", "hasNextPage": hasNextPage, "endCursor": endCursor, "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// When paginating forwards, are there more items?
+            public var hasNextPage: Bool {
+              get {
+                return resultMap["hasNextPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasNextPage")
+              }
+            }
+
+            /// When paginating forwards, the cursor to continue.
+            public var endCursor: String? {
+              get {
+                return resultMap["endCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "endCursor")
+              }
+            }
+
+            /// When paginating backwards, are there more items?
+            public var hasPreviousPage: Bool {
+              get {
+                return resultMap["hasPreviousPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasPreviousPage")
+              }
+            }
+
+            /// When paginating backwards, the cursor to continue.
+            public var startCursor: String? {
+              get {
+                return resultMap["startCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "startCursor")
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class FetchMySavedProjectsQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchMySavedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+        me {
+          __typename
+          savedProjects(first: $first, after: $after) {
+            __typename
+            nodes {
+              __typename
+              ...ProjectFragment
+            }
+            pageInfo {
+              __typename
+              hasNextPage
+              endCursor
+              hasPreviousPage
+              startCursor
+            }
+            totalCount
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "FetchMySavedProjects"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + ProjectFragment.fragmentDefinition)
+      document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + CountryFragment.fragmentDefinition)
+      document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      return document
+    }
+
+    public var first: Int?
+    public var after: String?
+    public var withStoredCards: Bool?
+
+    public init(first: Int? = nil, after: String? = nil, withStoredCards: Bool? = nil) {
+      self.first = first
+      self.after = after
+      self.withStoredCards = withStoredCards
+    }
+
+    public var variables: GraphQLMap? {
+      return ["first": first, "after": after, "withStoredCards": withStoredCards]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("me", type: .object(Me.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(me: Me? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "me": me.flatMap { (value: Me) -> ResultMap in value.resultMap }])
+      }
+
+      /// You.
+      public var me: Me? {
+        get {
+          return (resultMap["me"] as? ResultMap).flatMap { Me(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "me")
+        }
+      }
+
+      public struct Me: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("savedProjects", arguments: ["first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .object(SavedProject.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(savedProjects: SavedProject? = nil) {
+          self.init(unsafeResultMap: ["__typename": "User", "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Projects a user has saved.
+        public var savedProjects: SavedProject? {
+          get {
+            return (resultMap["savedProjects"] as? ResultMap).flatMap { SavedProject(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "savedProjects")
+          }
+        }
+
+        public struct SavedProject: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["UserSavedProjectsConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("nodes", type: .list(.object(Node.selections))),
+              GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+              GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(nodes: [Node?]? = nil, pageInfo: PageInfo, totalCount: Int) {
+            self.init(unsafeResultMap: ["__typename": "UserSavedProjectsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap, "totalCount": totalCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// A list of nodes.
+          public var nodes: [Node?]? {
+            get {
+              return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+            }
+          }
+
+          /// Information to aid in pagination.
+          public var pageInfo: PageInfo {
+            get {
+              return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            }
+          }
+
+          public var totalCount: Int {
+            get {
+              return resultMap["totalCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+
+          public struct Node: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["Project"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLFragmentSpread(ProjectFragment.self),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var fragments: Fragments {
+              get {
+                return Fragments(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+
+            public struct Fragments {
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var projectFragment: ProjectFragment {
+                get {
+                  return ProjectFragment(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+            }
+          }
+
+          public struct PageInfo: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PageInfo"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("endCursor", type: .scalar(String.self)),
+                GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("startCursor", type: .scalar(String.self)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(hasNextPage: Bool, endCursor: String? = nil, hasPreviousPage: Bool, startCursor: String? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PageInfo", "hasNextPage": hasNextPage, "endCursor": endCursor, "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// When paginating forwards, are there more items?
+            public var hasNextPage: Bool {
+              get {
+                return resultMap["hasNextPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasNextPage")
+              }
+            }
+
+            /// When paginating forwards, the cursor to continue.
+            public var endCursor: String? {
+              get {
+                return resultMap["endCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "endCursor")
+              }
+            }
+
+            /// When paginating backwards, are there more items?
+            public var hasPreviousPage: Bool {
+              get {
+                return resultMap["hasPreviousPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasPreviousPage")
+              }
+            }
+
+            /// When paginating backwards, the cursor to continue.
+            public var startCursor: String? {
+              get {
+                return resultMap["startCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "startCursor")
+              }
             }
           }
         }

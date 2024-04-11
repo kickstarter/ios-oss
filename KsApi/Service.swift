@@ -637,7 +637,7 @@ public struct Service: ServiceType {
     cursor: String? = nil,
     limit: Int? = nil
   ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    let query = GraphAPI.FetchBackerProjectsQuery(backed: true, first: limit, after: cursor)
+    let query = GraphAPI.FetchMyBackedProjectsQuery(first: limit, after: cursor)
 
     return GraphQL.shared.client
       .fetch(query: query)
@@ -648,7 +648,7 @@ public struct Service: ServiceType {
     cursor: String? = nil,
     limit: Int? = nil
   ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    let query = GraphAPI.FetchBackerProjectsQuery(starred: true, first: limit, after: cursor)
+    let query = GraphAPI.FetchMySavedProjectsQuery(first: limit, after: cursor)
 
     return GraphQL.shared.client
       .fetch(query: query)
