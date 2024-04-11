@@ -1,0 +1,231 @@
+query FetchMyBackedProjects($first: Int, $after: String) {
+  me {
+    __typename
+    backingsCount
+    backedProjects(first: $first, after: $after) {
+      __typename
+      nodes {
+      __typename
+
+      availableCardTypes
+      backersCount
+      category {
+        __typename
+        id
+        name
+        analyticsName
+        parentCategory {
+          __typename
+          id
+          name
+          analyticsName
+        }
+      }
+      canComment
+      commentsCount(withReplies: true)
+      country {
+        __typename
+        code
+        name
+      }
+      creator {
+        __typename
+        backings {
+          __typename
+
+          nodes {
+            __typename
+
+            errorReason
+          }
+        }
+        backingsCount
+        chosenCurrency
+        createdProjects {
+          __typename
+          totalCount
+        }
+        email
+        hasPassword
+        hasUnreadMessages
+        hasUnseenActivity
+        id
+        imageUrl: imageUrl(blur: false, width: 1024)
+        isAppleConnected
+        isBlocked
+        isCreator
+        isDeliverable
+        isEmailVerified
+        isFacebookConnected
+        isKsrAdmin
+        isFollowing
+        isSocializing
+        location {
+          __typename
+          country
+          countryName
+          displayableName
+          id
+          name
+        }
+        name
+        needsFreshFacebookToken
+        newsletterSubscriptions {
+          __typename
+          artsCultureNewsletter
+          filmNewsletter
+          musicNewsletter
+          inventNewsletter
+          gamesNewsletter
+          publishingNewsletter
+          promoNewsletter
+          weeklyNewsletter
+          happeningNewsletter
+          alumniNewsletter
+        }
+        notifications {
+          __typename
+          email
+          mobile
+          topic
+        }
+        optedOutOfRecommendations
+        showPublicProfile
+        savedProjects {
+          __typename
+          totalCount
+        }
+        storedCards @include(if: true) {
+          __typename
+          nodes {
+            __typename
+            expirationDate
+            id
+            lastFour
+            type
+          }
+          totalCount
+        }
+        surveyResponses(answered: false) {
+          __typename
+          totalCount
+        }
+        uid
+      }
+      currency
+      deadlineAt
+      description
+      environmentalCommitments {
+        __typename
+        commitmentCategory
+        description
+        id
+      }
+      aiDisclosure {
+        __typename
+        id
+        fundingForAiAttribution
+        fundingForAiConsent
+        fundingForAiOption
+        generatedByAiConsent
+        generatedByAiDetails
+        involvesAi
+        involvesFunding
+        involvesGeneration
+        involvesOther
+        otherAiDetails
+      }
+      faqs {
+        __typename
+        nodes {
+          __typename
+          question
+          answer
+          id
+          createdAt
+        }
+      }
+      finalCollectionDate
+      fxRate
+      goal {
+        __typename
+        amount
+        currency
+        symbol
+      }
+      image {
+        __typename
+        id
+        url(width: 1024)
+      }
+      isProjectWeLove
+      isProjectOfTheDay
+      isInPostCampaignPledgingPhase
+      isWatched
+      isLaunched
+      launchedAt
+      location {
+        __typename
+        country
+        countryName
+        displayableName
+        id
+        name
+      }
+      maxPledge
+      minPledge
+      name
+      pid
+      pledged {
+        __typename
+        amount
+        currency
+        symbol
+      }
+      posts {
+        __typename
+        totalCount
+      }
+      prelaunchActivated
+      postCampaignPledgingEnabled
+      risks
+      sendMetaCapiEvents
+      slug
+      state
+      stateChangedAt
+      story
+      tags(scope: DISCOVER) {
+        __typename
+        name
+      }
+      url
+      usdExchangeRate
+      video {
+        __typename
+        id
+        videoSources {
+          __typename
+          high {
+            __typename
+            src
+          }
+          hls {
+            __typename
+            src
+          }
+        }
+      }
+      watchesCount
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+
+    }
+  }
+}
+

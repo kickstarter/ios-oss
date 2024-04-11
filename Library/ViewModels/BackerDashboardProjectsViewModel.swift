@@ -4,18 +4,6 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public enum ProfileProjectsType {
-  case backed
-  case saved
-
-  var trackingString: String {
-    switch self {
-    case .backed: return "backed"
-    case .saved: return "saved"
-    }
-  }
-}
-
 public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the ProfileProjectsType to display and the default sort.
   func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
@@ -76,27 +64,13 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     }
     .skipRepeats { $0 == $1 }
 
-    let requestFirstPageWith = projectsTypeAndSort
+    let requestFirstPageWith = projectsType
       .takeWhen(
         Signal.merge(
           userUpdatedProjectsCount.ignoreValues(),
           self.refreshProperty.signal
         )
       )
-      .map { pType, sort -> DiscoveryParams in
-        switch pType {
-        case .backed:
-          return DiscoveryParams.defaults
-            |> DiscoveryParams.lens.backed .~ true
-            |> DiscoveryParams.lens.sort .~ sort
-            |> DiscoveryParams.lens.perPage .~ 20
-        case .saved:
-          return DiscoveryParams.defaults
-            |> DiscoveryParams.lens.starred .~ true
-            |> DiscoveryParams.lens.sort .~ sort
-            |> DiscoveryParams.lens.perPage .~ 20
-        }
-      }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in total > 5 && row >= total - 3 }
@@ -110,10 +84,26 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { $0.projects },
-      cursorFromEnvelope: { $0.urls.api.moreProjects },
-      requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+      valuesFromEnvelope: { (envelope: FetchProjectsEnvelope) -> [Project] in
+        envelope.projects
+      },
+      cursorFromEnvelope: { (envelope: FetchProjectsEnvelope) -> (ProfileProjectsType, String?) in
+        (envelope.type, envelope.cursor)
+      },
+      requestFromParams: { projectType in
+        if projectType == .backed {
+          return AppEnvironment.current.apiService.fetchBackedProjects(cursor: nil, limit: 20)
+        } else {
+          return AppEnvironment.current.apiService.fetchSavedProjects(cursor: nil, limit: 20)
+        }
+      },
+      requestFromCursor: { projectType, cursor in
+        if projectType == .backed {
+          return AppEnvironment.current.apiService.fetchBackedProjects(cursor: cursor, limit: 20)
+        } else {
+          return AppEnvironment.current.apiService.fetchSavedProjects(cursor: cursor, limit: 20)
+        }
+      }
     )
 
     self.isRefreshing = isLoading
