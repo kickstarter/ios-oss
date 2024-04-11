@@ -15,7 +15,7 @@ final class FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests: XCTestCase 
     XCTAssertEqual(env.projects.first?.name, "Moonrise Cafe (home of Heart Cakes)")
     XCTAssertEqual(env.totalCount, 4)
   }
-  
+
   func testFetchProjectsEnvelope_withValidBackedProjectsData_Success() {
     let envProducer = FetchProjectsEnvelope
       .fetchProjectsEnvelope(from: FetchBackerProjectsQueryDataTemplate.valid.backedProjectsData)
@@ -29,5 +29,4 @@ final class FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests: XCTestCase 
     XCTAssertEqual(env.projects.first?.name, "Zan's Late Pledge Campaign")
     XCTAssertEqual(env.totalCount, 59)
   }
-
 }

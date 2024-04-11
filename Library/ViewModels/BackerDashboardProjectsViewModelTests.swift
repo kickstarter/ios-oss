@@ -30,11 +30,21 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
     let projectsWithNewProject = (1...4).map { .template |> Project.lens.id .~ $0 }
     let projectsWithNewestProject = (1...5).map { .template |> Project.lens.id .~ $0 }
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let env2 = .template |> DiscoveryEnvelope.lens.projects .~ projectsWithNewProject
-    let env3 = .template |> DiscoveryEnvelope.lens.projects .~ projectsWithNewestProject
+    let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: true, totalCount: 5)
+    let env2 = FetchProjectsEnvelope(
+      type: .backed,
+      projects: projectsWithNewProject,
+      hasNextPage: true,
+      totalCount: 5
+    )
+    let env3 = FetchProjectsEnvelope(
+      type: .backed,
+      projects: projectsWithNewestProject,
+      hasNextPage: false,
+      totalCount: 5
+    )
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env), currentUser: .template) {
+    withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
       self.vm.inputs.viewWillAppear(false)
       self.vm.inputs.currentUserUpdated()
@@ -65,7 +75,10 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       let updatedUser = User.template |> \.stats.backedProjectsCount .~ 1
 
       // Come back after backing a project.
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env2), currentUser: updatedUser) {
+      withEnvironment(
+        apiService: MockService(fetchBackerBackedProjectsResponse: env2),
+        currentUser: updatedUser
+      ) {
         self.vm.inputs.currentUserUpdated()
         self.vm.inputs.viewWillAppear(false)
 
@@ -79,7 +92,10 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       }
 
       // Refresh.
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env3), currentUser: updatedUser) {
+      withEnvironment(
+        apiService: MockService(fetchBackerBackedProjectsResponse: env3),
+        currentUser: updatedUser
+      ) {
         self.vm.inputs.refresh()
 
         self.isRefreshing.assertValues([true, false, true, false, true])
@@ -94,9 +110,9 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   }
 
   func testNoProjects() {
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
+    let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env), currentUser: .template) {
+    withEnvironment(apiService: MockService(fetchBackerSavedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .saved, sort: .endingSoon)
       self.vm.inputs.viewWillAppear(false)
 
@@ -126,9 +142,9 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   func testProjectCellTapped() {
     let project = Project.template
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: false, totalCount: 3)
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env), currentUser: .template) {
+    withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
       self.vm.inputs.viewWillAppear(false)
 
