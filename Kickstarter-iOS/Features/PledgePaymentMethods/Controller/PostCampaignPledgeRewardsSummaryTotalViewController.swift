@@ -24,6 +24,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
     super.viewDidLoad()
 
     self.configureSubviews()
+    self.bindStyles()
 
     self.viewModel.inputs.viewDidLoad()
   }
