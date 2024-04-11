@@ -50,12 +50,17 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 0.8
       |> Project.lens.personalization.isStarred .~ true
 
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ [saved, liveProject, deadProject, failed]
+    let env = FetchProjectsEnvelope(
+      type: .backed,
+      projects: [saved, liveProject, deadProject, failed],
+      hasNextPage: true,
+      totalCount: 5
+    )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchDiscoveryResponse: env),
+        apiService: MockService(fetchBackerBackedProjectsResponse: env),
         currentUser: User.template,
         language: language
       ) {
@@ -74,11 +79,11 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   }
 
   func testEmpty_BackedProjects() {
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
+    let env = FetchProjectsEnvelope(type: .backed, projects: [], hasNextPage: false, totalCount: 0)
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchDiscoveryResponse: env),
+        apiService: MockService(fetchBackerBackedProjectsResponse: env),
         currentUser: User.template,
         language: language
       ) {
@@ -97,11 +102,11 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   }
 
   func testEmpty_SavedProjects() {
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
+    let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchDiscoveryResponse: env),
+        apiService: MockService(fetchBackerSavedProjectsResponse: env),
         currentUser: User.template,
         language: language
       ) {
