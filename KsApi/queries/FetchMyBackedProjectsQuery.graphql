@@ -1,0 +1,17 @@
+query FetchMyBackedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+  me {
+    backingsCount
+    backedProjects(first: $first, after: $after) {
+      nodes {
+        ...ProjectFragment
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+    }
+  }
+}
+
