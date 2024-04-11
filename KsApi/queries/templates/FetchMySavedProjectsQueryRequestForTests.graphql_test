@@ -1,8 +1,9 @@
-{
-  projects(starred: true, sort: END_DATE) {
+query FetchMySavedProjects($first: Int, $after: String) {
+  me {
     __typename
-
-    nodes {
+    savedProjects(first: $first, after: $after) {
+      __typename
+      nodes {
       __typename
 
       availableCardTypes
@@ -158,6 +159,7 @@
       }
       isProjectWeLove
       isProjectOfTheDay
+      isInPostCampaignPledgingPhase
       isWatched
       isLaunched
       launchedAt
@@ -184,6 +186,7 @@
         totalCount
       }
       prelaunchActivated
+      postCampaignPledgingEnabled
       risks
       sendMetaCapiEvents
       slug
@@ -212,15 +215,15 @@
         }
       }
       watchesCount
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+      totalCount
     }
-    pageInfo {
-      __typename
-      hasNextPage
-      endCursor
-      hasPreviousPage
-      startCursor
-    }
-    totalCount
   }
 }
-
