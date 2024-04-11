@@ -29,7 +29,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
 
   private func resultsMap(fromFile resource: String) -> [String: Any?] {
     /*
-     These are very large response object, so load it from a file instead of putting it inline here.
+     These are very large response objects, so load them from a file instead of putting them inline here.
 
      To create a new response, you'll need the *entire* request structure, including expanding all the fragments -
      a working request is stored in FetchMySavedProjectsQueryRequestForTests.graphql_test and in
