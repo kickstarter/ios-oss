@@ -801,6 +801,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Has patrocinado <b>%{project_name}</b> con éxito y tu contribución por <b>%{pledge_total}</b> se ha recaudado.</p>\n<p>Recibirás la confirmación en %{user_email} cuando estemos por entregarte las recompensas para que puedas pagar los costos de envío e impuestos.</p>\n<p>Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Ayuda a correr la voz!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
 "You_launched_this_project_on_launch_date" = "Publicaste el proyecto el %{launch_date}. Encuentra las herramientas para creadores en nuestro sitio web.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
