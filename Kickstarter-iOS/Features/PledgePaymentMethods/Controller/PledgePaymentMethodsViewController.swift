@@ -214,8 +214,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
         strongSelf.viewModel.inputs
           .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
       case .canceled:
-        strongSelf.messageDisplayingDelegate?
-          .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())
+        // User cancelled intentionally so do nothing.
+        break
       case let .failed(error):
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)

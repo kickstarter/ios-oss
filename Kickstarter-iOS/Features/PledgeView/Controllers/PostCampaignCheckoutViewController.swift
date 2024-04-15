@@ -282,8 +282,11 @@ final class PostCampaignCheckoutViewController: UIViewController,
     STPPaymentHandler.shared()
       .confirmPayment(paymentParams, with: self) { status, _, error in
         guard error == nil, status == .succeeded else {
-          self.messageBannerViewController?
-            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          // Only show error banner if confirmation failed instead of being canceled.
+          if status == .failed {
+            self.messageBannerViewController?
+              .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          }
           self.viewModel.inputs.checkoutTerminated()
           return
         }
