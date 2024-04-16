@@ -883,6 +883,54 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testPaymentSheetCardPaymentIntent_UsedToNotifyDelegate_WhenPaymentSheetCardAdded_Success() {
+    let userTemplateWithCards = self.userTemplate
+      |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let response = UserEnvelope<GraphUser>(me: userTemplateWithCards)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          100,
+          .paymentIntent
+        ))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.notifyDelegateCreditCardSelected.assertValues(
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id)],
+        "First card selected by default"
+      )
+
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          clientSecret: "fake_payment_intent"
+        )
+
+      self.notifyDelegateCreditCardSelected.assertValues([
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
+        PaymentSourceSelected
+          .paymentIntentClientSecret("fake_payment_intent")
+      ])
+    }
+  }
+
   func testCantSelectUnavailableCards() {
     let cards = UserCreditCards.withCards([
       UserCreditCards.visa,
@@ -1359,6 +1407,55 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       }
 
       XCTAssertTrue(allowedDelayedPaymentMethods)
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_LatePledgeContext_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = PaymentIntentEnvelope(clientSecret: "test")
+    let mockService = MockService(createPaymentIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          100,
+          .paymentIntent
+        ))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.lastValue?.clientSecret, "test")
+      XCTAssertEqual(
+        self.goToAddStripeCardIntent.lastValue?.configuration.merchantDisplayName,
+        Strings.general_accessibility_kickstarter()
+      )
+
+      guard let allowedDelayedPaymentMethods = self.goToAddStripeCardIntent.lastValue?.configuration
+        .allowsDelayedPaymentMethods else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertFalse(allowedDelayedPaymentMethods)
     }
   }
 }
