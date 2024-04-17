@@ -408,7 +408,6 @@ extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegat
 // MARK: - STPApplePayContextDelegate
 
 enum PostCampaignCheckoutApplePayError: Error {
-  case missingToken(String)
   case missingPaymentMethodInfo(String)
   case missingPaymentIntent(String)
 }
@@ -440,30 +439,17 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
 
     let transactionId = payment.token.transactionIdentifier
 
-    // Tokens considered 'legacy' from Stripe's side, but we still store the token ourselves.
-    STPAPIClient.shared.createToken(with: payment) { [weak self] token, _ in
-      guard let self = self else {
-        return
-      }
+    let params = ApplePayParams(
+      paymentInstrumentName: paymentDisplayName,
+      paymentNetwork: paymentNetworkName,
+      transactionIdentifier: transactionId,
+      /* Stripe tokens are incompatible with PaymentIntent-based payments and lead to a Stripe error.
+        We may be able to clean this up in the future. */
+      token: ""
+    )
 
-      guard let tokenId = token?.tokenId else {
-        completion(
-          nil,
-          PostCampaignCheckoutApplePayError.missingToken("Unable to retrieve token from Stripe")
-        )
-        return
-      }
-
-      let params = ApplePayParams(
-        paymentInstrumentName: paymentDisplayName,
-        paymentNetwork: paymentNetworkName,
-        transactionIdentifier: transactionId,
-        token: tokenId
-      )
-
-      self.viewModel.inputs.applePayContextDidCreatePayment(params: params)
-      completion(paymentIntentClientSecret, nil)
-    }
+    self.viewModel.inputs.applePayContextDidCreatePayment(params: params)
+    completion(paymentIntentClientSecret, nil)
   }
 
   func applePayContext(
