@@ -345,13 +345,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal)
+      .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal.mapConst(true))
       .takeWhen(self.applePayContextDidCompleteSignal)
       .map {
         (
           clientSecret: String,
           checkoutId: String,
-          applePayParams: ApplePayParams
+          _: Bool
         ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
@@ -359,7 +359,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
             paymentIntentClientSecret: clientSecret,
             paymentSourceId: nil,
             paymentSourceReusable: false,
-            applePay: GraphAPI.ApplePayInput.from(applePayParams)
+            /* We are no longer sending ApplePay parameters to the backend, because Stripe Tokens are
+              considered deprecated and are incompatible with PaymentIntent-based payments.
+
+              In the future, we may use the other parameters in the ApplePayParams object, but for now,
+              send nil.
+              */
+            applePay: nil
           )
       }
 
