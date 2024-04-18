@@ -181,11 +181,14 @@ private func stateString(for project: Project) -> String {
 }
 
 private func isProjectPrelaunch(_ project: Project) -> Bool {
-  switch (project.displayPrelaunch, project.dates.launchedAt, project.prelaunchActivated) {
-  case (.some(true), _, _),
-       (_, _, .some(true)):
+  switch (project.displayPrelaunch, project.prelaunchActivated, project.dates.launchedAt) {
+  // GraphQL requests using ProjectFragment will populate displayPrelaunch and prelaunchActivated
+  case (.some(true), .some(true), _):
     return true
-  case let (_, .some(timeValue), _):
+
+  // V1 requests may not return displayPrelaunch and prelaunchActivated.
+  // But if no launch date is set, we can assume this is a prelaunch project.
+  case let (.none, .none, .some(timeValue)):
     return timeValue <= 0
   default:
     return false
