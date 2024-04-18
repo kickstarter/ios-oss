@@ -114,6 +114,7 @@ internal final class SearchViewContollerTests: TestCase {
         |> Project.lens.photo.full .~ ""
         |> Project.lens.photo.med .~ ""
         |> Project.lens.displayPrelaunch .~ true
+        |> Project.lens.prelaunchActivated .~ true
     }
 
     let discoveryResponse = .template

@@ -39,6 +39,8 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.stats.fundingProgress .~ 0.5
       |> Project.lens.dates.deadline .~ endingInDays
+      |> Project.lens.prelaunchActivated .~ false
+      |> Project.lens.displayPrelaunch .~ false
 
     self.vm.inputs.configureWith(project: project)
 
@@ -58,6 +60,8 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.stats.fundingProgress .~ 1.1
       |> Project.lens.state .~ .successful
+      |> Project.lens.prelaunchActivated .~ false
+      |> Project.lens.displayPrelaunch .~ false
 
     self.vm.inputs.configureWith(project: project)
 
@@ -77,6 +81,8 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.stats.fundingProgress .~ 0.2
       |> Project.lens.state .~ .failed
+      |> Project.lens.prelaunchActivated .~ false
+      |> Project.lens.displayPrelaunch .~ false
 
     self.vm.inputs.configureWith(project: project)
 
@@ -97,6 +103,8 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 1.1
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.prelaunchActivated .~ false
+      |> Project.lens.displayPrelaunch .~ false
 
     self.vm.inputs.configureWith(project: project)
 
@@ -110,10 +118,11 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.savedIconIsHidden.assertValues([false])
   }
 
-  func testProjectData_Prelaunch() {
+  func testProjectData_Prelaunch_Displayed() {
     let project = .template
       |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
+      |> Project.lens.prelaunchActivated .~ true
       |> Project.lens.displayPrelaunch .~ true
       |> Project.lens.personalization.isStarred .~ true
 
@@ -122,5 +131,41 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
 
     self.prelaunchProject.assertValues([true])
+    self.metadataText.assertValues(["Coming soon"])
+  }
+
+  func testProjectData_Prelaunch_ActivatedButNotDisplayed() {
+    let project = .template
+      |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
+      |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
+      |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ false
+      |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.state .~ .successful
+
+    self.prelaunchProject.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.prelaunchProject.assertValues([false])
+    self.metadataText.assertValues(["Successful"])
+  }
+
+  func testProjectData_Prelaunch_DateIsZero() {
+    let project = .template
+      |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
+      |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
+      |> Project.lens.prelaunchActivated .~ nil
+      |> Project.lens.displayPrelaunch .~ nil
+      |> Project.lens.dates.launchedAt .~ 0
+      |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.state .~ .successful
+
+    self.prelaunchProject.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.prelaunchProject.assertValues([true])
+    self.metadataText.assertValues(["Coming soon"])
   }
 }
