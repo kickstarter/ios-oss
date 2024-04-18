@@ -37,7 +37,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     self.isFormValid.assertValues([false])
 
-    self.vm.inputs.email("gina@kickstarter.com", password: "blah")
+    self.vm.inputs.email("user@example.com", password: "password")
 
     self.isFormValid.assertValues([false])
 
@@ -59,7 +59,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     self.isFormValid.assertValues([false])
 
-    self.vm.inputs.facebookToken("204938023948")
+    self.vm.inputs.facebookToken("token")
 
     self.isFormValid.assertValues([false])
 
@@ -78,7 +78,7 @@ final class TwoFactorViewModelTests: TestCase {
 
   func testLogin_withEmailPasswordFlow() {
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+    self.vm.inputs.email("user@example.com", password: "password")
     self.vm.inputs.codeChanged("454545")
     self.vm.inputs.submitPressed()
 
@@ -99,7 +99,7 @@ final class TwoFactorViewModelTests: TestCase {
 
   func testLogin_withFacebookFlow() {
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.facebookToken("293jhapiapdoi")
+    self.vm.inputs.facebookToken("token")
     self.vm.inputs.codeChanged("454545")
 
     self.vm.inputs.submitPressed()
@@ -129,7 +129,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.email("user@example.com", password: "password")
       self.vm.inputs.codeChanged("454545")
       self.vm.inputs.submitPressed()
 
@@ -149,7 +149,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.facebookToken("token")
       self.vm.inputs.codeChanged("454545")
       self.vm.inputs.submitPressed()
 
@@ -169,7 +169,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.email("user@example.com", password: "password")
       self.vm.inputs.codeChanged("454545")
       self.vm.inputs.submitPressed()
 
@@ -189,7 +189,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.facebookToken("token")
       self.vm.inputs.codeChanged("454545")
       self.vm.inputs.submitPressed()
 
@@ -209,7 +209,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resendCodeResponse: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.email("user@example.com", password: "password")
       self.vm.inputs.resendPressed()
 
       self.isLoading.assertValues([true, false])
@@ -228,7 +228,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resendCodeResponse: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.facebookToken("token")
       self.vm.inputs.resendPressed()
 
       self.isLoading.assertValues([true, false])
@@ -247,7 +247,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resendCodeError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
+      self.vm.inputs.email("user@example.com", password: "password")
       self.vm.inputs.resendPressed()
 
       self.isLoading.assertValues([true, false])
@@ -266,7 +266,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resendCodeError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.facebookToken("2934ohhailisa")
+      self.vm.inputs.facebookToken("token")
       self.vm.inputs.resendPressed()
 
       self.isLoading.assertValues([true, false])
