@@ -1,14 +1,12 @@
-query FetchMySavedProjects($first: Int, $after: String) {
-  me {
+query FetchMySavedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+  projects(first: $first, after: $after, starred: true, sort: END_DATE) {
     __typename
-    savedProjects(first: $first, after: $after) {
+    nodes {
       __typename
-      nodes {
-      __typename
-
       availableCardTypes
       backersCount
       category {
+        __typename
         __typename
         id
         name
@@ -29,12 +27,11 @@ query FetchMySavedProjects($first: Int, $after: String) {
       }
       creator {
         __typename
+        __typename
         backings {
           __typename
-
           nodes {
             __typename
-
             errorReason
           }
         }
@@ -94,7 +91,7 @@ query FetchMySavedProjects($first: Int, $after: String) {
           __typename
           totalCount
         }
-        storedCards @include(if: true) {
+        storedCards @include(if: $withStoredCards) {
           __typename
           nodes {
             __typename
@@ -102,6 +99,7 @@ query FetchMySavedProjects($first: Int, $after: String) {
             id
             lastFour
             type
+            stripeCardId
           }
           totalCount
         }
@@ -159,9 +157,9 @@ query FetchMySavedProjects($first: Int, $after: String) {
       }
       isProjectWeLove
       isProjectOfTheDay
-      isInPostCampaignPledgingPhase
       isWatched
       isLaunched
+      isInPostCampaignPledgingPhase
       launchedAt
       location {
         __typename
@@ -181,12 +179,12 @@ query FetchMySavedProjects($first: Int, $after: String) {
         currency
         symbol
       }
+      postCampaignPledgingEnabled
       posts {
         __typename
         totalCount
       }
       prelaunchActivated
-      postCampaignPledgingEnabled
       risks
       sendMetaCapiEvents
       slug
@@ -215,15 +213,14 @@ query FetchMySavedProjects($first: Int, $after: String) {
         }
       }
       watchesCount
-      }
-      pageInfo {
-        __typename
-        hasNextPage
-        endCursor
-        hasPreviousPage
-        startCursor
-      }
-      totalCount
     }
+    pageInfo {
+      __typename
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
   }
 }

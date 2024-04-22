@@ -26,7 +26,7 @@ extension FetchProjectsEnvelope {
 
   static func fetchProjectsEnvelope(from data: GraphAPI.FetchMySavedProjectsQuery.Data)
     -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    guard let projects = data.me?.savedProjects?.nodes?.compactMap({ node -> Project? in
+    guard let projects = data.projects?.nodes?.compactMap({ node -> Project? in
       if let fragment = node?.fragments.projectFragment {
         return Project.project(from: fragment, currentUserChosenCurrency: nil)
       }
@@ -38,9 +38,9 @@ extension FetchProjectsEnvelope {
     let envelope = FetchProjectsEnvelope(
       type: .saved,
       projects: projects,
-      cursor: data.me?.savedProjects?.pageInfo.endCursor,
-      hasNextPage: data.me?.savedProjects?.pageInfo.hasNextPage ?? false,
-      totalCount: data.me?.savedProjects?.totalCount ?? 0
+      cursor: data.projects?.pageInfo.endCursor,
+      hasNextPage: data.projects?.pageInfo.hasNextPage ?? false,
+      totalCount: data.projects?.totalCount ?? 0
     )
 
     return SignalProducer(value: envelope)

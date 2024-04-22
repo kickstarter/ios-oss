@@ -12,7 +12,7 @@ final class FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests: XCTestCase 
     }
 
     XCTAssertEqual(env.projects.count, 4)
-    XCTAssertEqual(env.projects.first?.name, "Moonrise Cafe (home of Heart Cakes)")
+    XCTAssertEqual(env.projects.first?.name, "Zan's Late Pledge Campaign")
     XCTAssertEqual(env.totalCount, 4)
   }
 
