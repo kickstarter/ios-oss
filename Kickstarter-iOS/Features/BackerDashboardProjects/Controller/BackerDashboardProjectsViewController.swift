@@ -42,10 +42,20 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  internal override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  internal override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
 
-    self.viewModel.inputs.viewWillAppear(animated)
+    // The refresh control needs to be on screen when we call beginRefreshing, or else it won't show the spinner.
+    // So this is all done on didAppear instead of willAppear.
+    self.viewModel.inputs.viewDidAppear(animated)
+  }
+
+  internal override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // Refresh control is sensitive to lifecycle methods - see https://stackoverflow.com/questions/24341192/uirefreshcontrol-stuck-after-switching-tabs-in-uitabbarcontroller.
+    // This fixes this issue.
+    self.refreshControl?.endRefreshing()
   }
 
   internal override func bindViewModel() {
