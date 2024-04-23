@@ -20,8 +20,8 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when the view will appear.
-  func viewWillAppear(_ animated: Bool)
+  /// Call when the view did appear.
+  func viewDidAppear(_ animated: Bool)
 
   /// Call when a new row is displayed.
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
@@ -53,7 +53,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let projectsType = projectsTypeAndSort.map(first)
 
     let userUpdatedProjectsCount = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreValues(),
+      self.viewDidAppearProperty.signal.ignoreValues(),
       self.currentUserUpdatedProperty.signal
     )
     .map { _ -> (Int, Int) in
@@ -159,9 +159,9 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.refreshProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty(false)
-  public func viewWillAppear(_ animated: Bool) {
-    self.viewWillAppearProperty.value = animated
+  private let viewDidAppearProperty = MutableProperty(false)
+  public func viewDidAppear(_ animated: Bool) {
+    self.viewDidAppearProperty.value = animated
   }
 
   private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
