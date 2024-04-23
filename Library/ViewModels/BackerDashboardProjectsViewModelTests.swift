@@ -46,7 +46,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
-      self.vm.inputs.viewWillAppear(false)
+      self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 
       self.projects.assertValueCount(0)
@@ -63,7 +63,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateProjectsType.assertValues([.backed])
       self.isRefreshing.assertValues([true, false])
 
-      self.vm.inputs.viewWillAppear(true)
+      self.vm.inputs.viewDidAppear(true)
       self.isRefreshing.assertValues([true, false], "Projects don't refresh.")
 
       self.scheduler.advance()
@@ -80,7 +80,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         currentUser: updatedUser
       ) {
         self.vm.inputs.currentUserUpdated()
-        self.vm.inputs.viewWillAppear(false)
+        self.vm.inputs.viewDidAppear(false)
 
         self.isRefreshing.assertValues([true, false, true])
 
@@ -114,7 +114,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchBackerSavedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .saved, sort: .endingSoon)
-      self.vm.inputs.viewWillAppear(false)
+      self.vm.inputs.viewDidAppear(false)
 
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
@@ -130,7 +130,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
 
-      self.vm.inputs.viewWillAppear(true)
+      self.vm.inputs.viewDidAppear(true)
 
       self.scheduler.advance()
 
@@ -146,7 +146,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
-      self.vm.inputs.viewWillAppear(false)
+      self.vm.inputs.viewDidAppear(false)
 
       self.scheduler.advance()
 
