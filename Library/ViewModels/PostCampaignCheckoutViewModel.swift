@@ -254,12 +254,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.validateCheckoutSuccess = Signal
       .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
-    let validateCheckoutError = Signal
-      .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
-
-    self.showErrorBannerWithMessage = validateCheckoutError
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
-
     // MARK: ApplePay
 
     /*
@@ -270,6 +264,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      3) Present the payment authorization form
      4) Payment authorization form calls applePayContextDidCreatePayment with ApplePay params
      5) Payment authorization form calls paymentAuthorizationDidFinish
+     6) Validate checkout using the checkoutId, payment source id, and payment intent
      */
 
     let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
@@ -324,6 +319,33 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
       .skipNil()
 
+    let validateCheckoutWithApplePay = Signal.combineLatest(
+      newPaymentIntentForApplePay,
+      checkoutId,
+      self.applePayParamsSignal.signal
+    )
+    .takeWhen(self.applePayContextDidCompleteSignal)
+    .switchMap { (clientSecret: String, checkoutId: String, applePayParams: ApplePayParams) in
+      AppEnvironment.current.apiService
+        .validateCheckout(
+          checkoutId: checkoutId,
+          paymentSourceId: applePayParams.paymentMethodId ?? "",
+          paymentIntentClientSecret: clientSecret
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+    let validateCheckoutError = Signal
+      .merge(
+        validateCheckoutExistingCard.errors(),
+        validateCheckoutNewCard.errors(),
+        validateCheckoutWithApplePay.errors()
+      )
+
+    self.showErrorBannerWithMessage = validateCheckoutError
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
     // MARK: CompleteOnSessionCheckout
 
     let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
@@ -345,13 +367,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal.mapConst(true))
-      .takeWhen(self.applePayContextDidCompleteSignal)
+      .combineLatest(newPaymentIntentForApplePay, checkoutId)
+      .takeWhen(validateCheckoutWithApplePay.values())
       .map {
         (
           clientSecret: String,
-          checkoutId: String,
-          _: Bool
+          checkoutId: String
         ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
