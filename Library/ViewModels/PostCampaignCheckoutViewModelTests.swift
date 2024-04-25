@@ -355,6 +355,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
     let completeSessionJsonString = """
     {
       "completeOnSessionCheckout": {
@@ -376,7 +377,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       .Data(jsonString: completeSessionJsonString)
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
-      createPaymentIntentResult: .success(paymentIntent)
+      createPaymentIntentResult: .success(paymentIntent),
+      validateCheckoutResult: .success(validateCheckout)
     )
 
     let project = Project.cosmicSurgery
@@ -407,6 +409,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
       let params = ApplePayParams(
+        paymentMethodId: "Fake Payment Method id",
         paymentInstrumentName: "Fake Instrument",
         paymentNetwork: "Fake Payment Network",
         transactionIdentifier: "Fake transaction identifier",
@@ -418,6 +421,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.processingViewIsHidden.assertLastValue(false)
 
       self.vm.inputs.applePayContextDidComplete()
+
+      self.scheduler.run()
 
       self.checkoutComplete.assertDidEmitValue()
       self.processingViewIsHidden.assertLastValue(true)
