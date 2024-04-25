@@ -415,7 +415,7 @@ enum PostCampaignCheckoutApplePayError: Error {
 extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
   func applePayContext(
     _: StripeApplePay.STPApplePayContext,
-    didCreatePaymentMethod _: StripePayments.STPPaymentMethod,
+    didCreatePaymentMethod paymentMethod: StripePayments.STPPaymentMethod,
     paymentInformation payment: PKPayment,
     completion: @escaping StripeApplePay.STPIntentClientSecretCompletionBlock
   ) {
@@ -440,6 +440,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     let transactionId = payment.token.transactionIdentifier
 
     let params = ApplePayParams(
+      paymentMethodId: paymentMethod.stripeId,
       paymentInstrumentName: paymentDisplayName,
       paymentNetwork: paymentNetworkName,
       transactionIdentifier: transactionId,
