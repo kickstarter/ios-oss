@@ -10741,7 +10741,7 @@
 			repositoryURL = "https://github.com/stripe/stripe-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 23.10.0;
+				minimumVersion = 23.27.1;
 			};
 		};
 		194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */ = {
