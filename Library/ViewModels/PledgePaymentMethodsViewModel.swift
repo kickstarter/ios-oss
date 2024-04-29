@@ -317,11 +317,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         let setupIntentContext = pledgeContext == .latePledge
           ? GraphAPI.StripeIntentContextTypes.postCampaignCheckout
           : GraphAPI.StripeIntentContextTypes.crowdfundingCheckout
-        clientSecretSignal = AppEnvironment.current.apiService
-          .createStripeSetupIntent(
-            input: CreateSetupIntentInput(projectId: project.graphID, context: setupIntentContext)
-          )
-          .map { $0.clientSecret }
+        clientSecretSignal = StripeIntentService.createSetupIntent(
+          for: project.graphID,
+          context: setupIntentContext
+        )
+        .map { $0.clientSecret }
 
       case .paymentIntent:
         assert(
