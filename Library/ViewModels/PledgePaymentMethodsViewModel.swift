@@ -328,13 +328,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           !pledgeTotal.isNaN,
           "Pledge total must be set when using a PaymentIntent. Did you accidentally get here via PledgeViewModel instead of PostCampaignCheckoutViewModel?"
         )
-        clientSecretSignal = AppEnvironment.current.apiService
-          .createPaymentIntentInput(input: CreatePaymentIntentInput(
-            projectId: project.graphID,
-            amountDollars: String(format: "%.2f", pledgeTotal),
-            digitalMarketingAttributed: nil
-          ))
-          .map { $0.clientSecret }
+        clientSecretSignal = StripeIntentService.createPaymentIntent(
+          for: project.graphID,
+          pledgeTotal: pledgeTotal
+        )
+        .map { $0.clientSecret }
       }
 
       return clientSecretSignal

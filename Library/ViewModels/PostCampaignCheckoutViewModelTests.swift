@@ -457,7 +457,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.scheduler.run()
 
       self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
-      self.processingViewIsHidden.assertValues([false, true])
+      self.processingViewIsHidden.assertValues([true, false])
     }
   }
 
