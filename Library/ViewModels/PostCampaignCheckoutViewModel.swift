@@ -45,7 +45,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func termsOfUseTapped(with: HelpType)
   func viewDidLoad()
   func applePayButtonTapped()
-  func applePayContextDidCreatePayment(params: ApplePayParams)
+  func applePayContextDidCreatePayment(with paymentMethodId: String)
   func applePayContextDidComplete()
 }
 
@@ -249,12 +249,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.validateCheckoutSuccess = Signal
       .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
-    let validateCheckoutError = Signal
-      .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
-
-    self.showErrorBannerWithMessage = validateCheckoutError
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
-
     // MARK: ApplePay
 
     /*
@@ -263,8 +257,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      1) Apple pay button tapped
      2) Generate a new payment intent
      3) Present the payment authorization form
-     4) Payment authorization form calls applePayContextDidCreatePayment with ApplePay params
+     4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
      5) Payment authorization form calls paymentAuthorizationDidFinish
+     6) Validate checkout using the checkoutId, payment source id, and payment intent
      */
 
     let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
@@ -313,6 +308,33 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
       .skipNil()
 
+    let validateCheckoutWithApplePay = Signal.combineLatest(
+      newPaymentIntentForApplePay,
+      checkoutId,
+      self.applePayPaymentMethodIdSignal.signal
+    )
+    .takeWhen(self.applePayContextDidCompleteSignal)
+    .switchMap { (clientSecret: String, checkoutId: String, paymentMethodId: String) in
+      AppEnvironment.current.apiService
+        .validateCheckout(
+          checkoutId: checkoutId,
+          paymentSourceId: paymentMethodId,
+          paymentIntentClientSecret: clientSecret
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+    let validateCheckoutError = Signal
+      .merge(
+        validateCheckoutExistingCard.errors(),
+        validateCheckoutNewCard.errors(),
+        validateCheckoutWithApplePay.errors()
+      )
+
+    self.showErrorBannerWithMessage = validateCheckoutError
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
     // MARK: CompleteOnSessionCheckout
 
     let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
@@ -334,13 +356,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId, self.applePayParamsSignal.mapConst(true))
-      .takeWhen(self.applePayContextDidCompleteSignal)
+      .combineLatest(newPaymentIntentForApplePay, checkoutId)
+      .takeWhen(validateCheckoutWithApplePay.values())
       .map {
         (
           clientSecret: String,
-          checkoutId: String,
-          _: Bool
+          checkoutId: String
         ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
@@ -539,9 +560,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.applePayButtonTappedObserver.send(value: ())
   }
 
-  private let (applePayParamsSignal, applePayParamsObserver) = Signal<ApplePayParams, Never>.pipe()
-  public func applePayContextDidCreatePayment(params: ApplePayParams) {
-    self.applePayParamsObserver.send(value: params)
+  private let (applePayPaymentMethodIdSignal, applePayPaymentMethodIdObserver) = Signal<String, Never>.pipe()
+  public func applePayContextDidCreatePayment(with paymentMethodId: String) {
+    self.applePayPaymentMethodIdObserver.send(value: paymentMethodId)
   }
 
   private let (applePayContextDidCompleteSignal, applePayContextDidCompleteObserver)
