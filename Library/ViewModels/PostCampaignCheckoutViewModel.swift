@@ -45,7 +45,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func termsOfUseTapped(with: HelpType)
   func viewDidLoad()
   func applePayButtonTapped()
-  func applePayContextDidCreatePayment(params: ApplePayParams)
+  func applePayContextDidCreatePayment(with paymentMethodId: String)
   func applePayContextDidComplete()
 }
 
@@ -262,7 +262,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      1) Apple pay button tapped
      2) Generate a new payment intent
      3) Present the payment authorization form
-     4) Payment authorization form calls applePayContextDidCreatePayment with ApplePay params
+     4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
      5) Payment authorization form calls paymentAuthorizationDidFinish
      6) Validate checkout using the checkoutId, payment source id, and payment intent
      */
@@ -322,14 +322,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let validateCheckoutWithApplePay = Signal.combineLatest(
       newPaymentIntentForApplePay,
       checkoutId,
-      self.applePayParamsSignal.signal
+      self.applePayPaymentMethodIdSignal.signal
     )
     .takeWhen(self.applePayContextDidCompleteSignal)
-    .switchMap { (clientSecret: String, checkoutId: String, applePayParams: ApplePayParams) in
+    .switchMap { (clientSecret: String, checkoutId: String, paymentMethodId: String) in
       AppEnvironment.current.apiService
         .validateCheckout(
           checkoutId: checkoutId,
-          paymentSourceId: applePayParams.paymentMethodId ?? "",
+          paymentSourceId: paymentMethodId,
           paymentIntentClientSecret: clientSecret
         )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -571,9 +571,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.applePayButtonTappedObserver.send(value: ())
   }
 
-  private let (applePayParamsSignal, applePayParamsObserver) = Signal<ApplePayParams, Never>.pipe()
-  public func applePayContextDidCreatePayment(params: ApplePayParams) {
-    self.applePayParamsObserver.send(value: params)
+  private let (applePayPaymentMethodIdSignal, applePayPaymentMethodIdObserver) = Signal<String, Never>.pipe()
+  public func applePayContextDidCreatePayment(with paymentMethodId: String) {
+    self.applePayPaymentMethodIdObserver.send(value: paymentMethodId)
   }
 
   private let (applePayContextDidCompleteSignal, applePayContextDidCompleteObserver)

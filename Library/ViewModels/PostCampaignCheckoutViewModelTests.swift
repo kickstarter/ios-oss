@@ -408,14 +408,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.processingViewIsHidden.assertLastValue(false)
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
-      let params = ApplePayParams(
-        paymentMethodId: "Fake Payment Method id",
-        paymentInstrumentName: "Fake Instrument",
-        paymentNetwork: "Fake Payment Network",
-        transactionIdentifier: "Fake transaction identifier",
-        token: "tok_abc123def"
-      )
-      self.vm.inputs.applePayContextDidCreatePayment(params: params)
+      self.vm.inputs.applePayContextDidCreatePayment(with: "Fake Payment Method id")
 
       self.checkoutComplete.assertDidNotEmitValue()
       self.processingViewIsHidden.assertLastValue(false)

@@ -497,7 +497,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map { paymentData, token in
       (
-        nil,
         paymentData.displayName,
         paymentData.network,
         paymentData.transactionIdentifier,

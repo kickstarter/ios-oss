@@ -416,7 +416,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
   func applePayContext(
     _: StripeApplePay.STPApplePayContext,
     didCreatePaymentMethod paymentMethod: StripePayments.STPPaymentMethod,
-    paymentInformation payment: PKPayment,
+    paymentInformation _: PKPayment,
     completion: @escaping StripeApplePay.STPIntentClientSecretCompletionBlock
   ) {
     guard let paymentIntentClientSecret = self.applePayPaymentIntent else {
@@ -427,29 +427,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
       return
     }
 
-    guard let paymentDisplayName = payment.token.paymentMethod.displayName,
-          let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
-      completion(
-        nil,
-        PostCampaignCheckoutApplePayError
-          .missingPaymentMethodInfo("Unable to retrieve payment method information from ApplePay")
-      )
-      return
-    }
-
-    let transactionId = payment.token.transactionIdentifier
-
-    let params = ApplePayParams(
-      paymentMethodId: paymentMethod.stripeId,
-      paymentInstrumentName: paymentDisplayName,
-      paymentNetwork: paymentNetworkName,
-      transactionIdentifier: transactionId,
-      /* Stripe tokens are incompatible with PaymentIntent-based payments and lead to a Stripe error.
-        We may be able to clean this up in the future. */
-      token: ""
-    )
-
-    self.viewModel.inputs.applePayContextDidCreatePayment(params: params)
+    self.viewModel.inputs.applePayContextDidCreatePayment(with: paymentMethod.stripeId)
     completion(paymentIntentClientSecret, nil)
   }
 
