@@ -106,9 +106,9 @@ public enum GraphAPI {
     public var graphQLMap: GraphQLMap
 
     /// - Parameters:
-    ///   - checkoutId: The graphql relay id of the checkout
-    ///   - paymentIntentClientSecret: The stripe payment intent client secret
-    ///   - paymentSourceId: The rosie payment source id when using a saved source (optional)
+    ///   - checkoutId: The graphql relay id of the checkout (base64 encoded)
+    ///   - paymentIntentClientSecret: the client_secret returned by createPaymentIntent, starts with `pi_` (the same secret passed to stripe)
+    ///   - paymentSourceId: Kickstarter internal payment source id. Expects a number (not the stripe id starting with `pm_`). Pass in when using a saved card (optional)
     ///   - paymentSourceReusable: If the payment source can be reused for future payments (optional)
     ///   - applePay: Apple pay attributes for creating a payment source (optional)
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
@@ -116,7 +116,7 @@ public enum GraphAPI {
       graphQLMap = ["checkoutId": checkoutId, "paymentIntentClientSecret": paymentIntentClientSecret, "paymentSourceId": paymentSourceId, "paymentSourceReusable": paymentSourceReusable, "applePay": applePay, "clientMutationId": clientMutationId]
     }
 
-    /// The graphql relay id of the checkout
+    /// The graphql relay id of the checkout (base64 encoded)
     public var checkoutId: GraphQLID {
       get {
         return graphQLMap["checkoutId"] as! GraphQLID
@@ -126,7 +126,7 @@ public enum GraphAPI {
       }
     }
 
-    /// The stripe payment intent client secret
+    /// the client_secret returned by createPaymentIntent, starts with `pi_` (the same secret passed to stripe)
     public var paymentIntentClientSecret: String {
       get {
         return graphQLMap["paymentIntentClientSecret"] as! String
@@ -136,7 +136,7 @@ public enum GraphAPI {
       }
     }
 
-    /// The rosie payment source id when using a saved source (optional)
+    /// Kickstarter internal payment source id. Expects a number (not the stripe id starting with `pm_`). Pass in when using a saved card (optional)
     public var paymentSourceId: Swift.Optional<String?> {
       get {
         return graphQLMap["paymentSourceId"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
@@ -871,9 +871,11 @@ public enum GraphAPI {
     ///   - amount: total amount to be paid (eg. 10.55)
     ///   - paymentIntentContext: Context in which this stripe intent is created
     ///   - digitalMarketingAttributed: if the payment is attributed to digital marketing (default: false)
+    ///   - backingId: Current backing id for tracking purposes
+    ///   - checkoutId: Current checkout id for tracking purposes
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, amount: String, paymentIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "amount": amount, "paymentIntentContext": paymentIntentContext, "digitalMarketingAttributed": digitalMarketingAttributed, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, amount: String, paymentIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, backingId: Swift.Optional<GraphQLID?> = nil, checkoutId: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "amount": amount, "paymentIntentContext": paymentIntentContext, "digitalMarketingAttributed": digitalMarketingAttributed, "backingId": backingId, "checkoutId": checkoutId, "clientMutationId": clientMutationId]
     }
 
     /// kickstarter project id
@@ -913,6 +915,26 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "digitalMarketingAttributed")
+      }
+    }
+
+    /// Current backing id for tracking purposes
+    public var backingId: Swift.Optional<GraphQLID?> {
+      get {
+        return graphQLMap["backingId"] as? Swift.Optional<GraphQLID?> ?? Swift.Optional<GraphQLID?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "backingId")
+      }
+    }
+
+    /// Current checkout id for tracking purposes
+    public var checkoutId: Swift.Optional<GraphQLID?> {
+      get {
+        return graphQLMap["checkoutId"] as? Swift.Optional<GraphQLID?> ?? Swift.Optional<GraphQLID?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "checkoutId")
       }
     }
 
@@ -12101,6 +12123,7 @@ public enum GraphAPI {
           ) {
             __typename
             valid
+            errorTypes
             messages
           }
         }
@@ -12198,6 +12221,7 @@ public enum GraphAPI {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("valid", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("errorTypes", type: .list(.nonNull(.scalar(String.self)))),
               GraphQLField("messages", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
             ]
           }
@@ -12208,8 +12232,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(valid: Bool, messages: [String]) {
-            self.init(unsafeResultMap: ["__typename": "Validation", "valid": valid, "messages": messages])
+          public init(valid: Bool, errorTypes: [String]? = nil, messages: [String]) {
+            self.init(unsafeResultMap: ["__typename": "Validation", "valid": valid, "errorTypes": errorTypes, "messages": messages])
           }
 
           public var __typename: String {
@@ -12228,6 +12252,16 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "valid")
+            }
+          }
+
+          /// Error keys for validation error, if any
+          public var errorTypes: [String]? {
+            get {
+              return resultMap["errorTypes"] as? [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "errorTypes")
             }
           }
 

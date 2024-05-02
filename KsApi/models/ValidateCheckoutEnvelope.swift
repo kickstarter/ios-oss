@@ -3,6 +3,7 @@ import ReactiveSwift
 
 public struct ValidateCheckoutEnvelope: Decodable {
   public let valid: Bool
+  public let errorTypes: [String]
   public let messages: [String]
 }
 
@@ -25,9 +26,10 @@ extension ValidateCheckoutEnvelope {
       .Data
   ) -> ValidateCheckoutEnvelope? {
     guard let valid = data.checkout?.isValidForOnSessionCheckout.valid,
+          let errorTypes = data.checkout?.isValidForOnSessionCheckout.errorTypes,
           let messages = data.checkout?.isValidForOnSessionCheckout.messages
     else { return nil }
 
-    return ValidateCheckoutEnvelope(valid: valid, messages: messages)
+    return ValidateCheckoutEnvelope(valid: valid, errorTypes: errorTypes, messages: messages)
   }
 }
