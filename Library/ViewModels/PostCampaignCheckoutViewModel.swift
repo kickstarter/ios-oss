@@ -344,7 +344,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       )
 
     self.showErrorBannerWithMessage = validateCheckoutError
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
+      .map { $0.errorMessages.first ?? Strings.Something_went_wrong_please_try_again() }
 
     // MARK: CompleteOnSessionCheckout
 

@@ -355,7 +355,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope()
     let completeSessionJsonString = """
     {
       "completeOnSessionCheckout": {
@@ -461,7 +461,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   func testPledge_completesCheckoutFlow() {
     // Mock data for API requests
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope()
     let completeSessionJsonString = """
     {
       "completeOnSessionCheckout": {
@@ -580,7 +580,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   func testCheckoutTerminated_cancelsCheckoutFlow() {
     // Mock data for API requests
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope()
     let mockService = MockService(
       validateCheckoutResult: .success(validateCheckout)
     )
