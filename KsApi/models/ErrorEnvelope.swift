@@ -137,9 +137,9 @@ public struct ErrorEnvelope {
   }
 
   /**
-   A error that the current pledge checkout is invalid.
+   An error that that occurs when the current checkout is invalid.
 
-   - parameter message: The error message returned from our server..
+   - parameter message: The error message returned from the server.
 
    - returns: An error envelope that describes why the validation failed.
    */
