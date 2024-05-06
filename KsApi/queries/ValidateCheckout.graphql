@@ -2,7 +2,6 @@ query ValidateCheckout($checkoutId: ID!, $paymentSourceId: String!, $paymentInte
   checkout(id: $checkoutId) {
     isValidForOnSessionCheckout(stripePaymentMethodId: $paymentSourceId, paymentIntentClientSecret: $paymentIntentClientSecret) {
       valid
-      errorTypes
       messages
     }
   }
