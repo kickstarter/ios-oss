@@ -39,6 +39,7 @@ extension XCTestCase {
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    stripeIntentService: StripeIntentServiceType = AppEnvironment.current.stripeIntentService,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     uuidType: UUIDType.Type = AppEnvironment.current.uuidType,
@@ -71,6 +72,7 @@ extension XCTestCase {
         pushRegistrationType: pushRegistrationType,
         remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
+        stripeIntentService: stripeIntentService,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
         uuidType: uuidType

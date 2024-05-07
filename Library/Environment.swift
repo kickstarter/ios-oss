@@ -103,6 +103,9 @@ public struct Environment {
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateScheduler
 
+  /// A service that creates Stripe Payment Intents and Setup Intents.
+  public let stripeIntentService: StripeIntentServiceType
+
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
 
@@ -142,6 +145,7 @@ public struct Environment {
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     remoteConfigClient: RemoteConfigClientType? = nil,
     scheduler: DateScheduler = QueueScheduler.main,
+    stripeIntentService: StripeIntentServiceType = StripeIntentService(),
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard,
     uuidType: UUIDType.Type = UUID.self
@@ -175,6 +179,7 @@ public struct Environment {
     self.reachability = reachability
     self.remoteConfigClient = remoteConfigClient
     self.scheduler = scheduler
+    self.stripeIntentService = stripeIntentService
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
     self.uuidType = uuidType

@@ -164,8 +164,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
 
-        return StripeIntentService.createPaymentIntent(for: projectId, pledgeTotal: pledgeTotal)
-          .materialize()
+        return AppEnvironment.current.stripeIntentService.createPaymentIntent(
+          for: projectId,
+          pledgeTotal: pledgeTotal
+        )
+        .materialize()
       }
 
     let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
@@ -270,8 +273,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           let projectId = initialData.project.graphID
           let pledgeTotal = initialData.total
 
-          return StripeIntentService.createPaymentIntent(for: projectId, pledgeTotal: pledgeTotal)
-            .materialize()
+          return AppEnvironment.current.stripeIntentService.createPaymentIntent(
+            for: projectId,
+            pledgeTotal: pledgeTotal
+          )
+          .materialize()
         }
 
     let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay
