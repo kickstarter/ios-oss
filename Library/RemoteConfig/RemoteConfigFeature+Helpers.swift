@@ -44,3 +44,7 @@ public func featureLoginWithOAuthEnabled() -> Bool {
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
+
+public func featureStripeLinkEnabled() -> Bool {
+  featureEnabled(feature: .stripeLinkEnabled)
+}
