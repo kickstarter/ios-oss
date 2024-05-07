@@ -292,6 +292,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func formatLinkLabel(_ label: String) -> String? {
     // Link gives us a label like "Visa 1234"; reformat it to match our UI
     do {
+      // Find 4 digits in the string
       let regex = try NSRegularExpression(pattern: "\\d{4}")
       let matches = regex.matches(
         in: label,
