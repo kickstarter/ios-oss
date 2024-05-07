@@ -1,7 +1,7 @@
 import Foundation
 import ReactiveSwift
 
-public struct ClientSecretEnvelope: Decodable {
+public struct ClientSecretEnvelope: Decodable, Equatable {
   public let clientSecret: String
 }
 
