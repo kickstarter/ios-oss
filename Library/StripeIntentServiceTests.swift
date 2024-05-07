@@ -16,7 +16,9 @@ final class StripeIntentServiceTests: XCTestCase {
 
     _ = mockStripeIntentService.createPaymentIntent(for: "test-project", pledgeTotal: 10)
 
-    XCTAssertEqual([testPaymentIntentEnvelope], mockStripeIntentService.requestedPaymentIntentEnvelopes)
+    let requestedEnvelopes = mockStripeIntentService.intentRequests.map { $0.paymentIntentEnvelope }
+
+    XCTAssertEqual([testPaymentIntentEnvelope], requestedEnvelopes)
     XCTAssertEqual(expectedData, mockStripeIntentService.intentRequests)
   }
 
@@ -33,7 +35,9 @@ final class StripeIntentServiceTests: XCTestCase {
 
     _ = mockStripeIntentService.createSetupIntent(for: "test-project", context: .postCampaignCheckout)
 
-    XCTAssertEqual([testSetupIntentEnvelope], mockStripeIntentService.requestedSetupIntentEnvelopes)
+    let requestedEnvelopes = mockStripeIntentService.intentRequests.map { $0.clientSeretEnvelope }
+
+    XCTAssertEqual([testSetupIntentEnvelope], requestedEnvelopes)
     XCTAssertEqual(expectedData, mockStripeIntentService.intentRequests)
   }
 }

@@ -13,14 +13,6 @@ public struct StripeIntentRequestTestData: Equatable {
 public class MockStripeIntentService: StripeIntentServiceType {
   public private(set) var intentRequests = [StripeIntentRequestTestData]()
 
-  var requestedPaymentIntentEnvelopes: [PaymentIntentEnvelope?] {
-    self.intentRequests.map { $0.paymentIntentEnvelope }
-  }
-
-  var requestedSetupIntentEnvelopes: [ClientSecretEnvelope?] {
-    self.intentRequests.map { $0.clientSeretEnvelope }
-  }
-
   public init() {}
 
   public func createPaymentIntent(
