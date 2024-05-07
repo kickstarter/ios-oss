@@ -282,37 +282,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
       return nil
     }
 
-    let formattedLabel = self.formatLinkLabel(paymentMethod.label)
+    let formattedLabel = KSRStripeLink.formatLinkLabel(paymentMethod.label)
     return PaymentSheetPaymentOptionsDisplayData(
       image: paymentMethod.image,
       label: formattedLabel ?? paymentMethod.label
     )
-  }
-
-  private func formatLinkLabel(_ label: String) -> String? {
-    // Link gives us a label like "Visa 1234"; reformat it to match our UI
-    do {
-      // Find 4 digits in the string
-      let regex = try NSRegularExpression(pattern: "\\d{4}")
-      let matches = regex.matches(
-        in: label,
-        range: NSRange(location: 0, length: label.count)
-      )
-
-      guard let match = matches.first else {
-        return nil
-      }
-
-      guard let range = Range(match.range, in: label) else {
-        return nil
-      }
-
-      let lastFour = label[range]
-      return "•••• \(lastFour)"
-
-    } catch {
-      return nil
-    }
   }
 
   private func updateAddNewPaymentMethodButtonLoading(state: Bool) {
