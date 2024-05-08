@@ -229,6 +229,7 @@ public final class KSRAnalytics {
     case contactCreator
     case updatePledge
     case viewRewards
+    case trigger3DSFlow
 
     var trackingString: String {
       switch self {
@@ -238,6 +239,7 @@ public final class KSRAnalytics {
       case .contactCreator: return "contact_creator"
       case .updatePledge: return "update_pledge"
       case .viewRewards: return "view_rewards"
+      case .trigger3DSFlow: return "trigger_3DS"
       }
     }
   }

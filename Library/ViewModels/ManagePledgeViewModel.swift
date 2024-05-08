@@ -15,6 +15,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
   case contactCreator
   case cancelPledge
   case viewRewards
+  case trigger3DSFlow
 }
 
 public protocol ManagePledgeViewModelInputs {
@@ -39,6 +40,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<PledgeViewData, Never> { get }
+  var goToTrigger3DSFlow: Signal<String, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -285,6 +287,17 @@ public final class ManagePledgeViewModel:
       }
       .map(pledgeViewData)
 
+    self.goToTrigger3DSFlow = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .trigger3DSFlow })
+      .switchMap { project in
+        let input = CreateSetupIntentInput(projectId: project.graphID, context: .crowdfundingCheckout)
+        return AppEnvironment.current.apiService.createStripeSetupIntent(input: input).materialize()
+      }
+      .values()
+      .map { (envelope: ClientSecretEnvelope) -> String in
+        envelope.clientSecret
+      }
+
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,
       backing.skip(first: 1).mapConst(nil)
@@ -398,6 +411,7 @@ public final class ManagePledgeViewModel:
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<PledgeViewData, Never>
+  public let goToTrigger3DSFlow: Signal<String, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
@@ -493,6 +507,7 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .contactCreator: return .contactCreator
   case .updatePledge: return .updatePledge
   case .viewRewards: return .viewRewards
+  case .trigger3DSFlow: return .trigger3DSFlow
   }
 }
 

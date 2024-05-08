@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 protocol ManagePledgeViewControllerDelegate: AnyObject {
@@ -10,7 +11,12 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
   )
 }
 
-final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting,
+  STPAuthenticationContext {
+  func authenticationPresentingViewController() -> UIViewController {
+    return self
+  }
+
   weak var delegate: ManagePledgeViewControllerDelegate?
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
@@ -300,6 +306,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToCancelPledge(with: data)
       }
 
+    self.viewModel.outputs.goToTrigger3DSFlow
+      .observeForControllerAction()
+      .observeValues { [weak self] data in
+        self?.trigger3DSFlow(data)
+      }
+
     self.viewModel.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observeForUI()
       .observeValues { [weak self] message in
@@ -468,6 +480,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         title = Strings.Cancel_pledge()
       case .viewRewards:
         title = Strings.View_rewards()
+      case .trigger3DSFlow:
+        title = "Trigger 3DS Flow"
       }
 
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
@@ -491,6 +505,15 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   // MARK: - Functions
+
+  private func trigger3DSFlow(_ clientSecret: String) {
+    STPAPIClient.shared.publishableKey = Secrets.StripePublishableKey.staging
+    let params = STPSetupIntentConfirmParams(clientSecret: clientSecret)
+    params.paymentMethodID = "pm_card_authenticationRequired"
+    STPPaymentHandler.shared().confirmSetupIntent(params, with: self) { _, _, _ in
+      print("did the thing?")
+    }
+  }
 
   private func goToRewards(_ project: Project) {
     let vc = RewardsCollectionViewController.instantiate(
