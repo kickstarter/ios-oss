@@ -72,6 +72,12 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryCell.self)
   }
 
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+
+    self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
+  }
+
   private func setupConstraints() {
     let tableViewContainerHeightConstraint = self.tableViewContainer.heightAnchor
       .constraint(equalToConstant: 0)

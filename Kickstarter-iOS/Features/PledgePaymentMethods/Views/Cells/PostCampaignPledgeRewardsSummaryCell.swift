@@ -34,8 +34,6 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     self.selectionStyle = .none
     self.separatorInset = UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 
-    self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
-
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
     _ = self.rootStackView
@@ -43,6 +41,9 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> titleLabelStyle
+
+    self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   // MARK: - View model
@@ -76,6 +77,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     _ = ([self.titleLabel, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
+    super.layoutSubviews()
+  }
 }
 
 // MARK: - Styles
@@ -91,7 +98,7 @@ private let titleLabelStyle: LabelStyle = { label in
 private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .top)
   let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
   let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
   return { (stackView: UIStackView) in
