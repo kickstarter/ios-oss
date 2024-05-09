@@ -74,8 +74,11 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       .map { request, _ in request }
 
     let redirectAfterPostRequest = requestAndNavigationType
-      .filter { request, navigationType in
-        isUnpreparedSurvey(request: request) && navigationType == .other
+      .filter { request, _ -> Bool in
+        if case (.project(_, .surveyResponse, _))? = Navigation.match(request) {
+          return true
+        }
+        return false
       }
       .map { request, _ in request }
 

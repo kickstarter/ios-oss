@@ -48,6 +48,7 @@ public enum Navigation: Equatable {
     case updates
     case update(Int, Navigation.Project.Update)
     case survey(Int)
+    case surveyResponse
 
     public enum Checkout: Equatable {
       case thanks(racing: Bool?)
@@ -131,6 +132,7 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/search": search,
   "/signup": signup,
   "/projects/:creator_param/:project_param": project,
+  "/projects/:creator_param/:project_param/backing/survey_responses": surveyResponse,
   "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
@@ -291,6 +293,15 @@ private func project(_ params: RouteParamsDecoded) -> Navigation? {
   } else if let projectParam = params.projectParam() {
     let refInfo = refInfoFromParams(params)
     return Navigation.project(projectParam, .root, refInfo: refInfo)
+  }
+
+  return nil
+}
+
+private func surveyResponse(_ params: RouteParamsDecoded) -> Navigation? {
+  if let projectParam = params.projectParam() {
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .surveyResponse, refInfo: refInfo)
   }
 
   return nil
