@@ -511,7 +511,6 @@
 		60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F542BE003A60052A829 /* StripeIntentService.swift */; };
-		60A80F602BEA82020052A829 /* StripeIntentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F5F2BEA82020052A829 /* StripeIntentServiceTests.swift */; };
 		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
 		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
@@ -2124,7 +2123,6 @@
 		60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		60A80F542BE003A60052A829 /* StripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentService.swift; sourceTree = "<group>"; };
-		60A80F5F2BEA82020052A829 /* StripeIntentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentServiceTests.swift; sourceTree = "<group>"; };
 		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
 		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
@@ -6208,7 +6206,6 @@
 				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				60A80F542BE003A60052A829 /* StripeIntentService.swift */,
-				60A80F5F2BEA82020052A829 /* StripeIntentServiceTests.swift */,
 				8AD48632235939AF00A1463E /* StripeTypes.swift */,
 				6080DA3E2AB366550088EF3D /* SwiftUI+Extensions */,
 				94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */,
@@ -8041,7 +8038,6 @@
 				60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
-				60A80F602BEA82020052A829 /* StripeIntentServiceTests.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */,
