@@ -8,7 +8,10 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class PledgePaymentMethodsViewModelTests: TestCase {
-  private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
+  private var vm: PledgePaymentMethodsViewModelType =
+    PledgePaymentMethodsViewModel(stripeIntentService: MockStripeIntentService())
+  private var mockStripeIntentService = MockStripeIntentService()
+
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
 
   private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
@@ -32,6 +35,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = PledgePaymentMethodsViewModel(stripeIntentService: self.mockStripeIntentService)
 
     self.vm.outputs.notifyDelegateCreditCardSelected
       .observe(self.notifyDelegateCreditCardSelected.observer)
@@ -1018,6 +1023,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1053,6 +1060,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1088,6 +1097,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1123,6 +1134,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1158,6 +1171,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1285,6 +1300,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.addNewCardLoadingState.assertValues([true, false])
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1316,6 +1334,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.addNewCardLoadingState.assertValues([false, true, true, true])
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -1407,6 +1428,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       }
 
       XCTAssertTrue(allowedDelayedPaymentMethods)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
