@@ -1,7 +1,7 @@
 import Foundation
 import ReactiveSwift
 
-public struct PaymentIntentEnvelope: Decodable, Equatable {
+public struct PaymentIntentEnvelope: Decodable {
   public let clientSecret: String
 }
 
