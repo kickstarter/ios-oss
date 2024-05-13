@@ -2,16 +2,9 @@
 @testable import Library
 import ReactiveSwift
 
-public struct StripeIntentRequestTestData: Equatable {
-  let projectId: String?
-  let pledgeTotal: Double?
-  let paymentIntentEnvelope: PaymentIntentEnvelope?
-  let context: GraphAPI.StripeIntentContextTypes?
-  let clientSeretEnvelope: ClientSecretEnvelope?
-}
-
 public class MockStripeIntentService: StripeIntentServiceType {
-  public private(set) var intentRequests = [StripeIntentRequestTestData]()
+  public private(set) var setupIntentRequests: Int = 0
+  public private(set) var paymentIntentRequests: Int = 0
 
   public init() {}
 
@@ -19,33 +12,35 @@ public class MockStripeIntentService: StripeIntentServiceType {
     for projectId: String,
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
-    let paymentIntentEnvelope = PaymentIntentEnvelope(clientSecret: "test")
+    assert(
+      AppEnvironment.current.apiService as? MockService != nil,
+      "apiService should be a Mock when testing"
+    )
 
-    self.intentRequests.append(StripeIntentRequestTestData(
-      projectId: projectId,
-      pledgeTotal: pledgeTotal,
-      paymentIntentEnvelope: paymentIntentEnvelope,
-      context: nil,
-      clientSeretEnvelope: nil
-    ))
+    self.paymentIntentRequests += 1
 
-    return SignalProducer(value: paymentIntentEnvelope)
+    return AppEnvironment.current.apiService
+      .createPaymentIntentInput(input: CreatePaymentIntentInput(
+        projectId: projectId,
+        amountDollars: String(format: "%.2f", pledgeTotal),
+        digitalMarketingAttributed: nil
+      ))
   }
 
   public func createSetupIntent(
     for projectId: String?,
     context: GraphAPI.StripeIntentContextTypes
   ) -> SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
-    let clientSecretEnvelope = ClientSecretEnvelope(clientSecret: "test")
+    assert(
+      AppEnvironment.current.apiService as? MockService != nil,
+      "apiService should be a Mock when testing"
+    )
 
-    self.intentRequests.append(StripeIntentRequestTestData(
-      projectId: projectId,
-      pledgeTotal: nil,
-      paymentIntentEnvelope: nil,
-      context: context,
-      clientSeretEnvelope: clientSecretEnvelope
-    ))
+    self.setupIntentRequests += 1
 
-    return SignalProducer(value: clientSecretEnvelope)
+    return AppEnvironment.current.apiService
+      .createStripeSetupIntent(
+        input: CreateSetupIntentInput(projectId: projectId, context: context)
+      )
   }
 }
