@@ -155,7 +155,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     }
   }
 
-  func testMultipleSurveys_NeedsFacebookReconnect() {
+  func testMultipleSurveys() {
     let launch = .template
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (
