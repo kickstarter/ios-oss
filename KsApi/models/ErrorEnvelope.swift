@@ -143,9 +143,9 @@ public struct ErrorEnvelope {
 
    - returns: An error envelope that describes why the validation failed.
    */
-  internal static func validateCheckoutError(_ message: String) -> ErrorEnvelope {
+  internal static func validateCheckoutError(_ message: [String]) -> ErrorEnvelope {
     return ErrorEnvelope(
-      errorMessages: [message],
+      errorMessages: message,
       ksrCode: .ValidateCheckoutError,
       httpCode: 200,
       exception: nil

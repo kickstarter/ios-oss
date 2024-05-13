@@ -15,7 +15,7 @@ extension ValidateCheckoutEnvelope {
     }
 
     guard data.checkout?.isValidForOnSessionCheckout.valid == true else {
-      return SignalProducer(error: .validateCheckoutError(envelope.messages.first ?? ""))
+      return SignalProducer(error: .validateCheckoutError(envelope.messages))
     }
 
     return SignalProducer(value: envelope)
