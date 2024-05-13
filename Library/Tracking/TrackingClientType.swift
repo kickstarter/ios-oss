@@ -5,5 +5,5 @@ public protocol TrackingClientType {
    - parameter event:      Name of the event.
    - parameter properties: Dictionary of properties associated with event.
    */
-  func track(_ event: String, properties: [String: Any]?)
+  func track(name: String, properties: [String: Any]?)
 }

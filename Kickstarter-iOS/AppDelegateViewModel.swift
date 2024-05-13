@@ -1,9 +1,11 @@
-import AppboyKit
+import BrazeKit
+import BrazeUI
 import KsApi
 import Library
 import Prelude
 import ReactiveSwift
 import UserNotifications
+import UIKit
 
 public struct AppCenterConfigData: Equatable {
   public let appSecret: String
@@ -50,7 +52,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
   /// Call when the Braze SDK will display an in-app message, return a display choice.
-  func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice
+  func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> BrazeInAppMessageUI.DisplayChoice
 
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -737,7 +739,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
       .skipNil()
-      .map { _ in .displayInAppMessageNow }
+      .map { _ in .now }
 
     self.requestATTrackingAuthorizationStatus = Signal
       .combineLatest(
@@ -802,8 +804,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
   private let brazeWillDisplayInAppMessageProperty = MutableProperty<BrazeInAppMessageType?>(nil)
   private let brazeWillDisplayInAppMessageReturnProperty
-    = MutableProperty<ABKInAppMessageDisplayChoice>(.discardInAppMessage)
-  public func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice {
+    = MutableProperty<BrazeInAppMessageUI.DisplayChoice>(.discard)
+  public func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> BrazeInAppMessageUI.DisplayChoice {
     self.brazeWillDisplayInAppMessageProperty.value = message
     return self.brazeWillDisplayInAppMessageReturnProperty.value
   }

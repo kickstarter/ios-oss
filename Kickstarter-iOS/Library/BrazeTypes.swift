@@ -1,15 +1,16 @@
-import AppboyKit
-import AppboySegment
+import BrazeKit
+import BrazeUI
+import SegmentBrazeUI
 import Foundation
 
-// MARK: - BrazeInAppMessageType
+//// MARK: - BrazeInAppMessageType
 
 public protocol BrazeInAppMessageType {}
 
-extension ABKInAppMessage: BrazeInAppMessageType {}
+extension Braze.InAppMessage: BrazeInAppMessageType {}
 
 // MARK: - AppboyType
 
-public protocol AppboyType {}
-
-extension SEGAppboyHelper: AppboyType {}
+//public protocol AppboyType {}
+//
+//extension SEGAppboyHelper: AppboyType {}

@@ -1,4 +1,4 @@
-import AppboyKit
+import BrazeKit
 import Library
 import UIKit
 
@@ -51,10 +51,10 @@ public func logoutAndDismiss(
 
 // MARK: - Braze
 
-public func userNotificationCenterDidReceiveResponse(
-  appBoy: AppboyType?,
-  isNotNil: () -> (),
-  isNil: () -> ()
-) {
-  appBoy == nil ? isNil() : isNotNil()
-}
+//public func userNotificationCenterDidReceiveResponse(
+//  appBoy: AppboyType?,
+//  isNotNil: () -> (),
+//  isNil: () -> ()
+//) {
+//  appBoy == nil ? isNil() : isNotNil()
+//}

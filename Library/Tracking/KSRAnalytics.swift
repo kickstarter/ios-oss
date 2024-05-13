@@ -1,4 +1,4 @@
-import AppboySegment
+import SegmentBrazeUI
 import KsApi
 import PassKit
 import Prelude
@@ -536,7 +536,7 @@ public final class KSRAnalytics {
 
     let newData = KSRAnalyticsIdentityData(newUser)
     self.segmentClient?.identify(
-      "\(newData.userId)",
+      userId: "\(newData.userId)",
       traits: newData.allTraits
     )
   }
@@ -1219,7 +1219,7 @@ public final class KSRAnalytics {
     self.logEventCallback?(event, props)
 
     self.segmentClient?.track(
-      event,
+      name: event,
       properties: props
     )
   }

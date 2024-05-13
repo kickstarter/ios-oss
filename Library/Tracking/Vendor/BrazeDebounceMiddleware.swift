@@ -3,71 +3,51 @@ import Segment
 
 private let __brazeIntegrationName = "Appboy"
 
-/// Ref: https://github.com/segmentio/segment-braze-mobile-middleware
-class BrazeDebounceMiddleware: Middleware {
-  var previousIdentifyPayload: IdentifyPayload?
-
-  func context(_ context: Context, next: @escaping SEGMiddlewareNext) {
-    var workingContext = context
-
-    // only process identify payloads.
-    guard let identify = workingContext.payload as? IdentifyPayload else {
-      next(workingContext)
-      return
+/// Ref: https://github.com/segmentio/segment-braze-mobile-middleware for the middleware
+/// In the new integration, all middlewares must be rewritten as plugins.
+/// https://github.com/segmentio/analytics-react-native/blob/master/packages/plugins/plugin-braze-middleware/src/BrazeMiddlewarePlugin.tsx
+/// for a plugin example
+class BrazeDebounceMiddlewarePlugin: EventPlugin {
+  weak var analytics: Segment.Analytics?
+  
+  let type = PluginType.before
+  private var previousIdentifyEvent: IdentifyEvent?
+  
+  public func track(event: TrackEvent) -> TrackEvent? {
+    if event.event == "Application Foregrounded" {
+      return nil
     }
-
-    if self.shouldSendToBraze(payload: identify) {
-      // we don't need to do anything, it's different content.
-    } else {
-      // append to integrations such that this will not be sent to braze.
-      var integrations = identify.integrations
-      integrations[__brazeIntegrationName] = false
-      // provide the list of integrations to a new copy of the payload to pass along.
-      workingContext = workingContext.modify { ctx in
-        ctx.payload = IdentifyPayload(
-          userId: identify.userId,
-          anonymousId: identify.anonymousId,
-          traits: identify.traits,
-          context: identify.context,
-          integrations: integrations
-        )
-      }
+    return event
+  }
+  
+  public func identify(event: IdentifyEvent) -> IdentifyEvent? {
+    var mutableEvent = event
+  
+    if !self.shouldSendToBraze(event) {
+      let integrations = try? event.integrations?.add(value: false, forKey: __brazeIntegrationName)
+      mutableEvent.integrations = integrations
     }
-
-    self.previousIdentifyPayload = identify
-    next(workingContext)
+    
+    self.previousIdentifyEvent = event
+    return mutableEvent
   }
 
-  func shouldSendToBraze(payload: IdentifyPayload) -> Bool {
+  func shouldSendToBraze(_ event: IdentifyEvent) -> Bool {
     // if userID has changed, send it to braze.
-    if payload.userId != self.previousIdentifyPayload?.userId {
+    if event.userId != self.previousIdentifyEvent?.userId {
       return true
     }
 
     // if anonymousID has changed, send it to braze.
-    if payload.anonymousId != self.previousIdentifyPayload?.anonymousId {
+    if event.anonymousId != self.previousIdentifyEvent?.anonymousId {
       return true
     }
 
     // if the traits haven't changed, don't send it to braze.
-    if self.traitsEqual(lhs: payload.traits, rhs: self.previousIdentifyPayload?.traits) {
-      return false
+    if event.traits != self.previousIdentifyEvent?.traits {
+      return true
     }
 
-    return true
-  }
-
-  func traitsEqual(lhs: [String: Any]?, rhs: [String: Any]?) -> Bool {
-    var result = false
-
-    if lhs == nil, rhs == nil {
-      result = true
-    }
-
-    if let lhs = lhs, let rhs = rhs {
-      result = NSDictionary(dictionary: lhs).isEqual(to: rhs)
-    }
-
-    return result
+    return false
   }
 }

@@ -28,12 +28,12 @@
       }
     },
     {
-      "identity" : "analytics-ios",
+      "identity" : "analytics-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/segmentio/analytics-ios.git",
+      "location" : "https://github.com/segmentio/analytics-swift",
       "state" : {
-        "revision" : "78423aaae2e48e32a07246850f37c76f3d34cb84",
-        "version" : "4.1.8"
+        "revision" : "f6f3a7fafcace7bcdbda329f9b309f31bf9a42a1",
+        "version" : "1.5.11"
       }
     },
     {
@@ -46,15 +46,6 @@
       }
     },
     {
-      "identity" : "appboy-segment-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Appboy/appboy-segment-ios",
-      "state" : {
-        "revision" : "dc659b70f2b432f8c70fda869b27eac2acb688fe",
-        "version" : "4.6.1"
-      }
-    },
-    {
       "identity" : "appcenter-sdk-apple",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/microsoft/appcenter-sdk-apple",
@@ -64,12 +55,21 @@
       }
     },
     {
-      "identity" : "braze-ios-sdk",
+      "identity" : "braze-segment-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
+      "location" : "https://github.com/braze-inc/braze-segment-swift",
       "state" : {
-        "revision" : "538e3729ec56f1c10e678c0e83266c57da17b5fa",
-        "version" : "4.5.4"
+        "revision" : "e394034a4d5e4e14f74f44af76ba8cb90c8bf6f3",
+        "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "braze-swift-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/braze-inc/braze-swift-sdk",
+      "state" : {
+        "revision" : "22a9c2d49bf1f953af9f54228736d0f73ba5904b",
+        "version" : "9.0.0"
       }
     },
     {
@@ -142,6 +142,15 @@
       "state" : {
         "revision" : "b1d0099abe36facd198113633f502889842906af",
         "version" : "0.0.2"
+      }
+    },
+    {
+      "identity" : "jsonsafeencoding-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/segmentio/jsonsafeencoding-swift.git",
+      "state" : {
+        "revision" : "af6a8b360984085e36c6341b21ecb35c12f47ebd",
+        "version" : "2.0.0"
       }
     },
     {
@@ -230,8 +239,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "c51ba84499268ea3020e6aee9e229c0f56b9d924",
-        "version" : "5.16.0"
+        "revision" : "f6afa0132961d593f07970d84e2d8b588c29ea04",
+        "version" : "5.19.1"
+      }
+    },
+    {
+      "identity" : "sovran-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/segmentio/sovran-swift.git",
+      "state" : {
+        "revision" : "a342b905f6baa64499cabdf61ccc185ec476b7b2",
+        "version" : "1.1.1"
       }
     },
     {
