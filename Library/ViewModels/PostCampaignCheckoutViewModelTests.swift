@@ -6,7 +6,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class PostCampaignCheckoutViewModelTests: TestCase {
-  fileprivate let vm = PostCampaignCheckoutViewModel()
+  fileprivate let vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   fileprivate let goToApplePayPaymentAuthorization = TestObserver<
     PostCampaignPaymentAuthorizationData,
     Never

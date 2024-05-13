@@ -74,7 +74,11 @@ public protocol PostCampaignCheckoutViewModelType {
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
   PostCampaignCheckoutViewModelOutputs {
-  public init() {
+  let stripeIntentService: StripeIntentServiceType
+
+  public init(stripeIntentService: StripeIntentServiceType) {
+    self.stripeIntentService = stripeIntentService
+
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
       self.viewDidLoadProperty.signal
@@ -164,7 +168,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
 
-        return AppEnvironment.current.stripeIntentService.createPaymentIntent(
+        return stripeIntentService.createPaymentIntent(
           for: projectId,
           pledgeTotal: pledgeTotal
         )
@@ -273,7 +277,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           let projectId = initialData.project.graphID
           let pledgeTotal = initialData.total
 
-          return AppEnvironment.current.stripeIntentService.createPaymentIntent(
+          return stripeIntentService.createPaymentIntent(
             for: projectId,
             pledgeTotal: pledgeTotal
           )

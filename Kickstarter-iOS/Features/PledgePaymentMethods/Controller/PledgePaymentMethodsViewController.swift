@@ -29,7 +29,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
-  private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
+  private let viewModel: PledgePaymentMethodsViewModelType =
+    PledgePaymentMethodsViewModel(stripeIntentService: StripeIntentService())
   private var paymentSheetFlowController: PaymentSheet.FlowController?
 
   // MARK: - Lifecycle

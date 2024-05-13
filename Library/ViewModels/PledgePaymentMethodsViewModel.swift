@@ -68,7 +68,11 @@ public protocol PledgePaymentMethodsViewModelType {
 
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
   PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
-  public init() {
+  let stripeIntentService: StripeIntentServiceType
+
+  public init(stripeIntentService: StripeIntentServiceType) {
+    self.stripeIntentService = stripeIntentService
+
     let configureWithValue = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
       self.configureWithValueProperty.signal.skipNil()
@@ -317,7 +321,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         let setupIntentContext = pledgeContext == .latePledge
           ? GraphAPI.StripeIntentContextTypes.postCampaignCheckout
           : GraphAPI.StripeIntentContextTypes.crowdfundingCheckout
-        clientSecretSignal = AppEnvironment.current.stripeIntentService.createSetupIntent(
+        clientSecretSignal = stripeIntentService.createSetupIntent(
           for: project.graphID,
           context: setupIntentContext
         )
@@ -328,7 +332,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           !pledgeTotal.isNaN,
           "Pledge total must be set when using a PaymentIntent. Did you accidentally get here via PledgeViewModel instead of PostCampaignCheckoutViewModel?"
         )
-        clientSecretSignal = AppEnvironment.current.stripeIntentService.createPaymentIntent(
+        clientSecretSignal = stripeIntentService.createPaymentIntent(
           for: project.graphID,
           pledgeTotal: pledgeTotal
         )
