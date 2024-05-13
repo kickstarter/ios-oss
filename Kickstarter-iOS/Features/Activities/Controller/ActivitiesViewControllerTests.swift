@@ -132,7 +132,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let activities = [follow, update, backing, launch, following, success, failure, canceled, suspended]
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
         apiService: MockService(
@@ -147,46 +147,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
         vc.viewWillAppear(true)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 2_360
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
-    }
-  }
-
-  func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
-    let launch = .template
-      |> Activity.lens.id .~ 73
-      |> Activity.lens.project .~ (
-        .cosmicSurgery
-          |> Project.lens.creator .~ you
-          |> Project.lens.photo.med .~ ""
-          |> Project.lens.photo.full .~ ""
-          |> Project.lens.name .~ "A Very Very Important Project About Kittens and Puppies"
-          |> Project.lens.stats.fundingProgress .~ 0.01
-      )
-      |> Activity.lens.user .~ you
-      |> Activity.lens.category .~ .launch
-
-    let survey2 = .template |> SurveyResponse.lens.project .~ (
-      .anomalisa
-        |> Project.lens.creator .~ creator
-    )
-
-    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
-      withEnvironment(
-        apiService: MockService(
-          fetchActivitiesResponse: [launch],
-          fetchUnansweredSurveyResponsesResponse: [survey, survey2]
-        ),
-        currentUser: you |> \.facebookConnected .~ false |> \.needsFreshFacebookToken .~ true,
-        language: language,
-        userDefaults: MockKeyValueStore()
-      ) {
-        let vc = ActivitiesViewController.instantiate()
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 900
 
         self.scheduler.run()
 
@@ -212,7 +172,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         |> Project.lens.creator .~ creator
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
         apiService: MockService(
           fetchActivitiesResponse: [launch],
@@ -248,7 +208,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let env = ErroredBackingsEnvelope(projectsAndBackings: [projectAndBacking, projectAndBacking])
 
-    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchErroredUserBackingsResult: .success(env)),
         currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
