@@ -31,19 +31,19 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> \.selectionStyle .~ .none
-      |> \.separatorInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
+    self.selectionStyle = .none
+    self.separatorInset = UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 
-    _ = self.amountLabel
-      |> UILabel.lens.contentHuggingPriority(for: .horizontal) .~ .required
-      |> \.adjustsFontForContentSizeCategory .~ true
+    self.amountLabel.adjustsFontForContentSizeCategory = true
 
     _ = self.rootStackView
       |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
 
     _ = self.titleLabel
       |> titleLabelStyle
+
+    self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   // MARK: - View model
@@ -77,34 +77,42 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     _ = ([self.titleLabel, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
+    super.layoutSubviews()
+  }
 }
 
 // MARK: - Styles
 
 private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.textColor .~ .ksr_support_400
-    |> \.numberOfLines .~ 0
+  label.font = UIFont.ksr_subhead().bolded
+  label.textColor = UIColor.ksr_support_400
+  label.numberOfLines = 0
+
+  return label
 }
 
 private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .top)
   let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
   let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
   return { (stackView: UIStackView) in
-    stackView
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ spacing
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(
-        topBottom: Styles.grid(3),
-        leftRight: CheckoutConstants.PledgeView.Inset.leftRight
-      )
+    stackView.insetsLayoutMarginsFromSafeArea = false
+    stackView.alignment = alignment
+    stackView.axis = axis
+    stackView.distribution = distribution
+    stackView.spacing = spacing
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.layoutMargins = UIEdgeInsets(
+      topBottom: Styles.grid(3),
+      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
+    )
+
+    return stackView
   }
 }
