@@ -346,7 +346,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       )
 
     self.showErrorBannerWithMessage = validateCheckoutError
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
+      .map { error in
+        switch error.ksrCode {
+        case .ValidateCheckoutError:
+          return error.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
+        default:
+          return Strings.Something_went_wrong_please_try_again()
+        }
+      }
 
     // MARK: CompleteOnSessionCheckout
 
