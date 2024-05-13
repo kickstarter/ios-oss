@@ -223,6 +223,7 @@ public struct Service: ServiceType {
           .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
             projectId: input.projectId,
             amount: input.amountDollars,
+            paymentIntentContext: input.paymentIntentContext,
             digitalMarketingAttributed: input.digitalMarketingAttributed
           ))
       )

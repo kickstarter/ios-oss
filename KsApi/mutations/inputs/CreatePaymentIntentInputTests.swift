@@ -7,7 +7,8 @@ final class CreatePaymentIntentInputTests: XCTestCase {
     let createCheckoutInput = CreatePaymentIntentInput(
       projectId: "projectId",
       amountDollars: "200.00",
-      digitalMarketingAttributed: false
+      digitalMarketingAttributed: false,
+      paymentIntentContext: .postCampaignCheckout
     )
 
     let input = createCheckoutInput.toInputDictionary()
