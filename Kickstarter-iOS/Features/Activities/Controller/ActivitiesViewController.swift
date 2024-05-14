@@ -102,20 +102,6 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.showFacebookConnectSection
-      .observeForUI()
-      .observeValues { [weak self] source, shouldShow in
-        self?.dataSource.facebookConnect(source: source, visible: shouldShow)
-        self?.tableView.reloadData()
-      }
-
-    self.viewModel.outputs.showFindFriendsSection
-      .observeForUI()
-      .observeValues { [weak self] source, shouldShow in
-        self?.dataSource.findFriends(source: source, visible: shouldShow)
-        self?.tableView.reloadData()
-      }
-
     self.viewModel.outputs.showEmptyStateIsLoggedIn
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -139,34 +125,6 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
-      }
-
-    self.viewModel.outputs.deleteFacebookConnectSection
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.deleteFacebookSection()
-      }
-
-    self.viewModel.outputs.deleteFindFriendsSection
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.deleteFindFriendsSection()
-      }
-
-    self.viewModel.outputs.goToFriends
-      .observeForControllerAction()
-      .observeValues { [weak self] source in
-        self?.goToFriends(source: source)
-      }
-
-    self.viewModel.outputs.showFacebookConnectErrorAlert
-      .observeForControllerAction()
-      .observeValues { [weak self] error in
-        self?.present(
-          UIAlertController.alertController(forError: error),
-          animated: true,
-          completion: nil
-        )
       }
 
     self.viewModel.outputs.unansweredSurveys
@@ -214,10 +172,6 @@ internal final class ActivitiesViewController: UITableViewController {
   ) {
     if let cell = cell as? ActivityUpdateCell, cell.delegate == nil {
       cell.delegate = self
-    } else if let cell = cell as? FindFriendsFacebookConnectCell, cell.delegate == nil {
-      cell.delegate = self
-    } else if let cell = cell as? FindFriendsHeaderCell, cell.delegate == nil {
-      cell.delegate = self
     } else if let cell = cell as? ActivitySurveyResponseCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ActivityErroredBackingsCell, cell.delegate == nil {
@@ -255,11 +209,6 @@ internal final class ActivitiesViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goToFriends(source _: FriendsSource) {
-    let vc = FindFriendsViewController.configuredWith(source: .activity)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
   fileprivate func goToSurveyResponse(surveyResponse: SurveyResponse) {
     let vc = SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)
     vc.delegate = self
@@ -279,22 +228,6 @@ internal final class ActivitiesViewController: UITableViewController {
     let vc = ManagePledgeViewController.controller(with: params, delegate: self)
     self.present(vc, animated: true)
   }
-
-  fileprivate func deleteFacebookSection() {
-    self.tableView.beginUpdates()
-
-    self.tableView.deleteRows(at: self.dataSource.removeFacebookConnectRows(), with: .top)
-
-    self.tableView.endUpdates()
-  }
-
-  fileprivate func deleteFindFriendsSection() {
-    self.tableView.beginUpdates()
-
-    self.tableView.deleteRows(at: self.dataSource.removeFindFriendsRows(), with: .top)
-
-    self.tableView.endUpdates()
-  }
 }
 
 // MARK: - ActivityUpdateCellDelegate
@@ -302,34 +235,6 @@ internal final class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ActivityUpdateCellDelegate {
   internal func activityUpdateCellTappedProjectImage(activity: Activity) {
     self.viewModel.inputs.activityUpdateCellTappedProjectImage(activity: activity)
-  }
-}
-
-// MARK: - FindFriendsHeaderCellDelegate
-
-extension ActivitiesViewController: FindFriendsHeaderCellDelegate {
-  func findFriendsHeaderCellDismissHeader() {
-    self.viewModel.inputs.findFriendsHeaderCellDismissHeader()
-  }
-
-  func findFriendsHeaderCellGoToFriends() {
-    self.viewModel.inputs.findFriendsHeaderCellGoToFriends()
-  }
-}
-
-// MARK: - FindFriendsFacebookConnectCellDelegate
-
-extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
-  func findFriendsFacebookConnectCellDidFacebookConnectUser() {
-    self.viewModel.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
-  }
-
-  func findFriendsFacebookConnectCellDidDismissHeader() {
-    self.viewModel.inputs.findFriendsFacebookConnectCellDidDismissHeader()
-  }
-
-  func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError) {
-    self.viewModel.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
   }
 }
 

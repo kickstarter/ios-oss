@@ -39,19 +39,10 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.showRefTag.observer)
-    self.vm.outputs.deleteFacebookConnectSection.observe(self.deleteFacebookConnectSection.observer)
-    self.vm.outputs.deleteFindFriendsSection.observe(self.deleteFindFriendsSection.observer)
-    self.vm.outputs.goToFriends.observe(self.goToFriends.observer)
     self.vm.outputs.goToSurveyResponse.observe(self.goToSurveyResponse.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.showEmptyStateIsLoggedIn.observe(self.showEmptyStateIsLoggedIn.observer)
-    self.vm.outputs.showFacebookConnectSection.map { $0.1 }.observe(self.showFacebookConnectSection.observer)
-    self.vm.outputs.showFacebookConnectSection.map { $0.0 }
-      .observe(self.showFacebookConnectSectionSource.observer)
-    self.vm.outputs.showFindFriendsSection.map { $0.1 }.observe(self.showFindFriendsSection.observer)
-    self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
-    self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
     self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
@@ -334,175 +325,6 @@ final class ActivitiesViewModelTests: TestCase {
     )
   }
 
-  func testGoToFriends() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSection.assertValueCount(0)
-
-    self.goToFriends.assertValueCount(0)
-
-    withEnvironment(
-      apiService: MockService(fetchUnansweredSurveyResponsesResponse: []),
-      currentUser: .template
-    ) {
-      self.vm.inputs.userSessionStarted()
-      self.scheduler.advance()
-      self.vm.inputs.viewWillAppear(animated: false)
-
-      self.showFacebookConnectSection.assertValues([true], "Show Facebook Connect Section after log in")
-
-      self.vm.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
-
-      self.goToFriends.assertValues([FriendsSource.activity])
-
-      self.vm.inputs.viewWillAppear(animated: false)
-
-      self.goToFriends.assertValueCount(1)
-
-      self.vm.inputs.findFriendsHeaderCellGoToFriends()
-
-      self.goToFriends.assertValues([FriendsSource.activity, FriendsSource.activity])
-    }
-  }
-
-  func testFacebookSection() {
-    // logged out
-    self.showFacebookConnectSectionSource.assertValueCount(0)
-    self.showFacebookConnectSection.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSectionSource.assertValueCount(0)
-    self.showFacebookConnectSection.assertValueCount(0)
-
-    // logged in && Facebook connected && doesn't need new token
-    let user = User.template |> \.facebookConnected .~ true
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSectionSource.assertValues([FriendsSource.activity])
-    self.showFacebookConnectSection.assertValues([false], "Don't show Facebook Connect Section")
-
-    // logged in && not Facebook connected
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSectionSource.assertValues([FriendsSource.activity, FriendsSource.activity])
-    self.showFacebookConnectSection.assertValues([false, true], "Show Facebook Connect Section")
-
-    // logged in && FB connected, needs new token
-
-    let facebookReconnectUser = User.template
-      |> \.facebookConnected .~ true
-      |> \.needsFreshFacebookToken .~ true
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: facebookReconnectUser))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSection.assertValues([false, true, true], "Show Facebook Section")
-
-    // delete section
-    self.deleteFacebookConnectSection.assertValueCount(0)
-
-    self.vm.inputs.findFriendsFacebookConnectCellDidDismissHeader()
-
-    self.deleteFacebookConnectSection.assertValueCount(1)
-
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFacebookConnectSection.assertValues(
-      [false, true, true, false],
-      "Don't show Facebook Connect Section on return"
-    )
-  }
-
-  func testFindFriendsSection() {
-    // logged out
-    self.showFindFriendsSectionSource.assertValueCount(0)
-    self.showFindFriendsSection.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFindFriendsSectionSource.assertValueCount(0)
-    self.showFindFriendsSection.assertValueCount(0)
-
-    // logged in && not Facebook connected
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity])
-    self.showFindFriendsSection.assertValues([false], "Don't show Find Friends Section")
-
-    // logged in && FB connected but needs fresh token
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
-    let userConnected = User.template
-      |> \.facebookConnected .~ true
-      |> \.needsFreshFacebookToken .~ true
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: userConnected))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity, FriendsSource.activity])
-    self.showFindFriendsSection.assertValues([false, false], "Hide find friends section")
-
-    // logged in && Facebook connected & doesn't needs fresh token
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
-    let fbConnected = User.template
-      |> \.facebookConnected .~ true
-      |> \.needsFreshFacebookToken .~ false
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: fbConnected))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFindFriendsSectionSource.assertValues([
-      FriendsSource.activity,
-      FriendsSource.activity,
-      FriendsSource.activity
-    ])
-    self.showFindFriendsSection.assertValues([false, false, true], "Show Find Friends Section")
-
-    // delete section
-    self.deleteFindFriendsSection.assertValueCount(0)
-
-    self.vm.inputs.findFriendsHeaderCellDismissHeader()
-
-    self.deleteFindFriendsSection.assertValueCount(1)
-
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    self.showFindFriendsSection.assertValues([
-      false,
-      false,
-      true,
-      false
-    ], "Don't show Find Friends Section on return")
-  }
-
-  func testFacebookErrorAlerts() {
-    let alert = AlertError.facebookTokenFail
-    self.vm.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
-
-    self.showFacebookConnectErrorAlert.assertValues([AlertError.facebookTokenFail])
-  }
-
   func testSurveys() {
     let surveyResponse = SurveyResponse.template
 
@@ -526,7 +348,10 @@ final class ActivitiesViewModelTests: TestCase {
 
       // Exited survey full screen.
       self.vm.inputs.viewWillAppear(animated: true)
-      self.unansweredSurveyResponse.assertValues([[surveyResponse]], "Survey does not emit again.")
+      self.unansweredSurveyResponse.assertValues(
+        [[surveyResponse], [surveyResponse]],
+        "Survey emits whenever view appears"
+      )
 
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
       self.goToSurveyResponse.assertValues([surveyResponse, surveyResponse])
@@ -534,7 +359,7 @@ final class ActivitiesViewModelTests: TestCase {
       // Exited survey modal.
       self.vm.inputs.surveyResponseViewControllerDismissed()
       self.unansweredSurveyResponse.assertValues(
-        [[surveyResponse], [surveyResponse]],
+        [[surveyResponse], [surveyResponse], [surveyResponse]],
         "Same unanswered survey emits."
       )
     }

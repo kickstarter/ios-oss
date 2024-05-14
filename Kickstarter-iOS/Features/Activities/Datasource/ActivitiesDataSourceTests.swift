@@ -23,57 +23,6 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 
-  func testFacebookConnect() {
-    let section = ActivitiesDataSource.Section.facebookConnect.rawValue
-
-    self.dataSource.facebookConnect(source: .activity, visible: true)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-    XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
-
-    let indexPaths = self.dataSource.removeFacebookConnectRows()
-
-    XCTAssertEqual(1, indexPaths.count)
-    XCTAssertEqual(section, indexPaths.first?.section)
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-  }
-
-  func testFacebookReconnect() {
-    let section = ActivitiesDataSource.Section.facebookConnect.rawValue
-
-    self.dataSource.facebookConnect(source: .activity, visible: true)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-    XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
-
-    let indexPaths = self.dataSource.removeFacebookConnectRows()
-
-    XCTAssertEqual(1, indexPaths.count)
-    XCTAssertEqual(section, indexPaths.first?.section)
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-  }
-
-  func testFindFriends() {
-    let section = ActivitiesDataSource.Section.findFriends.rawValue
-
-    self.dataSource.findFriends(source: .activity, visible: true)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-    XCTAssertEqual("FindFriendsHeaderCell", self.dataSource.reusableId(item: 0, section: section))
-
-    let indexPaths = self.dataSource.removeFindFriendsRows()
-
-    XCTAssertEqual(1, indexPaths.count)
-    XCTAssertEqual(section, indexPaths.first?.section)
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-  }
-
   func testActivities() {
     let section = ActivitiesDataSource.Section.activities.rawValue
     let updateActivity = Activity.template |> Activity.lens.category .~ .update
