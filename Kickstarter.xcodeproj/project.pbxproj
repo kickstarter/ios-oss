@@ -510,6 +510,8 @@
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
 		60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
+		60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F542BE003A60052A829 /* StripeIntentService.swift */; };
+		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
 		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
 		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
@@ -2120,6 +2122,8 @@
 		609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerThirdPartyEvent.graphql; sourceTree = "<group>"; };
 		60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		60A80F542BE003A60052A829 /* StripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentService.swift; sourceTree = "<group>"; };
+		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
 		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
 		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
@@ -6201,6 +6205,7 @@
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
 				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
+				60A80F542BE003A60052A829 /* StripeIntentService.swift */,
 				8AD48632235939AF00A1463E /* StripeTypes.swift */,
 				6080DA3E2AB366550088EF3D /* SwiftUI+Extensions */,
 				94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */,
@@ -6353,6 +6358,7 @@
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
+				60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */,
 				1611EF6823B275700051CDCC /* MockUUID.swift */,
 				1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
@@ -7775,6 +7781,7 @@
 				4791BDE6271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift in Sources */,
 				0634C2F927CFEEC2003A6D6E /* ExternalSourceViewElementCellViewModel.swift in Sources */,
 				94BA16E426698C8B0034CC3F /* CommentTableViewFooterViewModel.swift in Sources */,
+				60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */,
 				77D19FF5240813240058FC8E /* NavigationController.swift in Sources */,
 				8A8099F422E2142C00373E66 /* RewardCardContainerViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
@@ -8028,6 +8035,7 @@
 				D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */,
 				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
+				60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,

@@ -74,7 +74,11 @@ public protocol PostCampaignCheckoutViewModelType {
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
   PostCampaignCheckoutViewModelOutputs {
-  public init() {
+  let stripeIntentService: StripeIntentServiceType
+
+  public init(stripeIntentService: StripeIntentServiceType) {
+    self.stripeIntentService = stripeIntentService
+
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
       self.viewDidLoadProperty.signal
@@ -164,13 +168,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
 
-        return AppEnvironment.current.apiService
-          .createPaymentIntentInput(input: CreatePaymentIntentInput(
-            projectId: projectId,
-            amountDollars: String(format: "%.2f", pledgeTotal),
-            digitalMarketingAttributed: nil
-          ))
-          .materialize()
+        return stripeIntentService.createPaymentIntent(
+          for: projectId,
+          pledgeTotal: pledgeTotal
+        )
+        .materialize()
       }
 
     let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
@@ -275,14 +277,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           let projectId = initialData.project.graphID
           let pledgeTotal = initialData.total
 
-          return AppEnvironment.current.apiService
-            .createPaymentIntentInput(input: CreatePaymentIntentInput(
-              projectId: projectId,
-              amountDollars: String(format: "%.2f", pledgeTotal),
-              digitalMarketingAttributed: nil
-            ))
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .materialize()
+          return stripeIntentService.createPaymentIntent(
+            for: projectId,
+            pledgeTotal: pledgeTotal
+          )
+          .materialize()
         }
 
     let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay

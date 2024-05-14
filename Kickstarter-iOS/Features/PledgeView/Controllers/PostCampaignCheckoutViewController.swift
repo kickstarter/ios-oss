@@ -61,7 +61,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: PostCampaignCheckoutViewModelType = PostCampaignCheckoutViewModel()
+  private let viewModel: PostCampaignCheckoutViewModelType =
+    PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
   // MARK: - Lifecycle
 
