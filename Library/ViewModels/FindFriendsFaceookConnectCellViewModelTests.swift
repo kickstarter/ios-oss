@@ -47,13 +47,13 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testShowCloseButton() {
-    self.vm.inputs.configureWith(source: .activity)
+    self.vm.inputs.configureWith(source: .settings)
 
     self.hideCloseButton.assertValue(false)
   }
 
   func testDismissal() {
-    self.vm.inputs.configureWith(source: .activity)
+    self.vm.inputs.configureWith(source: .settings)
 
     self.notifyPresenterToDismissHeader.assertValueCount(0)
 
@@ -64,7 +64,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
 
   func testLabels_NonFacebookConnectedUser() {
     withEnvironment(currentUser: User.template) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.title.assertValue(Strings.Discover_more_projects())
       self.subtitle.assertValue(Strings.Connect_with_Facebook_to_follow_friends_and_get_notified())
@@ -77,7 +77,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
         |> \.facebookConnected .~ true
         |> \.needsFreshFacebookToken .~ true
     ) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.title.assertValue(Strings.Facebook_reconnect())
       self.subtitle.assertValue(Strings.Facebook_reconnect_description())
@@ -106,7 +106,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     )
 
     withEnvironment(currentUser: User.template) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook Login does not emit")
 
@@ -144,7 +144,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       ]
     )
 
-    self.vm.inputs.configureWith(source: .activity)
+    self.vm.inputs.configureWith(source: .settings)
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -191,7 +191,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -242,7 +242,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -295,7 +295,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -346,7 +346,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      self.vm.inputs.configureWith(source: .activity)
+      self.vm.inputs.configureWith(source: .settings)
 
       self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 

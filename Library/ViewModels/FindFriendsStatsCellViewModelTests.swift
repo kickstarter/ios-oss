@@ -35,7 +35,7 @@ final class FindFriendsStatsCellViewModelTests: TestCase {
     self.followAllText.assertValueCount(0)
     self.friendsCountText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(stats: stats, source: FriendsSource.activity)
+    self.vm.inputs.configureWith(stats: stats, source: FriendsSource.settings)
 
     self.backedProjectsCountText.assertValues(["450"])
     self.followAllText.assertValues(["Follow all 45 friends"])
@@ -53,11 +53,11 @@ final class FindFriendsStatsCellViewModelTests: TestCase {
 
     self.hideFollowAllButton.assertValueCount(0)
 
-    self.vm.inputs.configureWith(stats: stats, source: FriendsSource.activity)
+    self.vm.inputs.configureWith(stats: stats, source: FriendsSource.settings)
 
     self.hideFollowAllButton.assertValues([true], "Not enough friends, hide Follow All button")
 
-    self.vm.inputs.configureWith(stats: statsPopular, source: FriendsSource.activity)
+    self.vm.inputs.configureWith(stats: statsPopular, source: FriendsSource.settings)
 
     self.hideFollowAllButton.assertValues([true, false], "Show Follow All button")
     self.showFollowAllFriendsAlert.assertValueCount(0)

@@ -7,37 +7,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case erroredBackings
     case surveys
-    case facebookConnect
-    case findFriends
     case activities
-  }
-
-  internal func facebookConnect(source: FriendsSource, visible: Bool) {
-    self.set(
-      values: visible ? [source] : [],
-      cellClass: FindFriendsFacebookConnectCell.self,
-      inSection: Section.facebookConnect.rawValue
-    )
-  }
-
-  internal func findFriends(source: FriendsSource, visible: Bool) {
-    self.set(
-      values: visible ? [source] : [],
-      cellClass: FindFriendsHeaderCell.self,
-      inSection: Section.findFriends.rawValue
-    )
-  }
-
-  internal func removeFacebookConnectRows() -> [IndexPath] {
-    self.clearValues(section: Section.facebookConnect.rawValue)
-
-    return [IndexPath(row: 0, section: Section.facebookConnect.rawValue)]
-  }
-
-  internal func removeFindFriendsRows() -> [IndexPath] {
-    self.clearValues(section: Section.findFriends.rawValue)
-
-    return [IndexPath(row: 0, section: Section.findFriends.rawValue)]
   }
 
   internal func load(erroredBackings: [ProjectAndBackingEnvelope]) {
@@ -97,10 +67,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityProjectStatusCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
-      cell.configureWith(value: value)
-    case let (cell as FindFriendsHeaderCell, value as FriendsSource):
-      cell.configureWith(value: value)
     case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
