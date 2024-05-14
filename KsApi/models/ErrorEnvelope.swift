@@ -47,6 +47,7 @@ public struct ErrorEnvelope {
     case DecodingJSONFailed = "decoding_json_failed"
     case InvalidPaginationUrl = "invalid_pagination_url"
     case GraphQLError = "graphql_error"
+    case ValidateCheckoutError = "validate_checkout_error"
   }
 
   public struct AltErrorMessage {
@@ -130,6 +131,22 @@ public struct ErrorEnvelope {
     return ErrorEnvelope(
       errorMessages: [message],
       ksrCode: .GraphQLError,
+      httpCode: 200,
+      exception: nil
+    )
+  }
+
+  /**
+   An error that that occurs when the current checkout is invalid.
+
+   - parameter message: The error message returned from the server.
+
+   - returns: An error envelope that describes why the validation failed.
+   */
+  internal static func validateCheckoutError(_ message: [String]) -> ErrorEnvelope {
+    return ErrorEnvelope(
+      errorMessages: message,
+      ksrCode: .ValidateCheckoutError,
       httpCode: 200,
       exception: nil
     )

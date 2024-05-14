@@ -8,7 +8,9 @@ import ReactiveSwift
 import XCTest
 
 internal final class PaymentMethodSettingsViewModelTests: TestCase {
-  private let vm = PaymentMethodSettingsViewModel()
+  private var vm = PaymentMethodSettingsViewModel(stripeIntentService: MockStripeIntentService())
+  private let mockStripeIntentService = MockStripeIntentService()
+
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
   private let cancelLoadingState = TestObserver<Void, Never>()
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
@@ -24,6 +26,8 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+
+    self.vm = PaymentMethodSettingsViewModel(stripeIntentService: self.mockStripeIntentService)
 
     self.vm.outputs.cancelAddNewCardLoadingState.observe(self.cancelLoadingState.observer)
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
@@ -96,6 +100,9 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
 
       self.errorLoadingPaymentMethodsOrSetupIntent
         .assertValue(ErrorEnvelope.couldNotParseJSON.localizedDescription)
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -287,6 +294,9 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(1))
 
       self.goToPaymentSheet.assertValueCount(1)
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 
@@ -309,6 +319,9 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(1))
 
       self.tableViewIsEditing.assertValues([false, true, false])
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 0)
     }
   }
 

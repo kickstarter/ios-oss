@@ -6,8 +6,10 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class PostCampaignCheckoutViewModelTests: TestCase {
-  fileprivate let vm = PostCampaignCheckoutViewModel()
-  fileprivate let goToApplePayPaymentAuthorization = TestObserver<
+  private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
+  private let mockStripeIntentService = MockStripeIntentService()
+
+  private let goToApplePayPaymentAuthorization = TestObserver<
     PostCampaignPaymentAuthorizationData,
     Never
   >()
@@ -31,6 +33,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = PostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
+
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
@@ -179,6 +184,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.bonus, 0)
       XCTAssertEqual(output.shipping, 0)
       XCTAssertEqual(output.total, 5)
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
@@ -221,6 +229,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.bonus, 0)
       XCTAssertEqual(output.shipping, 0)
       XCTAssertEqual(output.total, 18)
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
@@ -268,6 +279,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.bonus, 0)
       XCTAssertEqual(output.shipping, 72)
       XCTAssertEqual(output.total, 90)
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
@@ -317,6 +331,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.bonus, 5)
       XCTAssertEqual(output.shipping, 72)
       XCTAssertEqual(output.total, 133)
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
@@ -349,13 +366,16 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       let output = self.goToApplePayPaymentAuthorization.lastValue!
       XCTAssertEqual(output.paymentIntent, "foo")
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope(messages: ["message"])
     let completeSessionJsonString = """
     {
       "completeOnSessionCheckout": {
@@ -419,6 +439,9 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.checkoutComplete.assertDidEmitValue()
       self.processingViewIsHidden.assertLastValue(true)
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
@@ -455,13 +478,16 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.scheduler.run()
 
       self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
-      self.processingViewIsHidden.assertValues([false, true])
+      self.processingViewIsHidden.assertValues([true, false])
+
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
+      XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
 
   func testPledge_completesCheckoutFlow() {
     // Mock data for API requests
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope(messages: ["message"])
     let completeSessionJsonString = """
     {
       "completeOnSessionCheckout": {
@@ -580,7 +606,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   func testCheckoutTerminated_cancelsCheckoutFlow() {
     // Mock data for API requests
-    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let validateCheckout = ValidateCheckoutEnvelope(messages: ["message"])
     let mockService = MockService(
       validateCheckoutResult: .success(validateCheckout)
     )
