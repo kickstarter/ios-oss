@@ -58,14 +58,14 @@ internal final class SignupViewModelTests: TestCase {
     self.passwordTextFieldBecomeFirstResponder
       .assertDidNotEmitValue("Not first responder after editing name.")
 
-    self.vm.inputs.emailChanged("therealnativesquad@gmail.com")
+    self.vm.inputs.emailChanged("user@example.com")
     self.vm.inputs.emailTextFieldReturn()
     self.isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing email.")
 
-    self.vm.inputs.passwordChanged("0773rw473rm3l0n")
+    self.vm.inputs.passwordChanged("fake-safe-passw0rd")
     self.isSignupButtonEnabled.assertValues([false, true], "Enabled when form is valid.")
 
     self.vm.inputs.signupButtonPressed()
@@ -146,7 +146,7 @@ internal final class SignupViewModelTests: TestCase {
     self.withEnvironment(apiService: MockService(signupError: errorEnvelope)) {
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.emailChanged("user@example.com")
       self.vm.inputs.nameChanged("Native Squad")
       self.vm.inputs.passwordChanged("!")
       self.vm.inputs.signupButtonPressed()
