@@ -90,12 +90,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
-    self.configurePaymentMethodsViewControllerWithValue = initialData
-      .compactMap { data -> PledgePaymentMethodsValue? in
+    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(initialData, checkoutId)
+      .compactMap { data, checkoutId -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
         let reward = data.baseReward
 
-        return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
+        return (user, data.project, checkoutId, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
 
     self.showWebHelp = Signal.merge(
@@ -162,14 +162,15 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       !isNewPaymentMethod
     }
 
-    let newPaymentIntentForExistingCards = initialData
+    let newPaymentIntentForExistingCards = Signal.combineLatest(initialData, checkoutId)
       .takeWhen(selectedExistingCard)
-      .switchMap { initialData in
+      .switchMap { initialData, checkoutId in
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
 
         return stripeIntentService.createPaymentIntent(
           for: projectId,
+          checkoutId: checkoutId,
           pledgeTotal: pledgeTotal
         )
         .materialize()
@@ -270,15 +271,15 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      */
 
     let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
-      self.configureWithDataProperty.signal
-        .skipNil()
+      Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(), checkoutId)
         .takeWhen(self.applePayButtonTappedSignal)
-        .switchMap { initialData in
+        .switchMap { initialData, checkoutId in
           let projectId = initialData.project.graphID
           let pledgeTotal = initialData.total
 
           return stripeIntentService.createPaymentIntent(
             for: projectId,
+            checkoutId: checkoutId,
             pledgeTotal: pledgeTotal
           )
           .materialize()

@@ -7,6 +7,7 @@ final class CreatePaymentIntentInputTests: XCTestCase {
     let createCheckoutInput = CreatePaymentIntentInput(
       projectId: "projectId",
       amountDollars: "200.00",
+      checkoutId: "checkoutId",
       digitalMarketingAttributed: false
     )
 
@@ -15,5 +16,6 @@ final class CreatePaymentIntentInputTests: XCTestCase {
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["amountDollars"] as? String, "200.00")
     XCTAssertEqual(input["digitalMarketingAttributed"] as? Bool, false)
+    XCTAssertEqual(input["checkoutId"] as? String, "checkoutId")
   }
 }

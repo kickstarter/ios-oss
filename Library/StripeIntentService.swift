@@ -3,8 +3,11 @@ import KsApi
 import ReactiveSwift
 
 public protocol StripeIntentServiceType {
-  func createPaymentIntent(for projectId: String, pledgeTotal: Double)
-    -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>
+  func createPaymentIntent(
+    for projectId: String,
+    checkoutId: String,
+    pledgeTotal: Double
+  ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>
   func createSetupIntent(
     for projectId: String?,
     context: GraphAPI.StripeIntentContextTypes
@@ -22,17 +25,20 @@ public class StripeIntentService: StripeIntentServiceType {
    - parameter for: The types to register that we will request permissions for.
    - parameters:
      - projectId: The GraphID of a project
+     - checkoutId: The GraphID returned from our CreateCheckout mutation.
      - pledgeTotal: The final pledge total of the current pledge
    */
 
   public func createPaymentIntent(
     for projectId: String,
+    checkoutId: String,
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     AppEnvironment.current.apiService
       .createPaymentIntentInput(input: CreatePaymentIntentInput(
         projectId: projectId,
         amountDollars: String(format: "%.2f", pledgeTotal),
+        checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
         digitalMarketingAttributed: nil
       ))
   }

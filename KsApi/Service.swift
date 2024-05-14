@@ -224,7 +224,8 @@ public struct Service: ServiceType {
             projectId: input.projectId,
             amount: input.amountDollars,
             paymentIntentContext: input.paymentIntentContext,
-            digitalMarketingAttributed: input.digitalMarketingAttributed
+            digitalMarketingAttributed: input.digitalMarketingAttributed,
+            checkoutId: input.checkoutId
           ))
       )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
