@@ -91,7 +91,8 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
           multiplier: strongSelf.imageAspectRatio,
           constant: 0.0
         )
-        strongSelf.storyImageView.image = viewableImage
+
+        strongSelf.storyImageView.ugh()
       }
   }
 

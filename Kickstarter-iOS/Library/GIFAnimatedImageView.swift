@@ -1,3 +1,4 @@
 import Kingfisher
+import UIKit
 
-final class GIFAnimatedImageView: AnimatedImageView {}
+public class GIFAnimatedImageView: UIImageView {}

@@ -81,7 +81,7 @@ extension Element {
 
     src = self.parseImageElementSrc()
 
-    let value = src.isEmpty ? nil : ImageViewElement(src: src, href: href, caption: caption)
+    let value = src.isEmpty ? nil : ImageViewElement(src: "src", href: href, caption: caption)
 
     return value
   }
@@ -134,6 +134,10 @@ extension Element {
 
     if let source = try? child.attr(HTMLRawText.Link.source.rawValue) {
       updatedSrc = source
+    }
+
+    if updatedSrc.range(of: "webp").isSome {
+      print("found webp")
     }
 
     // - if it's a gif collect attribute data-src instead
