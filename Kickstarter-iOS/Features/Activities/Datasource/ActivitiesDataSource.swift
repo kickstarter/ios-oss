@@ -67,10 +67,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityProjectStatusCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
-      cell.configureWith(value: value)
-    case let (cell as FindFriendsHeaderCell, value as FriendsSource):
-      cell.configureWith(value: value)
     case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
