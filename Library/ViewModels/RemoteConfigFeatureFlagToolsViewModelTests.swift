@@ -86,7 +86,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        RemoteConfigFeature.blockUsersEnabled.rawValue: false
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient, userDefaults: userDefaults) {
@@ -112,7 +112,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         userDefaults
           .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         [
-          RemoteConfigFeature.blockUsersEnabled.rawValue: true
+          RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
         ]
       )
     }
