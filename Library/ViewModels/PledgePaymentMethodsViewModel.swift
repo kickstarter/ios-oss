@@ -14,6 +14,7 @@ public enum PaymentMethodsTableViewSection: Int {
 public typealias PledgePaymentMethodsValue = (
   user: User,
   project: Project,
+  checkoutId: String, /// Used for creating Payment Intents in the Late Pledge flow.
   reward: Reward,
   context: PledgeViewContext,
   refTag: RefTag?,
@@ -81,6 +82,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let project = configureWithValue.map { $0.project }
     let context = configureWithValue.map { $0.context }
+    let checkoutId = configureWithValue.map { $0.checkoutId }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
     let pledgeTotal = configureWithValue.map { $0.pledgeTotal }
     let paymentSheetType = configureWithValue.map { $0.paymentSheetType }
@@ -304,12 +306,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let createSetupIntentEvent = Signal.combineLatest(
       project,
+      checkoutId,
       pledgeTotal,
       paymentSheetType,
       context
     )
     .takeWhen(didTapToAddNewCard)
-    .switchMap { project, pledgeTotal, paymentSheetType, pledgeContext -> SignalProducer<
+    .switchMap { project, checkoutId, pledgeTotal, paymentSheetType, pledgeContext -> SignalProducer<
       Signal<PaymentSheetSetupData, ErrorEnvelope>.Event,
       Never
     > in
@@ -334,6 +337,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         )
         clientSecretSignal = stripeIntentService.createPaymentIntent(
           for: project.graphID,
+          checkoutId: checkoutId,
           pledgeTotal: pledgeTotal
         )
         .map { $0.clientSecret }

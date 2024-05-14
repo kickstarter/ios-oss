@@ -48,6 +48,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
         let data = PledgePaymentMethodsValue(
           user: .template,
           project: project,
+          checkoutId: "checkoutId",
           reward: reward,
           context: .pledge,
           refTag: nil,
@@ -89,6 +90,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
         let data = PledgePaymentMethodsValue(
           user: .template,
           project: project,
+          checkoutId: "checkoutId",
           reward: reward,
           context: .pledge,
           refTag: nil,

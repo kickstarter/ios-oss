@@ -223,7 +223,9 @@ public struct Service: ServiceType {
           .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
             projectId: input.projectId,
             amount: input.amountDollars,
-            digitalMarketingAttributed: input.digitalMarketingAttributed
+            paymentIntentContext: input.paymentIntentContext,
+            digitalMarketingAttributed: input.digitalMarketingAttributed,
+            checkoutId: input.checkoutId
           ))
       )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
