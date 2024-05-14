@@ -28,6 +28,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
+  private let configurePaymentMethodsViewControllerWithCheckoutId = TestObserver<String, Never>()
   private let configurePaymentMethodsViewControllerWithReward = TestObserver<Reward, Never>()
   private let configurePaymentMethodsViewControllerWithContext = TestObserver<PledgeViewContext, Never>()
 
@@ -101,8 +102,10 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.1 }
       .observe(self.configurePaymentMethodsViewControllerWithProject.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.2 }
-      .observe(self.configurePaymentMethodsViewControllerWithReward.observer)
+      .observe(self.configurePaymentMethodsViewControllerWithCheckoutId.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.3 }
+      .observe(self.configurePaymentMethodsViewControllerWithReward.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.4 }
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }

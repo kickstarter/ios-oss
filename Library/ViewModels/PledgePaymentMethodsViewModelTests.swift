@@ -85,6 +85,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -235,7 +236,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
 
       self.vm.inputs
-        .configure(with: (User.template, project, .template, .pledge, .discovery, Double.nan, .setupIntent))
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          .template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -374,6 +384,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -455,6 +466,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -555,6 +567,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           projectWithErroredBacking,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -650,6 +663,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -744,6 +758,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -811,6 +826,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -851,6 +867,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -899,6 +916,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           Project.template,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -953,6 +971,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1005,6 +1024,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1042,6 +1062,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .update,
           .discovery,
@@ -1079,6 +1100,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .updateReward,
           .discovery,
@@ -1116,6 +1138,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .changePaymentMethod,
           .discovery,
@@ -1153,6 +1176,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .fixPaymentMethod,
           .discovery,
@@ -1191,6 +1215,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1238,6 +1263,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1289,6 +1315,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1320,6 +1347,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1365,6 +1393,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1403,6 +1432,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
@@ -1454,6 +1484,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .configure(with: (
           User.template,
           project,
+          "checkoutID",
           Reward.template,
           .pledge,
           .discovery,
