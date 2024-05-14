@@ -168,8 +168,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .createPaymentIntentInput(input: CreatePaymentIntentInput(
             projectId: projectId,
             amountDollars: String(format: "%.2f", pledgeTotal),
-            digitalMarketingAttributed: nil,
-            paymentIntentContext: .postCampaignCheckout
+            digitalMarketingAttributed: nil
           ))
           .materialize()
       }
@@ -280,8 +279,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
             .createPaymentIntentInput(input: CreatePaymentIntentInput(
               projectId: projectId,
               amountDollars: String(format: "%.2f", pledgeTotal),
-              digitalMarketingAttributed: nil,
-              paymentIntentContext: .postCampaignCheckout
+              digitalMarketingAttributed: nil
             ))
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .materialize()

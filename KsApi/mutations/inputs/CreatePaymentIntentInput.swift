@@ -12,17 +12,16 @@ public struct CreatePaymentIntentInput: GraphMutationInput, Encodable {
    - parameter projectId: The GraphID of the Project.
    - parameter amountDollars: The amount.
    - parameter digitalMarketingAttributed: The optional ID of the ShippingRule's Location.
-   - parameter paymentIntentContext: The optional GraphAPI.StripeIntentContextType. Used to help the backend debug
+   - parameter paymentIntentContext: The GraphAPI.StripeIntentContextType. Used to help the backend debug
    */
   public init(
     projectId: String,
     amountDollars: String,
-    digitalMarketingAttributed: Bool?,
-    paymentIntentContext: GraphAPI.StripeIntentContextTypes?
+    digitalMarketingAttributed: Bool?
   ) {
     self.projectId = projectId
     self.amountDollars = amountDollars
     self.digitalMarketingAttributed = digitalMarketingAttributed
-    self.paymentIntentContext = paymentIntentContext
+    self.paymentIntentContext = .postCampaignCheckout
   }
 }

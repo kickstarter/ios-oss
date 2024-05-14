@@ -332,8 +332,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .createPaymentIntentInput(input: CreatePaymentIntentInput(
             projectId: project.graphID,
             amountDollars: String(format: "%.2f", pledgeTotal),
-            digitalMarketingAttributed: nil,
-            paymentIntentContext: .postCampaignCheckout
+            digitalMarketingAttributed: nil
           ))
           .map { $0.clientSecret }
       }
