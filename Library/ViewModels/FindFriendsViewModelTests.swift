@@ -36,9 +36,6 @@ final class FindFriendsViewModelTests: TestCase {
     self.vm.inputs.configureWith(source: FriendsSource.findFriends)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.configureWith(source: FriendsSource.activity)
-    self.vm.inputs.viewDidLoad()
-
     self.vm.inputs.configureWith(source: FriendsSource.discovery)
     self.vm.inputs.viewDidLoad()
 
@@ -65,7 +62,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testFriends_WithFacebookConnectedUser() {
     withEnvironment(currentUser: User.template |> \.facebookConnected .~ true) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.friends.assertValueCount(0, "Friends does not emit")
       self.showFacebookConnect.assertValueCount(0, "Facebook connect does not emit")
@@ -154,7 +151,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testStats_WithFacebookConnectedUser() {
     withEnvironment(currentUser: User.template |> \.facebookConnected .~ true) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.stats.assertValueCount(0)
       self.statsSource.assertValueCount(0)
@@ -164,13 +161,13 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.stats.assertValueCount(1)
-      self.statsSource.assertValues([FriendsSource.activity])
+      self.statsSource.assertValues([FriendsSource.settings])
     }
   }
 
   func testStats_WithNonFacebookConnectedUser() {
     withEnvironment(currentUser: User.template) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.stats.assertValueCount(0)
       self.statsSource.assertValueCount(0)
@@ -190,7 +187,7 @@ final class FindFriendsViewModelTests: TestCase {
       |> \.needsFreshFacebookToken .~ true
 
     withEnvironment(currentUser: facebookConnectedNeedsReconnectUser) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.stats.assertValueCount(0)
       self.statsSource.assertValueCount(0)
@@ -210,7 +207,7 @@ final class FindFriendsViewModelTests: TestCase {
       |> \.facebookConnected .~ true
 
     withEnvironment(apiService: MockService(fetchFriendsResponse: friendsResponse), currentUser: user) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.willDisplayRow(0, outOf: 2)
 
@@ -241,7 +238,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testLoaderIsAnimating_WithFacebookConnectedUser() {
     withEnvironment(currentUser: User.template |> \.facebookConnected .~ true) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.showLoadingIndicatorView.assertValueCount(0, "Loader is hidden")
 
@@ -265,7 +262,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testLoadedMoreFriendsReporting() {
     withEnvironment(currentUser: .template |> \.facebookConnected .~ true) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -281,7 +278,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testLoaderIsAnimating_WithNonFacebookConnectedUser() {
     withEnvironment(currentUser: User.template) {
-      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.configureWith(source: FriendsSource.settings)
 
       self.showLoadingIndicatorView.assertValueCount(0, "Loader is hidden")
 
