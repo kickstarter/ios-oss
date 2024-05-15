@@ -354,6 +354,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
           if featureStripeLinkEnabled() {
             configuration.defaultBillingDetails.email = AppEnvironment.current.currentUserEmail
+            configuration.billingDetailsCollectionConfiguration.email = .automatic
+          } else {
+            configuration.billingDetailsCollectionConfiguration.email = .always
           }
 
           let data = PaymentSheetSetupData(
