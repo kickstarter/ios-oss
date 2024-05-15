@@ -158,7 +158,6 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
             var configuration = PaymentSheet.Configuration()
             configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
             configuration.allowsDelayedPaymentMethods = true
-
             let data = PaymentSheetSetupData(
               clientSecret: envelope.clientSecret,
               configuration: configuration,
