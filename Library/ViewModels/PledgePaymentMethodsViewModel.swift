@@ -352,13 +352,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
           configuration.allowsDelayedPaymentMethods = paymentSheetType == .setupIntent
 
-          if featureStripeLinkEnabled() {
-            configuration.defaultBillingDetails.email = AppEnvironment.current.currentUserEmail
-            configuration.billingDetailsCollectionConfiguration.email = .automatic
-          } else {
-            configuration.billingDetailsCollectionConfiguration.email = .always
-          }
-
           let data = PaymentSheetSetupData(
             clientSecret: clientSecret,
             configuration: configuration,
