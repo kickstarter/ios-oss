@@ -37,9 +37,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
   private func configureAccessibilityElements() {
     self.participantStackView.isAccessibilityElement = true
-    if featureBlockUsersEnabled() {
-      self.participantStackView.accessibilityTraits.insert(.button)
-    }
+    self.participantStackView.accessibilityTraits.insert(.button)
     self.timestampLabel.isAccessibilityElement = true
     self.bodyTextView.isAccessibilityElement = true
     self.isAccessibilityElement = false

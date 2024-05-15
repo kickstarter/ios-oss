@@ -199,7 +199,6 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
 
   private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _ author: Comment.Author) {
     guard
-      featureBlockUsersEnabled(),
       let currentUser = AppEnvironment.current.currentUser,
       String(currentUser.id) != author.id,
       !author.isBlocked

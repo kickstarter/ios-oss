@@ -13,10 +13,6 @@ private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = f
   return defaultValue
 }
 
-public func featureBlockUsersEnabled() -> Bool {
-  return featureEnabled(feature: .blockUsersEnabled)
-}
-
 public func featureConsentManagementDialogEnabled() -> Bool {
   return featureEnabled(feature: .consentManagementDialogEnabled)
 }

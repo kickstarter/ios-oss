@@ -27,22 +27,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testBlockUsers_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureBlockUsersEnabled,
-        whenRemoteConfigFeatureIsFalse: .blockUsersEnabled
-      )
-  }
-
-  func testBlockUsers_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureBlockUsersEnabled,
-        whenRemoteConfigFeatureIsTrue: .blockUsersEnabled
-      )
-  }
-
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
     self
       .assert(
