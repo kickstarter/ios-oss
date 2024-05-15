@@ -141,9 +141,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.viewRepliesView.isAccessibilityElement = true
     self.viewRepliesView.accessibilityTraits.insert(.button)
     self.commentCellHeaderStackView.isAccessibilityElement = true
-    if featureBlockUsersEnabled() {
-      self.commentCellHeaderStackView.accessibilityTraits.insert(.button)
-    }
+    self.commentCellHeaderStackView.accessibilityTraits.insert(.button)
     self.commentCellHeaderStackView.postTimeLabel.isAccessibilityElement = true
     self.bodyTextView.isAccessibilityElement = true
   }
