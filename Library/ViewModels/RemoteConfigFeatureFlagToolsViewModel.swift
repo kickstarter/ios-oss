@@ -101,8 +101,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureLoginWithOAuthEnabled()
   case .useKeychainForOAuthToken:
     return featureUseKeychainForOAuthTokenEnabled()
-  case .stripeLinkEnabled:
-    return featureStripeLinkEnabled()
   }
 }
 

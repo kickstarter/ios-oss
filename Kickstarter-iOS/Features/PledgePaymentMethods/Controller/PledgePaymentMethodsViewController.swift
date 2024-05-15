@@ -168,7 +168,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
           guard let strongSelf = self else { return }
 
-          strongSelf.confirmPaymentResult(with: data)
+          strongSelf.confirmPaymentResult(with: data.clientSecret)
         }
         strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
       }
@@ -191,7 +191,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     }
   }
 
-  private func confirmPaymentResult(with data: PaymentSheetSetupData) {
+  private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
@@ -208,11 +208,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       switch paymentResult {
       case .completed:
-        strongSelf.didConfirmAddedPaymentOption(
-          paymentOption: existingPaymentOption,
-          forClientSecret: data.clientSecret,
-          forPaymentSheetType: data.paymentSheetType
+        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
+          image: existingPaymentOption.image,
+          label: existingPaymentOption.label
         )
+        strongSelf.viewModel.inputs
+          .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
       case .canceled:
         // User cancelled intentionally so do nothing.
         break
@@ -221,73 +222,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
       }
     }
-  }
-
-  private func didConfirmAddedPaymentOption(
-    paymentOption: PaymentSheet.FlowController.PaymentOptionDisplayData,
-    forClientSecret clientSecret: String,
-    forPaymentSheetType paymentSheetType: PledgePaymentSheetType
-  ) {
-    // Stripe also defines this constant, but it's defined internally to the Stripe SDK :(
-    let linkIdentifier = "link"
-
-    // For regular payment types, continue with the display information they gave us
-    if paymentOption.paymentMethodType != linkIdentifier {
-      let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
-        image: paymentOption.image,
-        label: paymentOption.label
-      )
-
-      self.viewModel.inputs.paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
-      return
-    }
-
-    // For link payment types, fetch the underlying payment method so we can get at the card type and label
-
-    switch paymentSheetType {
-    case .setupIntent:
-      STPAPIClient.shared
-        .retrieveSetupIntent(
-          withClientSecret: clientSecret,
-          expand: ["payment_method"]
-        ) { [weak self] intent, _ in
-          guard let strongSelf = self else { return }
-          guard let paymentDisplayData = strongSelf.paymentDisplayData(forLink: intent?.paymentMethod)
-          else { return }
-          strongSelf.viewModel.inputs.paymentSheetDidAdd(
-            newCard: paymentDisplayData,
-            clientSecret: clientSecret
-          )
-        }
-
-    case .paymentIntent:
-      STPAPIClient.shared
-        .retrievePaymentIntent(
-          withClientSecret: clientSecret,
-          expand: ["payment_method"]
-        ) { [weak self] intent, _ in
-          guard let strongSelf = self else { return }
-          guard let paymentDisplayData = strongSelf.paymentDisplayData(forLink: intent?.paymentMethod)
-          else { return }
-          strongSelf.viewModel.inputs.paymentSheetDidAdd(
-            newCard: paymentDisplayData,
-            clientSecret: clientSecret
-          )
-        }
-    }
-  }
-
-  private func paymentDisplayData(forLink optionalPaymentMethod: STPPaymentMethod?)
-    -> PaymentSheetPaymentOptionsDisplayData? {
-    guard let paymentMethod = optionalPaymentMethod else {
-      return nil
-    }
-
-    let formattedLabel = KSRStripeLink.formatLinkLabel(paymentMethod.label)
-    return PaymentSheetPaymentOptionsDisplayData(
-      image: paymentMethod.image,
-      label: formattedLabel ?? paymentMethod.label
-    )
   }
 
   private func updateAddNewPaymentMethodButtonLoading(state: Bool) {

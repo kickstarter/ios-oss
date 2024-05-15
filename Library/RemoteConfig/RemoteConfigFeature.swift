@@ -9,7 +9,6 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case reportThisProjectEnabled = "report_this_project"
   case loginWithOAuthEnabled = "ios_oauth"
   case useKeychainForOAuthToken = "use_keychain_for_oauth_token"
-  case stripeLinkEnabled = "stripe_link"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -23,7 +22,6 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .reportThisProjectEnabled: return "Report This Project"
     case .loginWithOAuthEnabled: return "Login with OAuth"
     case .useKeychainForOAuthToken: return "Use Keychain for OAuth token"
-    case .stripeLinkEnabled: return "Stripe Link"
     }
   }
 }
