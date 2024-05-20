@@ -78,7 +78,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.resendVerificationEmailViewIsHidden.assertValues([true])
       self.unverifiedEmailLabelHidden.assertValues([true])
-      self.emailText.assertValues(["nativesquad@ksr.com"])
+      self.emailText.assertValues(["user@example.com"])
 
       self.vm.inputs.emailFieldTextDidChange(text: "example@example.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
@@ -89,7 +89,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.didChangeEmail.assertDidEmitValue()
-      self.emailText.assertValues(["nativesquad@ksr.com", "example@example.com"])
+      self.emailText.assertValues(["user@example.com", "example@example.com"])
       self.resendVerificationEmailViewIsHidden.assertValues(
         [true],
         "Resend verification email button does not show"
@@ -128,7 +128,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.emailText.assertValues(["nativesquad@ksr.com"])
+      self.emailText.assertValues(["user@example.com"])
     }
   }
 
