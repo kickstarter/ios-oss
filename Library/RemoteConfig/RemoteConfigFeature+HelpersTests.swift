@@ -91,22 +91,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       )
   }
 
-  func testReportThisProject_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureReportThisProjectEnabled,
-        whenRemoteConfigFeatureIsTrue: .reportThisProjectEnabled
-      )
-  }
-
-  func testReportThisProject_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureReportThisProjectEnabled,
-        whenRemoteConfigFeatureIsFalse: .reportThisProjectEnabled
-      )
-  }
-
   func testLoginWithOAuth_RemoteConfig_FeatureFlag_True() {
     self
       .assert(

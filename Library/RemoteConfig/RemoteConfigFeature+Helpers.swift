@@ -29,10 +29,6 @@ public func featurePostCampaignPledgeEnabled() -> Bool {
   featureEnabled(feature: .postCampaignPledgeEnabled)
 }
 
-public func featureReportThisProjectEnabled() -> Bool {
-  featureEnabled(feature: .reportThisProjectEnabled)
-}
-
 public func featureLoginWithOAuthEnabled() -> Bool {
   featureEnabled(feature: .loginWithOAuthEnabled, defaultValue: true)
 }
