@@ -78,6 +78,12 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
         isUnpreparedSurvey(request: request) && navigationType == .other
       }
       .map { request, _ in request }
+    
+    let unpreparedSurvey = requestAndNavigationType
+      .filter { request, _ in
+        isUnpreparedSurvey(request: request)
+      }
+      .map { request, _ in request }
 
     self.dismissViewController = Signal.merge(
       self.alertButtonTappedProperty.signal,
@@ -125,7 +131,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
       surveyPostRequest.filter { $0.httpBody != nil }, // iOS 14 and up uses this path
-      newRequest
+      newRequest,
+      unpreparedSurvey
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
