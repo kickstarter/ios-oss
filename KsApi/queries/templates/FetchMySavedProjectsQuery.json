@@ -147,12 +147,12 @@
               "__typename": "UserCreatedProjectsConnection",
               "totalCount": 2
             },
-            "email": "lance@cainlevy.net.ksr",
+            "email": "l@example.com",
             "hasPassword": true,
             "hasUnreadMessages": null,
             "hasUnseenActivity": null,
             "id": "VXNlci0x",
-            "imageUrl": "https://i-dev.kickstarter.com/assets/005/760/137/822646ef2680de97e6fe8698561ee170_original.jpg?anim=false&fit=cover&height=1024&origin=ugc-qa&q=92&width=1024&sig=4KzqXnjivh5SWZkDhvPUzAM%2BxxkR%2F6APgTEuZWuFcU0%3D",
+            "imageUrl": "example.com/profile-l",
             "isAppleConnected": null,
             "isBlocked": false,
             "isCreator": true,
@@ -170,7 +170,7 @@
               "id": "TG9jYXRpb24tMjQ3NTY4Nw==",
               "name": "Portland"
             },
-            "name": "Lance Ivy",
+            "name": "L Lion",
             "needsFreshFacebookToken": null,
             "newsletterSubscriptions": {
               "__typename": "NewsletterSubscriptions",
@@ -391,12 +391,12 @@
               "__typename": "UserCreatedProjectsConnection",
               "totalCount": 7
             },
-            "email": "John@tentaclekitty.com.ksr",
+            "email": "J@example.com",
             "hasPassword": true,
             "hasUnreadMessages": null,
             "hasUnseenActivity": null,
             "id": "VXNlci03MTM2OTk4Mzc=",
-            "imageUrl": "https://i-dev.kickstarter.com/assets/007/043/182/55824148a299195b08ed442aa4b47625_original.jpg?anim=false&fit=cover&height=1024&origin=ugc-qa&q=92&width=1024&sig=7OlH2rmLXmRmL63Bhryg0bprUStr4FZceY%2Bw%2FtYlmBg%3D",
+            "imageUrl": "example.com/profile-j",
             "isAppleConnected": null,
             "isBlocked": false,
             "isCreator": true,
@@ -414,7 +414,7 @@
               "id": "TG9jYXRpb24tMjQzMjg4Nw==",
               "name": "Kingwood"
             },
-            "name": "John Merritt",
+            "name": "J Fish",
             "needsFreshFacebookToken": null,
             "newsletterSubscriptions": {
               "__typename": "NewsletterSubscriptions",
@@ -513,7 +513,7 @@
               "__typename": "SurveyResponsesConnection",
               "totalCount": 0
             },
-            "uid": "713699837"
+            "uid": "2"
           },
           "currency": "USD",
           "deadlineAt": 1699546033,
@@ -791,7 +791,7 @@
               "__typename": "UserCreatedProjectsConnection",
               "totalCount": 11
             },
-            "email": "roadtoinfamy@gmail.com.ksr",
+            "email": "r@example.com",
             "hasPassword": true,
             "hasUnreadMessages": null,
             "hasUnseenActivity": null,
@@ -814,7 +814,7 @@
               "id": "TG9jYXRpb24tMjM3OTU3NA==",
               "name": "Chicago"
             },
-            "name": "Road To Infamy",
+            "name": "Rye Bread",
             "needsFreshFacebookToken": null,
             "newsletterSubscriptions": {
               "__typename": "NewsletterSubscriptions",
@@ -913,7 +913,7 @@
               "__typename": "SurveyResponsesConnection",
               "totalCount": 0
             },
-            "uid": "2067373948"
+            "uid": "3"
           },
           "currency": "USD",
           "deadlineAt": 1696946410,
@@ -964,7 +964,7 @@
               {
                 "__typename": "ProjectFaq",
                 "question": "What is the best way to reach you?",
-                "answer": "If you have a question about your order, email us at roadtoinfamy@gmail.com. Do not post order questions in the comments; your comment may get buried in the other comments, plus it's difficult to do customer service in a public forum where personal information cannot be shared.\r\n\r\nIf you have a general question about the campaign that is not specific to your order, post in the comment section. That way, other backers benefit from seeing answers to common questions, and they may even be able to quickly answer the question for you.",
+                "answer": "If you have a question about your order, email us at r@example.com. Do not post order questions in the comments; your comment may get buried in the other comments, plus it's difficult to do customer service in a public forum where personal information cannot be shared.\r\n\r\nIf you have a general question about the campaign that is not specific to your order, post in the comment section. That way, other backers benefit from seeing answers to common questions, and they may even be able to quickly answer the question for you.",
                 "id": "UHJvamVjdEZhcS00NDM3ODY=",
                 "createdAt": 1694534781
               },
@@ -1055,7 +1055,7 @@
             "totalCount": 12
           },
           "prelaunchActivated": true,
-          "risks": "FULFILLMENT TIMELINE\nWhile delays are possible, we have a track record of delivering backer rewards on time. Our average time to deliver a game after a Kickstarter campaign is ~9 months.\n\nFINAL PRODUCT\nDesign, materials, and content are subject to change.\n\nLOST SHIPMENTS\nIf your order is lost or returned due to unforeseen circumstances, we will reship 1 time for free. Reshipment fee applies if incorrect address was given. If undeliverable, a refund will be issued.\n\nLATE SURVEYS\nReshipments and late orders will be sent about 2 months after fulfillment.\n\nThis campaign will close 6 months after fulfillment. If you do not provide shipping info by then, we can't fulfill your order and your pledge will be kept as a donation.\n\nREPLACEMENT PARTS\nTo request replacements parts, email roadtoinfamy@gmail.com. Box replacements are handled case by case. Minor cosmetic issues may not warrant free replacement.\n\nREFUND POLICY:\n• You can get a full refund within 2 weeks after campaign end.\n• After 2 weeks, you can get a refund minus 10% for crowdfunding/processing fees.\n• No refunds after pledge manager is locked.",
+          "risks": "FULFILLMENT TIMELINE\nWhile delays are possible, we have a track record of delivering backer rewards on time. Our average time to deliver a game after a Kickstarter campaign is ~9 months.\n\nFINAL PRODUCT\nDesign, materials, and content are subject to change.\n\nLOST SHIPMENTS\nIf your order is lost or returned due to unforeseen circumstances, we will reship 1 time for free. Reshipment fee applies if incorrect address was given. If undeliverable, a refund will be issued.\n\nLATE SURVEYS\nReshipments and late orders will be sent about 2 months after fulfillment.\n\nThis campaign will close 6 months after fulfillment. If you do not provide shipping info by then, we can't fulfill your order and your pledge will be kept as a donation.\n\nREPLACEMENT PARTS\nTo request replacements parts, email r@example.com. Box replacements are handled case by case. Minor cosmetic issues may not warrant free replacement.\n\nREFUND POLICY:\n• You can get a full refund within 2 weeks after campaign end.\n• After 2 weeks, you can get a refund minus 10% for crowdfunding/processing fees.\n• No refunds after pledge manager is locked.",
           "sendMetaCapiEvents": false,
           "slug": "roadtoinfamy/fromage",
           "state": "SUCCESSFUL",
@@ -1124,12 +1124,12 @@
               "__typename": "UserCreatedProjectsConnection",
               "totalCount": 1
             },
-            "email": "moonrisecafefm@gmail.com.ksr",
+            "email": "m@example.com",
             "hasPassword": true,
             "hasUnreadMessages": null,
             "hasUnseenActivity": null,
             "id": "VXNlci02MTQ0ODAxNTI=",
-            "imageUrl": "https://i-dev.kickstarter.com/assets/042/049/622/97583dcebe9126c3128bf2c62d0e2104_original.jpeg?anim=false&fit=cover&height=1024&origin=ugc-qa&q=92&width=1024&sig=YRJ%2B31iIkMzrEDMx6Gw%2BsgLKIcM8SLHDu0enC6pOS0E%3D",
+            "imageUrl": "example.com/moon",
             "isAppleConnected": null,
             "isBlocked": false,
             "isCreator": true,
@@ -1147,7 +1147,7 @@
               "id": "TG9jYXRpb24tMjQwMjI5Mg==",
               "name": "Fargo"
             },
-            "name": "Emily Driscoll",
+            "name": "M Moonbeam",
             "needsFreshFacebookToken": null,
             "newsletterSubscriptions": {
               "__typename": "NewsletterSubscriptions",
@@ -1246,7 +1246,7 @@
               "__typename": "SurveyResponsesConnection",
               "totalCount": 0
             },
-            "uid": "614480152"
+            "uid": "4"
           },
           "currency": "USD",
           "deadlineAt": 1696443047,
