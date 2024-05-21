@@ -719,7 +719,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
 
       // overviewCreatorHeader
       XCTAssertEqual(
