@@ -30,6 +30,7 @@ extension Backing {
     return Backing(
       addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
+      /// LOOKSIE:  use backing isLatePledge ? reward.latePledgeAmount : reward.pledgeAmount
       backer: backer,
       backerId: backerId,
       backerCompleted: backingFragment.backerCompleted,
