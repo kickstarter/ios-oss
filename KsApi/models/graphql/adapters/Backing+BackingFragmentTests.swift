@@ -27,6 +27,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.bonusAmount, 5.0)
       XCTAssertEqual(backing.cancelable, true)
       XCTAssertEqual(backing.id, decompose(id: "QmFja2luZy0xNDQ5NTI3MTc="))
+      XCTAssertEqual(backing.isLatePledge, false)
       XCTAssertEqual(backing.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
       XCTAssertEqual(backing.locationName, "Canada")
       XCTAssertEqual(backing.paymentSource?.type, .visa)
@@ -522,6 +523,7 @@ private func backingDictionary() -> [String: Any] {
       "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
     },
     "id": "QmFja2luZy0xNDQ5NTI3MTc=",
+    "isLatePledge": false,
     "location": {
       "__typename": "Location",
       "country": "CA",

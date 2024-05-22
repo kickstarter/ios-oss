@@ -30,12 +30,14 @@ extension Backing {
     return Backing(
       addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
+      /// LOOKSIE:  use backing isLatePledge ? reward.latePledgeAmount : reward.pledgeAmount
       backer: backer,
       backerId: backerId,
       backerCompleted: backingFragment.backerCompleted,
       bonusAmount: backingFragment.bonusAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       cancelable: backingFragment.cancelable,
       id: id,
+      isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
       paymentSource: backingPaymentSource(from: backingFragment),

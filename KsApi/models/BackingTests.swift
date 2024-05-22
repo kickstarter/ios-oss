@@ -20,6 +20,7 @@ final class BackingTests: XCTestCase {
       "backer_completed_at": 1,
       "cancelable": true,
       "id": 1,
+      "isLatePledge": false,
       "location_id": 1,
       "location_name": "United States",
       "payment_source": [
@@ -73,6 +74,7 @@ final class BackingTests: XCTestCase {
       "backer_completed_at": nil,
       "cancelable": true,
       "id": 1,
+      "isLatePledge": false,
       "location_id": 1,
       "location_name": "United States",
       "payment_source": [],

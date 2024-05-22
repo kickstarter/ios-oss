@@ -33,6 +33,7 @@ internal final class ActivityTests: XCTestCase {
         "backer_id": 1,
         "cancelable": true,
         "id": 1,
+        "isLatePledge": false,
         "location_id": 1,
         "pledged_at": 1_000,
         "project_country": "US",

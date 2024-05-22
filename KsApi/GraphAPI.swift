@@ -12292,6 +12292,7 @@ public enum GraphAPI {
           ...CreditCardFragment
         }
         id
+        isLatePledge
         location {
           __typename
           ...LocationFragment
@@ -12326,6 +12327,7 @@ public enum GraphAPI {
         GraphQLField("cancelable", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("paymentSource", alias: "creditCard", type: .object(CreditCard.selections)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("isLatePledge", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
         GraphQLField("pledgedOn", type: .scalar(String.self)),
         GraphQLField("project", type: .object(Project.selections)),
@@ -12342,8 +12344,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, location: Location? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
     }
 
     public var __typename: String {
@@ -12421,6 +12423,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// Whether or not the backing is a late pledge
+    public var isLatePledge: Bool {
+      get {
+        return resultMap["isLatePledge"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isLatePledge")
       }
     }
 

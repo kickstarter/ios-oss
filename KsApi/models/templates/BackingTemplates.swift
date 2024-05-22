@@ -11,6 +11,7 @@ extension Backing {
     bonusAmount: 0,
     cancelable: true,
     id: 1,
+    isLatePledge: false,
     locationId: 1,
     locationName: "United States",
     paymentSource: .template,

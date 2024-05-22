@@ -9,6 +9,7 @@ public struct Backing {
   public let bonusAmount: Double
   public let cancelable: Bool
   public let id: Int
+  public let isLatePledge: Bool
   public let locationId: Int?
   public let locationName: String?
   public let paymentSource: PaymentSource?
@@ -56,6 +57,7 @@ extension Backing: Decodable {
     case bonusAmount = "bonus_amount"
     case cancelable
     case id
+    case isLatePledge
     case locationId = "location_id"
     case locationName = "location_name"
     case paymentSource = "payment_source"
@@ -79,6 +81,7 @@ extension Backing: Decodable {
     self.bonusAmount = try values.decodeIfPresent(Double.self, forKey: .bonusAmount) ?? 0.0
     self.cancelable = try values.decode(Bool.self, forKey: .cancelable)
     self.id = try values.decode(Int.self, forKey: .id)
+    self.isLatePledge = try values.decode(Bool.self, forKey: .isLatePledge)
     self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
     self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
     self.paymentSource = try? values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)
