@@ -48,7 +48,7 @@ final class LoginViewModelTests: TestCase {
 
     self.isFormValid.assertValues([false], "Form is not valid")
 
-    self.vm.inputs.emailChanged("Gina@rules.com")
+    self.vm.inputs.emailChanged("puppies@rule.com")
     self.isFormValid.assertValues([false], "Form is not valid")
 
     self.vm.inputs.emailTextFieldDoneEditing()
@@ -109,7 +109,7 @@ final class LoginViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.emailChanged("user@example.com")
       self.vm.inputs.passwordChanged("helloooooo")
       self.vm.inputs.loginButtonPressed()
 
@@ -130,7 +130,7 @@ final class LoginViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.emailChanged("user@example.com")
       self.vm.inputs.passwordChanged("helloooooo")
       self.vm.inputs.loginButtonPressed()
 
@@ -151,7 +151,7 @@ final class LoginViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.emailChanged("user@example.com")
       self.vm.inputs.passwordChanged("helloooooo")
       self.vm.inputs.loginButtonPressed()
 
@@ -159,7 +159,7 @@ final class LoginViewModelTests: TestCase {
 
       self.showError.assertValueCount(0, "Login error did not happen")
       self.tfaChallenge.assertValues(
-        ["nativesquad@kickstarter.com"],
+        ["user@example.com"],
         "Two factor challenge emitted with email and password"
       )
       self.tfaChallengePasswordText.assertValues(["helloooooo"], "Two factor challenge emitted with password")

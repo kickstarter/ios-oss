@@ -14,7 +14,7 @@ internal final class FacebookConfirmationViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = FacebookConfirmationViewController
-          .configuredWith(facebookUserEmail: "hello@kickstarter.com", facebookAccessToken: "")
+          .configuredWith(facebookUserEmail: "hello@example.com", facebookAccessToken: "")
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()

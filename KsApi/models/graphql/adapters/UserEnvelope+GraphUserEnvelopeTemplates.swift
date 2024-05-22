@@ -5,16 +5,16 @@ public struct GraphUserEnvelopeTemplates {
     [
       "me": [
         "chosenCurrency": nil,
-        "email": "nativesquad@ksr.com",
+        "email": "user@example.com",
         "hasPassword": true,
-        "id": "VXNlci0xNDcwOTUyNTQ1",
-        "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D",
+        "id": "fakeId",
+        "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png",
         "isAppleConnected": false,
         "isBlocked": false,
         "isCreator": false,
         "isDeliverable": true,
         "isEmailVerified": true,
-        "name": "Hari Singh",
+        "name": "Example User",
         "storedCards": [
           "nodes": [
             [
@@ -27,7 +27,7 @@ public struct GraphUserEnvelopeTemplates {
           ],
           "totalCount": 1
         ],
-        "uid": "1470952545"
+        "uid": "11111"
       ]
     ]
 }

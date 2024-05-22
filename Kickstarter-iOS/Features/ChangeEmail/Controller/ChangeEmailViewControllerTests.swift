@@ -23,7 +23,7 @@ final class ChangeEmailViewControllerTests: TestCase {
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -39,7 +39,7 @@ final class ChangeEmailViewControllerTests: TestCase {
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -58,7 +58,7 @@ final class ChangeEmailViewControllerTests: TestCase {
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: service,
         currentUser: creator,
@@ -80,7 +80,7 @@ final class ChangeEmailViewControllerTests: TestCase {
       |> \.isDeliverable .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

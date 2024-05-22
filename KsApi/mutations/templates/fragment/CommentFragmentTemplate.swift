@@ -59,7 +59,7 @@ public enum CommentFragmentTemplate {
            "totalCount": 2
         },
         "optedOutOfRecommendations":true,
-        "email": "mubarak@kickstarter.com",
+        "email": "m@example.com",
         "isAppleConnected": true,
         "isBlocked": false,
         "isEmailVerified": false,
@@ -100,8 +100,8 @@ public enum CommentFragmentTemplate {
         "id": "VXNlci02MTgwMDU4ODY=",
         "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D",
         "isCreator": null,
-        "name": "Mubarak Sadoon",
-        "uid": "618005886"
+        "name": "Example User",
+        "uid": "11223"
       },
       "authorBadges": [
         "collaborator"

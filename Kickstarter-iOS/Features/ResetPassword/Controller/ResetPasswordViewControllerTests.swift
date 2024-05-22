@@ -13,7 +13,8 @@ internal final class ResetPasswordViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.pad, Device.phone4_7inch, Device.phone5_8inch]).forEach {
       language, device in
       withEnvironment(language: language) {
-        let controller = ResetPasswordViewController.configuredWith(email: "americasnexttopmodulus@gmail.com")
+        let controller = ResetPasswordViewController
+          .configuredWith(email: "americasnexttopmodulus@example.com")
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()

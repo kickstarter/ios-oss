@@ -39,16 +39,16 @@ public enum FetchUserBackingsQueryTemplate {
               "backer": [
                 "__typename": "User",
                 "chosenCurrency": "USD",
-                "email": "singh.harichandan@gmail.com",
+                "email": "user@example.com",
                 "hasPassword": true,
                 "id": "VXNlci0xNDcwOTUyNTQ1",
-                "imageUrl": "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D",
+                "imageUrl": "example.com/profile-pic",
                 "isAppleConnected": false,
                 "isCreator": false,
                 "isDeliverable": true,
                 "isEmailVerified": true,
-                "name": "Hari Singh",
-                "uid": "1470952545"
+                "name": "Example Backer",
+                "uid": "12345"
               ],
               "backerCompleted": false,
               "bonusAmount": [
@@ -93,16 +93,16 @@ public enum FetchUserBackingsQueryTemplate {
                 "creator": [
                   "__typename": "User",
                   "chosenCurrency": nil,
-                  "email": "afees.olabisi@gmail.com",
+                  "email": "c@example.com",
                   "hasPassword": nil,
                   "id": "VXNlci03NDAzNzgwNzc=",
-                  "imageUrl": "https://i.kickstarter.com/assets/033/406/310/0643a06ea18a1462cc8466af5718d9ef_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=f65xrY5%2ByRh3HWkJK9bpJA485zuH0XK7iiIk2bOGjLw%3D",
+                  "imageUrl": "example.com/creator-image",
                   "isAppleConnected": nil,
                   "isCreator": nil,
                   "isDeliverable": true,
                   "isEmailVerified": true,
-                  "name": "Afees Lawal",
-                  "uid": "740378077"
+                  "name": "Creator",
+                  "uid": "56789"
                 ],
                 "currency": "USD",
                 "deadlineAt": 1_683_676_800,

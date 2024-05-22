@@ -46,7 +46,7 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
     self.setPasswordButtonIsEnabled.assertValues([false])
 
-    self.vm.inputs.emailTextFieldFieldDidChange("scott@kickstarter.com")
+    self.vm.inputs.emailTextFieldFieldDidChange("user@example.com")
 
     self.setPasswordButtonIsEnabled.assertValues([false, true])
   }
@@ -54,7 +54,7 @@ final class FacebookResetPasswordViewModelTests: TestCase {
   func testResetSuccessValues_EnabledTextFieldsAndLoadingIndicator() {
     withEnvironment(apiService: MockService(resetPasswordResponse: .template)) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailTextFieldFieldDidChange("lisa@kickstarter.com")
+      self.vm.inputs.emailTextFieldFieldDidChange("user@example.com")
 
       self.shouldShowActivityIndicator.assertValues([])
       self.textFieldAndSetPasswordButtonAreEnabled.assertValues([])
@@ -64,7 +64,7 @@ final class FacebookResetPasswordViewModelTests: TestCase {
       self.setPasswordSuccess.assertValues(
         [
           Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-            email: "lisa@kickstarter.com"
+            email: "user@example.com"
           )
         ]
       )
