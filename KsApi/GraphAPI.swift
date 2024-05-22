@@ -15876,6 +15876,14 @@ public enum GraphAPI {
           ...LocationFragment
         }
         name
+        pledgeAmount {
+          __typename
+          ...MoneyFragment
+        }
+        latePledgeAmount {
+          __typename
+          ...MoneyFragment
+        }
         postCampaignPledgingEnabled
         project {
           __typename
@@ -15915,6 +15923,8 @@ public enum GraphAPI {
           GraphQLField("localReceiptLocation", type: .object(LocalReceiptLocation.selections)),
         ]),
         GraphQLField("name", type: .scalar(String.self)),
+        GraphQLField("pledgeAmount", type: .nonNull(.object(PledgeAmount.selections))),
+        GraphQLField("latePledgeAmount", type: .nonNull(.object(LatePledgeAmount.selections))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("project", type: .object(Project.selections)),
         GraphQLField("remainingQuantity", type: .scalar(Int.self)),
@@ -15933,8 +15943,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, available: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "available": available, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
+    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, available: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, pledgeAmount: PledgeAmount, latePledgeAmount: LatePledgeAmount, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "available": available, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "pledgeAmount": pledgeAmount.resultMap, "latePledgeAmount": latePledgeAmount.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
     }
 
     public var __typename: String {
@@ -16104,6 +16114,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "name")
+      }
+    }
+
+    /// Amount for claiming this reward during the campaign.
+    public var pledgeAmount: PledgeAmount {
+      get {
+        return PledgeAmount(unsafeResultMap: resultMap["pledgeAmount"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "pledgeAmount")
+      }
+    }
+
+    /// Amount for claiming this reward after the campaign.
+    public var latePledgeAmount: LatePledgeAmount {
+      get {
+        return LatePledgeAmount(unsafeResultMap: resultMap["latePledgeAmount"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "latePledgeAmount")
       }
     }
 
@@ -16558,6 +16588,118 @@ public enum GraphAPI {
         public var locationFragment: LocationFragment {
           get {
             return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct PledgeAmount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(MoneyFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var moneyFragment: MoneyFragment {
+          get {
+            return MoneyFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct LatePledgeAmount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(MoneyFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var moneyFragment: MoneyFragment {
+          get {
+            return MoneyFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap

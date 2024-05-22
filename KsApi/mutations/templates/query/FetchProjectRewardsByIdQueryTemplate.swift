@@ -55,9 +55,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                      "__typename": "RewardItemsConnection",
                      "edges": []
                    },
+                  "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"PERSONAL THANK YOU + SURPRISE GIF",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled":false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -118,9 +128,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":50,
                    "limitPerBacker":1,
                    "name":"SET OF 5 POSTCARDS",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -225,9 +245,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SPECIAL OFFER FOR PUPILS",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -317,9 +347,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"FIRST EDITON BOOK / ERSTAUSGABE",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -424,9 +464,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + PUPIL SUPPORT",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -516,9 +566,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"2 SIGNED BOOKS / 2 SIGNIERTE BÜCHER",
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -617,9 +677,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Eisbären)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -718,9 +788,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Aurora Borealis)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -819,9 +899,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Schnee)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -920,9 +1010,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Spalte im Eis)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1021,9 +1121,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Meereis)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1122,9 +1232,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Arktisches Licht)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1223,9 +1343,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Das erste Eis)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1330,9 +1460,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
+                       "latePledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + GALLERY PRINT (30x45cm)",
+                       "pledgeAmount": {
+                          "amount":"5.0",
+                          "currency":"EUR",
+                          "symbol":"€"
+                       },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",

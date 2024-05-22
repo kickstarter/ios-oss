@@ -9,9 +9,11 @@ public struct Reward {
   public let estimatedDeliveryOn: TimeInterval?
   public let hasAddOns: Bool
   public let id: Int
+  public let latePledgeAmount: Double
   public let limit: Int?
   public let limitPerBacker: Int?
   public let minimum: Double
+  public let pledgeAmount: Double
   public let postCampaignPledgingEnabled: Bool
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
@@ -107,9 +109,11 @@ extension Reward: Decodable {
     case estimatedDeliveryOn = "estimated_delivery_on"
     case hasAddOns = "has_addons"
     case id
+    case latePledgeAmount
     case limit
     case limitPerBacker = "limit_per_backer"
     case minimum
+    case pledgeAmount
     case postCampaignPledgingEnabled = "post_campaign_pledging_enabled"
     case remaining
     case rewardsItems = "rewards_items"
@@ -132,9 +136,11 @@ extension Reward: Decodable {
     self.estimatedDeliveryOn = try values.decodeIfPresent(TimeInterval.self, forKey: .estimatedDeliveryOn)
     self.hasAddOns = try values.decodeIfPresent(Bool.self, forKey: .hasAddOns) ?? false
     self.id = try values.decode(Int.self, forKey: .id)
+    self.latePledgeAmount = try values.decode(Double.self, forKey: .latePledgeAmount)
     self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
     self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
     self.minimum = try values.decode(Double.self, forKey: .minimum)
+    self.pledgeAmount = try values.decode(Double.self, forKey: .pledgeAmount)
     self.postCampaignPledgingEnabled =
       try values.decodeIfPresent(Bool.self, forKey: .postCampaignPledgingEnabled) ?? false
     self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)

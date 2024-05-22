@@ -98,9 +98,21 @@ public enum FetchAddsOnsQueryTemplate {
                     }
                   ]
                 },
+                "latePledgeAmount": {
+                  "__typename": "Money",
+                  "amount": "4.0",
+                  "currency": "AUD",
+                  "symbol": "$"
+                },
                 "limit": null,
                 "limitPerBacker": 10,
                 "name": "Paper Sticker Sheet",
+                "pledgeAmount": {
+                  "__typename": "Money",
+                  "amount": "4.0",
+                  "currency": "AUD",
+                  "symbol": "$"
+                },
                 "postCampaignPledgingEnabled": false,
                 "project": {
                   "__typename": "Project",
@@ -216,9 +228,21 @@ public enum FetchAddsOnsQueryTemplate {
                     }
                   ]
                 },
+                    "latePledgeAmount": {
+                  "__typename": "Money",
+                  "amount": "4.0",
+                  "currency": "AUD",
+                  "symbol": "$"
+                },
                 "limit": null,
                 "limitPerBacker": 10,
                 "name": "Hedgerow Paper Tape (20mm)",
+                    "pledgeAmount": {
+                  "__typename": "Money",
+                  "amount": "4.0",
+                  "currency": "AUD",
+                  "symbol": "$"
+                },
                 "postCampaignPledgingEnabled": false,
                 "project": {
                   "__typename": "Project",
