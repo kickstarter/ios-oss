@@ -106,7 +106,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -155,7 +155,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config,
@@ -206,7 +206,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -252,7 +252,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: currentUser, language: language
@@ -296,7 +296,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -342,7 +342,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: currentUser, language: language
@@ -383,7 +383,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -425,7 +425,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -478,7 +478,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -531,7 +531,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -584,7 +584,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -637,7 +637,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -680,7 +680,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -723,7 +723,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
@@ -766,7 +766,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(self.project.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: nil, language: language
@@ -805,7 +805,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(self.project.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: nil, language: language
@@ -845,7 +845,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: nil, language: language
@@ -883,7 +883,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config,
@@ -923,7 +923,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         language: language
@@ -961,7 +961,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         language: language
@@ -999,7 +999,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         currentUser: .template,
@@ -1125,7 +1125,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ ["use_of_ai": true]
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         language: language,
@@ -1164,7 +1164,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         language: language

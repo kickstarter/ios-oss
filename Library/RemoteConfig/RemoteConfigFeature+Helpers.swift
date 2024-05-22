@@ -13,10 +13,6 @@ private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = f
   return defaultValue
 }
 
-public func featureBlockUsersEnabled() -> Bool {
-  return featureEnabled(feature: .blockUsersEnabled)
-}
-
 public func featureConsentManagementDialogEnabled() -> Bool {
   return featureEnabled(feature: .consentManagementDialogEnabled)
 }
@@ -31,10 +27,6 @@ public func featureFacebookLoginInterstitialEnabled() -> Bool {
 
 public func featurePostCampaignPledgeEnabled() -> Bool {
   featureEnabled(feature: .postCampaignPledgeEnabled)
-}
-
-public func featureReportThisProjectEnabled() -> Bool {
-  featureEnabled(feature: .reportThisProjectEnabled)
 }
 
 public func featureLoginWithOAuthEnabled() -> Bool {

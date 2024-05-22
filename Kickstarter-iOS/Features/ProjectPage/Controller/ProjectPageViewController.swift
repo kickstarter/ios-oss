@@ -992,7 +992,6 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     goToCreatorForProject project: Project
   ) {
     guard
-      featureBlockUsersEnabled(),
       let currentUser = AppEnvironment.current.currentUser,
       currentUser != project.creator,
       !project.creator.isBlocked
