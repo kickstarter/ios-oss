@@ -3,11 +3,11 @@ import Foundation
 extension GraphUser {
   internal static let template = GraphUser(
     chosenCurrency: "USD",
-    email: "nativesquad@ksr.com",
+    email: "user@example.com",
     hasPassword: true,
-    id: "VXNlci0xNTQ2MjM2ODI=",
+    id: "idString=",
     isBlocked: false,
-    imageUrl: "http://www.kickstarter.com/image.jpg",
+    imageUrl: "http://www.example.com/image.jpg",
     isAppleConnected: false,
     isEmailVerified: true,
     isDeliverable: true,

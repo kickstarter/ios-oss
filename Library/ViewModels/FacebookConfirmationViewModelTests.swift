@@ -25,13 +25,13 @@ final class FacebookConfirmationViewModelTests: TestCase {
   }
 
   func testDisplayEmail_whenViewDidLoad() {
-    self.vm.inputs.email("kittens@kickstarter.com")
+    self.vm.inputs.email("kittens@example.com")
 
     self.displayEmail.assertDidNotEmitValue("Email does not display")
 
     self.vm.inputs.viewDidLoad()
 
-    self.displayEmail.assertValues(["kittens@kickstarter.com"], "Display email")
+    self.displayEmail.assertValues(["kittens@example.com"], "Display email")
   }
 
   func testNewsletterSwitch_whenViewDidLoad() {

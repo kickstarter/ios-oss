@@ -36,7 +36,7 @@ public enum UserFragmentTemplate {
           ]
        },
        "backingsCount": 1,
-       "email":"mubarak@kickstarter.com",
+       "email":"m@example.com",
        "isAppleConnected":true,
        "isBlocked":false,
        "isEmailVerified":false,

@@ -25,8 +25,8 @@ final class FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests: XCTestCase 
       return
     }
 
-    XCTAssertEqual(env.projects.count, 25)
+    XCTAssertEqual(env.projects.count, 3)
     XCTAssertEqual(env.projects.first?.name, "Zan's Late Pledge Campaign")
-    XCTAssertEqual(env.totalCount, 59)
+    XCTAssertEqual(env.totalCount, 3)
   }
 }

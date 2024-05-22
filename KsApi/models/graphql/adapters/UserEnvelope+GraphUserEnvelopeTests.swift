@@ -13,19 +13,16 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
     }
 
     XCTAssertNil(envelope.me.chosenCurrency)
-    XCTAssertEqual(envelope.me.email, "nativesquad@ksr.com")
+    XCTAssertEqual(envelope.me.email, "user@example.com")
     XCTAssertEqual(envelope.me.hasPassword, true)
-    XCTAssertEqual(envelope.me.id, "VXNlci0xNDcwOTUyNTQ1")
-    XCTAssertEqual(
-      envelope.me.imageUrl,
-      "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D"
-    )
+    XCTAssertEqual(envelope.me.id, "fakeId")
+    XCTAssertEqual(envelope.me.imageUrl, "https://i.kickstarter.com/missing_user_avatar.png")
     XCTAssertEqual(envelope.me.isAppleConnected, false)
     XCTAssertEqual(envelope.me.isBlocked, false)
     XCTAssertEqual(envelope.me.isCreator, false)
     XCTAssertEqual(envelope.me.isDeliverable, true)
     XCTAssertEqual(envelope.me.isEmailVerified, true)
-    XCTAssertEqual(envelope.me.name, "Hari Singh")
+    XCTAssertEqual(envelope.me.name, "Example User")
     XCTAssertEqual(
       envelope.me.storedCards,
       UserCreditCards(storedCards: [
@@ -39,7 +36,7 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
           )
       ])
     )
-    XCTAssertEqual(envelope.me.uid, "1470952545")
+    XCTAssertEqual(envelope.me.uid, "11111")
   }
 
   func testFetchUserEnvelope_User_Success() {
@@ -52,19 +49,16 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
     }
 
     XCTAssertNil(envelope.me.chosenCurrency)
-    XCTAssertEqual(envelope.me.email, "nativesquad@ksr.com")
+    XCTAssertEqual(envelope.me.email, "user@example.com")
     XCTAssertEqual(envelope.me.hasPassword, true)
-    XCTAssertEqual(envelope.me.id, "VXNlci0xNDcwOTUyNTQ1")
-    XCTAssertEqual(
-      envelope.me.imageUrl,
-      "https://i.kickstarter.com/missing_user_avatar.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=3CEELuVLNdj97Pjx4PDy7Q9OTZfKyMEZyeIlQicGPBY%3D"
-    )
+    XCTAssertEqual(envelope.me.id, "fakeId")
+    XCTAssertEqual(envelope.me.imageUrl, "https://i.kickstarter.com/missing_user_avatar.png")
     XCTAssertEqual(envelope.me.isAppleConnected, false)
     XCTAssertEqual(envelope.me.isBlocked, false)
     XCTAssertEqual(envelope.me.isCreator, false)
     XCTAssertEqual(envelope.me.isDeliverable, true)
     XCTAssertEqual(envelope.me.isEmailVerified, true)
-    XCTAssertEqual(envelope.me.name, "Hari Singh")
+    XCTAssertEqual(envelope.me.name, "Example User")
     XCTAssertEqual(
       envelope.me.storedCards,
       UserCreditCards(storedCards: [
@@ -78,7 +72,7 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
           )
       ])
     )
-    XCTAssertEqual(envelope.me.uid, "1470952545")
+    XCTAssertEqual(envelope.me.uid, "11111")
   }
 
   func testFetchUserEmail() {
@@ -90,6 +84,6 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(envelope.me.email, "nativesquad@ksr.com")
+    XCTAssertEqual(envelope.me.email, "user@example.com")
   }
 }
