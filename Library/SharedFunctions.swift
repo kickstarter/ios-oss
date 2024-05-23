@@ -89,10 +89,15 @@ internal func reward(withId rewardId: Int, inProject project: Project) -> Reward
 
  - parameter project: A project.
  - parameter reward:  A reward.
+ - parameter isLatePledgeBacking: Whether the reward was selected in a late pledge state or not.
 
  - returns: A pair of the minimum and maximum amount that can be pledged to a reward.
  */
-internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?)
+internal func minAndMaxPledgeAmount(
+  forProject project: Project,
+  reward: Reward?,
+  isLatePledgeBacking: Bool = false
+)
   -> (min: Double, max: Double) {
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
@@ -106,7 +111,9 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   case .none, .some(Reward.noReward):
     return (Double(country.minPledge ?? 1), Double(country.maxPledge ?? 10_000))
   case let .some(reward):
-    return (reward.minimum, Double(country.maxPledge ?? 10_000))
+    /// We only want to use `reward.minimum` here if the backing wasn't made in a late pledge state.
+    let minimumAmount = isLatePledgeBacking ? reward.latePledgeAmount : reward.minimum
+    return (minimumAmount, Double(country.maxPledge ?? 10_000))
   }
 }
 
@@ -116,11 +123,17 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
 
  - parameter project: A project.
  - parameter reward:  A reward.
+ - parameter isLatePledgeBacking: Whether the reward was selected in a late pledge state or not.
 
  - returns: The minimum amount needed to pledge to the reward.
  */
-internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> Double {
-  return minAndMaxPledgeAmount(forProject: project, reward: reward).min
+internal func minPledgeAmount(
+  forProject project: Project,
+  reward: Reward?,
+  isLatePledgeBacking: Bool = false
+) -> Double {
+  return minAndMaxPledgeAmount(forProject: project, reward: reward, isLatePledgeBacking: isLatePledgeBacking)
+    .min
 }
 
 /**
@@ -216,9 +229,10 @@ public func formattedAmountForReward(
   isLatePledgeBacking: Bool = false
 ) -> String {
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let amount = minPledgeAmount(forProject: project, reward: reward, isLatePledgeBacking: isLatePledgeBacking)
 
   return Format.currency(
-    isLatePledgeBacking ? reward.latePledgeAmount : reward.pledgeAmount,
+    amount,
     country: projectCurrencyCountry,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
