@@ -167,8 +167,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
         strongSelf.paymentSheetFlowController = paymentSheetFlowController
         strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
           guard let strongSelf = self else { return }
-
-          strongSelf.confirmPaymentResult(with: data.clientSecret)
+          
+          if data.paymentSheetType == .setupIntent {
+            strongSelf.confirmSetupIntentAndAddCard(with: data)
+          } else {
+            strongSelf.addCard(with: data)
+          }
         }
         strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
       }
@@ -191,12 +195,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
     }
   }
 
-  private func confirmPaymentResult(with clientSecret: String) {
+  private func confirmSetupIntentAndAddCard(with data: PaymentSheetSetupData) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
       return
     }
+    
+    guard data.paymentSheetType == .setupIntent else {
+      assert(false, "Confirming a PaymentIntent in PledgePaymentMethodsViewController means the user will be charged. This shouldn't happen here, it should happen when the pledge button is tapped.")
+      self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+
+      return
+    }
+
 
     self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
 
@@ -204,16 +216,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
-      guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
-
       switch paymentResult {
       case .completed:
-        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
-          image: existingPaymentOption.image,
-          label: existingPaymentOption.label
-        )
-        strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
+        strongSelf.addCard(with: data)
       case .canceled:
         // User cancelled intentionally so do nothing.
         break
@@ -223,6 +228,24 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
     }
   }
+  
+  private func addCard(with data: PaymentSheetSetupData) {
+    guard let existingPaymentOption = self.paymentSheetFlowController?.paymentOption else {
+      self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      return
+    }
+
+    let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
+      image: existingPaymentOption.image,
+      label: existingPaymentOption.label
+    )
+    
+    self.viewModel.inputs
+      .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: data.clientSecret)
+
+  }
+  
+  
 
   private func updateAddNewPaymentMethodButtonLoading(state: Bool) {
     self.dataSource.updateAddNewPaymentCardLoad(state: state)
