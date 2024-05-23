@@ -461,14 +461,24 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(currencyText, "MX$ 10")
 
     let reward = Reward.template
-      |> Reward.lens.minimum .~ 12.00
+      |> Reward.lens.latePledgeAmount .~ 6.00
+      |> Reward.lens.pledgeAmount .~ 12.00
 
     currencyText = formattedAmountForRewardOrBacking(
       project: mexicanCurrencyProjectTemplate,
-      rewardOrBacking: .left(reward)
+      rewardOrBacking: .left(reward),
+      isLatePledgeBacking: false
     )
 
     XCTAssertEqual(currencyText, "MX$ 12")
+
+    currencyText = formattedAmountForRewardOrBacking(
+      project: mexicanCurrencyProjectTemplate,
+      rewardOrBacking: .left(reward),
+      isLatePledgeBacking: true
+    )
+
+    XCTAssertEqual(currencyText, "MX$ 6")
   }
 
   func testMinAndMaxPledgeAmount_NoReward_ProjectCurrencyCountry_MinMaxPledgeReturned_Success() {

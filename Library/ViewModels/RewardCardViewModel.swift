@@ -78,9 +78,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.rewardMinimumLabelText = projectAndReward
       .map { project, reward in
-        (project, Either<Reward, Backing>.left(reward))
+        formattedAmountForRewardOrBacking(
+          project: project,
+          rewardOrBacking: Either<Reward, Backing>.left(reward),
+          isLatePledgeBacking: project.personalization.backing?.isLatePledge ?? false
+        )
       }
-      .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = projectAndReward
       .map(localizedDescription(project:reward:))

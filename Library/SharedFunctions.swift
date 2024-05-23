@@ -201,17 +201,25 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
   return shippingRuleInUSA ?? shippingRules.first
 }
 
+/**
+ Returns formatted currency string for a given `Reward` based on whether the original backing was made in a late pledge or crowdfunding state,  or based on the. `Backing`
+
+ - parameter rewardOrBacking: `Either<Reward, Backing>` object that contains the amount needed.
+ - parameter project: `Project` that we need to for the project's country.
+
+ - returns: A  `String` representation of the currency amount.
+ */
 public func formattedAmountForRewardOrBacking(
   project: Project,
-  rewardOrBacking: Either<Reward, Backing>
+  rewardOrBacking: Either<Reward, Backing>,
+  isLatePledgeBacking: Bool = false
 ) -> String {
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   switch rewardOrBacking {
   case let .left(reward):
-    let min = minPledgeAmount(forProject: project, reward: reward)
     return Format.currency(
-      min,
+      isLatePledgeBacking ? reward.latePledgeAmount : reward.pledgeAmount,
       country: projectCurrencyCountry,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
