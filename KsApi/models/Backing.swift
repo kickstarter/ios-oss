@@ -81,7 +81,7 @@ extension Backing: Decodable {
     self.bonusAmount = try values.decodeIfPresent(Double.self, forKey: .bonusAmount) ?? 0.0
     self.cancelable = try values.decode(Bool.self, forKey: .cancelable)
     self.id = try values.decode(Int.self, forKey: .id)
-    self.isLatePledge = try values.decode(Bool.self, forKey: .isLatePledge)
+    self.isLatePledge = try values.decodeIfPresent(Bool.self, forKey: .isLatePledge) ?? false
     self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
     self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
     self.paymentSource = try? values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)

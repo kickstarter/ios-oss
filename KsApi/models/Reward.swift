@@ -136,11 +136,11 @@ extension Reward: Decodable {
     self.estimatedDeliveryOn = try values.decodeIfPresent(TimeInterval.self, forKey: .estimatedDeliveryOn)
     self.hasAddOns = try values.decodeIfPresent(Bool.self, forKey: .hasAddOns) ?? false
     self.id = try values.decode(Int.self, forKey: .id)
-    self.latePledgeAmount = try values.decode(Double.self, forKey: .latePledgeAmount)
+    self.latePledgeAmount = try values.decodeIfPresent(Double.self, forKey: .latePledgeAmount) ?? 0
     self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
     self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
     self.minimum = try values.decode(Double.self, forKey: .minimum)
-    self.pledgeAmount = try values.decode(Double.self, forKey: .pledgeAmount)
+    self.pledgeAmount = try values.decodeIfPresent(Double.self, forKey: .pledgeAmount) ?? 0
     self.postCampaignPledgingEnabled =
       try values.decodeIfPresent(Bool.self, forKey: .postCampaignPledgingEnabled) ?? false
     self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)
