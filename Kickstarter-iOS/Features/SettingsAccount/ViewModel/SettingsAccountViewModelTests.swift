@@ -48,7 +48,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([false])
       self.reloadDataShouldHideEmailPasswordSection.assertValues([false])
       self.reloadDataShouldHideWarningIcon.assertValues([true])
@@ -101,7 +101,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([false])
       self.reloadDataShouldHideEmailPasswordSection
         .assertValues([true], "Change email & password options are hidden.")
@@ -112,7 +112,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       let shouldShowCreatePasswordFooter = self.vm.outputs.shouldShowCreatePasswordFooter()
 
       XCTAssertEqual(true, shouldShowCreatePasswordFooter?.0)
-      XCTAssertEqual("nativesquad@ksr.com", shouldShowCreatePasswordFooter?.1)
+      XCTAssertEqual("user@example.com", shouldShowCreatePasswordFooter?.1)
     }
   }
 
@@ -129,7 +129,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([false])
       self.reloadDataShouldHideEmailPasswordSection
         .assertValues([false], "Change email & password options are shown if user has set a password")
@@ -140,7 +140,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       let shouldShowCreatePasswordFooter = self.vm.outputs.shouldShowCreatePasswordFooter()
 
       XCTAssertEqual(false, shouldShowCreatePasswordFooter?.0)
-      XCTAssertEqual("nativesquad@ksr.com", shouldShowCreatePasswordFooter?.1)
+      XCTAssertEqual("user@example.com", shouldShowCreatePasswordFooter?.1)
     }
   }
 
@@ -159,7 +159,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([false])
       self.reloadDataShouldHideEmailPasswordSection.assertValues([false])
       self.reloadDataShouldHideWarningIcon
@@ -184,7 +184,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([false])
       self.reloadDataShouldHideEmailPasswordSection.assertValues([false])
       self.reloadDataShouldHideWarningIcon
@@ -207,7 +207,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValues([.USD])
-      self.reloadDataEmail.assertValues(["nativesquad@ksr.com"])
+      self.reloadDataEmail.assertValues(["user@example.com"])
       self.reloadDataIsAppleConnectedAccount.assertValues([true])
       self.reloadDataShouldHideEmailPasswordSection.assertValues([true])
       self.reloadDataShouldHideWarningIcon.assertValues([true])

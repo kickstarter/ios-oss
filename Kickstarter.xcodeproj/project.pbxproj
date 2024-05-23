@@ -1431,12 +1431,10 @@
 		D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CCD8A423A94C6200CFD5FF /* ActivityErroredBackingsCell.swift */; };
 		D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
-		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
 		D6E7DAFA22089F3900689BD6 /* MessageBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */; };
 		D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7DAFB22089F9800689BD6 /* SettingsViewControllerTests.swift */; };
 		D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */; };
 		D6ED1B37216D0C64007F7547 /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */; };
-		D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */; };
 		D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */; };
 		D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */; };
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
@@ -1535,6 +1533,7 @@
 		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
 		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
+		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
 		E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */; };
 		E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */; };
@@ -3061,11 +3060,9 @@
 		D6CCD8A423A94C6200CFD5FF /* ActivityErroredBackingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCell.swift; sourceTree = "<group>"; };
 		D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
-		D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTemplate.swift; sourceTree = "<group>"; };
 		D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerViewController.swift; sourceTree = "<group>"; };
 		D6E7DAFB22089F9800689BD6 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
-		D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailFields.swift; sourceTree = "<group>"; };
 		D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailInput.swift; sourceTree = "<group>"; };
 		D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountMutation.swift; sourceTree = "<group>"; };
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
@@ -3195,6 +3192,7 @@
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
+				E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5811,7 +5809,6 @@
 				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				D08CD20221922025009F89F0 /* WatchProjectResponseEnvelopeTemplates.swift */,
-				D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */,
 				D770DDE7217D729300B5319A /* GraphUserTemplates.swift */,
 			);
 			path = graphql;
@@ -6857,7 +6854,6 @@
 				D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */,
 				D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */,
 				D01588231EEB2ED7006E7684 /* User.swift */,
-				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
 				608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */,
@@ -7127,6 +7123,7 @@
 				19338D9A2A0D4E2300075F29 /* Stripe */,
 				1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */,
 				E113BD902B7D615000D3A809 /* Prelude */,
+				E1B214702BFD184500109961 /* KingfisherWebP */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7399,6 +7396,7 @@
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
+				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8748,7 +8746,6 @@
 				194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */,
 				D01588DF1EEB2ED7006E7684 /* User.StatsLenses.swift in Sources */,
 				06F7BE1826B31A020094BF37 /* UserCreditCards+UserFragment.swift in Sources */,
-				D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */,
 				D0198F3621793FCF0090A9EC /* Service+RequestHelpers.swift in Sources */,
 				D01588CF1EEB2ED7006E7684 /* StarEnvelopeLenses.swift in Sources */,
 				D01589151EEB2ED7006E7684 /* Reward.swift in Sources */,
@@ -8789,7 +8786,6 @@
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				47D7D09A26C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift in Sources */,
-				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				06232D3F2795EC3000A81755 /* TextNode+Helpers.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
 				60C996E82AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift in Sources */,
@@ -10812,6 +10808,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yeatse/KingfisherWebP.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -10939,6 +10943,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
+		};
+		E1B214702BFD184500109961 /* KingfisherWebP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
+			productName = KingfisherWebP;
 		};
 		E1F1DB3E2B7BC09C004EA80B /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;

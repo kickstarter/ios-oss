@@ -67,9 +67,11 @@ final class CommentInputContainerView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.postButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
-      self.postButton.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor, multiplier: 0.25)
+      self.postButton.heightAnchor.constraint(equalToConstant: Layout.Button.height)
     ])
+
+    self.postButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.postButton.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   // MARK: - Styles

@@ -42,7 +42,7 @@ final class ReportProjectFormViewModelTests: TestCase {
       XCTAssertEqual(userEmail.events.count, 2)
 
       if case let .value(value) = userEmail.events.last {
-        XCTAssertEqual(value, "nativesquad@ksr.com")
+        XCTAssertEqual(value, "user@example.com")
       } else {
         XCTFail()
       }

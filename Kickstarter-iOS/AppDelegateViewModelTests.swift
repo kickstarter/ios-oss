@@ -2461,7 +2461,7 @@ final class AppDelegateViewModelTests: TestCase {
       .Data(
         unsafeResultMap: [
           "me": [
-            "email": "nativesquad@ksr.com"
+            "email": "user@example.com"
           ]
         ]
       )
@@ -2480,7 +2480,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.userSessionStarted()
 
-      XCTAssertEqual(AppEnvironment.current.currentUserEmail, "nativesquad@ksr.com")
+      XCTAssertEqual(AppEnvironment.current.currentUserEmail, "user@example.com")
 
       AppEnvironment.logout()
 
