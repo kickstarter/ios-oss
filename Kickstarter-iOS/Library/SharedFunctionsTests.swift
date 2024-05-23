@@ -447,34 +447,24 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(projectCountry, .mx)
   }
 
-  func testFormattedAmountForRewardOrBacking() {
+  func testFormattedAmountForReward() {
     let mexicanCurrencyProjectTemplate = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-
-    let backing = Backing.template
-
-    var currencyText = formattedAmountForRewardOrBacking(
-      project: mexicanCurrencyProjectTemplate,
-      rewardOrBacking: .right(backing)
-    )
-
-    XCTAssertEqual(currencyText, "MX$ 10")
 
     let reward = Reward.template
       |> Reward.lens.latePledgeAmount .~ 6.00
       |> Reward.lens.pledgeAmount .~ 12.00
 
-    currencyText = formattedAmountForRewardOrBacking(
+    var currencyText = formattedAmountForReward(
       project: mexicanCurrencyProjectTemplate,
-      rewardOrBacking: .left(reward),
-      isLatePledgeBacking: false
+      reward: reward
     )
 
     XCTAssertEqual(currencyText, "MX$ 12")
 
-    currencyText = formattedAmountForRewardOrBacking(
+    currencyText = formattedAmountForReward(
       project: mexicanCurrencyProjectTemplate,
-      rewardOrBacking: .left(reward),
+      reward: reward,
       isLatePledgeBacking: true
     )
 

@@ -202,34 +202,26 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
 }
 
 /**
- Returns formatted currency string for a given `Reward` based on whether the original backing was made in a late pledge or crowdfunding state,  or based on the. `Backing`
+ Returns formatted currency string for a given `Reward` based on whether the original backing was made in a late pledge or crowdfunding state.
 
- - parameter rewardOrBacking: `Either<Reward, Backing>` object that contains the amount needed.
+ - parameter reward: `Reward` object that contains the amount needed.
  - parameter project: `Project` that we need to for the project's country.
+ - parameter isLatePledgeBacking: `Bool` whether the current backing was made in a late pledge state or not.
 
  - returns: A  `String` representation of the currency amount.
  */
-public func formattedAmountForRewardOrBacking(
+public func formattedAmountForReward(
   project: Project,
-  rewardOrBacking: Either<Reward, Backing>,
+  reward: Reward,
   isLatePledgeBacking: Bool = false
 ) -> String {
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-  switch rewardOrBacking {
-  case let .left(reward):
-    return Format.currency(
-      isLatePledgeBacking ? reward.latePledgeAmount : reward.pledgeAmount,
-      country: projectCurrencyCountry,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
-  case let .right(backing):
-    return Format.formattedCurrency(
-      backing.amount,
-      country: projectCurrencyCountry,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
-  }
+  return Format.currency(
+    isLatePledgeBacking ? reward.latePledgeAmount : reward.pledgeAmount,
+    country: projectCurrencyCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
 }
 
 internal func classNameWithoutModule(_ class: AnyClass) -> String {
