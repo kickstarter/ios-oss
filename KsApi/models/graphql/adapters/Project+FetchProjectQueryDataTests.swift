@@ -133,18 +133,9 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.flagging, false)
 
     /// Project User
-    XCTAssertEqual(
-      project.creator.avatar.large,
-      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
-    )
-    XCTAssertEqual(
-      project.creator.avatar.medium,
-      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
-    )
-    XCTAssertEqual(
-      project.creator.avatar.small,
-      "https://i.kickstarter.com/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=Aqxdt8UgJpaDfrw6J1yrxsCD1IMS%2FZMnpPjISr2HX7I%3D"
-    )
+    XCTAssertEqual(project.creator.avatar.large, "image-a")
+    XCTAssertEqual(project.creator.avatar.medium, "image-a")
+    XCTAssertEqual(project.creator.avatar.small, "image-a")
     XCTAssertEqual(project.creator.erroredBackingsCount, 1)
     XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xNTMyMzU3OTk3"))
     XCTAssertTrue(project.creator.isEmailVerified!)

@@ -16,7 +16,7 @@ final class CommentRepliesEnvelope_GraphCommentRepliesEnvelopeTests: XCTestCase 
     }
 
     XCTAssertEqual(envelope.comment.author.id, "\(commentId)")
-    XCTAssertEqual(envelope.comment.author.name, "Spencer Hamann")
+    XCTAssertEqual(envelope.comment.author.name, "Lord of Creation")
     XCTAssertEqual(
       envelope.comment.body,
       "Does the machine laser engrave on brass and copper? What’s max depth look like?"

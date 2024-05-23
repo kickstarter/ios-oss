@@ -30,12 +30,12 @@ public enum FetchCommentRepliesQueryTemplate {
             "createdProjects": {
               "totalCount": 0
             },
-            "email": "lordofthestrings7@hotmail.com.ksr",
+            "email": "lord@example.com",
             "hasPassword": null,
             "hasUnreadMessages": null,
             "hasUnseenActivity": null,
             "id": "VXNlci04MjkwODk1MDY=",
-            "imageUrl": "https://i.kickstarter.com/assets/008/325/855/32a0fe0d74e0e05acc01d4e4e13188df_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=UWHP7isSISgMtrUAzf%2Fg3aAz3SOTGjOA%2F%2B6WP2eC1nU%3D",
+            "imageUrl": "example.com/lord-of-profile-pictures",
             "isAppleConnected": null,
             "isCreator": null,
             "isDeliverable": null,
@@ -45,7 +45,7 @@ public enum FetchCommentRepliesQueryTemplate {
             "isFollowing": false,
             "isSocializing": null,
             "location": null,
-            "name": "Spencer Hamann",
+            "name": "Lord of Creation",
             "needsFreshFacebookToken": null,
             "newsletterSubscriptions": null,
             "notifications": null,
@@ -53,7 +53,7 @@ public enum FetchCommentRepliesQueryTemplate {
             "showPublicProfile": null,
             "savedProjects": null,
             "surveyResponses": null,
-            "uid": "829089506"
+            "uid": "41"
           },
           "authorBadges": ["collaborator"],
           "body": "Does the machine laser engrave on brass and copper? What’s max depth look like?",
@@ -75,12 +75,12 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "roy.hopman@gmail.com.ksr",
+                    "email": "r@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
                     "id": "VXNlci02ODY0MDk3NzM=",
-                    "imageUrl": "https://i.kickstarter.com/assets/009/942/387/09e3afa6a3591a6712c34916ab02c1c9_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=m5EuHCd3UsfaxhgFgGzO3uGBr7xGEnH%2FfSyQt6xrA5Y%3D",
+                    "imageUrl": "example.com/profile-pic-r",
                     "isAppleConnected": null,
                     "isCreator": null,
                     "isDeliverable": null,
@@ -90,7 +90,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Bittbite",
+                    "name": "R Rabbit",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -98,7 +98,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "686409773"
+                    "uid": "42"
                   },
                   "authorBadges": [],
                   "body": "Maybe blade-engraving?",
@@ -122,12 +122,12 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "lordofthestrings7@hotmail.com.ksr",
+                    "email": "lord@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
                     "id": "VXNlci04MjkwODk1MDY=",
-                    "imageUrl": "https://i.kickstarter.com/assets/008/325/855/32a0fe0d74e0e05acc01d4e4e13188df_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=UWHP7isSISgMtrUAzf%2Fg3aAz3SOTGjOA%2F%2B6WP2eC1nU%3D",
+                    "imageUrl": "example.com/lord-of-profile-pictures",
                     "isAppleConnected": null,
                     "isCreator": null,
                     "isDeliverable": null,
@@ -137,7 +137,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Spencer Hamann",
+                    "name": "Lord of Creation",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -145,7 +145,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "829089506"
+                    "uid": "41"
                   },
                   "authorBadges": [],
                   "body": "What prevents it from engraving brass or copper? What metals can it engrave?",
@@ -169,7 +169,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "bryangatenby@gmail.com.ksr",
+                    "email": "b@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
@@ -184,7 +184,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Bryan Gatenby",
+                    "name": "B Bear",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -192,7 +192,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "1832314866"
+                    "uid": "43"
                   },
                   "authorBadges": [],
                   "body": "I think this is simply a matter of physics. A 10W laser of this type can not heat those metals enough to mark them. In regards to the cutter, it's a blade like a small sharp knife. If you can't cut it with a sharp knife, it's not going to be able to cut it. This doesn't mean you can't customize items made of brass or copper, it just means you can't do it directly. As in, you need to add something to them that can be customized such as vinyl or a coating.",
@@ -216,12 +216,12 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "roy.hopman@gmail.com.ksr",
+                    "email": "r@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
                     "id": "VXNlci02ODY0MDk3NzM=",
-                    "imageUrl": "https://i.kickstarter.com/assets/009/942/387/09e3afa6a3591a6712c34916ab02c1c9_original.jpg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=m5EuHCd3UsfaxhgFgGzO3uGBr7xGEnH%2FfSyQt6xrA5Y%3D",
+                    "imageUrl": "example.com/profile-pic-r",
                     "isAppleConnected": null,
                     "isCreator": null,
                     "isDeliverable": null,
@@ -231,7 +231,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Bittbite",
+                    "name": "R Rabbit",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -239,7 +239,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "686409773"
+                    "uid": "42"
                   },
                   "authorBadges": [],
                   "body": "i was unsure about the cutting tool.",
@@ -263,12 +263,12 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "lordofthestrings7@hotmail.com.ksr",
+                    "email": "lord@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
                     "id": "VXNlci04MjkwODk1MDY=",
-                    "imageUrl": "https://i.kickstarter.com/assets/008/325/855/32a0fe0d74e0e05acc01d4e4e13188df_original.jpeg?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=UWHP7isSISgMtrUAzf%2Fg3aAz3SOTGjOA%2F%2B6WP2eC1nU%3D",
+                    "imageUrl": "example.com/lord-of-profile-pictures",
                     "isAppleConnected": null,
                     "isCreator": null,
                     "isDeliverable": null,
@@ -278,7 +278,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Spencer Hamann",
+                    "name": "Lord of Creation",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -286,7 +286,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "829089506"
+                    "uid": "41"
                   },
                   "authorBadges": [],
                   "body": "The materials list",
@@ -310,7 +310,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 0
                     },
-                    "email": "bryangatenby@gmail.com.ksr",
+                    "email": "b@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
@@ -325,7 +325,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "isFollowing": false,
                     "isSocializing": null,
                     "location": null,
-                    "name": "Bryan Gatenby",
+                    "name": "B Bear",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -333,7 +333,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "1832314866"
+                    "uid": "43"
                   },
                   "authorBadges": [],
                   "body": "I think I saw them state elsewhere that for stainless steel it actually oxidizes it, which marks it. If you google oxidize stainless steel with laser some studies come up about how that works.",
@@ -357,12 +357,12 @@ public enum FetchCommentRepliesQueryTemplate {
                     "createdProjects": {
                       "totalCount": 9
                     },
-                    "email": "ks@makeblock.com.ksr",
+                    "email": "ksr@example.com",
                     "hasPassword": null,
                     "hasUnreadMessages": null,
                     "hasUnseenActivity": null,
                     "id": "VXNlci0xODE4NTA1NjEz",
-                    "imageUrl": "https://i.kickstarter.com/assets/009/408/963/e197eb892960905a3db87a9c9c4ed78f_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=qx9dok0jgCTLypQepocL7q3SqyY8zFQdaWU%2BNdWo%2FZQ%3D",
+                    "imageUrl": "example.com/ksr",
                     "isAppleConnected": null,
                     "isCreator": null,
                     "isDeliverable": null,
@@ -378,7 +378,7 @@ public enum FetchCommentRepliesQueryTemplate {
                       "id": "TG9jYXRpb24tOTAwMzU3NDI=",
                       "name": "Omachi"
                     },
-                    "name": "Makeblock",
+                    "name": "Kickstarter",
                     "needsFreshFacebookToken": null,
                     "newsletterSubscriptions": null,
                     "notifications": null,
@@ -386,7 +386,7 @@ public enum FetchCommentRepliesQueryTemplate {
                     "showPublicProfile": null,
                     "savedProjects": null,
                     "surveyResponses": null,
-                    "uid": "1818505613"
+                    "uid": "44"
                   },
                   "authorBadges": [
                     "creator"
