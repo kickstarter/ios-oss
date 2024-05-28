@@ -123,9 +123,21 @@ private func rewardDictionary() -> [String: Any] {
         }
       ]
     },
+   "latePledgeAmount": {
+      "__typename": "Money",
+      "amount": "4.0",
+      "currency": "AUD",
+      "symbol": "$"
+    },
     "limit": null,
     "limitPerBacker": 1,
     "name": "Soft Cover Book (Signed)",
+     "pledgeAmount": {
+        "__typename": "Money",
+        "amount": "4.0",
+        "currency": "AUD",
+        "symbol": "$"
+      },
     "postCampaignPledgingEnabled": false,
     "project": {
       "__typename": "Project",

@@ -43,9 +43,12 @@ extension Reward {
       estimatedDeliveryOn: estimatedDeliveryOn,
       hasAddOns: rewardHasAddons,
       id: rewardId,
+      latePledgeAmount: rewardFragment.latePledgeAmount.fragments.moneyFragment.amount
+        .flatMap(Double.init) ?? 0,
       limit: rewardFragment.limit,
       limitPerBacker: rewardFragment.limitPerBacker,
       minimum: rewardFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
+      pledgeAmount: rewardFragment.pledgeAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       postCampaignPledgingEnabled: rewardFragment.postCampaignPledgingEnabled,
       remaining: rewardFragment.remainingQuantity,
       rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),

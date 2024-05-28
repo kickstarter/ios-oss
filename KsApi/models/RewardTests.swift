@@ -31,7 +31,9 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "minimum": 10,
       "converted_minimum": 12,
-      "description": "cool stuff"
+      "description": "cool stuff",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -48,7 +50,9 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "minimum": 10,
       "converted_minimum": 12,
-      "reward": "cool stuff"
+      "reward": "cool stuff",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -64,7 +68,9 @@ final class RewardTests: XCTestCase {
       "description": "Some reward",
       "minimum": 10,
       "converted_minimum": 12,
-      "backers_count": 10
+      "backers_count": 10,
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -81,7 +87,9 @@ final class RewardTests: XCTestCase {
       "description": "Some reward",
       "minimum": 10,
       "converted_minimum": 12,
-      "post_campaign_pledging_enabled": true
+      "post_campaign_pledging_enabled": true,
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -97,7 +105,9 @@ final class RewardTests: XCTestCase {
       "backers_count": 10,
       "shipping_enabled": true,
       "shipping_preference": "unrestricted",
-      "shipping_summary": "Ships anywhere in the world."
+      "shipping_summary": "Ships anywhere in the world.",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -119,7 +129,9 @@ final class RewardTests: XCTestCase {
       "converted_minimum": 12,
       "backers_count": 10,
       "shipping_enabled": true,
-      "shipping_type": "anywhere"
+      "shipping_type": "anywhere",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -144,7 +156,9 @@ final class RewardTests: XCTestCase {
       "shipping_single_location": [
         "id": 123,
         "localized_name": "United States"
-      ]
+      ],
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -166,7 +180,9 @@ final class RewardTests: XCTestCase {
       "converted_minimum": 12,
       "backers_count": 10,
       "shipping_enabled": true,
-      "shipping_type": "multiple_locations"
+      "shipping_type": "multiple_locations",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)
@@ -187,7 +203,9 @@ final class RewardTests: XCTestCase {
       "converted_minimum": 12,
       "backers_count": 10,
       "shipping_enabled": false,
-      "shipping_type": "no_shipping"
+      "shipping_type": "no_shipping",
+      "latePledgeAmount": 0,
+      "pledgeAmount": 0
     ])
 
     XCTAssertNotNil(reward)

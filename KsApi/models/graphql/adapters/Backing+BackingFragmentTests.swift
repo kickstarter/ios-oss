@@ -27,6 +27,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.bonusAmount, 5.0)
       XCTAssertEqual(backing.cancelable, true)
       XCTAssertEqual(backing.id, decompose(id: "QmFja2luZy0xNDQ5NTI3MTc="))
+      XCTAssertEqual(backing.isLatePledge, false)
       XCTAssertEqual(backing.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
       XCTAssertEqual(backing.locationName, "Canada")
       XCTAssertEqual(backing.paymentSource?.type, .visa)
@@ -36,6 +37,8 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertNotNil(backing.reward)
       XCTAssertEqual(backing.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
       XCTAssertNotNil(backing.reward?.isAvailable)
+      XCTAssertNotNil(backing.reward?.latePledgeAmount)
+      XCTAssertNotNil(backing.reward?.pledgeAmount)
       XCTAssertEqual(backing.sequence, 148)
       XCTAssertEqual(backing.shippingAmount, 10.0)
       XCTAssertEqual(backing.status, .pledged)
@@ -125,10 +128,22 @@ private func backingDictionary() -> [String: Any] {
               }
             ]
           },
+          "latePledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "localReceiptLocation": null,
           "limit": null,
           "limitPerBacker": 10,
           "name": "Art of the Quietly Quixotic",
+          "pledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "postCampaignPledgingEnabled": false,
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
@@ -206,9 +221,21 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "RewardItemsConnection",
             "edges": []
           },
+          "latePledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "limit": null,
           "limitPerBacker": 10,
           "name": "Wee William Journal & Coloring Book",
+          "pledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "postCampaignPledgingEnabled": false,
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
@@ -286,9 +313,21 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "RewardItemsConnection",
             "edges": []
           },
+          "latePledgeAmount":{
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "limit": null,
           "limitPerBacker": 10,
           "name": "Wee William Journal & Coloring Book",
+          "pledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "postCampaignPledgingEnabled": false,
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
@@ -366,9 +405,21 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "RewardItemsConnection",
             "edges": []
           },
+          "latePledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "limit": null,
           "limitPerBacker": 10,
           "name": "Wee William Journal & Coloring Book",
+          "pledgeAmount": {
+            "__typename": "Money",
+            "amount": "30.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
           "postCampaignPledgingEnabled": false,
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
@@ -522,6 +573,7 @@ private func backingDictionary() -> [String: Any] {
       "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
     },
     "id": "QmFja2luZy0xNDQ5NTI3MTc=",
+    "isLatePledge": false,
     "location": {
       "__typename": "Location",
       "country": "CA",
@@ -818,9 +870,21 @@ private func backingDictionary() -> [String: Any] {
           }
         ]
       },
+      "latePledgeAmount": {
+        "__typename": "Money",
+        "amount": "30.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
       "limit": null,
       "limitPerBacker": 1,
       "name": "Soft Cover Book (Signed)",
+      "pledgeAmount": {
+        "__typename": "Money",
+        "amount": "30.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
       "postCampaignPledgingEnabled": false,
       "project": {
         "__typename": "Project",
