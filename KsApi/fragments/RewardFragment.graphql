@@ -33,6 +33,12 @@ fragment RewardFragment on Reward {
     ...LocationFragment
   }
   name
+  pledgeAmount {
+    ...MoneyFragment
+  }
+  latePledgeAmount {
+    ...MoneyFragment
+  }
   postCampaignPledgingEnabled
   project {
     id

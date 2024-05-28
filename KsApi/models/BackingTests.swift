@@ -12,7 +12,9 @@ final class BackingTests: XCTestCase {
           "minimum": 10,
           "converted_minimum": 12,
           "backers_count": 10,
-          "post_campaign_pledging_enabled": false
+          "post_campaign_pledging_enabled": false,
+          "latePledgeAmount": 0,
+          "pledgeAmount": 0
         ]
       ],
       "amount": 1.0,
@@ -20,6 +22,7 @@ final class BackingTests: XCTestCase {
       "backer_completed_at": 1,
       "cancelable": true,
       "id": 1,
+      "isLatePledge": false,
       "location_id": 1,
       "location_name": "United States",
       "payment_source": [
@@ -41,7 +44,9 @@ final class BackingTests: XCTestCase {
         "minimum": 10,
         "converted_minimum": 12,
         "backers_count": 10,
-        "post_campaign_pledging_enabled": false
+        "post_campaign_pledging_enabled": false,
+        "latePledgeAmount": 0,
+        "pledgeAmount": 0
       ]
     ])
 
@@ -73,6 +78,7 @@ final class BackingTests: XCTestCase {
       "backer_completed_at": nil,
       "cancelable": true,
       "id": 1,
+      "isLatePledge": false,
       "location_id": 1,
       "location_name": "United States",
       "payment_source": [],

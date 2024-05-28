@@ -36,6 +36,7 @@ extension Backing {
       bonusAmount: backingFragment.bonusAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       cancelable: backingFragment.cancelable,
       id: id,
+      isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
       paymentSource: backingPaymentSource(from: backingFragment),
