@@ -33,14 +33,6 @@ public typealias PaymentSheetSetupData = (
   paymentSheetType: PledgePaymentSheetType
 )
 
-public typealias PledgePaymentMethodsAndSelectionData = (
-  paymentMethodsCellData: [PledgePaymentMethodCellData],
-  paymentSheetPaymentMethodsCellData: [PaymentSheetPaymentMethodCellData],
-  selectedPaymentMethod: PaymentSourceSelected?,
-  shouldReload: Bool,
-  isLoading: Bool
-)
-
 public protocol PledgePaymentMethodsViewModelInputs {
   func shouldCancelPaymentSheetAppearance(state: Bool)
   func stripePaymentSheetDidAppear()
@@ -142,12 +134,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
       .filter(second >>> isTrue)
-      .map { _ in (
+      .map { _ in PledgePaymentMethodsAndSelectionData(
         paymentMethodsCellData: [],
         paymentSheetPaymentMethodsCellData: [],
         selectedPaymentMethod: nil,
-        shouldReload: true,
-        isLoading: true
+        isLoading: true,
+        shouldReload: true
       ) }
 
     let configuredCards: Signal<PledgePaymentMethodsAndSelectionData, Never> = cards
@@ -162,8 +154,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           paymentMethodsCellData: cellData,
           paymentSheetPaymentMethodsCellData: [],
           selectedPaymentMethod: selectedPaymentMethod,
-          shouldReload: true,
-          isLoading: false
+          isLoading: false,
+          shouldReload: true
         )
       }
 
@@ -171,8 +163,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takePairWhen(newSetupIntentCards)
       .map { cardsAndPaymentSheetType, setupIntentCards -> PledgePaymentMethodsAndSelectionData in
         let (cards, paymentSheetType) = cardsAndPaymentSheetType
-        let updatedCardData = cards
-          |> \.paymentSheetPaymentMethodsCellData .~ setupIntentCards
+
+        var updatedCardData = cards
+        updatedCardData.paymentSheetPaymentMethodsCellData = setupIntentCards
 
         let updatedPaymentMethodSelectionData =
           pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
@@ -188,11 +181,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       configuredCardsWithNewSetupIntentCards
     )
     .map { pledgePaymentMethodsAndSelectionData -> PledgePaymentMethodsAndSelectionData in
-      let updatedPledgePaymentMethodsAndSelectionData = pledgePaymentMethodsAndSelectionData
-        |> \.shouldReload .~ false
-        |> \.isLoading .~ false
-
-      return updatedPledgePaymentMethodsAndSelectionData
+      var updatedData = pledgePaymentMethodsAndSelectionData
+      updatedData.isLoading = false
+      updatedData.shouldReload = false
+      return updatedData
     }
 
     let updatedCards = updatedCardsWithNewSetupIntentCards
@@ -202,13 +194,18 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
       .combineLatest(with: paymentSheetType)
       .map { ($0.0.0, $0.0.1, $0.1) } // turn ((a, b), c) into (a, b, c)
-      .map { data, indexPath, paymentSheetType -> PledgePaymentMethodsAndSelectionData? in
-        let updatedData = data
-          |> \.paymentMethodsCellData .~ []
-          |> \.paymentSheetPaymentMethodsCellData .~ []
-          |> \.selectedPaymentMethod .~ nil
-          |> \.isLoading .~ false
-          |> \.shouldReload .~ true
+      .map { (
+        data: PledgePaymentMethodsAndSelectionData,
+        indexPath: IndexPath,
+        paymentSheetType: PledgePaymentSheetType
+      ) -> PledgePaymentMethodsAndSelectionData? in
+        let updatedData = PledgePaymentMethodsAndSelectionData(
+          paymentMethodsCellData: [],
+          paymentSheetPaymentMethodsCellData: [],
+          selectedPaymentMethod: nil,
+          isLoading: false,
+          shouldReload: true
+        )
 
         let paymentMethodCount = data.paymentMethodsCellData.count
         let paymentSheetPaymentMethodCount = data.paymentSheetPaymentMethodsCellData.count
@@ -227,16 +224,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
             )
           }
 
-          let usePaymentIntent = paymentSheetType == .paymentIntent
+          let usePaymentIntent: Bool = paymentSheetType == .paymentIntent
+          let selectedPaymentMethod: PaymentSourceSelected = usePaymentIntent ?
+            .paymentIntentClientSecret(clientSecret) : .setupIntentClientSecret(clientSecret)
 
-          let selectionUpdatedData = updatedData
-            |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: nil)
-            |> \.paymentSheetPaymentMethodsCellData .~ selectedAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~
-            (
-              usePaymentIntent ? .paymentIntentClientSecret(clientSecret) :
-                .setupIntentClientSecret(clientSecret)
-            )
+          var selectionUpdatedData = updatedData
+          selectionUpdatedData.paymentMethodsCellData = cellData(data.paymentMethodsCellData, selecting: nil)
+          selectionUpdatedData.selectedPaymentMethod = selectedPaymentMethod
+          selectionUpdatedData.paymentSheetPaymentMethodsCellData = selectedAllSheetPaymentMethods
 
           return selectionUpdatedData
         } else if indexPath.row < paymentSheetPaymentMethodCount + paymentMethodCount {
@@ -253,11 +248,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
             )
           }
 
-          let selectionUpdatedData = updatedData
-            |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: card)
-            |> \.paymentSheetPaymentMethodsCellData .~ deselectAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~ .savedCreditCard(card.id)
-
+          var selectionUpdatedData = updatedData
+          selectionUpdatedData.paymentMethodsCellData = cellData(data.paymentMethodsCellData, selecting: card)
+          selectionUpdatedData.paymentSheetPaymentMethodsCellData = deselectAllSheetPaymentMethods
+          selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id)
           return selectionUpdatedData
         }
 
@@ -557,14 +551,13 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
 
     let usePaymentIntent = paymentSheetType == .paymentIntent
 
-    let updatePaymentMethodData = paymentMethodData
-      |> \.paymentMethodsCellData .~ preexistingCardDataUnselected
-      |> \.paymentSheetPaymentMethodsCellData .~ data
-      |> \.selectedPaymentMethod .~
-      (
-        usePaymentIntent ? .paymentIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret) :
-          .setupIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret)
-      )
+    var updatePaymentMethodData = paymentMethodData
+    updatePaymentMethodData.paymentMethodsCellData = preexistingCardDataUnselected
+    updatePaymentMethodData.paymentSheetPaymentMethodsCellData = data
+    updatePaymentMethodData
+      .selectedPaymentMethod = usePaymentIntent ?
+      .paymentIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret) :
+      .setupIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret)
 
     return updatePaymentMethodData
   }()
