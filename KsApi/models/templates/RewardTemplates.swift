@@ -100,6 +100,7 @@ extension Reward {
   public static let postcards = Reward.template
     |> Reward.lens.id .~ 20
     |> Reward.lens.minimum .~ 6.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 50
     |> Reward.lens.backersCount .~ 23

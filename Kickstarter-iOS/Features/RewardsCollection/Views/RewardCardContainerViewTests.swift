@@ -15,245 +15,258 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_BackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ reward
-              |> Backing.lens.rewardId .~ reward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ reward
+                |> Backing.lens.rewardId .~ reward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_BackedProject_BackedReward_LoggedIn() {
     let user = User.template
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(currentUser: user, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ reward
-              |> Backing.lens.rewardId .~ reward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ reward
+                |> Backing.lens.rewardId .~ reward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_BackedProject_NonBackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ Reward.otherReward
-              |> Backing.lens.rewardId .~ Reward.otherReward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ Reward.otherReward
+                |> Backing.lens.rewardId .~ Reward.otherReward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_NonBackedProject_LoggedIn() {
     let nonCreator = User.template
       |> User.lens.id .~ 5
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: nonCreator, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(currentUser: nonCreator, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ false
-          |> Project.lens.personalization.backing .~ nil
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ false
+            |> Project.lens.personalization.backing .~ nil
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_NonBackedProject_LoggedOut() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: nil, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(currentUser: nil, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ nil
-          |> Project.lens.personalization.backing .~ nil
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ nil
+            |> Project.lens.personalization.backing .~ nil
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_BackedProject_BackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ reward
-              |> Backing.lens.rewardId .~ reward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .successful
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ reward
+                |> Backing.lens.rewardId .~ reward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ Reward.otherReward
-              |> Backing.lens.rewardId .~ Reward.otherReward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .successful
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ Reward.otherReward
+                |> Backing.lens.rewardId .~ Reward.otherReward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_NonBackedProject() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.isBacking .~ false
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .successful
+            |> Project.lens.personalization.isBacking .~ false
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
@@ -263,36 +276,39 @@ final class RewardCardContainerViewTests: TestCase {
         !name.lowercased().contains("unavailable")
       }
 
-    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], filteredRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ reward
-              |> Backing.lens.rewardId .~ reward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
-              |> Backing.lens.status .~ .errored
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ reward
+                |> Backing.lens.rewardId .~ reward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+                |> Backing.lens.status .~ .errored
+                |> Backing.lens.isLatePledge .~ false
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_BackedProject_BackedReward_Errored() {
@@ -302,36 +318,38 @@ final class RewardCardContainerViewTests: TestCase {
         !name.lowercased().contains("unavailable")
       }
 
-    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], filteredRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (
-            .template
-              |> Backing.lens.reward .~ reward
-              |> Backing.lens.rewardId .~ reward.id
-              |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700.0
-              |> Backing.lens.status .~ .errored
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .successful
+            |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.personalization.backing .~ (
+              .template
+                |> Backing.lens.reward .~ reward
+                |> Backing.lens.rewardId .~ reward.id
+                |> Backing.lens.shippingAmount .~ 10
+                |> Backing.lens.amount .~ 700.0
+                |> Backing.lens.isLatePledge .~ false
+                |> Backing.lens.status .~ .errored
+            )
+
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
           )
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testLive_IsCreator() {
@@ -343,24 +361,25 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(currentUser: user, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_IsCreator() {
@@ -372,24 +391,25 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    orthogonalCombos([Language.en], [Device.phone4_7inch], allRewards)
+      .forEach { language, device, rewardTuple in
+        withEnvironment(currentUser: user, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          )
+        }
       }
-    }
   }
 
   override func tearDown() {
@@ -433,17 +453,20 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.isAvailable .~ true
   let availableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
     |> Reward.lens.isAvailable .~ true
   let availableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
     |> Reward.lens.isAvailable .~ true
   let availableNonLimitedReward = Reward.postcards
@@ -451,6 +474,7 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.isAvailable .~ true
   let availableShippingEnabledReward = Reward.postcards
     |> Reward.lens.limit .~ 100
@@ -458,6 +482,7 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
     |> Reward.lens.isAvailable .~ true
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.shipping .~ (
       .template
         |> Reward.Shipping.lens.enabled .~ true
@@ -469,21 +494,24 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
   let unavailableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
   let unavailableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.convertedMinimum .~ 7.0
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
   let unavailableShippingEnabledReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.convertedMinimum .~ 7.0
-
+    |> Reward.lens.pledgeAmount .~ 6.0
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
     |> Reward.lens.shipping .~ (
       .template
@@ -493,6 +521,7 @@ let allRewards: [(String, Reward)] = {
     )
   let noReward = Reward.noReward
     |> Reward.lens.convertedMinimum .~ 1
+    |> Reward.lens.pledgeAmount .~ 1
 
   return [
     ("AvailableAddOnsReward", availableAddOnsReward),
