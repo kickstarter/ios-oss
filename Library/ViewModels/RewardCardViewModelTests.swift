@@ -146,7 +146,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.pledgeAmount .~ 1_000
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configure(with: (project, reward, .pledge))
@@ -162,7 +162,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.pledgeAmount .~ 1_000
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs.configure(with: (project, reward, .pledge))
@@ -180,7 +180,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 0.5
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.pledgeAmount .~ 1_000
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configure(with: (project, reward, .pledge))
@@ -198,7 +198,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 0.5
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.pledgeAmount .~ 1_000
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs.configure(with: (project, reward, .pledge))
@@ -216,7 +216,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 0.5
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.pledgeAmount .~ 1_000
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs.configure(with: (project, reward, .pledge))

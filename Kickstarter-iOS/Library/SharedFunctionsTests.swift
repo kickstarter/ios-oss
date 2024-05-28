@@ -486,7 +486,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
 
     let reward = Reward.template
-      |> Reward.lens.minimum .~ 12.00
+      |> Reward.lens.pledgeAmount .~ 12.00
 
     let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: reward)
 
