@@ -111,7 +111,7 @@ internal func minAndMaxPledgeAmount(
   case .none, .some(Reward.noReward):
     return (Double(country.minPledge ?? 1), Double(country.maxPledge ?? 10_000))
   case let .some(reward):
-    /// We only want to use `reward.minimum` here if the backing wasn't made in a late pledge state.
+    /// We  want to use `reward.latePledgeAmount`  if the backing was't made in a late pledge state. Otherwise, we'll use `reward.pledgeAmount` if it was made in a normal crowdufunding state.
     let amount = isLatePledgeBacking ? reward.latePledgeAmount : reward.pledgeAmount
     return (amount, Double(country.maxPledge ?? 10_000))
   }

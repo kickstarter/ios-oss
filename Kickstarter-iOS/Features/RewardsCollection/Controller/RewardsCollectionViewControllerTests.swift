@@ -25,7 +25,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
 
     let language = Language.en, device = Device.phone4_7inch
-    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -47,7 +47,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards %~ { Array($0[1...3]) }
 
     let language = Language.de, device = Device.pad
-    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -78,7 +78,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       )
 
     let language = Language.es, device = Device.phone5_8inch
-    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -105,10 +105,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
 
     let language = Language.fr, device = Device.pad
-    withEnvironment(
-      language: language,
-      locale: .init(identifier: language.rawValue)
-    ) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -131,10 +128,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
 
     let language = Language.ja, device = Device.phone5_8inch
-    withEnvironment(
-      language: language,
-      locale: .init(identifier: language.rawValue)
-    ) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -157,10 +151,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [.noReward, reward]
 
     let language = Language.en, device = Device.phone5_8inch
-    withEnvironment(
-      language: language,
-      locale: .init(identifier: language.rawValue)
-    ) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
@@ -187,10 +178,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
 
     let language = Language.de, device = Device.phone5_8inch
-    withEnvironment(
-      language: language,
-      locale: .init(identifier: language.rawValue)
-    ) {
+    orthogonalCombos([language], [device]).forEach { language in
       let vc = RewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
