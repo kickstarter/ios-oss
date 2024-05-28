@@ -80,8 +80,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] data in
         guard let self = self else { return }
 
-        let cards = data.paymentMethodsCellData
-        let paymentSheetCards = data.paymentSheetPaymentMethodsCellData
+        let cards = data.existingPaymentMethods
+        let paymentSheetCards = data.newPaymentMethods
         let isLoading = data.isLoading
         let selectedPaymentMethod = data.selectedPaymentMethod
         let shouldReload = data.shouldReload

@@ -21,7 +21,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   private let reloadPaymentMethodsCards = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let reloadPaymentSheetPaymentMethodsCards = TestObserver<
-    [PaymentSheetPaymentMethodCellData],
+    [PledgePaymentMethodCellData],
     Never
   >()
   private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[Bool], Never>()
@@ -44,16 +44,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
 
     // swiftlint:disable line_length
-    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.card } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.existingPaymentMethods }.map { $0.map { $0.card } }
       .observe(self.reloadPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.isEnabled } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.existingPaymentMethods }.map { $0.map { $0.isEnabled } }
       .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.isSelected } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.existingPaymentMethods }.map { $0.map { $0.isSelected } }
       .observe(self.reloadPaymentMethodsIsSelected.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }
+    self.vm.outputs.reloadPaymentMethods.map { $0.existingPaymentMethods }
       .map { $0.map { $0.projectCountry } }
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.paymentSheetPaymentMethodsCellData }
+    self.vm.outputs.reloadPaymentMethods.map { $0.newPaymentMethods }
       .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
     self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.savedCreditCardId }
       .observe(self.reloadPaymentMethodsSelectedCardId.observer)
@@ -72,8 +72,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   func testReloadPaymentMethods_NewCardAdded_UnavailableIsLast() {
     let sampleSetupIntent = "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -142,6 +148,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: sampleSetupIntent
         )
 
+      self.scheduler.advance(by: .seconds(1))
+
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
@@ -149,14 +157,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
       )
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        "••••1234"
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.lastFour
       )
       XCTAssertEqual(
-        self.reloadPaymentMethodsSelectedSetupIntent.lastValue!,
-        sampleSetupIntent
+        self.reloadPaymentMethodsSelectedCardId.lastValue!,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
       )
 
       self.reloadPaymentMethodsCards.assertValues(
@@ -201,7 +209,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsSelectedCardId.assertValues([
         nil,
         response.me.storedCards.storedCards.first?.id,
-        nil
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
       ])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
     }
@@ -218,7 +226,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     ])
     let graphUser = GraphUser.template |> \.storedCards .~ cards
     let response = UserEnvelope<GraphUser>(me: graphUser)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     self.reloadPaymentMethodsCards.assertDidNotEmitValue()
     self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
@@ -306,6 +319,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
+      self.scheduler.advance(by: .seconds(1))
+
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
@@ -313,14 +328,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
       )
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        "••••1234"
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.lastFour
       )
       XCTAssertEqual(
-        self.reloadPaymentMethodsSelectedSetupIntent.lastValue!,
-        setupIntent
+        self.reloadPaymentMethodsSelectedCardId.lastValue!,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
       )
 
       self.reloadPaymentMethodsCards.assertValues([
@@ -359,7 +374,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         [
           nil,
           UserCreditCards.visa.id,
-          nil
+          addPaymentSheetResponse.createPaymentSource.paymentSource.id
         ],
         "No changes"
       )
@@ -370,7 +385,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testReloadPaymentMethods_NewCardAdded_NoStoredCards() {
     let emptyTemplate = GraphUser.template |> \.storedCards .~ .emptyTemplate
     let response = UserEnvelope<GraphUser>(me: emptyTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -428,6 +448,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
+      self.scheduler.advance(by: .seconds(1))
+
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[0].isEmpty
@@ -435,17 +457,17 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
       )
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        "••••1234"
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.lastFour
       )
       self.reloadPaymentMethodsCards.assertValues([[], [], []])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], [], []])
       self.reloadPaymentMethodsIsSelected.assertValues([[], [], []])
       self.reloadPaymentMethodsProjectCountry.assertValues([[], [], []])
       self.reloadPaymentMethodsSelectedCardId
-        .assertValues([nil, nil, nil])
+        .assertValues([nil, nil, addPaymentSheetResponse.createPaymentSource.paymentSource.id])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
     }
   }
@@ -455,7 +477,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       UserCreditCards.masterCard
     ])
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -501,12 +527,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
       let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
-      let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
-        image: UIImage(),
-        redactedCardNumber: "••••1234",
-        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+      let expectedPaymentSheetPaymentMethodCard = PledgePaymentMethodCellData(
+        card: addPaymentSheetResponse.createPaymentSource.paymentSource,
+        isEnabled: true,
         isSelected: true,
-        isEnabled: true
+        projectCountry: "US",
+        isErroredPaymentMethod: false
       )
 
       self.vm.inputs
@@ -514,20 +540,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           newCard: paymentOptionsDisplayData,
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
+
+      self.scheduler.advance(by: 1)
+
       self.reloadPaymentMethodsCards
         .assertValues(
           [[], [UserCreditCards.masterCard], [UserCreditCards.masterCard]],
           "Previous non payment sheet cards still emit."
         )
       self.reloadPaymentSheetPaymentMethodsCards.assertValueCount(3)
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        expectedPaymentSheetPaymentMethodCard.redactedCardNumber
-      )
-      XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
-        expectedPaymentSheetPaymentMethodCard.clientSecret
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour,
+        expectedPaymentSheetPaymentMethodCard.card.lastFour
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -538,10 +563,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         expectedPaymentSheetPaymentMethodCard.isEnabled
       )
       self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"])
+        .assertValues([nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, UserCreditCards.masterCard.id, nil],
+          [nil, UserCreditCards.masterCard.id, expectedPaymentSheetPaymentMethodCard.card.id],
           "No card to select after payment sheet card added."
         )
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
@@ -555,8 +580,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     ])
     let projectWithErroredBacking = Project.template
       |> \.personalization.backing .~ Backing.errored
+
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -599,12 +629,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
       let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
-      let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
-        image: UIImage(),
-        redactedCardNumber: "••••1234",
-        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+      let expectedPaymentSheetPaymentMethodCard = PledgePaymentMethodCellData(
+        card: addPaymentSheetResponse.createPaymentSource.paymentSource,
+        isEnabled: true,
         isSelected: true,
-        isEnabled: true
+        projectCountry: "US",
+        isErroredPaymentMethod: false
       )
 
       self.vm.inputs
@@ -612,20 +642,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           newCard: paymentOptionsDisplayData,
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
+
+      self.scheduler.advance(by: 1)
+
       self.reloadPaymentMethodsCards
         .assertValues(
           [[], [UserCreditCards.masterCard], [UserCreditCards.masterCard]],
           "Previous non payment sheet cards still emit."
         )
       self.reloadPaymentSheetPaymentMethodsCards.assertValueCount(3)
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        expectedPaymentSheetPaymentMethodCard.redactedCardNumber
-      )
-      XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
-        expectedPaymentSheetPaymentMethodCard.clientSecret
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour,
+        expectedPaymentSheetPaymentMethodCard.card.lastFour
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -635,14 +664,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isEnabled,
         expectedPaymentSheetPaymentMethodCard.isEnabled
       )
-      self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues(
-          [nil, nil, expectedPaymentSheetPaymentMethodCard.clientSecret],
-          "Newly added payment sheet card still selected even on errored backing."
-        )
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, nil, nil]
+          [nil, nil, expectedPaymentSheetPaymentMethodCard.card.id],
+          "Newly added payment sheet card still selected even on errored backing."
         )
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false, false])
@@ -654,7 +679,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       UserCreditCards.masterCard
     ])
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -697,23 +726,29 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           newCard: paymentOptionsDisplayData,
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
+
+      self.scheduler.advance(by: 1)
+
       self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"])
+        .assertValues([nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, UserCreditCards.masterCard.id, nil],
-          "No card to select after payment sheet card added."
+          [nil, UserCreditCards.masterCard.id, addPaymentSheetResponse.createPaymentSource.paymentSource.id]
         )
 
       let indexPath = IndexPath(row: 1, section: 0)
 
       self.vm.inputs.didSelectRowAtIndexPath(indexPath)
       self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ", nil])
+        .assertValues([nil, nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, UserCreditCards.masterCard.id, nil, UserCreditCards.masterCard.id],
-          "No card to select after payment sheet card added."
+          [
+            nil,
+            UserCreditCards.masterCard.id,
+            addPaymentSheetResponse.createPaymentSource.paymentSource.id,
+            UserCreditCards.masterCard.id
+          ]
         )
 
       let indexPath2 = IndexPath(row: 0, section: 0)
@@ -723,13 +758,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         .assertValues([
           nil,
           nil,
-          "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
           nil,
-          "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          nil,
+          nil
         ])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, UserCreditCards.masterCard.id, nil, UserCreditCards.masterCard.id, nil],
+          [
+            nil,
+            UserCreditCards.masterCard.id,
+            addPaymentSheetResponse.createPaymentSource.paymentSource.id,
+            UserCreditCards.masterCard.id,
+            addPaymentSheetResponse.createPaymentSource.paymentSource.id
+          ],
           "No card to select after payment sheet card added."
         )
     }
@@ -863,7 +904,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let userTemplateWithCards = self.userTemplate
       |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: userTemplateWithCards)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs
@@ -900,10 +945,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
+      self.scheduler.advance(by: 1)
+
       self.notifyDelegateCreditCardSelected.assertValues([
         PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
         PaymentSourceSelected
-          .setupIntentClientSecret("seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ")
+          .savedCreditCard(addPaymentSheetResponse.createPaymentSource.paymentSource.id)
       ])
     }
   }
@@ -912,7 +959,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let userTemplateWithCards = self.userTemplate
       |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: userTemplateWithCards)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs
@@ -949,10 +1000,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "fake_payment_intent"
         )
 
+      self.scheduler.advance(by: 1)
+
       self.notifyDelegateCreditCardSelected.assertValues([
         PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
         PaymentSourceSelected
-          .paymentIntentClientSecret("fake_payment_intent")
+          .savedCreditCard(addPaymentSheetResponse.createPaymentSource.paymentSource.id)
       ])
     }
   }
@@ -1207,7 +1260,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(
       apiService: mockService,
@@ -1242,12 +1299,141 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
+      self.scheduler.advance(by: 1)
+
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        "••••1234"
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.id,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
       )
+    }
+  }
+
+  func testGoToAddNewStripeCard_NoStoredCards_NewCardIsUnavailable_AddsButIsNotSelected() {
+    let project = Project.template
+      |> \.availableCardTypes .~ []
+
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
+
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
+
+      self.scheduler.advance(by: 1)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
+      let paymentSheetCard = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last
+
+      XCTAssertNotNil(paymentSheetCard?.card)
+      XCTAssertEqual(
+        paymentSheetCard?.card.id,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
+      )
+      XCTAssertFalse(paymentSheetCard?.isEnabled ?? false)
+      XCTAssertFalse(paymentSheetCard?.isSelected ?? false)
+
+      self.reloadPaymentMethodsSelectedCardId
+        .assertValues([nil, nil, nil])
+    }
+  }
+
+  func testGoToAddNewStripeCard_WithStoredCards_NewCardIsUnavailable_AddsButIsNotSelected() {
+    let project = Project.template
+      |> \.availableCardTypes .~ [CreditCardType.amex.rawValue]
+
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.amex])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
+
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
+
+      self.scheduler.advance(by: 1)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.last?.id, UserCreditCards.amex.id)
+
+      let paymentSheetCard = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last
+
+      XCTAssertNotNil(paymentSheetCard?.card)
+      XCTAssertEqual(
+        paymentSheetCard?.card.id,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
+      )
+      XCTAssertFalse(paymentSheetCard?.isEnabled ?? false)
+      XCTAssertFalse(paymentSheetCard?.isSelected ?? false)
+
+      self.reloadPaymentMethodsSelectedCardId
+        .assertValues([nil, UserCreditCards.amex.id, UserCreditCards.amex.id])
     }
   }
 
@@ -1255,7 +1441,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: graphUser)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(response)
+    )
 
     withEnvironment(
       apiService: mockService,
@@ -1291,11 +1481,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
+      self.scheduler.advance(by: 1)
+
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
-      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.lastFour)
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
-        "••••1234"
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.card.id,
+        addPaymentSheetResponse.createPaymentSource.paymentSource.id
       )
     }
   }

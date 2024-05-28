@@ -42,18 +42,18 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
   func testLoad_PaymentSheetCardValues() {
     let paymentSheetData = [
       (
-        image: UIImage(),
-        redactedCardNumber: "test1",
-        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        card: UserCreditCards.amex,
+        isEnabled: true,
         isSelected: true,
-        isEnabled: true
+        projectCountry: "Country 1",
+        isErroredPaymentMethod: false
       ),
       (
-        image: UIImage(),
-        redactedCardNumber: "test2",
-        clientSecret: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        card: UserCreditCards.visa,
+        isEnabled: false,
         isSelected: false,
-        isEnabled: true
+        projectCountry: "Country 2",
+        isErroredPaymentMethod: false
       )
     ]
 
@@ -90,18 +90,18 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
 
     let paymentSheetData = [
       (
-        image: UIImage(),
-        redactedCardNumber: "test1",
-        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        card: UserCreditCards.amex,
+        isEnabled: true,
         isSelected: true,
-        isEnabled: true
+        projectCountry: "Country 1",
+        isErroredPaymentMethod: false
       ),
       (
-        image: UIImage(),
-        redactedCardNumber: "test2",
-        clientSecret: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        card: UserCreditCards.visa,
+        isEnabled: false,
         isSelected: false,
-        isEnabled: true
+        projectCountry: "Country 2",
+        isErroredPaymentMethod: false
       )
     ]
 
