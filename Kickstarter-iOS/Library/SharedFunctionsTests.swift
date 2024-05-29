@@ -471,7 +471,8 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(currencyText, "MX$ 12")
   }
 
-  func testMinAndMaxPledgeAmount_NoReward_ProjectCurrencyCountry_MinMaxPledgeReturned_Success() {
+  func testMinAndMaxPledgeAmount_NoReward_ProjectCurrencyCountry_isNotLatePledge_MinMaxPledgeReturned_Success(
+  ) {
     let mexicanCurrencyProjectTemplate = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
 
@@ -481,7 +482,8 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(max, 200_000)
   }
 
-  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_MinMaxPledgeReturned_Success() {
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isNotLatePledge_MinimumPledgeReturned_Success(
+  ) {
     let mexicanCurrencyProjectTemplate = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
 
@@ -494,7 +496,45 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(max, 200_000)
   }
 
-  func testMinAndMaxPledgeAmount_NoReward_NoProjectCurrencyCountry_DefaultMinMaxPledgeReturned_Success() {
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isLatePledge_MinMaxLatePledgeAmountReturned_latePledgeAmount_Success(
+  ) {
+    let backing = Backing.template
+      |> Backing.lens.isLatePledge .~ true
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.personalization.backing .~ backing
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 12.00
+      |> Reward.lens.latePledgeAmount .~ 6.00
+
+    let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: reward)
+
+    XCTAssertEqual(min, 6)
+    XCTAssertEqual(max, 200_000)
+  }
+
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isLatePledge_MinMaxPledgeAmountReturned_Success(
+  ) {
+    let backing = Backing.template
+      |> Backing.lens.isLatePledge .~ false
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.personalization.backing .~ backing
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 12.00
+      |> Reward.lens.latePledgeAmount .~ 6.00
+      |> Reward.lens.pledgeAmount .~ 3.00
+
+    let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: reward)
+
+    XCTAssertEqual(min, 3)
+    XCTAssertEqual(max, 200_000)
+  }
+
+  func testMinAndMaxPledgeAmount_NoReward_NoProjectCurrencyCountry_isNotLatePledge__DefaultMinMaxPledgeReturned_Success(
+  ) {
     let mexicanCurrencyProjectTemplate = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
 

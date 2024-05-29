@@ -94,6 +94,67 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
   }
 
+  func testUpdateBackingInput_UpdateBackingData_AmountIsNull_WhenLatePledge_isApplePay() {
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
+    )
+
+    let backing = Backing.template
+      |> Backing.lens.isLatePledge .~ true
+
+    let reward = Reward.template
+
+    let data: UpdateBackingData = (
+      backing: backing,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: ShippingRule.template,
+      paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
+      applePayParams: applePayParams
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+
+    XCTAssertNil(input.amount)
+    XCTAssertEqual(input.applePay, applePayParams)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertEqual(input.locationId, "42")
+    XCTAssertNil(input.paymentSourceId)
+    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+  }
+
+  func testUpdateBackingInput_UpdateBackingData_AmountIsNull_WhenLatePledge_isNotApplePay() {
+    let backing = Backing.template
+      |> Backing.lens.isLatePledge .~ true
+
+    let reward = Reward.template
+
+    let data: UpdateBackingData = (
+      backing: backing,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: ShippingRule.template,
+      paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
+      applePayParams: nil
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+
+    XCTAssertNil(input.amount)
+    XCTAssertNil(input.applePay)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertEqual(input.locationId, "42")
+    XCTAssertNil(input.paymentSourceId)
+    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+  }
+
   func testUpdateBackingInput_WithShipping_RefTag_HasAddOns() {
     let reward = Reward.template
     let shippingRule = ShippingRule.template
