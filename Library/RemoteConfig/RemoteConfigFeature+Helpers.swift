@@ -13,10 +13,6 @@ private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = f
   return defaultValue
 }
 
-public func featureConsentManagementDialogEnabled() -> Bool {
-  return featureEnabled(feature: .consentManagementDialogEnabled)
-}
-
 public func featureDarkModeEnabled() -> Bool {
   return featureEnabled(feature: .darkModeEnabled)
 }
