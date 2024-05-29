@@ -1,10 +1,8 @@
 query FetchMyBackedProjects($first: Int, $after: String) {
-  me {
+  __typename
+  projects(first: $first, after: $after, backed: true, sort: END_DATE)) {
     __typename
-    backingsCount
-    backedProjects(first: $first, after: $after) {
-      __typename
-      nodes {
+    nodes {
       __typename
 
       availableCardTypes
