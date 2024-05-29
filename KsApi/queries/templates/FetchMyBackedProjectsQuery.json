@@ -1,307 +1,221 @@
 {
   "data": {
-    "me": {
-      "__typename": "User",
-      "backingsCount": 3,
-      "backedProjects": {
-        "__typename": "UserBackedProjectsConnection",
-        "nodes": [
-          {
-            "__typename": "Project",
-            "availableCardTypes": [
-              "VISA",
-              "MASTERCARD",
-              "AMEX",
-              "DISCOVER",
-              "JCB",
-              "DINERS",
-              "UNION_PAY"
-            ],
-            "backersCount": 39,
-            "category": {
+    "projects": {
+      "__typename": "UserBackedProjectsConnection",
+      "nodes": [
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "DINERS",
+            "UNION_PAY"
+          ],
+          "backersCount": 39,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMzYx",
+            "name": "Web",
+            "analyticsName": "Web",
+            "parentCategory": {
               "__typename": "Category",
-              "id": "Q2F0ZWdvcnktMzYx",
-              "name": "Web",
-              "analyticsName": "Web",
-              "parentCategory": {
-                "__typename": "Category",
-                "id": "Q2F0ZWdvcnktMTM=",
-                "name": "Journalism",
-                "analyticsName": "Journalism"
-              }
+              "id": "Q2F0ZWdvcnktMTM=",
+              "name": "Journalism",
+              "analyticsName": "Journalism"
+            }
+          },
+          "canComment": true,
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "US",
+            "name": "the United States"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": null,
+            "backingsCount": 187,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 2
             },
-            "canComment": true,
-            "commentsCount": 0,
-            "country": {
-              "__typename": "Country",
-              "code": "US",
-              "name": "the United States"
-            },
-            "creator": {
-              "__typename": "User",
-              "backings": null,
-              "backingsCount": 187,
-              "chosenCurrency": null,
-              "createdProjects": {
-                "__typename": "UserCreatedProjectsConnection",
-                "totalCount": 2
-              },
-              "email": "l@example.com",
-              "hasPassword": null,
-              "hasUnreadMessages": null,
-              "hasUnseenActivity": null,
-              "id": "VXNlci0x",
-              "imageUrl": "example.com/image-l",
-              "isAppleConnected": null,
-              "isBlocked": false,
-              "isCreator": null,
-              "isDeliverable": null,
-              "isEmailVerified": true,
-              "isFacebookConnected": false,
-              "isKsrAdmin": null,
-              "isFollowing": false,
-              "isSocializing": null,
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "Portland, OR",
-                "id": "TG9jYXRpb24tMjQ3NTY4Nw==",
-                "name": "Portland"
-              },
-              "name": "L Lion",
-              "needsFreshFacebookToken": null,
-              "newsletterSubscriptions": null,
-              "notifications": null,
-              "optedOutOfRecommendations": null,
-              "showPublicProfile": null,
-              "savedProjects": null,
-              "storedCards": {
-                "__typename": "UserCreditCardTypeConnection",
-                "nodes": [],
-                "totalCount": 0
-              },
-              "surveyResponses": null,
-              "uid": "1"
-            },
-            "currency": "USD",
-            "deadlineAt": 1710196633,
-            "description": "test blurb",
-            "environmentalCommitments": [],
-            "aiDisclosure": {
-              "__typename": "AiDisclosure",
-              "id": "QWlEaXNjbG9zdXJlLTM4MTg0",
-              "fundingForAiAttribution": null,
-              "fundingForAiConsent": null,
-              "fundingForAiOption": null,
-              "generatedByAiConsent": null,
-              "generatedByAiDetails": null,
-              "involvesAi": false,
-              "involvesFunding": false,
-              "involvesGeneration": false,
-              "involvesOther": false,
-              "otherAiDetails": null
-            },
-            "faqs": {
-              "__typename": "ProjectFaqConnection",
-              "nodes": []
-            },
-            "finalCollectionDate": null,
-            "fxRate": 1,
-            "goal": {
-              "__typename": "Money",
-              "amount": "1000.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "image": {
-              "__typename": "Photo",
-              "id": "UGhvdG8t",
-              "url": "https://i-dev.kickstarter.com/missing_project_photo.png?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=mtxWHN34oWziTC9W1L2IsQI9T3gsd9J1j3cqDfYyzAQ%3D"
-            },
-            "isProjectWeLove": false,
-            "isProjectOfTheDay": false,
-            "isInPostCampaignPledgingPhase": true,
-            "isWatched": true,
-            "isLaunched": true,
-            "launchedAt": 1710800428,
+            "email": "l@example.com",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci0x",
+            "imageUrl": "example.com/image-l",
+            "isAppleConnected": null,
+            "isBlocked": false,
+            "isCreator": null,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
             "location": {
               "__typename": "Location",
               "country": "US",
               "countryName": "United States",
-              "displayableName": "United States",
-              "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-              "name": "United States"
+              "displayableName": "Portland, OR",
+              "id": "TG9jYXRpb24tMjQ3NTY4Nw==",
+              "name": "Portland"
             },
-            "maxPledge": 10000,
-            "minPledge": 1,
-            "name": "Zan's Late Pledge Campaign",
-            "pid": 745600992,
-            "pledged": {
-              "__typename": "Money",
-              "amount": "343.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "posts": {
-              "__typename": "PostConnection",
+            "name": "L Lion",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
               "totalCount": 0
             },
-            "prelaunchActivated": false,
-            "postCampaignPledgingEnabled": true,
-            "risks": "May not deliver",
-            "sendMetaCapiEvents": false,
-            "slug": "cainlevy/zans-late-pledge-campaign",
-            "state": "SUCCESSFUL",
-            "stateChangedAt": 1710800431,
-            "story": "This project is fantastic!",
-            "tags": [],
-            "url": "https://staging.kickstarter.com/projects/cainlevy/zans-late-pledge-campaign",
-            "usdExchangeRate": 1,
-            "video": null,
-            "watchesCount": 6
+            "surveyResponses": null,
+            "uid": "1"
           },
-          {
-            "__typename": "Project",
-            "availableCardTypes": [
-              "VISA",
-              "MASTERCARD",
-              "AMEX",
-              "DISCOVER",
-              "JCB",
-              "DINERS",
-              "UNION_PAY"
-            ],
-            "backersCount": 27,
-            "category": {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnktMjcz",
-              "name": "Playing Cards",
-              "analyticsName": "Playing Cards",
-              "parentCategory": {
-                "__typename": "Category",
-                "id": "Q2F0ZWdvcnktMTI=",
-                "name": "Games",
-                "analyticsName": "Games"
-              }
-            },
-            "canComment": true,
-            "commentsCount": 1,
-            "country": {
-              "__typename": "Country",
-              "code": "US",
-              "name": "the United States"
-            },
-            "creator": {
-              "__typename": "User",
-              "backings": {
-                "__typename": "UserBackingsConnection",
-                "nodes": []
-              },
-              "backingsCount": 0,
-              "chosenCurrency": null,
-              "createdProjects": {
-                "__typename": "UserCreatedProjectsConnection",
-                "totalCount": 1
-              },
-              "email": "info@example.com",
-              "hasPassword": null,
-              "hasUnreadMessages": null,
-              "hasUnseenActivity": null,
-              "id": "VXNlci05MTc4MzYxMg==",
-              "imageUrl": "example.com/infographic",
-              "isAppleConnected": null,
-              "isBlocked": false,
-              "isCreator": true,
-              "isDeliverable": null,
-              "isEmailVerified": true,
-              "isFacebookConnected": false,
-              "isKsrAdmin": null,
-              "isFollowing": false,
-              "isSocializing": null,
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "Olathe, KS",
-                "id": "TG9jYXRpb24tMjQ2NDYzOQ==",
-                "name": "Olathe"
-              },
-              "name": "Info Graphic",
-              "needsFreshFacebookToken": null,
-              "newsletterSubscriptions": null,
-              "notifications": null,
-              "optedOutOfRecommendations": null,
-              "showPublicProfile": null,
-              "savedProjects": null,
-              "storedCards": {
-                "__typename": "UserCreditCardTypeConnection",
-                "nodes": [],
-                "totalCount": 0
-              },
-              "surveyResponses": null,
-              "uid": "2"
-            },
+          "currency": "USD",
+          "deadlineAt": 1710196633,
+          "description": "test blurb",
+          "environmentalCommitments": [],
+          "aiDisclosure": {
+            "__typename": "AiDisclosure",
+            "id": "QWlEaXNjbG9zdXJlLTM4MTg0",
+            "fundingForAiAttribution": null,
+            "fundingForAiConsent": null,
+            "fundingForAiOption": null,
+            "generatedByAiConsent": null,
+            "generatedByAiDetails": null,
+            "involvesAi": false,
+            "involvesFunding": false,
+            "involvesGeneration": false,
+            "involvesOther": false,
+            "otherAiDetails": null
+          },
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": []
+          },
+          "finalCollectionDate": null,
+          "fxRate": 1,
+          "goal": {
+            "__typename": "Money",
+            "amount": "1000.0",
             "currency": "USD",
-            "deadlineAt": 1708911385,
-            "description": "Bringing The Golf Course To The Card Table - Visit CardGolfTour.com for more information",
-            "environmentalCommitments": [
-              {
-                "__typename": "EnvironmentalCommitment",
-                "commitmentCategory": "long_lasting_design",
-                "description": "Our game is long-lasting design because the playing cards are made of durable material that are built for repeated shuffling and play.",
-                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYx"
-              },
-              {
-                "__typename": "EnvironmentalCommitment",
-                "commitmentCategory": "reusability_and_recyclability",
-                "description": "Our game components are primarily paper-based and therefore can be recycled as desired.",
-                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYz"
-              },
-              {
-                "__typename": "EnvironmentalCommitment",
-                "commitmentCategory": "sustainable_materials",
-                "description": "We plan to use recycled and up-cycled materials to make game components and packaging.",
-                "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYy"
-              }
-            ],
-            "aiDisclosure": {
-              "__typename": "AiDisclosure",
-              "id": "QWlEaXNjbG9zdXJlLTIwMDUw",
-              "fundingForAiAttribution": null,
-              "fundingForAiConsent": null,
-              "fundingForAiOption": null,
-              "generatedByAiConsent": null,
-              "generatedByAiDetails": null,
-              "involvesAi": false,
-              "involvesFunding": false,
-              "involvesGeneration": false,
-              "involvesOther": false,
-              "otherAiDetails": null
-            },
-            "faqs": {
-              "__typename": "ProjectFaqConnection",
+            "symbol": "$"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8t",
+            "url": "https://i-dev.kickstarter.com/missing_project_photo.png?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=mtxWHN34oWziTC9W1L2IsQI9T3gsd9J1j3cqDfYyzAQ%3D"
+          },
+          "isProjectWeLove": false,
+          "isProjectOfTheDay": false,
+          "isInPostCampaignPledgingPhase": true,
+          "isWatched": true,
+          "isLaunched": true,
+          "launchedAt": 1710800428,
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "United States",
+            "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
+            "name": "United States"
+          },
+          "maxPledge": 10000,
+          "minPledge": 1,
+          "name": "Zan's Late Pledge Campaign",
+          "pid": 745600992,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "343.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 0
+          },
+          "prelaunchActivated": false,
+          "postCampaignPledgingEnabled": true,
+          "risks": "May not deliver",
+          "sendMetaCapiEvents": false,
+          "slug": "cainlevy/zans-late-pledge-campaign",
+          "state": "SUCCESSFUL",
+          "stateChangedAt": 1710800431,
+          "story": "This project is fantastic!",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/cainlevy/zans-late-pledge-campaign",
+          "usdExchangeRate": 1,
+          "video": null,
+          "watchesCount": 6
+        },
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "DINERS",
+            "UNION_PAY"
+          ],
+          "backersCount": 27,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMjcz",
+            "name": "Playing Cards",
+            "analyticsName": "Playing Cards",
+            "parentCategory": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMTI=",
+              "name": "Games",
+              "analyticsName": "Games"
+            }
+          },
+          "canComment": true,
+          "commentsCount": 1,
+          "country": {
+            "__typename": "Country",
+            "code": "US",
+            "name": "the United States"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": {
+              "__typename": "UserBackingsConnection",
               "nodes": []
             },
-            "finalCollectionDate": null,
-            "fxRate": 1,
-            "goal": {
-              "__typename": "Money",
-              "amount": "2000.0",
-              "currency": "USD",
-              "symbol": "$"
+            "backingsCount": 0,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
             },
-            "image": {
-              "__typename": "Photo",
-              "id": "UGhvdG8tNDI5MDQzMjI=",
-              "url": "https://i-dev.kickstarter.com/assets/042/904/322/6ed4afa3dd309a42d162ff2823353444_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=bqyRXuSjHQ2F1dtGgfxBNiD%2B6vZYJR5%2B%2FjrSA5aYwNg%3D"
-            },
-            "isProjectWeLove": true,
-            "isProjectOfTheDay": false,
-            "isInPostCampaignPledgingPhase": false,
-            "isWatched": false,
-            "isLaunched": true,
-            "launchedAt": 1706319385,
+            "email": "info@example.com",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci05MTc4MzYxMg==",
+            "imageUrl": "example.com/infographic",
+            "isAppleConnected": null,
+            "isBlocked": false,
+            "isCreator": true,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
             "location": {
               "__typename": "Location",
               "country": "US",
@@ -310,269 +224,352 @@
               "id": "TG9jYXRpb24tMjQ2NDYzOQ==",
               "name": "Olathe"
             },
-            "maxPledge": 10000,
-            "minPledge": 1,
-            "name": "Card Golf Tour",
-            "pid": 1290897231,
-            "pledged": {
-              "__typename": "Money",
-              "amount": "1654.0",
-              "currency": "USD",
-              "symbol": "$"
+            "name": "Info Graphic",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
             },
-            "posts": {
-              "__typename": "PostConnection",
+            "surveyResponses": null,
+            "uid": "2"
+          },
+          "currency": "USD",
+          "deadlineAt": 1708911385,
+          "description": "Bringing The Golf Course To The Card Table - Visit CardGolfTour.com for more information",
+          "environmentalCommitments": [
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "long_lasting_design",
+              "description": "Our game is long-lasting design because the playing cards are made of durable material that are built for repeated shuffling and play.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYx"
+            },
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "reusability_and_recyclability",
+              "description": "Our game components are primarily paper-based and therefore can be recycled as desired.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYz"
+            },
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "sustainable_materials",
+              "description": "We plan to use recycled and up-cycled materials to make game components and packaging.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMjI5NDYy"
+            }
+          ],
+          "aiDisclosure": {
+            "__typename": "AiDisclosure",
+            "id": "QWlEaXNjbG9zdXJlLTIwMDUw",
+            "fundingForAiAttribution": null,
+            "fundingForAiConsent": null,
+            "fundingForAiOption": null,
+            "generatedByAiConsent": null,
+            "generatedByAiDetails": null,
+            "involvesAi": false,
+            "involvesFunding": false,
+            "involvesGeneration": false,
+            "involvesOther": false,
+            "otherAiDetails": null
+          },
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": []
+          },
+          "finalCollectionDate": null,
+          "fxRate": 1,
+          "goal": {
+            "__typename": "Money",
+            "amount": "2000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDI5MDQzMjI=",
+            "url": "https://i-dev.kickstarter.com/assets/042/904/322/6ed4afa3dd309a42d162ff2823353444_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=bqyRXuSjHQ2F1dtGgfxBNiD%2B6vZYJR5%2B%2FjrSA5aYwNg%3D"
+          },
+          "isProjectWeLove": true,
+          "isProjectOfTheDay": false,
+          "isInPostCampaignPledgingPhase": false,
+          "isWatched": false,
+          "isLaunched": true,
+          "launchedAt": 1706319385,
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "Olathe, KS",
+            "id": "TG9jYXRpb24tMjQ2NDYzOQ==",
+            "name": "Olathe"
+          },
+          "maxPledge": 10000,
+          "minPledge": 1,
+          "name": "Card Golf Tour",
+          "pid": 1290897231,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "1654.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 1
+          },
+          "prelaunchActivated": true,
+          "postCampaignPledgingEnabled": false,
+          "risks": "Game components include playing cards, instructional material and scorecards that are printed and shipped. Supply chain challenges that have increased over the past few years have introduced fulfillment risks in terms of shipping delays. We have vetted our printing partner through references from other card game creators and are confident our printing partner will be able to fulfill orders according to schedule.",
+          "sendMetaCapiEvents": false,
+          "slug": "cardgolftour/card-golf-tour",
+          "state": "LIVE",
+          "stateChangedAt": 1706319388,
+          "story": "<h3 id=\"h:What-Is-Card-Golf-Tour-\" class=\"page-anchor\"><strong>What Is Card Golf Tour?</strong></h3><p><strong>Card Golf Tour is a project developed by me (Nick Sahrmann) and my brother (Luke Sahrmann). We have always had great interest in both golf and card games. Our grandparents introduced us to the card game \"Card Golf\" a couple years back, and we instantly loved it. However, after over a year of playing the game, we thought to ourselves - \"there must be a way to make card golf more competitive and play more like the actual game of golf.\" Thus, Card Golf Tour was born.  </strong></p><p><strong>Card Golf Tour improves on the traditional game of card golf by introducing: </strong></p><ul>\n<li><strong>A deck of playing cards that replicates a set of golf clubs.</strong></li>\n<li><strong>An innovative scoring system that allows players to score eagles, birdies, pars, and bogeys.</strong></li>\n<li><strong>A unique par system that changes the duration of the hand.</strong></li>\n<li><strong>An optional proprietary stroke index system that varies the difficulty level from hand to hand.</strong></li>\n<li><strong>Multiple game formats, including scramble, alternate shot, and match play.</strong></li>\n</ul><p><strong>Our mission with Card Golf Tour is twofold; We want to help people learn about the game of golf while also creating a competitive and strategic card game that appeals to avid golfers and card players alike. We are running our Kickstarter campaign to raise funds for the production of our first 100 units of Card Golf Tour. To learn more about Card Golf Tour, visit our website at</strong><a href=\"https://cardgolftour.com/\" target=\"_blank\" rel=\"noopener\"><strong> https://cardgolftour.com/</strong></a><strong>.</strong></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43649898\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/649/898/453c79696fc59f8eb406907884c0be5c_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=p1ogJcKMJBRKuU4zNHE%2FzFGIc2UpqL0VcARho%2BO9hlw%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Meet-The-Team\" class=\"page-anchor\">Meet The Team</h3><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731507\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/507/bd1c620bc2810caf274cca8352334e14_original.JPG?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=Ur3rEPrpgKNB3VbTylisJ5ZncStOh3TTU5MAJIhEXq4%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Nick-Sahrmann-Freshman-at-the-University-of-Kansas\" class=\"page-anchor\">Nick Sahrmann - Freshman at the University of Kansas</h4><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731514\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/514/688f22bc2d1150d8666140754830589e_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=UWNAOhSKIwTZsWMEvYHum7JlIa6IH7mxGD7iKaOP7ZA%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Luke-Sahrmann-Junior-at-Olathe-West-High-School\" class=\"page-anchor\">Luke Sahrmann - Junior at Olathe West High School</h4><h3 id=\"h:Components\" class=\"page-anchor\"><strong>Components</strong></h3><p><strong>Each copy of Card Golf Tour includes the following items:</strong></p><ul>\n<li><strong>2 decks of Card Golf Tour playing cards (54 cards in each deck)</strong></li>\n<li><strong>4 Card Golf Tour scorecards</strong></li>\n<li><strong>1 Instruction Guide</strong></li>\n<li><strong>1 Dice</strong></li>\n<li><strong>1 Pencil</strong></li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731535\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/535/6ed4afa3dd309a42d162ff2823353444_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=8XgN%2FIvp1JqpvBNpSzvnPByUTjJHpdYBrveyntiEXx4%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:How-To-Play\" class=\"page-anchor\"><strong>How To Play</strong></h3><p><strong>The aim of the game in Card Golf Tour is to shoot par or better (minimize your point total) on each hole (hand) by strategically drawing, matching, keeping, and discarding cards. Card Golf Tour is designed to be played with a group of 2-5 players and will take anywhere from 10-90 minutes based on the amount of hands you play. Listed is below is a brief guide to Card Golf Tour as well as an instructional video on our YouTube channel.</strong></p><h4 id=\"h:Note-Composition-of-the-deck\" class=\"page-anchor\"><strong>Note: Composition of the deck</strong></h4><p><strong>Each deck of Card Golf Tour playing cards includes 54 cards. There are 14 types of cards in the deck:</strong></p><ul>\n<li><strong>Putter (-5 points)</strong></li>\n<li><strong>Driver (-2 points)</strong></li>\n<li><strong>Hybrid (0 points)</strong></li>\n<li><strong>1 Iron (1 point)</strong></li>\n<li><strong>2 Iron (2 points)</strong></li>\n<li><strong>3 Iron (3 points)</strong></li>\n<li><strong>4 Iron (4 points)</strong></li>\n<li><strong>5 Iron (5 points)</strong></li>\n<li><strong>6 Iron (6 points)</strong></li>\n<li><strong>7 Iron (7 points)</strong></li>\n<li><strong>8 Iron (8 points)</strong></li>\n<li><strong>9 Iron (9 points)</strong></li>\n<li><strong>Pitching Wedge (10 points)</strong></li>\n<li><strong>Sand Wedge (11 points)</strong></li>\n</ul><p><strong>Each type of card has 4 cards in the deck, 2 green cards of the respective type and 2 black cards. The exception to this is the putter card, in which there are only two putters in the deck, one black putter and one green putter (think of the putter as the joker of a standard deck of playing cards).</strong></p><p><strong>In Card Golf Tour, the lower the point value of the card, the more valuable that card is. This means that the putter is typically the best card in the deck while the sand wedge is typically the worst card in the deck.</strong></p><h4 id=\"h:Setup-\" class=\"page-anchor\"><strong>Setup:</strong></h4><p><strong>Step 1- The dealer will shuffle the deck of cards and then deal. Each player will be dealt 4, 6, or 8 cards face down based on the par of the hole (dealer will reference the scorecard for the par of the hole). </strong></p><p><strong>Step 2- The dealer will then place the remaining cards in the the center of the table, forming the draw pile. The top card of the draw pile will then be turned over and placed next to the draw pile forming the discard pile. </strong></p><p><strong>Step 3- Each player will arrange their cards in two horizontal rows of 2, 3, or 4 cards based on how many cards they were dealt. They will then chose 1, 2, or 3 cards to turn face up based on the amount of cards they were dealt. </strong></p><h4 id=\"h:Play-\" class=\"page-anchor\"><strong>Play:</strong></h4><p><strong>Step 1- Each player will roll the dice to determine order of play. The lowest roll will be player 1, and the lowest dice roll between the player to the right and left of player 1 will be player 2. Play will then continue in this direction for the remainder of the hole. </strong></p><p><strong>Step 2- Through a series of drawing, matching, keeping, and discarding cards players will attempt to minimize their hands point total (see our instructional video attached below for further explanation of this facet of the game). </strong></p><p><strong>Step 3- Once one player has all of their cards face up on the table, the hand ends and each remaining player is allowed one more turn. </strong></p><h4 id=\"h:Score-\" class=\"page-anchor\"><strong>Score:</strong></h4><p><strong>Step 1- Each player will find the sum of their hand. </strong></p><p><strong>Step 2- Each player will then find the score to par that their hand total falls under (see our instructional video below for further information on the scoring system in Card Golf Tour). </strong></p><p><strong>Step 3- Each player will then report their score on the hole to the scorekeeper who will keep a running tally of each players score throughout the round.</strong></p><p><strong>Note- Each step outlined above will be repeated for each subsequent hand in the game. It is recommended that the group plays either 9 or 18 hands, just like how golfers usually play 9 or 18 holes in a round.</strong></p><p><strong>At the conclusion of the game, the player with the lowest score is the winner!</strong></p><h4 id=\"h:Instructional-Video-\" class=\"page-anchor\"><strong>Instructional Video:</strong></h4><div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=HqyncJx4_7w&amp;t=217s\">\n</div>\n<h3 id=\"h:What-Tour-Players-Are-Saying-\" class=\"page-anchor\">What <em>Tour</em> Players Are Saying...</h3><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43565382\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/565/382/19d8db0e683aabdacaa38991f74f992e_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=nsbjyTP0A6p8sklIon%2BQmNAuSyYFXv%2FwubrEQthOCvc%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43565383\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/565/383/fae24670ca5f24f32264af3623f69ff3_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=rp13w8EsSHlTzGS0hjHjUAWoHDEtF4Uy5V9aVyXTHcY%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43649919\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/649/919/1fad42f0e34dee859cd2c6bebd5b2ff2_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qTvayef%2F2Xb0hGGpDYROjqCXO%2BWltuh8dH28Ns6EikQ%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Stretch-Goals\" class=\"page-anchor\">Stretch Goals</h3><p><strong>At Card Golf Tour, we have decided not to use stretch goals as a part of our crowdfunding campaign. Our reasoning for this is simple.</strong></p><p><strong>We want to ensure that each backer who pledges to the campaign will be able to open their box and immediately begin playing Card Golf Tour. Some Kickstarter campaigns withhold certain components of their game and use them as a reward for a stretch goal. At Card Golf Tour, we have designed our game holistically so that no add-ons are necessary in order to play our game. While we have designed many different ways to play Card Golf Tour, we have decided that we will release these updates to the game at scheduled times throughout the upcoming year to keep the game feeling new and exciting. </strong></p><p><strong>Our team at Card Golf Tour is using our Kickstarter campaign as a proof of concept campaign. We do not intend to make a profit on our product using Kickstarter, but rather, want to use our campaign to spread awareness about our game. Card Golf Tour is a hobby for us, not a job.</strong></p><h3 id=\"h:Shipping\" class=\"page-anchor\">Shipping</h3><p><strong>Our team at Card Golf Tour has made the decision to only ship within the United States. Shipping will be $5 to anywhere within the U.S and no matter the pledge level. </strong></p><p><strong>Backers may notice that we have set March 2024 as our targeted delivery date for our product. This is an unusually short turnaround as our campaign will be ending on February 25th. The reason for this is that we have already produced our first 100 copies of Card Golf Tour. This means that once the campaign ends, assuming it has met its goal, we will be able to immediately begin the process of shipping out our game to backers. While we anticipate that shipping will take 1-2 weeks, we cannot guarantee anything and will make sure to provide continued updates as needed.</strong></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43738194\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/738/194/e3dd541b4f9566d12c139b7f4f707457_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=rL1B%2BaBj4PWcjvJMGE8kR6OOGIAmbKNy5RQy3nPTuiY%3D\">\n</figure>\n\n</div>\n",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/cardgolftour/card-golf-tour",
+          "usdExchangeRate": 1,
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTI1OTU3MQ==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1712855593-yY8sggPJeOr47xDdQppZMFfUgqaXSUm9RGIGfWLghPo%3D/projects/4683889/video-1259571-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1712855593-yY8sggPJeOr47xDdQppZMFfUgqaXSUm9RGIGfWLghPo%3D/projects/4683889/video-1259571-hls_playlist.m3u8"
+              }
+            }
+          },
+          "watchesCount": 81
+        },
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "DINERS",
+            "UNION_PAY"
+          ],
+          "backersCount": 26,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMzU=",
+            "name": "Video Games",
+            "analyticsName": "Video Games",
+            "parentCategory": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMTI=",
+              "name": "Games",
+              "analyticsName": "Games"
+            }
+          },
+          "canComment": true,
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "US",
+            "name": "the United States"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": null,
+            "backingsCount": 0,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
               "totalCount": 1
             },
-            "prelaunchActivated": true,
-            "postCampaignPledgingEnabled": false,
-            "risks": "Game components include playing cards, instructional material and scorecards that are printed and shipped. Supply chain challenges that have increased over the past few years have introduced fulfillment risks in terms of shipping delays. We have vetted our printing partner through references from other card game creators and are confident our printing partner will be able to fulfill orders according to schedule.",
-            "sendMetaCapiEvents": false,
-            "slug": "cardgolftour/card-golf-tour",
-            "state": "LIVE",
-            "stateChangedAt": 1706319388,
-            "story": "<h3 id=\"h:What-Is-Card-Golf-Tour-\" class=\"page-anchor\"><strong>What Is Card Golf Tour?</strong></h3><p><strong>Card Golf Tour is a project developed by me (Nick Sahrmann) and my brother (Luke Sahrmann). We have always had great interest in both golf and card games. Our grandparents introduced us to the card game \"Card Golf\" a couple years back, and we instantly loved it. However, after over a year of playing the game, we thought to ourselves - \"there must be a way to make card golf more competitive and play more like the actual game of golf.\" Thus, Card Golf Tour was born.  </strong></p><p><strong>Card Golf Tour improves on the traditional game of card golf by introducing: </strong></p><ul>\n<li><strong>A deck of playing cards that replicates a set of golf clubs.</strong></li>\n<li><strong>An innovative scoring system that allows players to score eagles, birdies, pars, and bogeys.</strong></li>\n<li><strong>A unique par system that changes the duration of the hand.</strong></li>\n<li><strong>An optional proprietary stroke index system that varies the difficulty level from hand to hand.</strong></li>\n<li><strong>Multiple game formats, including scramble, alternate shot, and match play.</strong></li>\n</ul><p><strong>Our mission with Card Golf Tour is twofold; We want to help people learn about the game of golf while also creating a competitive and strategic card game that appeals to avid golfers and card players alike. We are running our Kickstarter campaign to raise funds for the production of our first 100 units of Card Golf Tour. To learn more about Card Golf Tour, visit our website at</strong><a href=\"https://cardgolftour.com/\" target=\"_blank\" rel=\"noopener\"><strong> https://cardgolftour.com/</strong></a><strong>.</strong></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43649898\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/649/898/453c79696fc59f8eb406907884c0be5c_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=p1ogJcKMJBRKuU4zNHE%2FzFGIc2UpqL0VcARho%2BO9hlw%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Meet-The-Team\" class=\"page-anchor\">Meet The Team</h3><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731507\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/507/bd1c620bc2810caf274cca8352334e14_original.JPG?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=Ur3rEPrpgKNB3VbTylisJ5ZncStOh3TTU5MAJIhEXq4%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Nick-Sahrmann-Freshman-at-the-University-of-Kansas\" class=\"page-anchor\">Nick Sahrmann - Freshman at the University of Kansas</h4><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731514\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/514/688f22bc2d1150d8666140754830589e_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=UWNAOhSKIwTZsWMEvYHum7JlIa6IH7mxGD7iKaOP7ZA%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Luke-Sahrmann-Junior-at-Olathe-West-High-School\" class=\"page-anchor\">Luke Sahrmann - Junior at Olathe West High School</h4><h3 id=\"h:Components\" class=\"page-anchor\"><strong>Components</strong></h3><p><strong>Each copy of Card Golf Tour includes the following items:</strong></p><ul>\n<li><strong>2 decks of Card Golf Tour playing cards (54 cards in each deck)</strong></li>\n<li><strong>4 Card Golf Tour scorecards</strong></li>\n<li><strong>1 Instruction Guide</strong></li>\n<li><strong>1 Dice</strong></li>\n<li><strong>1 Pencil</strong></li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43731535\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/731/535/6ed4afa3dd309a42d162ff2823353444_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=8XgN%2FIvp1JqpvBNpSzvnPByUTjJHpdYBrveyntiEXx4%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:How-To-Play\" class=\"page-anchor\"><strong>How To Play</strong></h3><p><strong>The aim of the game in Card Golf Tour is to shoot par or better (minimize your point total) on each hole (hand) by strategically drawing, matching, keeping, and discarding cards. Card Golf Tour is designed to be played with a group of 2-5 players and will take anywhere from 10-90 minutes based on the amount of hands you play. Listed is below is a brief guide to Card Golf Tour as well as an instructional video on our YouTube channel.</strong></p><h4 id=\"h:Note-Composition-of-the-deck\" class=\"page-anchor\"><strong>Note: Composition of the deck</strong></h4><p><strong>Each deck of Card Golf Tour playing cards includes 54 cards. There are 14 types of cards in the deck:</strong></p><ul>\n<li><strong>Putter (-5 points)</strong></li>\n<li><strong>Driver (-2 points)</strong></li>\n<li><strong>Hybrid (0 points)</strong></li>\n<li><strong>1 Iron (1 point)</strong></li>\n<li><strong>2 Iron (2 points)</strong></li>\n<li><strong>3 Iron (3 points)</strong></li>\n<li><strong>4 Iron (4 points)</strong></li>\n<li><strong>5 Iron (5 points)</strong></li>\n<li><strong>6 Iron (6 points)</strong></li>\n<li><strong>7 Iron (7 points)</strong></li>\n<li><strong>8 Iron (8 points)</strong></li>\n<li><strong>9 Iron (9 points)</strong></li>\n<li><strong>Pitching Wedge (10 points)</strong></li>\n<li><strong>Sand Wedge (11 points)</strong></li>\n</ul><p><strong>Each type of card has 4 cards in the deck, 2 green cards of the respective type and 2 black cards. The exception to this is the putter card, in which there are only two putters in the deck, one black putter and one green putter (think of the putter as the joker of a standard deck of playing cards).</strong></p><p><strong>In Card Golf Tour, the lower the point value of the card, the more valuable that card is. This means that the putter is typically the best card in the deck while the sand wedge is typically the worst card in the deck.</strong></p><h4 id=\"h:Setup-\" class=\"page-anchor\"><strong>Setup:</strong></h4><p><strong>Step 1- The dealer will shuffle the deck of cards and then deal. Each player will be dealt 4, 6, or 8 cards face down based on the par of the hole (dealer will reference the scorecard for the par of the hole). </strong></p><p><strong>Step 2- The dealer will then place the remaining cards in the the center of the table, forming the draw pile. The top card of the draw pile will then be turned over and placed next to the draw pile forming the discard pile. </strong></p><p><strong>Step 3- Each player will arrange their cards in two horizontal rows of 2, 3, or 4 cards based on how many cards they were dealt. They will then chose 1, 2, or 3 cards to turn face up based on the amount of cards they were dealt. </strong></p><h4 id=\"h:Play-\" class=\"page-anchor\"><strong>Play:</strong></h4><p><strong>Step 1- Each player will roll the dice to determine order of play. The lowest roll will be player 1, and the lowest dice roll between the player to the right and left of player 1 will be player 2. Play will then continue in this direction for the remainder of the hole. </strong></p><p><strong>Step 2- Through a series of drawing, matching, keeping, and discarding cards players will attempt to minimize their hands point total (see our instructional video attached below for further explanation of this facet of the game). </strong></p><p><strong>Step 3- Once one player has all of their cards face up on the table, the hand ends and each remaining player is allowed one more turn. </strong></p><h4 id=\"h:Score-\" class=\"page-anchor\"><strong>Score:</strong></h4><p><strong>Step 1- Each player will find the sum of their hand. </strong></p><p><strong>Step 2- Each player will then find the score to par that their hand total falls under (see our instructional video below for further information on the scoring system in Card Golf Tour). </strong></p><p><strong>Step 3- Each player will then report their score on the hole to the scorekeeper who will keep a running tally of each players score throughout the round.</strong></p><p><strong>Note- Each step outlined above will be repeated for each subsequent hand in the game. It is recommended that the group plays either 9 or 18 hands, just like how golfers usually play 9 or 18 holes in a round.</strong></p><p><strong>At the conclusion of the game, the player with the lowest score is the winner!</strong></p><h4 id=\"h:Instructional-Video-\" class=\"page-anchor\"><strong>Instructional Video:</strong></h4><div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=HqyncJx4_7w&amp;t=217s\">\n</div>\n<h3 id=\"h:What-Tour-Players-Are-Saying-\" class=\"page-anchor\">What <em>Tour</em> Players Are Saying...</h3><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43565382\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/565/382/19d8db0e683aabdacaa38991f74f992e_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=nsbjyTP0A6p8sklIon%2BQmNAuSyYFXv%2FwubrEQthOCvc%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43565383\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/565/383/fae24670ca5f24f32264af3623f69ff3_original.png?fit=contain&amp;origin=ugc-qa&amp;width=700&amp;sig=rp13w8EsSHlTzGS0hjHjUAWoHDEtF4Uy5V9aVyXTHcY%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43649919\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/649/919/1fad42f0e34dee859cd2c6bebd5b2ff2_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qTvayef%2F2Xb0hGGpDYROjqCXO%2BWltuh8dH28Ns6EikQ%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:Stretch-Goals\" class=\"page-anchor\">Stretch Goals</h3><p><strong>At Card Golf Tour, we have decided not to use stretch goals as a part of our crowdfunding campaign. Our reasoning for this is simple.</strong></p><p><strong>We want to ensure that each backer who pledges to the campaign will be able to open their box and immediately begin playing Card Golf Tour. Some Kickstarter campaigns withhold certain components of their game and use them as a reward for a stretch goal. At Card Golf Tour, we have designed our game holistically so that no add-ons are necessary in order to play our game. While we have designed many different ways to play Card Golf Tour, we have decided that we will release these updates to the game at scheduled times throughout the upcoming year to keep the game feeling new and exciting. </strong></p><p><strong>Our team at Card Golf Tour is using our Kickstarter campaign as a proof of concept campaign. We do not intend to make a profit on our product using Kickstarter, but rather, want to use our campaign to spread awareness about our game. Card Golf Tour is a hobby for us, not a job.</strong></p><h3 id=\"h:Shipping\" class=\"page-anchor\">Shipping</h3><p><strong>Our team at Card Golf Tour has made the decision to only ship within the United States. Shipping will be $5 to anywhere within the U.S and no matter the pledge level. </strong></p><p><strong>Backers may notice that we have set March 2024 as our targeted delivery date for our product. This is an unusually short turnaround as our campaign will be ending on February 25th. The reason for this is that we have already produced our first 100 copies of Card Golf Tour. This means that once the campaign ends, assuming it has met its goal, we will be able to immediately begin the process of shipping out our game to backers. While we anticipate that shipping will take 1-2 weeks, we cannot guarantee anything and will make sure to provide continued updates as needed.</strong></p><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43738194\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/738/194/e3dd541b4f9566d12c139b7f4f707457_original.jpeg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=rL1B%2BaBj4PWcjvJMGE8kR6OOGIAmbKNy5RQy3nPTuiY%3D\">\n</figure>\n\n</div>\n",
-            "tags": [],
-            "url": "https://staging.kickstarter.com/projects/cardgolftour/card-golf-tour",
-            "usdExchangeRate": 1,
-            "video": {
-              "__typename": "Video",
-              "id": "VmlkZW8tMTI1OTU3MQ==",
-              "videoSources": {
-                "__typename": "VideoSources",
-                "high": {
-                  "__typename": "VideoSourceInfo",
-                  "src": "https://v2.kickstarter.com/1712855593-yY8sggPJeOr47xDdQppZMFfUgqaXSUm9RGIGfWLghPo%3D/projects/4683889/video-1259571-h264_high.mp4"
-                },
-                "hls": {
-                  "__typename": "VideoSourceInfo",
-                  "src": "https://v2.kickstarter.com/1712855593-yY8sggPJeOr47xDdQppZMFfUgqaXSUm9RGIGfWLghPo%3D/projects/4683889/video-1259571-hls_playlist.m3u8"
-                }
-              }
-            },
-            "watchesCount": 81
-          },
-          {
-            "__typename": "Project",
-            "availableCardTypes": [
-              "VISA",
-              "MASTERCARD",
-              "AMEX",
-              "DISCOVER",
-              "JCB",
-              "DINERS",
-              "UNION_PAY"
-            ],
-            "backersCount": 26,
-            "category": {
-              "__typename": "Category",
-              "id": "Q2F0ZWdvcnktMzU=",
-              "name": "Video Games",
-              "analyticsName": "Video Games",
-              "parentCategory": {
-                "__typename": "Category",
-                "id": "Q2F0ZWdvcnktMTI=",
-                "name": "Games",
-                "analyticsName": "Games"
-              }
-            },
-            "canComment": true,
-            "commentsCount": 0,
-            "country": {
-              "__typename": "Country",
-              "code": "US",
-              "name": "the United States"
-            },
-            "creator": {
-              "__typename": "User",
-              "backings": null,
-              "backingsCount": 0,
-              "chosenCurrency": null,
-              "createdProjects": {
-                "__typename": "UserCreatedProjectsConnection",
-                "totalCount": 1
-              },
-              "email": "s@example.com",
-              "hasPassword": null,
-              "hasUnreadMessages": null,
-              "hasUnseenActivity": null,
-              "id": "VXNlci0xNDc0MjQ4ODQ1",
-              "imageUrl": "example.com/image-s",
-              "isAppleConnected": null,
-              "isBlocked": false,
-              "isCreator": null,
-              "isDeliverable": null,
-              "isEmailVerified": true,
-              "isFacebookConnected": false,
-              "isKsrAdmin": null,
-              "isFollowing": false,
-              "isSocializing": null,
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "New York, NY",
-                "id": "TG9jYXRpb24tMjQ1OTExNQ==",
-                "name": "New York"
-              },
-              "name": "S Spider",
-              "needsFreshFacebookToken": null,
-              "newsletterSubscriptions": null,
-              "notifications": null,
-              "optedOutOfRecommendations": null,
-              "showPublicProfile": null,
-              "savedProjects": null,
-              "storedCards": {
-                "__typename": "UserCreditCardTypeConnection",
-                "nodes": [],
-                "totalCount": 0
-              },
-              "surveyResponses": null,
-              "uid": "3"
-            },
-            "currency": "USD",
-            "deadlineAt": 1710054577,
-            "description": "A dark style action Soulslike game.",
-            "environmentalCommitments": [],
-            "aiDisclosure": {
-              "__typename": "AiDisclosure",
-              "id": "QWlEaXNjbG9zdXJlLTM0MDkx",
-              "fundingForAiAttribution": null,
-              "fundingForAiConsent": null,
-              "fundingForAiOption": null,
-              "generatedByAiConsent": null,
-              "generatedByAiDetails": null,
-              "involvesAi": false,
-              "involvesFunding": false,
-              "involvesGeneration": false,
-              "involvesOther": false,
-              "otherAiDetails": null
-            },
-            "faqs": {
-              "__typename": "ProjectFaqConnection",
-              "nodes": [
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "Where will the game be released when it is completed?",
-                  "answer": "The currently confirmed platform is Steam, and we will also try to communicate with other platforms.",
-                  "id": "UHJvamVjdEZhcS01MDU2NzQ=",
-                  "createdAt": 1705908260
-                },
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "What languages does the game support?",
-                  "answer": "English, Simplified Chinese, Traditional Chinese, French, Italian, German, Spanish, Japanese and Korean. We will add other languages according to the actual situation.",
-                  "id": "UHJvamVjdEZhcS01MDU2NzU=",
-                  "createdAt": 1705908260
-                },
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "How long is the game approximately?",
-                  "answer": "The current plan is that the main plot of the week will last about 20 hours.",
-                  "id": "UHJvamVjdEZhcS01MDU2NzY=",
-                  "createdAt": 1705908260
-                },
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "What is the difference between Digital Standard Edition and Digital Special Edition?",
-                  "answer": "The special edition will have three additional sets of equipment that will not affect game balance.",
-                  "id": "UHJvamVjdEZhcS01MDU2Nzg=",
-                  "createdAt": 1705909197
-                },
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "What stage is the game development currently at?",
-                  "answer": "The game is currently in the early development stage, and we really want to complete the game, so we want to do it through crowdfunding. Please believe that we have the ability to do it well.",
-                  "id": "UHJvamVjdEZhcS01MDU2Nzk=",
-                  "createdAt": 1705909197
-                },
-                {
-                  "__typename": "ProjectFaq",
-                  "question": "If the crowdfunding goal is exceeded, where will you use the funds?",
-                  "answer": "In addition to the basic expenses, additional funds will appropriately extend the plot content while ensuring the quality of the game, as well as more types of monsters and weapons.",
-                  "id": "UHJvamVjdEZhcS01MDU2ODA=",
-                  "createdAt": 1705909197
-                }
-              ]
-            },
-            "finalCollectionDate": null,
-            "fxRate": 1,
-            "goal": {
-              "__typename": "Money",
-              "amount": "20000.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "image": {
-              "__typename": "Photo",
-              "id": "UGhvdG8tNDM3MzYwMDM=",
-              "url": "https://i-dev.kickstarter.com/assets/043/736/003/8769ec8848c1a1c861094b6425ae2630_original.png?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=jtbq4V3FiH5vDWBz8VsiX%2Fg8eCZojAsTyqTU31dRfL0%3D"
-            },
-            "isProjectWeLove": false,
-            "isProjectOfTheDay": false,
-            "isInPostCampaignPledgingPhase": false,
-            "isWatched": false,
-            "isLaunched": true,
-            "launchedAt": 1706166577,
+            "email": "s@example.com",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci0xNDc0MjQ4ODQ1",
+            "imageUrl": "example.com/image-s",
+            "isAppleConnected": null,
+            "isBlocked": false,
+            "isCreator": null,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
             "location": {
               "__typename": "Location",
-              "country": "CN",
-              "countryName": "China",
-              "displayableName": "Shanghai, China",
-              "id": "TG9jYXRpb24tMjE1MTg0OQ==",
-              "name": "Shanghai"
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "New York, NY",
+              "id": "TG9jYXRpb24tMjQ1OTExNQ==",
+              "name": "New York"
             },
-            "maxPledge": 10000,
-            "minPledge": 1,
-            "name": "ShadowKnight",
-            "pid": 98154754,
-            "pledged": {
-              "__typename": "Money",
-              "amount": "7309.0",
-              "currency": "USD",
-              "symbol": "$"
+            "name": "S Spider",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
             },
-            "posts": {
-              "__typename": "PostConnection",
-              "totalCount": 1
-            },
-            "prelaunchActivated": true,
-            "postCampaignPledgingEnabled": false,
-            "risks": "The core concept of \"ShadowKnight\" aims to provide players with an unprecedented and challenging gaming experience. Our goal is to transcend the boundaries of traditional action games by introducing innovative soul-possession mechanics and a complex combat system. This ambitious objective brings significant technical and design challenges. To achieve this vision, our team is committed to relentless effort, continuous innovation, and refinement, ensuring the balance of game mechanics and the coherence of the story.\nOur team faces certain limitations in art and animation. High-quality visuals are a key factor in attracting players, especially in action soul games, where exquisite graphics and smooth animations are crucial. We recognize this and are actively seeking partnerships and external resources to address this shortcoming. We are dedicated to ensuring that the game's visuals meet industry standards, providing players with an immersive gaming experience.\nTo realize the highly interactive and dynamic combat scenes envisioned in \"ShadowKnight\", complex and advanced programming techniques are required. The challenge lies in accurately implementing the game's intricate state system and high-intelligence AI, while maintaining the game's fluidity and stability. Our team is facing the need for innovation and breakthroughs at the technical level.\nIn the end, no matter how much we raise, we will deliver.",
-            "sendMetaCapiEvents": false,
-            "slug": "soulightninggame/shadowknight",
-            "state": "LIVE",
-            "stateChangedAt": 1706166580,
-            "story": "<p>\"ShadowKnight\" is a Soulslike action game. The story unfolds in a mysterious and perilous unknown territory, where a small squad of brave knights encounters unknown monsters, leading to a catastrophic defeat. The protagonist, the lone survivor, unexpectedly gains a mystical power from wearing Pazuzu's possession talisman. After the monsters depart, you discover a unique ability: you can use your soul to inhabit the bodies of the deceased. You will use your soul to choose a new body (different professions) from your team to begin the journey of escaping this uncharted domain.</p><h3 id=\"h:Game-Features\" class=\"page-anchor\"><strong>Game Features</strong></h3><h4 id=\"h:Unique-Possession-Mechanism\" class=\"page-anchor\"><strong>Unique Possession Mechanism</strong></h4><ul>\n<li>In \"ShadowKnight\", players are reborn in a soul state after each death.</li>\n<li>In the soul state, players can choose to possess either corpses or weaker living bodies.</li>\n<li>The game offers three slots for players to permanently save different bodies.</li>\n<li>By consuming soul shards, players can possess stored bodies directly in the soul state.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727294\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/294/6d55b568faf5e47f7299433c030fe760_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=eHyyTwo6ICb%2BL28sDtHxQMcoiPeni%2F6GvtbdcmCbh9w%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/294/6d55b568faf5e47f7299433c030fe760_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=tIrQgkJxy36Ipi2caWJl8PCNISH%2BtNdmqw%2BkSRsuQww%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727298\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/298/c95d554da6df4db118dc7abcd0276edb_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=wD5OrVMIpxlKuHRU7%2BApSPF4BK7zXDN%2BSEpZPJpENwI%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/298/c95d554da6df4db118dc7abcd0276edb_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qAsGyw3YU4UCqFBoffBOloVFf%2FbCUNOS%2F15P1IpNfMI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727299\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/299/b81e19d0102a564c6962783f60d71ea6_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=wNZhC5jG4%2FHaRAUYLgao0T0U7NkH%2BuYf0cdeMhViyCM%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/299/b81e19d0102a564c6962783f60d71ea6_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=UPScZMcWS15SWiveFhC9q59Yns8e52qr7XaxuysutnQ%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727300\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/300/6396c426308dd8e641bd2a4d31cdc062_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=rfcjLB1smH6mb61r%2FuX%2Fc7POMQwBIbE8r91LAddXHO4%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/300/6396c426308dd8e641bd2a4d31cdc062_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=aS5t9vkAh1GTVFrTqnjFmFFikgxvinSi1H7LjlET4yM%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Body-Diversity-and-Combat-Variability\" class=\"page-anchor\"><strong>Body Diversity and Combat Variability</strong></h4><ul>\n<li>Every possessable creature in the game has unique base attributes and skills, offering rich combat experiences and strategic choices.</li>\n<li>The weapon attack customization mechanism allows players to adjust their combat style to their preference, offering greater freedom in gameplay.</li>\n<li>Different creatures have varying equipment and item usage restrictions, adding strategy and depth to the game.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43756173\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/756/173/ce3f4214fd753a633b2d84db37eecb59_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=pAkDSONCeoXHBHTvN9tmRWVOgXDjiN7fdUxq%2FVIOV7g%3D\" src=\"https://i-dev.kickstarter.com/assets/043/756/173/ce3f4214fd753a633b2d84db37eecb59_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=IETx9cm0z7zB4rp4O7Z5NGYqfZslG%2F87P2nXZJtYSOk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733246\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/246/54b0f66da26c86bff05662be8e8c997b_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OABurcv%2FfOA6a7R9PTP95p9FNJf66BeeNHFExibj4d4%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/246/54b0f66da26c86bff05662be8e8c997b_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=L7n25UmS%2FJ8eehucBCvDplsW2RIwaX584Oc3N8g75Bs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733248\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/248/9c80df37def1175af05518e8838aa946_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RQk8Gc9huc7XoSrb6lFg5uHBoqZRBhA3Hh2Jmv1D%2BYk%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/248/9c80df37def1175af05518e8838aa946_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=umiZF%2FVdE3KUhsEHkYzEetzdHmeqptp9btSNBJK04As%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733250\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/250/013f2a0fa523e6fd301cfdab1ebc867e_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=pZ%2BL5ZBXyQ7ldkryOByYdyWHPw4t0D20T5OlUCXYWSA%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/250/013f2a0fa523e6fd301cfdab1ebc867e_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=TvcpNMpvJL%2Bo9VNeugVnJM2zHWGs0arlsJETolrO05o%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733253\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/253/62e3024e89f417c48dd4a6f5763b2c0f_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=raMS9oEXp7xIHHNqWT3LLk3e6faTRptuhnE5crbSdG8%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/253/62e3024e89f417c48dd4a6f5763b2c0f_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=h9Jsy284pOS%2FvIs0%2FZU%2B9s4zHcuv73LUlt549J1q8KQ%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733254\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/254/d458b65488ea656bd618961f313b393c_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=2K9nVJUcTiBVoSBO4yhmw82i%2B03Qs%2FykA2amRvxcfZk%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/254/d458b65488ea656bd618961f313b393c_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=NP7o85WEMidBakN5gEW3AsTdvJ8a%2FADEKe%2Fveh%2BTo9Y%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733255\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/255/7bd9973080562efba9f4fe354cb5f8b8_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=DIZ%2FO9EJLIXe0QLtjAi%2BB19N48IKvyEGzvnhSxzh25w%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/255/7bd9973080562efba9f4fe354cb5f8b8_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=7gKYdGdTbvnh6496veOYFkxLUNCjzk7%2F71cbNXBGw6Y%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733256\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/256/2070cfc655b3080008d59a8e5eca1074_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=L4Hr1U3sdXvwkYFXubCs2cKx0rGjqjDb88Aw7DTXR8c%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/256/2070cfc655b3080008d59a8e5eca1074_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=S2swdwr2HPuiWiZ2%2F9SglpFk%2BpOtoBx0MKm1iCQ%2BWwk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733259\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/259/cbb1e1163be00184cb18718c457e5ec9_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=BIbFDun3qOEUc8s6Df3udVj0hysfFmDozWApVJjuj3I%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/259/cbb1e1163be00184cb18718c457e5ec9_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=SXS3DofyDd2aQYux7nXkMwZUF53087JhsFlq0oj0Mcw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733260\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/260/f1f612e333d07fe6b546b41ff8767168_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=COVGfnFAbJNN2YsTA9egTS6tud7EnAZsbJuElB20kdc%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/260/f1f612e333d07fe6b546b41ff8767168_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=txNSnRJFm15bR8Iyd7P3zRYquI7Z8IH%2F7MXuB1oNjV0%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Intelligent-AI-and-Diverse-Enemies\" class=\"page-anchor\"><strong>Intelligent AI and Diverse Enemies</strong></h4><ul>\n<li>Enemy AI is designed to consider various combat environments and situations, making each battle challenging and unpredictable.</li>\n<li>Interactions among enemies make combat more intense and strategic, forcing players to continually adjust tactics against different enemy combinations.</li>\n<li>Each enemy in the game has its unique behavior pattern and combat strategy, requiring players to continuously learn and adapt.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744405\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/405/f0600137abcb0431c27713ffb58b7f05_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=ohGTdJzTgAUxvvpfw%2BauWaKQxyIVHkKw2JNtHku8vp4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744407\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/407/e05280b303aa50af0432521319c61f13_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=0e7SAkIp6B4jS1bVztKgyhBUvJihoj1vRdIIT8nmeAs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744408\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/408/52404c95a11d55ccd1f237b0183c0b33_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RBXCR%2F3eDTHgJIhZYAugkechn7o2KRmyESnvBETotak%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744410\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/410/e261bfaa39e747a0ef0046ca0b800e2c_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OM8GgGqYYTcWQaX90ec0KvL%2FAunkPqf4kx%2BgU9Demww%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744411\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/411/c9f54394d56496fbf30813cee35f8ab7_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=fNoT47aHy%2Bnd5%2B3wT7Qy2dyn0dDCDQU39OO4vJyWbEs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744413\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/413/c6c758483aea05183e37a4328fcc0eeb_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=elPTTGMH3T2aHxio%2Fd5exGVKTSakMuVTv%2FFkthqOoOM%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Multiple-Endings-and-Story-Depth\" class=\"page-anchor\"><strong>Multiple Endings and Story Depth</strong></h4><ul>\n<li>The story development and endings of \"ShadowKnight\" change based on player choices and actions, offering a highly non-linear gaming experience.</li>\n<li>Players' decisions not only affect the story's direction but also influence relationships between characters and the state of the world.</li>\n<li>Every choice in the game involves moral and strategic considerations, adding to the story's complexity and immersion.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43747732\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/747/732/8589f12dbf9e221d49a8fdc12a686fef_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=karYCn2sPlCoDkuHI91WBxgzRR9sfjKI79RYLf3%2B2EM%3D\" src=\"https://i-dev.kickstarter.com/assets/043/747/732/8589f12dbf9e221d49a8fdc12a686fef_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=LbYGg2zpczqgp2hv7t9c6F9mp886B3seP%2B1egd5PqGI%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Interactive-Combat-Scenes\" class=\"page-anchor\"><strong>Interactive Combat Scenes</strong></h4><ul>\n<li>Combat environments offer a variety of interactive elements; players can use terrain advantages or environmental traps against enemies.</li>\n<li>Each combat scene is meticulously designed to provide unique tactical challenges and opportunities.</li>\n<li>Interactive elements in scenes not only add strategic depth to combat but also enhance exploration fun and surprises.</li>\n</ul><h3 id=\"h:Combat-Mechanics\" class=\"page-anchor\"><strong>Combat Mechanics</strong></h3><h4 id=\"h:Complex-State-System\" class=\"page-anchor\"><strong>Complex State System</strong></h4><ul>\n<li>The game introduces a stagger bar, rigidity bar, and defense bar, adding more layers and depth to combat.</li>\n<li>Different state effects like falling, grounding, knockback, and launching add extra strategic elements to combat, offering more tactical choices and responses.</li>\n</ul><h4 id=\"h:Rich-Attack-Types-and-Tactical-Choices\" class=\"page-anchor\"><strong>Rich Attack Types and Tactical Choices</strong></h4><ul>\n<li>The game offers various attack types, such as thrusting, cleaving, sweeping, stabbing, and lifting. Each attack type has its specific scenarios and effects.</li>\n<li>Specific attack types have extra effects on certain enemies or combat states, like thrusting attacks being more effective against enemies in front of walls, and cleaving attacks causing more damage to grounded enemies.</li>\n<li>Combat strategies are rich; players need to choose attack methods flexibly based on enemy types and combat environments.</li>\n</ul><h4 id=\"h:Unique-Guard-Breaking-Attacks-and-Combat-Interactions\" class=\"page-anchor\"><strong>Unique Guard-Breaking Attacks and Combat Interactions</strong></h4><ul>\n<li>Guard-breaking attacks (charged skills) add an extra strategic layer to combat; these attacks can't be blocked by normal defense and have additional effects on defensive enemies.</li>\n<li>The game encourages players to find enemies' weaknesses through observation and adaptation, using guard-breaking attacks to break stalemates.</li>\n<li>Combat interactions and reaction timings require players to stay alert and flexible, increasing the game's challenge and enjoyment.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744021\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/021/ab4132acd3d0f2fb367749af8654e155_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RuyjHQ238lJHEwcDaFy37gR7DUckOm0vld6Rbx8dG1w%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744022\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/022/ffd00b7900a328bf6c9f1a784b768ece_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=7nkpA4%2BHrVtQcjVrvuD217G8%2FJkakTUCi09jv8tbhj4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744023\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/023/ca3f186f6e53af6bb0e8b1710b98726d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=oS%2BiM0ZNZTfPsiBHYhaDjjnQQL7wWCvAr8U%2FBzb1F7Q%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744024\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/024/f1df473e529a083066e66c273d27122a_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=dI%2FnM25PstxEAvOoqNgtGwR%2F9qBv4EMRoZ1%2Fiv52Kwg%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744025\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/025/8ea070466d89882ecf0e2db317917bdd_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=sWRf%2FMSElIK%2FqdsjxXtfPn6mdPUZIK%2BxRJDYlzGRo18%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744027\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/027/174aeb1e53f89f5e0e76b8f3f15f334f_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qj1SGl6oYNZHylDGnTsC3aVFY4xxn2UtHh8VH3rXGxw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744028\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/028/2955bc76d69ec3ad235fb7a9ac75905d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=fEQooT%2FudxPKGHLLTPYmYI387nTvbV%2FiBnXN3lzQ4yI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744029\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/029/d6dda7f29f55570a05221e300f341e0e_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=g8LIN%2BA6PEJErQzY5apDauJ5XtmzK6u7khsZGTOcKgM%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744030\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/030/c940e701d3581103988ebf8edea8febf_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=i49G2rw2mR5QWqXrAQN8NEdA4Caai5SZ7hvACcN1Twc%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744031\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/031/2221ce72d39f4ef99772efbafd9b1f1d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=yIK%2Fld11qCYXIjmCSvSsagubZ%2BDIiXhxg%2Fo5X8eZ%2FB8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744032\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/032/314963c7fb0a02d9dcfa931c0a768c25_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2BdOozdqz6mXODZ6aFCb7qO%2FTrVACMGgapzr3RDRMPPU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744033\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/033/e45a36b97369f446c128327c2784d8a5_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=KxI7BMRyRI%2BzNaIDntPxR%2FcsnpMyBSh0uxRBsjeUuUE%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:JoinUs\" class=\"page-anchor\">JoinUs</h3><p><strong>Discord:</strong><a href=\"https://discord.gg/rgTdaX8kSV\" target=\"_blank\" rel=\"noopener\"><strong>rgTdaX8kSV</strong></a></p><p><strong>Twitter:</strong><a href=\"https://twitter.com/_Soulightning_\" target=\"_blank\" rel=\"noopener\"><strong>SoulightningGameStudio (@_Soulightning_) / X (twitter.com)</strong></a></p>",
-            "tags": [],
-            "url": "https://staging.kickstarter.com/projects/soulightninggame/shadowknight",
-            "usdExchangeRate": 1,
-            "video": {
-              "__typename": "Video",
-              "id": "VmlkZW8tMTI3MDE1MA==",
-              "videoSources": {
-                "__typename": "VideoSources",
-                "high": {
-                  "__typename": "VideoSourceInfo",
-                  "src": "https://v2.kickstarter.com/1712855593-dzSyV%2BCn8XeqNL3tpEjsK1FVWaZINGR%2FDSvPu6ez4Ec%3D/projects/4713986/video-1270150-h264_high.mp4"
-                },
-                "hls": {
-                  "__typename": "VideoSourceInfo",
-                  "src": "https://v2.kickstarter.com/1712855593-dzSyV%2BCn8XeqNL3tpEjsK1FVWaZINGR%2FDSvPu6ez4Ec%3D/projects/4713986/video-1270150-hls_playlist.m3u8"
-                }
+            "surveyResponses": null,
+            "uid": "3"
+          },
+          "currency": "USD",
+          "deadlineAt": 1710054577,
+          "description": "A dark style action Soulslike game.",
+          "environmentalCommitments": [],
+          "aiDisclosure": {
+            "__typename": "AiDisclosure",
+            "id": "QWlEaXNjbG9zdXJlLTM0MDkx",
+            "fundingForAiAttribution": null,
+            "fundingForAiConsent": null,
+            "fundingForAiOption": null,
+            "generatedByAiConsent": null,
+            "generatedByAiDetails": null,
+            "involvesAi": false,
+            "involvesFunding": false,
+            "involvesGeneration": false,
+            "involvesOther": false,
+            "otherAiDetails": null
+          },
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "Where will the game be released when it is completed?",
+                "answer": "The currently confirmed platform is Steam, and we will also try to communicate with other platforms.",
+                "id": "UHJvamVjdEZhcS01MDU2NzQ=",
+                "createdAt": 1705908260
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "What languages does the game support?",
+                "answer": "English, Simplified Chinese, Traditional Chinese, French, Italian, German, Spanish, Japanese and Korean. We will add other languages according to the actual situation.",
+                "id": "UHJvamVjdEZhcS01MDU2NzU=",
+                "createdAt": 1705908260
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "How long is the game approximately?",
+                "answer": "The current plan is that the main plot of the week will last about 20 hours.",
+                "id": "UHJvamVjdEZhcS01MDU2NzY=",
+                "createdAt": 1705908260
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "What is the difference between Digital Standard Edition and Digital Special Edition?",
+                "answer": "The special edition will have three additional sets of equipment that will not affect game balance.",
+                "id": "UHJvamVjdEZhcS01MDU2Nzg=",
+                "createdAt": 1705909197
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "What stage is the game development currently at?",
+                "answer": "The game is currently in the early development stage, and we really want to complete the game, so we want to do it through crowdfunding. Please believe that we have the ability to do it well.",
+                "id": "UHJvamVjdEZhcS01MDU2Nzk=",
+                "createdAt": 1705909197
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "If the crowdfunding goal is exceeded, where will you use the funds?",
+                "answer": "In addition to the basic expenses, additional funds will appropriately extend the plot content while ensuring the quality of the game, as well as more types of monsters and weapons.",
+                "id": "UHJvamVjdEZhcS01MDU2ODA=",
+                "createdAt": 1705909197
               }
-            },
-            "watchesCount": 21
-          }
-        ],
-        "pageInfo": {
-          "__typename": "PageInfo",
-          "hasNextPage": false,
-          "endCursor": "WzE3MjYxMDM3NV0=",
-          "hasPreviousPage": false,
-          "startCursor": "WzE3MjYxMTU4Nl0="
+            ]
+          },
+          "finalCollectionDate": null,
+          "fxRate": 1,
+          "goal": {
+            "__typename": "Money",
+            "amount": "20000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDM3MzYwMDM=",
+            "url": "https://i-dev.kickstarter.com/assets/043/736/003/8769ec8848c1a1c861094b6425ae2630_original.png?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=jtbq4V3FiH5vDWBz8VsiX%2Fg8eCZojAsTyqTU31dRfL0%3D"
+          },
+          "isProjectWeLove": false,
+          "isProjectOfTheDay": false,
+          "isInPostCampaignPledgingPhase": false,
+          "isWatched": false,
+          "isLaunched": true,
+          "launchedAt": 1706166577,
+          "location": {
+            "__typename": "Location",
+            "country": "CN",
+            "countryName": "China",
+            "displayableName": "Shanghai, China",
+            "id": "TG9jYXRpb24tMjE1MTg0OQ==",
+            "name": "Shanghai"
+          },
+          "maxPledge": 10000,
+          "minPledge": 1,
+          "name": "ShadowKnight",
+          "pid": 98154754,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "7309.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 1
+          },
+          "prelaunchActivated": true,
+          "postCampaignPledgingEnabled": false,
+          "risks": "The core concept of \"ShadowKnight\" aims to provide players with an unprecedented and challenging gaming experience. Our goal is to transcend the boundaries of traditional action games by introducing innovative soul-possession mechanics and a complex combat system. This ambitious objective brings significant technical and design challenges. To achieve this vision, our team is committed to relentless effort, continuous innovation, and refinement, ensuring the balance of game mechanics and the coherence of the story.\nOur team faces certain limitations in art and animation. High-quality visuals are a key factor in attracting players, especially in action soul games, where exquisite graphics and smooth animations are crucial. We recognize this and are actively seeking partnerships and external resources to address this shortcoming. We are dedicated to ensuring that the game's visuals meet industry standards, providing players with an immersive gaming experience.\nTo realize the highly interactive and dynamic combat scenes envisioned in \"ShadowKnight\", complex and advanced programming techniques are required. The challenge lies in accurately implementing the game's intricate state system and high-intelligence AI, while maintaining the game's fluidity and stability. Our team is facing the need for innovation and breakthroughs at the technical level.\nIn the end, no matter how much we raise, we will deliver.",
+          "sendMetaCapiEvents": false,
+          "slug": "soulightninggame/shadowknight",
+          "state": "LIVE",
+          "stateChangedAt": 1706166580,
+          "story": "<p>\"ShadowKnight\" is a Soulslike action game. The story unfolds in a mysterious and perilous unknown territory, where a small squad of brave knights encounters unknown monsters, leading to a catastrophic defeat. The protagonist, the lone survivor, unexpectedly gains a mystical power from wearing Pazuzu's possession talisman. After the monsters depart, you discover a unique ability: you can use your soul to inhabit the bodies of the deceased. You will use your soul to choose a new body (different professions) from your team to begin the journey of escaping this uncharted domain.</p><h3 id=\"h:Game-Features\" class=\"page-anchor\"><strong>Game Features</strong></h3><h4 id=\"h:Unique-Possession-Mechanism\" class=\"page-anchor\"><strong>Unique Possession Mechanism</strong></h4><ul>\n<li>In \"ShadowKnight\", players are reborn in a soul state after each death.</li>\n<li>In the soul state, players can choose to possess either corpses or weaker living bodies.</li>\n<li>The game offers three slots for players to permanently save different bodies.</li>\n<li>By consuming soul shards, players can possess stored bodies directly in the soul state.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727294\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/294/6d55b568faf5e47f7299433c030fe760_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=eHyyTwo6ICb%2BL28sDtHxQMcoiPeni%2F6GvtbdcmCbh9w%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/294/6d55b568faf5e47f7299433c030fe760_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=tIrQgkJxy36Ipi2caWJl8PCNISH%2BtNdmqw%2BkSRsuQww%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727298\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/298/c95d554da6df4db118dc7abcd0276edb_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=wD5OrVMIpxlKuHRU7%2BApSPF4BK7zXDN%2BSEpZPJpENwI%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/298/c95d554da6df4db118dc7abcd0276edb_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qAsGyw3YU4UCqFBoffBOloVFf%2FbCUNOS%2F15P1IpNfMI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727299\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/299/b81e19d0102a564c6962783f60d71ea6_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=wNZhC5jG4%2FHaRAUYLgao0T0U7NkH%2BuYf0cdeMhViyCM%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/299/b81e19d0102a564c6962783f60d71ea6_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=UPScZMcWS15SWiveFhC9q59Yns8e52qr7XaxuysutnQ%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43727300\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/727/300/6396c426308dd8e641bd2a4d31cdc062_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=rfcjLB1smH6mb61r%2FuX%2Fc7POMQwBIbE8r91LAddXHO4%3D\" src=\"https://i-dev.kickstarter.com/assets/043/727/300/6396c426308dd8e641bd2a4d31cdc062_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=aS5t9vkAh1GTVFrTqnjFmFFikgxvinSi1H7LjlET4yM%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Body-Diversity-and-Combat-Variability\" class=\"page-anchor\"><strong>Body Diversity and Combat Variability</strong></h4><ul>\n<li>Every possessable creature in the game has unique base attributes and skills, offering rich combat experiences and strategic choices.</li>\n<li>The weapon attack customization mechanism allows players to adjust their combat style to their preference, offering greater freedom in gameplay.</li>\n<li>Different creatures have varying equipment and item usage restrictions, adding strategy and depth to the game.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43756173\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/756/173/ce3f4214fd753a633b2d84db37eecb59_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=pAkDSONCeoXHBHTvN9tmRWVOgXDjiN7fdUxq%2FVIOV7g%3D\" src=\"https://i-dev.kickstarter.com/assets/043/756/173/ce3f4214fd753a633b2d84db37eecb59_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=IETx9cm0z7zB4rp4O7Z5NGYqfZslG%2F87P2nXZJtYSOk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733246\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/246/54b0f66da26c86bff05662be8e8c997b_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OABurcv%2FfOA6a7R9PTP95p9FNJf66BeeNHFExibj4d4%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/246/54b0f66da26c86bff05662be8e8c997b_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=L7n25UmS%2FJ8eehucBCvDplsW2RIwaX584Oc3N8g75Bs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733248\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/248/9c80df37def1175af05518e8838aa946_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RQk8Gc9huc7XoSrb6lFg5uHBoqZRBhA3Hh2Jmv1D%2BYk%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/248/9c80df37def1175af05518e8838aa946_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=umiZF%2FVdE3KUhsEHkYzEetzdHmeqptp9btSNBJK04As%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733250\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/250/013f2a0fa523e6fd301cfdab1ebc867e_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=pZ%2BL5ZBXyQ7ldkryOByYdyWHPw4t0D20T5OlUCXYWSA%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/250/013f2a0fa523e6fd301cfdab1ebc867e_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=TvcpNMpvJL%2Bo9VNeugVnJM2zHWGs0arlsJETolrO05o%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733253\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/253/62e3024e89f417c48dd4a6f5763b2c0f_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=raMS9oEXp7xIHHNqWT3LLk3e6faTRptuhnE5crbSdG8%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/253/62e3024e89f417c48dd4a6f5763b2c0f_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=h9Jsy284pOS%2FvIs0%2FZU%2B9s4zHcuv73LUlt549J1q8KQ%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733254\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/254/d458b65488ea656bd618961f313b393c_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=2K9nVJUcTiBVoSBO4yhmw82i%2B03Qs%2FykA2amRvxcfZk%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/254/d458b65488ea656bd618961f313b393c_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=NP7o85WEMidBakN5gEW3AsTdvJ8a%2FADEKe%2Fveh%2BTo9Y%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733255\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/255/7bd9973080562efba9f4fe354cb5f8b8_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=DIZ%2FO9EJLIXe0QLtjAi%2BB19N48IKvyEGzvnhSxzh25w%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/255/7bd9973080562efba9f4fe354cb5f8b8_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=7gKYdGdTbvnh6496veOYFkxLUNCjzk7%2F71cbNXBGw6Y%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733256\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/256/2070cfc655b3080008d59a8e5eca1074_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=L4Hr1U3sdXvwkYFXubCs2cKx0rGjqjDb88Aw7DTXR8c%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/256/2070cfc655b3080008d59a8e5eca1074_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=S2swdwr2HPuiWiZ2%2F9SglpFk%2BpOtoBx0MKm1iCQ%2BWwk%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733259\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/259/cbb1e1163be00184cb18718c457e5ec9_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=BIbFDun3qOEUc8s6Df3udVj0hysfFmDozWApVJjuj3I%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/259/cbb1e1163be00184cb18718c457e5ec9_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=SXS3DofyDd2aQYux7nXkMwZUF53087JhsFlq0oj0Mcw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43733260\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/733/260/f1f612e333d07fe6b546b41ff8767168_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=COVGfnFAbJNN2YsTA9egTS6tud7EnAZsbJuElB20kdc%3D\" src=\"https://i-dev.kickstarter.com/assets/043/733/260/f1f612e333d07fe6b546b41ff8767168_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=txNSnRJFm15bR8Iyd7P3zRYquI7Z8IH%2F7MXuB1oNjV0%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Intelligent-AI-and-Diverse-Enemies\" class=\"page-anchor\"><strong>Intelligent AI and Diverse Enemies</strong></h4><ul>\n<li>Enemy AI is designed to consider various combat environments and situations, making each battle challenging and unpredictable.</li>\n<li>Interactions among enemies make combat more intense and strategic, forcing players to continually adjust tactics against different enemy combinations.</li>\n<li>Each enemy in the game has its unique behavior pattern and combat strategy, requiring players to continuously learn and adapt.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744405\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/405/f0600137abcb0431c27713ffb58b7f05_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=ohGTdJzTgAUxvvpfw%2BauWaKQxyIVHkKw2JNtHku8vp4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744407\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/407/e05280b303aa50af0432521319c61f13_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=0e7SAkIp6B4jS1bVztKgyhBUvJihoj1vRdIIT8nmeAs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744408\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/408/52404c95a11d55ccd1f237b0183c0b33_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RBXCR%2F3eDTHgJIhZYAugkechn7o2KRmyESnvBETotak%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744410\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/410/e261bfaa39e747a0ef0046ca0b800e2c_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=OM8GgGqYYTcWQaX90ec0KvL%2FAunkPqf4kx%2BgU9Demww%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744411\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/411/c9f54394d56496fbf30813cee35f8ab7_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=fNoT47aHy%2Bnd5%2B3wT7Qy2dyn0dDCDQU39OO4vJyWbEs%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744413\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/413/c6c758483aea05183e37a4328fcc0eeb_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=elPTTGMH3T2aHxio%2Fd5exGVKTSakMuVTv%2FFkthqOoOM%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Multiple-Endings-and-Story-Depth\" class=\"page-anchor\"><strong>Multiple Endings and Story Depth</strong></h4><ul>\n<li>The story development and endings of \"ShadowKnight\" change based on player choices and actions, offering a highly non-linear gaming experience.</li>\n<li>Players' decisions not only affect the story's direction but also influence relationships between characters and the state of the world.</li>\n<li>Every choice in the game involves moral and strategic considerations, adding to the story's complexity and immersion.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43747732\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://i-dev.kickstarter.com/assets/043/747/732/8589f12dbf9e221d49a8fdc12a686fef_original.gif?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=karYCn2sPlCoDkuHI91WBxgzRR9sfjKI79RYLf3%2B2EM%3D\" src=\"https://i-dev.kickstarter.com/assets/043/747/732/8589f12dbf9e221d49a8fdc12a686fef_original.gif?anim=false&amp;fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=LbYGg2zpczqgp2hv7t9c6F9mp886B3seP%2B1egd5PqGI%3D\">\n</figure>\n\n</div>\n<h4 id=\"h:Interactive-Combat-Scenes\" class=\"page-anchor\"><strong>Interactive Combat Scenes</strong></h4><ul>\n<li>Combat environments offer a variety of interactive elements; players can use terrain advantages or environmental traps against enemies.</li>\n<li>Each combat scene is meticulously designed to provide unique tactical challenges and opportunities.</li>\n<li>Interactive elements in scenes not only add strategic depth to combat but also enhance exploration fun and surprises.</li>\n</ul><h3 id=\"h:Combat-Mechanics\" class=\"page-anchor\"><strong>Combat Mechanics</strong></h3><h4 id=\"h:Complex-State-System\" class=\"page-anchor\"><strong>Complex State System</strong></h4><ul>\n<li>The game introduces a stagger bar, rigidity bar, and defense bar, adding more layers and depth to combat.</li>\n<li>Different state effects like falling, grounding, knockback, and launching add extra strategic elements to combat, offering more tactical choices and responses.</li>\n</ul><h4 id=\"h:Rich-Attack-Types-and-Tactical-Choices\" class=\"page-anchor\"><strong>Rich Attack Types and Tactical Choices</strong></h4><ul>\n<li>The game offers various attack types, such as thrusting, cleaving, sweeping, stabbing, and lifting. Each attack type has its specific scenarios and effects.</li>\n<li>Specific attack types have extra effects on certain enemies or combat states, like thrusting attacks being more effective against enemies in front of walls, and cleaving attacks causing more damage to grounded enemies.</li>\n<li>Combat strategies are rich; players need to choose attack methods flexibly based on enemy types and combat environments.</li>\n</ul><h4 id=\"h:Unique-Guard-Breaking-Attacks-and-Combat-Interactions\" class=\"page-anchor\"><strong>Unique Guard-Breaking Attacks and Combat Interactions</strong></h4><ul>\n<li>Guard-breaking attacks (charged skills) add an extra strategic layer to combat; these attacks can't be blocked by normal defense and have additional effects on defensive enemies.</li>\n<li>The game encourages players to find enemies' weaknesses through observation and adaptation, using guard-breaking attacks to break stalemates.</li>\n<li>Combat interactions and reaction timings require players to stay alert and flexible, increasing the game's challenge and enjoyment.</li>\n</ul><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744021\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/021/ab4132acd3d0f2fb367749af8654e155_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=RuyjHQ238lJHEwcDaFy37gR7DUckOm0vld6Rbx8dG1w%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744022\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/022/ffd00b7900a328bf6c9f1a784b768ece_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=7nkpA4%2BHrVtQcjVrvuD217G8%2FJkakTUCi09jv8tbhj4%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744023\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/023/ca3f186f6e53af6bb0e8b1710b98726d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=oS%2BiM0ZNZTfPsiBHYhaDjjnQQL7wWCvAr8U%2FBzb1F7Q%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744024\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/024/f1df473e529a083066e66c273d27122a_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=dI%2FnM25PstxEAvOoqNgtGwR%2F9qBv4EMRoZ1%2Fiv52Kwg%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744025\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/025/8ea070466d89882ecf0e2db317917bdd_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=sWRf%2FMSElIK%2FqdsjxXtfPn6mdPUZIK%2BxRJDYlzGRo18%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744027\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/027/174aeb1e53f89f5e0e76b8f3f15f334f_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=qj1SGl6oYNZHylDGnTsC3aVFY4xxn2UtHh8VH3rXGxw%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744028\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/028/2955bc76d69ec3ad235fb7a9ac75905d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=fEQooT%2FudxPKGHLLTPYmYI387nTvbV%2FiBnXN3lzQ4yI%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744029\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/029/d6dda7f29f55570a05221e300f341e0e_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=g8LIN%2BA6PEJErQzY5apDauJ5XtmzK6u7khsZGTOcKgM%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744030\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/030/c940e701d3581103988ebf8edea8febf_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=i49G2rw2mR5QWqXrAQN8NEdA4Caai5SZ7hvACcN1Twc%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744031\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/031/2221ce72d39f4ef99772efbafd9b1f1d_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=yIK%2Fld11qCYXIjmCSvSsagubZ%2BDIiXhxg%2Fo5X8eZ%2FB8%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744032\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/032/314963c7fb0a02d9dcfa931c0a768c25_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=%2BdOozdqz6mXODZ6aFCb7qO%2FTrVACMGgapzr3RDRMPPU%3D\">\n</figure>\n\n</div>\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"43744033\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://i-dev.kickstarter.com/assets/043/744/033/e45a36b97369f446c128327c2784d8a5_original.jpg?fit=contain&amp;origin=ugc-qa&amp;q=92&amp;width=700&amp;sig=KxI7BMRyRI%2BzNaIDntPxR%2FcsnpMyBSh0uxRBsjeUuUE%3D\">\n</figure>\n\n</div>\n<h3 id=\"h:JoinUs\" class=\"page-anchor\">JoinUs</h3><p><strong>Discord:</strong><a href=\"https://discord.gg/rgTdaX8kSV\" target=\"_blank\" rel=\"noopener\"><strong>rgTdaX8kSV</strong></a></p><p><strong>Twitter:</strong><a href=\"https://twitter.com/_Soulightning_\" target=\"_blank\" rel=\"noopener\"><strong>SoulightningGameStudio (@_Soulightning_) / X (twitter.com)</strong></a></p>",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/soulightninggame/shadowknight",
+          "usdExchangeRate": 1,
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTI3MDE1MA==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1712855593-dzSyV%2BCn8XeqNL3tpEjsK1FVWaZINGR%2FDSvPu6ez4Ec%3D/projects/4713986/video-1270150-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1712855593-dzSyV%2BCn8XeqNL3tpEjsK1FVWaZINGR%2FDSvPu6ez4Ec%3D/projects/4713986/video-1270150-hls_playlist.m3u8"
+              }
+            }
+          },
+          "watchesCount": 21
         }
-      }
+      ],
+      "pageInfo": {
+        "__typename": "PageInfo",
+        "hasNextPage": false,
+        "endCursor": "WzE3MjYxMDM3NV0=",
+        "hasPreviousPage": false,
+        "startCursor": "WzE3MjYxMTU4Nl0="
+      },
+      "totalCount": 3
     }
   }
 }
