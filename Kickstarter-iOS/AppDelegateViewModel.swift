@@ -750,8 +750,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter(isTrue)
       .map { _ in
         guard let _ = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier else {
-          if AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus(),
-             featureConsentManagementDialogEnabled() {
+          if AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() {
             AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus()
           }
 
