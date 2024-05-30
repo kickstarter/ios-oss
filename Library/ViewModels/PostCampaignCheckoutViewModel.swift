@@ -95,7 +95,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let user = AppEnvironment.current.currentUser else { return nil }
         let reward = data.baseReward
 
-        return (user, data.project, checkoutId, reward, data.context, data.refTag, data.total, .paymentIntent)
+        return (user, data.project, checkoutId, reward, data.context, data.refTag)
       }
 
     self.showWebHelp = Signal.merge(

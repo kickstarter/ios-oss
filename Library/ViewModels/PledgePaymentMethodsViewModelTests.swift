@@ -97,9 +97,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -258,9 +256,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           .template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -410,9 +406,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -498,9 +492,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -603,9 +595,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -698,9 +688,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -805,9 +793,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -873,9 +859,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -918,9 +902,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -972,10 +954,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           Project.template,
           "checkoutID",
           Reward.template,
-          .pledge,
-          .discovery,
-          100,
-          .paymentIntent
+          .latePledge,
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -1030,9 +1010,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.viewDidLoad()
 
@@ -1083,9 +1061,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       let addNewCardIndexPath = IndexPath(
@@ -1121,9 +1097,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .update,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       let addNewCardIndexPath = IndexPath(
@@ -1159,9 +1133,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .updateReward,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       let addNewCardIndexPath = IndexPath(
@@ -1197,9 +1169,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .changePaymentMethod,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       let addNewCardIndexPath = IndexPath(
@@ -1235,9 +1205,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .fixPaymentMethod,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       let addNewCardIndexPath = IndexPath(
@@ -1278,9 +1246,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -1334,9 +1300,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -1397,9 +1361,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -1459,9 +1421,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
 
       guard let paymentMethod = STPPaymentMethod.amexStripePaymentMethod else {
@@ -1513,9 +1473,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
@@ -1545,9 +1503,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: true)
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
@@ -1591,9 +1547,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
 
@@ -1630,9 +1584,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "checkoutID",
           Reward.template,
           .pledge,
-          .discovery,
-          Double.nan,
-          .setupIntent
+          .discovery
         ))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
@@ -1664,8 +1616,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       row: 0,
       section: PaymentMethodsTableViewSection.addNewCard.rawValue
     )
-    let envelope = PaymentIntentEnvelope(clientSecret: "test")
-    let mockService = MockService(createPaymentIntentResult: .success(envelope))
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
     var configuration = PaymentSheet.Configuration()
     configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
     configuration.allowsDelayedPaymentMethods = true
@@ -1681,10 +1633,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           project,
           "checkoutID",
           Reward.template,
-          .pledge,
-          .discovery,
-          100,
-          .paymentIntent
+          .latePledge,
+          .discovery
         ))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
@@ -1704,7 +1654,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         return
       }
 
-      XCTAssertFalse(allowedDelayedPaymentMethods)
+      XCTAssertTrue(allowedDelayedPaymentMethods)
     }
   }
 }

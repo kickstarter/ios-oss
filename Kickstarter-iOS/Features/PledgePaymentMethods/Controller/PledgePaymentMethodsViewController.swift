@@ -180,21 +180,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
     }
 
-    switch data.paymentSheetType {
-    case .setupIntent:
-      PaymentSheet.FlowController.create(
-        setupIntentClientSecret: data.clientSecret,
-        configuration: data.configuration,
-        completion: completion
-      )
-    case .paymentIntent:
-      PaymentSheet.FlowController
-        .create(
-          paymentIntentClientSecret: data.clientSecret,
-          configuration: data.configuration,
-          completion: completion
-        )
-    }
+    PaymentSheet.FlowController.create(
+      setupIntentClientSecret: data.clientSecret,
+      configuration: data.configuration,
+      completion: completion
+    )
   }
 
   private func confirmPaymentResult(with clientSecret: String) {

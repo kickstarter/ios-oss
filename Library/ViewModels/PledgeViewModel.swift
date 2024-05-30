@@ -367,7 +367,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         // This second to last value - pledgeTotal - is only needed when the payment methods controller
         // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
         // we don't accidentally propagate this nan downstream.
-        return (user, project, "", reward, context, refTag, Double.nan, .setupIntent)
+        return (user, project, "", reward, context, refTag)
       }
 
     self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)

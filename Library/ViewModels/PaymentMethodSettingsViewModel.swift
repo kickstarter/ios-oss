@@ -150,7 +150,7 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
     let createSetupIntentEvent = self.didTapAddCardButtonProperty.signal
       .switchMap { SignalProducer(value: paymentSheetEnabled) }
       .filter(isTrue)
-      .switchMap { _ -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
+      .switchMap { (_: Bool) -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
         stripeIntentService.createSetupIntent(for: nil, context: .profileSettings)
           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -160,8 +160,7 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
             configuration.allowsDelayedPaymentMethods = true
             let data = PaymentSheetSetupData(
               clientSecret: envelope.clientSecret,
-              configuration: configuration,
-              paymentSheetType: .setupIntent
+              configuration: configuration
             )
             return SignalProducer(value: data)
           }
