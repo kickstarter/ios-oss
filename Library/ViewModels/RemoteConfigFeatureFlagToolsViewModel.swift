@@ -85,8 +85,6 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
 
 private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
   switch feature {
-  case .consentManagementDialogEnabled:
-    return featureConsentManagementDialogEnabled()
   case .darkModeEnabled:
     return featureDarkModeEnabled()
   case .facebookLoginInterstitialEnabled:
@@ -97,6 +95,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureLoginWithOAuthEnabled()
   case .useKeychainForOAuthToken:
     return featureUseKeychainForOAuthTokenEnabled()
+  case .pledgedProjectsOverviewEnabled:
+    return featurePledgedProjectsOverviewEnabled()
   }
 }
 

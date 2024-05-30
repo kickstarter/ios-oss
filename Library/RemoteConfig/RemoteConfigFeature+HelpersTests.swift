@@ -27,22 +27,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureConsentManagementDialogEnabled,
-        whenRemoteConfigFeatureIsFalse: .consentManagementDialogEnabled
-      )
-  }
-
-  func testConsentManagementDialog_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureConsentManagementDialogEnabled,
-        whenRemoteConfigFeatureIsTrue: .consentManagementDialogEnabled
-      )
-  }
-
   func testDarkMode_RemoteConfig_FeatureFlag_False() {
     self
       .assert(
