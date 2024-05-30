@@ -899,4 +899,18 @@ public struct Service: ServiceType {
       ))
       .flatMap(ValidateCheckoutEnvelope.envelopeProducer(from:))
   }
+
+  public func confirmBackingAddress(
+    backingId: String,
+    addressId: String
+  ) -> AnyPublisher<Bool, ErrorEnvelope> {
+    let input = GraphAPI.CreateOrUpdateBackingAddressInput(backingId: backingId, addressId: addressId)
+    let mutation = GraphAPI.CreateOrUpdateBackingAddressMutation(input: input)
+    return GraphQL.shared.client
+      .perform(mutation: mutation)
+      .map { data in
+        data.createOrUpdateBackingAddress?.success ?? false
+      }
+      .eraseToAnyPublisher()
+  }
 }

@@ -413,6 +413,9 @@ public protocol ServiceType {
 
   func exchangeTokenForOAuthToken(params: OAuthTokenExchangeParams)
     -> AnyPublisher<OAuthTokenExchangeResponse, ErrorEnvelope>
+
+  /// Confirms a backer's address for a given backing. Returns a success boolean.
+  func confirmBackingAddress(backingId: String, addressId: String) -> AnyPublisher<Bool, ErrorEnvelope>
 }
 
 extension ServiceType {
