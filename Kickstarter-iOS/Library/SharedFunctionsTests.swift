@@ -496,6 +496,24 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(max, 200_000)
   }
 
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_NoBacking_ProjectIsLatePledge_MinimumPledgeReturned_Success(
+  ) {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.isInPostCampaignPledgingPhase .~ true
+      |> Project.lens.personalization.backing .~ nil
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 12.00
+      |> Reward.lens.latePledgeAmount .~ 10.00
+      |> Reward.lens.pledgeAmount .~ 6.00
+
+    let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: reward)
+
+    XCTAssertEqual(min, 12)
+    XCTAssertEqual(max, 200_000)
+  }
+
   func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isLatePledge_MinMaxLatePledgeAmountReturned_latePledgeAmount_Success(
   ) {
     let backing = Backing.template
@@ -514,7 +532,7 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(max, 200_000)
   }
 
-  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isLatePledge_MinMaxPledgeAmountReturned_Success(
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_HasLatePledge_MinMaxPledgeAmountReturned_Success(
   ) {
     let backing = Backing.template
       |> Backing.lens.isLatePledge .~ false

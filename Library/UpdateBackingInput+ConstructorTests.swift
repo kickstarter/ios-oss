@@ -145,13 +145,13 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       applePayParams: nil
     )
 
-    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+    let input = UpdateBackingInput.input(from: data, isApplePay: false)
 
     XCTAssertNil(input.amount)
     XCTAssertNil(input.applePay)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertEqual(input.locationId, "42")
-    XCTAssertNil(input.paymentSourceId)
+    XCTAssertEqual(input.paymentSourceId, "6")
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
   }
 
