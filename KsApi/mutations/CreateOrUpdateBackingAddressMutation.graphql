@@ -1,0 +1,5 @@
+mutation CreateOrUpdateBackingAddress($input: CreateOrUpdateBackingAddressInput!) {
+  createOrUpdateBackingAddress(input: $input) {
+    success
+  }
+}

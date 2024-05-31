@@ -26,6 +26,7 @@ $(PROJECT_DIR)/KsApi/mutations/CreateSetupIntent.graphql
 $(PROJECT_DIR)/KsApi/mutations/BlockUser.graphql
 $(PROJECT_DIR)/KsApi/mutations/ClearUserUnseenActivity.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreatePaymentSource.graphql
+$(PROJECT_DIR)/KsApi/mutations/CreateOrUpdateBackingAddressMutation.graphql
 $(PROJECT_DIR)/KsApi/mutations/SignInWithApple.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateFlagging.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateBacking.graphql

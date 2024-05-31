@@ -51,6 +51,8 @@
 
     fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>?
 
+    fileprivate let confirmBackingAddressResult: Result<Bool, ErrorEnvelope>?
+
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>?
 
     fileprivate let triggerThirdPartyEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -244,6 +246,7 @@
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+      confirmBackingAddressResult: Result<Bool, ErrorEnvelope>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       triggerThirdPartyEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
@@ -375,6 +378,9 @@
       self.createStripeSetupIntentResult = createStripeSetupIntentResult
 
       self.changePaymentMethodResult = changePaymentMethodResult
+
+      self.confirmBackingAddressResult = confirmBackingAddressResult
+
       self.deletePaymentMethodResult = deletePaymentMethodResult
 
       self.triggerThirdPartyEventResult = triggerThirdPartyEventResult
@@ -1803,6 +1809,24 @@
         return Fail(outputType: OAuthTokenExchangeResponse.self, failure: loginError).eraseToAnyPublisher()
       } else {
         return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
+    }
+
+    func confirmBackingAddress(
+      backingId _: String,
+      addressId _: String
+    ) -> AnyPublisher<Bool, ErrorEnvelope> {
+      guard let confirmResponse = self.confirmBackingAddressResult else {
+        return Fail(outputType: Bool.self, failure: ErrorEnvelope.couldNotParseErrorEnvelopeJSON)
+          .eraseToAnyPublisher()
+      }
+
+      switch confirmResponse {
+      case let .success(didMutationSucceed):
+        return Just(didMutationSucceed).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
+
+      case let .failure(envelope):
+        return Fail(outputType: Bool.self, failure: envelope).eraseToAnyPublisher()
       }
     }
   }
