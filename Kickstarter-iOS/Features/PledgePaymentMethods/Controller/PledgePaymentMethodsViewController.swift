@@ -96,17 +96,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
           self.tableView.reloadData()
         } else {
           switch selectedPaymentMethod {
-          case let .paymentIntentClientSecret(selectedPaymentSheetCardId):
-            fallthrough
-          case let .setupIntentClientSecret(selectedPaymentSheetCardId):
-            self.tableView.visibleCells
-              .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
-              .forEach { $0.setSelectedCard(selectedPaymentSheetCardId) }
           case let .savedCreditCard(selectedCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentMethodCell }
               .forEach { $0.setSelectedCardId(selectedCardId) }
-          default:
+          case .none:
             break
           }
         }

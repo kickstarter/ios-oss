@@ -28,7 +28,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsIsLoading = TestObserver<Bool, Never>()
   private let reloadPaymentMethodsIsSelected = TestObserver<[Bool], Never>()
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
-  private let reloadPaymentMethodsSelectedSetupIntent = TestObserver<String?, Never>()
   private let reloadPaymentMethodsSelectedCardId = TestObserver<String?, Never>()
   private let reloadPaymentMethodsShouldReload = TestObserver<Bool, Never>()
   private let addNewCardLoadingState = TestObserver<Bool, Never>()
@@ -57,8 +56,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
     self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.savedCreditCardId }
       .observe(self.reloadPaymentMethodsSelectedCardId.observer)
-    self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.setupIntentClientSecret }
-      .observe(self.reloadPaymentMethodsSelectedSetupIntent.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.shouldReload }
       .observe(self.reloadPaymentMethodsShouldReload.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.isLoading }
@@ -128,7 +125,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
       )
-      XCTAssertNil(self.reloadPaymentMethodsSelectedSetupIntent.lastValue!)
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
@@ -297,7 +293,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(
         self.reloadPaymentSheetPaymentMethodsCards.values[1].isEmpty
       )
-      XCTAssertNil(self.reloadPaymentMethodsSelectedSetupIntent.lastValue!)
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
@@ -481,7 +476,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentSheetPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCardId.assertDidNotEmitValue()
-      self.reloadPaymentMethodsSelectedSetupIntent.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
@@ -502,7 +496,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentSheetPaymentMethodsCards.assertValueCount(2)
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.first?.count, 0)
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.last?.count, 0)
-      self.reloadPaymentMethodsSelectedSetupIntent.assertValues([nil, nil], "No setup intent card to select")
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
           [nil, UserCreditCards.masterCard.id],
@@ -554,12 +547,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isEnabled,
         expectedPaymentSheetPaymentMethodCard.isEnabled
       )
-      self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
-          [nil, UserCreditCards.masterCard.id, expectedPaymentSheetPaymentMethodCard.card.id],
-          "No card to select after payment sheet card added."
+          [nil, UserCreditCards.masterCard.id, expectedPaymentSheetPaymentMethodCard.card.id]
         )
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false, false])
@@ -584,7 +574,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentSheetPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCardId.assertDidNotEmitValue()
-      self.reloadPaymentMethodsSelectedSetupIntent.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
@@ -605,7 +594,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentSheetPaymentMethodsCards.assertValueCount(2)
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.first?.count, 0)
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.last?.count, 0)
-      self.reloadPaymentMethodsSelectedSetupIntent.assertValues([nil, nil], "No setup intent card to select")
       self.reloadPaymentMethodsSelectedCardId
         .assertValues([nil, nil], "No selected card due to backing error.")
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
@@ -679,7 +667,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentSheetPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCardId.assertDidNotEmitValue()
-      self.reloadPaymentMethodsSelectedSetupIntent.assertDidNotEmitValue()
 
       self.vm.inputs
         .configure(with: (
@@ -694,7 +681,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsSelectedSetupIntent.assertValues([nil, nil], "No setup intent card to select")
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
           [nil, UserCreditCards.masterCard.id],
@@ -717,8 +703,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance(by: 1)
 
-      self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
           [nil, UserCreditCards.masterCard.id, addPaymentSheetResponse.createPaymentSource.paymentSource.id]
@@ -727,8 +711,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let indexPath = IndexPath(row: 1, section: 0)
 
       self.vm.inputs.didSelectRowAtIndexPath(indexPath)
-      self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([nil, nil, nil, nil])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
           [
@@ -742,14 +724,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let indexPath2 = IndexPath(row: 0, section: 0)
 
       self.vm.inputs.didSelectRowAtIndexPath(indexPath2)
-      self.reloadPaymentMethodsSelectedSetupIntent
-        .assertValues([
-          nil,
-          nil,
-          nil,
-          nil,
-          nil
-        ])
       self.reloadPaymentMethodsSelectedCardId
         .assertValues(
           [
