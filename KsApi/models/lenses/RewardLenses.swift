@@ -227,6 +227,34 @@ extension Reward {
       ) }
     )
 
+    public static let latePledgeAmount = Lens<Reward, Double>(
+      view: { $0.latePledgeAmount },
+      set: { Reward(
+        backersCount: $1.backersCount,
+        convertedMinimum: $1.convertedMinimum,
+        description: $1.description,
+        endsAt: $1.endsAt,
+        estimatedDeliveryOn: $1.estimatedDeliveryOn,
+        hasAddOns: $1.hasAddOns,
+        id: $1.id,
+        latePledgeAmount: $0,
+        limit: $1.limit,
+        limitPerBacker: $1.limitPerBacker,
+        minimum: $1.minimum,
+        pledgeAmount: $1.pledgeAmount,
+        postCampaignPledgingEnabled: $1.postCampaignPledgingEnabled,
+        remaining: $1.remaining,
+        rewardsItems: $1.rewardsItems,
+        shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
+        shippingRulesExpanded: $1.shippingRulesExpanded,
+        startsAt: $1.startsAt,
+        title: $1.title,
+        localPickup: $1.localPickup,
+        isAvailable: $1.isAvailable
+      ) }
+    )
+
     public static let limit = Lens<Reward, Int?>(
       view: { $0.limit },
       set: { Reward(
@@ -298,6 +326,34 @@ extension Reward {
         limitPerBacker: $1.limitPerBacker,
         minimum: $0,
         pledgeAmount: $1.pledgeAmount,
+        postCampaignPledgingEnabled: $1.postCampaignPledgingEnabled,
+        remaining: $1.remaining,
+        rewardsItems: $1.rewardsItems,
+        shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
+        shippingRulesExpanded: $1.shippingRulesExpanded,
+        startsAt: $1.startsAt,
+        title: $1.title,
+        localPickup: $1.localPickup,
+        isAvailable: $1.isAvailable
+      ) }
+    )
+
+    public static let pledgeAmount = Lens<Reward, Double>(
+      view: { $0.latePledgeAmount },
+      set: { Reward(
+        backersCount: $1.backersCount,
+        convertedMinimum: $1.convertedMinimum,
+        description: $1.description,
+        endsAt: $1.endsAt,
+        estimatedDeliveryOn: $1.estimatedDeliveryOn,
+        hasAddOns: $1.hasAddOns,
+        id: $1.id,
+        latePledgeAmount: $1.latePledgeAmount,
+        limit: $1.limit,
+        limitPerBacker: $1.limitPerBacker,
+        minimum: $1.minimum,
+        pledgeAmount: $0,
         postCampaignPledgingEnabled: $1.postCampaignPledgingEnabled,
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
