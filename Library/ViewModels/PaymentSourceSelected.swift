@@ -4,13 +4,23 @@ import Foundation
  Now it can only return stored credit cards. Leaving this enum here in case we ever add
  more payment types in the future.
  */
-public enum PaymentSourceSelected: Equatable {
-  case savedCreditCard(String)
 
-  public var savedCreditCardId: String? {
+public typealias StripePaymentMethodID = String
+public typealias KSRCreditCardId = String
+public enum PaymentSourceSelected: Equatable {
+  case savedCreditCard(KSRCreditCardId, StripePaymentMethodID?)
+
+  public var savedCreditCardId: KSRCreditCardId {
     switch self {
-    case let .savedCreditCard(value):
-      return value
+    case let .savedCreditCard(savedCardId, _):
+      return savedCardId
+    }
+  }
+
+  public var stripePaymentMethodId: StripePaymentMethodID? {
+    switch self {
+    case let .savedCreditCard(_, paymentMethodId):
+      return paymentMethodId
     }
   }
 }

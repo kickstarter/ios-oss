@@ -545,7 +545,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.vm.inputs
         .creditCardSelected(
-          source: .savedCreditCard(UserCreditCards.visa.id)
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
         )
 
       self.scheduler.run()
@@ -604,7 +604,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.vm.inputs
         .creditCardSelected(
-          source: .savedCreditCard(UserCreditCards.visa.id)
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
         )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
@@ -654,7 +654,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.vm.inputs
         .creditCardSelected(
-          source: .savedCreditCard(UserCreditCards.visa.id)
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
         )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
@@ -705,7 +705,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
       self.vm.inputs
         .creditCardSelected(
-          source: .savedCreditCard(UserCreditCards.visa.id)
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
         )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])

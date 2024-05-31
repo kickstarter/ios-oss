@@ -623,7 +623,7 @@ final class PledgeViewModelTests: TestCase {
       self.summarySectionSeparatorHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard(backing.paymentSource!.id!)
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard(backing.paymentSource!.id!, "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -2206,7 +2206,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -2305,7 +2305,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -2387,7 +2387,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.processingViewIsHidden.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -2990,7 +2990,7 @@ final class PledgeViewModelTests: TestCase {
       "Amount and shipping rule unchanged"
     )
 
-    var paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345")
+    var paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345", "pm_fake")
 
     self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -2999,7 +2999,10 @@ final class PledgeViewModelTests: TestCase {
       "Payment method changed"
     )
 
-    paymentSourceSelected = PaymentSourceSelected.savedCreditCard(Backing.PaymentSource.template.id ?? "")
+    paymentSourceSelected = PaymentSourceSelected.savedCreditCard(
+      Backing.PaymentSource.template.id ?? "",
+      "pm_fake"
+    )
 
     self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -3963,7 +3966,7 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService2) {
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -4070,7 +4073,7 @@ final class PledgeViewModelTests: TestCase {
       let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -4281,7 +4284,7 @@ final class PledgeViewModelTests: TestCase {
       let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -4465,7 +4468,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -4586,7 +4589,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -4687,7 +4690,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -5493,7 +5496,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -5590,7 +5593,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -5919,7 +5922,7 @@ final class PledgeViewModelTests: TestCase {
     ))
     self.vm.inputs.shippingRuleSelected(.template)
 
-    let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+    let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
     self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -5992,7 +5995,7 @@ final class PledgeViewModelTests: TestCase {
       ))
       self.vm.inputs.shippingRuleSelected(.template)
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
@@ -6071,7 +6074,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345")
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345", "pm_fake")
 
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 

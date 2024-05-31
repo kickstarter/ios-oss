@@ -96,7 +96,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
           self.tableView.reloadData()
         } else {
           switch selectedPaymentMethod {
-          case let .savedCreditCard(selectedCardId):
+          case let .savedCreditCard(selectedCardId, _):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentMethodCell }
               .forEach { $0.setSelectedCardId(selectedCardId) }
@@ -184,7 +184,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-
       return
     }
 
@@ -192,22 +191,26 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       guard let strongSelf = self else { return }
 
-      strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-
-      guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
-
       switch paymentResult {
       case .completed:
-        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
-          image: existingPaymentOption.image,
-          label: existingPaymentOption.label
-        )
-        strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
+        // Fetch the stripe payment method ID
+        STPAPIClient.shared
+          .retrieveSetupIntent(withClientSecret: clientSecret) { intent, _ in
+            strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+
+            // Always try and add the card, even if the Stripe fetch failed.
+            // The payment method ID is only required for late pledges.
+            strongSelf.viewModel.inputs
+              .paymentSheetDidAdd(
+                clientSecret: clientSecret,
+                paymentMethod: intent?.paymentMethodID
+              )
+          }
       case .canceled:
-        // User cancelled intentionally so do nothing.
-        break
+        strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      // User cancelled intentionally so do nothing.
       case let .failed(error):
+        strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
       }

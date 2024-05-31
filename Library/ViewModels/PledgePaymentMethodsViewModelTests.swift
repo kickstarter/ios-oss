@@ -138,8 +138,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: sampleSetupIntent
+          clientSecret: sampleSetupIntent,
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: .seconds(1))
@@ -306,8 +306,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: .seconds(1))
@@ -433,8 +433,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: .seconds(1))
@@ -522,8 +522,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -617,8 +617,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -697,8 +697,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -840,7 +840,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id)],
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id, "pm_fake_amex")],
         "First card selected by default"
       )
 
@@ -852,8 +852,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id),
-        PaymentSourceSelected.savedCreditCard(UserCreditCards.discover.id)
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id, "pm_fake_amex"),
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.discover.id, "pm_fake_discover")
       ])
     }
   }
@@ -862,7 +862,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let userTemplateWithCards = self.userTemplate
       |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: userTemplateWithCards)
-    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId(
+      "999",
+      stripeCardId: nil
+    )
     let mockService = MockService(
       addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
       fetchGraphUserResult: .success(response)
@@ -883,7 +886,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id)],
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id, "pm_fake_visa")],
         "First card selected by default"
       )
 
@@ -897,16 +900,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake_from_viewmodel"
         )
 
       self.scheduler.advance(by: 1)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id, "pm_fake_visa"),
         PaymentSourceSelected
-          .savedCreditCard(addPaymentSheetResponse.createPaymentSource.paymentSource.id)
+          .savedCreditCard(
+            addPaymentSheetResponse.createPaymentSource.paymentSource.id,
+            "pm_fake_from_viewmodel"
+          )
       ])
     }
   }
@@ -915,7 +921,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let userTemplateWithCards = self.userTemplate
       |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: userTemplateWithCards)
-    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId(
+      "999",
+      stripeCardId: "pm_fake_from_response"
+    )
     let mockService = MockService(
       addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
       fetchGraphUserResult: .success(response)
@@ -936,7 +945,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id)],
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id, "pm_fake_visa")],
         "First card selected by default"
       )
 
@@ -945,21 +954,24 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
         return
       }
+
       let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
-      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "fake_payment_intent"
+          clientSecret: "fake_payment_intent",
+          paymentMethod: "pm_fake_from_response"
         )
 
       self.scheduler.advance(by: 1)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id, "pm_fake_visa"),
         PaymentSourceSelected
-          .savedCreditCard(addPaymentSheetResponse.createPaymentSource.paymentSource.id)
+          .savedCreditCard(
+            addPaymentSheetResponse.createPaymentSource.paymentSource.id,
+            "pm_fake_from_response"
+          )
       ])
     }
   }
@@ -1235,8 +1247,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -1289,8 +1301,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -1350,8 +1362,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)
@@ -1411,8 +1423,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
-          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
         )
 
       self.scheduler.advance(by: 1)

@@ -141,23 +141,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: - Validate Existing Cards
 
-    /// Capture current users stored credit cards in the case that we need to validate an existing payment method
-    let storedCardsEvent = initialData.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUser(withStoredCards: true)
-          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-          .map { envelope in (envelope, false) }
-          .prefix(value: (nil, true))
-          .materialize()
-      }
-
-    let storedCardsValues = storedCardsEvent.values()
-      .filter(second >>> isFalse)
-      .map(first)
-      .skipNil()
-      .map { $0.me.storedCards.storedCards }
-
     let newPaymentIntentForExistingCards = Signal.combineLatest(initialData, checkoutId)
       .takeWhen(selectedCard)
       .switchMap { initialData, checkoutId in
@@ -179,21 +162,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .combineLatest(
         checkoutId,
         selectedCard,
-        paymentIntentClientSecretForExistingCards,
-        storedCardsValues
+        paymentIntentClientSecretForExistingCards
       )
 
     // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
     let validateCheckoutExistingCard = validateCheckoutExistingCardInput
       .takeWhen(self.submitButtonTappedProperty.signal)
-      .switchMap { checkoutId, selectedExistingCreditCard, paymentIntentClientSecret, storedCards in
-        let selectedStoredCard = storedCards.first { $0.id == selectedExistingCreditCard.savedCreditCardId }
-        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
+      .switchMap { checkoutId, selectedCard, paymentIntentClientSecret in
+
+        assert(
+          selectedCard.stripePaymentMethodId != nil,
+          "Payment method ID should not be missing in a late pledge context."
+        )
 
         return AppEnvironment.current.apiService
           .validateCheckout(
             checkoutId: checkoutId,
-            paymentSourceId: selectedCardStripeCardId,
+            paymentSourceId: selectedCard.stripePaymentMethodId ?? "",
             paymentIntentClientSecret: paymentIntentClientSecret
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -201,15 +186,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     self.validateCheckoutSuccess = Signal
-      .combineLatest(paymentIntentClientSecretForExistingCards, selectedCard, storedCardsValues)
+      .combineLatest(paymentIntentClientSecretForExistingCards, selectedCard)
       .takeWhen(validateCheckoutExistingCard.values())
-      .map { paymentIntentClientSecret, selectedCard, storedCards in
-        let selectedStoredCard = storedCards.first { $0.id == selectedCard.savedCreditCardId }
-        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
+      .map { paymentIntentClientSecret, selectedCard in
 
-        return PaymentSourceValidation(
+        PaymentSourceValidation(
           paymentIntentClientSecret: paymentIntentClientSecret,
-          selectedCardStripeCardId: selectedCardStripeCardId,
+          selectedCardStripeCardId: selectedCard.stripePaymentMethodId,
           requiresConfirmation: true
         )
       }

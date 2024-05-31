@@ -31,8 +31,8 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(
-    newCard card: PaymentSheetPaymentOptionsDisplayData,
-    clientSecret: String
+    clientSecret: String,
+    paymentMethod: String?
   )
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
@@ -100,28 +100,46 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map { ($0.0, $0.1, $0.2, false) }
 
-    let newCards = self.newStripeIntentCreditCardProperty.signal.skipNil()
-      .map { _, setupIntent in
-        CreatePaymentSourceSetupIntentInput.init(intentClientSecret: setupIntent, reuseable: true)
-      }
-      .switchMap { inputValue in
-        AppEnvironment.current.apiService.addPaymentSheetPaymentSource(input: inputValue)
+    let newlyAddedCardProducer = self.newStripeIntentCreditCardProperty.signal.skipNil()
+      .switchMap { setupIntent, paymentMethodId -> SignalProducer<
+        Signal<UserCreditCards.CreditCard, ErrorEnvelope>.Event,
+        Never
+      > in
+        let input = CreatePaymentSourceSetupIntentInput.init(intentClientSecret: setupIntent, reuseable: true)
+        return AppEnvironment.current.apiService.addPaymentSheetPaymentSource(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
+          .map { (envelope: CreatePaymentSourceEnvelope) -> UserCreditCards.CreditCard? in
+            guard envelope.createPaymentSource.isSuccessful else {
+              return nil
+            }
+
+            // There is a backend bug where the stripeCardId isn't being refreshed
+            // after the add card mutation is called. This adds it back in.
+            var card = envelope.createPaymentSource.paymentSource
+            if card.stripeCardId == nil {
+              card.stripeCardId = paymentMethodId
+            }
+
+            return card
+          }
+          .skipNil()
           .materialize()
       }
 
-    let newCardsUserCreditCardValues: Signal<[UserCreditCards.CreditCard], Never> = newCards.values()
-      .map { [$0.paymentSource] }
-
     let newCardsData: Signal<([PledgePaymentMethodCellData], UserCreditCards.CreditCard?), Never> = Signal
       .combineLatest(
-        newCardsUserCreditCardValues,
+        newlyAddedCardProducer.values(),
         availableCardTypes,
         project
       )
-      .map { ($0.0, $0.1, $0.2, true) } // Add 'true' as last arg
-      .map(pledgePaymentMethodCellDataAndSelectedCard)
+      .map { card, availableCardTypes, project in
+        pledgePaymentMethodCellDataAndSelectedCard(
+          with: [card],
+          availableCardTypes: availableCardTypes,
+          project: project,
+          newCardAdded: true
+        )
+      }
 
     let allCards = Signal.merge(
       storedCards
@@ -146,7 +164,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         var selectedPaymentMethod: PaymentSourceSelected?
         if let selectedCardId = selectedCard?.id {
-          selectedPaymentMethod = .savedCreditCard(selectedCardId)
+          if let stripeCardId = selectedCard?.stripeCardId {
+            selectedPaymentMethod = .savedCreditCard(selectedCardId, stripeCardId)
+          } else {
+            assert(false, "Expected stripeCardId to be set. Late pledges may fail if this value is missing.")
+            selectedPaymentMethod = .savedCreditCard(selectedCardId, "")
+          }
         }
 
         return PledgePaymentMethodsAndSelectionData(
@@ -167,7 +190,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         updatedCardData.newPaymentMethods = newCards
 
         if let selectedCard = newSelectedCard {
-          updatedCardData.selectedPaymentMethod = .savedCreditCard(selectedCard.id)
+          if let stripeCardId = selectedCard.stripeCardId {
+            updatedCardData.selectedPaymentMethod = .savedCreditCard(selectedCard.id, stripeCardId)
+          } else {
+            assert(false, "Expected stripeCardId to be set. Late pledges may fail if this value is missing.")
+            updatedCardData.selectedPaymentMethod = .savedCreditCard(selectedCard.id, "")
+          }
         }
 
         let updatedPaymentMethodSelectionData =
@@ -216,7 +244,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           var selectionUpdatedData = updatedData
           selectionUpdatedData.existingPaymentMethods = cellData(data.existingPaymentMethods, selecting: nil)
           selectionUpdatedData.newPaymentMethods = cellData(data.newPaymentMethods, selecting: card)
-          selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id)
+
+          if let stripeCardId = card.stripeCardId {
+            selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id, stripeCardId)
+          } else {
+            assert(false, "Expected stripeCardId to be set. Late pledges may fail if this value is missing.")
+            selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id, "")
+          }
 
           return selectionUpdatedData
         } else if indexPath.row < paymentSheetPaymentMethodCount + paymentMethodCount {
@@ -226,7 +260,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           var selectionUpdatedData = updatedData
           selectionUpdatedData.existingPaymentMethods = cellData(data.existingPaymentMethods, selecting: card)
           selectionUpdatedData.newPaymentMethods = cellData(data.newPaymentMethods, selecting: nil)
-          selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id)
+          if let stripeCardId = card.stripeCardId {
+            selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id, stripeCardId)
+          } else {
+            assert(false, "Expected stripeCardId to be set. Late pledges may fail if this value is missing.")
+            selectionUpdatedData.selectedPaymentMethod = .savedCreditCard(card.id, "")
+          }
           return selectionUpdatedData
         }
 
@@ -409,12 +448,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   }
 
   private let newStripeIntentCreditCardProperty =
-    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
+    MutableProperty<(String, String?)?>(nil)
   public func paymentSheetDidAdd(
-    newCard card: PaymentSheetPaymentOptionsDisplayData,
-    clientSecret: String
+    clientSecret: String,
+    paymentMethod: String?
   ) {
-    self.newStripeIntentCreditCardProperty.value = (card, clientSecret)
+    self.newStripeIntentCreditCardProperty.value = (clientSecret, paymentMethod)
   }
 
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
@@ -511,8 +550,14 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
     updatePaymentMethodData.newPaymentMethods = data
 
     if newestPaymentSheetPaymentMethod.isEnabled {
-      updatePaymentMethodData
-        .selectedPaymentMethod = .savedCreditCard(newestPaymentSheetPaymentMethod.card.id)
+      if let stripeCardId = newestPaymentSheetPaymentMethod.card.stripeCardId {
+        updatePaymentMethodData
+          .selectedPaymentMethod = .savedCreditCard(newestPaymentSheetPaymentMethod.card.id, stripeCardId)
+      } else {
+        assert(false, "Expected stripeCardId to be set. Late pledges may fail if this value is missing.")
+        updatePaymentMethodData
+          .selectedPaymentMethod = .savedCreditCard(newestPaymentSheetPaymentMethod.card.id, "")
+      }
     }
 
     return updatePaymentMethodData
