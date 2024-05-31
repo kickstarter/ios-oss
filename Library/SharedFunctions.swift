@@ -106,7 +106,20 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   case .none, .some(Reward.noReward):
     return (Double(country.minPledge ?? 1), Double(country.maxPledge ?? 10_000))
   case let .some(reward):
-    return (reward.minimum, Double(country.maxPledge ?? 10_000))
+    guard let backing = project.personalization.backing else {
+      return (reward.minimum, Double(country.maxPledge ?? 10_000))
+    }
+
+    let min: Double
+
+    /// Account for the case where the originally selected reward pricing, for this backing, has since changed to late pledge pricing. We should always use the original pricing at the time of the backing over the most current state.
+    if backing.isLatePledge == true {
+      min = reward.latePledgeAmount > 0 ? reward.latePledgeAmount : reward.minimum
+    } else {
+      min = reward.pledgeAmount > 0 ? reward.pledgeAmount : reward.minimum
+    }
+
+    return (min, Double(country.maxPledge ?? 10_000))
   }
 }
 

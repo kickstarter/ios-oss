@@ -77,8 +77,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, paymentSheetCards, selectedPaymentMethod, shouldReload, isLoading in
+      .observeValues { [weak self] data in
         guard let self = self else { return }
+
+        let cards = data.paymentMethodsCellData
+        let paymentSheetCards = data.paymentSheetPaymentMethodsCellData
+        let isLoading = data.isLoading
+        let selectedPaymentMethod = data.selectedPaymentMethod
+        let shouldReload = data.shouldReload
 
         self.dataSource.load(
           cards,

@@ -15,7 +15,7 @@ extension UpdateBackingInput {
     )
 
     return UpdateBackingInput(
-      amount: pledgeTotal,
+      amount: updateBackingData.backing.isLatePledge ? nil : pledgeTotal,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: backingId,
       locationId: locationId,

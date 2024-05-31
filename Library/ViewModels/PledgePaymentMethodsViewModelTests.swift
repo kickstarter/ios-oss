@@ -44,22 +44,25 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
 
     // swiftlint:disable line_length
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.card } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.card } }
       .observe(self.reloadPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isEnabled } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.isEnabled } }
       .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isSelected } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }.map { $0.map { $0.isSelected } }
       .observe(self.reloadPaymentMethodsIsSelected.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.paymentMethodsCellData }
+      .map { $0.map { $0.projectCountry } }
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.1 }
+    self.vm.outputs.reloadPaymentMethods.map { $0.paymentSheetPaymentMethodsCellData }
       .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
     self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.savedCreditCardId }
       .observe(self.reloadPaymentMethodsSelectedCardId.observer)
     self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.setupIntentClientSecret }
       .observe(self.reloadPaymentMethodsSelectedSetupIntent.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsShouldReload.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.shouldReload }
+      .observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.isLoading }
+      .observe(self.reloadPaymentMethodsIsLoading.observer)
     self.vm.outputs.updateAddNewCardLoading.map { $0 }.observe(self.addNewCardLoadingState.observer)
     self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
