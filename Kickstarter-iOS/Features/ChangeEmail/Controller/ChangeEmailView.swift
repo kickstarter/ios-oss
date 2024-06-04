@@ -161,6 +161,13 @@ struct ChangeEmailView: View {
       .onAppear {
         self.reactiveViewModel.inputs.viewDidLoad()
       }
+      .refreshable {
+        self.reactiveViewModel.inputs.testAsync()
+        for await test in self.reactiveViewModel.testAsyncPublisher.values {
+          print("Ingerid: Done refreshing!")
+          return
+        }
+      }
     }
   }
 

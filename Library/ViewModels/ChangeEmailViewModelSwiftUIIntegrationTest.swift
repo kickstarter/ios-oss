@@ -9,6 +9,7 @@ public protocol ChangeEmailViewModelInputsSwiftUIIntegrationTest {
   func viewDidLoad()
   func updateEmail(newEmail: String, currentPassword: String)
   func didTapSaveButton()
+  func testAsync()
 }
 
 public protocol ChangeEmailViewModelOutputsSwiftUIIntegrationTest {
@@ -42,6 +43,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewMo
   public var currentPasswordText: PassthroughSubject<String, Never> = .init()
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
   public var resetEditableText: PassthroughSubject<Bool, Never> = .init()
+  public var testAsyncPublisher: PassthroughSubject<Bool, Never> = .init()
 
   public init() {
     let changeEmailEvent = self.updateEmailAndPasswordProperty.signal.skipNil()
@@ -217,6 +219,40 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewMo
 
         self?.warningMessageWithAlert = (Strings.We_ve_been_unable_to_send_email(), true)
       }
+
+    // GraphQL test
+//    let refreshAsync = self.testAsyncProperty.signal
+//      .switchMap { _ in
+//        AppEnvironment.current
+//          .apiService
+//          .fetchGraphUser(withStoredCards: false)
+//          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+//          .materialize()
+//      }
+//      .values()
+//
+//    _ = refreshAsync
+//      .observeForUI()
+//      .observeValues({ [weak self] user in
+//        self?.testAsyncPublisher.send(true)
+//      })
+
+    // v1 test
+    let refreshAsync = self.testAsyncProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current
+          .apiService
+          .fetchFriendStats()
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler) // See refresh
+          .materialize()
+      }
+      .values()
+
+    _ = refreshAsync
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.testAsyncPublisher.send(true)
+      }
   }
 
   private let updateEmailAndPasswordProperty = MutableProperty<(String, String)?>(nil)
@@ -246,6 +282,11 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewMo
 
   public func didTapSaveButton() {
     self.saveTriggered.send(true)
+  }
+
+  private let testAsyncProperty = MutableProperty(())
+  public func testAsync() {
+    self.testAsyncProperty.value = ()
   }
 
   public let didFailToSendVerificationEmail: Signal<String, Never>
