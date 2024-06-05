@@ -49,7 +49,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     self.tableView.registerCellClass(PledgePaymentMethodCell.self)
-    self.tableView.registerCellClass(PledgePaymentSheetPaymentMethodCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodAddCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodLoadingCell.self)
   }

@@ -10,7 +10,6 @@ public protocol PaymentMethodSettingsViewModelInputs {
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func paymentSheetDidAdd(
-    newCard card: PaymentSheetPaymentOptionsDisplayData,
     setupIntent: String
   )
   func shouldCancelPaymentSheetAppearance(state: Bool)
@@ -86,25 +85,6 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
     )
 
     let newSetupIntentCards = self.newSetupIntentCreditCardProperty.signal.skipNil()
-      .map { data -> PaymentSheetPaymentMethodCellData? in
-        let (displayData, setupIntent) = data
-
-        return (
-          image: displayData.image,
-          redactedCardNumber: displayData.label,
-          clientSecret: setupIntent,
-          isSelected: false,
-          isEnabled: true
-        )
-      }
-      .map { paymentMethodData -> String? in
-        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.clientSecret else {
-          return nil
-        }
-
-        return selectedPaymentSheetPaymentMethodCardId
-      }
-      .skipNil()
       .map { setupIntent in
         CreatePaymentSourceSetupIntentInput.init(intentClientSecret: setupIntent, reuseable: true)
       }
@@ -252,12 +232,11 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
   }
 
   private let newSetupIntentCreditCardProperty =
-    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
+    MutableProperty<String?>(nil)
   public func paymentSheetDidAdd(
-    newCard card: PaymentSheetPaymentOptionsDisplayData,
     setupIntent: String
   ) {
-    self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+    self.newSetupIntentCreditCardProperty.value = setupIntent
   }
 
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)

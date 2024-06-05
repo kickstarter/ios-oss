@@ -76,11 +76,6 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       value as PledgePaymentMethodCellData
     ):
       cell.configureWith(value: value)
-    case let (
-      cell as PledgePaymentSheetPaymentMethodCell,
-      value as PaymentSheetPaymentMethodCellData
-    ):
-      cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodAddCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodLoadingCell, value as Void):
