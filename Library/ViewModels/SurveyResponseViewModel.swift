@@ -5,9 +5,6 @@ import ReactiveSwift
 import WebKit
 
 public protocol SurveyResponseViewModelInputs {
-  /// Call when the alert OK button is tapped.
-  func alertButtonTapped()
-
   /// Call when the close button is tapped.
   func closeButtonTapped()
 
@@ -27,9 +24,6 @@ public protocol SurveyResponseViewModelOutputs {
 
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Param, RefTag?), Never> { get }
-
-  /// Emits when an alert should be shown.
-  var showAlert: Signal<String, Never> { get }
 
   /// Set the navigation item's title.
   var title: Signal<String, Never> { get }
@@ -67,16 +61,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .map { request, _ in request }
 
-    let redirectAfterPostRequest = requestAndNavigationType
-      .filter { request, navigationType in
-        isUnpreparedSurvey(request: request) && navigationType == .other
-      }
-      .map { request, _ in request }
-
-    self.dismissViewController = Signal.merge(
-      self.alertButtonTappedProperty.signal,
-      self.closeButtonTappedProperty.signal
-    )
+    self.dismissViewController = self.closeButtonTappedProperty.signal
 
     self.goToProject = requestAndNavigationType
       .map { request, _ -> (Param, RefTag?)? in
@@ -97,9 +82,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .map { $0 ? .allow : .cancel }
 
-    self.showAlert = redirectAfterPostRequest
-      .mapConst(Strings.Got_it_your_survey_response_has_been_submitted())
-
     self.title = self.viewDidLoadProperty.signal
       .mapConst(Strings.Survey())
 
@@ -109,9 +91,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
-
-  fileprivate let alertButtonTappedProperty = MutableProperty(())
-  public func alertButtonTapped() { self.alertButtonTappedProperty.value = () }
 
   fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
@@ -133,7 +112,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
   public let dismissViewController: Signal<Void, Never>
   public let goToProject: Signal<(Param, RefTag?), Never>
-  public let showAlert: Signal<String, Never>
   public let title: Signal<String, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
 

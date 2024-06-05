@@ -10,7 +10,6 @@ final class SurveyResponseViewModelTests: TestCase {
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
-  fileprivate let showAlert = TestObserver<String, Never>()
   fileprivate let title = TestObserver<String, Never>()
   fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
@@ -20,7 +19,6 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
-    self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest
       .map { AppEnvironment.current.apiService.isPrepared(request: $0) }
@@ -118,10 +116,8 @@ final class SurveyResponseViewModelTests: TestCase {
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
     self.webViewLoadRequest.assertValueCount(2)
 
-    // 3. Display success alert.
-    self.showAlert.assertDidNotEmitValue()
-
-    let surveyRedirectGetRequest = surveyRequest(project: project, prepared: false, method: .GET)
+    // 3. Redirect to completed responses.
+    let surveyRedirectGetRequest = surveyRequest(project: project, prepared: true, method: .GET)
 
     let surveyRedirectGetRequestNavigationAction = WKNavigationActionData(
       navigationType: .other,
@@ -135,16 +131,14 @@ final class SurveyResponseViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      WKNavigationActionPolicy.cancel.rawValue, surveyRedirectGetRequestPolicy.rawValue,
-      "Intercept redirect to survey"
+      WKNavigationActionPolicy.allow.rawValue, surveyRedirectGetRequestPolicy.rawValue,
+      "Allow redirect to completed survey responses"
     )
 
-    self.showAlert.assertValues([Strings.Got_it_your_survey_response_has_been_submitted()])
-
-    // 4. Tap OK on alert, dismiss view controller.
+    // 4. Tap close button, dismiss view controller.
     self.dismissViewController.assertDidNotEmitValue()
 
-    self.vm.inputs.alertButtonTapped()
+    self.vm.inputs.closeButtonTapped()
     self.dismissViewController.assertValueCount(1)
   }
 

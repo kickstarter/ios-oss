@@ -50,12 +50,6 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.goToProject(param: param, refTag: refTag)
       }
 
-    self.viewModel.outputs.showAlert
-      .observeForControllerAction()
-      .observeValues { [weak self] message in
-        self?.showAlert(message: message)
-      }
-
     self.navigationItem.rac.title = self.viewModel.outputs.title
 
     self.viewModel.outputs.webViewLoadRequest
@@ -79,19 +73,6 @@ internal final class SurveyResponseViewController: WebViewController {
     nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
     self.present(nav, animated: true, completion: nil)
-  }
-
-  fileprivate func showAlert(message: String) {
-    self.present(
-      UIAlertController.alert(
-        message: message,
-        handler: { [weak self] _ in
-          self?.viewModel.inputs.alertButtonTapped()
-        }
-      ),
-      animated: true,
-      completion: nil
-    )
   }
 
   internal func webView(
