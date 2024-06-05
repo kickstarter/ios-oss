@@ -52,19 +52,18 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    let requestAndNavigationType = self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in (action.request, action.navigationType) }
+    let newRequest = self.policyForNavigationActionProperty.signal.skipNil()
+      .map { action in action.request }
 
-    let surveyPostRequest = requestAndNavigationType
-      .filter { request, navigationType in
-        isUnpreparedSurvey(request: request) && navigationType == .formSubmitted
+    let newSurveyRequest = newRequest
+      .filter { request in
+        isUnpreparedSurvey(request: request)
       }
-      .map { request, _ in request }
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    self.goToProject = requestAndNavigationType
-      .map { request, _ -> (Param, RefTag?)? in
+    self.goToProject = newRequest
+      .map { request -> (Param, RefTag?)? in
         if case let (.project(param, .root, refInfo))? = Navigation.match(request) {
           return (param, refInfo?.refTag)
         }
@@ -72,8 +71,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    self.policyDecisionProperty <~ requestAndNavigationType
-      .map { request, _ in
+    self.policyDecisionProperty <~ newRequest
+      .map { request in
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
         }
@@ -87,7 +86,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
-      surveyPostRequest
+      newSurveyRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }

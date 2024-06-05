@@ -149,6 +149,8 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/updates": updates,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
   "/projects/:creator_param/:project_param/surveys/:survey_param": projectSurvey,
+  "/projects/:creator_param/:project_param/surveys/:survey_param/edit": projectSurvey,
+  "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address": projectSurvey,
   "/settings/:notification_param/:enabled_param": settingsNotifications,
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
@@ -171,6 +173,8 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/projects/:creator_param/:project_param/posts/:update_param",
     "/projects/:creator_param/:project_param/posts/:update_param/comments",
     "/projects/:creator_param/:project_param/surveys/:survey_param",
+    "/projects/:creator_param/:project_param/surveys/:survey_param/edit",
+    "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address",
     "/projects/:creator_param/:project_param/pledge",
     "/settings/:notification_param/:enabled_param",
     "/users/:user_param/surveys/:survey_response_id"
