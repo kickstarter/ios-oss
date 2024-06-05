@@ -63,14 +63,6 @@ internal final class SurveyResponseViewController: WebViewController {
       .observeValues { [weak self] request in
         self?.webView.load(request)
       }
-
-    self.viewModel.outputs.extractFormDataWithJavaScript
-      .observeForUI()
-      .observeValues { [weak self] js in
-        self?.webView.evaluateJavaScript(js) { result, _ in
-          self?.viewModel.inputs.didEvaluateJavaScriptWithResult(result)
-        }
-      }
   }
 
   @objc fileprivate func closeButtonTapped() {

@@ -17,9 +17,6 @@ public protocol SurveyResponseViewModelInputs {
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
 
-  /// Call with the result after evaluating JavaScript on the form.
-  func didEvaluateJavaScriptWithResult(_ result: Any?)
-
   /// Call when the view loads.
   func viewDidLoad()
 }
@@ -27,9 +24,6 @@ public protocol SurveyResponseViewModelInputs {
 public protocol SurveyResponseViewModelOutputs {
   /// Emits when the view controller should be dismissed.
   var dismissViewController: Signal<Void, Never> { get }
-
-  /// Emits when the form data needs to be extracted with JavaScript using the JS to evaluate.
-  var extractFormDataWithJavaScript: Signal<String, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Param, RefTag?), Never> { get }
@@ -109,23 +103,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.title = self.viewDidLoadProperty.signal
       .mapConst(Strings.Survey())
 
-    // Required for `WKWebView` bug prior to iOS 14
-    self.extractFormDataWithJavaScript = surveyResponse
-      .takeWhen(surveyPostRequest.filter { $0.httpBody == nil })
-      .map { surveyResponse in
-        "$('#edit_survey_response_\(surveyResponse.id)').serialize()"
-      }
-
-    let newRequest = Signal.combineLatest(
-      surveyPostRequest.filter { $0.httpBody == nil },
-      self.didEvaluateJavaScriptWithResultProperty.signal
-    )
-    .map(requestInjectedWithFormData)
-
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
-      surveyPostRequest.filter { $0.httpBody != nil }, // iOS 14 and up uses this path
-      newRequest
+      surveyPostRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
@@ -143,12 +123,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     return self.policyDecisionProperty.value
   }
 
-  // Required for `WKWebView` bug prior to iOS 14
-  private let didEvaluateJavaScriptWithResultProperty = MutableProperty<Any?>(nil)
-  public func didEvaluateJavaScriptWithResult(_ result: Any?) {
-    self.didEvaluateJavaScriptWithResultProperty.value = result
-  }
-
   fileprivate let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
   public func configureWith(surveyResponse: SurveyResponse) {
     self.surveyResponseProperty.value = surveyResponse
@@ -158,7 +132,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, Never>
-  public let extractFormDataWithJavaScript: Signal<String, Never>
   public let goToProject: Signal<(Param, RefTag?), Never>
   public let showAlert: Signal<String, Never>
   public let title: Signal<String, Never>
@@ -176,12 +149,4 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 private func isSurvey(request: URLRequest) -> Bool {
   guard case (.project(_, .survey, _))? = Navigation.match(request) else { return false }
   return true
-}
-
-private func requestInjectedWithFormData(with request: URLRequest, result: Any?) -> URLRequest {
-  var newRequest = request
-  if let formData = result as? String {
-    newRequest.httpBody = formData.data(using: .utf8)
-  }
-  return newRequest
 }

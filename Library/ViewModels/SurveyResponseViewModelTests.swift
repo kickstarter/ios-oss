@@ -9,7 +9,6 @@ final class SurveyResponseViewModelTests: TestCase {
   fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
-  fileprivate let extractFormDataWithJavaScript = TestObserver<String, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
   fileprivate let showAlert = TestObserver<String, Never>()
   fileprivate let title = TestObserver<String, Never>()
@@ -20,7 +19,6 @@ final class SurveyResponseViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
-    self.vm.outputs.extractFormDataWithJavaScript.observe(self.extractFormDataWithJavaScript.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.title.observe(self.title.observer)
@@ -115,7 +113,6 @@ final class SurveyResponseViewModelTests: TestCase {
       "Not prepared"
     )
 
-    self.extractFormDataWithJavaScript.assertDidNotEmitValue()
     XCTAssertEqual(self.webViewLoadRequest.values.last?.httpBody, "data=data".data(using: .utf8))
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -145,106 +142,6 @@ final class SurveyResponseViewModelTests: TestCase {
     self.showAlert.assertValues([Strings.Got_it_your_survey_response_has_been_submitted()])
 
     // 4. Tap OK on alert, dismiss view controller.
-    self.dismissViewController.assertDidNotEmitValue()
-
-    self.vm.inputs.alertButtonTapped()
-    self.dismissViewController.assertValueCount(1)
-  }
-
-  func testRespondToSurvey_JavaScript_Workaround_Prior_To_iOS_14() {
-    let project = Project.template
-    let surveyResponse = .template
-      |> SurveyResponse.lens.id .~ 123
-      |> SurveyResponse.lens.project .~ project
-
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
-    self.vm.inputs.viewDidLoad()
-
-    // 1. Load survey.
-    self.webViewLoadRequestIsPrepared.assertValues([true])
-    self.webViewLoadRequest.assertValueCount(1)
-
-    let surveyPreparedGetRequest = surveyRequest(project: project, prepared: true, method: .GET)
-
-    let surveyPreparedGetRequestNavigationAction = WKNavigationActionData(
-      navigationType: .other,
-      request: surveyPreparedGetRequest,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedGetRequest),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedGetRequest)
-    )
-
-    let surveyPreparedGetRequestPolicy = self.vm.inputs.decidePolicyFor(
-      navigationAction: surveyPreparedGetRequestNavigationAction
-    )
-
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, surveyPreparedGetRequestPolicy.rawValue)
-
-    // 2. Submit unprepared survey with nil body.
-    let surveyUnpreparedPostRequest = surveyRequest(project: project, prepared: false, method: .POST)
-
-    let surveyUnpreparedPostRequestNavigationAction = WKNavigationActionData(
-      navigationType: .formSubmitted,
-      request: surveyUnpreparedPostRequest,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyUnpreparedPostRequest),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyUnpreparedPostRequest)
-    )
-
-    let surveyUnpreparedPostRequestPolicy = self.vm.inputs.decidePolicyFor(
-      navigationAction: surveyUnpreparedPostRequestNavigationAction
-    )
-
-    XCTAssertEqual(
-      WKNavigationActionPolicy.cancel.rawValue, surveyUnpreparedPostRequestPolicy.rawValue,
-      "Not prepared"
-    )
-
-    self.extractFormDataWithJavaScript.assertValues(["$('#edit_survey_response_123').serialize()"])
-    self.vm.inputs.didEvaluateJavaScriptWithResult("data=data")
-    XCTAssertEqual(self.webViewLoadRequest.values.last?.httpBody, "data=data".data(using: .utf8))
-
-    self.webViewLoadRequestIsPrepared.assertValues([true, true])
-    self.webViewLoadRequest.assertValueCount(2)
-
-    // 3. Submit prepared survey.
-    let surveyPreparedPostRequest = surveyRequest(project: project, prepared: true, method: .POST)
-
-    let surveyPreparedPostRequestNavigationAction = WKNavigationActionData(
-      navigationType: .other,
-      request: surveyPreparedPostRequest,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedPostRequest),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedPostRequest)
-    )
-
-    let surveyPreparedPostRequestPolicy = self.vm.inputs.decidePolicyFor(
-      navigationAction: surveyPreparedPostRequestNavigationAction
-    )
-
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, surveyPreparedPostRequestPolicy.rawValue)
-
-    // 4. Display success alert.
-    self.showAlert.assertDidNotEmitValue()
-
-    let surveyRedirectGetRequest = surveyRequest(project: project, prepared: false, method: .GET)
-
-    let surveyRedirectGetRequestNavigationAction = WKNavigationActionData(
-      navigationType: .other,
-      request: surveyRedirectGetRequest,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyRedirectGetRequest),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyRedirectGetRequest)
-    )
-
-    let surveyRedirectGetRequestPolicy = self.vm.inputs.decidePolicyFor(
-      navigationAction: surveyRedirectGetRequestNavigationAction
-    )
-
-    XCTAssertEqual(
-      WKNavigationActionPolicy.cancel.rawValue, surveyRedirectGetRequestPolicy.rawValue,
-      "Intercept redirect to survey"
-    )
-
-    self.showAlert.assertValues([Strings.Got_it_your_survey_response_has_been_submitted()])
-
-    // 5. Tap OK on alert, dismiss view controller.
     self.dismissViewController.assertDidNotEmitValue()
 
     self.vm.inputs.alertButtonTapped()
