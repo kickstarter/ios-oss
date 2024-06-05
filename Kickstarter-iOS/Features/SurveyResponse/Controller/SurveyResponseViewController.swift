@@ -50,6 +50,12 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.goToProject(param: param, refTag: refTag)
       }
 
+    self.viewModel.outputs.goToUpdate
+      .observeForControllerAction()
+      .observeValues { [weak self] project, update in
+        self?.goToUpdate(project: project, update: update)
+      }
+
     self.navigationItem.rac.title = self.viewModel.outputs.title
 
     self.viewModel.outputs.webViewLoadRequest
@@ -63,18 +69,6 @@ internal final class SurveyResponseViewController: WebViewController {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  fileprivate func goToProject(param: Param, refTag: RefTag?) {
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: .right(param),
-      refInfo: RefInfo(refTag)
-    )
-
-    let nav = NavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
-
-    self.present(nav, animated: true, completion: nil)
-  }
-
   internal func webView(
     _: WKWebView,
     decidePolicyFor navigationAction: WKNavigationAction,
@@ -85,5 +79,31 @@ internal final class SurveyResponseViewController: WebViewController {
         navigationAction: WKNavigationActionData(navigationAction: navigationAction)
       )
     )
+  }
+
+  // MARK: - Deeplinks
+
+  fileprivate func goToProject(param: Param, refTag: RefTag?) {
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: .right(param),
+      refInfo: RefInfo(refTag)
+    )
+    self.presentViewController(vc)
+  }
+
+  fileprivate func goToUpdate(project: Project, update: Update) {
+    let vc = UpdateViewController.configuredWith(
+      project: project,
+      update: update,
+      context: .deepLink
+    )
+    self.presentViewController(vc)
+  }
+
+  fileprivate func presentViewController(_ vc: UIViewController) {
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }

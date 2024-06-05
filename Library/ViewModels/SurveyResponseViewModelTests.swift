@@ -10,6 +10,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
+  fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
   fileprivate let title = TestObserver<String, Never>()
   fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
@@ -19,6 +20,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
+    self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest
       .map { AppEnvironment.current.apiService.isPrepared(request: $0) }
@@ -61,6 +63,41 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.dismissViewController.assertDidNotEmitValue()
     self.goToProjectParam.assertValues([.slug(project.slug)])
+  }
+
+  func testGoToUpdate() {
+    let project = Project.template
+    let surveyResponse = .template
+      |> SurveyResponse.lens.project .~ project
+
+    let update = Update.template
+
+    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.viewDidLoad()
+
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchUpdateResponse: update
+    )) {
+      self.goToUpdate.assertDidNotEmitValue()
+
+      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/1")!)
+      let navigationAction = WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+      )
+
+      let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+      self.dismissViewController.assertDidNotEmitValue()
+      self.goToUpdate.assertValueCount(1)
+      let (projectResult, updateResult) = self.goToUpdate.lastValue!
+      XCTAssertEqual(project, projectResult, "Update project is wrong.")
+      XCTAssertEqual(update, updateResult, " Update is wrong.")
+    }
   }
 
   func testRespondToSurvey() {

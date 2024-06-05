@@ -25,6 +25,8 @@ public protocol SurveyResponseViewModelOutputs {
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Param, RefTag?), Never> { get }
 
+  var goToUpdate: Signal<(Project, Update), Never> { get }
+
   /// Set the navigation item's title.
   var title: Signal<String, Never> { get }
 
@@ -71,6 +73,29 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
+    self.goToUpdate = newRequest
+      .map { (request: URLRequest) -> (Param, Int)? in
+        if case let (.project(param, .update(id, _), _))? = Navigation.match(request) {
+          return (param, id)
+        }
+        return nil
+      }
+      .skipNil()
+      .switchMap { (param: Param, updateId: Int) in
+        AppEnvironment.current.apiService.fetchProject(param: param)
+          .demoteErrors()
+          .map { project -> (Param, Project, Int) in
+            (param, project, updateId)
+          }
+      }
+      .switchMap { (param: Param, project: Project, updateId: Int) in
+        AppEnvironment.current.apiService.fetchUpdate(updateId: updateId, projectParam: param)
+          .demoteErrors()
+          .map { update -> (Project, Update) in
+            (project, update)
+          }
+      }
+
     self.policyDecisionProperty <~ newRequest
       .map { request in
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
@@ -111,6 +136,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
   public let dismissViewController: Signal<Void, Never>
   public let goToProject: Signal<(Param, RefTag?), Never>
+  public let goToUpdate: Signal<(Project, Update), Never>
   public let title: Signal<String, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
 
