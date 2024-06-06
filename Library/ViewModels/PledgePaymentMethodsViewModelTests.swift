@@ -1438,6 +1438,52 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testAddNewStripeCard_SavingCardReturnsError_NotifiesDelegateOfError() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("999")
+    let error = ErrorEnvelope.couldNotParseErrorEnvelopeJSON
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .failure(error),
+      fetchGraphUserResult: .success(response)
+    )
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery
+        ))
+
+      guard let paymentMethod = STPPaymentMethod.amexStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.advance(by: 1)
+
+      XCTAssertEqual(self.notifyDelegateLoadPaymentMethodsError.lastValue, error.localizedDescription)
+    }
+  }
+
   func testLoadingStateAddNewCard_ShowAndHide_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(

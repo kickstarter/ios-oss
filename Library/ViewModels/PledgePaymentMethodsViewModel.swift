@@ -359,7 +359,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .skipNil()
 
     self.notifyDelegateLoadPaymentMethodsError = Signal
-      .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
+      .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors(), newlyAddedCardProducer.errors())
       .map { $0.localizedDescription }
 
     self.updateAddNewCardLoading = Signal.merge(
