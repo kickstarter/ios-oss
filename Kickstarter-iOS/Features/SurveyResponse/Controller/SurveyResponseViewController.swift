@@ -56,6 +56,12 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.goToUpdate(project: project, update: update)
       }
 
+    self.viewModel.outputs.goToPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] param in
+        self?.goToPledge(param: param)
+      }
+
     self.navigationItem.rac.title = self.viewModel.outputs.title
 
     self.viewModel.outputs.webViewLoadRequest
@@ -97,6 +103,12 @@ internal final class SurveyResponseViewController: WebViewController {
       update: update,
       context: .deepLink
     )
+    self.presentViewController(vc)
+  }
+
+  fileprivate func goToPledge(param: Param) {
+    let vc = ManagePledgeViewController.instantiate()
+    vc.configureWith(params: (param, nil))
     self.presentViewController(vc)
   }
 

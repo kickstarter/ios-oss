@@ -27,6 +27,9 @@ public protocol SurveyResponseViewModelOutputs {
 
   var goToUpdate: Signal<(Project, Update), Never> { get }
 
+  /// Emits a project param that should be used to present the manage pledge view controller
+  var goToPledge: Signal<Param, Never> { get }
+
   /// Set the navigation item's title.
   var title: Signal<String, Never> { get }
 
@@ -68,6 +71,15 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       .map { request -> (Param, RefTag?)? in
         if case let (.project(param, .root, refInfo))? = Navigation.match(request) {
           return (param, refInfo?.refTag)
+        }
+        return nil
+      }
+      .skipNil()
+
+    self.goToPledge = newRequest
+      .map { request -> (Param)? in
+        if case let (.project(param, .pledge, refInfo))? = Navigation.match(request) {
+          return param
         }
         return nil
       }
@@ -137,6 +149,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let dismissViewController: Signal<Void, Never>
   public let goToProject: Signal<(Param, RefTag?), Never>
   public let goToUpdate: Signal<(Project, Update), Never>
+  public let goToPledge: Signal<Param, Never>
   public let title: Signal<String, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
 

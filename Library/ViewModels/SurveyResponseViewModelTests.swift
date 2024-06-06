@@ -9,6 +9,7 @@ final class SurveyResponseViewModelTests: TestCase {
   fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
+  fileprivate let goToPledge = TestObserver<Param, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
   fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
   fileprivate let title = TestObserver<String, Never>()
@@ -19,6 +20,7 @@ final class SurveyResponseViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
     self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
     self.vm.outputs.title.observe(self.title.observer)
@@ -37,6 +39,31 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.vm.inputs.closeButtonTapped()
     self.dismissViewController.assertValueCount(1)
+  }
+
+  func testGoToPledge() {
+    let project = Project.template
+    let surveyResponse = .template
+      |> SurveyResponse.lens.project .~ project
+
+    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToPledge.assertDidNotEmitValue()
+
+    let request = URLRequest(url: URL(string: project.urls.web.project + "/pledge/edit")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+    )
+
+    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+    self.dismissViewController.assertDidNotEmitValue()
+    self.goToPledge.assertValues([.slug(project.slug)])
   }
 
   func testGoToProject() {
