@@ -1484,6 +1484,103 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testAddNewStripeCard_MultipleCards_StoresAllCards_WithMostRecentCardFirst() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+
+    let addPaymentSheetResponse1 = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("1")
+    let addPaymentSheetResponse2 = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("2")
+    let addPaymentSheetResponse3 = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplateWithId("3")
+
+    let mockServiceInitial = MockService(
+      fetchGraphUserResult: .success(response)
+    )
+
+    let mockService1 = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse1)
+    )
+    let mockService2 = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse2)
+    )
+    let mockService3 = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse3)
+    )
+
+    withEnvironment(
+      apiService: mockServiceInitial,
+      currentUser: User.template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery
+        ))
+
+      self.scheduler.advance(by: .seconds(1))
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 0)
+    }
+
+    withEnvironment(
+      apiService: mockService1,
+      currentUser: User.template
+    ) {
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "seti_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 1)
+      let firstCardInList = self.reloadPaymentSheetPaymentMethodsCards.lastValue?[0]
+      XCTAssertEqual(firstCardInList?.card.id, "1")
+      XCTAssertTrue(firstCardInList?.isSelected ?? false)
+    }
+
+    withEnvironment(
+      apiService: mockService2,
+      currentUser: User.template
+    ) {
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "seti_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 2)
+      let firstCardInList = self.reloadPaymentSheetPaymentMethodsCards.lastValue?[0]
+      XCTAssertEqual(firstCardInList?.card.id, "2")
+      XCTAssertTrue(firstCardInList?.isSelected ?? false)
+    }
+
+    withEnvironment(
+      apiService: mockService3,
+      currentUser: User.template
+    ) {
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "seti_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 3)
+      let firstCardInList = self.reloadPaymentSheetPaymentMethodsCards.lastValue?[0]
+      XCTAssertEqual(firstCardInList?.card.id, "3")
+      XCTAssertTrue(firstCardInList?.isSelected ?? false)
+    }
+  }
+
   func testLoadingStateAddNewCard_ShowAndHide_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(

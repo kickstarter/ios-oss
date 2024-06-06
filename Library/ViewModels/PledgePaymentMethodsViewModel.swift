@@ -126,15 +126,20 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
+    let allNewlyAddedCards: Signal<[UserCreditCards.CreditCard], Never> = newlyAddedCardProducer.values()
+      .scan(into: []) { array, card in
+        array.insert(card, at: 0)
+      }
+
     let newCardsData: Signal<([PledgePaymentMethodCellData], UserCreditCards.CreditCard?), Never> = Signal
       .combineLatest(
-        newlyAddedCardProducer.values(),
+        allNewlyAddedCards,
         availableCardTypes,
         project
       )
-      .map { card, availableCardTypes, project in
+      .map { cards, availableCardTypes, project in
         pledgePaymentMethodCellDataAndSelectedCard(
-          with: [card],
+          with: cards,
           availableCardTypes: availableCardTypes,
           project: project,
           newCardAdded: true
