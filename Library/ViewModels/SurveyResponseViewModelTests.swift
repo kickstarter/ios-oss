@@ -41,92 +41,6 @@ final class SurveyResponseViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func testGoToPledge() {
-    let project = Project.template
-    let surveyResponse = .template
-      |> SurveyResponse.lens.project .~ project
-
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToPledge.assertDidNotEmitValue()
-
-    let request = URLRequest(url: URL(string: project.urls.web.project + "/pledge/edit")!)
-    let navigationAction = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: request,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
-    )
-
-    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
-
-    self.dismissViewController.assertDidNotEmitValue()
-    self.goToPledge.assertValues([.slug(project.slug)])
-  }
-
-  func testGoToProject() {
-    let project = Project.template
-    let surveyResponse = .template
-      |> SurveyResponse.lens.project .~ project
-
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToProjectParam.assertDidNotEmitValue()
-
-    let request = URLRequest(url: URL(string: project.urls.web.project)!)
-    let navigationAction = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: request,
-      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
-      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
-    )
-
-    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
-
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
-
-    self.dismissViewController.assertDidNotEmitValue()
-    self.goToProjectParam.assertValues([.slug(project.slug)])
-  }
-
-  func testGoToUpdate() {
-    let project = Project.template
-    let surveyResponse = .template
-      |> SurveyResponse.lens.project .~ project
-
-    let update = Update.template
-
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
-    self.vm.inputs.viewDidLoad()
-
-    withEnvironment(apiService: MockService(
-      fetchProjectResult: .success(project),
-      fetchUpdateResponse: update
-    )) {
-      self.goToUpdate.assertDidNotEmitValue()
-
-      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/1")!)
-      let navigationAction = WKNavigationActionData(
-        navigationType: .linkActivated,
-        request: request,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
-      )
-
-      let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
-      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
-
-      self.dismissViewController.assertDidNotEmitValue()
-      self.goToUpdate.assertValueCount(1)
-      let (projectResult, updateResult) = self.goToUpdate.lastValue!
-      XCTAssertEqual(project, projectResult, "Update project is wrong.")
-      XCTAssertEqual(update, updateResult, " Update is wrong.")
-    }
-  }
-
   func testRespondToSurvey() {
     let project = Project.template
     let surveyResponse = .template
@@ -213,7 +127,97 @@ final class SurveyResponseViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.title.assertValues([Strings.Survey()])
   }
+
+  // MARK: - Test links
+
+  func testGoToPledge() {
+    let project = Project.template
+    let surveyResponse = .template
+      |> SurveyResponse.lens.project .~ project
+
+    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToPledge.assertDidNotEmitValue()
+
+    let request = URLRequest(url: URL(string: project.urls.web.project + "/pledge/edit")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+    )
+
+    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+    self.dismissViewController.assertDidNotEmitValue()
+    self.goToPledge.assertValues([.slug(project.slug)])
+  }
+
+  func testGoToProject() {
+    let project = Project.template
+    let surveyResponse = .template
+      |> SurveyResponse.lens.project .~ project
+
+    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToProjectParam.assertDidNotEmitValue()
+
+    let request = URLRequest(url: URL(string: project.urls.web.project)!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+    )
+
+    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+    self.dismissViewController.assertDidNotEmitValue()
+    self.goToProjectParam.assertValues([.slug(project.slug)])
+  }
+
+  func testGoToUpdate() {
+    let project = Project.template
+    let surveyResponse = .template
+      |> SurveyResponse.lens.project .~ project
+
+    let update = Update.template
+
+    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.viewDidLoad()
+
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchUpdateResponse: update
+    )) {
+      self.goToUpdate.assertDidNotEmitValue()
+
+      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/1")!)
+      let navigationAction = WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+      )
+
+      let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+      self.dismissViewController.assertDidNotEmitValue()
+      self.goToUpdate.assertValueCount(1)
+      let (projectResult, updateResult) = self.goToUpdate.lastValue!
+      XCTAssertEqual(project, projectResult, "Update project is wrong.")
+      XCTAssertEqual(update, updateResult, " Update is wrong.")
+    }
+  }
 }
+
+// MARK: - Helpers
 
 private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
