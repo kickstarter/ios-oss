@@ -354,28 +354,7 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
   ) {
-    switch paymentSource {
-    case let .paymentIntentClientSecret(clientSecret):
-      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
-        guard let intent = intent, let paymentMethodId = intent.paymentMethodId else {
-          self.messageBannerViewController?
-            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
-          return
-        }
-
-        self.viewModel.inputs
-          .creditCardSelected(
-            source: paymentSource,
-            paymentMethodId: paymentMethodId,
-            isNewPaymentMethod: true
-          )
-      }
-    case let .savedCreditCard(savedCardId):
-      self.viewModel.inputs
-        .creditCardSelected(source: paymentSource, paymentMethodId: savedCardId, isNewPaymentMethod: false)
-    default:
-      break
-    }
+    self.viewModel.inputs.creditCardSelected(source: paymentSource)
   }
 }
 

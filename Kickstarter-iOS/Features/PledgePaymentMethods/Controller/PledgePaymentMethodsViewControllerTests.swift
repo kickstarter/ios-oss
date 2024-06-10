@@ -51,9 +51,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
           checkoutId: "checkoutId",
           reward: reward,
           context: .pledge,
-          refTag: nil,
-          pledgeTotal: Double.nan,
-          paymentSheetType: .setupIntent
+          refTag: nil
         )
 
         controller.configure(with: data)
@@ -93,9 +91,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
           checkoutId: "checkoutId",
           reward: reward,
           context: .pledge,
-          refTag: nil,
-          pledgeTotal: Double.nan,
-          paymentSheetType: .setupIntent
+          refTag: nil
         )
 
         controller.configure(with: data)

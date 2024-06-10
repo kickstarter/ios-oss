@@ -367,7 +367,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         // This second to last value - pledgeTotal - is only needed when the payment methods controller
         // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
         // we don't accidentally propagate this nan downstream.
-        return (user, project, "", reward, context, refTag, Double.nan, .setupIntent)
+        return (user, project, "", reward, context, refTag)
       }
 
     self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
@@ -564,7 +564,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         -> CreateBackingData in
 
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
-      var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
       return (
         project: project,
@@ -573,7 +572,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         selectedQuantities: selectedQuantities,
         shippingRule: selectedShippingRule,
         paymentSourceId: paymentSourceId,
-        setupIntentClientSecret: setupIntentClientSecret,
+        setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         refTag: refTag
       )
@@ -638,7 +637,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         applePayParams
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
-      var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
       return (
         backing: backing,
@@ -647,7 +645,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         selectedQuantities: selectedQuantities,
         shippingRule: selectedShippingRule,
         paymentSourceId: paymentSourceId,
-        setupIntentClientSecret: setupIntentClientSecret,
+        setupIntentClientSecret: nil,
         applePayParams: applePayParams
       )
     }
