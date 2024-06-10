@@ -325,6 +325,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
           configuration.allowsDelayedPaymentMethods = true
 
+          // Enable Stripe Link
+          configuration.defaultBillingDetails.email = AppEnvironment.current.currentUserEmail
+
           let data = PaymentSheetSetupData(
             clientSecret: clientSecret,
             configuration: configuration
