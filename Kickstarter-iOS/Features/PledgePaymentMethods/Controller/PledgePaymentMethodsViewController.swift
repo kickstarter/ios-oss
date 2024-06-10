@@ -206,8 +206,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
               )
           }
       case .canceled:
+        // User cancelled intentionally so do nothing.
         strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-      // User cancelled intentionally so do nothing.
       case let .failed(error):
         strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
         strongSelf.messageDisplayingDelegate?

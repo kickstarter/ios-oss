@@ -171,7 +171,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .switchMap { checkoutId, selectedCard, paymentIntentClientSecret in
 
         assert(
-          selectedCard.stripePaymentMethodId != nil,
+          selectedCard.stripePaymentMethodId.isSome && selectedCard.stripePaymentMethodId != "",
           "Payment method ID should not be missing in a late pledge context."
         )
 

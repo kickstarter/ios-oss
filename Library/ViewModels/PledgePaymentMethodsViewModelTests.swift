@@ -1315,8 +1315,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         paymentSheetCard?.card.id,
         addPaymentSheetResponse.createPaymentSource.paymentSource.id
       )
-      XCTAssertFalse(paymentSheetCard?.isEnabled ?? false)
-      XCTAssertFalse(paymentSheetCard?.isSelected ?? false)
+      XCTAssertFalse(paymentSheetCard!.isEnabled)
+      XCTAssertFalse(paymentSheetCard!.isSelected)
 
       self.reloadPaymentMethodsSelectedCardId
         .assertValues([nil, nil, nil])
