@@ -207,12 +207,8 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
 
       switch paymentResult {
       case .completed:
-        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
-          image: existingPaymentOption.image,
-          label: existingPaymentOption.label
-        )
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
+          .paymentSheetDidAdd(setupIntent: clientSecret)
       case .canceled:
         strongSelf.viewModel.inputs.failedToAddNewCard()
       // User cancelled intentionally so don't show them an error banner.

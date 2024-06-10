@@ -127,7 +127,6 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
 
       self.vm.inputs
         .paymentSheetDidAdd(
-          newCard: paymentOptionsDisplayData,
           setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 

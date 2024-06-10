@@ -512,8 +512,14 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
     let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
       .Data(jsonObject: completeSessionJson as! JSONObject)
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let userResponse = UserEnvelope<GraphUser>(me: graphUser)
+
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
+      createPaymentIntentResult: .success(paymentIntent),
+      fetchGraphUserResult: .success(userResponse),
       validateCheckoutResult: .success(validateCheckout)
     )
 
@@ -537,10 +543,12 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
 
-      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
-
       self.vm.inputs
-        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+        .creditCardSelected(
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
+        )
+
+      self.scheduler.run()
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
@@ -564,7 +572,13 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   func testPledge_validationFails() {
     // Mock data for API requests
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let userResponse = UserEnvelope<GraphUser>(me: graphUser)
+
     let mockService = MockService(
+      createPaymentIntentResult: .success(paymentIntent),
+      fetchGraphUserResult: .success(userResponse),
       validateCheckoutResult: .failure(.couldNotParseErrorEnvelopeJSON)
     )
 
@@ -588,9 +602,10 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
 
-      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
       self.vm.inputs
-        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+        .creditCardSelected(
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
+        )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
@@ -610,7 +625,10 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testCheckoutTerminated_cancelsCheckoutFlow() {
     // Mock data for API requests
     let validateCheckout = ValidateCheckoutEnvelope(messages: ["message"])
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+
     let mockService = MockService(
+      createPaymentIntentResult: .success(paymentIntent),
       validateCheckoutResult: .success(validateCheckout)
     )
 
@@ -634,9 +652,10 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
 
-      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
       self.vm.inputs
-        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+        .creditCardSelected(
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
+        )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
@@ -658,7 +677,11 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   }
 
   func testPledgeViewCTAEnabled_afterSelectingNewPaymentMethod_LoggedIn() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(
+      serverConfig: ServerConfig.staging,
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.cosmicSurgery
@@ -680,9 +703,10 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
       self.vm.inputs
-        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+        .creditCardSelected(
+          source: .savedCreditCard(UserCreditCards.visa.id, "pm_fake")
+        )
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true, true])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
