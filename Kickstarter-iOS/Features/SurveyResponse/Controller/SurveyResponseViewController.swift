@@ -50,10 +50,16 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.goToProject(param: param, refTag: refTag)
       }
 
-    self.viewModel.outputs.showAlert
+    self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
-      .observeValues { [weak self] message in
-        self?.showAlert(message: message)
+      .observeValues { [weak self] project, update in
+        self?.goToUpdate(project: project, update: update)
+      }
+
+    self.viewModel.outputs.goToPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] param in
+        self?.goToPledge(param: param)
       }
 
     self.navigationItem.rac.title = self.viewModel.outputs.title
@@ -63,43 +69,10 @@ internal final class SurveyResponseViewController: WebViewController {
       .observeValues { [weak self] request in
         self?.webView.load(request)
       }
-
-    self.viewModel.outputs.extractFormDataWithJavaScript
-      .observeForUI()
-      .observeValues { [weak self] js in
-        self?.webView.evaluateJavaScript(js) { result, _ in
-          self?.viewModel.inputs.didEvaluateJavaScriptWithResult(result)
-        }
-      }
   }
 
   @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
-  }
-
-  fileprivate func goToProject(param: Param, refTag: RefTag?) {
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: .right(param),
-      refInfo: RefInfo(refTag)
-    )
-
-    let nav = NavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
-
-    self.present(nav, animated: true, completion: nil)
-  }
-
-  fileprivate func showAlert(message: String) {
-    self.present(
-      UIAlertController.alert(
-        message: message,
-        handler: { [weak self] _ in
-          self?.viewModel.inputs.alertButtonTapped()
-        }
-      ),
-      animated: true,
-      completion: nil
-    )
   }
 
   internal func webView(
@@ -112,5 +85,37 @@ internal final class SurveyResponseViewController: WebViewController {
         navigationAction: WKNavigationActionData(navigationAction: navigationAction)
       )
     )
+  }
+
+  // MARK: - Deeplinks
+
+  fileprivate func goToProject(param: Param, refTag: RefTag?) {
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: .right(param),
+      refInfo: RefInfo(refTag)
+    )
+    self.presentViewController(vc)
+  }
+
+  fileprivate func goToUpdate(project: Project, update: Update) {
+    let vc = UpdateViewController.configuredWith(
+      project: project,
+      update: update,
+      context: .deepLink
+    )
+    self.presentViewController(vc)
+  }
+
+  fileprivate func goToPledge(param: Param) {
+    let vc = ManagePledgeViewController.instantiate()
+    vc.configureWith(params: (param, nil))
+    self.presentViewController(vc)
+  }
+
+  fileprivate func presentViewController(_ vc: UIViewController) {
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }
