@@ -22,15 +22,15 @@ extension STPPaymentMethod {
   ])
 
   static let sampleStringPaymentOption: (STPPaymentMethod) -> PaymentSheet.PaymentOption = { paymentMethod in
-    PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
+    PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod, confirmParams: nil)
   }
 
   static let samplePaymentOptionsDisplayData: (PaymentSheet.PaymentOption)
     -> PaymentSheetPaymentOptionsDisplayData = { paymentOption in
       switch paymentOption {
-      case let .saved(paymentMethod):
+      case let .saved(paymentMethod, _):
         return PaymentSheetPaymentOptionsDisplayData(image: .add, label: "••••1234")
-      case .applePay, .new, .link:
+      case .applePay, .new, .link, .external:
         return PaymentSheetPaymentOptionsDisplayData(image: .add, label: "Unknown")
       }
     }
