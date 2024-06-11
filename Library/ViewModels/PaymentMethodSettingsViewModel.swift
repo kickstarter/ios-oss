@@ -138,6 +138,10 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
             var configuration = PaymentSheet.Configuration()
             configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
             configuration.allowsDelayedPaymentMethods = true
+
+            // Log in to Stripe Link
+            configuration.defaultBillingDetails.email = AppEnvironment.current.currentUserEmail
+
             let data = PaymentSheetSetupData(
               clientSecret: envelope.clientSecret,
               configuration: configuration
