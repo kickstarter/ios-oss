@@ -1975,7 +1975,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      // There are now twos card, in the new section
+      // There are now two cards, in the new section
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 2)
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.count, 0)
 
