@@ -516,7 +516,9 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
   }()
 
   let updatedDataWithSelection: PledgePaymentMethodsAndSelectionData = {
-    guard let newestPaymentSheetPaymentMethod = paymentMethodData.newPaymentMethods.first
+    guard let newestPaymentSheetPaymentMethod = paymentMethodData.newPaymentMethods.first,
+          // If the new payment method is disabled, exit and keep the previous selection. (MBL-1550)
+          newestPaymentSheetPaymentMethod.isEnabled == true
     else {
       return paymentMethodData
     }

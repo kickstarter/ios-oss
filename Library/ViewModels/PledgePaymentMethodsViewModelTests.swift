@@ -1786,4 +1786,231 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(allowedDelayedPaymentMethods)
     }
   }
+
+  // A test for MBL-1550
+  func testAddNewUnavailablePaymentMethod_userAlreadyHasCard_selectsValidPaymentMethod() {
+    let cards = UserCreditCards.withCards([
+      UserCreditCards.visa
+    ])
+
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let graphUserResponse = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplate
+
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(graphUserResponse)
+    )
+    let project = Project.template
+      |> \.availableCardTypes .~ ["VISA"]
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery
+        ))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      // There is one card, it's enabled, and it's selected
+      XCTAssertEqual(self.reloadPaymentMethodsIsSelected.lastValue, [true])
+      XCTAssertEqual(self.reloadPaymentMethodsAvailableCardTypes.lastValue, [true])
+      XCTAssertEqual(self.reloadPaymentMethodsSelectedCardId.lastValue, UserCreditCards.visa.id)
+
+      // Add a new card
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "si_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.run()
+
+      // There are now two cards, one in each section
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 1)
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.count, 1)
+
+      // The newly added card is disabled and not selected
+      let newCardData = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.first
+      XCTAssertEqual(newCardData?.isEnabled, false)
+      XCTAssertEqual(newCardData?.isSelected, false)
+
+      // The previously added and available card is still selected
+      XCTAssertEqual(self.reloadPaymentMethodsSelectedCardId.lastValue, UserCreditCards.visa.id)
+      XCTAssertEqual(self.reloadPaymentMethodsIsSelected.lastValue, [true])
+      XCTAssertEqual(self.reloadPaymentMethodsAvailableCardTypes.lastValue, [true])
+    }
+  }
+
+  func testAddNewUnavailablePaymentMethod_userHasNoCards_noCardSelected() {
+    let cards = UserCreditCards.withCards([])
+
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let graphUserResponse = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponse = CreatePaymentSourceEnvelope.paymentSourceSuccessTemplate
+
+    let mockService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponse),
+      fetchGraphUserResult: .success(graphUserResponse)
+    )
+    let project = Project.template
+      |> \.availableCardTypes .~ ["VISA"]
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery
+        ))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      // There are no cards
+      XCTAssertEqual(self.reloadPaymentMethodsIsSelected.lastValue, [])
+      XCTAssertEqual(self.reloadPaymentMethodsAvailableCardTypes.lastValue, [])
+      XCTAssertNil(self.reloadPaymentMethodsSelectedCardId.lastValue ?? nil)
+
+      // Add a new card
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "si_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.run()
+
+      // There is now one card, in the new section
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 1)
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.count, 0)
+
+      // The newly added card is disabled and not selected
+      let newCardData = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.first
+      XCTAssertEqual(newCardData?.isEnabled, false)
+      XCTAssertEqual(newCardData?.isSelected, false)
+      XCTAssertNil(self.reloadPaymentMethodsSelectedCardId.lastValue ?? nil)
+    }
+  }
+
+  func testAddNewUnavailablePaymentMethod_afterAddingAvailableCard_onlyAvailableCardSelected() {
+    let cards = UserCreditCards.withCards([])
+
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let graphUserResponse = UserEnvelope<GraphUser>(me: graphUser)
+    let addPaymentSheetResponseVisa = CreatePaymentSourceEnvelope(
+      createPaymentSource: .init(isSuccessful: true, paymentSource: UserCreditCards.visa)
+    )
+    let addPaymentSheetResponseDiscover = CreatePaymentSourceEnvelope(
+      createPaymentSource: .init(isSuccessful: true, paymentSource: UserCreditCards.discover)
+    )
+
+    let mockService1 = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponseVisa),
+      fetchGraphUserResult: .success(graphUserResponse)
+    )
+
+    let mockService2 = MockService(
+      addPaymentSheetPaymentSourceResult: .success(addPaymentSheetResponseDiscover)
+    )
+
+    let project = Project.template
+      |> \.availableCardTypes .~ ["VISA"]
+
+    withEnvironment(apiService: mockService1, currentUser: User.template) {
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          "checkoutID",
+          Reward.template,
+          .pledge,
+          .discovery
+        ))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      // There are no cards
+      XCTAssertEqual(self.reloadPaymentMethodsIsSelected.lastValue, [])
+      XCTAssertEqual(self.reloadPaymentMethodsAvailableCardTypes.lastValue, [])
+      XCTAssertNil(self.reloadPaymentMethodsSelectedCardId.lastValue ?? nil)
+
+      // Add a new card (the visa)
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "si_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.run()
+
+      // There is now one card, in the new section
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 1)
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.count, 0)
+
+      // The newly added card is enabled and selected
+      let newCardData = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.first
+      XCTAssertEqual(newCardData?.isEnabled, true)
+      XCTAssertEqual(newCardData?.isSelected, true)
+      XCTAssertEqual(self.reloadPaymentMethodsSelectedCardId.lastValue, UserCreditCards.visa.id)
+    }
+
+    withEnvironment(apiService: mockService2, currentUser: User.template) {
+      // Add another new card (the discover)
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          clientSecret: "si_fake",
+          paymentMethod: "pm_fake"
+        )
+
+      self.scheduler.run()
+
+      // There are now two cards, in the new section
+      XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.count, 2)
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue?.count, 0)
+
+      // The discover is disabled and not selected.
+      let discoverCardData = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.first(where: { (
+        card: UserCreditCards.CreditCard,
+        _: Bool,
+        _: Bool,
+        _: String,
+        _: Bool
+      ) in
+        card.id == UserCreditCards.discover.id
+      })
+      XCTAssertNotNil(discoverCardData)
+      XCTAssertEqual(discoverCardData?.card.id, UserCreditCards.discover.id)
+      XCTAssertEqual(discoverCardData?.isEnabled, false)
+      XCTAssertEqual(discoverCardData?.isSelected, false)
+
+      // The visa is enabled and selected.
+      let visaCardData = self.reloadPaymentSheetPaymentMethodsCards.lastValue?.first(where: { (
+        card: UserCreditCards.CreditCard,
+        _: Bool,
+        _: Bool,
+        _: String,
+        _: Bool
+      ) in
+        card.id == UserCreditCards.visa.id
+      })
+      XCTAssertNotNil(visaCardData)
+      XCTAssertEqual(visaCardData?.card.id, UserCreditCards.visa.id)
+      XCTAssertEqual(visaCardData?.isEnabled, true)
+      XCTAssertEqual(visaCardData?.isSelected, true)
+
+      // The visa is still selected
+      XCTAssertEqual(self.reloadPaymentMethodsSelectedCardId.lastValue, UserCreditCards.visa.id)
+    }
+  }
 }
