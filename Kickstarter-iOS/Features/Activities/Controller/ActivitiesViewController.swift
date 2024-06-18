@@ -210,7 +210,8 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   fileprivate func goToSurveyResponse(surveyResponse: SurveyResponse) {
-    let vc = SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)
+    let url = surveyResponse.urls.web.survey
+    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
     vc.delegate = self
 
     let nav = UINavigationController(rootViewController: vc)

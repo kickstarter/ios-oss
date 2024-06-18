@@ -33,7 +33,7 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 
   func testDismissViewControllerOnCloseButtonTapped() {
-    self.vm.inputs.configureWith(surveyResponse: .template)
+    self.vm.inputs.configureWith(surveyUrl: SurveyResponse.template.urls.web.survey)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
 
@@ -47,7 +47,7 @@ final class SurveyResponseViewModelTests: TestCase {
       |> SurveyResponse.lens.id .~ 123
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     // 1. Load survey.
@@ -121,7 +121,7 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 
   func testTitle() {
-    self.vm.inputs.configureWith(surveyResponse: .template)
+    self.vm.inputs.configureWith(surveyUrl: SurveyResponse.template.urls.web.survey)
     self.title.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
@@ -135,7 +135,7 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     self.goToPledge.assertDidNotEmitValue()
@@ -160,7 +160,7 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectParam.assertDidNotEmitValue()
@@ -188,7 +188,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     let update = Update.template
 
-    self.vm.inputs.configureWith(surveyResponse: surveyResponse)
+    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(

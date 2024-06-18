@@ -126,7 +126,10 @@ public final class NavigationTests: XCTestCase {
       navigation: .update(2, .commentThread("dead", "beef"))
     )
 
-    self.assertProjectMatch(path: "/projects/creator/project/surveys/3", navigation: .survey(3))
+    self.assertProjectMatch(
+      path: "/projects/creator/project/surveys/3",
+      navigation: .survey(3, "https://www.kickstarter.com/projects/creator/project/surveys/3")
+    )
 
     KSRAssertMatch(
       .signup,
