@@ -47,7 +47,7 @@ public enum Navigation: Equatable {
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
-    case survey(Int, String)
+    case survey(String)
 
     public enum Checkout: Equatable {
       case thanks(racing: Bool?)
@@ -422,11 +422,10 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let surveyParam = params.surveyParam(),
      let path = params.path() {
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.survey(surveyParam, url)
+    let survey = Navigation.Project.survey(url)
     return Navigation.project(projectParam, survey, refInfo: refInfo)
   }
 

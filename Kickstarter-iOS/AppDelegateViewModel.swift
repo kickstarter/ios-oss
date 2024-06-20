@@ -596,7 +596,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let surveyUrlFromProjectLink = deepLink
       .map { link -> String? in
-        if case let .project(_, .survey(surveyResponseId, surveyUrl), _) = link {
+        if case let .project(_, .survey(surveyUrl), _) = link {
           return surveyUrl
         }
         return nil
