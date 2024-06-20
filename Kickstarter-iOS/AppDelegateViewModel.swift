@@ -579,10 +579,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           }
       }
 
-    let surveyResponseLink = deepLink
+    let surveyUrlFromUserLink = deepLink
       .map { link -> Int? in
         if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
-        if case let .project(_, .survey(surveyResponseId), _) = link { return surveyResponseId }
         return nil
       }
       .skipNil()
@@ -590,9 +589,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
           .demoteErrors()
           .observeForUI()
-          .map { surveyResponse -> [UIViewController] in
-            [SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)]
+          .map { surveyResponse -> String in
+            surveyResponse.urls.web.survey
           }
+      }
+
+    let surveyUrlFromProjectLink = deepLink
+      .map { link -> String? in
+        if case let .project(_, .survey(surveyUrl), _) = link {
+          return surveyUrl
+        }
+        return nil
+      }
+      .skipNil()
+
+    let surveyResponseLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
+      .map { url -> [UIViewController] in
+        [SurveyResponseViewController.configuredWith(surveyUrl: url)]
       }
 
     let updatesLink = projectLink

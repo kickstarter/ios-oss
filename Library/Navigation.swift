@@ -47,7 +47,7 @@ public enum Navigation: Equatable {
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
-    case survey(Int)
+    case survey(String)
 
     public enum Checkout: Equatable {
       case thanks(racing: Bool?)
@@ -422,9 +422,10 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let surveyParam = params.surveyParam() {
+     let path = params.path() {
+    let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.survey(surveyParam)
+    let survey = Navigation.Project.survey(url)
     return Navigation.project(projectParam, survey, refInfo: refInfo)
   }
 
@@ -559,6 +560,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   // If the deeplink opens the project page, track the url.
   if urlComponents.first == "projects" {
     object[RouteParamsDecoded.CodingKeys.deeplinkUrl.rawValue] = url.absoluteString
+    object[RouteParamsDecoded.CodingKeys.path.rawValue] = url.path
   }
 
   return object
@@ -598,6 +600,7 @@ extension RouteParamsDecoded {
     case notificationParam = "notification_param"
     case checkoutParam = "checkout_param"
     case enabledParam = "enabled_param"
+    case path
     case payload
     case projectParam = "project_param"
     case ref
@@ -623,6 +626,11 @@ extension RouteParamsDecoded {
   public func enabledParam() -> Bool? {
     let key = CodingKeys.enabledParam.rawValue
     return self[key].flatMap(Bool.init)
+  }
+
+  public func path() -> String? {
+    let key = CodingKeys.path.rawValue
+    return self[key]
   }
 
   public func refTag() -> RefTag? {

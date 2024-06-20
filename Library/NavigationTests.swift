@@ -1,4 +1,4 @@
-import KsApi
+@testable import KsApi
 @testable import Library
 import Prelude
 import XCTest
@@ -126,7 +126,12 @@ public final class NavigationTests: XCTestCase {
       navigation: .update(2, .commentThread("dead", "beef"))
     )
 
-    self.assertProjectMatch(path: "/projects/creator/project/surveys/3", navigation: .survey(3))
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+      self.assertProjectMatch(
+        path: "/projects/creator/project/surveys/3",
+        navigation: .survey("https://www.kickstarter.com/projects/creator/project/surveys/3")
+      )
+    }
 
     KSRAssertMatch(
       .signup,

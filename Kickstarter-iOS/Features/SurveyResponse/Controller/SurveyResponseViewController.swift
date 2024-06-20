@@ -13,10 +13,10 @@ internal final class SurveyResponseViewController: WebViewController {
   internal weak var delegate: SurveyResponseViewControllerDelegate?
   fileprivate let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
 
-  internal static func configuredWith(surveyResponse: SurveyResponse)
+  internal static func configuredWith(surveyUrl: String)
     -> SurveyResponseViewController {
     let vc = SurveyResponseViewController()
-    vc.viewModel.inputs.configureWith(surveyResponse: surveyResponse)
+    vc.viewModel.inputs.configureWith(surveyUrl: surveyUrl)
     return vc
   }
 

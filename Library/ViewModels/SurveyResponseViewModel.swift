@@ -8,8 +8,8 @@ public protocol SurveyResponseViewModelInputs {
   /// Call when the close button is tapped.
   func closeButtonTapped()
 
-  /// Call to configure with a survey response.
-  func configureWith(surveyResponse: SurveyResponse)
+  /// Call to configure with a survey url.
+  func configureWith(surveyUrl: String)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
@@ -45,14 +45,14 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public init() {
     let surveyResponse = Signal.combineLatest(
-      self.surveyResponseProperty.signal.skipNil(),
+      self.initialSurveyProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
     let initialRequest = surveyResponse
-      .map { surveyResponse -> URLRequest? in
-        guard let url = URL(string: surveyResponse.urls.web.survey) else { return nil }
+      .map { surveyUrlString -> URLRequest? in
+        guard let url = URL(string: surveyUrlString) else { return nil }
         return URLRequest(url: url)
       }
       .skipNil()
@@ -138,9 +138,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     return self.policyDecisionProperty.value
   }
 
-  fileprivate let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
-  public func configureWith(surveyResponse: SurveyResponse) {
-    self.surveyResponseProperty.value = surveyResponse
+  fileprivate let initialSurveyProperty = MutableProperty<String?>(nil)
+  public func configureWith(surveyUrl: String) {
+    self.initialSurveyProperty.value = surveyUrl
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
