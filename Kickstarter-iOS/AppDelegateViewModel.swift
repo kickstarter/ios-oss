@@ -588,7 +588,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .switchMap { surveyResponseId in
         AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
           .demoteErrors()
-          .observeForUI()
           .map { surveyResponse -> String in
             surveyResponse.urls.web.survey
           }
@@ -604,6 +603,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     let surveyResponseLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
+      .observeForUI()
       .map { url -> [UIViewController] in
         [SurveyResponseViewController.configuredWith(surveyUrl: url)]
       }
