@@ -6,7 +6,7 @@ public class PPOContainerViewController: PagedContainerViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    // TODO: Translate these strings
+    // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
     let ppoViewController = UIHostingController(rootView: PPOView())
     ppoViewController.title = "Project Alerts"

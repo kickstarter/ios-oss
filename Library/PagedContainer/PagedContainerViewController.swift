@@ -34,6 +34,18 @@ open class PagedContainerViewController: UIViewController {
       }.store(in: &self.subscriptions)
   }
 
+  /*
+   The custom appearanceTransition code in this UIViewController was implemented
+   so that the child view controllers will receive viewWillAppear with animated = true
+   when a tab is selected.
+
+   I initially implemented this because ActivitiesViewController filters unanimated
+   calls to viewWillAppear; this behavior is relied on by our screenshot tests.
+
+   While we should refactor the ActivitiesViewController, it also makes sense that transitions
+   between pages in this container view controller will (eventually) be animated, even if
+   I didn't animate them in this stub.
+   */
   open override var shouldAutomaticallyForwardAppearanceMethods: Bool {
     return false
   }

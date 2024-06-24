@@ -4780,7 +4780,7 @@
 				1937A6F028C92F0000DD732D /* PledgeAmountSummary */,
 				19A97D3928C802230031B857 /* PledgePaymentMethods */,
 				1937A70428C9392600DD732D /* PledgeShippingLocation */,
-				E1BAA0332C1A18DA004F8B06 /* PostPledgeOverview */,
+				E1BAA0332C1A18DA004F8B06 /* PledgedProjectsOverview */,
 				1937A70528C9399D00DD732D /* PledgeView */,
 				1965436E28C810CC00457EC6 /* ProjectNotifications */,
 				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
@@ -7094,7 +7094,7 @@
 			path = combine;
 			sourceTree = "<group>";
 		};
-		E1BAA0332C1A18DA004F8B06 /* PostPledgeOverview */ = {
+		E1BAA0332C1A18DA004F8B06 /* PledgedProjectsOverview */ = {
 			isa = PBXGroup;
 			children = (
 				E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */,
@@ -7102,7 +7102,7 @@
 				E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */,
 				E1BAA03D2C1A1CE4004F8B06 /* PPOViewModelTests.swift */,
 			);
-			path = PostPledgeOverview;
+			path = PledgedProjectsOverview;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
