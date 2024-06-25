@@ -177,12 +177,17 @@ extension PushEnvelope.Survey {
   public enum lens {
     public static let id = Lens<PushEnvelope.Survey, Int>(
       view: { $0.id },
-      set: { .init(id: $0, projectId: $1.projectId) }
+      set: { .init(id: $0, projectId: $1.projectId, urls: $1.urls) }
     )
 
     public static let projectId = Lens<PushEnvelope.Survey, Int>(
       view: { $0.projectId },
-      set: { .init(id: $1.id, projectId: $0) }
+      set: { .init(id: $1.id, projectId: $0, urls: $1.urls) }
+    )
+
+    public static let urls = Lens<PushEnvelope.Survey, PushEnvelope.Survey.Urls>(
+      view: { $0.urls },
+      set: { .init(id: $1.id, projectId: $1.projectId, urls: $0) }
     )
   }
 }

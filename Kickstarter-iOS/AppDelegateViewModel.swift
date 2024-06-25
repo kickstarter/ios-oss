@@ -1066,7 +1066,9 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let survey = envelope.survey {
-    return .user(.slug("self"), .survey(survey.id))
+    let path = survey.urls.web.survey
+    let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
+    return .project(.id(survey.projectId), .survey(url), refInfo: RefInfo(.push))
   }
 
   if let update = envelope.update {

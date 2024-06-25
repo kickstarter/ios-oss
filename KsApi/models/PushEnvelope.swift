@@ -42,6 +42,17 @@ public struct PushEnvelope {
   public struct Survey {
     public let id: Int
     public let projectId: Int
+
+    // urls.web.survey is the survey path.
+    public struct Urls: Decodable {
+      public struct Web: Decodable {
+        public let survey: String
+      }
+
+      public let web: Web
+    }
+
+    public let urls: Urls
   }
 
   public struct Update {
@@ -123,6 +134,7 @@ extension PushEnvelope.Survey: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case projectId = "project_id"
+    case urls
   }
 }
 
