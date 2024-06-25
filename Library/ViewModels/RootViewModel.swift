@@ -9,6 +9,7 @@ public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerInde
 public enum RootViewControllerData: Equatable {
   case discovery
   case activities
+  case pledgedProjectsAndActivities
   case search
   case profile(isLoggedIn: Bool)
 
@@ -16,6 +17,7 @@ public enum RootViewControllerData: Equatable {
     switch (lhs, rhs) {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
+    case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
     case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
@@ -429,6 +431,9 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
 }
 
 private func generateStandardViewControllers() -> [RootViewControllerData] {
+  if featurePledgedProjectsOverviewEnabled() {
+    return [.discovery, .pledgedProjectsAndActivities, .search]
+  }
   return [.discovery, .activities, .search]
 }
 
