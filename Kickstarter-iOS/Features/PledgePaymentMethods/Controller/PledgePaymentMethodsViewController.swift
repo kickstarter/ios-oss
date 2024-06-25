@@ -145,6 +145,41 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Functions
 
+//  private func goToPaymentSheet(data: PaymentSheetSetupData) {
+//    let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
+//      guard let strongSelf = self else { return }
+//
+//      switch result {
+//      case let .failure(error):
+//        strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+//        strongSelf.messageDisplayingDelegate?
+//          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+//      case let .success(paymentSheetFlowController):
+//        let topViewController = strongSelf.navigationController?.topViewController
+//
+//        assert(
+//          topViewController is PledgeViewController ||
+//            topViewController is PostCampaignCheckoutViewController,
+//          "PledgePaymentMethodsViewController is only intended to be presented as part of a pledge flow."
+//        )
+//
+//        strongSelf.paymentSheetFlowController = paymentSheetFlowController
+//        strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+//          guard let strongSelf = self else { return }
+//
+//          strongSelf.confirmPaymentResult(with: data.clientSecret)
+//        }
+//        strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
+//      }
+//    }
+//
+//    PaymentSheet.FlowController.create(
+//      setupIntentClientSecret: data.clientSecret,
+//      configuration: data.configuration,
+//      completion: completion
+//    )
+//  }
+
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
     let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
       guard let strongSelf = self else { return }
@@ -173,13 +208,25 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
     }
 
+    let intentConfig = PaymentSheet.IntentConfiguration(
+      mode: .payment(amount: 1099, currency: "USD")
+    ) { [weak self] paymentMethod, shouldSavePaymentMethod, intentCreationCallback in
+      self?.handleConfirm(paymentMethod, shouldSavePaymentMethod, intentCreationCallback)
+    }
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = "Kickstarter"
+    
     PaymentSheet.FlowController.create(
-      setupIntentClientSecret: data.clientSecret,
-      configuration: data.configuration,
+      intentConfiguration: intentConfig,
+      configuration: configuration,
       completion: completion
     )
   }
-
+  
+  func handleConfirm(_ paymentMethod: STPPaymentMethod, _ shouldSavePaymentMethod: Bool, _ intentCreationCallback: @escaping (Result<String, Error>) -> Void) {
+    print(paymentMethod)
+  }
+  
   private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
