@@ -459,6 +459,7 @@
 		6021F66A2B97BC8100F76031 /* ConfirmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6692B97BC8100F76031 /* ConfirmDetailsViewController.swift */; };
 		6021F66C2B97BCE200F76031 /* ConfirmDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */; };
 		6021F66E2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */; };
+		602258942C2B30A8005BD8DB /* ApplePayCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258932C2B30A8005BD8DB /* ApplePayCheckoutViewModel.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
@@ -2075,6 +2076,7 @@
 		6021F6692B97BC8100F76031 /* ConfirmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewController.swift; sourceTree = "<group>"; };
 		6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModel.swift; sourceTree = "<group>"; };
 		6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModelTests.swift; sourceTree = "<group>"; };
+		602258932C2B30A8005BD8DB /* ApplePayCheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayCheckoutViewModel.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
@@ -6077,6 +6079,7 @@
 				D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */,
 				77C9122823C4FC0B00F3D2C9 /* ApplePayCapabilities.swift */,
 				77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */,
+				602258932C2B30A8005BD8DB /* ApplePayCheckoutViewModel.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
 				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
@@ -7729,6 +7732,7 @@
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				D660078C2416D66C00AC1EDB /* CuratedProjectsViewModel.swift in Sources */,
 				77C93C2522C27443005D3195 /* DebugData.swift in Sources */,
+				602258942C2B30A8005BD8DB /* ApplePayCheckoutViewModel.swift in Sources */,
 				D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */,
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,

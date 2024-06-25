@@ -44,9 +44,6 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
   func viewDidLoad()
-  func applePayButtonTapped()
-  func applePayContextDidCreatePayment(with paymentMethodId: String)
-  func applePayContextDidComplete()
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
@@ -61,7 +58,6 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
   var checkoutComplete: Signal<ThanksPageData, Never> { get }
   var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
@@ -69,22 +65,42 @@ public protocol PostCampaignCheckoutViewModelOutputs {
 public protocol PostCampaignCheckoutViewModelType {
   var inputs: PostCampaignCheckoutViewModelInputs { get }
   var outputs: PostCampaignCheckoutViewModelOutputs { get }
+  var applePayViewModel: ApplePayCheckoutViewModel { get }
 }
+
+/*
+ viewDidLoad
+ configure
+ selectedCard
+ validate
+ submit
+ complete or terminate
+ */
 
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
   PostCampaignCheckoutViewModelOutputs {
+  /// ApplePay Service isn't  injected directly because it needs access to initial config data as well as the StripeIntentService
+  public let applePayViewModel: ApplePayCheckoutViewModel
   let stripeIntentService: StripeIntentServiceType
 
   public init(stripeIntentService: StripeIntentServiceType) {
-    self.stripeIntentService = stripeIntentService
-
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
       self.viewDidLoadProperty.signal
     )
     .map(first)
     .skipNil()
+
+    // MARK: Dependencies
+
+    self.stripeIntentService = stripeIntentService
+    self.applePayViewModel = ApplePayCheckoutViewModel(
+      withConfigurationSignal: initialData,
+      stripeIntentService: self.stripeIntentService
+    )
+
+    // MARK: Initial Config Data
 
     let context = initialData.map(\.context)
     let checkoutId = initialData.map(\.checkoutId)
@@ -197,92 +213,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         )
       }
 
-    // MARK: ApplePay
+    // MARK: Apple Pay
 
-    /*
-
-     Order of operations:
-     1) Apple pay button tapped
-     2) Generate a new payment intent
-     3) Present the payment authorization form
-     4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
-     5) Payment authorization form calls paymentAuthorizationDidFinish
-     6) Validate checkout using the checkoutId, payment source id, and payment intent
-     */
-
-    let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
-      Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(), checkoutId)
-        .takeWhen(self.applePayButtonTappedSignal)
-        .switchMap { initialData, checkoutId in
-          let projectId = initialData.project.graphID
-          let pledgeTotal = initialData.total
-
-          return stripeIntentService.createPaymentIntent(
-            for: projectId,
-            checkoutId: checkoutId,
-            pledgeTotal: pledgeTotal
-          )
-          .materialize()
-        }
-
-    let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay
-      .errors()
-
-    let newPaymentIntentForApplePay: Signal<String, Never> = createPaymentIntentForApplePay
-      .values()
-      .map { $0.clientSecret }
-
-    self.goToApplePayPaymentAuthorization = self
-      .configureWithDataProperty
-      .signal
-      .skipNil()
-      .combineLatest(with: newPaymentIntentForApplePay)
-      .map { (
-        data: PostCampaignCheckoutData,
-        paymentIntent: String
-      ) -> PostCampaignPaymentAuthorizationData? in
-        let baseReward = data.baseReward
-
-        return PostCampaignPaymentAuthorizationData(
-          project: data.project,
-          hasNoReward: baseReward.isNoReward,
-          subtotal: baseReward.isNoReward ? baseReward.minimum : calculateAllRewardsTotal(
-            addOnRewards: data.rewards,
-            selectedQuantities: data.selectedQuantities
-          ),
-          bonus: data.bonusAmount ?? 0,
-          shipping: data.shipping?.total ?? 0,
-          total: data.total,
-          merchantIdentifier: Secrets.ApplePay.merchantIdentifier,
-          paymentIntent: paymentIntent
-        )
-      }
-      .skipNil()
-
-    let validateCheckoutWithApplePay = Signal.combineLatest(
-      newPaymentIntentForApplePay,
-      checkoutId,
-      self.applePayPaymentMethodIdSignal.signal
+    let applePayErrors = Signal.merge(
+      self.applePayViewModel.createNewPaymentIntentError,
+      self.applePayViewModel.validateCheckoutError
     )
-    .takeWhen(self.applePayContextDidCompleteSignal)
-    .switchMap { (clientSecret: String, checkoutId: String, paymentMethodId: String) in
-      AppEnvironment.current.apiService
-        .validateCheckout(
-          checkoutId: checkoutId,
-          paymentSourceId: paymentMethodId,
-          paymentIntentClientSecret: clientSecret
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
 
-    let validateCheckoutError = Signal
-      .merge(
-        validateCheckoutExistingCard.errors(),
-        validateCheckoutWithApplePay.errors()
-      )
+    let validateCheckoutExistingCardError = validateCheckoutExistingCard.errors()
 
-    self.showErrorBannerWithMessage = validateCheckoutError
+    self.showErrorBannerWithMessage = self.applePayViewModel.validateCheckoutError
       .map { error in
         switch error.ksrCode {
         case .ValidateCheckoutError:
@@ -312,34 +252,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           )
       }
 
-    let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId)
-      .takeWhen(validateCheckoutWithApplePay.values())
-      .map {
-        (
-          clientSecret: String,
-          checkoutId: String
-        ) -> GraphAPI.CompleteOnSessionCheckoutInput in
-        GraphAPI
-          .CompleteOnSessionCheckoutInput(
-            checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
-            paymentIntentClientSecret: clientSecret,
-            paymentSourceId: nil,
-            paymentSourceReusable: false,
-            /* We are no longer sending ApplePay parameters to the backend, because Stripe Tokens are
-              considered deprecated and are incompatible with PaymentIntent-based payments.
-
-              In the future, we may use the other parameters in the ApplePayParams object, but for now,
-              send nil.
-              */
-            applePay: nil
-          )
-      }
-
     let checkoutCompleteSignal = Signal
       .merge(
         completeCheckoutWithCreditCardInput,
-        completeCheckoutWithApplePayInput
+        self.applePayViewModel.completeCheckoutWithApplePayInput
       )
       .switchMap { input in
         AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
@@ -385,10 +301,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.processingViewIsHidden = Signal.merge(
       // Processing view starts hidden, so show at the start of a pledge flow.
       self.submitButtonTappedProperty.signal.mapConst(false),
-      self.applePayButtonTappedSignal.mapConst(false),
+      self.applePayViewModel.applePayButtonTappedSignal.mapConst(false),
       // Hide view again whenever pledge flow is completed/cancelled/errors.
-      newPaymentIntentForApplePayError.mapConst(true),
-      validateCheckoutError.mapConst(true),
+      applePayErrors.mapConst(true),
+      validateCheckoutExistingCardError.mapConst(true),
       self.checkoutTerminatedProperty.signal.mapConst(true),
       checkoutCompleteSignal.signal.mapConst(true)
     )
@@ -422,7 +338,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // Apple pay button tapped event
     initialData
-      .takeWhen(self.applePayButtonTappedSignal)
+      .takeWhen(self.applePayViewModel.applePayButtonTappedSignal)
       .observeValues { data in
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
           project: data.project,
@@ -500,22 +416,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
-  public func applePayButtonTapped() {
-    self.applePayButtonTappedObserver.send(value: ())
-  }
-
-  private let (applePayPaymentMethodIdSignal, applePayPaymentMethodIdObserver) = Signal<String, Never>.pipe()
-  public func applePayContextDidCreatePayment(with paymentMethodId: String) {
-    self.applePayPaymentMethodIdObserver.send(value: paymentMethodId)
-  }
-
-  private let (applePayContextDidCompleteSignal, applePayContextDidCompleteObserver)
-    = Signal<Void, Never>.pipe()
-  public func applePayContextDidComplete() {
-    self.applePayContextDidCompleteObserver.send(value: ())
-  }
-
   // MARK: - Outputs
 
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
@@ -530,7 +430,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
-  public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
   public let checkoutError: Signal<ErrorEnvelope, Never>
 
