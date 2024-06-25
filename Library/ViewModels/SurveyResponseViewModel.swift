@@ -110,6 +110,10 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.policyDecisionProperty <~ newRequest
       .map { request in
+        if isStripeElement(request) {
+          return true
+        }
+
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
         }
@@ -165,4 +169,8 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 private func isSurvey(request: URLRequest) -> Bool {
   guard case (.project(_, .survey, _))? = Navigation.match(request) else { return false }
   return true
+}
+
+private func isStripeElement(_ request: URLRequest) -> Bool {
+  return request.url?.host == "js.stripe.com"
 }
