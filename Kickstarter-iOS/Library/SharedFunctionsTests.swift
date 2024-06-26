@@ -302,10 +302,6 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(selectedRewardQuantities(in: backing), quantities)
   }
 
-  func testIsNativeRiskMessagingControlEnabled() {
-    XCTAssertTrue(isNativeRiskMessagingControlEnabled())
-  }
-
   func testRewardIsAvailable_NotLimitedBaseReward_NotBacked() {
     let reward = Reward.template
       |> Reward.lens.limit .~ nil
