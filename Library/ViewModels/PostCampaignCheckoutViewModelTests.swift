@@ -37,7 +37,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
     self.vm = PostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
 
-    self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
+    self.vm.applePayViewModel.goToApplePayPaymentAuthorization
+      .observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
@@ -174,7 +175,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.scheduler.run()
 
@@ -219,7 +220,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.scheduler.run()
 
@@ -269,7 +270,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.scheduler.run()
 
@@ -321,7 +322,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.scheduler.run()
 
@@ -363,7 +364,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
       self.scheduler.run()
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
@@ -424,19 +425,19 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
 
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertLastValue(false)
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
-      self.vm.inputs.applePayContextDidCreatePayment(with: "Fake Payment Method id")
+      self.vm.applePayViewModel.applePayContextDidCreatePayment(with: "Fake Payment Method id")
 
       self.checkoutComplete.assertDidNotEmitValue()
       self.processingViewIsHidden.assertLastValue(false)
 
-      self.vm.inputs.applePayContextDidComplete()
+      self.vm.applePayViewModel.applePayContextDidComplete()
 
       self.scheduler.run()
 
@@ -474,7 +475,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
 
-      self.vm.inputs.applePayButtonTapped()
+      self.vm.applePayViewModel.applePayButtonTapped()
 
       self.processingViewIsHidden.assertLastValue(false)
 
