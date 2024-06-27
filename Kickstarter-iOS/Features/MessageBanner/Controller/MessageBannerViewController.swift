@@ -10,6 +10,7 @@ public protocol MessageBannerViewControllerPresenting {
 }
 
 public protocol MessageBannerViewControllerDelegate: AnyObject {
+  // Called when banner view hides if dismissType is `.bannerOnly`.
   func messageBannerViewDidHide(type: MessageBannerType)
 }
 
@@ -19,7 +20,19 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate var messageLabel: UILabel!
 
   private var bannerType: MessageBannerType?
-  private var dismissible: Bool = true
+
+  public enum DismissType {
+    // Banner cannot be dismissed and will not be dismissed automatically.
+    case persist
+    // Banner can be dismissed by the user and will be dismissed automatically.
+    // Once the banner is dismissed, the delegate method `messageBannerViewDidHide` is called.
+    case bannerOnly
+    // Banner can be dismissed by the user and will be dismissed automatically.
+    // Once the banner is dismissed, the presenting view controller is popped.
+    case bannerAndViewController
+  }
+
+  private var dismissType: DismissType = .bannerOnly
 
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
@@ -70,7 +83,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
       .observeValues { [weak self] isHidden in
         guard let self else { return }
 
-        if isHidden, !self.dismissible {
+        if isHidden, self.dismissType == .persist {
           return
         }
 
@@ -103,15 +116,19 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
       }
   }
 
-  public func showBanner(with type: MessageBannerType, message: String, dismissible: Bool = true) {
+  public func showBanner(
+    with type: MessageBannerType,
+    message: String,
+    dismissType: DismissType = .bannerOnly
+  ) {
     self.bannerType = type
-    self.dismissible = dismissible
+    self.dismissType = dismissType
     self.viewModel.inputs.update(with: (type, message))
     self.viewModel.inputs.bannerViewWillShow(true)
   }
 
   private func showViewAndAnimate(_ isHidden: Bool) {
-    if !isHidden, !self.view.isHidden, !self.dismissible { return }
+    if !isHidden, !self.view.isHidden, self.dismissType == .persist { return }
 
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
@@ -120,7 +137,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
     if !isHidden {
       self.view.superview?.bringSubviewToFront(self.view)
 
-      if self.dismissible {
+      if self.dismissType != .persist {
         self.view.superview?.isUserInteractionEnabled = false
       }
 
@@ -165,6 +182,11 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
             )
           }
         } else {
+          if self?.dismissType == .bannerAndViewController {
+            self?.navigationController?.popViewController(animated: true)
+            return
+          }
+
           self?.view.superview?.isUserInteractionEnabled = true
 
           if let type = self?.bannerType {
@@ -176,7 +198,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
-    guard self.dismissible, let view = sender.view else {
+    guard self.dismissType != .persist, let view = sender.view else {
       return
     }
 
@@ -205,7 +227,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewTapped(_: Any) {
-    guard self.dismissible else { return }
+    guard self.dismissType != .persist else { return }
 
     self.viewModel.inputs.bannerViewWillShow(false)
   }

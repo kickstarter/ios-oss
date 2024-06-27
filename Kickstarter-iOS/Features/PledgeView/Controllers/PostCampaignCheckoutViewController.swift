@@ -82,7 +82,6 @@ final class PostCampaignCheckoutViewController: UIViewController,
     self.title = Strings.Back_this_project()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
-    self.messageBannerViewController?.delegate = self
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -226,7 +225,11 @@ final class PostCampaignCheckoutViewController: UIViewController,
     self.viewModel.outputs.showErrorBannerWithMessage
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+        self?.messageBannerViewController?.showBanner(
+          with: .error,
+          message: errorMessage,
+          dismissType: .bannerAndViewController
+        )
       }
 
     self.viewModel.outputs.configureStripeIntegration
@@ -261,7 +264,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
         #endif
 
         self?.messageBannerViewController?
-          .showBanner(with: .error, message: message)
+          .showBanner(with: .error, message: message, dismissType: .bannerAndViewController)
       }
   }
 
@@ -286,7 +289,11 @@ final class PostCampaignCheckoutViewController: UIViewController,
           // Only show error banner if confirmation failed instead of being canceled.
           if status == .failed {
             self.messageBannerViewController?
-              .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+              .showBanner(
+                with: .error,
+                message: Strings.Something_went_wrong_please_try_again(),
+                dismissType: .bannerAndViewController
+              )
           }
           self.viewModel.inputs.checkoutTerminated()
           return
@@ -361,27 +368,22 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
 // MARK: - PledgeViewControllerMessageDisplaying
 
 extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
-    self.messageBannerViewController?.showBanner(with: .error, message: message)
+  func pledgeViewController(_: UIViewController, didErrorWith message: String, error: Error?) {
+    // If the error is a stripe error from attempting to add a new card, dismiss the banner only
+    // instead of restarting the checkout flow.
+    let stripeError = error as? NSError
+    let dismissBannerOnly = stripeError?.domain == STPError.stripeDomain &&
+      stripeError?.code == STPErrorCode.cardError.rawValue
+
+    self.messageBannerViewController?.showBanner(
+      with: .error,
+      message: message,
+      dismissType: dismissBannerOnly ? .bannerOnly : .bannerAndViewController
+    )
   }
 
   func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
     self.messageBannerViewController?.showBanner(with: .success, message: message)
-  }
-}
-
-// MARK: - MessageBannerViewControllerDelegate
-
-extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
-  func messageBannerViewDidHide(type: MessageBannerType) {
-    switch type {
-    case .error:
-      // Pop view controller in order to start checkout flow from the beginning,
-      // starting with generating a new checkout id.
-      self.navigationController?.popViewController(animated: true)
-    default:
-      break
-    }
   }
 }
 
@@ -422,7 +424,11 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     case .error:
       self.viewModel.inputs.checkoutTerminated()
       self.messageBannerViewController?
-        .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+        .showBanner(
+          with: .error,
+          message: Strings.Something_went_wrong_please_try_again(),
+          dismissType: .bannerAndViewController
+        )
     case .userCancellation:
       // User canceled the payment
       self.viewModel.inputs.checkoutTerminated()

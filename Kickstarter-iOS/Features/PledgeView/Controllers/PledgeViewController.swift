@@ -643,7 +643,7 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
 // MARK: - PledgeViewControllerMessageDisplaying
 
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String, error _: Error?) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 
