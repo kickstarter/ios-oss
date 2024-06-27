@@ -409,17 +409,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
 
-    let applePayButtonTappedAndOrIsChangingPaymentMethod = Signal.merge(
-      self.applePayButtonTappedSignal,
-      changingApplePayPaymentMethod
-    )
-
     let goToApplePayPaymentAuthorization = pledgeAmountIsValid
-      .takeWhen(applePayButtonTappedAndOrIsChangingPaymentMethod)
+      .takeWhen(self.applePayButtonTappedSignal)
       .filter(isTrue)
 
     let showApplePayAlert = pledgeAmountIsValid
-      .takeWhen(applePayButtonTappedAndOrIsChangingPaymentMethod)
+      .takeWhen(self.applePayButtonTappedSignal)
       .filter(isFalse)
 
     let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
@@ -443,7 +438,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
-      .takeWhen(self.applePayButtonTappedSignal)
+      .takeWhen(goToApplePayPaymentAuthorization)
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
