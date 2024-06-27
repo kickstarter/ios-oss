@@ -29,7 +29,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
     case bannerOnly
     // Banner can be dismissed by the user and will be dismissed automatically.
     // Once the banner is dismissed, the presenting view controller is popped.
-    case bannerAndParentVC
+    case bannerAndViewController
   }
 
   private var dismissType: DismissType = .bannerOnly
@@ -182,7 +182,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
             )
           }
         } else {
-          if self?.dismissType == .bannerAndParentVC {
+          if self?.dismissType == .bannerAndViewController {
             self?.navigationController?.popViewController(animated: true)
             return
           }

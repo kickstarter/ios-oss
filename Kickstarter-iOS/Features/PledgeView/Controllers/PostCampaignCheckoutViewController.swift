@@ -228,7 +228,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
         self?.messageBannerViewController?.showBanner(
           with: .error,
           message: errorMessage,
-          dismissType: .bannerAndParentVC
+          dismissType: .bannerAndViewController
         )
       }
 
@@ -264,7 +264,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
         #endif
 
         self?.messageBannerViewController?
-          .showBanner(with: .error, message: message, dismissType: .bannerAndParentVC)
+          .showBanner(with: .error, message: message, dismissType: .bannerAndViewController)
       }
   }
 
@@ -292,7 +292,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
               .showBanner(
                 with: .error,
                 message: Strings.Something_went_wrong_please_try_again(),
-                dismissType: .bannerAndParentVC
+                dismissType: .bannerAndViewController
               )
           }
           self.viewModel.inputs.checkoutTerminated()
@@ -378,7 +378,7 @@ extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplay
     self.messageBannerViewController?.showBanner(
       with: .error,
       message: message,
-      dismissType: dismissBannerOnly ? .bannerOnly : .bannerAndParentVC
+      dismissType: dismissBannerOnly ? .bannerOnly : .bannerAndViewController
     )
   }
 
@@ -427,7 +427,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
         .showBanner(
           with: .error,
           message: Strings.Something_went_wrong_please_try_again(),
-          dismissType: .bannerAndParentVC
+          dismissType: .bannerAndViewController
         )
     case .userCancellation:
       // User canceled the payment
