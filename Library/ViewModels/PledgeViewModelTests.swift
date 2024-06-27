@@ -59,7 +59,6 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationAdditionalPledgeAmount = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
-  private let goToRiskMessagingModal = TestObserver<Bool, Never>()
   private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
@@ -156,8 +155,6 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.goToApplePayPaymentAuthorizationShippingTotal.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
-
-    self.vm.outputs.goToRiskMessagingModal.observe(self.goToRiskMessagingModal.observer)
 
     self.vm.outputs.goToThanks.map { $0.project }.observe(self.goToThanksProject.observer)
     self.vm.outputs.goToThanks.map { $0.reward }.observe(self.goToThanksReward.observer)
@@ -1357,38 +1354,6 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
-  func testOutputGoToRiskMessagingModal_SubmitButtonTapped() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 20
-      |> Reward.lens.shipping.enabled .~ true
-    let shippingRule = ShippingRule.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToRiskMessagingModal.assertDidNotEmitValue()
-
-    self.vm.inputs.shippingRuleSelected(shippingRule)
-
-    withEnvironment {
-      self.vm.inputs.submitButtonTapped()
-
-      self.scheduler.advance()
-
-      self.goToRiskMessagingModal.assertDidNotEmitValue()
-    }
-  }
-
   func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_US_ProjectCurrency_US_ProjectCountry(
   ) {
     let project = Project.template
@@ -1674,7 +1639,7 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
-  func testApplePay_GoToThanks_NativeRiskMessagingEnabled_Control() {
+  func testApplePay_GoToThanks() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
         id: "Q2hlY2tvdXQtMQ==",
@@ -1759,99 +1724,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
-        self.segmentTrackingClient.events
-      )
-    }
-  }
-
-  func testApplePay_GoToThanks_NativeRiskMessagingEnabled_Variant() {
-    let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(
-        id: "Q2hlY2tvdXQtMQ==",
-        state: .successful,
-        backing: .init(clientSecret: nil, requiresAction: false)
-      )
-    )
-
-    let mockService = MockService(
-      createBackingResult:
-      Result.success(CreateBackingEnvelope(createBacking: createBacking))
-    )
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
-      let reward = Reward.template
-        |> Reward.lens.minimum .~ 5
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.applePayButtonTapped()
-
-      self.vm.inputs.riskMessagingViewControllerDismissed(isApplePay: true)
-
-      self.goToThanksProject.assertDidNotEmitValue()
-      self.processingViewIsHidden.assertDidNotEmitValue()
-
-      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
-        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
-      )
-
-      let pledgeAmountData = (amount: 10.0, min: 5.0, max: 10_000.0, isValid: true)
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
-
-      XCTAssertEqual(
-        PKPaymentAuthorizationStatus.success,
-        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
-      )
-
-      self.goToThanksProject.assertDidNotEmitValue()
-
-      self.processingViewIsHidden.assertValues([false])
-
-      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
-
-      self.processingViewIsHidden.assertValues([false])
-      self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      self.scheduler.run()
-
-      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
-        addOnsCountTotal: 0,
-        addOnsCountUnique: 0,
-        addOnsMinimumUsd: 0.00,
-        bonusAmountInUsd: 10.00,
-        checkoutId: "1",
-        estimatedDelivery: 1_506_897_315.0,
-        paymentType: "apple_pay",
-        revenueInUsd: 15.00,
-        rewardId: "1",
-        rewardMinimumUsd: 5.00,
-        rewardTitle: "My Reward",
-        shippingEnabled: false,
-        shippingAmountUsd: nil,
-        userHasStoredApplePayCard: true
-      )
-
-      self.processingViewIsHidden.assertValues([false, true])
-      self.goToThanksProject.assertValues([project])
-      self.goToThanksReward.assertValues([reward])
-      self.goToThanksCheckoutData.assertValues([checkoutData])
-
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2149,7 +2021,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testCreateBacking_Success_NativeRiskMessaging_Control() {
+  func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
         id: "Q2hlY2tvdXQtMQ==",
@@ -5965,87 +5837,6 @@ final class PledgeViewModelTests: TestCase {
       KSRAnalytics.TypeContext.creditCard.trackingString,
       segmentClientProps?["context_type"] as? String
     )
-  }
-
-  func testTrackingEvents_PledgeConfirmButtonClicked() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .discovery,
-      context: .pledge
-    )
-
-    withEnvironment {
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
-        amount: 40.0,
-        min: 10.0,
-        max: 100.0,
-        isValid: true
-      ))
-      self.vm.inputs.shippingRuleSelected(.template)
-
-      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
-
-      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
-
-      self.vm.inputs.submitButtonTapped()
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
-        self.segmentTrackingClient.events
-      )
-
-      self.vm.inputs.riskMessagingViewControllerDismissed(isApplePay: false)
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
-        self.segmentTrackingClient.events
-      )
-
-      let segmentClientProps = self.segmentTrackingClient.properties.last
-
-      // Checkout properties
-
-      XCTAssertEqual("credit_card", segmentClientProps?["checkout_payment_type"] as? String)
-      XCTAssertEqual("1", segmentClientProps?["checkout_reward_id"] as? String)
-      XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
-      XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-      XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
-      XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-      XCTAssertEqual(
-        "2017-10-01T22:35:15Z",
-        segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String
-      )
-      XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
-
-      // Project properties
-      XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
-
-      XCTAssertEqual("discovery", segmentClientProps?["session_ref_tag"] as? String)
-
-      // Context properties
-
-      XCTAssertEqual(
-        KSRAnalytics.CTAContext.pledgeConfirm.trackingString,
-        segmentClientProps?["context_cta"] as? String
-      )
-
-      XCTAssertEqual(
-        KSRAnalytics.TypeContext.creditCard.trackingString,
-        segmentClientProps?["context_type"] as? String
-      )
-    }
   }
 
   func testTrackingEvents_UpdatePledgeButtonSubmit_ContextIsFixPayment() {

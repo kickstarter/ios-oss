@@ -288,10 +288,6 @@ public func discoveryPageBackgroundColor() -> UIColor {
   return UIColor.ksr_white
 }
 
-public func isNativeRiskMessagingControlEnabled() -> Bool {
-  return true
-}
-
 public func rewardIsAvailable(_ reward: Reward) -> Bool {
   reward.isAvailable == true || reward.isNoReward
 }
