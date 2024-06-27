@@ -239,7 +239,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
         STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
 
-    self.viewModel.applePayService.goToApplePayPaymentAuthorization
+    self.viewModel.applePayViewModel.goToApplePayPaymentAuthorization
       .observeForControllerAction()
       .observeValues { [weak self] paymentAuthorizationData in
         self?.goToPaymentAuthorization(paymentAuthorizationData)
@@ -340,7 +340,7 @@ extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate
 
   func applePayButtonTapped() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
-    self.viewModel.applePayService.applePayButtonTapped()
+    self.viewModel.applePayViewModel.applePayButtonTapped()
   }
 
   func submitButtonTapped() {
@@ -409,7 +409,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
       return
     }
 
-    self.viewModel.applePayService.applePayContextDidCreatePayment(with: paymentMethod.stripeId)
+    self.viewModel.applePayViewModel.applePayContextDidCreatePayment(with: paymentMethod.stripeId)
     completion(paymentIntentClientSecret, nil)
   }
 
@@ -420,7 +420,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
   ) {
     switch status {
     case .success:
-      self.viewModel.applePayService.applePayContextDidComplete()
+      self.viewModel.applePayViewModel.applePayContextDidComplete()
     case .error:
       self.viewModel.inputs.checkoutTerminated()
       self.messageBannerViewController?

@@ -215,6 +215,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: Apple Pay
 
+    /// See ApplePayCheckoutViewModel.swift
+
     let applePayErrors = Signal.merge(
       self.applePayViewModel.createNewPaymentIntentError,
       self.applePayViewModel.validateCheckoutError

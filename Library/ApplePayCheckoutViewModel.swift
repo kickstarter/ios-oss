@@ -1,5 +1,6 @@
 import Foundation
 import KsApi
+import Prelude
 import ReactiveSwift
 
 public protocol ApplePayCheckoutViewModelInputs {
@@ -15,19 +16,23 @@ public protocol ApplePayCheckoutViewModelOutputs {
   var createNewPaymentIntentError: Signal<ErrorEnvelope, Never> { get }
 }
 
-/*
-
- Core Functionality:
- 1) Apple pay button tapped
- 2) Create a new payment intent
- 3) Present the payment authorization form
- 4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
- 5) Payment authorization form calls paymentAuthorizationDidFinish
- 6) Validate checkout using the checkoutId, payment source id, and payment intent
- 7) Notify the parent View Model that Apple Pay checkout is complete
- */
-
 public class ApplePayCheckoutViewModel: ApplePayCheckoutViewModelInputs, ApplePayCheckoutViewModelOutputs {
+  // MARK: Late Pledge Init
+
+  /// Crowdfunding logic may need to be in it's own init.
+
+  /*
+
+   Core Late Pledge Functionality:
+   1) Apple pay button tapped
+   2) Create a new payment intent
+   3) Present the payment authorization form
+   4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
+   5) Payment authorization form calls paymentAuthorizationDidFinish
+   6) Validate checkout using the checkoutId, payment source id, and payment intent
+   7) Notify the parent View Model that Apple Pay checkout is complete
+   */
+
   public init(
     withConfigurationSignal configureWithData: Signal<PostCampaignCheckoutData, Never>,
     stripeIntentService: StripeIntentServiceType
