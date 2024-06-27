@@ -109,7 +109,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
-        self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
+        self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage, error: nil)
       }
 
     self.viewModel.outputs.notifyDelegateCreditCardSelected
@@ -153,7 +153,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       case let .failure(error):
         strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
         strongSelf.messageDisplayingDelegate?
-          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription, error: error)
       case let .success(paymentSheetFlowController):
         let topViewController = strongSelf.navigationController?.topViewController
 
@@ -211,7 +211,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       case let .failed(error):
         strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
         strongSelf.messageDisplayingDelegate?
-          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription, error: error)
       }
     }
   }

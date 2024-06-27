@@ -2504,7 +2504,12 @@ private let surveyResponsePushData = [
   ],
   "survey": [
     "id": 1,
-    "project_id": 1
+    "project_id": 1,
+    "urls": [
+      "web": [
+        "survey": "/projects/fakeCreatorId/1/surveys/0"
+      ]
+    ]
   ]
 ]
 

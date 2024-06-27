@@ -1003,39 +1003,6 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the Confirm button on the Risk Messaging modal is clicked
-
-   parameters:
-   - project: the project being pledged to
-   - reward: the chosen reward
-   - typeContext: The context of the pledge submit button for a project.
-   - checkoutData: all the checkout data associated with the pledge
-   - refTag: the associated RefTag for the pledge
-
-   */
-
-  public func trackPledgeConfirmButtonClicked(
-    project: Project,
-    reward: Reward,
-    typeContext: TypeContext,
-    checkoutData: CheckoutPropertiesData,
-    refTag: RefTag?
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-      .withAllValuesFrom(contextProperties(
-        ctaContext: .pledgeConfirm,
-        page: .checkout,
-        typeContext: typeContext
-      ))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
   /* Call when the Thanks page is viewed
 
    parameters:

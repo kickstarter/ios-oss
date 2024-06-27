@@ -376,12 +376,6 @@ final class PledgeViewController: UIViewController,
         self?.goToPaymentAuthorization(paymentAuthorizationData)
       }
 
-    self.viewModel.outputs.goToRiskMessagingModal
-      .observeForControllerAction()
-      .observeValues { [weak self] isApplePay in
-        self?.goToRiskMessagingModal(isApplePay: isApplePay)
-      }
-
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] data in
@@ -490,14 +484,6 @@ final class PledgeViewController: UIViewController,
     paymentAuthorizationViewController.delegate = self
 
     self.present(paymentAuthorizationViewController, animated: true)
-  }
-
-  private func goToRiskMessagingModal(isApplePay: Bool) {
-    let viewController = RiskMessagingViewController()
-    viewController.configure(isApplePay: isApplePay)
-    viewController.delegate = self
-    let offset = self.view.bounds.height * Layout.Style.modalHeightMultiplier
-    self.presentViewControllerWithSheetOverlay(viewController, offset: offset)
   }
 
   private func goToThanks(data: ThanksPageData) {
@@ -643,7 +629,7 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
 // MARK: - PledgeViewControllerMessageDisplaying
 
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String, error _: Error?) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 
@@ -676,14 +662,6 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
 extension PledgeViewController: PledgeDisclaimerViewDelegate {
   func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
     self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
-  }
-}
-
-// MARK: - RiskMessagingViewControllerDelegate
-
-extension PledgeViewController: RiskMessagingViewControllerDelegate {
-  func riskMessagingViewControllerDismissed(_: RiskMessagingViewController, isApplePay: Bool) {
-    self.viewModel.inputs.riskMessagingViewControllerDismissed(isApplePay: isApplePay)
   }
 }
 
