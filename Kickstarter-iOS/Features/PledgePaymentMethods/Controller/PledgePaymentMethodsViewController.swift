@@ -181,7 +181,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
 //  }
 
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
-    let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
       guard let strongSelf = self else { return }
 
       switch result {

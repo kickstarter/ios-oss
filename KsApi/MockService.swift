@@ -32,6 +32,8 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
+    fileprivate let completeOrderResult: Result<CompleteOrderEnvelope,ErrorEnvelope>?
+
     fileprivate let completeOnSessionCheckoutResult: Result<
       GraphAPI.CompleteOnSessionCheckoutMutation.Data,
       ErrorEnvelope
@@ -235,6 +237,7 @@
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
+      completeOrderResult: Result<CompleteOrderEnvelope, ErrorEnvelope>? = nil,
       completeOnSessionCheckoutResult: Result<
         GraphAPI.CompleteOnSessionCheckoutMutation.Data,
         ErrorEnvelope
@@ -364,6 +367,8 @@
       self.createAttributionEventResult = createAttributionEventResult
 
       self.createBackingResult = createBackingResult
+
+      self.completeOrderResult = completeOrderResult
 
       self.completeOnSessionCheckoutResult = completeOnSessionCheckoutResult
 
@@ -654,6 +659,17 @@
       let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
+    }
+    
+    internal func completeOrder(input: GraphAPI.CompleteOrderInput)
+    -> SignalProducer<CompleteOrderEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CompleteOrderMutation(input: input)
+
+      return client.performWithResult(mutation: mutation, result: self.completeOrderResult)
     }
 
     internal func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->

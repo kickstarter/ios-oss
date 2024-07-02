@@ -169,6 +169,29 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
+  public func completeOrder(input: GraphAPI.CompleteOrderInput) ->
+    SignalProducer<CompleteOrderEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CompleteOrderMutation(input: input))
+      .flatMap(CompleteOrderEnvelope.producer(from:))
+  }
+
+  public func completeOrder(
+    projectId: String,
+    stripePaymentMethodId: String
+  ) -> AnyPublisher<String, ErrorEnvelope> {
+    let input = GraphAPI.CompleteOrderInput(
+      projectId: projectId,
+      stripePaymentMethodId: stripePaymentMethodId
+    )
+    let mutation = GraphAPI.CompleteOrderMutation(input: input)
+
+    return GraphQL.shared.client
+      .perform(mutation: mutation)
+      .map { data in data.completeOrder?.clientSecret ?? "" }
+      .eraseToAnyPublisher()
+  }
+
   public func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->
     SignalProducer<GraphAPI.CompleteOnSessionCheckoutMutation.Data, ErrorEnvelope> {
     return GraphQL.shared.client.perform(mutation: GraphAPI.CompleteOnSessionCheckoutMutation(input: input))
