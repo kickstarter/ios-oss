@@ -459,6 +459,7 @@
 		6021F66A2B97BC8100F76031 /* ConfirmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6692B97BC8100F76031 /* ConfirmDetailsViewController.swift */; };
 		6021F66C2B97BCE200F76031 /* ConfirmDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */; };
 		6021F66E2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */; };
+		602258962C3461CE005BD8DB /* CompleteOrderMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 602258952C3461CE005BD8DB /* CompleteOrderMutation.graphql */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
@@ -2069,6 +2070,7 @@
 		6021F6692B97BC8100F76031 /* ConfirmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewController.swift; sourceTree = "<group>"; };
 		6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModel.swift; sourceTree = "<group>"; };
 		6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModelTests.swift; sourceTree = "<group>"; };
+		602258952C3461CE005BD8DB /* CompleteOrderMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CompleteOrderMutation.graphql; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
@@ -5708,6 +5710,7 @@
 				47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */,
 				19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */,
 				E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */,
+				602258952C3461CE005BD8DB /* CompleteOrderMutation.graphql */,
 				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
@@ -7522,6 +7525,7 @@
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
 				06261603273B0E1500389981 /* PostComment.graphql in Resources */,
+				602258962C3461CE005BD8DB /* CompleteOrderMutation.graphql in Resources */,
 				06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */,
 				E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,

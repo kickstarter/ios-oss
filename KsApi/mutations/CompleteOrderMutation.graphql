@@ -1,0 +1,7 @@
+mutation CompleteOrder($input: CompleteOrderInput!) {
+   completeOrder(input: $input) {
+    clientMutationId
+    clientSecret
+    status
+  }
+}

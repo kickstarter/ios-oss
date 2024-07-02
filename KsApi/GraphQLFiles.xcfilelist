@@ -30,6 +30,7 @@ $(PROJECT_DIR)/KsApi/mutations/CreateOrUpdateBackingAddressMutation.graphql
 $(PROJECT_DIR)/KsApi/mutations/SignInWithApple.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateFlagging.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateBacking.graphql
+$(PROJECT_DIR)/KsApi/mutations/CompleteOrderMutation.graphql
 $(PROJECT_DIR)/KsApi/mutations/WatchProject.graphql
 $(PROJECT_DIR)/KsApi/mutations/UserSendEmailVerification.graphql
 $(PROJECT_DIR)/KsApi/mutations/CancelBacking.graphql
