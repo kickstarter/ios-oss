@@ -339,6 +339,7 @@
 		37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAF702273B7FF00662CC8 /* UIStackView.swift */; };
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
+		392BB12A2C3BEB5600A5591B /* PPOEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */; };
 		3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */; };
 		3959A62C2B69B9CD00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 		3959A62E2B69BBA600FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
@@ -1945,6 +1946,7 @@
 		37FDAF702273B7FF00662CC8 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tests.swift"; sourceTree = "<group>"; };
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
+		392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOEmptyStateView.swift; sourceTree = "<group>"; };
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
 		395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
@@ -7085,6 +7087,7 @@
 		E1BAA0332C1A18DA004F8B06 /* PledgedProjectsOverview */ = {
 			isa = PBXGroup;
 			children = (
+				392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */,
 				E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */,
 				E1BAA0342C1A1907004F8B06 /* PPOView.swift */,
 				E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */,
@@ -8445,6 +8448,7 @@
 				379CFFFC2242DAE800F6F0C2 /* Nib.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
+				392BB12A2C3BEB5600A5591B /* PPOEmptyStateView.swift in Sources */,
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
 				395A3BC72BA8CB6E0091A379 /* PostCampaignCheckoutViewController.swift in Sources */,
 				604453282BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift in Sources */,
