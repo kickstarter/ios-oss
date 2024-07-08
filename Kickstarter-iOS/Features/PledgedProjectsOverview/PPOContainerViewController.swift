@@ -8,7 +8,9 @@ public class PPOContainerViewController: PagedContainerViewController {
 
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
-    let ppoViewController = UIHostingController(rootView: PPOView())
+
+    let tabBarController = self.tabBarController as? RootTabBarViewController
+    let ppoViewController = UIHostingController(rootView: PPOView(tabBarController: tabBarController))
     ppoViewController.title = "Project Alerts"
 
     let activitiesViewController = ActivitiesViewController.instantiate()

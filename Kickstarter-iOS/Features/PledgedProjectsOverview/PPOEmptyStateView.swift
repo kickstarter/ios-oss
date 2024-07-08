@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct PPOEmptyStateView: View {
+  weak var tabBarController: RootTabBarViewController?
+
   private enum Constants {
     public static let largePadding = 24.0
     public static let horizontalPadding = 16.0
@@ -28,7 +30,7 @@ struct PPOEmptyStateView: View {
           .multilineTextAlignment(.center)
 
         Button {
-          print("Looking!")
+          self.tabBarController?.switchToProfile()
         } label: {
           Text("See all backed projects")
             .frame(maxWidth: .infinity)
