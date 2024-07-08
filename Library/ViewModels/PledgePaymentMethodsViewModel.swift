@@ -34,6 +34,9 @@ public protocol PledgePaymentMethodsViewModelInputs {
     clientSecret: String,
     paymentMethod: String?
   )
+  /// Used to manually add card info to the payment methods view without saving to the backend first
+  /// This should 'selecting the new card' and end up notifying the pledge view model about the newly selected card.
+  func paymentSheetDidAddRedemptionCard(paymentMethod: STPPaymentMethod)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -280,7 +283,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
       .takeWhen(didTapToAddNewCard)
-      .mapConst(true)
+      .mapConst(false)
 
     self.shouldCancelPaymentSheetAppearance <~ showLoadingIndicator.mapConst(false)
 
@@ -432,6 +435,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
   public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
+  }
+
+  private let paymentSheetDidAddRedemptionCardProperty =
+    MutableProperty<STPPaymentMethod?>(nil)
+  public func paymentSheetDidAddRedemptionCard(
+    paymentMethod: STPPaymentMethod
+  ) {
+    self.paymentSheetDidAddRedemptionCardProperty.value = paymentMethod
   }
 
   private let newStripeIntentCreditCardProperty =

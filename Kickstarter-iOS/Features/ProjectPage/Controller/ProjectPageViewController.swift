@@ -754,17 +754,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(alert, animated: true)
   }
 
-  private func goToCreatorProfile(forProject project: Project) {
-    let vc = ProjectCreatorViewController.configuredWith(project: project)
-
-    if self.traitCollection.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.viewModel.inputs.showNavigationBar(false)
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+  private func goToCreatorProfile(forProject _: Project) {
+//    let vc = ProjectCreatorViewController.configuredWith(project: project)
+//
+//    if self.traitCollection.userInterfaceIdiom == .pad {
+//      let nav = UINavigationController(rootViewController: vc)
+//      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+//      self.present(nav, animated: true, completion: nil)
+//    } else {
+//      self.viewModel.inputs.showNavigationBar(false)
+//      self.navigationController?.pushViewController(vc, animated: true)
+//    }
   }
 
   // MARK: - Selectors
@@ -988,29 +988,32 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
   }
 
   internal func projectPamphletMainCell(
-    _ cell: ProjectPamphletMainCell,
-    goToCreatorForProject project: Project
+    _: ProjectPamphletMainCell,
+    goToCreatorForProject _: Project
   ) {
-    guard
-      let currentUser = AppEnvironment.current.currentUser,
-      currentUser != project.creator,
-      !project.creator.isBlocked
-    else {
-      self.goToCreatorProfile(forProject: project)
-      return
-    }
+    let vc = PledgeRedemptionViewController()
+    self.navigationController?.pushViewController(vc, animated: true)
 
-    let actionSheet = UIAlertController
-      .blockUserActionSheet(
-        blockUserHandler: { _ in
-          self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
-        },
-        viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
-        sourceView: cell.creatorButton,
-        isIPad: self.traitCollection.userInterfaceIdiom == .pad
-      )
-
-    self.present(actionSheet, animated: true)
+//    guard
+//      let currentUser = AppEnvironment.current.currentUser,
+//      currentUser != project.creator,
+//      !project.creator.isBlocked
+//    else {
+//      self.goToCreatorProfile(forProject: project)
+//      return
+//    }
+//
+//    let actionSheet = UIAlertController
+//      .blockUserActionSheet(
+//        blockUserHandler: { _ in
+//          self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
+//        },
+//        viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
+//        sourceView: cell.creatorButton,
+//        isIPad: self.traitCollection.userInterfaceIdiom == .pad
+//      )
+//
+//    self.present(actionSheet, animated: true)
   }
 }
 

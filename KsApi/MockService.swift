@@ -32,7 +32,7 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
-    fileprivate let completeOrderResult: Result<CompleteOrderEnvelope,ErrorEnvelope>?
+    fileprivate let completeOrderResult: Result<CompleteOrderEnvelope, ErrorEnvelope>?
 
     fileprivate let completeOnSessionCheckoutResult: Result<
       GraphAPI.CompleteOnSessionCheckoutMutation.Data,
@@ -660,16 +660,16 @@
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
     }
-    
-    internal func completeOrder(input: GraphAPI.CompleteOrderInput)
-    -> SignalProducer<CompleteOrderEnvelope, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
 
-      let mutation = GraphAPI.CompleteOrderMutation(input: input)
+    internal func completeOrder(input: CompleteOrderInput)
+      -> SignalProducer<CompleteOrderEnvelope, ErrorEnvelope> {
+        guard let client = self.apolloClient else {
+          return .empty
+        }
 
-      return client.performWithResult(mutation: mutation, result: self.completeOrderResult)
+        let mutation = GraphAPI.CompleteOrderMutation(input: GraphAPI.CompleteOrderInput.from(input))
+
+        return client.performWithResult(mutation: mutation, result: self.completeOrderResult)
     }
 
     internal func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->

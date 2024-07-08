@@ -78,7 +78,7 @@ public protocol ServiceType {
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
   /// Completes a pledge redemption checkout order. Returns the client secret.
-  func completeOrder(input: GraphAPI.CompleteOrderInput) ->
+  func completeOrder(input: CompleteOrderInput) ->
     SignalProducer<CompleteOrderEnvelope, ErrorEnvelope>
 
   func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->

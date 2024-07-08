@@ -4,7 +4,7 @@ import ReactiveSwift
 public struct CompleteOrderEnvelope: Decodable {
   public var clientSecret: String
   public var status: String
-  
+
   static func from(_ data: GraphAPI.CompleteOrderMutation.Data) -> CompleteOrderEnvelope? {
     guard let clientSecret = data.completeOrder?.clientSecret, let status = data.completeOrder?.status else {
       return nil
@@ -12,7 +12,7 @@ public struct CompleteOrderEnvelope: Decodable {
 
     return CompleteOrderEnvelope(clientSecret: clientSecret, status: status)
   }
-  
+
   static func producer(
     from data: GraphAPI.CompleteOrderMutation.Data
   ) -> SignalProducer<CompleteOrderEnvelope, ErrorEnvelope> {

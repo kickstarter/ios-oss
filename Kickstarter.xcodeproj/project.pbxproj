@@ -462,6 +462,10 @@
 		602258962C3461CE005BD8DB /* CompleteOrderMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 602258952C3461CE005BD8DB /* CompleteOrderMutation.graphql */; };
 		6022589C2C346B2A005BD8DB /* ConfirmOrderMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258992C346A7A005BD8DB /* ConfirmOrderMutationTests.swift */; };
 		602258A22C34B0F7005BD8DB /* CompleteOrderEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258A12C34B0F7005BD8DB /* CompleteOrderEnvelope.swift */; };
+		602258A82C35AE39005BD8DB /* PledgeRedemptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258A62C35ADEF005BD8DB /* PledgeRedemptionViewController.swift */; };
+		602258AB2C35B22D005BD8DB /* PledgeRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258A92C35AFE1005BD8DB /* PledgeRedemptionViewModel.swift */; };
+		602258AD2C35E7AB005BD8DB /* GraphAPI.CompleteOrderInput+CompleteOrderInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258AC2C35E7AB005BD8DB /* GraphAPI.CompleteOrderInput+CompleteOrderInput.swift */; };
+		602258AF2C35E7D9005BD8DB /* CompleteOrderInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602258AE2C35E7D9005BD8DB /* CompleteOrderInput.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
@@ -2075,6 +2079,10 @@
 		602258952C3461CE005BD8DB /* CompleteOrderMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CompleteOrderMutation.graphql; sourceTree = "<group>"; };
 		602258992C346A7A005BD8DB /* ConfirmOrderMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmOrderMutationTests.swift; sourceTree = "<group>"; };
 		602258A12C34B0F7005BD8DB /* CompleteOrderEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteOrderEnvelope.swift; sourceTree = "<group>"; };
+		602258A62C35ADEF005BD8DB /* PledgeRedemptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRedemptionViewController.swift; sourceTree = "<group>"; };
+		602258A92C35AFE1005BD8DB /* PledgeRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRedemptionViewModel.swift; sourceTree = "<group>"; };
+		602258AC2C35E7AB005BD8DB /* GraphAPI.CompleteOrderInput+CompleteOrderInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CompleteOrderInput+CompleteOrderInput.swift"; sourceTree = "<group>"; };
+		602258AE2C35E7D9005BD8DB /* CompleteOrderInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteOrderInput.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
@@ -3745,6 +3753,8 @@
 		1937A70528C9399D00DD732D /* PledgeView */ = {
 			isa = PBXGroup;
 			children = (
+				602258A62C35ADEF005BD8DB /* PledgeRedemptionViewController.swift */,
+				602258A92C35AFE1005BD8DB /* PledgeRedemptionViewModel.swift */,
 				1937A72A28C95B0700DD732D /* Views */,
 				1937A70628C939B400DD732D /* Controllers */,
 			);
@@ -5927,6 +5937,7 @@
 				8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */,
 				4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */,
 				47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */,
+				602258AC2C35E7AB005BD8DB /* GraphAPI.CompleteOrderInput+CompleteOrderInput.swift */,
 				8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */,
 				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
 				60C996E72AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift */,
@@ -7000,6 +7011,7 @@
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
+				602258AE2C35E7D9005BD8DB /* CompleteOrderInput.swift */,
 				D755ECA42315E6E10096F189 /* CreateBackingInput.swift */,
 				D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */,
 				6051C6642B600F2000514202 /* CreateCheckoutInput.swift */,
@@ -7714,6 +7726,7 @@
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */,
+				602258AB2C35B22D005BD8DB /* PledgeRedemptionViewModel.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
 				A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */,
 				60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */,
@@ -8360,6 +8373,7 @@
 				A75798911D6A201F0063CEEC /* DebugPushNotificationsViewController.swift in Sources */,
 				1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */,
 				06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */,
+				602258A82C35AE39005BD8DB /* PledgeRedemptionViewController.swift in Sources */,
 				774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
@@ -8646,6 +8660,7 @@
 				06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */,
 				06232D462795EC4A00A81755 /* TextComponent.swift in Sources */,
 				19047FC72889BC5800BDD1A8 /* ClientSecretEnvelope.swift in Sources */,
+				602258AF2C35E7D9005BD8DB /* CompleteOrderInput.swift in Sources */,
 				7798B56521750041008BC50D /* GraphUser.swift in Sources */,
 				8A1557072693A07500017845 /* Backing+BackingFragment.swift in Sources */,
 				6051C6832B683E6300514202 /* PaymentIntentEnvelope.swift in Sources */,
@@ -8940,6 +8955,7 @@
 				D68F0B16243CFF3F009FC948 /* SignInWithAppleEnvelope.swift in Sources */,
 				D6B686EB2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift in Sources */,
 				D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */,
+				602258AD2C35E7AB005BD8DB /* GraphAPI.CompleteOrderInput+CompleteOrderInput.swift in Sources */,
 				D67B6CD8221F46D700B63A6B /* Project.Country+Encode.swift in Sources */,
 				8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
