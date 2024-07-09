@@ -2455,7 +2455,7 @@ public enum GraphAPI {
     case mastercard
     case visa
     case diners
-    case unionPay
+    case unionpay
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -2467,7 +2467,7 @@ public enum GraphAPI {
         case "MASTERCARD": self = .mastercard
         case "VISA": self = .visa
         case "DINERS": self = .diners
-        case "UNION_PAY": self = .unionPay
+        case "UNIONPAY": self = .unionpay
         default: self = .__unknown(rawValue)
       }
     }
@@ -2480,7 +2480,7 @@ public enum GraphAPI {
         case .mastercard: return "MASTERCARD"
         case .visa: return "VISA"
         case .diners: return "DINERS"
-        case .unionPay: return "UNION_PAY"
+        case .unionpay: return "UNIONPAY"
         case .__unknown(let value): return value
       }
     }
@@ -2493,7 +2493,7 @@ public enum GraphAPI {
         case (.mastercard, .mastercard): return true
         case (.visa, .visa): return true
         case (.diners, .diners): return true
-        case (.unionPay, .unionPay): return true
+        case (.unionpay, .unionpay): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -2507,7 +2507,7 @@ public enum GraphAPI {
         .mastercard,
         .visa,
         .diners,
-        .unionPay,
+        .unionpay,
       ]
     }
   }
@@ -7908,7 +7908,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8053,10 +8053,6 @@ public enum GraphAPI {
 
         public static func makeOrder() -> Node {
           return Node(unsafeResultMap: ["__typename": "Order"])
-        }
-
-        public static func makeOrderAddress() -> Node {
-          return Node(unsafeResultMap: ["__typename": "OrderAddress"])
         }
 
         public static func makeSurvey() -> Node {
@@ -8365,7 +8361,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8506,10 +8502,6 @@ public enum GraphAPI {
 
         public static func makeOrder() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "Order"])
-        }
-
-        public static func makeOrderAddress() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "OrderAddress"])
         }
 
         public static func makeSurvey() -> Comment {
@@ -16915,7 +16907,7 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("cost", type: .object(Cost.selections)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-        GraphQLField("location", type: .object(Location.selections)),
+        GraphQLField("location", type: .nonNull(.object(Location.selections))),
       ]
     }
 
@@ -16925,8 +16917,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(cost: Cost? = nil, id: GraphQLID, location: Location? = nil) {
-      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }])
+    public init(cost: Cost? = nil, id: GraphQLID, location: Location) {
+      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.resultMap])
     }
 
     public var __typename: String {
@@ -16958,12 +16950,12 @@ public enum GraphAPI {
     }
 
     /// The shipping location to which the rule pertains.
-    public var location: Location? {
+    public var location: Location {
       get {
-        return (resultMap["location"] as? ResultMap).flatMap { Location(unsafeResultMap: $0) }
+        return Location(unsafeResultMap: resultMap["location"]! as! ResultMap)
       }
       set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "location")
+        resultMap.updateValue(newValue.resultMap, forKey: "location")
       }
     }
 
