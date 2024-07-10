@@ -3,24 +3,31 @@ import SwiftUI
 
 struct MessageBannerView: View {
   @Binding var viewModel: MessageBannerViewViewModel?
+  @SwiftUI.Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
   var body: some View {
     if let vm = viewModel {
-      ZStack {
-        RoundedRectangle(cornerRadius: 4)
-          .foregroundColor(vm.bannerBackgroundColor)
-        Label(vm.bannerMessage, image: vm.iconImageName)
+      HStack(alignment: .center, spacing: 12) {
+        Image(vm.iconImageName, bundle: Bundle.framework)
+        Text(vm.bannerMessage)
           .font(Font(UIFont.ksr_subhead()))
-          .foregroundColor(vm.messageTextColor)
-          .lineLimit(3)
           .multilineTextAlignment(vm.messageTextAlignment)
-          .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+          .frame(
+            maxWidth: .infinity,
+            minHeight: 40,
+            alignment: self.alignmentFromTextAlignment(vm.messageTextAlignment)
+          )
+      }
+      .foregroundColor(vm.messageTextColor)
+      .padding(EdgeInsets(top: 16, leading: 9, bottom: 16, trailing: 9))
+      .background {
+        RoundedRectangle(cornerRadius: 6)
+          .foregroundColor(vm.bannerBackgroundColor)
       }
       .accessibilityElement()
       .accessibilityLabel(vm.bannerMessageAccessibilityLabel)
-      .padding()
       .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (self.voiceOverEnabled ? 8 : 4)) {
           self.viewModel = nil
         }
       }
@@ -29,4 +36,19 @@ struct MessageBannerView: View {
       }
     }
   }
+
+  // MARK: - Helpers
+
+  private func alignmentFromTextAlignment(_ textAligment: TextAlignment) -> Alignment {
+    switch textAligment {
+    case .center: return .center
+    case .leading: return .leading
+    case .trailing: return .trailing
+    }
+  }
+}
+
+#Preview {
+  @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((.success, "Short string"))
+  return MessageBannerView(viewModel: $viewModel)
 }

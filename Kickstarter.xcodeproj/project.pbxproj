@@ -358,6 +358,7 @@
 		39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */; };
 		39B5E1122B89120F00FFB720 /* CreateAttributionEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */; };
 		39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850752C3EA5620045CBA5 /* SwiftUI.swift */; };
+		39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */; };
 		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
@@ -1959,6 +1960,7 @@
 		39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfoTests.swift; sourceTree = "<group>"; };
 		39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreateAttributionEvent.graphql; sourceTree = "<group>"; };
 		39B850752C3EA5620045CBA5 /* SwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUI.swift; sourceTree = "<group>"; };
+		39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerViewTests.swift; sourceTree = "<group>"; };
 		39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
@@ -5700,6 +5702,7 @@
 			isa = PBXGroup;
 			children = (
 				7061848829BE4C11008F9941 /* MessageBannerView.swift */,
+				39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -8567,6 +8570,7 @@
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
+				39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
