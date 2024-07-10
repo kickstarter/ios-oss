@@ -54,9 +54,9 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     let shippingShouldBeginLoading = configData
       .mapConst(true)
-    
+
     // CURRENT APP VERSION:
-      
+
 //    let shippingRulesEvent = Signal.zip(project, reward)
 //      .filter { _, reward in reward.shipping.enabled }
 //      .switchMap { project, reward -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
@@ -109,14 +109,16 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     let initialShippingRule = Signal.combineLatest(
       project,
-      shippingRules,
+      shippingRules.skipRepeats(),
       selectedLocationId
     )
     .map(determineShippingRule)
 
-    self.shippingRulesError = shippingRulesEvent.errors().map { _ in
-      Strings.We_were_unable_to_load_the_shipping_destinations()
-    }
+    self.shippingRulesError = shippingRulesEvent.errors()
+      .map { _ in
+        Strings.We_were_unable_to_load_the_shipping_destinations()
+      }
+      .skipRepeats()
 
     self.notifyDelegateOfSelectedShippingRule = Signal.merge(
       initialShippingRule.skipNil(),
@@ -199,14 +201,19 @@ private func getRewardIDsToQuery(for project: Project) -> Set<Int> {
   var rewardIDsToQuery = Set<Int>()
 
   /// If project contains a reward with an `unrestricted` shipping preference, we can query just that reward. This will return ALL available locations.
-  if let reward = project.rewards.first(where: { $0.isUnRestrictedShippingPreference && $0.shipping.enabled }) {
+  if let reward = project.rewards
+    .first(where: { $0.isUnRestrictedShippingPreference && $0.shipping.enabled }) {
     rewardIDsToQuery.insert(reward.id)
   }
 
-  /// If project does not contain a reward with an `unrestricted` shipping preference, then we'll need to query all other  rewards to capture all possible shipping locations.
+  /// If project does not contain a reward with an `unrestricted` shipping preference, then we'll need to query all other rewards to capture all possible shipping locations.
   if rewardIDsToQuery.isEmpty {
-    let restrictedRewards = project.rewards.filter { ($0.isRestrictedShippingPreference || $0.isLocalShippingPreference) && $0.shipping.enabled }
-    
+    let restrictedRewards = project.rewards
+      .filter {
+        ($0.isRestrictedShippingPreference || $0.isLocalShippingPreference || $0.hasNoShippingPreference)
+          && $0.shipping.enabled
+      }
+
     restrictedRewards.forEach { rewardIDsToQuery.insert($0.id) }
   }
 

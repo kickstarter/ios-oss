@@ -52,7 +52,7 @@ public struct Reward {
   public var isLocalShippingPreference: Bool {
     return self.shipping.preference == .local
   }
-  
+
   public var hasNoShippingPreference: Bool {
     return self.shipping.preference == Reward.Shipping.Preference.none
   }
