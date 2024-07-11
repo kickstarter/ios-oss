@@ -138,7 +138,9 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     .takeWhen(self.shippingLocationButtonTappedSignal)
 
     self.amountAttributedText = Signal.combineLatest(project, shippingAmount)
-      .map { project, shippingAmount in shippingValue(of: project, with: shippingAmount) }
+      .map { project, shippingAmount in
+        shippingValue(of: project, with: shippingAmount)
+      }
       .skipNil()
 
     self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
