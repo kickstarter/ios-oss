@@ -5,29 +5,46 @@ struct MessageBannerView: View {
   @Binding var viewModel: MessageBannerViewViewModel?
   @SwiftUI.Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
+  private enum Constants {
+    public static let defaultSpacing = Styles.grid(2)
+    public static let verticalPadding = Styles.grid(3)
+    public static let minTextHeight = 40.0
+    public static let dismissTime = 4.0
+    public static let dismissTimeVoiceoverOn = 10.0
+  }
+
   var body: some View {
     if let vm = viewModel {
-      HStack(alignment: .center, spacing: 12) {
-        Image(vm.iconImageName, bundle: Bundle.framework)
+      HStack(alignment: .center, spacing: Constants.defaultSpacing) {
+        if vm.iconImageName.count > 0 {
+          Image(vm.iconImageName, bundle: Bundle.framework)
+        }
         Text(vm.bannerMessage)
           .font(Font(UIFont.ksr_subhead()))
           .multilineTextAlignment(vm.messageTextAlignment)
           .frame(
             maxWidth: .infinity,
-            minHeight: 40,
+            minHeight: Constants.minTextHeight,
             alignment: self.alignmentFromTextAlignment(vm.messageTextAlignment)
           )
       }
       .foregroundColor(vm.messageTextColor)
-      .padding(EdgeInsets(top: 16, leading: 9, bottom: 16, trailing: 9))
+      .padding(EdgeInsets(
+        top: Constants.verticalPadding,
+        leading: Constants.defaultSpacing,
+        bottom: Constants.verticalPadding,
+        trailing: Constants.defaultSpacing
+      ))
       .background {
-        RoundedRectangle(cornerRadius: 6)
+        RoundedRectangle(cornerRadius: Styles.cornerRadius)
           .foregroundColor(vm.bannerBackgroundColor)
       }
       .accessibilityElement()
       .accessibilityLabel(vm.bannerMessageAccessibilityLabel)
       .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + (self.voiceOverEnabled ? 8 : 4)) {
+        let dismissTime =
+          self.voiceOverEnabled ? Constants.dismissTimeVoiceoverOn : Constants.dismissTime
+        DispatchQueue.main.asyncAfter(deadline: .now() + dismissTime) {
           self.viewModel = nil
         }
       }
