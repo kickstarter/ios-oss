@@ -55,18 +55,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     let shippingShouldBeginLoading = configData
       .mapConst(true)
 
-    // CURRENT APP VERSION:
-
-//    let shippingRulesEvent = Signal.zip(project, reward)
-//      .filter { _, reward in reward.shipping.enabled }
-//      .switchMap { project, reward -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-//        AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id, rewardId: reward.id)
-//          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-//          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-//          .retry(upTo: 3)
-//          .materialize()
-//      }
-
     let shippingRulesEvent = project
       .switchMap { project -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
         /// Get  all of the reward IDs we'll need to fetch the Shipping Rules. See inner method logic for more details.
