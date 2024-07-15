@@ -63,7 +63,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
         /// Initializing the result with a fetch using the first reward ID in the Set to avoid optional warnings
         var queryResult: SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never>?
 
-        /// Ffetch the shipping rules for each reward and then consolidate each corresponding SignalProducer into the `queryResult` variable using .merge(with:).
+        /// Fetch the shipping rules for each reward and then consolidate each corresponding SignalProducer into the `queryResult` variable using .merge(with:).
         rewardIDsToQuery.forEach { id in
           let fetchResult = AppEnvironment.current.apiService.fetchRewardShippingRules(
             projectId: project.id,
