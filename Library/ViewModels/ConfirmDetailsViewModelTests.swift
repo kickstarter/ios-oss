@@ -94,7 +94,11 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   func testGoToLoginSignup_doesNotEmitWhenLoggedIn_createCheckoutIsSuccessful() {
     let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
-    let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
+    let createCheckout = CreateCheckoutEnvelope.Checkout(
+      id: expectedId,
+      paymentUrl: "paymentUrl",
+      backingId: "backingId"
+    )
     let mockService = MockService(
       createCheckoutResult:
       Result.success(CreateCheckoutEnvelope(checkout: createCheckout))
@@ -886,7 +890,11 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   func testContinueButton_CallsCreateBackingMutation_Success() {
     let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
-    let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
+    let createCheckout = CreateCheckoutEnvelope.Checkout(
+      id: expectedId,
+      paymentUrl: "paymentUrl",
+      backingId: "backingId"
+    )
 
     let mockService = MockService(
       createCheckoutResult:
@@ -949,14 +957,19 @@ final class ConfirmDetailsViewModelTests: TestCase {
         shipping: expectedShipping,
         refTag: nil,
         context: .pledge,
-        checkoutId: "198336646"
+        checkoutId: "198336646",
+        backingId: "backingId"
       )
       self.createCheckoutSuccess.assertValue(expectedValue)
     }
   }
 
   func testContinueButton_CallsCreateBackingMutation_Failure_ShowsErrorMessageBanner() {
-    let createCheckout = CreateCheckoutEnvelope.Checkout(id: "id", paymentUrl: "paymentUrl")
+    let createCheckout = CreateCheckoutEnvelope.Checkout(
+      id: "id",
+      paymentUrl: "paymentUrl",
+      backingId: "backingId"
+    )
     let errorUnknown = ErrorEnvelope(
       errorMessages: ["Something went wrong yo."],
       ksrCode: .UnknownCode,
