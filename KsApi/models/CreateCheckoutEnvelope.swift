@@ -7,6 +7,7 @@ public struct CreateCheckoutEnvelope: Decodable {
   public struct Checkout: Decodable {
     public var id: String
     public var paymentUrl: String
+    public var backingId: String
   }
 }
 
@@ -15,11 +16,12 @@ public struct CreateCheckoutEnvelope: Decodable {
 extension CreateCheckoutEnvelope {
   static func from(_ data: GraphAPI.CreateCheckoutMutation.Data) -> CreateCheckoutEnvelope? {
     guard let id = data.createCheckout?.checkout?.id,
-          let paymentUrl = data.createCheckout?.checkout?.paymentUrl else {
+          let paymentUrl = data.createCheckout?.checkout?.paymentUrl,
+          let backingId = data.createCheckout?.checkout?.backing.id else {
       return nil
     }
 
-    return CreateCheckoutEnvelope(checkout: Checkout(id: id, paymentUrl: paymentUrl))
+    return CreateCheckoutEnvelope(checkout: Checkout(id: id, paymentUrl: paymentUrl, backingId: backingId))
   }
 
   static func producer(from data: GraphAPI.CreateCheckoutMutation.Data)

@@ -370,13 +370,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let checkoutValues = createCheckoutEvents.values()
       .map { values in
         var checkoutId = values.checkout.id
+        var backingId = values.checkout.backingId
 
         if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
           let id = decoded[range.upperBound...]
           checkoutId = String(id)
         }
 
-        return checkoutId
+        return (checkoutId, backingId)
       }
 
     self.createCheckoutSuccess = checkoutValues.withLatestFrom(
@@ -388,7 +389,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         baseReward
       )
     )
-    .map { checkoutId, otherData -> PostCampaignCheckoutData in
+    .map { checkoutAndBackingId, otherData -> PostCampaignCheckoutData in
+      let (checkoutId, backingId) = checkoutAndBackingId
       let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
@@ -409,11 +411,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context,
-        checkoutId: checkoutId
+        checkoutId: checkoutId,
+        backingId: backingId
       )
     }
 
-    // TODO: [MBL-1217] Update string once translations are done
     self.showErrorBannerWithMessage = createCheckoutEvents.errors()
       .map { _ in Strings.Something_went_wrong_please_try_again() }
   }

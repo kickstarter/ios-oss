@@ -10,6 +10,7 @@ public class MockStripeIntentService: StripeIntentServiceType {
 
   public func createPaymentIntent(
     for projectId: String,
+    backingId: String,
     checkoutId: String,
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
@@ -23,6 +24,7 @@ public class MockStripeIntentService: StripeIntentServiceType {
     return AppEnvironment.current.apiService
       .createPaymentIntentInput(input: CreatePaymentIntentInput(
         projectId: projectId,
+        backingId: backingId,
         amountDollars: String(format: "%.2f", pledgeTotal),
         checkoutId: checkoutId,
         digitalMarketingAttributed: nil

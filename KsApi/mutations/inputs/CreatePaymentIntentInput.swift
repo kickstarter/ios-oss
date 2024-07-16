@@ -2,6 +2,7 @@ import Foundation
 
 public struct CreatePaymentIntentInput: GraphMutationInput, Encodable {
   let projectId: String
+  let backingId: String
   let amountDollars: String
   let checkoutId: String
   let digitalMarketingAttributed: Bool?
@@ -11,6 +12,7 @@ public struct CreatePaymentIntentInput: GraphMutationInput, Encodable {
    Initializes a CreateCheckout.
 
    - parameter projectId: The GraphID of the Project.
+   - parameter backingId: The GraphID of the backing.
    - parameter amountDollars: The amount.
    - parameter checkoutId: The GraphID returned from our CreateCheckout mutation.
    - parameter digitalMarketingAttributed: The optional ID of the ShippingRule's Location.
@@ -18,11 +20,13 @@ public struct CreatePaymentIntentInput: GraphMutationInput, Encodable {
    */
   public init(
     projectId: String,
+    backingId: String,
     amountDollars: String,
     checkoutId: String,
     digitalMarketingAttributed: Bool?
   ) {
     self.projectId = projectId
+    self.backingId = backingId
     self.amountDollars = amountDollars
     self.checkoutId = checkoutId
     self.digitalMarketingAttributed = digitalMarketingAttributed

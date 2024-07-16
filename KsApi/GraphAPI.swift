@@ -4949,6 +4949,10 @@ public enum GraphAPI {
             __typename
             id
             paymentUrl
+            backing {
+              __typename
+              id
+            }
           }
         }
       }
@@ -5052,6 +5056,7 @@ public enum GraphAPI {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("paymentUrl", type: .scalar(String.self)),
+              GraphQLField("backing", type: .nonNull(.object(Backing.selections))),
             ]
           }
 
@@ -5061,8 +5066,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, paymentUrl: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "Checkout", "id": id, "paymentUrl": paymentUrl])
+          public init(id: GraphQLID, paymentUrl: String? = nil, backing: Backing) {
+            self.init(unsafeResultMap: ["__typename": "Checkout", "id": id, "paymentUrl": paymentUrl, "backing": backing.resultMap])
           }
 
           public var __typename: String {
@@ -5089,6 +5094,55 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "paymentUrl")
+            }
+          }
+
+          /// The backing that the checkout is modifying.
+          public var backing: Backing {
+            get {
+              return Backing(unsafeResultMap: resultMap["backing"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "backing")
+            }
+          }
+
+          public struct Backing: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["Backing"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(id: GraphQLID) {
+              self.init(unsafeResultMap: ["__typename": "Backing", "id": id])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var id: GraphQLID {
+              get {
+                return resultMap["id"]! as! GraphQLID
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "id")
+              }
             }
           }
         }
@@ -7908,7 +7962,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8007,16 +8061,16 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
-        public static func makeProjectProfile() -> Node {
-          return Node(unsafeResultMap: ["__typename": "ProjectProfile"])
-        }
-
         public static func makeAttachedAudio() -> Node {
           return Node(unsafeResultMap: ["__typename": "AttachedAudio"])
         }
 
         public static func makeAttachedVideo() -> Node {
           return Node(unsafeResultMap: ["__typename": "AttachedVideo"])
+        }
+
+        public static func makeProjectProfile() -> Node {
+          return Node(unsafeResultMap: ["__typename": "ProjectProfile"])
         }
 
         public static func makeTag() -> Node {
@@ -8361,7 +8415,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8456,16 +8510,16 @@ public enum GraphAPI {
           return Comment(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
-        public static func makeProjectProfile() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "ProjectProfile"])
-        }
-
         public static func makeAttachedAudio() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "AttachedAudio"])
         }
 
         public static func makeAttachedVideo() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "AttachedVideo"])
+        }
+
+        public static func makeProjectProfile() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "ProjectProfile"])
         }
 
         public static func makeTag() -> Comment {

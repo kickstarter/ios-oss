@@ -1640,6 +1640,26 @@
             "deprecationReason": null
           },
           {
+            "name": "allowedCountries",
+            "description": "Countries that the backing's reward can be shipped to. If null, the backing's reward can be shipped to any country.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "CountryCode",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "amount",
             "description": "Total amount pledged by the backer to the project, including shipping.",
             "args": [],
@@ -2312,17 +2332,17 @@
           },
           {
             "kind": "OBJECT",
-            "name": "ProjectProfile",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
             "name": "AttachedAudio",
             "ofType": null
           },
           {
             "kind": "OBJECT",
             "name": "AttachedVideo",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ProjectProfile",
             "ofType": null
           },
           {
@@ -3201,6 +3221,30 @@
               "kind": "ENUM",
               "name": "ShippingPreference",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingRates",
+            "description": "Shipping rates defined by the creator for this reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ShippingRate",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4613,6 +4657,18 @@
           {
             "name": "addressCollectionEnabled",
             "description": "Whether or not the creator has enabled address collection",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "addressCollectionForDigitalReward",
+            "description": "Whether or not the creator has enabled address collection for digital reward backers",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -6216,6 +6272,18 @@
             "deprecationReason": null
           },
           {
+            "name": "onBehalfOf",
+            "description": "A Stripe account identifier",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paymentSource",
             "description": "Payment source on creator's account used to issue refunds.",
             "args": [],
@@ -6384,6 +6452,88 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunchStory",
+            "description": "The rich text story for a prelaunch campaign.",
+            "args": [
+              {
+                "name": "first",
+                "description": "The number of visible characters to fetch (does not include HTML markup).",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "assetWidth",
+                "description": "The width of embedded assets in pixels.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "HTML",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunchStoryForEditor",
+            "description": "The rich text story for a prelaunch campaign in raw form.",
+            "args": [
+              {
+                "name": "first",
+                "description": "The number of visible characters to fetch (does not include HTML markup).",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "assetWidth",
+                "description": "The width of embedded assets in pixels.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "HTML",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunchStoryRichText",
+            "description": "Return an itemized version of the prelaunch story. This feature is in BETA: types can change anytime!",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RichText",
                 "ofType": null
               }
             },
@@ -8932,6 +9082,22 @@
           {
             "name": "isSuperbacker",
             "description": "Whether the user is a superbacker",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isTrustedForOverlappingFulfillment",
+            "description": "Whether a user is trusted for overlapping fulfillment.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -13268,6 +13434,12 @@
             "deprecationReason": null
           },
           {
+            "name": "late_pledges_learn_more_cta",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "post_campaign_backings_2024",
             "description": null,
             "isDeprecated": false,
@@ -13365,6 +13537,12 @@
           },
           {
             "name": "address_collection_for_digital_rewards_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunch_story_editor",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -21698,938 +21876,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "OBJECT",
-        "name": "ProjectProfile",
-        "description": "A profile for after a project has ended.",
-        "fields": [
-          {
-            "name": "blurb",
-            "description": "The description of the projects from the project's profile.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "featureImageUrl",
-            "description": "Featured image for this project profile.",
-            "args": [
-              {
-                "name": "width",
-                "description": "The width of the image in pixels.",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The name from the project's profile.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "state",
-            "description": "The project profile's current state.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "ProjectProfileState",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ProjectProfileState",
-        "description": "Various project profile states.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "INACTIVE",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ACTIVE",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "BitlyHashes",
-        "description": "The different bitly hashes for a project",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "SHARE",
-            "description": "A project's share link",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TWEET",
-            "description": "A project's twitter share link",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FACEBOOK",
-            "description": "A project's facebook share link",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "EMAIL",
-            "description": "A project's email share link",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ProjectStatus",
-        "description": "Project status set by user",
-        "fields": [
-          {
-            "name": "enabled",
-            "description": "Whether the project status is currently enabled or not (opted-in / opted-out)",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": "Id of a project status",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "nextDueDate",
-            "description": "The estimated due date for the next_status of the project",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ISO8601DateTime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "nextStatus",
-            "description": "The next_status of the project",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "nowStatus",
-            "description": "The now_status of the project",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": "When project status is updated",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ISO8601DateTime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Question",
-        "description": "A question associated with one of the following: Project, RewardItem",
-        "fields": [
-          {
-            "name": "choiceSelectionLimit",
-            "description": "The question choice selection limit",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choices",
-            "description": "The question choices",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "optional",
-            "description": "Whether the question is optional",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "prompt",
-            "description": "The question prompt",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "questionable",
-            "description": "The object associated with the question",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "UNION",
-                "name": "Questionable",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": "The question type",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "QuestionType",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "UNION",
-        "name": "Questionable",
-        "description": "An object that can be associated with a question",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "Project",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "RewardItem",
-            "ofType": null
-          }
-        ]
-      },
-      {
-        "kind": "ENUM",
-        "name": "QuestionType",
-        "description": "Question types",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "text",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choices",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Recommendations",
-        "description": "Score and model from recommendations engine if a project was fetched via recommendations.",
-        "fields": [
-          {
-            "name": "modelName",
-            "description": "Model used for these recommendations.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "rawScore",
-            "description": "Raw score from recommendations.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "score",
-            "description": "Recommendations score.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "RiskQuestion",
-        "description": "A category of risk. Each category corresponds to a question in the project Plan.",
-        "fields": [
-          {
-            "name": "inputType",
-            "description": "The input type of the risk category.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "RiskCategoryInput",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "question",
-            "description": "The question associated with the risk category.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "required",
-            "description": "Whether or not this is a required category.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": "The category identifier.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "RiskCategoryType",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "RiskCategoryInput",
-        "description": "Describes the expected input type for a risk category.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "text",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "radio",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "RiskCategoryType",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "delays",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unexpected_pledge_volume",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "previous_experience",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "fulfillment_plan",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "project_budget_contingency",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "alternative_fulfillment_path",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "RiskStrategy",
-        "description": null,
-        "fields": [
-          {
-            "name": "description",
-            "description": "Creator's answer for mitigating this particular risk category.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "riskCategory",
-            "description": "The type of risk",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "RiskCategoryType",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "riskQuestion",
-            "description": "The question the creator is answering.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "RiskQuestion",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Spreadsheet",
-        "description": "A project spreadsheet, including a url and row data",
-        "fields": [
-          {
-            "name": "data",
-            "description": "The data of the Google Sheet associated to this project",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "SpreadsheetDatum",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "dataLastUpdatedAt",
-            "description": "When the data for the sheet was last fetched successfully",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "ISO8601DateTime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "displayMode",
-            "description": "Can be `amount` or `percent` based on the creator's choice",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "hasDisplayableData",
-            "description": "Whether a spreadsheet contains the minimum information to render a graphic budget",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "public",
-            "description": "Whether the sheet is shareable with the public",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "url",
-            "description": "The URL of the Google Sheet associated to this project",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "SpreadsheetDatum",
-        "description": "A row of datum for a funding spreadsheet",
-        "fields": [
-          {
-            "name": "description",
-            "description": "Expanded description of the purpose of that row",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The name of the row",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "phase",
-            "description": "The funding category of the row",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "rowNum",
-            "description": "The spreadsheet row number",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "value",
-            "description": "The dollar value of the row",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ProjectState",
-        "description": "Various project states.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "STARTED",
-            "description": "Created and preparing for launch.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "SUBMITTED",
-            "description": "Ready for launch with a draft submitted for auto-approval.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "LIVE",
-            "description": "Active and accepting pledges.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CANCELED",
-            "description": "Canceled by creator.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "SUSPENDED",
-            "description": "Suspended for investigation, visible.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PURGED",
-            "description": "Suspended and hidden.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "SUCCESSFUL",
-            "description": "Successfully funded by deadline.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FAILED",
-            "description": "Failed to fund by deadline.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "SCALAR",
         "name": "HTML",
         "description": "An HTML string.",
@@ -23742,6 +22988,938 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ProjectProfile",
+        "description": "A profile for after a project has ended.",
+        "fields": [
+          {
+            "name": "blurb",
+            "description": "The description of the projects from the project's profile.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "featureImageUrl",
+            "description": "Featured image for this project profile.",
+            "args": [
+              {
+                "name": "width",
+                "description": "The width of the image in pixels.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name from the project's profile.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "state",
+            "description": "The project profile's current state.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "ProjectProfileState",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ProjectProfileState",
+        "description": "Various project profile states.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "INACTIVE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ACTIVE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "BitlyHashes",
+        "description": "The different bitly hashes for a project",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "SHARE",
+            "description": "A project's share link",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TWEET",
+            "description": "A project's twitter share link",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FACEBOOK",
+            "description": "A project's facebook share link",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EMAIL",
+            "description": "A project's email share link",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ProjectStatus",
+        "description": "Project status set by user",
+        "fields": [
+          {
+            "name": "enabled",
+            "description": "Whether the project status is currently enabled or not (opted-in / opted-out)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "Id of a project status",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nextDueDate",
+            "description": "The estimated due date for the next_status of the project",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nextStatus",
+            "description": "The next_status of the project",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nowStatus",
+            "description": "The now_status of the project",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "When project status is updated",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Question",
+        "description": "A question associated with one of the following: Project, RewardItem",
+        "fields": [
+          {
+            "name": "choiceSelectionLimit",
+            "description": "The question choice selection limit",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "choices",
+            "description": "The question choices",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "optional",
+            "description": "Whether the question is optional",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prompt",
+            "description": "The question prompt",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "questionable",
+            "description": "The object associated with the question",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "Questionable",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "The question type",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "QuestionType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "Questionable",
+        "description": "An object that can be associated with a question",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Project",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "RewardItem",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "ENUM",
+        "name": "QuestionType",
+        "description": "Question types",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "text",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "choices",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Recommendations",
+        "description": "Score and model from recommendations engine if a project was fetched via recommendations.",
+        "fields": [
+          {
+            "name": "modelName",
+            "description": "Model used for these recommendations.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rawScore",
+            "description": "Raw score from recommendations.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "score",
+            "description": "Recommendations score.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RiskQuestion",
+        "description": "A category of risk. Each category corresponds to a question in the project Plan.",
+        "fields": [
+          {
+            "name": "inputType",
+            "description": "The input type of the risk category.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RiskCategoryInput",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "question",
+            "description": "The question associated with the risk category.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "required",
+            "description": "Whether or not this is a required category.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "The category identifier.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RiskCategoryType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RiskCategoryInput",
+        "description": "Describes the expected input type for a risk category.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "text",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "radio",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RiskCategoryType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "delays",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unexpected_pledge_volume",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previous_experience",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fulfillment_plan",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project_budget_contingency",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alternative_fulfillment_path",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RiskStrategy",
+        "description": null,
+        "fields": [
+          {
+            "name": "description",
+            "description": "Creator's answer for mitigating this particular risk category.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "riskCategory",
+            "description": "The type of risk",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RiskCategoryType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "riskQuestion",
+            "description": "The question the creator is answering.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RiskQuestion",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Spreadsheet",
+        "description": "A project spreadsheet, including a url and row data",
+        "fields": [
+          {
+            "name": "data",
+            "description": "The data of the Google Sheet associated to this project",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SpreadsheetDatum",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "dataLastUpdatedAt",
+            "description": "When the data for the sheet was last fetched successfully",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "ISO8601DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "displayMode",
+            "description": "Can be `amount` or `percent` based on the creator's choice",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hasDisplayableData",
+            "description": "Whether a spreadsheet contains the minimum information to render a graphic budget",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "public",
+            "description": "Whether the sheet is shareable with the public",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "url",
+            "description": "The URL of the Google Sheet associated to this project",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SpreadsheetDatum",
+        "description": "A row of datum for a funding spreadsheet",
+        "fields": [
+          {
+            "name": "description",
+            "description": "Expanded description of the purpose of that row",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name of the row",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "phase",
+            "description": "The funding category of the row",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rowNum",
+            "description": "The spreadsheet row number",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "value",
+            "description": "The dollar value of the row",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ProjectState",
+        "description": "Various project states.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "STARTED",
+            "description": "Created and preparing for launch.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SUBMITTED",
+            "description": "Ready for launch with a draft submitted for auto-approval.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LIVE",
+            "description": "Active and accepting pledges.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CANCELED",
+            "description": "Canceled by creator.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SUSPENDED",
+            "description": "Suspended for investigation, visible.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PURGED",
+            "description": "Suspended and hidden.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SUCCESSFUL",
+            "description": "Successfully funded by deadline.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FAILED",
+            "description": "Failed to fund by deadline.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -26654,6 +26832,102 @@
       },
       {
         "kind": "OBJECT",
+        "name": "ShippingRate",
+        "description": "A shipping rate for a particular shippable and location",
+        "fields": [
+          {
+            "name": "cost",
+            "description": "The shipping cost for this location.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Money",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "location",
+            "description": "The shipping location for which this shipping rate is defined.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Location",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippable",
+            "description": "The item or reward for which this shipping rate is defined.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "Shippable",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "Shippable",
+        "description": "Types that can have shipping rates",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Reward",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "RewardItem",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
         "name": "ShippingRule",
         "description": "A project reward's shipping rule.",
         "fields": [
@@ -27202,6 +27476,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "shouldCollectAddress",
+            "description": "Whether or not this cart needs an address to be finalized",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -27212,7 +27502,7 @@
       {
         "kind": "OBJECT",
         "name": "Answer",
-        "description": "An answer associated with one of the following: LineItem, Project",
+        "description": "An answer associated with one of the following: LineItem, Cart, BackingAddon",
         "fields": [
           {
             "name": "answerable",
@@ -27308,7 +27598,12 @@
           },
           {
             "kind": "OBJECT",
-            "name": "Project",
+            "name": "Cart",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "BackingAddon",
             "ofType": null
           }
         ]
@@ -33775,6 +34070,33 @@
             "deprecationReason": null
           },
           {
+            "name": "confirmOrderAddress",
+            "description": "Confirm order address",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ConfirmOrderAddressInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ConfirmOrderAddressPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "copyRewardItems",
             "description": "Copy Reward Items from one Project to another.",
             "args": [
@@ -37123,6 +37445,33 @@
             "deprecationReason": null
           },
           {
+            "name": "updateRewardShippingRates",
+            "description": "Update ShippingRates for a BackerReward",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateRewardShippingRatesInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateRewardShippingRatesPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updateSpreadsheetToggles",
             "description": "Updates the toggle-able options of the spreadsheet graph",
             "args": [
@@ -38478,8 +38827,8 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "projectId",
-            "description": "kickstarter project id",
+            "name": "orderId",
+            "description": "The order id",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -38492,18 +38841,8 @@
             "defaultValue": null
           },
           {
-            "name": "orderId",
-            "description": "kickstarter order id (not required for now, but will be when this is refactored)",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
             "name": "stripeConfirmationTokenId",
-            "description": "the stripe confirmation token used to complete a payment (web only)",
+            "description": "The stripe confirmation token used to complete a payment (web only)",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -38513,7 +38852,7 @@
           },
           {
             "name": "stripePaymentMethodId",
-            "description": "the stripe payment method id, starting with either `card_` or `pm_` (mobile only)",
+            "description": "The stripe payment method id, starting with either `card_` or `pm_` (mobile only)",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -38593,7 +38932,7 @@
           },
           {
             "name": "clientSecret",
-            "description": "the stripe payment intent client secret used to complete a payment",
+            "description": "The stripe payment intent client secret used to complete a payment",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -38609,7 +38948,7 @@
           },
           {
             "name": "status",
-            "description": "the stripe payment intent status (if requires_action, it will be)",
+            "description": "The stripe payment intent status (if requires_action, it will be)",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -38617,6 +38956,94 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ConfirmOrderAddressInput",
+        "description": "Autogenerated input type of ConfirmOrderAddress",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "orderId",
+            "description": "The order id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "addressId",
+            "description": "The address id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ConfirmOrderAddressPayload",
+        "description": "Autogenerated return type of ConfirmOrderAddress",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "order",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Order",
                 "ofType": null
               }
             },
@@ -48698,6 +49125,18 @@
             "deprecationReason": null
           },
           {
+            "name": "deliveryAddress",
+            "description": "The delivery address attached to backing.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Address",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "success",
             "description": "Succeeds if cart is finalized.",
             "args": [],
@@ -51541,6 +51980,16 @@
             "defaultValue": null
           },
           {
+            "name": "prelaunchStory",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "HTML",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -52740,6 +53189,151 @@
               "kind": "OBJECT",
               "name": "RewardItem",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateRewardShippingRatesInput",
+        "description": "Autogenerated input type of UpdateRewardShippingRates",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "rewardId",
+            "description": "Kickstarter BackerReward (base or addon) id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shippingRates",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ShippingRateInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ShippingRateInput",
+        "description": "Shipping rule for a reward",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "cost",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "locationId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateRewardShippingRatesPayload",
+        "description": "Autogenerated return type of UpdateRewardShippingRates",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reward",
+            "description": "The updated BackerReward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Reward",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
