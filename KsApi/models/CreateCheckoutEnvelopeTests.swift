@@ -7,7 +7,8 @@ final class CreateCheckoutEnvelopeTests: XCTestCase {
     {
       "checkout": {
         "id": "2020",
-        "paymentUrl": "https://test-url.com"
+        "paymentUrl": "https://test-url.com",
+        "backingId": "backingId"
       }
     }
     """
@@ -18,6 +19,7 @@ final class CreateCheckoutEnvelopeTests: XCTestCase {
       let envelope = try JSONDecoder().decode(CreateCheckoutEnvelope.self, from: data)
       XCTAssertEqual(envelope.checkout.id, "2020")
       XCTAssertEqual(envelope.checkout.paymentUrl, "https://test-url.com")
+      XCTAssertEqual(envelope.checkout.backingId, "backingId")
     } catch {
       XCTFail("\(error)")
     }

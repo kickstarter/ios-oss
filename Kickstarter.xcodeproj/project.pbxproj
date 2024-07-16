@@ -460,6 +460,7 @@
 		6021F66C2B97BCE200F76031 /* ConfirmDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */; };
 		6021F66E2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
+		6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6035AF982C46E03E007E28FC /* CreateCheckout.graphql */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
 		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
@@ -473,7 +474,6 @@
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
 		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
-		6051C6612B600E6000514202 /* CreateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6051C6602B600E6000514202 /* CreateCheckout.graphql */; };
 		6051C6632B600E8000514202 /* CreateCheckoutMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6622B600E8000514202 /* CreateCheckoutMutation.swift */; };
 		6051C6652B600F2000514202 /* CreateCheckoutInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6642B600F2000514202 /* CreateCheckoutInput.swift */; };
 		6051C6672B600F3200514202 /* CreateCheckoutInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6662B600F3200514202 /* CreateCheckoutInputTests.swift */; };
@@ -2076,6 +2076,7 @@
 		6021F66B2B97BCE200F76031 /* ConfirmDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModel.swift; sourceTree = "<group>"; };
 		6021F66D2B98AF0C00F76031 /* ConfirmDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
+		6035AF982C46E03E007E28FC /* CreateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateCheckout.graphql; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
 		60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
@@ -2089,7 +2090,6 @@
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6049D01E2AA774130015BB0D /* DesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColors.swift; sourceTree = "<group>"; };
 		6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCTAContainerView.swift; sourceTree = "<group>"; };
-		6051C6602B600E6000514202 /* CreateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateCheckout.graphql; sourceTree = "<group>"; };
 		6051C6622B600E8000514202 /* CreateCheckoutMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutMutation.swift; sourceTree = "<group>"; };
 		6051C6642B600F2000514202 /* CreateCheckoutInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutInput.swift; sourceTree = "<group>"; };
 		6051C6662B600F3200514202 /* CreateCheckoutInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutInputTests.swift; sourceTree = "<group>"; };
@@ -5714,7 +5714,7 @@
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */,
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
-				6051C6602B600E6000514202 /* CreateCheckout.graphql */,
+				6035AF982C46E03E007E28FC /* CreateCheckout.graphql */,
 				60C996EB2AC1FF0C006BE4F4 /* CreateFlagging.graphql */,
 				6051C6742B67F2D600514202 /* CreatePaymentIntent.graphql */,
 				47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */,
@@ -7576,11 +7576,11 @@
 				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
+				6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */,
 				E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */,
 				0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */,
 				E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
-				6051C6612B600E6000514202 /* CreateCheckout.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
 				399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */,
