@@ -5,6 +5,7 @@ import ReactiveSwift
 public protocol StripeIntentServiceType {
   func createPaymentIntent(
     for projectId: String,
+    backingId: String,
     checkoutId: String,
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>
@@ -26,17 +27,20 @@ public class StripeIntentService: StripeIntentServiceType {
    - parameters:
      - projectId: The GraphID of a project
      - checkoutId: The GraphID returned from our CreateCheckout mutation.
+     - backingId: The current Backing ID used by the backend to reverse payments and rescue checkouts.
      - pledgeTotal: The final pledge total of the current pledge
    */
 
   public func createPaymentIntent(
     for projectId: String,
+    backingId: String,
     checkoutId: String,
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     AppEnvironment.current.apiService
       .createPaymentIntentInput(input: CreatePaymentIntentInput(
         projectId: projectId,
+        backingId: backingId,
         amountDollars: String(format: "%.2f", pledgeTotal),
         checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
         digitalMarketingAttributed: nil
