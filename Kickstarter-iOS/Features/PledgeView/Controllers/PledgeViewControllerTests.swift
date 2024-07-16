@@ -443,7 +443,7 @@ final class PledgeViewControllerTests: TestCase {
 
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
-    
+
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
