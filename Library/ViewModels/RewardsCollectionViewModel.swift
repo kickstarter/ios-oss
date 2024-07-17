@@ -327,7 +327,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public func shippingLocationViewDidFailToLoad() {
     self.shippingLocationViewDidFailToLoadProperty.value = ()
   }
-
   private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()
   public func shippingRuleSelected(_ shippingRule: ShippingRule?) {
     self.shippingRuleSelectedObserver.send(value: shippingRule)
