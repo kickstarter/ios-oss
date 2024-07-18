@@ -396,7 +396,9 @@ extension RewardsCollectionViewController: PledgeShippingLocationViewControllerD
   }
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
+    self.viewModel.inputs.shippingLocationViewDidFailToLoad()
+  }
 }
 
 // MARK: Styles

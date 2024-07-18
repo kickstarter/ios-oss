@@ -13,6 +13,7 @@ public protocol RewardsCollectionViewModelInputs {
   func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
+  func shippingLocationViewDidFailToLoad()
   func shippingRuleSelected(_ shippingRule: ShippingRule?)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
@@ -320,6 +321,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
   public func rewardSelected(with rewardId: Int) {
     self.rewardSelectedWithRewardIdProperty.value = rewardId
+  }
+
+  private let shippingLocationViewDidFailToLoadProperty = MutableProperty(())
+  public func shippingLocationViewDidFailToLoad() {
+    self.shippingLocationViewDidFailToLoadProperty.value = ()
   }
 
   private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()

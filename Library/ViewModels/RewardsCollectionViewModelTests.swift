@@ -23,6 +23,16 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let showEditRewardConfirmationPromptTitle = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
+  private let configureShippingLocationViewWithDataProject = TestObserver<Project, Never>()
+  private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
+  private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
+  private let configureShippingLocationViewWithDataSelectedLocationId
+    = TestObserver<Int?, Never>()
+  private let shippingLocationViewHidden = TestObserver<Bool, Never>()
+
+  let shippingRule = ShippingRule.template
+    |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
+
   override func setUp() {
     super.setUp()
 
@@ -45,6 +55,98 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.showEditRewardConfirmationPrompt.map(second)
       .observe(self.showEditRewardConfirmationPromptMessage.observer)
     self.vm.outputs.title.observe(self.title.observer)
+
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.0 }
+      .observe(self.configureShippingLocationViewWithDataProject.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.1 }
+      .observe(self.configureShippingLocationViewWithDataReward.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.2 }
+      .observe(self.configureShippingLocationViewWithDataShowAmount.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.3 }
+      .observe(self.configureShippingLocationViewWithDataSelectedLocationId.observer)
+    self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+  }
+
+  func testconfigureShippingLocationViewWithData_ShippingEnabled() {
+    self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataSelectedLocationId.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureShippingLocationViewWithDataProject.assertValues([project])
+    self.configureShippingLocationViewWithDataReward.assertValues([reward])
+    self.configureShippingLocationViewWithDataShowAmount.assertValues([false])
+    self.shippingLocationViewHidden.assertValue(false)
+    self.configureShippingLocationViewWithDataSelectedLocationId.assertValues([nil])
+
+    self.vm.inputs.shippingRuleSelected(ShippingRule.template)
+    self.scheduler.advance()
+
+    self.configureShippingLocationViewWithDataSelectedLocationId.assertValues([nil])
+  }
+
+  func testconfigureShippingLocationViewWithData_ShippingDisabled() {
+    self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataSelectedLocationId.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
+    self.configureShippingLocationViewWithDataSelectedLocationId.assertDidNotEmitValue()
+    self.shippingLocationViewHidden.assertValue(true)
+  }
+
+  func testShippingLocationViewHidden_RewardHasLocalShipping() {
+    self.shippingLocationViewHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .local
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationViewHidden.assertValues([true])
+  }
+
+  func testShippingLocationViewHidden_NoShipping() {
+    self.shippingLocationViewHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (
+        .template |> Reward.Shipping.lens.enabled .~ false
+      )
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationViewHidden.assertValues([true])
   }
 
   func testConfigureWithProject() {
@@ -227,11 +329,14 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
+
       self.vm.inputs.rewardSelected(with: firstRewardId)
 
       let expected = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -321,6 +426,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
 
       self.goToPledge.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
@@ -328,6 +434,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [firstReward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [firstReward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -345,6 +452,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected2 = PledgeViewData(
         project: project,
         rewards: [secondReward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [secondReward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -376,6 +484,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
@@ -386,6 +495,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -420,6 +530,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
@@ -430,6 +541,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -465,6 +577,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
@@ -475,6 +588,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -526,6 +640,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.shippingRuleSelected(self.shippingRule)
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
@@ -536,6 +651,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
