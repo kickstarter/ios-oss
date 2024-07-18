@@ -80,9 +80,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
+        [.rewardAddOn(expected)],
+        [.rewardAddOn(expected)]
+      ])
     }
   }
 
@@ -189,7 +192,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
     }
@@ -208,12 +211,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.beginRefresh()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(3)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
         [.emptyState(.errorPullToRefresh)],
@@ -279,7 +282,10 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
+        [.rewardAddOn(expected)],
+        [.rewardAddOn(expected)]
+      ])
       XCTAssertEqual(
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 1,
         "Only the single add-on reward without shipping is emitted for no-shipping base reward."
@@ -414,7 +420,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected, expected])
     }
   }
 
