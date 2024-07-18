@@ -154,6 +154,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let selectedShippingRule = Signal.merge(
       project.mapConst(nil),
+      initialData.map(\.selectedShippingRule),
       self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
