@@ -35,8 +35,6 @@ public protocol RewardAddOnSelectionViewModelInputs {
 
 public protocol RewardAddOnSelectionViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
-  var configurePledgeShippingLocationViewControllerWithData:
-    Signal<PledgeShippingLocationViewData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -67,19 +65,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let initialLocationId = configData.map(\.selectedLocationId)
     let selectedShippingRule = configData.map(\.selectedShippingRule)
 
-    let shippingLocationViewConfigData = Signal.zip(project, baseReward, initialLocationId)
-
-    let fetchShippingLocations = Signal.merge(
-      shippingLocationViewConfigData,
-      shippingLocationViewConfigData.takeWhen(self.beginRefreshSignal)
-    )
-    .filter { _, reward, _ in reward.shipping.enabled }
-
-    self.configurePledgeShippingLocationViewControllerWithData = fetchShippingLocations
-      .map { project, reward, initialLocationId in
-        (project, reward, false, initialLocationId)
-      }
-
     let slug = project.map(\.slug)
 
     let fetchAddOnsWithSlug = Signal.merge(
@@ -92,13 +77,13 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
-    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule)
+    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule.skipNil())
 
     let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
         slug: slug,
-        shippingEnabled: shippingRule?.location.graphID != nil,
-        locationId: shippingRule?.location.graphID
+        shippingEnabled: shippingRule.location.graphID != nil,
+        locationId: shippingRule.location.graphID
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .materialize()
@@ -235,7 +220,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.goToPledge = Signal.combineLatest(
       project,
       selectedRewards,
-      selectedShippingRule,
+      shippingRule,
       selectedQuantities,
       selectedLocationId,
       refTag,
@@ -364,8 +349,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
   }
 
   public let configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never>
-  public let configurePledgeShippingLocationViewControllerWithData:
-    Signal<PledgeShippingLocationViewData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
