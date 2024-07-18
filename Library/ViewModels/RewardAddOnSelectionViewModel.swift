@@ -76,13 +76,13 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
-    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule)
+    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule.skipNil())
 
     let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
         slug: slug,
-        shippingEnabled: shippingRule?.location.graphID != nil,
-        locationId: shippingRule?.location.graphID
+        shippingEnabled: shippingRule.location.graphID != nil,
+        locationId: shippingRule.location.graphID
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .materialize()
