@@ -506,10 +506,10 @@ func calculateShippingTotal(
  */
 func calculatePledgeTotal(
   pledgeAmount: Double,
-  shippingCost: Double,
+  shippingCost: Double? = nil,
   addOnRewardsTotal: Double
 ) -> Double {
-  let r = [pledgeAmount, shippingCost, addOnRewardsTotal].reduce(0) { accum, amount in
+  let r = [pledgeAmount, shippingCost ?? 0, addOnRewardsTotal].reduce(0) { accum, amount in
     accum.addingCurrency(amount)
   }
 

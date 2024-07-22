@@ -34,7 +34,6 @@ public struct PostCampaignRewardsSummaryViewData {
   public let selectedQuantities: SelectedRewardQuantities
   public let projectCountry: Project.Country
   public let omitCurrencyCode: Bool
-  public let shipping: PledgeShippingSummaryViewData?
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
@@ -173,21 +172,6 @@ private func items(
     ))
   }
   var items = [headerItem] + rewardItems
-
-  // MARK: Shipping
-
-  if let shipping = data.shipping {
-    let shippingAmountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
-    )
-
-    let shippingItem = PostCampaignRewardsSummaryItem.reward((
-      text: Strings.Shipping_to_country(country: shipping.locationName),
-      amount: shippingAmountAttributedText
-    ))
-
-    items.append(shippingItem)
-  }
 
   // MARK: Bonus
 

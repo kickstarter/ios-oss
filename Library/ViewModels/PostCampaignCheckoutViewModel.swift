@@ -111,8 +111,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           rewards: data.rewards,
           selectedQuantities: data.selectedQuantities,
           projectCountry: data.project.country,
-          omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-          shipping: data.shipping
+          omitCurrencyCode: data.project.stats.omitUSCurrencyCode
         )
         let pledgeData = PledgeSummaryViewData(
           project: data.project,
