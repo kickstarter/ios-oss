@@ -209,11 +209,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
-        if featureFacebookLoginInterstitialEnabled(), accessTokenEnv.user.needsPassword == true {
-          strongSelf.pushSetYourPasswordViewController()
-          return
-        }
-
         strongSelf.viewModel.inputs.environmentLoggedIn()
       }
 
@@ -244,23 +239,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .observeForControllerAction()
       .observeValues { [weak self] error in
         guard let strongSelf = self else { return }
-
-        if featureFacebookLoginInterstitialEnabled() {
-          strongSelf.present(
-            UIAlertController.facebookDeprecationNewPasswordOptionAlert(
-              loginHandler: { [weak self] _ in
-                self?.pushLoginViewController()
-              },
-              setNewPasswordHandler: { [weak self] _ in
-                self?.pushFacebookResetPasswordViewController()
-              }
-            ),
-            animated: true,
-            completion: nil
-          )
-
-          return
-        }
 
         strongSelf.present(
           UIAlertController.alertController(forError: error),
@@ -481,14 +459,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
   }
 
-  private func pushSetYourPasswordViewController() {
-    let vc = SetYourPasswordViewController.instantiate()
-    vc.delegate = self
-    self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem
-      .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
-  }
-
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -655,14 +625,6 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
       }
       self.viewModel.inputs.appleAuthorizationDidFail(with: authError)
     }
-  }
-}
-
-// MARK: SetYourPasswordViewControllerDelegate
-
-extension LoginToutViewController: SetYourPasswordViewControllerDelegate {
-  func setPasswordCompleteAndLogUserIn() {
-    self.viewModel.inputs.environmentLoggedIn()
   }
 }
 
