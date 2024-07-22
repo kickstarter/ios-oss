@@ -100,6 +100,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+    self.viewModel.inputs.shippingRuleSelected(nil)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -389,11 +390,15 @@ extension RewardsCollectionViewController: RewardCellDelegate {
 extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelect _: ShippingRule
-  ) {}
+    didSelect shippingRule: ShippingRule
+  ) {
+    self.viewModel.inputs.shippingRuleSelected(shippingRule)
+  }
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
+    self.viewModel.inputs.shippingLocationViewDidFailToLoad()
+  }
 }
 
 // MARK: Styles

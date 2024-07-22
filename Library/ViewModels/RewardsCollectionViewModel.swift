@@ -13,7 +13,8 @@ public protocol RewardsCollectionViewModelInputs {
   func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
-  func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func shippingLocationViewDidFailToLoad()
+  func shippingRuleSelected(_ shippingRule: ShippingRule?)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLayoutSubviews()
@@ -114,12 +115,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let goToPledge: Signal<(PledgeViewData, Bool), Never> = Signal.combineLatest(
       project,
       selectedRewardFromId,
-      refTag
+      refTag,
+      self.shippingRuleSelectedSignal.signal
     )
-    .filter { project, reward, _ in
+    .takeWhen(self.rewardSelectedWithRewardIdProperty.signal)
+    .filter { project, reward, _, _ in
       rewardsCarouselCanNavigateToReward(reward, in: project)
     }
-    .map { project, reward, refTag -> (PledgeViewData, Bool) in
+    .map { project, reward, refTag, selectedShippingRule -> (PledgeViewData, Bool) in
       let pledgeContext =
         featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
           ? PledgeViewContext.latePledge
@@ -127,6 +130,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: selectedShippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
@@ -319,8 +323,13 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
 
-  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
-  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
+  private let shippingLocationViewDidFailToLoadProperty = MutableProperty(())
+  public func shippingLocationViewDidFailToLoad() {
+    self.shippingLocationViewDidFailToLoadProperty.value = ()
+  }
+
+  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()
+  public func shippingRuleSelected(_ shippingRule: ShippingRule?) {
     self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 

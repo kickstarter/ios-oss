@@ -12,17 +12,11 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
   private let configureContinueCTAViewWithDataIsLoading = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataIsValid = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataQuantity = TestObserver<Int, Never>()
-  private let configurePledgeShippingLocationViewControllerWithDataProject = TestObserver<Project, Never>()
-  private let configurePledgeShippingLocationViewControllerWithDataReward = TestObserver<Reward, Never>()
-  private let configurePledgeShippingLocationViewControllerWithDataShowAmount = TestObserver<Bool, Never>()
-  private let configurePledgeShippingLocationViewControllerWithDataSelectedLocationId
-    = TestObserver<Int?, Never>()
   private let endRefreshing = TestObserver<(), Never>()
   private let goToPledge = TestObserver<PledgeViewData, Never>()
   private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
   private let loadAddOnRewardsIntoDataSourceAndReloadTableView
     = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
-  private let shippingLocationViewIsHidden = TestObserver<Bool, Never>()
   private let startRefreshing = TestObserver<(), Never>()
 
   override func setUp() {
@@ -34,126 +28,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       .observe(self.configureContinueCTAViewWithDataIsValid.observer)
     self.vm.outputs.configureContinueCTAViewWithData.map(third)
       .observe(self.configureContinueCTAViewWithDataIsLoading.observer)
-    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.0 }
-      .observe(self.configurePledgeShippingLocationViewControllerWithDataProject.observer)
-    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.1 }
-      .observe(self.configurePledgeShippingLocationViewControllerWithDataReward.observer)
-    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.2 }
-      .observe(self.configurePledgeShippingLocationViewControllerWithDataShowAmount.observer)
-    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.3 }
-      .observe(self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSource.observe(self.loadAddOnRewardsIntoDataSource.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSourceAndReloadTableView
       .observe(self.loadAddOnRewardsIntoDataSourceAndReloadTableView.observer)
-    self.vm.outputs.shippingLocationViewIsHidden.observe(self.shippingLocationViewIsHidden.observer)
     self.vm.outputs.startRefreshing.observe(self.startRefreshing.observer)
-  }
-
-  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingEnabled() {
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-
-    let project = Project.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [:],
-      selectedLocationId: 2,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
-  }
-
-  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingDisabled() {
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
-
-    let project = Project.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [:],
-      selectedLocationId: 2,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
-  }
-
-  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingEnabled_FailedThenRefreshed() {
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
-    self.shippingLocationViewIsHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-
-    let project = Project.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [:],
-      selectedLocationId: 2,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
-    self.shippingLocationViewIsHidden.assertValues([false])
-
-    self.vm.inputs.shippingLocationViewDidFailToLoad()
-
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
-    self.shippingLocationViewIsHidden.assertValues([false, true])
-
-    self.vm.inputs.beginRefresh()
-
-    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project, project])
-    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward, reward])
-    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false, false])
-    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2, 2])
-    self.shippingLocationViewIsHidden.assertValues([false, true, false])
   }
 
   func testLoadAddOnRewardsIntoDataSource() {
@@ -184,6 +64,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -199,9 +80,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
+        [.rewardAddOn(expected)],
+        [.rewardAddOn(expected)]
+      ])
     }
   }
 
@@ -228,6 +112,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -239,7 +124,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.addOnsUnavailable)]])
     }
   }
 
@@ -255,6 +140,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -290,6 +176,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -305,7 +192,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
     }
@@ -324,12 +211,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.beginRefresh()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(2)
 
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(3)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
         [.emptyState(.errorPullToRefresh)],
@@ -383,6 +270,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward, noShippingAddOn],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -394,7 +282,10 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
+        [.rewardAddOn(expected)],
+        [.rewardAddOn(expected)]
+      ])
       XCTAssertEqual(
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 1,
         "Only the single add-on reward without shipping is emitted for no-shipping base reward."
@@ -517,6 +408,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [baseReward],
+        selectedShippingRule: ShippingRule.template,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -528,7 +420,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected, expected])
     }
   }
 
@@ -611,6 +503,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -623,10 +516,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-
-      self.scheduler.advance()
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.scheduler.advance()
 
@@ -715,6 +604,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -727,10 +617,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-
-      self.scheduler.advance()
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.scheduler.advance()
 
@@ -817,6 +703,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -829,10 +716,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-
-      self.scheduler.advance()
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.scheduler.advance()
 
@@ -914,6 +797,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -926,10 +810,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-
-      self.scheduler.advance()
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.scheduler.advance()
 
@@ -1047,6 +927,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -1056,13 +937,9 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.scheduler.advance()
 
@@ -1092,52 +969,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.configureContinueCTAViewWithDataIsValid.assertValues([true, false, false, false, true])
       self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false, false, false, false])
     }
-  }
-
-  func testShippingLocationViewIsHidden_RewardHasShipping() {
-    self.shippingLocationViewIsHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewIsHidden.assertValues([false])
-  }
-
-  func testShippingLocationViewIsHidden_NoShipping() {
-    self.shippingLocationViewIsHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (
-        .template |> Reward.Shipping.lens.enabled .~ false
-      )
-    let project = Project.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewIsHidden.assertValues([true])
   }
 
   func testGoToPledge_AddOnsSkipped() {
@@ -1185,6 +1016,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -1194,8 +1026,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.scheduler.advance()
-    self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
@@ -1215,6 +1045,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let expectedGoToPledgeData = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: shippingRule.location.id,
       refTag: nil,
@@ -1273,6 +1104,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: .activity,
@@ -1282,8 +1114,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.scheduler.advance()
-    self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)

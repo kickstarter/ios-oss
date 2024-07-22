@@ -30,21 +30,16 @@ public protocol RewardAddOnSelectionViewModelInputs {
   func configure(with data: PledgeViewData)
   func continueButtonTapped()
   func rewardAddOnCardViewDidSelectQuantity(quantity: Int, rewardId: Int)
-  func shippingLocationViewDidFailToLoad()
-  func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
 }
 
 public protocol RewardAddOnSelectionViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
-  var configurePledgeShippingLocationViewControllerWithData:
-    Signal<PledgeShippingLocationViewData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
   var loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
-  var shippingLocationViewIsHidden: Signal<Bool, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
 }
 
@@ -68,17 +63,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let refTag = configData.map(\.refTag)
     let context = configData.map(\.context)
     let initialLocationId = configData.map(\.selectedLocationId)
-
-    let shippingLocationViewConfigData = Signal.zip(project, baseReward, initialLocationId)
-
-    let fetchShippingLocations = Signal.merge(
-      shippingLocationViewConfigData,
-      shippingLocationViewConfigData.takeWhen(self.beginRefreshSignal)
-    )
-    .filter { _, reward, _ in reward.shipping.enabled }
-
-    self.configurePledgeShippingLocationViewControllerWithData = fetchShippingLocations
-      .map { project, reward, initialLocationId in (project, reward, false, initialLocationId) }
+    let selectedShippingRule = configData.map(\.selectedShippingRule)
 
     let slug = project.map(\.slug)
 
@@ -88,7 +73,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
 
     let shippingRule = Signal.merge(
-      self.shippingRuleSelectedProperty.signal,
+      selectedShippingRule,
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
@@ -175,19 +160,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .map(unpack)
       .map(rewardsData)
 
-    self.shippingLocationViewIsHidden = Signal.merge(
-      baseReward.map(\.shipping.enabled).negate(),
-      self.shippingLocationViewDidFailToLoadProperty.signal.mapConst(true),
-      fetchShippingLocations.mapConst(false)
-    )
-    .combineLatest(with: baseReward)
-    .switchMap { flag, baseReward -> SignalProducer<Bool, Never> in
-      let shippingLocationViewHidden = isRewardLocalPickup(baseReward) ? true : flag
-
-      return SignalProducer(value: shippingLocationViewHidden)
-    }
-    .skipRepeats()
-
     let dataSourceItems = Signal.merge(
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView,
       self.loadAddOnRewardsIntoDataSource
@@ -248,6 +220,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.goToPledge = Signal.combineLatest(
       project,
       selectedRewards,
+      shippingRule,
       selectedQuantities,
       selectedLocationId,
       refTag,
@@ -255,21 +228,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
-
-    let shippingTotal = Signal.combineLatest(
-      shippingRule.skipNil(),
-      selectedRewards,
-      selectedQuantities
-    )
-    .map(calculateShippingTotal)
-
-    let baseRewardShippingTotal = Signal.zip(project, baseReward, shippingRule)
-      .map(getBaseRewardShippingTotal)
-
-    let allRewardsShippingTotal = Signal.merge(
-      baseRewardShippingTotal,
-      shippingTotal
-    )
 
     // Additional pledge amount is zero if not backed.
     let additionalPledgeAmount = Signal.merge(
@@ -285,7 +243,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let combinedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      allRewardsShippingTotal,
+      additionalPledgeAmount.mapConst(0),
       allRewardsTotal
     )
     .map(calculatePledgeTotal)
@@ -305,12 +263,11 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       refTag,
       configData,
       additionalPledgeAmount,
-      allRewardsShippingTotal,
       pledgeTotal
     )
     .take(first: 1)
     .observeForUI()
-    .observeValues { project, baseReward, selectedRewards, refTag, configData, additionalPledgeAmount, shippingTotal, pledgeTotal in
+    .observeValues { project, baseReward, selectedRewards, refTag, configData, additionalPledgeAmount, pledgeTotal in
       let checkoutPropertiesData = checkoutProperties(
         from: project,
         baseReward: baseReward,
@@ -318,7 +275,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         selectedQuantities: configData.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
         pledgeTotal: pledgeTotal,
-        shippingTotal: shippingTotal,
+        shippingTotal: 0,
         isApplePay: nil
       )
 
@@ -338,10 +295,9 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       selectedQuantities,
       additionalPledgeAmount,
       pledgeTotal,
-      allRewardsShippingTotal,
       refTag
     ).takeWhen(self.continueButtonTappedProperty.signal)
-      .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, shippingTotal, refTag in
+      .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, refTag in
 
         let checkoutData = checkoutProperties(
           from: project,
@@ -350,7 +306,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           selectedQuantities: selectedQuantities,
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: pledgeTotal,
-          shippingTotal: shippingTotal,
+          shippingTotal: 0,
           isApplePay: nil
         )
 
@@ -392,25 +348,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.rewardAddOnCardViewDidSelectQuantityProperty.value = (quantity, rewardId)
   }
 
-  private let shippingLocationViewDidFailToLoadProperty = MutableProperty(())
-  public func shippingLocationViewDidFailToLoad() {
-    self.shippingLocationViewDidFailToLoadProperty.value = ()
-  }
-
-  private let shippingRuleSelectedProperty = MutableProperty<ShippingRule?>(nil)
-  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
-    self.shippingRuleSelectedProperty.value = shippingRule
-  }
-
   public let configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never>
-  public let configurePledgeShippingLocationViewControllerWithData:
-    Signal<PledgeShippingLocationViewData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
   public let loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never>
-  public let shippingLocationViewIsHidden: Signal<Bool, Never>
   public let startRefreshing: Signal<(), Never>
 
   public var inputs: RewardAddOnSelectionViewModelInputs { return self }

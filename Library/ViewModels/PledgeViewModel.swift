@@ -39,6 +39,7 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 public struct PledgeViewData: Equatable {
   public let project: Project
   public let rewards: [Reward]
+  public let selectedShippingRule: ShippingRule?
   public let selectedQuantities: SelectedRewardQuantities
   public let selectedLocationId: Int?
   public let refTag: RefTag?

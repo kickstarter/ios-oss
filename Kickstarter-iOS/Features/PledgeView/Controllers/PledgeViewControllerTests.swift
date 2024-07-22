@@ -40,6 +40,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -87,6 +88,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -121,6 +123,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
+            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -171,6 +174,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
+            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -220,6 +224,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -264,6 +269,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -308,6 +314,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -353,6 +360,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -401,6 +409,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -450,6 +459,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -493,6 +503,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -525,6 +536,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward],
+            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -561,6 +573,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
+            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -599,6 +612,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
+            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -639,6 +653,7 @@ final class PledgeViewControllerTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
+      selectedShippingRule: ShippingRule.template,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
       selectedLocationId: ShippingRule.template.id,
       refTag: .projectPage,
