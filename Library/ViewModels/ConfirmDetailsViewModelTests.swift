@@ -35,6 +35,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
 
+  let shippingRule = ShippingRule.template
+    |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
+
   override func setUp() {
     super.setUp()
 
@@ -76,6 +79,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: Project.template,
         rewards: [Reward.template],
+        selectedShippingRule: self.shippingRule,
         selectedQuantities: [Reward.template.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
@@ -108,6 +112,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: Project.template,
         rewards: [Reward.template],
+        selectedShippingRule: self.shippingRule,
         selectedQuantities: [Reward.template.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
@@ -155,7 +160,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -188,7 +194,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -218,7 +225,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -247,7 +255,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -274,7 +283,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -301,7 +311,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -328,7 +339,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -364,7 +376,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -413,7 +426,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -465,7 +479,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedQuantities: [reward.id: 1],
+
+        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -528,7 +543,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-      selectedQuantities: [reward.id: 1],
+
+      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -553,7 +569,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-      selectedQuantities: [reward.id: 1],
+
+      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -578,7 +595,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-      selectedQuantities: [reward.id: 1],
+
+      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -605,6 +623,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -635,6 +654,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -662,7 +682,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-      selectedQuantities: [reward.id: 1],
+
+      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -690,7 +711,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-      selectedQuantities: [reward.id: 1],
+
+      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -721,6 +743,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -751,6 +774,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: shippingRule.id,
       refTag: nil,
@@ -790,6 +814,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: shippingRule.id,
       refTag: nil,
@@ -833,6 +858,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
       selectedLocationId: shippingRule.location.id,
       refTag: nil,
@@ -874,6 +900,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
       selectedLocationId: shippingRule.id,
       refTag: nil,
@@ -916,7 +943,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: expectedRewards,
-        selectedQuantities: selectedQuantities,
+
+        selectedShippingRule: shippingRule, selectedQuantities: selectedQuantities,
         selectedLocationId: ShippingRule.template.id,
         refTag: nil,
         context: .pledge
@@ -992,6 +1020,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward, addOnReward1],
+        selectedShippingRule: shippingRule,
         selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
         selectedLocationId: ShippingRule.template.id,
         refTag: nil,
