@@ -499,8 +499,6 @@
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
 		6080DA402AB366680088EF3D /* Text+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080DA3F2AB366680088EF3D /* Text+HTML.swift */; };
-		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
-		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */; };
 		608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */; };
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
@@ -518,8 +516,6 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
-		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
-		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
@@ -2110,8 +2106,6 @@
 		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
-		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
-		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ValidateCheckout.graphql; sourceTree = "<group>"; };
 		608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCheckoutEnvelope.swift; sourceTree = "<group>"; };
 		6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift"; sourceTree = "<group>"; };
@@ -2131,8 +2125,6 @@
 		60C996EB2AC1FF0C006BE4F4 /* CreateFlagging.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateFlagging.graphql; sourceTree = "<group>"; };
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
-		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
-		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -3911,23 +3903,6 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
-		1937A71828C93DE500DD732D /* SetYourPassword */ = {
-			isa = PBXGroup;
-			children = (
-				1937A71928C93DEF00DD732D /* Controller */,
-			);
-			path = SetYourPassword;
-			sourceTree = "<group>";
-		};
-		1937A71928C93DEF00DD732D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */,
-				60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
 		1937A71A28C9407200DD732D /* Storyboards_DEPRECATED_09_07_2022 */ = {
 			isa = PBXGroup;
 			children = (
@@ -4799,7 +4774,6 @@
 				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
 				19450C4628C8271D00C60F97 /* SettingsNotifications */,
 				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
-				1937A71828C93DE500DD732D /* SetYourPassword */,
 				1937A70F28C93CD800DD732D /* SheetOverlay */,
 				1937A70E28C93CAF00DD732D /* Signup */,
 				19450C5228C82CEF00C60F97 /* ShippingRules */,
@@ -6645,8 +6619,6 @@
 				D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */,
 				D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */,
 				D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */,
-				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
-				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */,
@@ -7807,7 +7779,6 @@
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */,
 				06B0FDBA2702579A00147E3E /* ProjectPageViewModel.swift in Sources */,
-				608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				94114D83265451FF0063E8F6 /* CommentCellViewModel.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
@@ -8216,7 +8187,6 @@
 				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
 				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
 				A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */,
-				60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */,
 				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
 				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
@@ -8393,7 +8363,6 @@
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */,
-				608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
@@ -8643,7 +8612,6 @@
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
-				60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */,
 				8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */,
 				94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
