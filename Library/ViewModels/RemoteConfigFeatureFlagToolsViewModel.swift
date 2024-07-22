@@ -87,8 +87,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
   switch feature {
   case .darkModeEnabled:
     return featureDarkModeEnabled()
-  case .facebookLoginInterstitialEnabled:
-    return featureFacebookLoginInterstitialEnabled()
   case .postCampaignPledgeEnabled:
     return featurePostCampaignPledgeEnabled()
   case .loginWithOAuthEnabled:

@@ -17,10 +17,6 @@ public func featureDarkModeEnabled() -> Bool {
   return featureEnabled(feature: .darkModeEnabled)
 }
 
-public func featureFacebookLoginInterstitialEnabled() -> Bool {
-  return featureEnabled(feature: .facebookLoginInterstitialEnabled)
-}
-
 public func featurePostCampaignPledgeEnabled() -> Bool {
   featureEnabled(feature: .postCampaignPledgeEnabled)
 }
