@@ -182,10 +182,7 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagEnabled() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
-
+  func testFacebookLoginFlow_Succes() {
     let token = AccessToken(
       tokenString: "12344566",
       permissions: [],
@@ -206,63 +203,7 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: []
     )
 
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      self.vm.inputs.viewWillAppear()
-
-      self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
-
-      self.vm.inputs.facebookLoginButtonPressed()
-
-      self.attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
-
-      self.vm.inputs.facebookLoginSuccess(result: result)
-
-      self.isLoading.assertValues([true])
-
-      // Wait enough time for API request to be made.
-      scheduler.advance()
-
-      self.isLoading.assertValues([true, false])
-      self.logIntoEnvironmentWithFacebook.assertValueCount(1, "Log into environment.")
-
-      self.postNotification.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      // Notifications are not posted on the next run loop
-      XCTAssert(self.postNotification.values.isEmpty)
-
-      self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
-      self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
-    }
-  }
-
-  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagDisabled() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
-
-    let token = AccessToken(
-      tokenString: "12344566",
-      permissions: [],
-      declinedPermissions: [],
-      expiredPermissions: [],
-      appID: "834987809",
-      userID: "0000000001",
-      expirationDate: Date(),
-      refreshDate: Date(),
-      dataAccessExpirationDate: Date()
-    )
-
-    let result = LoginManagerLoginResult(
-      token: token,
-      authenticationToken: nil,
-      isCancelled: false,
-      grantedPermissions: [],
-      declinedPermissions: []
-    )
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+    withEnvironment {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
@@ -715,7 +656,7 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  func testLogIntoEnvironment_SignInWithApple_WhenFBLoginDeprecationFlagDisabled() {
+  func testLogIntoEnvironment_SignInWithApple() {
     let user = User.template
 
     let envelope = SignInWithAppleEnvelope.template
@@ -723,50 +664,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
 
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false]
-
-    withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
-      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
-      self.vm.inputs.viewWillAppear()
-
-      let data = SignInWithAppleData(
-        appId: "com.kickstarter.test",
-        firstName: "Nino",
-        lastName: "Teixeira",
-        token: "apple_auth_token"
-      )
-
-      self.isLoading.assertDidNotEmitValue()
-      self.logIntoEnvironmentWithApple.assertDidNotEmitValue()
-
-      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
-
-      self.isLoading.assertValues([true])
-      self.scheduler.run()
-
-      self.isLoading.assertValues([true, false])
-      self.logIntoEnvironmentWithApple.assertValueCount(1)
-
-      let value = self.logIntoEnvironmentWithApple.values.first
-
-      XCTAssertEqual(user, value?.user)
-      XCTAssertEqual("some_token", value?.accessToken)
-    }
-  }
-
-  func testLogIntoEnvironment_SignInWithApple_WhenFBLoginDeprecationFlagEnabled() {
-    let user = User.template
-
-    let envelope = SignInWithAppleEnvelope.template
-      |> \.signInWithApple.apiAccessToken .~ "some_token"
-
-    let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
-
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
-
-    withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
+    withEnvironment(apiService: service) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 

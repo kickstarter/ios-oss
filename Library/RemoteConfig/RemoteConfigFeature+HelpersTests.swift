@@ -43,22 +43,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       )
   }
 
-  func testFacebookDeprecation_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureFacebookLoginInterstitialEnabled,
-        whenRemoteConfigFeatureIsTrue: .facebookLoginInterstitialEnabled
-      )
-  }
-
-  func testFacebookDeprecation_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureFacebookLoginInterstitialEnabled,
-        whenRemoteConfigFeatureIsFalse: .facebookLoginInterstitialEnabled
-      )
-  }
-
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
     self
       .assert(
