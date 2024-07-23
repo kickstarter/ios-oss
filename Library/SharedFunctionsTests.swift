@@ -387,7 +387,6 @@ final class SharedFunctionsTests: TestCase {
       selectedQuantities: selectedQuantities,
       additionalPledgeAmount: 10.0,
       pledgeTotal: 100.0,
-      shippingTotal: 10.0,
       checkoutId: nil,
       isApplePay: false
     )
@@ -407,7 +406,6 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(10.00, checkoutPropertiesData.rewardMinimumUsd)
     XCTAssertEqual("My Reward", checkoutPropertiesData.rewardTitle)
     XCTAssertEqual(true, checkoutPropertiesData.shippingEnabled)
-    XCTAssertEqual(10.00, checkoutPropertiesData.shippingAmountUsd)
     XCTAssertEqual(
       true,
       checkoutPropertiesData.userHasStoredApplePayCard
@@ -576,11 +574,10 @@ final class SharedFunctionsTests: TestCase {
 
     let pledgeTotal = calculatePledgeTotal(
       pledgeAmount: pledgeAmount,
-      shippingCost: shippingTotal,
       addOnRewardsTotal: allRewardsTotal
     )
 
-    XCTAssertEqual(745.0, pledgeTotal)
+    XCTAssertEqual(730.0, pledgeTotal)
   }
 
   func testCalculated_Pledge_Total_NotBacking() {
@@ -615,11 +612,10 @@ final class SharedFunctionsTests: TestCase {
 
     let pledgeTotal = calculatePledgeTotal(
       pledgeAmount: 10,
-      shippingCost: shippingTotal,
       addOnRewardsTotal: allRewardsTotal
     )
 
-    XCTAssertEqual(55.0, pledgeTotal)
+    XCTAssertEqual(40.0, pledgeTotal)
   }
 
   func testGetCalculated_AllRewards_Total() {

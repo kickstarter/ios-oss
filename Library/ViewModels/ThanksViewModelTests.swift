@@ -362,7 +362,6 @@ final class ThanksViewModelTests: TestCase {
       rewardMinimumUsd: 5.00,
       rewardTitle: "SUPER reward",
       shippingEnabled: true,
-      shippingAmountUsd: 10.00,
       userHasStoredApplePayCard: true
     )
 
@@ -387,7 +386,6 @@ final class ThanksViewModelTests: TestCase {
       rewardMinimumUsd: 5.00,
       rewardTitle: "SUPER reward",
       shippingEnabled: true,
-      shippingAmountUsd: 10.00,
       userHasStoredApplePayCard: true
     )
 
@@ -415,7 +413,6 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual(10.00, segmentClientProps?["checkout_shipping_amount_usd"] as? Decimal)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String

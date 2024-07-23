@@ -2075,7 +2075,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual("restricted", props?["checkout_reward_shipping_preference"] as? String)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual(10.00, props?["checkout_shipping_amount_usd"] as? Decimal)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       props?["checkout_reward_estimated_delivery_on"] as? String
@@ -2115,7 +2114,6 @@ extension KSRAnalytics.CheckoutPropertiesData {
     rewardMinimumUsd: 5.00,
     rewardTitle: "SUPER reward",
     shippingEnabled: true,
-    shippingAmountUsd: 10.00,
     userHasStoredApplePayCard: true
   )
 }
