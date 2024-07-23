@@ -19,10 +19,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
   private let configurePledgeSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
 
   private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
-  private let configureShippingSummaryViewWithData = TestObserver<PledgeShippingSummaryViewData, Never>()
-  private let configureShippingLocationViewWithDataProject = TestObserver<Project, Never>()
-  private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
-  private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
   private let createCheckoutSuccess = TestObserver<PostCampaignCheckoutData, Never>()
 
@@ -30,8 +26,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
-  private let shippingLocationViewHidden = TestObserver<Bool, Never>()
-  private let shippingSummaryViewHidden = TestObserver<Bool, Never>()
 
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
 
@@ -42,16 +36,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.configureLocalPickupViewWithData.observe(self.configureLocalPickupViewWithData.observer)
-
-    self.vm.outputs.configureShippingLocationViewWithData.map { $0.project }
-      .observe(self.configureShippingLocationViewWithDataProject.observer)
-    self.vm.outputs.configureShippingLocationViewWithData.map { $0.reward }
-      .observe(self.configureShippingLocationViewWithDataReward.observer)
-    self.vm.outputs.configureShippingLocationViewWithData.map { $0.showAmount }
-      .observe(self.configureShippingLocationViewWithDataShowAmount.observer)
-
-    self.vm.outputs.configureShippingSummaryViewWithData
-      .observe(self.configureShippingSummaryViewWithData.observer)
 
     self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.2 }
       .observe(self.configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden.observer)
@@ -66,8 +50,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
-    self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
-    self.vm.outputs.shippingSummaryViewHidden.observe(self.shippingSummaryViewHidden.observer)
 
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
   }
@@ -130,9 +112,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
         projectCountry: .us,
         total: 3
       )
-      self.vm.inputs.shippingRuleSelected(
-        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
-      )
 
       let expectedBonus = 5.0
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -160,8 +139,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -174,12 +153,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
       self.pledgeAmountViewHidden.assertValues([false])
-      self.shippingLocationViewHidden.assertValues([false])
     }
   }
 
@@ -194,8 +168,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -207,10 +181,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.pledgeAmountViewHidden.assertValues([false])
     }
@@ -225,8 +195,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -237,10 +207,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
-      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
-      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.pledgeAmountViewHidden.assertValues([false])
     }
@@ -255,8 +221,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -267,10 +233,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
     }
   }
 
@@ -283,8 +245,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -295,10 +257,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
-      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
-      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
     }
   }
 
@@ -311,8 +269,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -323,97 +281,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-    }
-  }
-
-  func testShippingRuleSelectedDefaultShippingRule() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-
-    withEnvironment(currentUser: .template) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      let defaultShippingRule = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 5
-
-      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
-
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal
-        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
-      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
-    }
-  }
-
-  func testShippingRuleSelectedUpdatedShippingRule() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-
-    withEnvironment(currentUser: .template) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      let defaultShippingRule = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 5
-
-      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
-
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal
-        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
-      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
-
-      let selectedShippingRule = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 5
-        |> ShippingRule.lens.location .~ .australia
-
-      self.vm.inputs.shippingRuleSelected(selectedShippingRule)
-
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([
-        reward.minimum,
-        reward.minimum + defaultShippingRule.cost,
-        reward.minimum + selectedShippingRule.cost
-      ])
-      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
 
@@ -426,8 +293,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
@@ -439,12 +306,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
       self.pledgeAmountViewHidden.assertValues([false])
-      self.shippingLocationViewHidden.assertValues([false])
 
       let data1 = (amount: 66.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -453,252 +315,16 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
       let data2 = (amount: 93.0, min: 10.0, max: 10_000.0, isValid: true)
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
       self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76, 103])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project, project])
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
     }
-  }
-
-  func testSelectedShippingRuleAndPledgeAmountUpdates() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-
-    withEnvironment(currentUser: .template) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-
-        selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      self.pledgeAmountViewHidden.assertValues([false])
-      self.shippingLocationViewHidden.assertValues([false])
-
-      let shippingRule1 = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 20.0
-
-      self.vm.inputs.shippingRuleSelected(shippingRule1)
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      let data1 = (amount: 200.0, min: 10.0, max: 10_000.0, isValid: true)
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      let shippingRule2 = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 123.0
-
-      self.vm.inputs.shippingRuleSelected(shippingRule2)
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-
-      let data2 = (amount: 1_999.0, min: 10.0, max: 10_000.0, isValid: true)
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
-
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
-    }
-  }
-
-  func testShippingSummaryViewHidden_IsHidden_NoReward() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.noReward
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-
-      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([true])
-  }
-
-  func testShippingSummaryViewHidden_IsHidden_RegularReward_NoShipping() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-
-      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([true])
-  }
-
-  func testShippingSummaryViewHidden_IsHidden_RegularReward_Shipping_NoAddOns() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-
-      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([false])
-    self.shippingSummaryViewHidden.assertValues([true])
-  }
-
-  func testShippingSummaryViewHidden_IsHidden_RegularReward_Shipping_HasAddOns_ChangePaymentContext() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let addOnReward1 = Reward.template
-      |> Reward.lens.id .~ 2
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward, addOnReward1],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .changePaymentMethod
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues(
-      [true],
-      "All shipping location views are hidden in this context"
-    )
-    self.shippingSummaryViewHidden.assertValues([true])
-  }
-
-  func testShippingSummaryViewHidden_IsVisible_RegularReward_Shipping_HasAddOns() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let addOnReward1 = Reward.template
-      |> Reward.lens.id .~ 2
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward, addOnReward1],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([false])
-  }
-
-  func testShippingLocationViewHidden_IsHidden_RegularReward_Shipping_NoAddOns_RewardIsLocalPckup() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
-      |> Reward.lens.shipping.preference .~ .local
-      |> Reward.lens.localPickup .~ .losAngeles
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-
-      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([true])
   }
 
   func testLocalRewardViewHidden_IsVisible_RegularReward_Shipping_NoAddOns_RewardIsLocalPckup() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
     self.localPickupViewHidden.assertDidNotEmitValue()
 
     let reward = Reward.template
@@ -711,8 +337,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
-
-      selectedShippingRule: shippingRule, selectedQuantities: [reward.id: 1],
+      selectedShippingRule: shippingRule,
+      selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
       context: .pledge
@@ -720,15 +346,10 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([true])
     self.localPickupViewHidden.assertValues([false])
   }
 
   func testLocalRewardView_IsHidden_RegularReward_Shipping_HasAddOns_RewardIsNotLocalPickup() {
-    self.shippingSummaryViewHidden.assertDidNotEmitValue()
-    self.shippingLocationViewHidden.assertDidNotEmitValue()
     self.localPickupViewHidden.assertDidNotEmitValue()
 
     let reward = Reward.template
@@ -753,131 +374,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.shippingLocationViewHidden.assertValues([true])
-    self.shippingSummaryViewHidden.assertValues([false])
     self.localPickupViewHidden.assertValues([true])
-  }
-
-  func testConfigureShippingSummaryViewWithData_HasAddOns() {
-    self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let addOnReward1 = Reward.template
-      |> Reward.lens.id .~ 2
-      |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let shippingRule = ShippingRule.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward, addOnReward1],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedLocationId: shippingRule.id,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.shippingRuleSelected(shippingRule)
-
-    self.configureShippingSummaryViewWithData.assertValues([
-      PledgeShippingSummaryViewData(
-        locationName: "Brooklyn, NY",
-        omitUSCurrencyCode: true,
-        projectCountry: .us,
-        total: 10
-      )
-    ])
-  }
-
-  func testConfigureShippingSummaryViewWithData_HasAddOns_NonUS_ProjectCurrency_US_ProjectCountry() {
-    self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let addOnReward1 = Reward.template
-      |> Reward.lens.id .~ 2
-      |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-      |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let shippingRule = ShippingRule.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward, addOnReward1],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedLocationId: shippingRule.id,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.shippingRuleSelected(shippingRule)
-
-    self.configureShippingSummaryViewWithData.assertValues([
-      PledgeShippingSummaryViewData(
-        locationName: "Brooklyn, NY",
-        omitUSCurrencyCode: true,
-        projectCountry: .mx,
-        total: 10
-      )
-    ])
-  }
-
-  func testConfigureShippingSummaryViewWithData_HasAddOns_OnlyOneHasShipping() {
-    self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
-    let addOnReward1 = Reward.template
-      |> Reward.lens.id .~ 2
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
-    let addOnReward2 = Reward.template
-      |> Reward.lens.id .~ 3
-      |> Reward.lens.shipping.enabled .~ false
-
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let shippingRule = ShippingRule.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward, addOnReward1, addOnReward2],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
-      selectedLocationId: shippingRule.location.id,
-      refTag: nil,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.shippingRuleSelected(shippingRule)
-
-    self.configureShippingSummaryViewWithData.assertValues([
-      PledgeShippingSummaryViewData(
-        locationName: "Brooklyn, NY",
-        omitUSCurrencyCode: true,
-        projectCountry: .us,
-        total: 10
-      )
-    ])
   }
 
   func testConfigureLocalPickupViewWithData_Success() {
@@ -943,8 +440,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: expectedRewards,
-
-        selectedShippingRule: shippingRule, selectedQuantities: selectedQuantities,
+        selectedShippingRule: shippingRule,
+        selectedQuantities: selectedQuantities,
         selectedLocationId: ShippingRule.template.id,
         refTag: nil,
         context: .pledge
@@ -952,16 +449,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-
-      let expectedShipping = PledgeShippingSummaryViewData(
-        locationName: "Los Angeles, CA",
-        omitUSCurrencyCode: true,
-        projectCountry: .us,
-        total: 3
-      )
-      self.vm.inputs.shippingRuleSelected(
-        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
-      )
 
       let expectedBonus = 5.0
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -981,23 +468,19 @@ final class ConfirmDetailsViewModelTests: TestCase {
         rewards: expectedRewards,
         selectedQuantities: selectedQuantities,
         bonusAmount: expectedBonus,
-        total: 28,
-        shipping: expectedShipping,
+        total: 25,
+        shipping: nil,
         refTag: nil,
         context: .pledge,
         checkoutId: "198336646",
         backingId: "backingId"
       )
+
       self.createCheckoutSuccess.assertValue(expectedValue)
     }
   }
 
   func testContinueButton_CallsCreateBackingMutation_Failure_ShowsErrorMessageBanner() {
-    let createCheckout = CreateCheckoutEnvelope.Checkout(
-      id: "id",
-      paymentUrl: "paymentUrl",
-      backingId: "backingId"
-    )
     let errorUnknown = ErrorEnvelope(
       errorMessages: ["Something went wrong yo."],
       ksrCode: .UnknownCode,
