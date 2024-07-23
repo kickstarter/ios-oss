@@ -53,11 +53,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(data: (project: project, reward: reward, true, nil))
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, true, nil))
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
@@ -92,13 +89,12 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   func testDefaultShippingRule_US_ProjectCountry_NonUSProjectCurrencyCountry_US_UserLocation() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-
     let project = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (project: project, reward: reward, true, nil))
@@ -139,11 +135,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(data: (project: project, reward: reward, true, Location.australia.id))
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, true, Location.australia.id))
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
@@ -197,11 +190,9 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(data: (project: project, reward: reward, false, nil))
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false, nil))
       self.vm.inputs.viewDidLoad()
 
       guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
@@ -240,11 +231,9 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(data: (project: project, reward: reward, false, nil))
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false, nil))
       self.vm.inputs.viewDidLoad()
 
       guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
@@ -275,11 +264,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.failure(error))) {
-      self.vm.inputs.configureWith(data: (project: project, reward: reward, false, nil))
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false, nil))
       self.vm.inputs.viewDidLoad()
 
       self.shippingRulesError.assertValues([])
@@ -302,8 +288,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
   func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
 
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
@@ -316,7 +300,9 @@ final class PledgeShippingLocationViewModelTests: TestCase {
           |> Backing.lens.locationId .~ Location.canada.id
           |> Backing.lens.locationName .~ Location.canada.name
       )
-      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (project: project, reward: reward, false, nil))
@@ -355,9 +341,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRulesWithoutCanada))
 
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
@@ -369,7 +352,9 @@ final class PledgeShippingLocationViewModelTests: TestCase {
           |> Backing.lens.locationId .~ Location.canada.id
           |> Backing.lens.locationName .~ Location.canada.name
       )
-      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (project: project, reward: reward, false, nil))

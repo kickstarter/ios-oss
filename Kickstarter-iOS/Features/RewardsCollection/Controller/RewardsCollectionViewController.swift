@@ -20,13 +20,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  /// The bottom-up modal for selecting a new shipping location
-  private lazy var pledgeShippingLocationViewController = {
-    PledgeShippingLocationViewController.instantiate()
-      |> \.delegate .~ self
-      |> \.view.layoutMargins .~ .init(all: Styles.grid(3))
-  }()
-
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
@@ -73,18 +66,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
+    if featurePostCampaignPledgeEnabled() {
+      _ = (self.headerView, self.view)
+        |> ksr_addSubviewToParent()
+    }
+
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
-
-    /// Adding this to the CollectionView Header's rootStackView from here so that we can handle the shipping view's delegates from this view controller.
-    _ = ([self.pledgeShippingLocationViewController.view], self.headerView.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    self.addChild(self.pledgeShippingLocationViewController)
-    self.pledgeShippingLocationViewController.didMove(toParent: self)
 
     _ = (self.rewardsCollectionFooterView, self.view)
       |> ksr_addSubviewToParent()
@@ -143,7 +131,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> checkoutBackgroundStyle
 
     _ = self.headerView
-      |> \.backgroundColor .~ .ksr_alert
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.collectionView
@@ -226,17 +213,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] title, message in
         self?.showEditRewardConfirmationPrompt(title: title, message: message)
       }
-
-    // MARK: - Shipping Location Outputs
-
-    self.pledgeShippingLocationViewController.view.rac.hidden = self.viewModel.outputs
-      .shippingLocationViewHidden
-
-    self.viewModel.outputs.configureShippingLocationViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeShippingLocationViewController.configureWith(value: data)
-      }
   }
 
   // MARK: - Functions
@@ -245,16 +221,24 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self.collectionView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
+    if featurePostCampaignPledgeEnabled() {
+      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+    }
+
     NSLayoutConstraint.activate([
-      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.collectionView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor)
+      self.collectionView.topAnchor
+        .constraint(
+          equalTo: featurePostCampaignPledgeEnabled()
+            ? self.headerView.bottomAnchor
+            : self.view.topAnchor
+        )
     ])
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
@@ -382,18 +366,6 @@ extension RewardsCollectionViewController: RewardCellDelegate {
   func rewardCell(_: RewardCell, shouldShowDividerLine show: Bool) {
     self.viewModel.inputs.rewardCellShouldShowDividerLine(show)
   }
-}
-
-// MARK: - PledgeShippingLocationViewControllerDelegate
-
-extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didSelect _: ShippingRule
-  ) {}
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: Styles
