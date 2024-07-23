@@ -8,7 +8,6 @@ public protocol ConfirmDetailsViewModelInputs {
   func configure(with data: PledgeViewData)
   func continueCTATapped()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
-  func shippingRuleSelected(_ shippingRule: ShippingRule)
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -22,16 +21,12 @@ public protocol ConfirmDetailsViewModelOutputs {
     Never
   > { get }
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
-  var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
-  var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var pledgeSummaryViewHidden: Signal<Bool, Never> { get }
-  var shippingLocationViewHidden: Signal<Bool, Never> { get }
-  var shippingSummaryViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
 }
 
@@ -55,6 +50,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let rewards = initialData.map(\.rewards)
     let selectedQuantities = initialData.map(\.selectedQuantities)
     let selectedLocationId = initialData.map(\.selectedLocationId)
+    let selectedShippingRule = initialData.map(\.selectedShippingRule)
     let context = initialData.map(\.context)
     let refTag = initialData.map(\.refTag)
 
@@ -76,24 +72,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
 
-    let selectedShippingRule = Signal.merge(
+    let shippingRule = Signal.merge(
       project.mapConst(nil),
-      self.shippingRuleSelectedSignal.wrapInOptional()
-    )
-
-    let calculatedShippingTotal = Signal.combineLatest(
-      selectedShippingRule.skipNil(),
-      rewards,
-      selectedQuantities
-    )
-    .map(calculateShippingTotal)
-
-    let baseRewardShippingTotal = Signal.zip(project, baseReward, selectedShippingRule)
-      .map(getBaseRewardShippingTotal)
-
-    let allRewardsShippingTotal = Signal.merge(
-      baseRewardShippingTotal,
-      calculatedShippingTotal
+      selectedShippingRule
     )
 
     /// Initial pledge amount is zero if not backed.
@@ -126,12 +107,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         ].contains(true)
       }
 
-    self.shippingLocationViewHidden = Signal
-      .combineLatest(nonLocalPickupShippingLocationViewHidden, baseReward)
-      .map { flag, baseReward in
-        isRewardLocalPickup(baseReward) ? true : flag
-      }
-
     /**
      Shipping summary view is hidden when updating,
      if the base reward has no shipping, when NO add-ons were selected or when base reward has local pickup option.
@@ -145,52 +120,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         ].contains(true)
       }
 
-    self.shippingSummaryViewHidden = Signal.combineLatest(nonLocalPickupShippingSummaryViewHidden, baseReward)
-      .map { flag, baseReward in
-        isRewardLocalPickup(baseReward) ? true : flag
-      }
-
-    let shippingViewsHidden: Signal<Bool, Never> = Signal.combineLatest(
-      self.shippingSummaryViewHidden,
-      self.shippingLocationViewHidden
-    )
-    .map { a, b -> Bool in
-      let r = a && b
-      return r
-    }
-
     self.localPickupViewHidden = baseReward.map(isRewardLocalPickup).negate()
-
-    // Only shown for regular non-add-ons based rewards
-    self.configureShippingLocationViewWithData = Signal.combineLatest(
-      projectAndReward,
-      shippingViewsHidden.filter(isFalse),
-      selectedLocationId
-    )
-    .map { projectAndReward, _, selectedLocationId in
-      (projectAndReward.0, projectAndReward.1, selectedLocationId)
-    }
-    .map { project, reward, locationId in
-      (project, reward, true, locationId)
-    }
-
-    /// Only shown for add-ons based rewards
-    self.configureShippingSummaryViewWithData = Signal.combineLatest(
-      selectedShippingRule.skipNil().map(\.location.localizedName),
-      project.map(\.stats.omitUSCurrencyCode),
-      project.map { project in
-        projectCountry(forCurrency: project.stats.currency) ?? project.country
-      },
-      allRewardsShippingTotal
-    )
-    .map { locationName, omitUSCurrencyCode, projectCountry, total in
-      PledgeShippingSummaryViewData(
-        locationName: locationName,
-        omitUSCurrencyCode: omitUSCurrencyCode,
-        projectCountry: projectCountry,
-        total: total
-      )
-    }
 
     self.configurePledgeAmountViewWithData = Signal.combineLatest(
       projectAndReward,
@@ -205,21 +135,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       )
     }
 
-    /// Only shown for if the shipping summary view and shipping location view are hidden
-    self.configureLocalPickupViewWithData = Signal.combineLatest(
-      projectAndReward,
-      shippingViewsHidden.filter(isTrue)
-    )
-    .switchMap { projectAndReward, _ -> SignalProducer<PledgeLocalPickupViewData?, Never> in
-      guard let locationName = projectAndReward.1.localPickup?.displayableName else {
-        return SignalProducer(value: nil)
+    self.configureLocalPickupViewWithData = projectAndReward
+      .switchMap { projectAndReward -> SignalProducer<PledgeLocalPickupViewData?, Never> in
+        guard let locationName = projectAndReward.1.localPickup?.displayableName else {
+          return SignalProducer(value: nil)
+        }
+
+        let localPickupLocationData = PledgeLocalPickupViewData(locationName: locationName)
+
+        return SignalProducer(value: localPickupLocationData)
       }
-
-      let localPickupLocationData = PledgeLocalPickupViewData(locationName: locationName)
-
-      return SignalProducer(value: localPickupLocationData)
-    }
-    .skipNil()
+      .skipNil()
 
     // MARK: Total Pledge Summary
 
@@ -236,12 +162,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     /**
      * For a regular reward this includes the bonus support amount,
-     * the total of all rewards and their respective shipping costs.
+     * the total of all rewards.
      * For No Reward this is only the pledge amount.
      */
     let calculatedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      allRewardsShippingTotal,
+      allRewardsTotal.mapConst(nil),
       allRewardsTotal
     )
     .map(calculatePledgeTotal)
@@ -277,21 +203,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         return context.expandableRewardViewHidden
       }
 
-    let shippingSummaryData = Signal.combineLatest(
-      selectedShippingRule.skipNil().map(\.location.localizedName),
-      project.map(\.stats.omitUSCurrencyCode),
-      project.map { project in
-        projectCountry(forCurrency: project.stats.currency) ?? project.country
-      },
-      allRewardsShippingTotal
-    )
-    .map(PledgeShippingSummaryViewData.init)
-
-    let optionalShippingSummaryData = Signal.merge(
-      project.mapConst(nil),
-      shippingSummaryData.wrapInOptional()
-    )
-
     let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
@@ -299,11 +210,10 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
-      optionalShippingSummaryData,
       bonusOrPledgeUpdatedAmount,
       pledgeTotalSummaryData
     )
-    .map { _, project, rewards, selectedQuantities, shippingSummaryData, bonusOrPledgeUpdatedAmount, pledgeTotalSummaryData -> (
+    .map { _, project, rewards, selectedQuantities, bonusOrPledgeUpdatedAmount, pledgeTotalSummaryData -> (
       PostCampaignRewardsSummaryViewData,
       Double?,
       PledgeSummaryViewData
@@ -313,8 +223,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           rewards: rewards,
           selectedQuantities: selectedQuantities,
           projectCountry: project.country,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode,
-          shipping: shippingSummaryData
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
         ),
         bonusOrPledgeUpdatedAmount,
         pledgeTotalSummaryData
@@ -384,14 +293,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Signal.combineLatest(
         initialData,
         bonusOrPledgeUpdatedAmount,
-        optionalShippingSummaryData,
         pledgeTotal,
         baseReward
       )
     )
     .map { checkoutAndBackingId, otherData -> PostCampaignCheckoutData in
       let (checkoutId, backingId) = checkoutAndBackingId
-      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
+      let (initialData, bonusOrReward, pledgeTotal, baseReward) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -408,7 +316,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         selectedQuantities: initialData.selectedQuantities,
         bonusAmount: bonus == 0 ? nil : bonus,
         total: pledgeTotal,
-        shipping: shipping,
+        shipping: nil,
         refTag: initialData.refTag,
         context: initialData.context,
         checkoutId: checkoutId,
@@ -417,7 +325,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     }
 
     self.showErrorBannerWithMessage = createCheckoutEvents.errors()
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
+      .map { _ in
+        Strings.Something_went_wrong_please_try_again()
+      }
   }
 
   // MARK: - Inputs
@@ -440,11 +350,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
   public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
     self.pledgeAmountObserver.send(value: data)
-  }
-
-  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
-  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
-    self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 
   private let (submitButtonTappedSignal, submitButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -473,16 +378,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
-  public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
-  public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
   public let pledgeSummaryViewHidden: Signal<Bool, Never>
-  public let shippingLocationViewHidden: Signal<Bool, Never>
-  public let shippingSummaryViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
 
   public var inputs: ConfirmDetailsViewModelInputs { return self }

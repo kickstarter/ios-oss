@@ -64,7 +64,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let context = configData.map(\.context)
     let initialLocationId = configData.map(\.selectedLocationId)
     let selectedShippingRule = configData.map(\.selectedShippingRule)
-
     let slug = project.map(\.slug)
 
     let fetchAddOnsWithSlug = Signal.merge(

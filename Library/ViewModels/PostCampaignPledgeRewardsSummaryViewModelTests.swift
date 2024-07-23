@@ -44,8 +44,7 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
       rewards: [reward1, reward2, reward3],
       selectedQuantities: [reward1.id: 1, reward2.id: 2, reward3.id: 3],
       projectCountry: .us,
-      omitCurrencyCode: false,
-      shipping: nil
+      omitCurrencyCode: false
     )
 
     let pledgeData = PledgeSummaryViewData(

@@ -27,17 +27,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> \.delegate .~ self
   }()
 
-  /// The shipping location shown when changing shipping locations isn't an option
-  private lazy var shippingSummaryView: PledgeShippingSummaryView = {
-    PledgeShippingSummaryView(frame: .zero)
-  }()
-
-  /// The bottom-up modal for selecting a new shipping location
-  private lazy var shippingLocationViewController = {
-    PledgeShippingLocationViewController.instantiate()
-      |> \.delegate .~ self
-  }()
-
   private lazy var localPickupLocationView = {
     PledgeLocalPickupView(frame: .zero)
   }()
@@ -61,8 +50,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
   private lazy var inputsSectionViews = {
     [
-      self.shippingLocationViewController.view,
-      self.shippingSummaryView,
       self.localPickupLocationView,
       self.pledgeAmountViewController.view
     ]
@@ -150,7 +137,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     let childViewControllers = [
       self.pledgeAmountViewController,
-      self.shippingLocationViewController,
       self.pledgeSummaryViewController,
       self.pledgeRewardsSummaryViewController
     ]
@@ -226,18 +212,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.localPickupLocationView.configure(with: data)
       }
 
-    self.viewModel.outputs.configureShippingLocationViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.shippingLocationViewController.configureWith(value: data)
-      }
-
-    self.viewModel.outputs.configureShippingSummaryViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.shippingSummaryView.configure(with: data)
-      }
-
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -294,10 +268,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
-    self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
-
-    self.shippingSummaryView.rac.hidden = self.viewModel.outputs.shippingSummaryViewHidden
-
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
 
     self.pledgeSummarySectionSeparator.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
@@ -348,20 +318,6 @@ extension ConfirmDetailsViewController: PledgeAmountViewControllerDelegate {
   ) {
     self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
-}
-
-// MARK: - PledgeShippingLocationViewControllerDelegate
-
-extension ConfirmDetailsViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
-  ) {
-    self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - ConfirmDetailsContinueCTAViewDelegate
