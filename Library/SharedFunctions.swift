@@ -506,10 +506,9 @@ func calculateShippingTotal(
  */
 func calculatePledgeTotal(
   pledgeAmount: Double,
-  shippingCost: Double? = nil,
   addOnRewardsTotal: Double
 ) -> Double {
-  let r = [pledgeAmount, shippingCost ?? 0, addOnRewardsTotal].reduce(0) { accum, amount in
+  let r = [pledgeAmount, addOnRewardsTotal].reduce(0) { accum, amount in
     accum.addingCurrency(amount)
   }
 
@@ -560,7 +559,6 @@ public func checkoutProperties(
   selectedQuantities: SelectedRewardQuantities,
   additionalPledgeAmount: Double,
   pledgeTotal: Double,
-  shippingTotal: Double,
   checkoutId: String? = nil,
   isApplePay: Bool?
 ) -> KSRAnalytics.CheckoutPropertiesData {
@@ -585,8 +583,6 @@ public func checkoutProperties(
     .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
     .multiplyingCurrency(staticUsdRate)
 
-  let shippingAmount: Double? = baseReward.shipping.enabled ? shippingTotal : nil
-
   let rewardId = String(baseReward.id)
   let estimatedDelivery = baseReward.estimatedDeliveryOn
 
@@ -600,7 +596,6 @@ public func checkoutProperties(
   let rewardTitle = baseReward.title
   let rewardMinimumUsd = rounded(baseReward.minimum.multiplyingCurrency(staticUsdRate), places: 2)
   let shippingEnabled = baseReward.shipping.enabled
-  let shippingAmountUsd = shippingAmount?.multiplyingCurrency(staticUsdRate)
 
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapabilities
@@ -619,7 +614,6 @@ public func checkoutProperties(
     rewardMinimumUsd: rewardMinimumUsd,
     rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
-    shippingAmountUsd: shippingAmountUsd,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
 }

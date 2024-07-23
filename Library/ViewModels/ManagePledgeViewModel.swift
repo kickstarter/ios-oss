@@ -331,7 +331,6 @@ public final class ManagePledgeViewModel:
           selectedQuantities: selectedRewardQuantities(in: backing),
           additionalPledgeAmount: backing.bonusAmount,
           pledgeTotal: backing.amount,
-          shippingTotal: Double(backing.shippingAmount ?? 0),
           isApplePay: backing.paymentSource?.paymentType == .applePay
         )
 

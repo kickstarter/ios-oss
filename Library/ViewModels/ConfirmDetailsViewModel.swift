@@ -167,7 +167,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
      */
     let calculatedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      allRewardsTotal.mapConst(nil),
       allRewardsTotal
     )
     .map(calculatePledgeTotal)

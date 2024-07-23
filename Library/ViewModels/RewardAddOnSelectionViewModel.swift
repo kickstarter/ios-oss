@@ -242,7 +242,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let combinedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      additionalPledgeAmount.mapConst(0),
       allRewardsTotal
     )
     .map(calculatePledgeTotal)
@@ -274,7 +273,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         selectedQuantities: configData.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
         pledgeTotal: pledgeTotal,
-        shippingTotal: 0,
         isApplePay: nil
       )
 
@@ -305,7 +303,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           selectedQuantities: selectedQuantities,
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: pledgeTotal,
-          shippingTotal: 0,
           isApplePay: nil
         )
 

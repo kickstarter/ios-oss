@@ -505,7 +505,6 @@ public final class KSRAnalytics {
     let rewardMinimumUsd: Decimal
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmountUsd: Double?
     let userHasStoredApplePayCard: Bool
   }
 
@@ -1385,7 +1384,6 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0, places: 2)
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)

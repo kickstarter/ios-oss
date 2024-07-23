@@ -212,7 +212,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .observeValues { project, refTag, _ in
       // This event is fired before a base reward is selected
       let reward = Reward.noReward
-      let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
+      let (backing, _) = backingAndShippingTotal(for: project, and: reward)
       let checkoutPropertiesData = checkoutProperties(
         from: project,
         baseReward: reward,
@@ -220,7 +220,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         selectedQuantities: [:],
         additionalPledgeAmount: backing?.bonusAmount ?? 0,
         pledgeTotal: backing?.amount ?? reward.minimum,
-        shippingTotal: shippingTotal ?? 0,
         isApplePay: nil
       )
 
@@ -235,7 +234,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .observeValues { project, reward, refTag in
 
         // The `Backing` is nil for a new pledge.
-        let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
+        let (backing, _) = backingAndShippingTotal(for: project, and: reward)
 
         // Regardless of whether this is the beginning of a new pledge or we are editing our reward,
         // we only have the base reward selected at this point
@@ -246,7 +245,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           selectedQuantities: [reward.id: 1],
           additionalPledgeAmount: backing?.bonusAmount ?? 0,
           pledgeTotal: backing?.amount ?? reward.minimum, // The total is the value of the reward
-          shippingTotal: shippingTotal ?? 0,
           isApplePay: nil
         )
 

@@ -451,7 +451,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       selectedQuantities: data.selectedQuantities,
       additionalPledgeAmount: data.bonusAmount ?? 0,
       pledgeTotal: data.total,
-      shippingTotal: data.shipping?.total ?? 0,
       checkoutId: data.checkoutId,
       isApplePay: isApplePay
     )

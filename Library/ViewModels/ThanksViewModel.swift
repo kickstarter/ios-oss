@@ -220,12 +220,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     )
     .observeValues { project, configData in
       var pledgeAmount: Double?
-      var shipping: Double?
       var transactionId: String?
 
       if let checkoutDataValues = configData.checkoutData {
         transactionId = checkoutDataValues.checkoutId
-        shipping = checkoutDataValues.shippingAmountUsd
         pledgeAmount = NSDecimalNumber(decimal: checkoutDataValues.revenueInUsd).doubleValue
           + NSDecimalNumber(decimal: checkoutDataValues.bonusAmountInUsd ?? 0).doubleValue
           + checkoutDataValues.addOnsMinimumUsd
@@ -254,7 +252,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
           projectId: projectId,
           pledgeAmount: pledgeAmount,
-          shipping: shipping,
+          shipping: 0,
           transactionId: transactionId,
           userId: userId,
           appData: .init(
