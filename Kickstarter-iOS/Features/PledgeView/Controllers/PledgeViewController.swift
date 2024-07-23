@@ -104,7 +104,10 @@ final class PledgeViewController: UIViewController,
   }()
 
   private lazy var summarySectionViews = {
-    [self.summarySectionSeparator]
+    [
+      self.summarySectionSeparator,
+      self.summaryViewController.view
+    ]
   }()
 
   private lazy var summaryViewController = {
