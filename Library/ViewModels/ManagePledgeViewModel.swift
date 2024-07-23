@@ -446,7 +446,6 @@ private func pledgeViewData(
   return PledgeViewData(
     project: project,
     rewards: rewards,
-    selectedShippingRule: nil,
     selectedQuantities: selectedRewardQuantities(in: backing),
     selectedLocationId: backing.locationId,
     refTag: nil,

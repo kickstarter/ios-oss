@@ -503,7 +503,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: nil,
@@ -627,7 +626,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: nil,
@@ -681,7 +679,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [baseReward, addOn1, addOn2],
-        selectedShippingRule: nil,
         selectedQuantities: [baseReward.id: 1, addOn1.id: 1, addOn2.id: 2],
         selectedLocationId: nil,
         refTag: nil,
@@ -1434,7 +1431,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: nil,

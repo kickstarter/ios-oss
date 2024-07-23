@@ -38,14 +38,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [:],
           selectedLocationId: nil,
           refTag: nil,
@@ -98,13 +97,12 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [:],
           selectedLocationId: nil,
           refTag: nil,
@@ -115,6 +113,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
+
+        controller.pledgeShippingLocationViewController(
+          PledgeShippingLocationViewController.instantiate(),
+          didSelect: .template
+        )
+
+        self.scheduler.advance(by: .seconds(1))
 
         assertSnapshot(
           matching: parent.view,
@@ -196,13 +201,12 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [:],
           selectedLocationId: nil,
           refTag: nil,
@@ -213,6 +217,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
+
+        controller.pledgeShippingLocationViewController(
+          PledgeShippingLocationViewController.instantiate(),
+          didSelect: shippingRule
+        )
+
+        self.scheduler.advance(by: .seconds(1))
 
         assertSnapshot(
           matching: parent.view,
@@ -231,14 +242,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [:],
           selectedLocationId: nil,
           refTag: nil,
@@ -278,14 +288,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [:],
           selectedLocationId: nil,
           refTag: nil,
