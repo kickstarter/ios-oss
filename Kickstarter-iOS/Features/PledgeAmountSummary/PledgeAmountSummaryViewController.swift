@@ -14,9 +14,6 @@ final class PledgeAmountSummaryViewController: UIViewController {
   private lazy var pledgeAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var pledgeLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var shippingAmountLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var shippingLocationLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var shippingLocationStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private let viewModel: PledgeAmountSummaryViewModelType = PledgeAmountSummaryViewModel()
 
@@ -50,9 +47,6 @@ final class PledgeAmountSummaryViewController: UIViewController {
     _ = self.pledgeAmountStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
 
-    _ = self.shippingLocationStackView
-      |> adaptableStackViewStyle(isAccessibilityCategory)
-
     _ = self.bonusLabel
       |> titleLabelStyle
       |> \.text %~ { _ in Strings.Bonus() }
@@ -62,12 +56,6 @@ final class PledgeAmountSummaryViewController: UIViewController {
       |> \.text %~ { _ in Strings.Pledge() }
 
     _ = self.pledgeAmountLabel
-      |> amountLabelStyle
-
-    _ = self.shippingLocationLabel
-      |> titleLabelStyle
-
-    _ = self.shippingAmountLabel
       |> amountLabelStyle
   }
 
@@ -79,9 +67,6 @@ final class PledgeAmountSummaryViewController: UIViewController {
     self.bonusAmountLabel.rac.attributedText = self.viewModel.outputs.bonusAmountText
     self.bonusAmountStackView.rac.hidden = self.viewModel.outputs.bonusAmountStackViewIsHidden
     self.pledgeAmountLabel.rac.attributedText = self.viewModel.outputs.pledgeAmountText
-    self.shippingAmountLabel.rac.attributedText = self.viewModel.outputs.shippingAmountText
-    self.shippingLocationLabel.rac.text = self.viewModel.outputs.shippingLocationText
-    self.shippingLocationStackView.rac.hidden = self.viewModel.outputs.shippingLocationStackViewIsHidden
   }
 
   // MARK: Functions
@@ -99,14 +84,9 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     self.bonusAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.pledgeAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
-    self.shippingAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
-
-    _ = ([self.shippingLocationLabel, self.shippingAmountLabel], self.shippingLocationStackView)
-      |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([
       self.pledgeAmountStackView,
-      self.shippingLocationStackView,
       self.bonusAmountStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
