@@ -70,8 +70,6 @@ final class PledgeViewController: UIViewController,
 
   private lazy var inputsSectionViews = {
     [
-      self.shippingLocationViewController.view,
-      self.shippingSummaryView,
       self.localPickupLocationView,
       self.pledgeAmountViewController.view
     ]
@@ -101,24 +99,12 @@ final class PledgeViewController: UIViewController,
       |> \.delegate .~ self
   }()
 
-  private lazy var shippingLocationViewController = {
-    PledgeShippingLocationViewController.instantiate()
-      |> \.delegate .~ self
-  }()
-
   private lazy var localPickupLocationView = {
     PledgeLocalPickupView(frame: .zero)
   }()
 
-  private lazy var shippingSummaryView: PledgeShippingSummaryView = {
-    PledgeShippingSummaryView(frame: .zero)
-  }()
-
   private lazy var summarySectionViews = {
-    [
-      self.summarySectionSeparator,
-      self.summaryViewController.view
-    ]
+    [self.summarySectionSeparator]
   }()
 
   private lazy var summaryViewController = {
@@ -193,7 +179,6 @@ final class PledgeViewController: UIViewController,
       self.pledgeExpandableRewardsHeaderViewController,
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
-      self.shippingLocationViewController,
       self.summaryViewController,
       self.paymentMethodsViewController
     ]
@@ -306,18 +291,6 @@ final class PledgeViewController: UIViewController,
         STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
 
-    self.viewModel.outputs.configureShippingLocationViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.shippingLocationViewController.configureWith(value: data)
-      }
-
-    self.viewModel.outputs.configureShippingSummaryViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.shippingSummaryView.configure(with: data)
-      }
-
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -414,10 +387,6 @@ final class PledgeViewController: UIViewController,
       }
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
-    self.shippingLocationViewController.view.rac.hidden
-      = self.viewModel.outputs.shippingLocationViewHidden
-    self.shippingSummaryView.rac.hidden
-      = self.viewModel.outputs.shippingSummaryViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
@@ -474,7 +443,7 @@ final class PledgeViewController: UIViewController,
         reward: paymentAuthorizationData.reward,
         allRewardsTotal: paymentAuthorizationData.allRewardsTotal,
         additionalPledgeAmount: paymentAuthorizationData.additionalPledgeAmount,
-        allRewardsShippingTotal: paymentAuthorizationData.allRewardsShippingTotal,
+        allRewardsShippingTotal: 0,
         merchantIdentifier: paymentAuthorizationData.merchantIdentifier
       )
 
@@ -610,20 +579,6 @@ extension PledgeViewController: PledgeAmountViewControllerDelegate {
   ) {
     self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
-}
-
-// MARK: - PledgeShippingLocationViewControllerDelegate
-
-extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
-  ) {
-    self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - PledgeViewControllerMessageDisplaying
