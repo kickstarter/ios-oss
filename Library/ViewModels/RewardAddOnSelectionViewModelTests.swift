@@ -65,6 +65,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [:],
       selectedLocationId: 2,
       refTag: nil,
@@ -94,6 +95,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [:],
       selectedLocationId: 2,
       refTag: nil,
@@ -124,6 +126,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [:],
       selectedLocationId: 2,
       refTag: nil,
@@ -184,6 +187,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -228,6 +232,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -255,6 +260,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -290,6 +296,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -383,6 +390,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward, noShippingAddOn],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -517,6 +525,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [baseReward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -611,6 +620,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -715,6 +725,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -817,6 +828,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -914,6 +926,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -1047,6 +1060,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [:],
         selectedLocationId: nil,
         refTag: nil,
@@ -1104,6 +1118,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -1128,6 +1143,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -1185,6 +1201,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: nil,
@@ -1215,6 +1232,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let expectedGoToPledgeData = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: shippingRule.location.id,
       refTag: nil,
@@ -1273,6 +1291,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: nil,
       refTag: .activity,

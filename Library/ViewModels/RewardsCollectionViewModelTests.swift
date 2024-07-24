@@ -232,6 +232,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -328,6 +329,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [firstReward],
+        selectedShippingRule: nil,
         selectedQuantities: [firstReward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -345,6 +347,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected2 = PledgeViewData(
         project: project,
         rewards: [secondReward],
+        selectedShippingRule: nil,
         selectedQuantities: [secondReward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -386,6 +389,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -430,6 +434,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -475,6 +480,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
@@ -536,6 +542,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let expected1 = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .activity,
