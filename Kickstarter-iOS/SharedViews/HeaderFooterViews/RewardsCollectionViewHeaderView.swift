@@ -6,7 +6,6 @@ import UIKit
 public final class RewardsCollectionViewHeaderView: UICollectionReusableView {
   // MARK: - Properties
 
-  public let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private var label: UILabel = { UILabel(frame: .zero) }()
 
   override init(frame: CGRect) {
@@ -27,18 +26,12 @@ public final class RewardsCollectionViewHeaderView: UICollectionReusableView {
     _ = self
       |> baseStyle
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
     _ = self.label
       |> labelStyle
   }
 
   private func setupSubviews() {
-    _ = ([self.label], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.rootStackView, self)
+    _ = (self.label, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
 
@@ -47,23 +40,20 @@ public final class RewardsCollectionViewHeaderView: UICollectionReusableView {
   }
 }
 
-private func baseStyle(_ view: UIView) {
-  view.layoutMargins = .init(
-    top: Styles.grid(4),
-    left: Styles.grid(3),
-    bottom: Styles.grid(1),
-    right: Styles.grid(3)
-  )
-  view.backgroundColor = .clear
+private let baseStyle: ViewStyle = { view in
+  view
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(4),
+      left: Styles.grid(3),
+      bottom: Styles.grid(1),
+      right: Styles.grid(3)
+    )
+    |> \.backgroundColor .~ .clear
 }
 
-private func rootStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.spacing = Styles.grid(2)
-}
-
-private func labelStyle(_ label: UILabel) {
-  label.numberOfLines = 1
-  label.textColor = UIColor.ksr_support_700
-  label.font = UIFont.ksr_title2().bolded
+private let labelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.font .~ UIFont.ksr_title2().bolded
 }

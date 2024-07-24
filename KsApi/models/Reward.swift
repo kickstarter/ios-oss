@@ -41,22 +41,6 @@ public struct Reward {
     return self.endsAt != nil
   }
 
-  public var isRestrictedShippingPreference: Bool {
-    return self.shipping.preference == .restricted
-  }
-
-  public var isUnRestrictedShippingPreference: Bool {
-    return self.shipping.preference == .unrestricted
-  }
-
-  public var isLocalShippingPreference: Bool {
-    return self.shipping.preference == .local
-  }
-
-  public var hasNoShippingPreference: Bool {
-    return self.shipping.preference == Reward.Shipping.Preference.none
-  }
-
   /**
    Returns the closest matching `ShippingRule` for this `Reward` to `otherShippingRule`.
    If no match is found `otherShippingRule` is returned, this is to be backward-compatible

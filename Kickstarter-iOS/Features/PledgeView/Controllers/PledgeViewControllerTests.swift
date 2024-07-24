@@ -32,7 +32,7 @@ final class PledgeViewControllerTests: TestCase {
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
 
@@ -40,7 +40,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -88,7 +87,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -114,7 +112,7 @@ final class PledgeViewControllerTests: TestCase {
   func testView_PledgeContext_NeedsConversion_IsFalse() {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
@@ -123,7 +121,6 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
-            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -167,14 +164,13 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ .some(2.0)
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
-            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -224,7 +220,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -269,7 +264,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -314,7 +308,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -360,7 +353,6 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -403,13 +395,12 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.amount .~ 700.0
       )
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -453,13 +444,12 @@ final class PledgeViewControllerTests: TestCase {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -497,13 +487,12 @@ final class PledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: ShippingRule.template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -529,14 +518,13 @@ final class PledgeViewControllerTests: TestCase {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(language: language) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
             rewards: [reward],
-            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -566,14 +554,13 @@ final class PledgeViewControllerTests: TestCase {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(language: language) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
-            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -605,14 +592,13 @@ final class PledgeViewControllerTests: TestCase {
       |> (Reward.lens.shipping .. Reward.Shipping.lens.preference) .~ .local
       |> Reward.lens.localPickup .~ Location.losAngeles
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(language: language) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
-            selectedShippingRule: ShippingRule.template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
@@ -653,14 +639,13 @@ final class PledgeViewControllerTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
-      selectedShippingRule: ShippingRule.template,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
       selectedLocationId: ShippingRule.template.id,
       refTag: .projectPage,
       context: .pledge
     )
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(language: language) {
           let controller = PledgeViewController.instantiate()

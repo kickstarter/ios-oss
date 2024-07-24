@@ -13,8 +13,6 @@ public protocol RewardsCollectionViewModelInputs {
   func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
-  func shippingLocationViewDidFailToLoad()
-  func shippingRuleSelected(_ shippingRule: ShippingRule?)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLayoutSubviews()
@@ -24,7 +22,6 @@ public protocol RewardsCollectionViewModelInputs {
 
 public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
-  var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToAddOnSelection: Signal<PledgeViewData, Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
@@ -32,7 +29,6 @@ public protocol RewardsCollectionViewModelOutputs {
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
-  var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showEditRewardConfirmationPrompt: Signal<(String, String), Never> { get }
   var title: Signal<String, Never> { get }
 
@@ -83,23 +79,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.flashScrollIndicators = self.viewDidAppearProperty.signal
 
-    // MARK: Shipping Location
-
-    self.shippingLocationViewHidden = project
-      .map { project in
-        projectHasShippableRewards(project) == false
-      }
-
-    // Only shown for regular non-add-ons based rewards
-    self.configureShippingLocationViewWithData = Signal.combineLatest(
-      project,
-      self.shippingLocationViewHidden.filter(isFalse)
-    )
-    .map { project, _ in
-      // TODO: Reward will be removed from  ShippingLocationViewData once we remove the selector from Add-Ons
-      (project, project.rewards[0], false, nil)
-    }
-
     let selectedRewardFromId = rewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
@@ -115,14 +94,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let goToPledge: Signal<(PledgeViewData, Bool), Never> = Signal.combineLatest(
       project,
       selectedRewardFromId,
-      refTag,
-      self.shippingRuleSelectedSignal.signal
+      refTag
     )
-    .takeWhen(self.rewardSelectedWithRewardIdProperty.signal)
-    .filter { project, reward, _, _ in
+    .filter { project, reward, _ in
       rewardsCarouselCanNavigateToReward(reward, in: project)
     }
-    .map { project, reward, refTag, selectedShippingRule -> (PledgeViewData, Bool) in
+    .map { project, reward, refTag -> (PledgeViewData, Bool) in
       let pledgeContext =
         featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
           ? PledgeViewContext.latePledge
@@ -130,7 +107,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedShippingRule: selectedShippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
@@ -323,16 +299,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
 
-  private let shippingLocationViewDidFailToLoadProperty = MutableProperty(())
-  public func shippingLocationViewDidFailToLoad() {
-    self.shippingLocationViewDidFailToLoadProperty.value = ()
-  }
-
-  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()
-  public func shippingRuleSelected(_ shippingRule: ShippingRule?) {
-    self.shippingRuleSelectedObserver.send(value: shippingRule)
-  }
-
   private let traitCollectionChangedProperty = MutableProperty<UITraitCollection?>(nil)
   public func traitCollectionDidChange(_ traitCollection: UITraitCollection) {
     self.traitCollectionChangedProperty.value = traitCollection
@@ -358,7 +324,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
-  public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToAddOnSelection: Signal<PledgeViewData, Never>
@@ -367,7 +332,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
-  public var shippingLocationViewHidden: Signal<Bool, Never>
   public let showEditRewardConfirmationPrompt: Signal<(String, String), Never>
   public let title: Signal<String, Never>
 
@@ -381,11 +345,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 }
 
 // MARK: - Functions
-
-private func projectHasShippableRewards(_ project: Project) -> Bool {
-  project.rewards
-    .contains(where: { $0.isUnRestrictedShippingPreference || $0.isRestrictedShippingPreference })
-}
 
 private func titleForContext(_ context: RewardsCollectionViewContext, project: Project) -> String {
   if currentUserIsCreator(of: project) {
