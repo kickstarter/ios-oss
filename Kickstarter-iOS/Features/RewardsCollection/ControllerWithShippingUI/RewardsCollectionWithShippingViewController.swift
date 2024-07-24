@@ -98,6 +98,7 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
     )
 
     self.setupConstraints()
+    self.viewModel.inputs.shippingRuleSelected(nil)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -294,11 +295,19 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
   }
 
   private func goToAddOnSelection(data: PledgeViewData) {
-    let vc = RewardAddOnSelectionViewController.instantiate()
-    vc.pledgeViewDelegate = self.pledgeViewDelegate
-    vc.configure(with: data)
-    vc.navigationItem.title = self.title
-    self.navigationController?.pushViewController(vc, animated: true)
+    if featureNoShippingAtCheckout() {
+      let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
+      vc.pledgeViewDelegate = self.pledgeViewDelegate
+      vc.configure(with: data)
+      vc.navigationItem.title = self.title
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = RewardAddOnSelectionViewController.instantiate()
+      vc.pledgeViewDelegate = self.pledgeViewDelegate
+      vc.configure(with: data)
+      vc.navigationItem.title = self.title
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToPledge(data: PledgeViewData) {
@@ -389,11 +398,15 @@ extension RewardsWithShippingCollectionViewController: RewardCellDelegate {
 extension RewardsWithShippingCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelect _: ShippingRule
-  ) {}
+    didSelect shippingRule: ShippingRule
+  ) {
+    self.viewModel.inputs.shippingRuleSelected(shippingRule)
+  }
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
+    self.viewModel.inputs.shippingLocationViewDidFailToLoad()
+  }
 }
 
 // MARK: Styles

@@ -248,6 +248,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.goToPledge = Signal.combineLatest(
       project,
       selectedRewards,
+      shippingRule.mapConst(nil),
       selectedQuantities,
       selectedLocationId,
       refTag,

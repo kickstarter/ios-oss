@@ -107,6 +107,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
