@@ -462,7 +462,6 @@
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6035AF982C46E03E007E28FC /* CreateCheckout.graphql */; };
 		6035AF9C2C51696C007E28FC /* RewardsCollectionWithShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AF9A2C5168F8007E28FC /* RewardsCollectionWithShippingViewController.swift */; };
-		6035AF9F2C5169CF007E28FC /* RewardsWithShippingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AF9D2C5169BA007E28FC /* RewardsWithShippingViewControllerTests.swift */; };
 		6035AFA22C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */; };
 		6035AFA42C516B75007E28FC /* RewardsWithShippingCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA32C516B75007E28FC /* RewardsWithShippingCollectionViewModel.swift */; };
 		6035AFA62C516B7F007E28FC /* RewardsWithShippingCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA52C516B7F007E28FC /* RewardsWithShippingCollectionViewModelTests.swift */; };
@@ -2079,7 +2078,6 @@
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		6035AF982C46E03E007E28FC /* CreateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateCheckout.graphql; sourceTree = "<group>"; };
 		6035AF9A2C5168F8007E28FC /* RewardsCollectionWithShippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionWithShippingViewController.swift; sourceTree = "<group>"; };
-		6035AF9D2C5169BA007E28FC /* RewardsWithShippingViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingViewControllerTests.swift; sourceTree = "<group>"; };
 		6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		6035AFA32C516B75007E28FC /* RewardsWithShippingCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingCollectionViewModel.swift; sourceTree = "<group>"; };
 		6035AFA52C516B7F007E28FC /* RewardsWithShippingCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingCollectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -5619,7 +5617,6 @@
 			isa = PBXGroup;
 			children = (
 				6035AF9A2C5168F8007E28FC /* RewardsCollectionWithShippingViewController.swift */,
-				6035AF9D2C5169BA007E28FC /* RewardsWithShippingViewControllerTests.swift */,
 			);
 			path = ControllerWithShippingUI;
 			sourceTree = "<group>";
@@ -8599,7 +8596,6 @@
 				392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
-				6035AF9F2C5169CF007E28FC /* RewardsWithShippingViewControllerTests.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
 				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
 				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
