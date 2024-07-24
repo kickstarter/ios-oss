@@ -4026,6 +4026,7 @@
 		19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */ = {
 			isa = PBXGroup;
 			children = (
+				6035AFA72C517EC0007E28FC /* ControllerWithoutShipping */,
 				19450C1C28C81F5600C60F97 /* Views */,
 				19450C1B28C81F4A00C60F97 /* Controller */,
 				19450C1E28C81F6900C60F97 /* Datasource */,
@@ -5636,6 +5637,14 @@
 				6035AF9D2C5169BA007E28FC /* RewardsWithShippingViewControllerTests.swift */,
 			);
 			path = ControllerWithShippingUI;
+			sourceTree = "<group>";
+		};
+		6035AFA72C517EC0007E28FC /* ControllerWithoutShipping */ = {
+			isa = PBXGroup;
+			children = (
+				6035AFA82C517EDD007E28FC /* RewardAddOnSelectionNoShippingViewController.swift */,
+			);
+			path = ControllerWithoutShipping;
 			sourceTree = "<group>";
 		};
 		6049D00E2A9CF6530015BB0D /* DesignSystem */ = {
