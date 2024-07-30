@@ -40,6 +40,7 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
@@ -311,11 +312,19 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
   }
 
   private func goToPledge(data: PledgeViewData) {
-    let pledgeViewController = PledgeViewController.instantiate()
-    pledgeViewController.delegate = self.pledgeViewDelegate
-    pledgeViewController.configure(with: data)
+    if featureNoShippingAtCheckout() {
+      let pledgeViewController = NoShippingPledgeViewController.instantiate()
+      pledgeViewController.delegate = self.noShippingPledgeViewDelegate
+      pledgeViewController.configure(with: data)
 
-    self.navigationController?.pushViewController(pledgeViewController, animated: true)
+      self.navigationController?.pushViewController(pledgeViewController, animated: true)
+    } else {
+      let pledgeViewController = PledgeViewController.instantiate()
+      pledgeViewController.delegate = self.pledgeViewDelegate
+      pledgeViewController.configure(with: data)
+
+      self.navigationController?.pushViewController(pledgeViewController, animated: true)
+    }
   }
 
   private func goToConfirmDetails(data: PledgeViewData) {

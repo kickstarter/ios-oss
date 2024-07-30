@@ -18,7 +18,7 @@ public func featureDarkModeEnabled() -> Bool {
 }
 
 public func featureNoShippingAtCheckout() -> Bool {
-  true
+  return featureEnabled(feature: .noShippingAtCheckout)
 }
 
 public func featurePostCampaignPledgeEnabled() -> Bool {

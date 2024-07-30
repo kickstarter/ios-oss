@@ -18,6 +18,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -205,10 +206,19 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   }
 
   private func goToPledge(data: PledgeViewData) {
-    let vc = PledgeViewController.instantiate()
-    vc.delegate = self.pledgeViewDelegate
-    vc.configure(with: data)
-    self.navigationController?.pushViewController(vc, animated: true)
+    if featureNoShippingAtCheckout() {
+      let vc = NoShippingPledgeViewController.instantiate()
+      vc.delegate = self.noShippingPledgeViewDelegate
+      vc.configure(with: data)
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = PledgeViewController.instantiate()
+      vc.delegate = self.pledgeViewDelegate
+      vc.configure(with: data)
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 }
 
