@@ -174,19 +174,21 @@ private func items(
   }
   var items = [headerItem] + rewardItems
 
-  // MARK: Shipping
+  if featureNoShippingAtCheckout() == false {
+    // MARK: Shipping
 
-  if let shipping = data.shipping {
-    let shippingAmountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
-    )
+    if let shipping = data.shipping {
+      let shippingAmountAttributedText = attributedRewardCurrency(
+        with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
+      )
 
-    let shippingItem = PostCampaignRewardsSummaryItem.reward((
-      text: Strings.Shipping_to_country(country: shipping.locationName),
-      amount: shippingAmountAttributedText
-    ))
+      let shippingItem = PostCampaignRewardsSummaryItem.reward((
+        text: Strings.Shipping_to_country(country: shipping.locationName),
+        amount: shippingAmountAttributedText
+      ))
 
-    items.append(shippingItem)
+      items.append(shippingItem)
+    }
   }
 
   // MARK: Bonus
