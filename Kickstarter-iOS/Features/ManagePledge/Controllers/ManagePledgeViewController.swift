@@ -493,15 +493,26 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    let vc = RewardsCollectionViewController.instantiate(
-      with: project,
-      refTag: nil,
-      context: .managePledge
-    )
+    if featureNoShippingAtCheckout() {
+      /// Render rewards carousel that has the shipping location dropdown
+      let vc = RewardsWithShippingCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .managePledge
+      )
+      vc.pledgeViewDelegate = self
 
-    vc.pledgeViewDelegate = self
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .managePledge
+      )
+      vc.pledgeViewDelegate = self
 
-    self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToUpdatePledge(data: PledgeViewData) {
