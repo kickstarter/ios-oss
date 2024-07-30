@@ -516,11 +516,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func goToUpdatePledge(data: PledgeViewData) {
-    let vc = PledgeViewController.instantiate()
-    vc.configure(with: data)
-    vc.delegate = self
+    if featureNoShippingAtCheckout() {
+      let vc = NoShippingPledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
 
-    self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = PledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToCancelPledge(with data: CancelPledgeViewData) {
@@ -532,19 +540,35 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func goToChangePaymentMethod(data: PledgeViewData) {
-    let vc = PledgeViewController.instantiate()
-    vc.configure(with: data)
-    vc.delegate = self
+    if featureNoShippingAtCheckout() {
+      let vc = NoShippingPledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
 
-    self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = PledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToFixPaymentMethod(data: PledgeViewData) {
-    let vc = PledgeViewController.instantiate()
-    vc.configure(with: data)
-    vc.delegate = self
+    if featureNoShippingAtCheckout() {
+      let vc = NoShippingPledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
 
-    self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = PledgeViewController.instantiate()
+      vc.configure(with: data)
+      vc.delegate = self
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToContactCreator(
@@ -581,6 +605,14 @@ extension ManagePledgeViewController: PledgeViewControllerDelegate {
 extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
   func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
     self.viewModel.inputs.fixButtonTapped()
+  }
+}
+
+// MARK: - NoShippingPledgeViewControllerDelegate
+
+extension ManagePledgeViewController: NoShippingPledgeViewControllerDelegate {
+  func noShippingPledgeViewControllerDidUpdatePledge(_: NoShippingPledgeViewController, message: String) {
+    self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }
 
