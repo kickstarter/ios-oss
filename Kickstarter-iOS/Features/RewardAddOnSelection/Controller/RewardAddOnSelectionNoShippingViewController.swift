@@ -198,11 +198,19 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   // MARK: Functions
 
   private func goToConfirmDetails(data: PledgeViewData) {
-    let vc = ConfirmDetailsViewController.instantiate()
-    vc.configure(with: data)
-    vc.title = self.title
+    if featureNoShippingAtCheckout() {
+      let vc = NoShippingConfirmDetailsViewController.instantiate()
+      vc.configure(with: data)
+      vc.title = self.title
 
-    self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(vc, animated: true)
+    } else {
+      let vc = ConfirmDetailsViewController.instantiate()
+      vc.configure(with: data)
+      vc.title = self.title
+
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToPledge(data: PledgeViewData) {
