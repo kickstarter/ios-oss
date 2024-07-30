@@ -254,7 +254,7 @@ private func getRewardIDsToQuery(for project: Project) -> Set<Int> {
   if rewardIDsToQuery.isEmpty {
     let restrictedRewards = project.rewards
       .filter {
-        ($0.isRestrictedShippingPreference || $0.isLocalShippingPreference || $0.hasNoShippingPreference)
+        ($0.isRestrictedShippingPreference || $0.hasNoShippingPreference)
           && $0.shipping.enabled
       }
 
