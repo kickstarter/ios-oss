@@ -2,6 +2,9 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+// See `Kickstarter-iOS/SharedViews/ViewModifiers/ButtonModifiers.swift` for the SwiftUI version of
+// these styles. These files should be kept in sync.
+
 // MARK: - Apple Pay
 
 public let applePayButtonStyle: ButtonStyle = { button in
