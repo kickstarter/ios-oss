@@ -6,8 +6,6 @@ struct PPOEmptyStateView: View {
   private enum Constants {
     public static let largePadding = 24.0
     public static let horizontalPadding = 16.0
-    public static let verticalButtonPadding = 13.0
-    public static let buttonRadius = 12.0
   }
 
   // TODO: Translate these strings (MBL-1558)
@@ -29,24 +27,10 @@ struct PPOEmptyStateView: View {
           .font(Font(UIFont.ksr_body()))
           .multilineTextAlignment(.center)
 
-        Button {
+        Button("See all backed projects") {
           self.tabBarController?.switchToProfile()
-        } label: {
-          Text("See all backed projects")
-            .frame(maxWidth: .infinity)
         }
-        .padding(EdgeInsets(
-          top: Constants.verticalButtonPadding,
-          leading: Constants.horizontalPadding,
-          bottom: Constants.verticalButtonPadding,
-          trailing: Constants.horizontalPadding
-        ))
-        .foregroundColor(.white)
-        .background(
-          Color(UIColor.ksr_create_700),
-          in: RoundedRectangle(cornerRadius: Constants.buttonRadius)
-        )
-        .font(Font(UIFont.ksr_body()))
+        .buttonStyle(GreenButtonStyle())
       }
       .padding(EdgeInsets(
         top: 0,
