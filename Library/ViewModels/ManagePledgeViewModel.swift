@@ -471,7 +471,15 @@ private func actionSheetMenuOptionsFor(
     return [.contactCreator]
   }
 
-  return ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+  let actions: [ManagePledgeAlertAction]
+
+  // TODO: Remove 'update pledge' from ManagePledgeAlertAction after feature rollout.
+  if featureNoShippingAtCheckout() {
+    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards && $0 != .updatePledge }
+  } else {
+    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+  }
+  return actions
 }
 
 private func navigationBarTitle(
