@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public protocol RewardsWithShippingCollectionViewModelInputs {
+public protocol WithShippingRewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
@@ -17,7 +17,7 @@ public protocol RewardsWithShippingCollectionViewModelInputs {
   func viewWillAppear()
 }
 
-public protocol RewardsWithShippingCollectionViewModelOutputs {
+public protocol WithShippingRewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
@@ -34,14 +34,14 @@ public protocol RewardsWithShippingCollectionViewModelOutputs {
   func selectedReward() -> Reward?
 }
 
-public protocol RewardsWithShippingCollectionViewModelType {
-  var inputs: RewardsWithShippingCollectionViewModelInputs { get }
-  var outputs: RewardsWithShippingCollectionViewModelOutputs { get }
+public protocol WithShippingRewardsCollectionViewModelType {
+  var inputs: WithShippingRewardsCollectionViewModelInputs { get }
+  var outputs: WithShippingRewardsCollectionViewModelOutputs { get }
 }
 
-public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCollectionViewModelType,
-  RewardsWithShippingCollectionViewModelInputs,
-  RewardsWithShippingCollectionViewModelOutputs {
+public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCollectionViewModelType,
+  WithShippingRewardsCollectionViewModelInputs,
+  WithShippingRewardsCollectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
@@ -372,8 +372,8 @@ public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCo
     return self.selectedRewardProperty.value
   }
 
-  public var inputs: RewardsWithShippingCollectionViewModelInputs { return self }
-  public var outputs: RewardsWithShippingCollectionViewModelOutputs { return self }
+  public var inputs: WithShippingRewardsCollectionViewModelInputs { return self }
+  public var outputs: WithShippingRewardsCollectionViewModelOutputs { return self }
 }
 
 // MARK: - Functions

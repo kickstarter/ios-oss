@@ -495,7 +495,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   private func goToRewards(_ project: Project) {
     if featureNoShippingAtCheckout() {
       /// Render rewards carousel that has the shipping location dropdown
-      let vc = RewardsWithShippingCollectionViewController.instantiate(
+      let vc = WithShippingRewardsCollectionViewController.instantiate(
         with: project,
         refTag: nil,
         context: .managePledge
