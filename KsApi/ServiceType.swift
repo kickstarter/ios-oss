@@ -416,6 +416,10 @@ public protocol ServiceType {
 
   /// Confirms a backer's address for a given backing. Returns a success boolean.
   func confirmBackingAddress(backingId: String, addressId: String) -> AnyPublisher<Bool, ErrorEnvelope>
+
+  /// Fetch data for the pledged projects overview.
+  func fetchPledgedProjects(cursor: String?, limit: Int?)
+    -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>
 }
 
 extension ServiceType {

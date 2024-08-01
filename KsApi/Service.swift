@@ -913,4 +913,13 @@ public struct Service: ServiceType {
       }
       .eraseToAnyPublisher()
   }
+
+  public func fetchPledgedProjects(
+    cursor: String? = nil,
+    limit: Int? = nil
+  ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchPledgedProjectsQuery(first: limit, after: cursor))
+      .eraseToAnyPublisher()
+  }
 }
