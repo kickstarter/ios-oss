@@ -1,0 +1,11 @@
+# Minimal version of BackingFragment, containing only the fields needed for PPO.
+
+fragment PPOBackingFragment on Backing {
+  amount {
+    ...MoneyFragment
+  }
+  id
+  project {
+    ...PPOProjectFragment
+  }
+}
