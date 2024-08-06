@@ -55,6 +55,9 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
     let rewards = project
       .map(allowableSortedProjectRewards)
 
+    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingRuleSelectedSignal.skipNil())
+      .map(filteredRewardsByLocation)
+
     self.title = configData
       .map { project, _, context in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
@@ -67,11 +70,17 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       .skipNil()
       .take(first: 1)
 
-    self.reloadDataWithValues = Signal.combineLatest(project, rewards)
-      .map { project, rewards in
-        rewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge) }
+    self.reloadDataWithValues = Signal.combineLatest(project, rewards, filteredByLocationRewards)
+      .map { project, rewards, filteredByLocationRewards in
+        if filteredByLocationRewards.isEmpty == false {
+          filteredByLocationRewards
+            .filter { reward in isStartDateBeforeToday(for: reward) }
+            .map { reward in (project, reward, .pledge) }
+        } else {
+          rewards
+            .filter { reward in isStartDateBeforeToday(for: reward) }
+            .map { reward in (project, reward, .pledge) }
+        }
       }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
@@ -429,5 +438,56 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
   let availableRewards = project.rewards.filter { rewardIsAvailable($0) }
   let unAvailableRewards = project.rewards.filter { !rewardIsAvailable($0) }
+
   return availableRewards + unAvailableRewards
+}
+
+private func filteredRewardsByLocation(
+  _ rewards: [Reward],
+  shippingRule: ShippingRule?
+) -> [Reward] {
+  return rewards.filter { reward in
+    var shouldDisplayReward = false
+
+    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+
+    // return all rewards that are digital or ship anywhere in the world.
+    if isRewardLocalOrDigital || isUnrestrictedShippingReward {
+      shouldDisplayReward = true
+
+      // if add on is local for local base, ensure locations are equal before displaying
+      if isRewardLocalPickup(reward) {
+        if let rewardLocation = reward.localPickup?.country,
+           let shippingRuleLocation = shippingRule?.location.country, rewardLocation == shippingRuleLocation {
+          shouldDisplayReward = true
+        } else {
+          shouldDisplayReward = false
+        }
+      }
+      // If restricted shipping, compare against selected shipping location
+    } else if isRestrictedShippingReward {
+      shouldDisplayReward = rewardShipsTo(selectedLocation: shippingRule?.location.id, reward)
+    }
+
+    return shouldDisplayReward
+  }
+}
+
+/**
+ For base rewards that have restricted shipping, only return
+ add-ons that can ship to the selected shipping location.
+ */
+private func rewardShipsTo(
+  selectedLocation locationId: Int?,
+  _ reward: Reward
+) -> Bool {
+  guard let selectedLocationId = locationId else { return false }
+
+  let shippingLocationIds: Set<Int> = Set(
+    reward.shippingRulesExpanded?.map(\.location).map(\.id) ?? []
+  )
+
+  return shippingLocationIds.contains(selectedLocationId)
 }
