@@ -351,12 +351,6 @@ public protocol ServiceType {
   func signInWithApple(input: SignInWithAppleInput)
     -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope>
 
-  /// Signup with email.
-  func signup(
-    name: String, email: String, password: String, passwordConfirmation: String,
-    sendNewsletters: Bool
-  ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
-
   /// Signup with Facebook access token and newsletter bool.
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>

@@ -39,10 +39,6 @@ internal enum Route {
   case searchMessages(query: String, project: Project?)
   case sendMessage(body: String, messageSubject: MessageSubject)
   case shippingRules(projectId: Int, rewardId: Int)
-  case signup(
-    name: String, email: String, password: String, passwordConfirmation: String,
-    sendNewsletters: Bool
-  )
   case surveyResponse(surveyResponseId: Int)
   case unansweredSurveyResponses
   case unfollowFriend(userId: Int)
@@ -207,17 +203,6 @@ internal enum Route {
 
       case let .shippingRules(projectId, rewardId):
         return (.GET, "/v1/projects/\(projectId)/rewards/\(rewardId)/shipping_rules", [:], nil)
-
-      case let .signup(name, email, password, passwordConfirmation, sendNewsletters):
-        let params: [String: Any] = [
-          "name": name,
-          "email": email,
-          "newsletter_opt_in": sendNewsletters,
-          "password": password,
-          "password_confirmation": passwordConfirmation,
-          "send_newsletters": sendNewsletters
-        ]
-        return (.POST, "/v1/users", params, nil)
 
       case let .surveyResponse(surveyResponseId):
         return (.GET, "/v1/users/self/surveys/\(surveyResponseId)", [:], nil)

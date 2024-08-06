@@ -1033,20 +1033,6 @@ public final class KSRAnalytics {
 
   // MARK: - Login/Signup Events
 
-  public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
-    let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
-    let props = contextProperties(ctaContext: .signUpSubmit, page: .signup, typeContext: typeContext)
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props
-    )
-  }
-
-  public func trackSignupPageViewed() {
-    let props = contextProperties(page: .signup)
-    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
-  }
-
   /**
    Call when the Login page is viewed
    */

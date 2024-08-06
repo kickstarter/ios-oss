@@ -806,22 +806,6 @@ public struct Service: ServiceType {
       .flatMap(SignInWithAppleEnvelope.producer(from:))
   }
 
-  public func signup(
-    name: String,
-    email: String,
-    password: String,
-    passwordConfirmation: String,
-    sendNewsletters: Bool
-  ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.signup(
-      name: name,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation,
-      sendNewsletters: sendNewsletters
-    ))
-  }
-
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
     return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
