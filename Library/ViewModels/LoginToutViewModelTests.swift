@@ -127,35 +127,9 @@ final class LoginToutViewModelTests: TestCase {
     self.startOAuthSignupOrLogin.assertValueCount(1, "OAuth signup/loginlogin emitted")
   }
 
-  func testShowSignupOrLoginWithOAuth_featureFlagOn() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([true])
-    }
-  }
-
-  func testShowSignupOrLoginWithOAuth_featureFlagOff() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: false
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([false])
-    }
-  }
-
-  func testShowSignupOrLoginWithOAuth_featureFlagUnset() {
-    withEnvironment(remoteConfigClient: nil) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([true])
-    }
+  func testShowSignupOrLoginWithOAuth() {
+    self.vm.inputs.viewWillAppear()
+    self.showLoginWithOAuth.assertValues([true])
   }
 
   func testHeadlineLabelHidden() {

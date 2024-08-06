@@ -403,7 +403,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }
 
   fileprivate func pushOAuthFlow() {
-    guard featureLoginWithOAuthEnabled(), let session = createAuthorizationSession() else {
+    guard let session = createAuthorizationSession() else {
       return
     }
 

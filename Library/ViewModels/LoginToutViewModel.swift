@@ -277,7 +277,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
     self.showLoginWithOAuth = self.viewWillAppearProperty.signal.map { _ in
-      featureLoginWithOAuthEnabled()
+      true
     }
   }
 
