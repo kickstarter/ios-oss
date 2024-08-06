@@ -55,7 +55,7 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
     let rewards = project
       .map(allowableSortedProjectRewards)
 
-    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingRuleSelectedSignal.skipNil())
+    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingRuleSelectedSignal)
       .map(filteredRewardsByLocation)
 
     self.title = configData
@@ -72,7 +72,7 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards, filteredByLocationRewards)
       .map { project, rewards, filteredByLocationRewards in
-        if filteredByLocationRewards.isEmpty == false {
+        if !filteredByLocationRewards.isEmpty {
           filteredByLocationRewards
             .filter { reward in isStartDateBeforeToday(for: reward) }
             .map { reward in (project, reward, .pledge) }
@@ -457,7 +457,7 @@ private func filteredRewardsByLocation(
     if isRewardLocalOrDigital || isUnrestrictedShippingReward {
       shouldDisplayReward = true
 
-      // if add on is local for local base, ensure locations are equal before displaying
+      // if add on is local pickup, ensure locations are equal.
       if isRewardLocalPickup(reward) {
         if let rewardLocation = reward.localPickup?.country,
            let shippingRuleLocation = shippingRule?.location.country, rewardLocation == shippingRuleLocation {
@@ -466,7 +466,7 @@ private func filteredRewardsByLocation(
           shouldDisplayReward = false
         }
       }
-      // If restricted shipping, compare against selected shipping location
+      // If restricted shipping, compare against selected shipping location.
     } else if isRestrictedShippingReward {
       shouldDisplayReward = rewardShipsTo(selectedLocation: shippingRule?.location.id, reward)
     }
@@ -475,19 +475,18 @@ private func filteredRewardsByLocation(
   }
 }
 
-/**
- For base rewards that have restricted shipping, only return
- add-ons that can ship to the selected shipping location.
- */
+/// Returns true if a given selection location matches the countries the given reward is available to ship to.
 private func rewardShipsTo(
   selectedLocation locationId: Int?,
   _ reward: Reward
 ) -> Bool {
   guard let selectedLocationId = locationId else { return false }
 
-  let shippingLocationIds: Set<Int> = Set(
-    reward.shippingRulesExpanded?.map(\.location).map(\.id) ?? []
-  )
+  var shippingLocationIds: [Int] = []
+
+  reward.shippingRules?.forEach { rule in
+    shippingLocationIds.append(rule.location.id)
+  }
 
   return shippingLocationIds.contains(selectedLocationId)
 }
