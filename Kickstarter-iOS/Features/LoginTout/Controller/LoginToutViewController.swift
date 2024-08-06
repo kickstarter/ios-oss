@@ -363,11 +363,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  fileprivate func pushLoginViewController() {
-    self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
-  }
-
   fileprivate func pushOAuthFlow() {
     guard let session = createAuthorizationSession() else {
       return
@@ -410,11 +405,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
-  }
-
-  fileprivate func pushSignupViewController() {
-    self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
