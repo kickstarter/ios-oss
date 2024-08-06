@@ -33,9 +33,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
   private lazy var getNotifiedLabel = { UILabel(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
-  private lazy var loginButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private lazy var signupOrLoginWithOAuthButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -53,9 +50,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
   private var sessionStartedObserver: Any?
-  private lazy var signupButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
@@ -142,9 +136,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       }
       |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
 
-    _ = self.loginButton |> greyButtonStyle
-    self.loginButton.setTitle(Strings.login_tout_back_intent_traditional_login_button(), for: .normal)
-
     _ = self.signupOrLoginWithOAuthButton |> greenButtonStyle
     self.signupOrLoginWithOAuthButton
       .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
@@ -169,9 +160,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     _ = self.separatorView
       |> separatorViewStyle
 
-    _ = self.signupButton
-      |> signupWithEmailButtonStyle
-
     _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
       ||> baseStackViewStyle
   }
@@ -179,18 +167,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   // MARK: - View Model
 
   public override func bindViewModel() {
-    self.viewModel.outputs.startLogin
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in
-        self?.pushLoginViewController()
-      }
-
-    self.viewModel.outputs.startSignup
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in
-        self?.pushSignupViewController()
-      }
-
     self.viewModel.outputs.startOAuthSignupOrLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -283,10 +259,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
 
-    self.loginButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth
-    self.signupButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth
-    self.signupOrLoginWithOAuthButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth.signal.negate()
-
     self.viewModel.outputs.headlineLabelHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -347,8 +319,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> ksr_addArrangedSubviewsToStackView()
 
     self.emailLoginStackView.addArrangedSubview(self.signupOrLoginWithOAuthButton)
-    self.emailLoginStackView.addArrangedSubview(self.signupButton)
-    self.emailLoginStackView.addArrangedSubview(self.loginButton)
   }
 
   private func setupConstraints() {
@@ -356,8 +326,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.loginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.signupButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     NSLayoutConstraint.activate([
@@ -375,8 +343,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       self, action: #selector(self.facebookLoginButtonPressed(_:)),
       for: .touchUpInside
     )
-    self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
-    self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
     self.signupOrLoginWithOAuthButton
       .addTarget(self, action: #selector(self.signupOrLoginWithOAuthButtonPressed), for: .touchUpInside)
   }
@@ -521,16 +487,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @objc private func loginButtonPressed(_: UIButton) {
-    self.viewModel.inputs.loginButtonPressed()
-  }
-
   @objc private func facebookLoginButtonPressed(_: UIButton) {
     self.viewModel.inputs.facebookLoginButtonPressed()
-  }
-
-  @objc private func signupButtonPressed() {
-    self.viewModel.inputs.signupButtonPressed()
   }
 
   @objc private func signupOrLoginWithOAuthButtonPressed() {

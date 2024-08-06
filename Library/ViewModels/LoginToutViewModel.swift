@@ -35,12 +35,6 @@ public protocol LoginToutViewModelInputs {
   /// Call when Facebook login completed successfully with a result
   func facebookLoginSuccess(result: LoginManagerLoginResult)
 
-  /// Call when login button is pressed
-  func loginButtonPressed()
-
-  /// Call when sign up button is pressed
-  func signupButtonPressed()
-
   /// Call with login with OAuth button is pressed
   func signupOrLoginWithOAuthButtonPressed()
 
@@ -89,12 +83,6 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
 
-  /// Emits when Login view should be shown
-  var startLogin: Signal<(), Never> { get }
-
-  /// Emits when Signup view should be shown
-  var startSignup: Signal<(), Never> { get }
-
   /// Emits when OAuth flow should be shown
   var startOAuthSignupOrLogin: Signal<(), Never> { get }
 
@@ -103,10 +91,6 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits an access token to show 2fa view when Facebook login fails with tfaRequired error
   var startTwoFactorChallenge: Signal<String, Never> { get }
-
-  /// True if the feature flag for OAuth login is true.
-  /// Note that this is not a signal, because we don't want it to ever change after the screen is loaded.
-  var showLoginWithOAuth: Signal<Bool, Never> { get }
 }
 
 public protocol LoginToutViewModelType {
@@ -129,8 +113,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let isLoading: MutableProperty<Bool> = MutableProperty(false)
 
     self.isLoading = isLoading.signal.skipRepeats()
-    self.startLogin = self.loginButtonPressedProperty.signal
-    self.startSignup = self.signupButtonPressedProperty.signal
     self.startOAuthSignupOrLogin = self.signupOrLoginWithOAuthButtonPressedProperty.signal
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
     self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
@@ -276,9 +258,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
-    self.showLoginWithOAuth = self.viewWillAppearProperty.signal.map { _ in
-      true
-    }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
@@ -328,16 +307,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.facebookLoginSuccessProperty.value = result
   }
 
-  fileprivate let loginButtonPressedProperty = MutableProperty(())
-  public func loginButtonPressed() {
-    self.loginButtonPressedProperty.value = ()
-  }
-
-  fileprivate let signupButtonPressedProperty = MutableProperty(())
-  public func signupButtonPressed() {
-    self.signupButtonPressedProperty.value = ()
-  }
-
   fileprivate let signupOrLoginWithOAuthButtonPressedProperty = MutableProperty(())
   public func signupOrLoginWithOAuthButtonPressed() {
     self.signupOrLoginWithOAuthButtonPressedProperty.value = ()
@@ -368,13 +337,10 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
-  public let startLogin: Signal<(), Never>
-  public let startSignup: Signal<(), Never>
   public let startOAuthSignupOrLogin: Signal<(), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
   public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
-  public let showLoginWithOAuth: Signal<Bool, Never>
 }
 
 private func statusString(_ forStatus: LoginIntent) -> String {
