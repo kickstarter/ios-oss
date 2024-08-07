@@ -6,4 +6,12 @@ fragment ShippingRuleFragment on ShippingRule {
   location {
     ...LocationFragment
   }
+  estimatedMin {
+      amount
+      currency
+  }
+  estimatedMax {
+      amount
+      currency
+  }
 }
