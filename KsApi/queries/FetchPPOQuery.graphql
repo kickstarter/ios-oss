@@ -1,0 +1,21 @@
+query FetchPledgedProjects($first: Int = null, $after: String = null) {
+  pledgeProjectsOverview {
+    pledges(first: $first, after: $after) {
+      totalCount
+      edges {
+        cursor
+        node {
+          ...PPOCardFragment
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+    }
+  }
+}
+
+
