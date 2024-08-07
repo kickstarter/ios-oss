@@ -91,8 +91,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureNoShippingAtCheckout()
   case .postCampaignPledgeEnabled:
     return featurePostCampaignPledgeEnabled()
-  case .loginWithOAuthEnabled:
-    return featureLoginWithOAuthEnabled()
   case .useKeychainForOAuthToken:
     return featureUseKeychainForOAuthTokenEnabled()
   case .pledgedProjectsOverviewEnabled:

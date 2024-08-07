@@ -110,6 +110,9 @@
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
+    fileprivate let fetchPledgedProjectsResult:
+      Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>?
+
     /**
      FIXME: Eventually combine `fetchProjectEnvelopeResult` and `fetchProjectPamphletEnvelopeResult` once all calls returning `Project` are using GQL. https://kickstarter.atlassian.net/browse/NTV-219
      */
@@ -286,6 +289,7 @@
       fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
+      fetchPledgedProjectsResult: Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>? = nil,
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
@@ -412,6 +416,8 @@
       self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
 
       self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
+
+      self.fetchPledgedProjectsResult = fetchPledgedProjectsResult
 
       self.fetchProjectCommentsEnvelopeResult = fetchProjectCommentsEnvelopeResult
       self.fetchUpdateCommentsEnvelopeResult = fetchUpdateCommentsEnvelopeResult
@@ -1605,29 +1611,6 @@
         .performWithResult(mutation: mutationSignInWithApple, result: self.signInWithAppleResult)
     }
 
-    internal func signup(
-      name: String,
-      email _: String,
-      password _: String,
-      passwordConfirmation _: String,
-      sendNewsletters: Bool
-    ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-      if let error = signupError {
-        return SignalProducer(error: error)
-      } else if let accessTokenEnvelope = signupResponse {
-        return SignalProducer(value: accessTokenEnvelope)
-      }
-      return SignalProducer(
-        value:
-        AccessTokenEnvelope(
-          accessToken: "deadbeef",
-          user: .template
-            |> \.name .~ name
-            |> \.newsletters.weekly .~ sendNewsletters
-        )
-      )
-    }
-
     internal func signup(facebookAccessToken _: String, sendNewsletters _: Bool) ->
       SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
       if let error = signupError {
@@ -1827,6 +1810,28 @@
 
       case let .failure(envelope):
         return Fail(outputType: Bool.self, failure: envelope).eraseToAnyPublisher()
+      }
+    }
+
+    func fetchPledgedProjects(
+      cursor _: String?,
+      limit _: Int?
+    ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
+      guard let response = self.fetchPledgedProjectsResult else {
+        return Fail(
+          outputType: GraphAPI.FetchPledgedProjectsQuery.Data.self,
+          failure: ErrorEnvelope.couldNotParseErrorEnvelopeJSON
+        )
+        .eraseToAnyPublisher()
+      }
+
+      switch response {
+      case let .success(pledgedProjectsData):
+        return Just(pledgedProjectsData).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
+
+      case let .failure(envelope):
+        return Fail(outputType: GraphAPI.FetchPledgedProjectsQuery.Data.self, failure: envelope)
+          .eraseToAnyPublisher()
       }
     }
   }

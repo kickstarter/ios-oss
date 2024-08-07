@@ -1,0 +1,7 @@
+fragment PPOCardFragment on PledgeProjectOverviewItem {
+  backing {
+    ...PPOBackingFragment
+  }
+  tierType
+  tags
+}

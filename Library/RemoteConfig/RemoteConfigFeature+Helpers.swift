@@ -25,10 +25,6 @@ public func featurePostCampaignPledgeEnabled() -> Bool {
   featureEnabled(feature: .postCampaignPledgeEnabled)
 }
 
-public func featureLoginWithOAuthEnabled() -> Bool {
-  featureEnabled(feature: .loginWithOAuthEnabled, defaultValue: true)
-}
-
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }

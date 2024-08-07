@@ -351,12 +351,6 @@ public protocol ServiceType {
   func signInWithApple(input: SignInWithAppleInput)
     -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope>
 
-  /// Signup with email.
-  func signup(
-    name: String, email: String, password: String, passwordConfirmation: String,
-    sendNewsletters: Bool
-  ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
-
   /// Signup with Facebook access token and newsletter bool.
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
@@ -416,6 +410,10 @@ public protocol ServiceType {
 
   /// Confirms a backer's address for a given backing. Returns a success boolean.
   func confirmBackingAddress(backingId: String, addressId: String) -> AnyPublisher<Bool, ErrorEnvelope>
+
+  /// Fetch data for the pledged projects overview.
+  func fetchPledgedProjects(cursor: String?, limit: Int?)
+    -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>
 }
 
 extension ServiceType {
