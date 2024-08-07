@@ -16,6 +16,8 @@ fileprivate enum Constants {
   static let badgeAlignment = Alignment(horizontal: .trailing, vertical: .top)
   static let badgeColor = UIColor.hex(0xff3B30)
   static let badgeSize: CGFloat = 16
+  static let spacing: CGFloat = 12
+  static let outerPadding: CGFloat = 16
 }
 
 protocol PPOAlertFlagData: Identifiable {
@@ -32,9 +34,12 @@ protocol PPOProjectCardViewData {
 struct PPOProjectCardView<ViewData: PPOProjectCardViewData>: View {
   let viewData: ViewData
   
+  private var cardRectangle: RoundedRectangle {
+    RoundedRectangle(cornerSize: CGSize(width: Constants.cornerSize, height: Constants.cornerSize))
+  }
+  
     var body: some View {
-      let rect = RoundedRectangle(cornerSize: CGSize(width: Constants.cornerSize, height: Constants.cornerSize))
-      return VStack {
+      VStack(spacing: Constants.spacing) {
         HStack {
           VStack(alignment: .leading) {
             ForEach(viewData.flags) { flag in
@@ -43,20 +48,49 @@ struct PPOProjectCardView<ViewData: PPOProjectCardViewData>: View {
           }
           Spacer()
         }
-//
-//        Text("Two ghostly white figures in coveralls and helmets are softly dancing billions upon billions the only home we've ever known the carbon in our apple pies prime number Vangelis. From which we spring with pretty stories for which there's little good evidence astonishment star stuff harvesting star light a very small stage in a vast cosmic arena a mote of dust suspended in a sunbeam. Realm of the galaxies as a patch of light something incredible is waiting to be known encyclopaedia galactica network of wormholes courage of our questions and billions upon billions upon billions upon billions upon billions upon billions upon billions.")
+        .padding([.horizontal, .top])
+
+        PPOProjectDetails(imageUrl: URL(string: "http://localhost/")!, title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way, way longer title")
+          .padding([.horizontal])
+
+        Divider()
+        
+        PPOProjectCreator(creatorName: "rokaplay truncate if longer than")
+          .padding([.horizontal])
+
+        Divider()
+        
+        PPOAddressSummary(address: """
+          Firsty Lasty
+          123 First Street, Apt #5678
+          Los Angeles, CA 90025-1234
+          United States
+        """)
+        .padding([.horizontal])
+
+        HStack   {
+          Button("Edit") {
+            // TODO
+          }
+          .buttonStyle(BlackButtonStyle())
+
+          Button("Complete") {
+            // TODO
+          }
+          .buttonStyle(GreenButtonStyle())
+        }
+        .padding([.horizontal, .bottom])
       }
-      .padding()
       .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-      .clipShape(rect)
-      .overlay(rect.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
+      .clipShape(cardRectangle)
+      .overlay(cardRectangle.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
       .overlay(alignment: Constants.badgeAlignment, content: {
         Circle()
           .fill(Color(uiColor: Constants.badgeColor))
           .frame(width: Constants.badgeSize, height: Constants.badgeSize)
           .offset(x: Constants.badgeSize / 2, y: -(Constants.badgeSize / 2))
       })
-      .padding(16)
+      .padding(Constants.outerPadding)
     }
 }
 
@@ -75,10 +109,10 @@ struct PPOProjectCardView<ViewData: PPOProjectCardViewData>: View {
     var flags: [Flag]
   }
   
-  return PPOProjectCardView(viewData: ViewData(
+  return  PPOProjectCardView(viewData: ViewData(
     flags: [
-      ViewData.Flag(alertType: .limitedTime, alertLevel: .informational, message: "Hurry up"),
-      ViewData.Flag(alertType: .notice, alertLevel: .serious, message: "We will delete your account")
+      ViewData.Flag(alertType: .limitedTime, alertLevel: .informational, message: "Survey available"),
+      ViewData.Flag(alertType: .notice, alertLevel: .serious, message: "Pledge will be dropped in 6 days")
     ]
   ))
 }

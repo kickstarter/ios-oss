@@ -18,25 +18,35 @@ struct PPOProjectDetails: View {
   var body: some View {
       HStack {
         AsyncImage(url: imageUrl)
-          .clipShape(RoundedRectangle(cornerRadius: 4))
-          .aspectRatio(16/9, contentMode: .fit)
-          .frame(height: 48)
+          .clipShape(Constants.imageShape)
+          .aspectRatio(Constants.imageAspectRatio, contentMode: .fit)
+          .frame(width: Constants.imageWidth)
         Spacer()
-          .frame(width: 8)
+          .frame(width: Constants.spacing)
         VStack {
           Text(title)
-            .font(Font(UIFont.ksr_caption1().bolded))
+            .font(Font(Constants.titleFont))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(2)
           Text("$50.00 pledged")
-            .font(Font(UIFont.ksr_footnote()))
-            .foregroundStyle(Color(UIColor.ksr_support_400))
+            .font(Font(Constants.subtitleFont))
+            .foregroundStyle(Color(Constants.subtitleTextColor))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(1)
         }
       }
       .fixedSize(horizontal: false, vertical: true)
       .frame(maxWidth: .infinity)
+  }
+  
+  private enum Constants {
+    static let imageShape = RoundedRectangle(cornerRadius: 4)
+    static let imageAspectRatio: CGFloat = 16/9
+    static let imageWidth: CGFloat = 85
+    static let spacing: CGFloat = 8
+    static let titleFont = UIFont.ksr_caption1().bolded
+    static let subtitleFont = UIFont.ksr_footnote()
+    static let subtitleTextColor = UIColor.ksr_support_400
   }
 }
 
