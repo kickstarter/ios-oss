@@ -17474,6 +17474,16 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
+        estimatedMin {
+          __typename
+          amount
+          currency
+        }
+        estimatedMax {
+          __typename
+          amount
+          currency
+        }
       }
       """
 
@@ -17485,6 +17495,8 @@ public enum GraphAPI {
         GraphQLField("cost", type: .object(Cost.selections)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("location", type: .nonNull(.object(Location.selections))),
+        GraphQLField("estimatedMin", type: .object(EstimatedMin.selections)),
+        GraphQLField("estimatedMax", type: .object(EstimatedMax.selections)),
       ]
     }
 
@@ -17494,8 +17506,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(cost: Cost? = nil, id: GraphQLID, location: Location) {
-      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.resultMap])
+    public init(cost: Cost? = nil, id: GraphQLID, location: Location, estimatedMin: EstimatedMin? = nil, estimatedMax: EstimatedMax? = nil) {
+      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.resultMap, "estimatedMin": estimatedMin.flatMap { (value: EstimatedMin) -> ResultMap in value.resultMap }, "estimatedMax": estimatedMax.flatMap { (value: EstimatedMax) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -17533,6 +17545,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue.resultMap, forKey: "location")
+      }
+    }
+
+    /// The estimated minimum shipping cost
+    public var estimatedMin: EstimatedMin? {
+      get {
+        return (resultMap["estimatedMin"] as? ResultMap).flatMap { EstimatedMin(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "estimatedMin")
+      }
+    }
+
+    /// The estimated maximum shipping cost
+    public var estimatedMax: EstimatedMax? {
+      get {
+        return (resultMap["estimatedMax"] as? ResultMap).flatMap { EstimatedMax(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "estimatedMax")
       }
     }
 
@@ -17644,6 +17676,108 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct EstimatedMin: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("amount", type: .scalar(String.self)),
+          GraphQLField("currency", type: .scalar(CurrencyCode.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Floating-point numeric value of monetary amount represented as a string
+      public var amount: String? {
+        get {
+          return resultMap["amount"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "amount")
+        }
+      }
+
+      /// Currency of the monetary amount
+      public var currency: CurrencyCode? {
+        get {
+          return resultMap["currency"] as? CurrencyCode
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "currency")
+        }
+      }
+    }
+
+    public struct EstimatedMax: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("amount", type: .scalar(String.self)),
+          GraphQLField("currency", type: .scalar(CurrencyCode.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Floating-point numeric value of monetary amount represented as a string
+      public var amount: String? {
+        get {
+          return resultMap["amount"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "amount")
+        }
+      }
+
+      /// Currency of the monetary amount
+      public var currency: CurrencyCode? {
+        get {
+          return resultMap["currency"] as? CurrencyCode
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "currency")
         }
       }
     }
