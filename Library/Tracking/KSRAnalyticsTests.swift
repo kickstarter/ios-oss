@@ -254,34 +254,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("log_in_submit", segmentClient.properties.last?["context_cta"] as? String)
   }
 
-  func testTrackSignupSubmitButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(
-      loggedInUser: nil,
-      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
-    )
-
-    ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: true)
-
-    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("sign_up_submit", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("subscription_true", segmentClient.properties.last?["context_type"] as? String)
-  }
-
-  func testTrackSignupPageViewed() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(
-      loggedInUser: nil,
-      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
-    )
-
-    ksrAnalytics.trackSignupPageViewed()
-
-    XCTAssertEqual(["Page Viewed"], segmentClient.events)
-    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
-  }
-
   func testTrackLoginPageViewed() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
@@ -1895,9 +1867,6 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackLoginPageViewed()
     XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackSignupPageViewed()
-    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
