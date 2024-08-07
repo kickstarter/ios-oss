@@ -345,6 +345,7 @@
 		393E8DA32C5BE08500AEA968 /* PPOCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */; };
 		393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */; };
 		394BB7132C5ACCBA007F0FFD /* ButtonStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */; };
+		393E8DA72C5BF35B00AEA968 /* FetchPPOQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA62C5BF35B00AEA968 /* FetchPPOQuery.graphql */; };
 		3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */; };
 		3959A62C2B69B9CD00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 		3959A62E2B69BBA600FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
@@ -1964,6 +1965,7 @@
 		393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOCardFragment.graphql; sourceTree = "<group>"; };
 		393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOProjectFragment.graphql; sourceTree = "<group>"; };
 		394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStylesTests.swift; sourceTree = "<group>"; };
+		393E8DA62C5BF35B00AEA968 /* FetchPPOQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchPPOQuery.graphql; sourceTree = "<group>"; };
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
 		395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
@@ -5770,6 +5772,7 @@
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
 				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
+				393E8DA62C5BF35B00AEA968 /* FetchPPOQuery.graphql */,
 				06B3605B26E12288006CB9E4 /* FetchProjectByIdQuery.graphql */,
 				06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */,
 				06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */,
@@ -7595,6 +7598,7 @@
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
+				393E8DA72C5BF35B00AEA968 /* FetchPPOQuery.graphql in Resources */,
 				475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
