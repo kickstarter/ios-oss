@@ -9130,6 +9130,367 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchPledgedProjectsQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchPledgedProjects($first: Int = null, $after: String = null) {
+        pledgeProjectsOverview {
+          __typename
+          pledges(first: $first, after: $after) {
+            __typename
+            totalCount
+            edges {
+              __typename
+              cursor
+              node {
+                __typename
+                ...PPOCardFragment
+              }
+            }
+            pageInfo {
+              __typename
+              hasNextPage
+              endCursor
+              hasPreviousPage
+              startCursor
+            }
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "FetchPledgedProjects"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + PpoCardFragment.fragmentDefinition)
+      document.append("\n" + PpoBackingFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + PpoProjectFragment.fragmentDefinition)
+      return document
+    }
+
+    public var first: Int?
+    public var after: String?
+
+    public init(first: Int? = nil, after: String? = nil) {
+      self.first = first
+      self.after = after
+    }
+
+    public var variables: GraphQLMap? {
+      return ["first": first, "after": after]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("pledgeProjectsOverview", type: .object(PledgeProjectsOverview.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(pledgeProjectsOverview: PledgeProjectsOverview? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "pledgeProjectsOverview": pledgeProjectsOverview.flatMap { (value: PledgeProjectsOverview) -> ResultMap in value.resultMap }])
+      }
+
+      /// Provides an overview of pledge projects
+      public var pledgeProjectsOverview: PledgeProjectsOverview? {
+        get {
+          return (resultMap["pledgeProjectsOverview"] as? ResultMap).flatMap { PledgeProjectsOverview(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "pledgeProjectsOverview")
+        }
+      }
+
+      public struct PledgeProjectsOverview: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["PledgeProjectsOverview"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("pledges", arguments: ["first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .object(Pledge.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(pledges: Pledge? = nil) {
+          self.init(unsafeResultMap: ["__typename": "PledgeProjectsOverview", "pledges": pledges.flatMap { (value: Pledge) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// List of pledged projects
+        public var pledges: Pledge? {
+          get {
+            return (resultMap["pledges"] as? ResultMap).flatMap { Pledge(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "pledges")
+          }
+        }
+
+        public struct Pledge: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["PledgedProjectsOverviewPledgesConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+              GraphQLField("edges", type: .list(.object(Edge.selections))),
+              GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(totalCount: Int, edges: [Edge?]? = nil, pageInfo: PageInfo) {
+            self.init(unsafeResultMap: ["__typename": "PledgedProjectsOverviewPledgesConnection", "totalCount": totalCount, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var totalCount: Int {
+            get {
+              return resultMap["totalCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+
+          /// A list of edges.
+          public var edges: [Edge?]? {
+            get {
+              return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
+            }
+          }
+
+          /// Information to aid in pagination.
+          public var pageInfo: PageInfo {
+            get {
+              return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            }
+          }
+
+          public struct Edge: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PledgeProjectOverviewItemEdge"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("cursor", type: .nonNull(.scalar(String.self))),
+                GraphQLField("node", type: .object(Node.selections)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(cursor: String, node: Node? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItemEdge", "cursor": cursor, "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// A cursor for use in pagination.
+            public var cursor: String {
+              get {
+                return resultMap["cursor"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "cursor")
+              }
+            }
+
+            /// The item at the end of the edge.
+            public var node: Node? {
+              get {
+                return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+              }
+              set {
+                resultMap.updateValue(newValue?.resultMap, forKey: "node")
+              }
+            }
+
+            public struct Node: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["PledgeProjectOverviewItem"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLFragmentSpread(PpoCardFragment.self),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var fragments: Fragments {
+                get {
+                  return Fragments(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+
+              public struct Fragments {
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public var ppoCardFragment: PpoCardFragment {
+                  get {
+                    return PpoCardFragment(unsafeResultMap: resultMap)
+                  }
+                  set {
+                    resultMap += newValue.resultMap
+                  }
+                }
+              }
+            }
+          }
+
+          public struct PageInfo: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PageInfo"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("endCursor", type: .scalar(String.self)),
+                GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("startCursor", type: .scalar(String.self)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(hasNextPage: Bool, endCursor: String? = nil, hasPreviousPage: Bool, startCursor: String? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PageInfo", "hasNextPage": hasNextPage, "endCursor": endCursor, "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// When paginating forwards, are there more items?
+            public var hasNextPage: Bool {
+              get {
+                return resultMap["hasNextPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasNextPage")
+              }
+            }
+
+            /// When paginating forwards, the cursor to continue.
+            public var endCursor: String? {
+              get {
+                return resultMap["endCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "endCursor")
+              }
+            }
+
+            /// When paginating backwards, are there more items?
+            public var hasPreviousPage: Bool {
+              get {
+                return resultMap["hasPreviousPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasPreviousPage")
+              }
+            }
+
+            /// When paginating backwards, the cursor to continue.
+            public var startCursor: String? {
+              get {
+                return resultMap["startCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "startCursor")
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchProjectByIdQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
