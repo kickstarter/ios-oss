@@ -549,7 +549,7 @@ public struct Service: ServiceType {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
-        includeShippingRules: false,
+        includeShippingRules: true,
         includeLocalPickup: true
       )
 
