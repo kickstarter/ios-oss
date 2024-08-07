@@ -23,11 +23,8 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let showAppleErrorAlert = TestObserver<String, Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
-  fileprivate let startLogin = TestObserver<(), Never>()
-  fileprivate let startSignup = TestObserver<(), Never>()
   fileprivate let startOAuthSignupOrLogin = TestObserver<(), Never>()
   fileprivate let startTwoFactorChallenge = TestObserver<String, Never>()
-  fileprivate let showLoginWithOAuth = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -47,11 +44,8 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
-    self.vm.outputs.startLogin.observe(self.startLogin.observer)
-    self.vm.outputs.startSignup.observe(self.startSignup.observer)
     self.vm.outputs.startOAuthSignupOrLogin.observe(self.startOAuthSignupOrLogin.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
-    self.vm.outputs.showLoginWithOAuth.observe(self.showLoginWithOAuth.observer)
   }
 
   func testLoginIntent_Pledge() {
@@ -69,93 +63,10 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testStartLogin() {
-    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.loginButtonPressed()
-
-    self.startLogin.assertValueCount(1, "Start login emitted")
-
-    self.logInContextText.assertValues(
-      ["Pledge to projects and view all your saved and backed projects in one place."],
-      "Emits login Context Text"
-    )
-  }
-
-  func testStartLogin_PledgeIntent() {
-    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.loginButtonPressed()
-
-    self.startLogin.assertValueCount(1)
-
-    self.logInContextText.assertValues(
-      ["Please log in or sign up to back this project."],
-      "Emits login with pledge intent Context Text"
-    )
-  }
-
-  func testStartSignup() {
-    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.signupButtonPressed()
-
-    self.startSignup.assertValueCount(1, "Start sign up emitted")
-
-    self.logInContextText.assertValues(
-      ["Pledge to projects and view all your saved and backed projects in one place."],
-      "Emits Signup Context Text"
-    )
-  }
-
-  func testStartSignup_PledgeIntent() {
-    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.signupButtonPressed()
-
-    self.startSignup.assertValueCount(1)
-
-    self.logInContextText.assertValues(
-      ["Please log in or sign up to back this project."],
-      "Emits Signup with pledge login Context Text"
-    )
-  }
-
   func testStartSignupOrLoginWithOAuth() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.signupOrLoginWithOAuthButtonPressed()
     self.startOAuthSignupOrLogin.assertValueCount(1, "OAuth signup/loginlogin emitted")
-  }
-
-  func testShowSignupOrLoginWithOAuth_featureFlagOn() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([true])
-    }
-  }
-
-  func testShowSignupOrLoginWithOAuth_featureFlagOff() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: false
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([false])
-    }
-  }
-
-  func testShowSignupOrLoginWithOAuth_featureFlagUnset() {
-    withEnvironment(remoteConfigClient: nil) {
-      self.vm.inputs.viewWillAppear()
-      self.showLoginWithOAuth.assertValues([true])
-    }
   }
 
   func testHeadlineLabelHidden() {

@@ -114,8 +114,6 @@ public let signupButtonStyle: ButtonStyle = { button in
     }
 }
 
-public let signupControllerStyle = UIViewController.lens.title %~ { _ in Strings.signup_button() }
-
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
     UIColor.ksr_support_400.withAlphaComponent(0.5)

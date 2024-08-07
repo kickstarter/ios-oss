@@ -1611,29 +1611,6 @@
         .performWithResult(mutation: mutationSignInWithApple, result: self.signInWithAppleResult)
     }
 
-    internal func signup(
-      name: String,
-      email _: String,
-      password _: String,
-      passwordConfirmation _: String,
-      sendNewsletters: Bool
-    ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-      if let error = signupError {
-        return SignalProducer(error: error)
-      } else if let accessTokenEnvelope = signupResponse {
-        return SignalProducer(value: accessTokenEnvelope)
-      }
-      return SignalProducer(
-        value:
-        AccessTokenEnvelope(
-          accessToken: "deadbeef",
-          user: .template
-            |> \.name .~ name
-            |> \.newsletters.weekly .~ sendNewsletters
-        )
-      )
-    }
-
     internal func signup(facebookAccessToken _: String, sendNewsletters _: Bool) ->
       SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
       if let error = signupError {
