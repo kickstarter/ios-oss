@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import Library
+import KsApi
 
 public class PPOViewModel: ObservableObject {
   let greeting = "Hello, PPO"

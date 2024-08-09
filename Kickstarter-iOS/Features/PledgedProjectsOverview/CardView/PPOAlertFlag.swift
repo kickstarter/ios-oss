@@ -10,36 +10,7 @@ import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
-  let alertType: AlertType
-  let alertLevel: AlertLevel
-  let message: String
-
-  var image: Image {
-    switch alertType {
-    case .limitedTime:
-      Image(Constants.limitedTimeImage)
-    case .notice:
-      Image(Constants.noticeImage)
-    }
-  }
-
-  var foregroundColor: Color {
-    switch alertLevel {
-    case .informational:
-      Color(uiColor: Constants.informationalForegroundColor)
-    case .serious:
-      Color(uiColor: Constants.seriousForegroundColor)
-    }
-  }
-
-  var backgroundColor: Color {
-    switch alertLevel {
-    case .informational:
-      Color(uiColor: Constants.informationalBackgroundColor)
-    case .serious:
-      Color(uiColor: Constants.seriousBackgroundColor)
-    }
-  }
+  let alert: PPOProjectCardViewModel.Alert
 
   var body: some View {
     HStack {
@@ -50,7 +21,7 @@ struct PPOAlertFlag: View {
         .frame(width: Constants.imageSize, height: Constants.imageSize)
       Spacer()
         .frame(width: Constants.spacerWidth)
-      Text(message)
+      Text(alert.message)
         .font(Font(Constants.font))
         .foregroundStyle(foregroundColor)
     }
@@ -59,43 +30,42 @@ struct PPOAlertFlag: View {
     .clipShape(RoundedRectangle(cornerSize: CGSize(width: Constants.cornerRadius, height: Constants.cornerRadius)))
   }
 
-  enum AlertType: Identifiable {
-    case limitedTime
-    case notice
-
-    var id: String {
-      switch self {
-      case .limitedTime:
-        "limitedTime"
-      case .notice:
-        "notice"
-      }
+  var image: Image {
+    switch alert.type {
+    case .time:
+      Image(Constants.timeImage)
+    case .alert:
+      Image(Constants.alertImage)
     }
   }
 
-  enum AlertLevel: Identifiable {
-    case informational
-    case serious
-
-    var id: String {
-      switch self {
-      case .informational:
-        "informational"
-      case .serious:
-        "serious"
-      }
+  var foregroundColor: Color {
+    switch alert.icon {
+    case .warning:
+      Color(uiColor: Constants.warningForegroundColor)
+    case .alert:
+      Color(uiColor: Constants.alertForegroundColor)
     }
   }
 
-  fileprivate enum Constants {
-    static let informationalForegroundColor = UIColor.ksr_support_400
-    static let informationalBackgroundColor = UIColor.ksr_celebrate_100
+  var backgroundColor: Color {
+    switch alert.icon {
+    case .warning:
+      Color(uiColor: Constants.warningBackgroundColor)
+    case .alert:
+      Color(uiColor: Constants.alertBackgroundColor)
+    }
+  }
 
-    static let seriousForegroundColor = UIColor.hex(0x73140D)
-    static let seriousBackgroundColor = UIColor.hex(0xFEF2F1)
+  private enum Constants {
+    static let warningForegroundColor = UIColor.ksr_support_400
+    static let warningBackgroundColor = UIColor.ksr_celebrate_100
 
-    static let limitedTimeImage = ImageResource.iconTimer
-    static let noticeImage = ImageResource.iconExclamation
+    static let alertForegroundColor = UIColor.hex(0x73140D)
+    static let alertBackgroundColor = UIColor.hex(0xFEF2F1)
+
+    static let timeImage = ImageResource.iconTimer
+    static let alertImage = ImageResource.iconExclamation
 
     static let imageSize: CGFloat = 18
     static let spacerWidth: CGFloat = 4
@@ -107,10 +77,10 @@ struct PPOAlertFlag: View {
 
 #Preview("Stack of flags") {
   VStack(alignment: .leading, spacing: 8) {
-    PPOAlertFlag(alertType: .limitedTime, alertLevel: .informational, message: "Address locks in 8 hours")
-    PPOAlertFlag(alertType: .notice, alertLevel: .informational, message: "Survey available")
-    PPOAlertFlag(alertType: .notice, alertLevel: .serious, message: "Payment failed")
-    PPOAlertFlag(alertType: .limitedTime, alertLevel: .serious, message: "Pledge will be dropped in 6 days")
-    PPOAlertFlag(alertType: .notice, alertLevel: .serious, message: "Card needs authentication")
+    PPOAlertFlag(alert: .init(type: .time, icon: .warning, message: "Address locks in 8 hours"))
+    PPOAlertFlag(alert: .init(type: .alert, icon: .warning, message: "Survey available"))
+    PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Payment failed"))
+    PPOAlertFlag(alert: .init(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"))
+    PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Card needs authentication"))
   }
 }

@@ -12,22 +12,25 @@ import KsApi
 import SwiftUI
 
 struct PPOProjectDetails: View {
-  let imageUrl: URL
-  let title: String
+  let imageUrl: URL?
+  let title: String?
   
   var body: some View {
       HStack {
-        AsyncImage(url: imageUrl)
+        KFImage(imageUrl)
+          .resizable()
           .clipShape(Constants.imageShape)
           .aspectRatio(Constants.imageAspectRatio, contentMode: .fit)
           .frame(width: Constants.imageWidth)
         Spacer()
           .frame(width: Constants.spacing)
         VStack {
-          Text(title)
-            .font(Font(Constants.titleFont))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(2)
+          if let title {
+            Text(title)
+              .font(Font(Constants.titleFont))
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .lineLimit(2)
+          }
           Text("$50.00 pledged")
             .font(Font(Constants.subtitleFont))
             .foregroundStyle(Color(Constants.subtitleTextColor))
