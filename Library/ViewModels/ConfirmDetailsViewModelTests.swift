@@ -128,7 +128,13 @@ final class ConfirmDetailsViewModelTests: TestCase {
         total: 3
       )
       self.vm.inputs.shippingRuleSelected(
-        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
+        ShippingRule(
+          cost: expectedShipping.total,
+          id: nil,
+          location: .losAngeles,
+          estimatedMin: Money(amount: 1.0),
+          estimatedMax: Money(amount: 10.0)
+        )
       )
 
       let expectedBonus = 5.0
@@ -957,7 +963,13 @@ final class ConfirmDetailsViewModelTests: TestCase {
         total: 3
       )
       self.vm.inputs.shippingRuleSelected(
-        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
+        ShippingRule(
+          cost: expectedShipping.total,
+          id: nil,
+          location: .losAngeles,
+          estimatedMin: Money(amount: 1.0),
+          estimatedMax: Money(amount: 10.0)
+        )
       )
 
       let expectedBonus = 5.0
