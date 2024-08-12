@@ -17,7 +17,8 @@ public enum RewardCardViewContext {
 public typealias RewardCardViewData = (
   project: Project,
   reward: Reward,
-  context: RewardCardViewContext
+  context: RewardCardViewContext,
+  currentShippingRule: ShippingRule?
 )
 
 public protocol RewardCardViewModelInputs {
@@ -30,8 +31,10 @@ public protocol RewardCardViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
+  var estimatedShippingStackViewHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryStackViewHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
+  var estimatedShippingLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
@@ -55,10 +58,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     let configData = self.configDataProperty.signal
       .skipNil()
 
-    let context = configData.map(third)
+    let context = configData.map(\.context)
 
-    let project: Signal<Project, Never> = configData.map(first)
-    let reward: Signal<Reward, Never> = configData.map(second)
+    let project: Signal<Project, Never> = configData.map(\.project)
+    let reward: Signal<Reward, Never> = configData.map(\.reward)
+    let currentShippingRule: Signal<ShippingRule, Never> = configData.map(\.currentShippingRule).skipNil()
 
     let projectAndReward = Signal.zip(project, reward)
 
@@ -124,8 +128,16 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardLocationStackViewHidden = reward
       .map { !isRewardLocalPickup($0) }
 
+    self.estimatedShippingLabelText = Signal.combineLatest(reward, currentShippingRule)
+      .map { reward, shippingRule in estimatedShippingText(with: reward, selectedShippingRule: shippingRule) }
+
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
+
+    self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
+      .map { reward, text in
+        reward.shipping.enabled == false || text.isEmpty
+      }
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -142,8 +154,10 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let descriptionLabelText: Signal<String, Never>
+  public let estimatedShippingStackViewHidden: Signal<Bool, Never>
   public let estimatedDeliveryStackViewHidden: Signal<Bool, Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
+  public let estimatedShippingLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
@@ -333,4 +347,29 @@ private func estimatedDeliveryDateText(with reward: Reward) -> String? {
       timeZone: UTCTimeZone
     )
   }
+}
+
+private func estimatedShippingText(with reward: Reward, selectedShippingRule: ShippingRule) -> String {
+  guard reward.shipping.enabled else { return "" }
+
+  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
+  guard let shippingRules = reward.shippingRules,
+        let currentRewardShippingRule = shippingRules
+        .first(where: { $0.location.country == selectedShippingRule.location.country })
+  else {
+    return ""
+  }
+
+  guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount.rounded(.towardZero),
+        let estimatedMax = currentRewardShippingRule.estimatedMax?.amount.rounded(.towardZero),
+        estimatedMin > 0 || estimatedMax > 0 else {
+    return ""
+  }
+
+  /// Drop digits after the decimal.
+  let formattedMin = String(format: "%.0f", estimatedMin)
+  let formattedMax = String(format: "%.0f", estimatedMax)
+
+  // TODO: Update string with translations
+  return "About $\(formattedMin)-$\(formattedMax)"
 }
