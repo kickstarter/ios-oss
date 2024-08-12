@@ -6,19 +6,19 @@ import SwiftUI
 
 struct GreenButtonStyle: SwiftUI.ButtonStyle {
   @SwiftUI.Environment(\.isEnabled) private var isEnabled
-  
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
       .font(Font(UIFont.boldSystemFont(ofSize: 16)))
       .foregroundColor(Color(.ksr_white))
       .padding(Styles.grid(2))
-      .background(backgroundColor(configuration))
+      .background(self.backgroundColor(configuration))
       .cornerRadius(Styles.grid(2))
   }
-  
+
   private func backgroundColor(_ configuration: Configuration) -> Color {
-    if !isEnabled {
+    if !self.isEnabled {
       return Color(.ksr_create_700.mixLighter(0.36))
     } else if configuration.isPressed {
       return Color(.ksr_create_700.mixDarker(0.36))
@@ -29,19 +29,19 @@ struct GreenButtonStyle: SwiftUI.ButtonStyle {
 
 struct RedButtonStyle: SwiftUI.ButtonStyle {
   @SwiftUI.Environment(\.isEnabled) private var isEnabled
-  
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
       .font(Font(UIFont.boldSystemFont(ofSize: 16)))
       .foregroundColor(Color(.ksr_white))
       .padding(Styles.grid(2))
-      .background(backgroundColor(configuration))
+      .background(self.backgroundColor(configuration))
       .cornerRadius(Styles.grid(2))
   }
-  
+
   private func backgroundColor(_ configuration: Configuration) -> Color {
-    if !isEnabled {
+    if !self.isEnabled {
       return Color(.ksr_alert.mixLighter(0.36))
     } else if configuration.isPressed {
       return Color(.ksr_alert.mixDarker(0.12))
@@ -52,19 +52,19 @@ struct RedButtonStyle: SwiftUI.ButtonStyle {
 
 struct BlackButtonStyle: SwiftUI.ButtonStyle {
   @SwiftUI.Environment(\.isEnabled) private var isEnabled
-  
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
       .font(Font(UIFont.boldSystemFont(ofSize: 16)))
-      .foregroundColor(isEnabled ? Color(.ksr_white) : Color(.ksr_support_100))
+      .foregroundColor(self.isEnabled ? Color(.ksr_white) : Color(.ksr_support_100))
       .padding(Styles.grid(2))
-      .background(backgroundColor(configuration))
+      .background(self.backgroundColor(configuration))
       .cornerRadius(Styles.grid(2))
   }
-  
+
   private func backgroundColor(_ configuration: Configuration) -> Color {
-    if !isEnabled {
+    if !self.isEnabled {
       return Color(.ksr_support_700.mixLighter(0.36))
     } else if configuration.isPressed {
       return Color(.ksr_support_700.mixDarker(0.66))

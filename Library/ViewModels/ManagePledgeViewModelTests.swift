@@ -294,6 +294,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.showActionSheetMenuWithOptions.assertValues([
         [
+          ManagePledgeAlertAction.updatePledge,
           ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.chooseAnotherReward,
           ManagePledgeAlertAction.contactCreator,
