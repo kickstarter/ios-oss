@@ -32,6 +32,10 @@ public final class RewardAddOnCardView: UIView {
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let includedItemsLabel = UILabel(frame: .zero)
+  private let estimatedShippingSeparator: UIView = UIView(frame: .zero)
+  private let estimatedShippingStackView = UIStackView(frame: .zero)
+  private let estimatedShippingTitleLabel = UILabel(frame: .zero)
+  private let estimatedShippingLabel = UILabel(frame: .zero)
   private let quantityLabel = UILabel(frame: .zero)
   private let quantityLabelContainer = UIView(frame: .zero)
   private let pillsView: PillsView = PillsView(frame: .zero)
@@ -85,12 +89,18 @@ public final class RewardAddOnCardView: UIView {
       |> UIButton.lens.title(for: .normal) .~ Strings.Add()
       |> blackButtonStyle
 
-    _ = [
+    var stackViews = [
       self.rootStackView,
       self.titleAmountStackView,
       self.includedItemsStackView,
       self.rewardLocationStackView
     ]
+
+    if featureNoShippingAtCheckout() {
+      stackViews.insert(self.estimatedShippingStackView, at: 3)
+    }
+
+    _ = stackViews
       ||> { stackView in
         stackView
           |> sectionStackViewStyle
@@ -115,6 +125,23 @@ public final class RewardAddOnCardView: UIView {
       |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.includedItemsLabel
+      |> baseRewardLabelStyle
+      |> \.font .~ .ksr_callout()
+
+    _ = self.estimatedShippingSeparator
+      |> separatorStyle
+
+    _ = self.estimatedShippingStackView
+      |> includedItemsStackViewStyle
+
+    // TODO: Update string with translations
+    _ = self.estimatedShippingTitleLabel
+      |> baseRewardLabelStyle
+      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
+      |> \.text %~ { _ in "Estimated Shipping" }
+      |> \.textColor .~ UIColor.ksr_support_400
+
+    _ = self.estimatedShippingLabel
       |> baseRewardLabelStyle
       |> \.font .~ .ksr_callout()
 
@@ -185,6 +212,8 @@ public final class RewardAddOnCardView: UIView {
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.includedItemsLabel.rac.attributedText = self.viewModel.outputs.includedItemsLabelAttributedText
+    self.estimatedShippingStackView.rac.hidden = self.viewModel.outputs.estimatedShippingStackViewHidden
+    self.estimatedShippingLabel.rac.text = self.viewModel.outputs.estimatedShippingLabelText
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.pillsView.rac.hidden = self.viewModel.outputs.pillsViewHidden
     self.quantityLabel.rac.text = self.viewModel.outputs.quantityLabelText
@@ -224,7 +253,7 @@ public final class RewardAddOnCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    let rootSubviews = [
+    var rootSubviews = [
       self.rewardTitleLabel,
       self.titleAmountStackView,
       self.descriptionLabel,
@@ -234,6 +263,10 @@ public final class RewardAddOnCardView: UIView {
       self.addButton,
       self.stepperStackView
     ]
+
+    if featureNoShippingAtCheckout() {
+      rootSubviews.insert(self.estimatedShippingStackView, at: 4)
+    }
 
     _ = (rootSubviews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -249,7 +282,16 @@ public final class RewardAddOnCardView: UIView {
       self.includedItemsLabel
     ]
 
+    let estimatedShippingViews = [
+      self.estimatedShippingSeparator,
+      self.estimatedShippingTitleLabel,
+      self.estimatedShippingLabel
+    ]
+
     _ = (includedItemsViews, self.includedItemsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (estimatedShippingViews, self.estimatedShippingStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.quantityLabel, self.quantityLabelContainer)

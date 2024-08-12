@@ -129,7 +129,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { !isRewardLocalPickup($0) }
 
     self.estimatedShippingLabelText = Signal.combineLatest(reward, currentShippingRule)
-      .map { reward, shippingRule in estimatedShippingText(with: reward, selectedShippingRule: shippingRule) }
+      .map { reward, shippingRule in estimatedShippingText(for: reward, selectedShippingRule: shippingRule) }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
@@ -347,29 +347,4 @@ private func estimatedDeliveryDateText(with reward: Reward) -> String? {
       timeZone: UTCTimeZone
     )
   }
-}
-
-private func estimatedShippingText(with reward: Reward, selectedShippingRule: ShippingRule) -> String {
-  guard reward.shipping.enabled else { return "" }
-
-  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
-  guard let shippingRules = reward.shippingRules,
-        let currentRewardShippingRule = shippingRules
-        .first(where: { $0.location.country == selectedShippingRule.location.country })
-  else {
-    return ""
-  }
-
-  guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount.rounded(.towardZero),
-        let estimatedMax = currentRewardShippingRule.estimatedMax?.amount.rounded(.towardZero),
-        estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
-  }
-
-  /// Drop digits after the decimal.
-  let formattedMin = String(format: "%.0f", estimatedMin)
-  let formattedMax = String(format: "%.0f", estimatedMax)
-
-  // TODO: Update string with translations
-  return "About $\(formattedMin)-$\(formattedMax)"
 }
