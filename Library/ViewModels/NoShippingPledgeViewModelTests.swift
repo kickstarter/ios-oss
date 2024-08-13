@@ -79,13 +79,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.4 }
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
-      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
-      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
-      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.4 }
+      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.5 }
       .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
     self.vm.outputs.configureStripeIntegration.map(first)
