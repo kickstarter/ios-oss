@@ -14,6 +14,7 @@ struct PPOAddressSummary: View {
   
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
+        // TODO: Localize
         Text("Shipping address")
           .lineLimit(nil)
           .font(Font(Constants.labelFont))

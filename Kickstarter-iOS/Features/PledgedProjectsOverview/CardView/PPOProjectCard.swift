@@ -65,7 +65,8 @@ struct PPOProjectCard: View {
   private var projectDetails: some View {
     PPOProjectDetails(
       imageUrl: viewModel.imageURL,
-      title: viewModel.title
+      title: viewModel.title,
+      pledge: viewModel.pledge
     )
     .padding([.horizontal])
   }
@@ -128,7 +129,7 @@ struct PPOProjectCard: View {
   }
 }
 
-#Preview("Basic card") {
+#Preview("Card variants") {
   ScrollView(.vertical) {
     VStack(spacing: 16) {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(

@@ -14,7 +14,8 @@ import SwiftUI
 struct PPOProjectDetails: View {
   let imageUrl: URL?
   let title: String?
-  
+  let pledge: GraphAPI.MoneyFragment
+
   var body: some View {
       HStack {
         KFImage(imageUrl)
@@ -31,7 +32,8 @@ struct PPOProjectDetails: View {
               .frame(maxWidth: .infinity, alignment: .leading)
               .lineLimit(2)
           }
-          Text("$50.00 pledged")
+          // TODO: Localize
+          Text("\(pledge.symbol ?? "")\(pledge.amount ?? "") pledged")
             .font(Font(Constants.subtitleFont))
             .foregroundStyle(Color(Constants.subtitleTextColor))
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,8 +57,8 @@ struct PPOProjectDetails: View {
 
 #Preview {
   return VStack {
-    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title")
-    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "One line")
+    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title", pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"))
+    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "One line", pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"))
   }
   .padding(28)
 }

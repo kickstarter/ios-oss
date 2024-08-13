@@ -14,12 +14,14 @@ struct PPOProjectCreator: View {
   
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
+        // TODO: Localize
         Text("Created by **\(creatorName)**")
           .font(Font(Constants.createdByFont))
           .foregroundStyle(Color(Constants.createdByColor))
           .frame(maxWidth: .infinity, alignment: .leading)
           .lineLimit(1)
 
+        // TODO: Localize
         Text("Send a message")
           .font(Font(Constants.sendMessageFont))
           .foregroundStyle(Color(Constants.sendMessageColor))
