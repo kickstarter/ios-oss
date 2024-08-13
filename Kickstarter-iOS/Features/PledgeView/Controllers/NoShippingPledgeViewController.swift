@@ -42,12 +42,7 @@ final class NoShippingPledgeViewController: UIViewController,
   private lazy var projectTitleLabel = UILabel(frame: .zero)
 
   private lazy var sectionSeparatorViews = {
-    [self.descriptionSectionSeparator, self.summarySectionSeparator]
-  }()
-
-  private lazy var summarySectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    [self.descriptionSectionSeparator]
   }()
 
   private lazy var pledgeAmountViewController = {
@@ -101,15 +96,8 @@ final class NoShippingPledgeViewController: UIViewController,
     PledgeLocalPickupView(frame: .zero)
   }()
 
-  private lazy var summarySectionViews = {
-    [
-      self.summarySectionSeparator,
-      self.summaryViewController.view
-    ]
-  }()
-
-  private lazy var summaryViewController = {
-    PledgeSummaryViewController.instantiate()
+  private lazy var pledgeRewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
@@ -179,7 +167,7 @@ final class NoShippingPledgeViewController: UIViewController,
     let childViewControllers = [
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
-      self.summaryViewController,
+      self.pledgeRewardsSummaryViewController,
       self.paymentMethodsViewController
     ]
 
@@ -187,7 +175,7 @@ final class NoShippingPledgeViewController: UIViewController,
       self.descriptionSectionViews,
       [self.pledgeAmountSummaryViewController.view],
       self.inputsSectionViews,
-      self.summarySectionViews,
+      [self.pledgeRewardsSummaryViewController.view],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -280,6 +268,13 @@ final class NoShippingPledgeViewController: UIViewController,
         STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
 
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
+
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -304,11 +299,6 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
-    self.viewModel.outputs.configureSummaryViewControllerWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.summaryViewController.configure(with: data)
-      }
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
@@ -361,7 +351,6 @@ final class NoShippingPledgeViewController: UIViewController,
     self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitle
     self.projectTitleLabel.rac.hidden = self.viewModel.outputs.projectTitleLabelHidden
     self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
-    self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
