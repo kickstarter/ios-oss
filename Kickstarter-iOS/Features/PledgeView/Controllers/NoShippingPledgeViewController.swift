@@ -34,6 +34,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
   public weak var delegate: NoShippingPledgeViewControllerDelegate?
 
+  private var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var projectTitleLabel = UILabel(frame: .zero)
 
   internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
@@ -117,6 +118,8 @@ final class NoShippingPledgeViewController: UIViewController,
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
+    self.titleLabel.text = Strings.Checkout()
+
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
@@ -159,7 +162,8 @@ final class NoShippingPledgeViewController: UIViewController,
     .flatMap { $0 }
     .compact()
 
-    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
+    _ = ([self.titleLabel, self.rootInsetStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
@@ -169,11 +173,17 @@ final class NoShippingPledgeViewController: UIViewController,
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
+
+    self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.topAnchor.constraint(
+        equalTo: self.view.safeAreaLayoutGuide.topAnchor,
+        constant: Styles.grid(1)
+      ),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
@@ -191,6 +201,9 @@ final class NoShippingPledgeViewController: UIViewController,
 
     _ = self.view
       |> checkoutBackgroundStyle
+
+    _ = self.titleLabel
+      |> titleLabelStyle
 
     _ = self.pledgeDisclaimerView
       |> pledgeDisclaimerViewStyle
@@ -215,6 +228,13 @@ final class NoShippingPledgeViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self
+          ?|> \.title .~ title
+      }
 
     self.viewModel.outputs.beginSCAFlowWithClientSecret
       .observeForUI()
@@ -247,7 +267,7 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
-    
+
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
@@ -306,8 +326,7 @@ final class NoShippingPledgeViewController: UIViewController,
     self.viewModel.outputs.title
       .observeForUI()
       .observeValues { [weak self] title in
-        guard let self = self else { return }
-
+        guard let self else { return }
         _ = self
           |> \.title %~ { _ in title }
       }
@@ -552,6 +571,10 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets(
+      topBottom: 0,
+      leftRight: Layout.Margin.leftRight
+    )
 }
 
 private let rootInsetStackViewStyle: StackViewStyle = { stackView in
@@ -559,8 +582,11 @@ private let rootInsetStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: 0,
-      leftRight: Layout.Margin.leftRight
-    )
+}
+
+public func titleLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 1
+  label.textColor = UIColor.ksr_support_700
+  label.font = UIFont.ksr_title2().bolded
+  label.layoutMargins = UIEdgeInsets(topBottom: Layout.Margin.topBottom, leftRight: Styles.grid(3))
 }

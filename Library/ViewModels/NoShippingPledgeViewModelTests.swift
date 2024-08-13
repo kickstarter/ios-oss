@@ -4462,7 +4462,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testPledgeAmountSummaryViewHidden_UpdateContext_NoReward_IsHidden() {
-
     let project = Project.template
     let reward = Reward.noReward
 
@@ -4478,11 +4477,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
-
   }
 
   func testPledgeAmountSummaryViewHidden_UpdateContext_RegularReward_IsNotHidden() {
-
     let project = Project.template
     let reward = Reward.template
 
@@ -4498,7 +4495,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
-
   }
 
   func testCreateBacking_WithNewPaymentSheetCard_TappedPledgeButton_Success() {
