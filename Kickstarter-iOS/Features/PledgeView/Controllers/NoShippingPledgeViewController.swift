@@ -66,11 +66,6 @@ final class NoShippingPledgeViewController: UIViewController,
     [self.projectTitleLabel, self.descriptionSectionSeparator]
   }()
 
-  private lazy var pledgeExpandableRewardsHeaderViewController = {
-    PledgeExpandableRewardsHeaderViewController(nibName: nil, bundle: nil)
-      |> \.animatingViewDelegate .~ self.view
-  }()
-
   private lazy var inputsSectionViews = {
     [
       self.localPickupLocationView,
@@ -182,18 +177,11 @@ final class NoShippingPledgeViewController: UIViewController,
       |> ksr_addSubviewToParent()
 
     let childViewControllers = [
-      self.pledgeExpandableRewardsHeaderViewController,
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
       self.summaryViewController,
       self.paymentMethodsViewController
     ]
-
-    let arrangedSubviews = [
-      self.pledgeExpandableRewardsHeaderViewController.view,
-      self.rootInsetStackView
-    ]
-    .compact()
 
     let arrangedInsetSubviews = [
       self.descriptionSectionViews,
@@ -206,9 +194,7 @@ final class NoShippingPledgeViewController: UIViewController,
     .flatMap { $0 }
     .compact()
 
-    arrangedSubviews.forEach { view in
-      self.rootStackView.addArrangedSubview(view)
-    }
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
@@ -218,9 +204,6 @@ final class NoShippingPledgeViewController: UIViewController,
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
-
-    self.rootStackView
-      .setCustomSpacing(Styles.grid(2), after: self.pledgeExpandableRewardsHeaderViewController.view)
   }
 
   private func setupConstraints() {
@@ -303,12 +286,6 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeAmountViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.configureExpandableRewardsHeaderWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeExpandableRewardsHeaderViewController.configure(with: data)
-      }
-
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -386,19 +363,11 @@ final class NoShippingPledgeViewController: UIViewController,
     self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
     self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
 
-    self.viewModel.outputs.rootStackViewLayoutMargins
-      .observeForUI()
-      .observeValues { [weak self] margins in
-        self?.rootStackView.layoutMargins = margins
-      }
-
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
-    self.pledgeExpandableRewardsHeaderViewController.view.rac.hidden
-      = self.viewModel.outputs.expandableRewardsHeaderViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -493,7 +462,6 @@ final class NoShippingPledgeViewController: UIViewController,
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let navigationBarHeight = navigationController.navigationBar.bounds.height
 
     self.present(navigationController, animated: true)
   }
