@@ -1,11 +1,3 @@
-//
-//  PPOProjectCardView+GraphAPI.swift
-//  Kickstarter-Framework-iOS
-//
-//  Created by Steve Streza on 8/12/24.
-//  Copyright © 2024 Kickstarter. All rights reserved.
-//
-
 import Foundation
 import KsApi
 

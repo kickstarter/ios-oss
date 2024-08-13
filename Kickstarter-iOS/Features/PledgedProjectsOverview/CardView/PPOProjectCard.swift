@@ -1,11 +1,3 @@
-//
-//  PPOProjectCard.swift
-//  Kickstarter-iOS
-//
-//  Created by Steve Streza on 7/29/24.
-//  Copyright © 2024 Kickstarter. All rights reserved.
-//
-
 import Foundation
 import KsApi
 import SwiftUI
@@ -15,21 +7,21 @@ struct PPOProjectCard: View {
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
-      flagList
-      projectDetails
-      divider
-      projectCreator
-      divider
-      addressDetails
-      actionButtons
+      self.flagList
+      self.projectDetails
+      self.divider
+      self.projectCreator
+      self.divider
+      self.addressDetails
+      self.actionButtons
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
     // round rectangle around the card
-    .clipShape(cardRectangle)
-    .overlay(cardRectangle.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
+    .clipShape(self.cardRectangle)
+    .overlay(self.cardRectangle.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
     // upper right corner badge
-    .overlay(alignment: Constants.badgeAlignment, content: { badge.opacity(viewModel.isUnread ? 1 : 0) })
+    .overlay(alignment: Constants.badgeAlignment, content: { badge.opacity(self.viewModel.isUnread ? 1 : 0) })
     // insets
     .padding(.horizontal, Constants.outerPadding)
   }
@@ -49,10 +41,10 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var flagList: some View {
-    if viewModel.alerts.isEmpty == false {
+    if self.viewModel.alerts.isEmpty == false {
       HStack {
         VStack(alignment: .leading) {
-          ForEach(viewModel.alerts) { alert in
+          ForEach(self.viewModel.alerts) { alert in
             PPOAlertFlag(alert: alert)
           }
         }
@@ -65,22 +57,22 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var projectDetails: some View {
     PPOProjectDetails(
-      imageUrl: viewModel.imageURL,
-      title: viewModel.title,
-      pledge: viewModel.pledge
+      imageUrl: self.viewModel.imageURL,
+      title: self.viewModel.title,
+      pledge: self.viewModel.pledge
     )
     .padding([.horizontal])
   }
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(creatorName: viewModel.creatorName)
+    PPOProjectCreator(creatorName: self.viewModel.creatorName)
       .padding([.horizontal])
   }
 
   @ViewBuilder
   private var addressDetails: some View {
-    if let address = viewModel.address {
+    if let address = self.viewModel.address {
       PPOAddressSummary(address: address)
         .padding([.horizontal])
     }
@@ -111,11 +103,11 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var actionButtons: some View {
     HStack {
-      if let action = viewModel.secondaryAction {
+      if let action = self.viewModel.secondaryAction {
         button(for: action)
       }
 
-      button(for: viewModel.primaryAction)
+      button(for: self.viewModel.primaryAction)
     }
     .padding([.horizontal])
   }

@@ -1,11 +1,3 @@
-//
-//  PPOProjectCardTests.swift
-//  Kickstarter-Framework-iOSTests
-//
-//  Created by Steve Streza on 8/12/24.
-//  Copyright © 2024 Kickstarter. All rights reserved.
-//
-
 @testable import Kickstarter_Framework
 import SnapshotTesting
 import SwiftUI

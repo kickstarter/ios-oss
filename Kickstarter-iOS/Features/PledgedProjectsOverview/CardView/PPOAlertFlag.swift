@@ -1,72 +1,64 @@
-//
-//  PPOAlertFlag.swift
-//  Kickstarter-iOS
-//
-//  Created by Steve Streza on 7/30/24.
-//  Copyright © 2024 Kickstarter. All rights reserved.
-//
-
 import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
   let alert: PPOProjectCardViewModel.Alert
-
+  
   var body: some View {
     HStack {
-      image
+      self.image
         .renderingMode(.template)
         .aspectRatio(contentMode: .fit)
-        .foregroundStyle(foregroundColor)
+        .foregroundStyle(self.foregroundColor)
         .frame(width: Constants.imageSize, height: Constants.imageSize)
       Spacer()
         .frame(width: Constants.spacerWidth)
-      Text(alert.message)
+      Text(self.alert.message)
         .font(Font(Constants.font))
-        .foregroundStyle(foregroundColor)
+        .foregroundStyle(self.foregroundColor)
     }
     .padding(Constants.padding)
-    .background(backgroundColor)
+    .background(self.backgroundColor)
     .clipShape(RoundedRectangle(cornerSize: CGSize(width: Constants.cornerRadius, height: Constants.cornerRadius)))
   }
-
+  
   var image: Image {
-    switch alert.type {
+    switch self.alert.type {
     case .time:
       Image(Constants.timeImage)
     case .alert:
       Image(Constants.alertImage)
     }
   }
-
+  
   var foregroundColor: Color {
-    switch alert.icon {
+    switch self.alert.icon {
     case .warning:
       Color(uiColor: Constants.warningForegroundColor)
     case .alert:
       Color(uiColor: Constants.alertForegroundColor)
     }
   }
-
+  
   var backgroundColor: Color {
-    switch alert.icon {
+    switch self.alert.icon {
     case .warning:
       Color(uiColor: Constants.warningBackgroundColor)
     case .alert:
       Color(uiColor: Constants.alertBackgroundColor)
     }
   }
-
+  
   private enum Constants {
     static let warningForegroundColor = UIColor.ksr_support_400
     static let warningBackgroundColor = UIColor.ksr_celebrate_100
-
+    
     static let alertForegroundColor = UIColor.hex(0x73140D)
     static let alertBackgroundColor = UIColor.hex(0xFEF2F1)
-
+    
     static let timeImage = ImageResource.iconLimitedTime
     static let alertImage = ImageResource.iconNotice
-
+    
     static let imageSize: CGFloat = 18
     static let spacerWidth: CGFloat = 4
     static let cornerRadius: CGFloat = 6

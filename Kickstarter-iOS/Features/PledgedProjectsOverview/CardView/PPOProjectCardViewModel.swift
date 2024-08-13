@@ -1,11 +1,3 @@
-//
-//  PPOProjectCardViewModel.swift
-//  Kickstarter-Framework-iOS
-//
-//  Created by Steve Streza on 8/8/24.
-//  Copyright © 2024 Kickstarter. All rights reserved.
-//
-
 import Combine
 import Foundation
 import KsApi
@@ -58,27 +50,27 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   // Inputs
 
   func sendCreatorMessage() {
-    sendCreatorMessageSubject.send(())
+    self.sendCreatorMessageSubject.send(())
   }
 
   func performAction(action: Action) {
-    actionPerformedSubject.send(action)
+    self.actionPerformedSubject.send(action)
   }
 
   // Outputs
 
-  var sendMessageTapped: AnyPublisher<(), Never> { sendCreatorMessageSubject.eraseToAnyPublisher() }
-  var actionPerformed: AnyPublisher<Action, Never> { actionPerformedSubject.eraseToAnyPublisher() }
+  var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
+  var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
   // Helpers
 
   var primaryAction: PPOProjectCardViewModel.Action {
-    let (primary, _) = actions
+    let (primary, _) = self.actions
     return primary
   }
 
   var secondaryAction: PPOProjectCardViewModel.Action? {
-    let (_, secondary) = actions
+    let (_, secondary) = self.actions
     return secondary
   }
 
