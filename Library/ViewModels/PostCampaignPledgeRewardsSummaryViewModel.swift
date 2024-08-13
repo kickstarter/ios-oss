@@ -193,7 +193,7 @@ private func items(
 
   // MARK: Bonus
 
-  if let bonus = bonusAmount {
+  if let bonus = bonusAmount, bonus > 0 {
     let bonusAmountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
