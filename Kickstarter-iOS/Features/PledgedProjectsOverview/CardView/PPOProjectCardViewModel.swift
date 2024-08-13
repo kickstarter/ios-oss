@@ -160,9 +160,11 @@ extension PPOProjectCardViewModel {
 
     // TODO
     let address: String? = nil
+
     // TODO
     let alerts: [PPOProjectCardViewModel.Alert] = []
 
+    // TODO
     let action = PPOProjectCardViewModel.Action(label: "Confirm address", style: .green) {
 
     }

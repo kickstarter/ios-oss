@@ -64,8 +64,8 @@ struct PPOAlertFlag: View {
     static let alertForegroundColor = UIColor.hex(0x73140D)
     static let alertBackgroundColor = UIColor.hex(0xFEF2F1)
 
-    static let timeImage = ImageResource.iconTimer
-    static let alertImage = ImageResource.iconExclamation
+    static let timeImage = ImageResource.iconLimitedTime
+    static let alertImage = ImageResource.iconNotice
 
     static let imageSize: CGFloat = 18
     static let spacerWidth: CGFloat = 4
