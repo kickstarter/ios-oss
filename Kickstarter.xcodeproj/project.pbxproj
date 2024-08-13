@@ -1127,6 +1127,8 @@
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA0834CD2C6574C400200B90 /* PPOProjectCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */; };
+		AA677DF82C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */; };
+		AA677DFA2C6AEB6000E193F0 /* PPOProjectCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */; };
 		AA6E9E832C62B9DC001543FC /* PPOProjectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE52C588723003D8B95 /* PPOProjectCard.swift */; };
 		AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA592782C5C708000482087 /* PPOProjectDetails.swift */; };
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
@@ -2770,6 +2772,8 @@
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModel.swift; sourceTree = "<group>"; };
+		AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardView+GraphAPI.swift"; sourceTree = "<group>"; };
+		AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardTests.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
@@ -6696,8 +6700,10 @@
 		AAD2BEE72C59B964003D8B95 /* CardView */ = {
 			isa = PBXGroup;
 			children = (
-				AAD2BEE52C588723003D8B95 /* PPOProjectCard.swift */,
 				AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */,
+				AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */,
+				AAD2BEE52C588723003D8B95 /* PPOProjectCard.swift */,
+				AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */,
 				AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */,
 				AAA592782C5C708000482087 /* PPOProjectDetails.swift */,
 				AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */,
@@ -8565,6 +8571,7 @@
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
 				60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
+				AA677DF82C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,
 				77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */,
@@ -8604,6 +8611,7 @@
 				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
+				AA677DFA2C6AEB6000E193F0 /* PPOProjectCardTests.swift in Sources */,
 				47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,

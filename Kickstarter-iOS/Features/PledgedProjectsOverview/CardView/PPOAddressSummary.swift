@@ -15,12 +15,14 @@ struct PPOAddressSummary: View {
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
         Text("Shipping address")
+          .lineLimit(nil)
           .font(Font(Constants.labelFont))
           .foregroundStyle(Color(Constants.labelColor))
           .frame(width: Constants.labelWidth, alignment: .leading)
           .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
 
         Text(address)
+        .lineLimit(nil)
           .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
           .font(Font(Constants.addressFont))
           .foregroundStyle(Color(Constants.addressColor))

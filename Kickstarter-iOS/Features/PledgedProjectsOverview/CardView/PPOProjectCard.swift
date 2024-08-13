@@ -29,7 +29,7 @@ struct PPOProjectCard: View {
     .clipShape(cardRectangle)
     .overlay(cardRectangle.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
     // upper right corner badge
-    .overlay(alignment: Constants.badgeAlignment, content: { badge })
+    .overlay(alignment: Constants.badgeAlignment, content: { badge.opacity(viewModel.isUnread ? 1 : 0) })
     // insets
     .padding(.horizontal, Constants.outerPadding)
   }
@@ -132,6 +132,7 @@ struct PPOProjectCard: View {
   ScrollView(.vertical) {
     VStack(spacing: 16) {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours"),
         ],
@@ -149,6 +150,7 @@ struct PPOProjectCard: View {
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
           PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours"),
@@ -162,6 +164,7 @@ struct PPOProjectCard: View {
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Payment failed"),
           PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
@@ -175,6 +178,7 @@ struct PPOProjectCard: View {
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Card needs authentication"),
           PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
@@ -188,6 +192,7 @@ struct PPOProjectCard: View {
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
         ],
