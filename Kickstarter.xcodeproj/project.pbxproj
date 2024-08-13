@@ -1129,6 +1129,7 @@
 		AA0834CD2C6574C400200B90 /* PPOProjectCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */; };
 		AA677DF82C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */; };
 		AA677DFA2C6AEB6000E193F0 /* PPOProjectCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */; };
+		AA677DFD2C6BE55800E193F0 /* PPOProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677DFB2C6BE54400E193F0 /* PPOProjectCardViewModelTests.swift */; };
 		AA6E9E832C62B9DC001543FC /* PPOProjectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE52C588723003D8B95 /* PPOProjectCard.swift */; };
 		AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA592782C5C708000482087 /* PPOProjectDetails.swift */; };
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
@@ -2774,6 +2775,7 @@
 		AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModel.swift; sourceTree = "<group>"; };
 		AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardView+GraphAPI.swift"; sourceTree = "<group>"; };
 		AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardTests.swift; sourceTree = "<group>"; };
+		AA677DFB2C6BE54400E193F0 /* PPOProjectCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModelTests.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
@@ -6701,6 +6703,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0834CC2C6574C400200B90 /* PPOProjectCardViewModel.swift */,
+				AA677DFB2C6BE54400E193F0 /* PPOProjectCardViewModelTests.swift */,
 				AA677DF72C6AEA5700E193F0 /* PPOProjectCardView+GraphAPI.swift */,
 				AAD2BEE52C588723003D8B95 /* PPOProjectCard.swift */,
 				AA677DF92C6AEB6000E193F0 /* PPOProjectCardTests.swift */,
@@ -8634,6 +8637,7 @@
 				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
 				06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
+				AA677DFD2C6BE55800E193F0 /* PPOProjectCardViewModelTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
 				19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,

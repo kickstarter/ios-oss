@@ -28,7 +28,7 @@ final class PPOProjectCardTests: TestCase {
         Los Angeles, CA 90025-1234
         United States
       """,
-      actions: (.init(label: "Confirm", style: .green, action: { () in }), .init(label: "Edit", style: .black, action: { () in }))
+      actions: (.confirmAddress, .editAddress)
     ))
       .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
       .padding()
@@ -47,7 +47,7 @@ final class PPOProjectCardTests: TestCase {
       pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.init(label: "Complete survey", style: .green, action: { () in }), nil)
+      actions: (.completeSurvey, nil)
     ))
       .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
       .padding()
@@ -66,7 +66,7 @@ final class PPOProjectCardTests: TestCase {
       pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.init(label: "Fix payment", style: .red, action: { () in }), nil)
+      actions: (.fixPayment, nil)
     ))
       .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
       .padding()
@@ -85,7 +85,7 @@ final class PPOProjectCardTests: TestCase {
       pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.init(label: "Authenticate card", style: .red, action: { () in }), nil)
+      actions: (.authenticateCard, nil)
     ))
       .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
       .padding()
@@ -103,7 +103,7 @@ final class PPOProjectCardTests: TestCase {
       pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.init(label: "Complete survey", style: .green, action: { () in }), nil)
+      actions: (.completeSurvey, nil)
     ))
       .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
       .padding()

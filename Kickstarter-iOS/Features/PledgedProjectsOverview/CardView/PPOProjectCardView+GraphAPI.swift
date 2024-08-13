@@ -41,9 +41,7 @@ extension PPOProjectCardViewModel {
     let alerts: [PPOProjectCardViewModel.Alert] = []
 
     // TODO
-    let action = PPOProjectCardViewModel.Action(label: "Confirm address", style: .green) {
-
-    }
+    let action = PPOProjectCardViewModel.Action.confirmAddress
 
     if let imageURL, let title, let pledge, let creatorName {
       self.init(isUnread: isUnread, alerts: alerts, imageURL: imageURL, title: title, pledge: pledge, creatorName: creatorName, address: address, actions: (action, nil))

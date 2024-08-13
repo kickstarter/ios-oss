@@ -85,8 +85,8 @@ struct PPOProjectCard: View {
   }
 
   private func baseButton(for action: PPOProjectCardViewModel.Action) -> some View {
-    Button(action.label) {
-      action.action()
+    Button(action.label) { [weak viewModel] () in
+      viewModel?.performAction(action: action)
     }
   }
 
@@ -146,7 +146,7 @@ struct PPOProjectCard: View {
           Los Angeles, CA 90025-1234
           United States
         """,
-        actions: (.init(label: "Confirm", style: .green, action: { () in }), .init(label: "Edit", style: .black, action: { () in }))
+        actions: (.confirmAddress, .editAddress)
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
@@ -160,7 +160,7 @@ struct PPOProjectCard: View {
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
-        actions: (.init(label: "Complete survey", style: .green, action: { () in }), nil)
+        actions: (.completeSurvey, nil)
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
@@ -174,7 +174,7 @@ struct PPOProjectCard: View {
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
-        actions: (.init(label: "Fix payment", style: .red, action: { () in }), nil)
+        actions: (.fixPayment, nil)
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
@@ -188,7 +188,7 @@ struct PPOProjectCard: View {
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
-        actions: (.init(label: "Authenticate card", style: .red, action: { () in }), nil)
+        actions: (.authenticateCard, nil)
       ))
 
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
@@ -201,7 +201,7 @@ struct PPOProjectCard: View {
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
-        actions: (.init(label: "Complete survey", style: .green, action: { () in }), nil)
+        actions: (.completeSurvey, nil)
       ))
     }
   }

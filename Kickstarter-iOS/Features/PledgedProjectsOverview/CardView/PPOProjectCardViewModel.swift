@@ -12,10 +12,12 @@ import KsApi
 
 protocol PPOProjectCardViewModelInputs {
   func sendCreatorMessage()
+  func performAction(action: PPOProjectCardViewModel.Action)
 }
 
 protocol PPOProjectCardViewModelOutputs {
-  var sendMessageTapped: AnyPublisher<(), Never> { get }
+  var sendMessageTapped: AnyPublisher<Void, Never> { get }
+  var actionPerformed: AnyPublisher<PPOProjectCardViewModel.Action, Never> { get }
 }
 
 typealias PPOProjectCardViewModelType = PPOProjectCardViewModelInputs & PPOProjectCardViewModelOutputs & ObservableObject & Identifiable
@@ -31,6 +33,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   internal private(set) var actions: (Action, Action?)
 
   private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
+  private let actionPerformedSubject = PassthroughSubject<PPOProjectCardViewModel.Action, Never>()
 
   init(
     isUnread: Bool,
@@ -58,9 +61,14 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     sendCreatorMessageSubject.send(())
   }
 
+  func performAction(action: Action) {
+    actionPerformedSubject.send(action)
+  }
+
   // Outputs
 
   var sendMessageTapped: AnyPublisher<(), Never> { sendCreatorMessageSubject.eraseToAnyPublisher() }
+  var actionPerformed: AnyPublisher<Action, Never> { actionPerformedSubject.eraseToAnyPublisher() }
 
   // Helpers
 
@@ -76,13 +84,41 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // Types
 
-  struct Action: Identifiable {
-    let label: String
-    let style: Style
-    let action: () -> Void
+  enum Action: Identifiable {
+    case confirmAddress
+    case editAddress
+    case completeSurvey
+    case fixPayment
+    case authenticateCard
 
-    var id: String {
-      "\(label) \(style.id)"
+    var label: String {
+      switch self {
+      case .confirmAddress:
+        "Confirm"
+      case .editAddress:
+        "Edit"
+      case .completeSurvey:
+        "Complete survey"
+      case .fixPayment:
+        "Fix payment"
+      case .authenticateCard:
+        "Authenticate card"
+      }
+    }
+
+    var style: Style {
+      switch self {
+      case .confirmAddress:
+        .green
+      case .editAddress:
+        .black
+      case .completeSurvey:
+        .green
+      case .fixPayment:
+        .red
+      case .authenticateCard:
+        .red
+      }
     }
 
     enum Style: Identifiable {
@@ -97,6 +133,10 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
         case .black: "black"
         }
       }
+    }
+
+    var id: String {
+      "\(label) \(style.id)"
     }
   }
 
