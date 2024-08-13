@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class RewardsWithShippingCollectionViewController: UICollectionViewController {
+final class WithShippingRewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
@@ -47,14 +47,14 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: RewardsWithShippingCollectionViewModelType = RewardsWithShippingCollectionViewModel()
+  private let viewModel: WithShippingRewardsCollectionViewModelType = WithShippingRewardsCollectionViewModel()
 
   static func instantiate(
     with project: Project,
     refTag: RefTag?,
     context: RewardsCollectionViewContext
-  ) -> RewardsWithShippingCollectionViewController {
-    let rewardsCollectionVC = RewardsWithShippingCollectionViewController()
+  ) -> WithShippingRewardsCollectionViewController {
+    let rewardsCollectionVC = WithShippingRewardsCollectionViewController()
     rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag, context: context)
 
     return rewardsCollectionVC
@@ -370,7 +370,7 @@ final class RewardsWithShippingCollectionViewController: UICollectionViewControl
 
 // MARK: - UICollectionViewDelegate
 
-extension RewardsWithShippingCollectionViewController {
+extension WithShippingRewardsCollectionViewController {
   override func collectionView(
     _: UICollectionView, willDisplay cell: UICollectionViewCell,
     forItemAt _: IndexPath
@@ -383,7 +383,7 @@ extension RewardsWithShippingCollectionViewController {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension RewardsWithShippingCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension WithShippingRewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt _: IndexPath
@@ -400,7 +400,7 @@ extension RewardsWithShippingCollectionViewController: UICollectionViewDelegateF
 
 // MARK: - RewardCellDelegate
 
-extension RewardsWithShippingCollectionViewController: RewardCellDelegate {
+extension WithShippingRewardsCollectionViewController: RewardCellDelegate {
   func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
@@ -412,7 +412,7 @@ extension RewardsWithShippingCollectionViewController: RewardCellDelegate {
 
 // MARK: - PledgeShippingLocationViewControllerDelegate
 
-extension RewardsWithShippingCollectionViewController: PledgeShippingLocationViewControllerDelegate {
+extension WithShippingRewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
@@ -434,19 +434,19 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
     |> \.showsHorizontalScrollIndicator .~ true
 }
 
-extension RewardsWithShippingCollectionViewController {
+extension WithShippingRewardsCollectionViewController {
   public static func controller(
     with project: Project,
     refTag: RefTag?
   ) -> UINavigationController {
-    let rewardsWithShippingCollectionViewController = RewardsWithShippingCollectionViewController
+    let rewardsWithShippingCollectionViewController = WithShippingRewardsCollectionViewController
       .instantiate(with: project, refTag: refTag, context: .createPledge)
 
     let closeButton = UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: rewardsWithShippingCollectionViewController,
-      action: #selector(RewardsWithShippingCollectionViewController.closeButtonTapped)
+      action: #selector(WithShippingRewardsCollectionViewController.closeButtonTapped)
     )
 
     _ = closeButton

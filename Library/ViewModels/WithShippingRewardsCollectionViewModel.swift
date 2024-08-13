@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public protocol RewardsWithShippingCollectionViewModelInputs {
+public protocol WithShippingRewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
@@ -17,7 +17,7 @@ public protocol RewardsWithShippingCollectionViewModelInputs {
   func viewWillAppear()
 }
 
-public protocol RewardsWithShippingCollectionViewModelOutputs {
+public protocol WithShippingRewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
@@ -34,14 +34,14 @@ public protocol RewardsWithShippingCollectionViewModelOutputs {
   func selectedReward() -> Reward?
 }
 
-public protocol RewardsWithShippingCollectionViewModelType {
-  var inputs: RewardsWithShippingCollectionViewModelInputs { get }
-  var outputs: RewardsWithShippingCollectionViewModelOutputs { get }
+public protocol WithShippingRewardsCollectionViewModelType {
+  var inputs: WithShippingRewardsCollectionViewModelInputs { get }
+  var outputs: WithShippingRewardsCollectionViewModelOutputs { get }
 }
 
-public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCollectionViewModelType,
-  RewardsWithShippingCollectionViewModelInputs,
-  RewardsWithShippingCollectionViewModelOutputs {
+public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCollectionViewModelType,
+  WithShippingRewardsCollectionViewModelInputs,
+  WithShippingRewardsCollectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
@@ -55,6 +55,9 @@ public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCo
     let rewards = project
       .map(allowableSortedProjectRewards)
 
+    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingRuleSelectedSignal)
+      .map(filteredRewardsByLocation)
+
     self.title = configData
       .map { project, _, context in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
@@ -67,11 +70,17 @@ public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCo
       .skipNil()
       .take(first: 1)
 
-    self.reloadDataWithValues = Signal.combineLatest(project, rewards)
-      .map { project, rewards in
-        rewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge) }
+    self.reloadDataWithValues = Signal.combineLatest(project, rewards, filteredByLocationRewards)
+      .map { project, rewards, filteredByLocationRewards in
+        if !filteredByLocationRewards.isEmpty {
+          filteredByLocationRewards
+            .filter { reward in isStartDateBeforeToday(for: reward) }
+            .map { reward in (project, reward, .pledge) }
+        } else {
+          rewards
+            .filter { reward in isStartDateBeforeToday(for: reward) }
+            .map { reward in (project, reward, .pledge) }
+        }
       }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
@@ -372,8 +381,8 @@ public final class RewardsWithShippingCollectionViewModel: RewardsWithShippingCo
     return self.selectedRewardProperty.value
   }
 
-  public var inputs: RewardsWithShippingCollectionViewModelInputs { return self }
-  public var outputs: RewardsWithShippingCollectionViewModelOutputs { return self }
+  public var inputs: WithShippingRewardsCollectionViewModelInputs { return self }
+  public var outputs: WithShippingRewardsCollectionViewModelOutputs { return self }
 }
 
 // MARK: - Functions
@@ -429,5 +438,55 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
   let availableRewards = project.rewards.filter { rewardIsAvailable($0) }
   let unAvailableRewards = project.rewards.filter { !rewardIsAvailable($0) }
+
   return availableRewards + unAvailableRewards
+}
+
+private func filteredRewardsByLocation(
+  _ rewards: [Reward],
+  shippingRule: ShippingRule?
+) -> [Reward] {
+  return rewards.filter { reward in
+    var shouldDisplayReward = false
+
+    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+
+    // return all rewards that are digital or ship anywhere in the world.
+    if isRewardLocalOrDigital || isUnrestrictedShippingReward {
+      shouldDisplayReward = true
+
+      // if add on is local pickup, ensure locations are equal.
+      if isRewardLocalPickup(reward) {
+        if let rewardLocation = reward.localPickup?.country,
+           let shippingRuleLocation = shippingRule?.location.country, rewardLocation == shippingRuleLocation {
+          shouldDisplayReward = true
+        } else {
+          shouldDisplayReward = false
+        }
+      }
+      // If restricted shipping, compare against selected shipping location.
+    } else if isRestrictedShippingReward {
+      shouldDisplayReward = rewardShipsTo(selectedLocation: shippingRule?.location.id, reward)
+    }
+
+    return shouldDisplayReward
+  }
+}
+
+/// Returns true if a given selection location matches the countries the given reward is available to ship to.
+private func rewardShipsTo(
+  selectedLocation locationId: Int?,
+  _ reward: Reward
+) -> Bool {
+  guard let selectedLocationId = locationId else { return false }
+
+  var shippingLocationIds: [Int] = []
+
+  reward.shippingRules?.forEach { rule in
+    shippingLocationIds.append(rule.location.id)
+  }
+
+  return shippingLocationIds.contains(selectedLocationId)
 }
