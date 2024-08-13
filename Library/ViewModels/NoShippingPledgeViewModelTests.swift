@@ -17,14 +17,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
   private let beginSCAFlowWithClientSecret = TestObserver<String, Never>()
 
-  private let configureExpandableRewardsHeaderWithDataRewards = TestObserver<[Reward], Never>()
-  private let configureExpandableRewardsHeaderWithDataSelectedQuantities
-    = TestObserver<SelectedRewardQuantities, Never>()
-  private let configureExpandableRewardsHeaderWithDataProjectCurrencyCountry = TestObserver<
-    Project.Country,
-    Never
-  >()
-  private let configureExpandableRewardsHeaderWithDataOmitCurrencyCode = TestObserver<Bool, Never>()
   private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
@@ -70,7 +62,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showWebHelp = TestObserver<HelpType, Never>()
   private let summarySectionSeparatorHidden = TestObserver<Bool, Never>()
-  private let rootStackViewLayoutMargins = TestObserver<UIEdgeInsets, Never>()
   private let title = TestObserver<String, Never>()
 
   let shippingRule = ShippingRule.template
@@ -81,14 +72,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.outputs.beginSCAFlowWithClientSecret.observe(self.beginSCAFlowWithClientSecret.observer)
 
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.rewards)
-      .observe(self.configureExpandableRewardsHeaderWithDataRewards.observer)
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.selectedQuantities)
-      .observe(self.configureExpandableRewardsHeaderWithDataSelectedQuantities.observer)
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.projectCountry)
-      .observe(self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.observer)
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.omitCurrencyCode)
-      .observe(self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.observer)
     self.vm.outputs.configureLocalPickupViewWithData.observe(self.configureLocalPickupViewWithData.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
@@ -125,7 +108,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.projectTitle.observe(self.projectTitle.observer)
     self.vm.outputs.projectTitleLabelHidden.observe(self.projectTitleLabelHidden.observer)
     self.vm.outputs.descriptionSectionSeparatorHidden.observe(self.descriptionSectionSeparatorHidden.observer)
-    self.vm.outputs.expandableRewardsHeaderViewHidden.observe(self.expandableRewardsHeaderViewHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
       .observe(self.goToApplePayPaymentAuthorizationProject.observer)
@@ -151,8 +133,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.pledgeAmountSummaryViewHidden.observe(self.pledgeAmountSummaryViewHidden.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
-
-    self.vm.outputs.rootStackViewLayoutMargins.observe(self.rootStackViewLayoutMargins.observer)
 
     self.vm.outputs.summarySectionSeparatorHidden.observe(self.summarySectionSeparatorHidden.observer)
     self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
@@ -202,10 +182,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Back this project"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
@@ -223,7 +199,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
-      self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -232,36 +207,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.summarySectionSeparatorHidden.assertValues([false])
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-    }
-  }
-
-  func testPledgeContext_NonUS_ProjectCurrency_US_ProjectCountry_LoggedIn() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
-        |> Project.lens.country .~ .us
-        |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.title.assertValues(["Back this project"])
-
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.mx])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
     }
   }
 
@@ -288,10 +233,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Back this project"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
@@ -309,7 +250,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
-      self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -344,10 +284,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Update pledge"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
@@ -365,7 +301,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
-      self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -400,10 +335,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Update pledge"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
@@ -421,7 +352,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
-      self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -466,10 +396,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Change payment method"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
@@ -490,7 +416,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
-      self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
@@ -540,10 +465,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Fix payment method"])
 
-      self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
-      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
-
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
@@ -560,7 +481,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
-      self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
