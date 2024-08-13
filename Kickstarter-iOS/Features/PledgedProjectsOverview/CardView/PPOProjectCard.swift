@@ -17,9 +17,9 @@ struct PPOProjectCard: View {
     VStack(spacing: Constants.spacing) {
       flagList
       projectDetails
-      Divider()
+      divider
       projectCreator
-      Divider()
+      divider
       addressDetails
       actionButtons
     }
@@ -34,6 +34,7 @@ struct PPOProjectCard: View {
     .padding(.horizontal, Constants.outerPadding)
   }
 
+  @ViewBuilder
   private var cardRectangle: RoundedRectangle {
     RoundedRectangle(cornerSize: CGSize(width: Constants.cornerSize, height: Constants.cornerSize))
   }
@@ -85,6 +86,7 @@ struct PPOProjectCard: View {
     }
   }
 
+  @ViewBuilder
   private func baseButton(for action: PPOProjectCardViewModel.Action) -> some View {
     Button(action.label) { [weak viewModel] () in
       viewModel?.performAction(action: action)
@@ -106,6 +108,7 @@ struct PPOProjectCard: View {
     }
   }
 
+  @ViewBuilder
   private var actionButtons: some View {
     HStack {
       if let action = viewModel.secondaryAction {
@@ -115,6 +118,11 @@ struct PPOProjectCard: View {
       button(for: viewModel.primaryAction)
     }
     .padding([.horizontal])
+  }
+
+  @ViewBuilder
+  private var divider: some View {
+    Divider()
   }
 
   private enum Constants {

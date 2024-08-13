@@ -35,7 +35,7 @@ final class PPOProjectCardViewModelTests: XCTestCase {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(isUnread: true, alerts: [], imageURL: URL(string: "http://localhost/")!, title: "Test project", pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"), creatorName: "Dave", address: nil, actions: (.authenticateCard, nil))
 
-    let expectation = expectation(description: "Waiting for action to be performed")
+    let expectation = expectation(description: "Waiting for message to be sent")
     var didSendMessage = false
     viewModel.sendMessageTapped
       .sink { () in

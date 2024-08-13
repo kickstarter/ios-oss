@@ -91,6 +91,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     case fixPayment
     case authenticateCard
 
+    // TODO: Localize
     var label: String {
       switch self {
       case .confirmAddress:
