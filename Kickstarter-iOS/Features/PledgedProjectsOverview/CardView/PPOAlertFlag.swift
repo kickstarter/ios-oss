@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PPOAlertFlag: View {
   let alert: PPOProjectCardViewModel.Alert
-  
+
   var body: some View {
     HStack {
       self.image
@@ -19,9 +19,12 @@ struct PPOAlertFlag: View {
     }
     .padding(Constants.padding)
     .background(self.backgroundColor)
-    .clipShape(RoundedRectangle(cornerSize: CGSize(width: Constants.cornerRadius, height: Constants.cornerRadius)))
+    .clipShape(RoundedRectangle(cornerSize: CGSize(
+      width: Constants.cornerRadius,
+      height: Constants.cornerRadius
+    )))
   }
-  
+
   var image: Image {
     switch self.alert.type {
     case .time:
@@ -30,7 +33,7 @@ struct PPOAlertFlag: View {
       Image(Constants.alertImage)
     }
   }
-  
+
   var foregroundColor: Color {
     switch self.alert.icon {
     case .warning:
@@ -39,7 +42,7 @@ struct PPOAlertFlag: View {
       Color(uiColor: Constants.alertForegroundColor)
     }
   }
-  
+
   var backgroundColor: Color {
     switch self.alert.icon {
     case .warning:
@@ -48,17 +51,17 @@ struct PPOAlertFlag: View {
       Color(uiColor: Constants.alertBackgroundColor)
     }
   }
-  
+
   private enum Constants {
     static let warningForegroundColor = UIColor.ksr_support_400
     static let warningBackgroundColor = UIColor.ksr_celebrate_100
-    
+
     static let alertForegroundColor = UIColor.hex(0x73140D)
     static let alertBackgroundColor = UIColor.hex(0xFEF2F1)
-    
+
     static let timeImage = ImageResource.iconLimitedTime
     static let alertImage = ImageResource.iconNotice
-    
+
     static let imageSize: CGFloat = 18
     static let spacerWidth: CGFloat = 4
     static let cornerRadius: CGFloat = 6

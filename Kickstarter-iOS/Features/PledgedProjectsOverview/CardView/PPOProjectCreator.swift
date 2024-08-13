@@ -42,7 +42,7 @@ struct PPOProjectCreator: View {
 }
 
 #Preview {
-  return VStack(spacing: 28) {
+  VStack(spacing: 28) {
     PPOProjectCreator(creatorName: "Disco Dave")
     PPOProjectCreator(creatorName: "A much longer name")
     PPOProjectCreator(creatorName: "rokaplay truncate if longer than")

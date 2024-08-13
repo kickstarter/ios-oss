@@ -12,7 +12,8 @@ protocol PPOProjectCardViewModelOutputs {
   var actionPerformed: AnyPublisher<PPOProjectCardViewModel.Action, Never> { get }
 }
 
-typealias PPOProjectCardViewModelType = PPOProjectCardViewModelInputs & PPOProjectCardViewModelOutputs & ObservableObject & Identifiable
+typealias PPOProjectCardViewModelType = Identifiable & ObservableObject & PPOProjectCardViewModelInputs &
+  PPOProjectCardViewModelOutputs
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   internal private(set) var isUnread: Bool
@@ -129,7 +130,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     }
 
     var id: String {
-      "\(label) \(style.id)"
+      "\(self.label) \(self.style.id)"
     }
   }
 
@@ -139,7 +140,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     let message: String
 
     var id: String {
-      "\(type)-\(icon)-\(message)"
+      "\(self.type)-\(self.icon)-\(self.message)"
     }
 
     enum AlertType: Identifiable {

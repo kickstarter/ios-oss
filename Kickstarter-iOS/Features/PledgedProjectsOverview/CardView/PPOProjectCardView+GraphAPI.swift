@@ -3,14 +3,14 @@ import KsApi
 
 extension PPOProjectCardViewModel {
   convenience init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledge.Edge.Node) {
-    // TODO
+    // TODO: Implement
     let isUnread = true
 
     let imageURL = node.fragments.ppoCardFragment
       .backing?.fragments.ppoBackingFragment
       .project?.fragments.ppoProjectFragment
       .image?.url
-      .flatMap({ URL(string: $0 )})
+      .flatMap { URL(string: $0) }
 
     let title = node.fragments.ppoCardFragment
       .backing?.fragments.ppoBackingFragment
@@ -26,17 +26,26 @@ extension PPOProjectCardViewModel {
       .project?.fragments.ppoProjectFragment
       .creator?.name
 
-    // TODO
+    // TODO: Implement
     let address: String? = nil
 
-    // TODO
+    // TODO: Implement
     let alerts: [PPOProjectCardViewModel.Alert] = []
 
-    // TODO
+    // TODO: Implement
     let action = PPOProjectCardViewModel.Action.confirmAddress
 
     if let imageURL, let title, let pledge, let creatorName {
-      self.init(isUnread: isUnread, alerts: alerts, imageURL: imageURL, title: title, pledge: pledge, creatorName: creatorName, address: address, actions: (action, nil))
+      self.init(
+        isUnread: isUnread,
+        alerts: alerts,
+        imageURL: imageURL,
+        title: title,
+        pledge: pledge,
+        creatorName: creatorName,
+        address: address,
+        actions: (action, nil)
+      )
     } else {
       return nil
     }

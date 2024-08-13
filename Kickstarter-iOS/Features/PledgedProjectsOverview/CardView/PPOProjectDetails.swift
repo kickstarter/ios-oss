@@ -38,7 +38,7 @@ struct PPOProjectDetails: View {
 
   private enum Constants {
     static let imageShape = RoundedRectangle(cornerRadius: 4)
-    static let imageAspectRatio: CGFloat = 16/9
+    static let imageAspectRatio: CGFloat = 16 / 9
     static let imageWidth: CGFloat = 85
     static let spacing: CGFloat = 8
     static let titleFont = UIFont.ksr_caption1().bolded
@@ -48,9 +48,17 @@ struct PPOProjectDetails: View {
 }
 
 #Preview {
-  return VStack {
-    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title", pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"))
-    PPOProjectDetails(imageUrl: URL(string: "http:///")!, title: "One line", pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"))
+  VStack {
+    PPOProjectDetails(
+      imageUrl: URL(string: "http:///")!,
+      title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$")
+    )
+    PPOProjectDetails(
+      imageUrl: URL(string: "http:///")!,
+      title: "One line",
+      pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$")
+    )
   }
   .padding(28)
 }

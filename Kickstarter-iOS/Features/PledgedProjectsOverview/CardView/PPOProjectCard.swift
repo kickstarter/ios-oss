@@ -19,9 +19,15 @@ struct PPOProjectCard: View {
     .frame(maxWidth: .infinity)
     // round rectangle around the card
     .clipShape(self.cardRectangle)
-    .overlay(self.cardRectangle.strokeBorder(Color(uiColor: Constants.borderColor), lineWidth: Constants.borderWidth))
+    .overlay(self.cardRectangle.strokeBorder(
+      Color(uiColor: Constants.borderColor),
+      lineWidth: Constants.borderWidth
+    ))
     // upper right corner badge
-    .overlay(alignment: Constants.badgeAlignment, content: { badge.opacity(self.viewModel.isUnread ? 1 : 0) })
+    .overlay(
+      alignment: Constants.badgeAlignment,
+      content: { self.badge.opacity(self.viewModel.isUnread ? 1 : 0) }
+    )
     // insets
     .padding(.horizontal, Constants.outerPadding)
   }
@@ -89,13 +95,13 @@ struct PPOProjectCard: View {
   private func button(for action: PPOProjectCardViewModel.Action) -> some View {
     switch action.style {
     case .green:
-      baseButton(for: action)
+      self.baseButton(for: action)
         .buttonStyle(GreenButtonStyle())
     case .red:
-      baseButton(for: action)
+      self.baseButton(for: action)
         .buttonStyle(RedButtonStyle())
     case .black:
-      baseButton(for: action)
+      self.baseButton(for: action)
         .buttonStyle(BlackButtonStyle())
     }
   }
@@ -104,10 +110,10 @@ struct PPOProjectCard: View {
   private var actionButtons: some View {
     HStack {
       if let action = self.viewModel.secondaryAction {
-        button(for: action)
+        self.button(for: action)
       }
 
-      button(for: self.viewModel.primaryAction)
+      self.button(for: self.viewModel.primaryAction)
     }
     .padding([.horizontal])
   }
@@ -122,7 +128,7 @@ struct PPOProjectCard: View {
     static let borderColor = UIColor.ksr_support_300
     static let borderWidth: CGFloat = 1
     static let badgeAlignment = Alignment(horizontal: .trailing, vertical: .top)
-    static let badgeColor = UIColor.hex(0xff3B30)
+    static let badgeColor = UIColor.hex(0xFF3B30)
     static let badgeSize: CGFloat = 16
     static let spacing: CGFloat = 12
     static let outerPadding: CGFloat = 16
@@ -135,7 +141,7 @@ struct PPOProjectCard: View {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         isUnread: true,
         alerts: [
-          PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours"),
+          PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours")
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -154,7 +160,7 @@ struct PPOProjectCard: View {
         isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
-          PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours"),
+          PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours")
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -168,7 +174,11 @@ struct PPOProjectCard: View {
         isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Payment failed"),
-          PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
+          PPOProjectCardViewModel.Alert(
+            type: .time,
+            icon: .alert,
+            message: "Pledge will be dropped in 6 days"
+          )
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -182,7 +192,11 @@ struct PPOProjectCard: View {
         isUnread: true,
         alerts: [
           PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Card needs authentication"),
-          PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
+          PPOProjectCardViewModel.Alert(
+            type: .time,
+            icon: .alert,
+            message: "Pledge will be dropped in 6 days"
+          )
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -195,7 +209,7 @@ struct PPOProjectCard: View {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         isUnread: true,
         alerts: [
-          PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
+          PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available")
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",

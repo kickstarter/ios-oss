@@ -8,7 +8,7 @@ final class PPOProjectCardTests: TestCase {
     let card = PPOProjectCard(viewModel: PPOProjectCardViewModel(
       isUnread: true,
       alerts: [
-        PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours"),
+        PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours")
       ],
       imageURL: URL(string: "http://localhost/")!,
       title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -22,8 +22,8 @@ final class PPOProjectCardTests: TestCase {
       """,
       actions: (.confirmAddress, .editAddress)
     ))
-      .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
-      .padding()
+    .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
+    .padding()
     assertSnapshot(matching: card, as: .image, named: "addressLocks")
   }
 
@@ -32,7 +32,7 @@ final class PPOProjectCardTests: TestCase {
       isUnread: true,
       alerts: [
         PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
-        PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours"),
+        PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours")
       ],
       imageURL: URL(string: "http://localhost/")!,
       title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -41,8 +41,8 @@ final class PPOProjectCardTests: TestCase {
       address: nil,
       actions: (.completeSurvey, nil)
     ))
-      .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
-      .padding()
+    .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
+    .padding()
     assertSnapshot(matching: card, as: .image, named: "surveyAvailableAddressLocks")
   }
 
@@ -51,7 +51,7 @@ final class PPOProjectCardTests: TestCase {
       isUnread: true,
       alerts: [
         PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Payment failed"),
-        PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
+        PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days")
       ],
       imageURL: URL(string: "http://localhost/")!,
       title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -60,8 +60,8 @@ final class PPOProjectCardTests: TestCase {
       address: nil,
       actions: (.fixPayment, nil)
     ))
-      .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
-      .padding()
+    .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
+    .padding()
     assertSnapshot(matching: card, as: .image, named: "paymentFailedPledgeDropped")
   }
 
@@ -70,7 +70,7 @@ final class PPOProjectCardTests: TestCase {
       isUnread: true,
       alerts: [
         PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Card needs authentication"),
-        PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"),
+        PPOProjectCardViewModel.Alert(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days")
       ],
       imageURL: URL(string: "http://localhost/")!,
       title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -79,8 +79,8 @@ final class PPOProjectCardTests: TestCase {
       address: nil,
       actions: (.authenticateCard, nil)
     ))
-      .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
-      .padding()
+    .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
+    .padding()
     assertSnapshot(matching: card, as: .image, named: "cardAuthPledgeDropped")
   }
 
@@ -88,7 +88,7 @@ final class PPOProjectCardTests: TestCase {
     let card = PPOProjectCard(viewModel: PPOProjectCardViewModel(
       isUnread: true,
       alerts: [
-        PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
+        PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available")
       ],
       imageURL: URL(string: "http://localhost/")!,
       title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -97,8 +97,8 @@ final class PPOProjectCardTests: TestCase {
       address: nil,
       actions: (.completeSurvey, nil)
     ))
-      .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
-      .padding()
+    .frame(minWidth: 375, maxWidth: 375, maxHeight: .infinity)
+    .padding()
     assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
   }
 }

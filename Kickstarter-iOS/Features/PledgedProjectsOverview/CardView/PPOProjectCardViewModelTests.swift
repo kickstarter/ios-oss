@@ -1,12 +1,21 @@
-@testable import Kickstarter_Framework
 import Combine
+@testable import Kickstarter_Framework
 import KsApi
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
   func testPerformAction() throws {
     var cancellables: [AnyCancellable] = []
-    let viewModel = PPOProjectCardViewModel(isUnread: true, alerts: [], imageURL: URL(string: "http://localhost/")!, title: "Test project", pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"), creatorName: "Dave", address: nil, actions: (.authenticateCard, nil))
+    let viewModel = PPOProjectCardViewModel(
+      isUnread: true,
+      alerts: [],
+      imageURL: URL(string: "http://localhost/")!,
+      title: "Test project",
+      pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
+      creatorName: "Dave",
+      address: nil,
+      actions: (.authenticateCard, nil)
+    )
 
     let expectation = expectation(description: "Waiting for action to be performed")
     var actions: [PPOProjectCardViewModel.Action] = []
@@ -25,7 +34,16 @@ final class PPOProjectCardViewModelTests: XCTestCase {
 
   func testSendMessage() throws {
     var cancellables: [AnyCancellable] = []
-    let viewModel = PPOProjectCardViewModel(isUnread: true, alerts: [], imageURL: URL(string: "http://localhost/")!, title: "Test project", pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"), creatorName: "Dave", address: nil, actions: (.authenticateCard, nil))
+    let viewModel = PPOProjectCardViewModel(
+      isUnread: true,
+      alerts: [],
+      imageURL: URL(string: "http://localhost/")!,
+      title: "Test project",
+      pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
+      creatorName: "Dave",
+      address: nil,
+      actions: (.authenticateCard, nil)
+    )
 
     let expectation = expectation(description: "Waiting for message to be sent")
     var didSendMessage = false
