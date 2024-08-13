@@ -47,7 +47,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
-  private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let projectTitle = TestObserver<String, Never>()
@@ -118,7 +117,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
-    self.vm.outputs.pledgeAmountSummaryViewHidden.observe(self.pledgeAmountSummaryViewHidden.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
 
@@ -186,7 +184,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -232,7 +229,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -278,7 +274,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -324,7 +319,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -380,7 +374,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -439,7 +432,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -501,7 +493,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -541,7 +532,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
     }
   }
 
@@ -575,7 +565,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
     }
   }
 
@@ -609,7 +598,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
     }
   }
 
@@ -643,7 +631,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
     }
   }
 
@@ -677,7 +664,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
     }
   }
 
@@ -711,7 +697,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
 
       let data1 = (amount: 66.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -753,7 +738,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
 
       withEnvironment(currentUser: user) {
         self.vm.inputs.userSessionStarted()
@@ -4478,7 +4462,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testPledgeAmountSummaryViewHidden_UpdateContext_NoReward_IsHidden() {
-    self.pledgeAmountSummaryViewHidden.assertDidNotEmitValue()
 
     let project = Project.template
     let reward = Reward.noReward
@@ -4496,11 +4479,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeAmountSummaryViewHidden.assertValues([true])
   }
 
   func testPledgeAmountSummaryViewHidden_UpdateContext_RegularReward_IsNotHidden() {
-    self.pledgeAmountSummaryViewHidden.assertDidNotEmitValue()
 
     let project = Project.template
     let reward = Reward.template
@@ -4518,7 +4499,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeAmountSummaryViewHidden.assertValues([false])
   }
 
   func testCreateBacking_WithNewPaymentSheetCard_TappedPledgeButton_Success() {

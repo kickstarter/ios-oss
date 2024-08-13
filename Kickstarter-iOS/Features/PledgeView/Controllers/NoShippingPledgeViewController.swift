@@ -34,21 +34,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
   public weak var delegate: NoShippingPledgeViewControllerDelegate?
 
-  private lazy var descriptionSectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var projectTitleLabel = UILabel(frame: .zero)
-
-  private lazy var sectionSeparatorViews = {
-    [self.descriptionSectionSeparator]
-  }()
-
-  private lazy var pledgeAmountViewController = {
-    PledgeAmountViewController.instantiate()
-      |> \.delegate .~ self
-  }()
 
   internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
@@ -58,13 +44,12 @@ final class NoShippingPledgeViewController: UIViewController,
   }()
 
   private lazy var descriptionSectionViews = {
-    [self.projectTitleLabel, self.descriptionSectionSeparator]
+    [self.projectTitleLabel]
   }()
 
   private lazy var inputsSectionViews = {
     [
-      self.localPickupLocationView,
-      self.pledgeAmountViewController.view
+      self.localPickupLocationView
     ]
   }()
 
@@ -77,10 +62,6 @@ final class NoShippingPledgeViewController: UIViewController,
   }()
 
   internal var messageBannerViewController: MessageBannerViewController?
-
-  private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
-    PledgeAmountSummaryViewController.instantiate()
-  }()
 
   private lazy var paymentMethodsSectionViews = {
     [self.paymentMethodsViewController.view]
@@ -165,15 +146,11 @@ final class NoShippingPledgeViewController: UIViewController,
       |> ksr_addSubviewToParent()
 
     let childViewControllers = [
-      self.pledgeAmountSummaryViewController,
-      self.pledgeAmountViewController,
       self.pledgeRewardsSummaryViewController,
       self.paymentMethodsViewController
     ]
 
     let arrangedInsetSubviews = [
-      self.descriptionSectionViews,
-      [self.pledgeAmountSummaryViewController.view],
       self.inputsSectionViews,
       [self.pledgeRewardsSummaryViewController.view],
       self.paymentMethodsSectionViews,
@@ -205,13 +182,6 @@ final class NoShippingPledgeViewController: UIViewController,
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
-
-    self.sectionSeparatorViews.forEach { view in
-      _ = view.heightAnchor.constraint(equalToConstant: 1)
-        |> \.isActive .~ true
-
-      view.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
   }
 
   // MARK: - Styles
@@ -236,9 +206,6 @@ final class NoShippingPledgeViewController: UIViewController,
 
     _ = self.rootInsetStackView
       |> rootInsetStackViewStyle
-
-    _ = self.sectionSeparatorViews
-      ||> separatorStyleDark
 
     _ = self.paymentMethodsViewController.view
       |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
@@ -275,30 +242,12 @@ final class NoShippingPledgeViewController: UIViewController,
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
-    self.viewModel.outputs.configurePledgeAmountViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeAmountViewController.configureWith(value: data)
-      }
-
-    self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeAmountSummaryViewController.configureWith(data)
-      }
-
     self.viewModel.outputs.configurePledgeViewCTAContainerView
       .observeForUI()
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
-
-    self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
-      .observeForUI()
-      .observeValues { [weak self] amount in
-        self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
-      }
-
+    
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
@@ -350,13 +299,9 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitle
     self.projectTitleLabel.rac.hidden = self.viewModel.outputs.projectTitleLabelHidden
-    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
-    self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
-    self.pledgeAmountSummaryViewController.view.rac.hidden
-      = self.viewModel.outputs.pledgeAmountSummaryViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()

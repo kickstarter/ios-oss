@@ -35,8 +35,6 @@ public protocol NoShippingPledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
-  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
-  var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
@@ -49,10 +47,8 @@ public protocol NoShippingPledgeViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
-  var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
-  var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var projectTitle: Signal<String, Never> { get }
@@ -96,9 +92,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
-    }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
@@ -131,8 +124,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       initialAdditionalPledgeAmount
     )
 
-    self.notifyPledgeAmountViewControllerUnavailableAmountChanged = allRewardsTotal
-
     let projectAndReward = Signal.zip(project, baseReward)
 
     /**
@@ -160,30 +151,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         ].contains(true)
       }
 
-    let shippingViewsHiddenConditionsForPledgeAmountSummary: Signal<Bool, Never> = Signal
-      .combineLatest(
-        nonLocalPickupShippingLocationViewHidden,
-        nonLocalPickupShippingSummaryViewHidden
-      )
-      .map { a, b -> Bool in
-        let r = a && b
-        return r
-      }
-
     self.localPickupViewHidden = baseReward.map(isRewardLocalPickup).negate()
-
-    self.configurePledgeAmountViewWithData = Signal.combineLatest(
-      projectAndReward,
-      initialAdditionalPledgeAmount
-    )
-    .map(unpack)
-    .map { project, reward, additionalPledgeAmount in
-      (
-        project,
-        reward,
-        additionalPledgeAmount
-      )
-    }
 
     self.configureLocalPickupViewWithData = projectAndReward
       .switchMap { projectAndReward -> SignalProducer<PledgeLocalPickupViewData?, Never> in
@@ -240,19 +208,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       )
       return (rewardsData, additionalPledgeAmount, pledgeData)
     }
-
-    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndReward,
-      allRewardsTotal,
-      additionalPledgeAmount,
-      shippingViewsHiddenConditionsForPledgeAmountSummary,
-      context
-    )
-    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
-      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
-    }
-    .map(pledgeAmountSummaryViewData)
-    .skipNil()
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialDataUnpacked,
@@ -990,8 +945,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
-  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
-  public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
@@ -1004,10 +957,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
-  public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
-  public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let projectTitle: Signal<String, Never>
@@ -1120,32 +1071,4 @@ private func pledgeSummaryViewData(
   confirmationLabelHidden: Bool
 ) -> PledgeSummaryViewData {
   return (project, total, confirmationLabelHidden)
-}
-
-private func pledgeAmountSummaryViewData(
-  with project: Project,
-  reward _: Reward,
-  allRewardsTotal: Double,
-  additionalPledgeAmount: Double,
-  shippingViewsHidden: Bool,
-  context: PledgeViewContext
-) -> PledgeAmountSummaryViewData? {
-  guard let backing = project.personalization.backing else { return nil }
-
-  let rewardIsLocalPickup = isRewardLocalPickup(backing.reward)
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
-  return .init(
-    bonusAmount: additionalPledgeAmount,
-    bonusAmountHidden: context == .update,
-    isNoReward: backing.reward?.isNoReward ?? false,
-    locationName: backing.locationName,
-    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    projectCurrencyCountry: projectCurrencyCountry,
-    pledgedOn: backing.pledgedAt,
-    rewardMinimum: allRewardsTotal,
-    shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: !shippingViewsHidden,
-    rewardIsLocalPickup: rewardIsLocalPickup
-  )
 }
