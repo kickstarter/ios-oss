@@ -151,7 +151,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let arrangedInsetSubviews = [
       self.paymentMethodsSectionViews,
-      self.confirmationSectionViews
+      self.confirmationSectionViews,
+      [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
     .compact()
