@@ -4,6 +4,15 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
+public typealias NoShippingPledgeViewCTAContainerViewData = (
+  project: Project,
+  total: Double,
+  isLoggedIn: Bool,
+  isEnabled: Bool,
+  context: PledgeViewContext,
+  willRetryPaymentMethod: Bool
+)
+
 public typealias PaymentAuthorizationDataNoShipping = (
   project: Project,
   reward: Reward,
@@ -41,7 +50,7 @@ public protocol NoShippingPledgeViewModelOutputs {
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   > { get }
-  var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never> { get }
@@ -604,7 +613,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
-      amountChangedAndValid,
       paymentMethodChangedAndValid,
       context
     )
@@ -785,12 +793,14 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      project,
+      pledgeTotal,
       isLoggedIn,
       isEnabled,
       context,
       willRetryPaymentMethod
     )
-    .map { $0 as PledgeViewCTAContainerViewData }
+    .map { $0 as NoShippingPledgeViewCTAContainerViewData }
 
     self.projectTitle = project.map(\.name)
 
@@ -996,7 +1006,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   >
-  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never>
@@ -1101,15 +1111,14 @@ private func paymentMethodValid(
 }
 
 private func allValuesChangedAndValid(
-  amountValid: Bool,
   paymentSourceValid: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
-    return amountValid || paymentSourceValid
+    return paymentSourceValid
   }
 
-  return amountValid
+  return true
 }
 
 // MARK: - Helper Functions

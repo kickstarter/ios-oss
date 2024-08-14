@@ -344,8 +344,8 @@
 		393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */; };
 		393E8DA32C5BE08500AEA968 /* PPOCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */; };
 		393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */; };
-		394BB7132C5ACCBA007F0FFD /* ButtonStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */; };
 		393E8DA72C5BF35B00AEA968 /* FetchPPOQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA62C5BF35B00AEA968 /* FetchPPOQuery.graphql */; };
+		394BB7132C5ACCBA007F0FFD /* ButtonStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */; };
 		3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */; };
 		3959A62C2B69B9CD00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 		3959A62E2B69BBA600FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
@@ -1966,8 +1966,8 @@
 		393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOBackingFragment.graphql; sourceTree = "<group>"; };
 		393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOCardFragment.graphql; sourceTree = "<group>"; };
 		393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOProjectFragment.graphql; sourceTree = "<group>"; };
-		394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStylesTests.swift; sourceTree = "<group>"; };
 		393E8DA62C5BF35B00AEA968 /* FetchPPOQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchPPOQuery.graphql; sourceTree = "<group>"; };
+		394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStylesTests.swift; sourceTree = "<group>"; };
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
 		395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
@@ -4003,6 +4003,7 @@
 				063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */,
 				8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */,
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
+				60E1BB262C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -8325,6 +8326,7 @@
 				01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */,
 				77636FC1243CFE25007F67B9 /* ProcessingView.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
+				60E1BB272C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift in Sources */,
 				6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
