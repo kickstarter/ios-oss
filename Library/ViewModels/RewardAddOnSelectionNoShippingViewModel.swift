@@ -12,6 +12,7 @@ public protocol RewardAddOnSelectionNoShippingViewModelInputs {
 
 public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
+  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -231,6 +232,16 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       combinedPledgeTotal
     )
 
+    // MARK: - Bonus support
+
+    self.configurePledgeAmountViewWithData = Signal.combineLatest(
+      project,
+      baseReward
+    )
+    .map { project, reward in
+      (project, reward, /* initial value: */ 0)
+    }
+
     // MARK: - Tracking
 
     // shippingRule needs to be set for the event is fired
@@ -327,6 +338,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
   }
 
   public let configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never>
+  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
