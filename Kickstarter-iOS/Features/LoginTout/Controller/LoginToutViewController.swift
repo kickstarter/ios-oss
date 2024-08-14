@@ -325,7 +325,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     NSLayoutConstraint.activate([
       self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     NSLayoutConstraint.activate([
