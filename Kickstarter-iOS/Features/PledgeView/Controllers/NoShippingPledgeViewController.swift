@@ -78,8 +78,8 @@ final class NoShippingPledgeViewController: UIViewController,
     PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
-  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
-    PledgeViewCTAContainerView(frame: .zero)
+  private lazy var pledgeCTAContainerView: NoShippingPledgeViewCTAContainerView = {
+    NoShippingPledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
   }()
@@ -471,7 +471,7 @@ extension NoShippingPledgeViewController: PKPaymentAuthorizationViewControllerDe
 
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
-extension NoShippingPledgeViewController: PledgeViewCTAContainerViewDelegate {
+extension NoShippingPledgeViewController: NoShippingPledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
@@ -490,17 +490,6 @@ extension NoShippingPledgeViewController: PledgeViewCTAContainerViewDelegate {
   func termsOfUseTapped(with helpType: HelpType) {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
-  }
-}
-
-// MARK: - PledgeAmountViewControllerDelegate
-
-extension NoShippingPledgeViewController: PledgeAmountViewControllerDelegate {
-  func pledgeAmountViewController(
-    _: PledgeAmountViewController,
-    didUpdateWith data: PledgeAmountData
-  ) {
-    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 

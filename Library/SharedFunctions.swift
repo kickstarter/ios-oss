@@ -660,3 +660,17 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
     existingReward.shipping.preference
     .isAny(of: Reward.Shipping.Preference.none)
 }
+
+public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
+  return Format.attributedCurrency(
+    total,
+    country: projectCurrencyCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    defaultAttributes: defaultAttributes,
+    superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+  )
+}
