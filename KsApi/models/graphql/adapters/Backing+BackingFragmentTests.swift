@@ -165,6 +165,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "Earth",
                 "id": "TG9jYXRpb24tMQ==",
                 "name": "Rest of World"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             },
             {
@@ -183,6 +195,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "United States",
                 "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
                 "name": "United States"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             }
           ],
@@ -257,6 +281,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "Earth",
                 "id": "TG9jYXRpb24tMQ==",
                 "name": "Rest of World"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             },
             {
@@ -275,6 +311,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "United States",
                 "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
                 "name": "United States"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             }
           ],
@@ -349,6 +397,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "Earth",
                 "id": "TG9jYXRpb24tMQ==",
                 "name": "Rest of World"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             },
             {
@@ -367,6 +427,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "United States",
                 "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
                 "name": "United States"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             }
           ],
@@ -441,6 +513,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "Earth",
                 "id": "TG9jYXRpb24tMQ==",
                 "name": "Rest of World"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             },
             {
@@ -459,6 +543,18 @@ private func backingDictionary() -> [String: Any] {
                 "displayableName": "United States",
                 "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
                 "name": "United States"
+              },
+              "estimatedMin": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "estimatedMax": {
+                "__typename": "Money",
+                "amount": "25.0",
+                "currency": "USD",
+                "symbol": "$"
               }
             }
           ],
@@ -915,6 +1011,18 @@ private func backingDictionary() -> [String: Any] {
             "displayableName": "Earth",
             "id": "TG9jYXRpb24tMQ==",
             "name": "Rest of World"
+          },
+          "estimatedMin": {
+            "__typename": "Money",
+            "amount": "25.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "estimatedMax": {
+            "__typename": "Money",
+            "amount": "25.0",
+            "currency": "USD",
+            "symbol": "$"
           }
         },
         {
@@ -933,6 +1041,18 @@ private func backingDictionary() -> [String: Any] {
             "displayableName": "United States",
             "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
             "name": "United States"
+          },
+          "estimatedMin": {
+            "__typename": "Money",
+            "amount": "25.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "estimatedMax": {
+            "__typename": "Money",
+            "amount": "25.0",
+            "currency": "USD",
+            "symbol": "$"
           }
         }
       ],
