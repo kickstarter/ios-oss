@@ -28,10 +28,6 @@ final class NoShippingPledgeViewController: UIViewController,
   MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
 
-  private lazy var confirmationSectionViews = {
-    [self.pledgeDisclaimerView]
-  }()
-
   public weak var delegate: NoShippingPledgeViewControllerDelegate?
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -155,9 +151,9 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let arrangedInsetSubviews = [
       self.paymentMethodsSectionViews,
+      [self.pledgeDisclaimerView],
       self.inputsSectionViews,
-      [self.pledgeRewardsSummaryViewController.view],
-      self.confirmationSectionViews
+      [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
     .compact()
