@@ -565,6 +565,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
+      amountChangedAndValid,
       paymentMethodChangedAndValid,
       context
     )
@@ -746,7 +747,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       project,
-      pledgeTotal,
+      pledgeTotal.skipRepeats(),
       isLoggedIn,
       isEnabled,
       context,
@@ -1058,14 +1059,15 @@ private func paymentMethodValid(
 }
 
 private func allValuesChangedAndValid(
+  amountValid: Bool,
   paymentSourceValid: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
-    return paymentSourceValid
+    return amountValid || paymentSourceValid
   }
 
-  return true
+  return amountValid
 }
 
 // MARK: - Helper Functions
