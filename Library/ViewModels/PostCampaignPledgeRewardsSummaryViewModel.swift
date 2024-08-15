@@ -163,14 +163,18 @@ private func items(
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
-    let headerText = reward == data.rewards.first ? Strings.backer_modal_reward_title() : Strings.Add_ons()
-    let headerAttributedText = NSAttributedString(
-      string: headerText,
-      attributes: [
-        .foregroundColor: UIColor.ksr_black,
-        .font: UIFont.ksr_subhead().bolded
-      ]
-    )
+    var headerAttributedText: NSAttributedString?
+
+    if featureNoShippingAtCheckout() == true {
+      let headerText = reward == data.rewards.first ? Strings.backer_modal_reward_title() : Strings.Add_ons()
+      headerAttributedText = NSAttributedString(
+        string: headerText,
+        attributes: [
+          .foregroundColor: UIColor.ksr_black,
+          .font: UIFont.ksr_subhead().bolded
+        ]
+      )
+    }
 
     let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
     let amountAttributedText = attributedRewardCurrency(
