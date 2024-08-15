@@ -14947,7 +14947,12 @@ public enum GraphAPI {
           ...PPOBackingFragment
         }
         tierType
-        tags
+        flags {
+          __typename
+          icon
+          message
+          type
+        }
       }
       """
 
@@ -14958,7 +14963,7 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("backing", type: .object(Backing.selections)),
         GraphQLField("tierType", type: .scalar(String.self)),
-        GraphQLField("tags", type: .list(.nonNull(.scalar(String.self)))),
+        GraphQLField("flags", type: .list(.nonNull(.object(Flag.selections)))),
       ]
     }
 
@@ -14968,8 +14973,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backing: Backing? = nil, tierType: String? = nil, tags: [String]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "tags": tags])
+    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }])
     }
 
     public var __typename: String {
@@ -15002,12 +15007,12 @@ public enum GraphAPI {
     }
 
     /// tags
-    public var tags: [String]? {
+    public var flags: [Flag]? {
       get {
-        return resultMap["tags"] as? [String]
+        return (resultMap["flags"] as? [ResultMap]).flatMap { (value: [ResultMap]) -> [Flag] in value.map { (value: ResultMap) -> Flag in Flag(unsafeResultMap: value) } }
       }
       set {
-        resultMap.updateValue(newValue, forKey: "tags")
+        resultMap.updateValue(newValue.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, forKey: "flags")
       }
     }
 
@@ -15059,6 +15064,68 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct Flag: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PledgedProjectsOverviewPledgeFlags"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("icon", type: .scalar(String.self)),
+          GraphQLField("message", type: .scalar(String.self)),
+          GraphQLField("type", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(icon: String? = nil, message: String? = nil, type: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "PledgedProjectsOverviewPledgeFlags", "icon": icon, "message": message, "type": type])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Flag icon type, e.g. time, alert, etc.
+      public var icon: String? {
+        get {
+          return resultMap["icon"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "icon")
+        }
+      }
+
+      /// Translated flag message
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+
+      /// Flag type, e.g. warning, alert, etc.
+      public var type: String? {
+        get {
+          return resultMap["type"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "type")
         }
       }
     }
