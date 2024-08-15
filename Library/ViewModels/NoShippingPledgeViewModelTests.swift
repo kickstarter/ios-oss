@@ -78,13 +78,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.4 }
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
-      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
-      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
-      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.4 }
+      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.5 }
       .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
     self.vm.outputs.configureStripeIntegration.map(first)
@@ -116,7 +116,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
-    self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
 
@@ -183,7 +182,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -228,7 +226,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -273,7 +270,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -318,7 +314,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([false])
     }
@@ -373,7 +368,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -431,7 +425,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -492,7 +485,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.projectTitleLabelHidden.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([true])
       self.descriptionSectionSeparatorHidden.assertValues([true])
       self.summarySectionSeparatorHidden.assertValues([true])
 
@@ -531,7 +523,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
     }
   }
 
@@ -564,7 +555,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
     }
   }
 
@@ -597,7 +587,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([false])
     }
   }
 
@@ -630,7 +619,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([false])
     }
   }
 
@@ -663,7 +651,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([false])
     }
   }
 
@@ -696,7 +683,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountViewHidden.assertValues([false])
 
       let data1 = (amount: 66.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -737,7 +723,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
 
       withEnvironment(currentUser: user) {
         self.vm.inputs.userSessionStarted()
