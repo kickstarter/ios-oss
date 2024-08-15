@@ -3,5 +3,9 @@ fragment PPOCardFragment on PledgeProjectOverviewItem {
     ...PPOBackingFragment
   }
   tierType
-  tags
+  flags {
+    icon
+    message
+    type
+  }
 }
