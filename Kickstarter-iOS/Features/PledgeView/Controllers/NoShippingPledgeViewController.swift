@@ -75,7 +75,7 @@ final class NoShippingPledgeViewController: UIViewController,
   }()
 
   private lazy var pledgeRewardsSummaryViewController = {
-    PostCampaignPledgeRewardsSummaryViewController.instantiate()
+    NoShippingPledgeRewardsSummaryTotalViewController.instantiate()
   }()
 
   private lazy var pledgeCTAContainerView: NoShippingPledgeViewCTAContainerView = {
