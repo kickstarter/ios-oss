@@ -59,14 +59,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       )
   }
 
-  func testLoginWithOAuth_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureLoginWithOAuthEnabled,
-        whenRemoteConfigFeatureIsTrue: .loginWithOAuthEnabled
-      )
-  }
-
   func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_False() {
     self
       .assert(
@@ -80,14 +72,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       .assert(
         featureFlagIsTrue: featureUseKeychainForOAuthTokenEnabled,
         whenRemoteConfigFeatureIsTrue: .useKeychainForOAuthToken
-      )
-  }
-
-  func testLoginWithOAuth_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureLoginWithOAuthEnabled,
-        whenRemoteConfigFeatureIsFalse: .loginWithOAuthEnabled
       )
   }
 }

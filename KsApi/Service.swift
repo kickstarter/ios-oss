@@ -549,7 +549,7 @@ public struct Service: ServiceType {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
-        includeShippingRules: false,
+        includeShippingRules: true,
         includeLocalPickup: true
       )
 
@@ -806,22 +806,6 @@ public struct Service: ServiceType {
       .flatMap(SignInWithAppleEnvelope.producer(from:))
   }
 
-  public func signup(
-    name: String,
-    email: String,
-    password: String,
-    passwordConfirmation: String,
-    sendNewsletters: Bool
-  ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.signup(
-      name: name,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation,
-      sendNewsletters: sendNewsletters
-    ))
-  }
-
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
     return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
@@ -911,6 +895,15 @@ public struct Service: ServiceType {
       .map { data in
         data.createOrUpdateBackingAddress?.success ?? false
       }
+      .eraseToAnyPublisher()
+  }
+
+  public func fetchPledgedProjects(
+    cursor: String? = nil,
+    limit: Int? = nil
+  ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchPledgedProjectsQuery(first: limit, after: cursor))
       .eraseToAnyPublisher()
   }
 }

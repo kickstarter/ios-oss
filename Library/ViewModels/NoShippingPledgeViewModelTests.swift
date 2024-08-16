@@ -2515,7 +2515,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
 
-    let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+    let defaultShippingRule = ShippingRule(
+      cost: 10,
+      id: 1,
+      location: .brooklyn,
+      estimatedMin: Money(amount: 1.0),
+      estimatedMax: Money(amount: 10.0)
+    )
 
     let data = PledgeViewData(
       project: project,
@@ -2680,7 +2686,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -2843,7 +2855,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -2973,7 +2991,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -3119,7 +3143,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -3374,7 +3404,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -3590,7 +3626,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -3793,7 +3835,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -3966,7 +4014,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
       let project = Project.template
         |> Project.lens.rewardData.rewards .~ [reward]
 
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,
@@ -4088,7 +4142,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
 
-      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+      let defaultShippingRule = ShippingRule(
+        cost: 10,
+        id: 1,
+        location: .brooklyn,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
 
       let data = PledgeViewData(
         project: project,

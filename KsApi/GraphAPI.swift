@@ -7962,7 +7962,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8039,10 +8039,6 @@ public enum GraphAPI {
 
         public static func makeAiDisclosure() -> Node {
           return Node(unsafeResultMap: ["__typename": "AiDisclosure"])
-        }
-
-        public static func makeBusinessAddress() -> Node {
-          return Node(unsafeResultMap: ["__typename": "BusinessAddress"])
         }
 
         public static func makeFlagging() -> Node {
@@ -8415,7 +8411,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8488,10 +8484,6 @@ public enum GraphAPI {
 
         public static func makeAiDisclosure() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "AiDisclosure"])
-        }
-
-        public static func makeBusinessAddress() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "BusinessAddress"])
         }
 
         public static func makeFlagging() -> Comment {
@@ -9131,6 +9123,367 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "startCursor")
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class FetchPledgedProjectsQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchPledgedProjects($first: Int = null, $after: String = null) {
+        pledgeProjectsOverview {
+          __typename
+          pledges(first: $first, after: $after) {
+            __typename
+            totalCount
+            edges {
+              __typename
+              cursor
+              node {
+                __typename
+                ...PPOCardFragment
+              }
+            }
+            pageInfo {
+              __typename
+              hasNextPage
+              endCursor
+              hasPreviousPage
+              startCursor
+            }
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "FetchPledgedProjects"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + PpoCardFragment.fragmentDefinition)
+      document.append("\n" + PpoBackingFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + PpoProjectFragment.fragmentDefinition)
+      return document
+    }
+
+    public var first: Int?
+    public var after: String?
+
+    public init(first: Int? = nil, after: String? = nil) {
+      self.first = first
+      self.after = after
+    }
+
+    public var variables: GraphQLMap? {
+      return ["first": first, "after": after]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("pledgeProjectsOverview", type: .object(PledgeProjectsOverview.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(pledgeProjectsOverview: PledgeProjectsOverview? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "pledgeProjectsOverview": pledgeProjectsOverview.flatMap { (value: PledgeProjectsOverview) -> ResultMap in value.resultMap }])
+      }
+
+      /// Provides an overview of pledge projects
+      public var pledgeProjectsOverview: PledgeProjectsOverview? {
+        get {
+          return (resultMap["pledgeProjectsOverview"] as? ResultMap).flatMap { PledgeProjectsOverview(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "pledgeProjectsOverview")
+        }
+      }
+
+      public struct PledgeProjectsOverview: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["PledgeProjectsOverview"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("pledges", arguments: ["first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .object(Pledge.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(pledges: Pledge? = nil) {
+          self.init(unsafeResultMap: ["__typename": "PledgeProjectsOverview", "pledges": pledges.flatMap { (value: Pledge) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// List of pledged projects
+        public var pledges: Pledge? {
+          get {
+            return (resultMap["pledges"] as? ResultMap).flatMap { Pledge(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "pledges")
+          }
+        }
+
+        public struct Pledge: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["PledgedProjectsOverviewPledgesConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+              GraphQLField("edges", type: .list(.object(Edge.selections))),
+              GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(totalCount: Int, edges: [Edge?]? = nil, pageInfo: PageInfo) {
+            self.init(unsafeResultMap: ["__typename": "PledgedProjectsOverviewPledgesConnection", "totalCount": totalCount, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var totalCount: Int {
+            get {
+              return resultMap["totalCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+
+          /// A list of edges.
+          public var edges: [Edge?]? {
+            get {
+              return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
+            }
+          }
+
+          /// Information to aid in pagination.
+          public var pageInfo: PageInfo {
+            get {
+              return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            }
+          }
+
+          public struct Edge: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PledgeProjectOverviewItemEdge"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("cursor", type: .nonNull(.scalar(String.self))),
+                GraphQLField("node", type: .object(Node.selections)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(cursor: String, node: Node? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItemEdge", "cursor": cursor, "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// A cursor for use in pagination.
+            public var cursor: String {
+              get {
+                return resultMap["cursor"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "cursor")
+              }
+            }
+
+            /// The item at the end of the edge.
+            public var node: Node? {
+              get {
+                return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+              }
+              set {
+                resultMap.updateValue(newValue?.resultMap, forKey: "node")
+              }
+            }
+
+            public struct Node: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["PledgeProjectOverviewItem"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLFragmentSpread(PpoCardFragment.self),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var fragments: Fragments {
+                get {
+                  return Fragments(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+
+              public struct Fragments {
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public var ppoCardFragment: PpoCardFragment {
+                  get {
+                    return PpoCardFragment(unsafeResultMap: resultMap)
+                  }
+                  set {
+                    resultMap += newValue.resultMap
+                  }
+                }
+              }
+            }
+          }
+
+          public struct PageInfo: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PageInfo"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("endCursor", type: .scalar(String.self)),
+                GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
+                GraphQLField("startCursor", type: .scalar(String.self)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(hasNextPage: Bool, endCursor: String? = nil, hasPreviousPage: Bool, startCursor: String? = nil) {
+              self.init(unsafeResultMap: ["__typename": "PageInfo", "hasNextPage": hasNextPage, "endCursor": endCursor, "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// When paginating forwards, are there more items?
+            public var hasNextPage: Bool {
+              get {
+                return resultMap["hasNextPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasNextPage")
+              }
+            }
+
+            /// When paginating forwards, the cursor to continue.
+            public var endCursor: String? {
+              get {
+                return resultMap["endCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "endCursor")
+              }
+            }
+
+            /// When paginating backwards, are there more items?
+            public var hasPreviousPage: Bool {
+              get {
+                return resultMap["hasPreviousPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasPreviousPage")
+              }
+            }
+
+            /// When paginating backwards, the cursor to continue.
+            public var startCursor: String? {
+              get {
+                return resultMap["startCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "startCursor")
+              }
             }
           }
         }
@@ -14397,6 +14750,604 @@ public enum GraphAPI {
     }
   }
 
+  public struct PpoBackingFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PPOBackingFragment on Backing {
+        __typename
+        amount {
+          __typename
+          ...MoneyFragment
+        }
+        id
+        project {
+          __typename
+          ...PPOProjectFragment
+        }
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Backing"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("project", type: .object(Project.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(amount: Amount, id: GraphQLID, project: Project? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// Total amount pledged by the backer to the project, including shipping.
+    public var amount: Amount {
+      get {
+        return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "amount")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// The project
+    public var project: Project? {
+      get {
+        return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "project")
+      }
+    }
+
+    public struct Amount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(MoneyFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var moneyFragment: MoneyFragment {
+          get {
+            return MoneyFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Project: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Project"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(PpoProjectFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var ppoProjectFragment: PpoProjectFragment {
+          get {
+            return PpoProjectFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+  }
+
+  public struct PpoCardFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PPOCardFragment on PledgeProjectOverviewItem {
+        __typename
+        backing {
+          __typename
+          ...PPOBackingFragment
+        }
+        tierType
+        flags {
+          __typename
+          icon
+          message
+          type
+        }
+      }
+      """
+
+    public static let possibleTypes: [String] = ["PledgeProjectOverviewItem"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("backing", type: .object(Backing.selections)),
+        GraphQLField("tierType", type: .scalar(String.self)),
+        GraphQLField("flags", type: .list(.nonNull(.object(Flag.selections)))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// backing details
+    public var backing: Backing? {
+      get {
+        return (resultMap["backing"] as? ResultMap).flatMap { Backing(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "backing")
+      }
+    }
+
+    /// tier type
+    public var tierType: String? {
+      get {
+        return resultMap["tierType"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "tierType")
+      }
+    }
+
+    /// tags
+    public var flags: [Flag]? {
+      get {
+        return (resultMap["flags"] as? [ResultMap]).flatMap { (value: [ResultMap]) -> [Flag] in value.map { (value: ResultMap) -> Flag in Flag(unsafeResultMap: value) } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, forKey: "flags")
+      }
+    }
+
+    public struct Backing: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Backing"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(PpoBackingFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var ppoBackingFragment: PpoBackingFragment {
+          get {
+            return PpoBackingFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Flag: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PledgedProjectsOverviewPledgeFlags"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("icon", type: .scalar(String.self)),
+          GraphQLField("message", type: .scalar(String.self)),
+          GraphQLField("type", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(icon: String? = nil, message: String? = nil, type: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "PledgedProjectsOverviewPledgeFlags", "icon": icon, "message": message, "type": type])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Flag icon type, e.g. time, alert, etc.
+      public var icon: String? {
+        get {
+          return resultMap["icon"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "icon")
+        }
+      }
+
+      /// Translated flag message
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+
+      /// Flag type, e.g. warning, alert, etc.
+      public var type: String? {
+        get {
+          return resultMap["type"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "type")
+        }
+      }
+    }
+  }
+
+  public struct PpoProjectFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PPOProjectFragment on Project {
+        __typename
+        creator {
+          __typename
+          email
+          id
+          name
+        }
+        image {
+          __typename
+          id
+          url(width: 1024)
+        }
+        name
+        pid
+        slug
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Project"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("creator", type: .object(Creator.selections)),
+        GraphQLField("image", type: .object(Image.selections)),
+        GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("slug", type: .nonNull(.scalar(String.self))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(creator: Creator? = nil, image: Image? = nil, name: String, pid: Int, slug: String) {
+      self.init(unsafeResultMap: ["__typename": "Project", "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "slug": slug])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// The project's creator.
+    public var creator: Creator? {
+      get {
+        return (resultMap["creator"] as? ResultMap).flatMap { Creator(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "creator")
+      }
+    }
+
+    /// The project's primary image.
+    public var image: Image? {
+      get {
+        return (resultMap["image"] as? ResultMap).flatMap { Image(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "image")
+      }
+    }
+
+    /// The project's name.
+    public var name: String {
+      get {
+        return resultMap["name"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "name")
+      }
+    }
+
+    /// The project's pid.
+    public var pid: Int {
+      get {
+        return resultMap["pid"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pid")
+      }
+    }
+
+    /// The project's unique URL identifier.
+    public var slug: String {
+      get {
+        return resultMap["slug"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "slug")
+      }
+    }
+
+    public struct Creator: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["User"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("email", type: .scalar(String.self)),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(email: String? = nil, id: GraphQLID, name: String) {
+        self.init(unsafeResultMap: ["__typename": "User", "email": email, "id": id, "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// A user's email address.
+      public var email: String? {
+        get {
+          return resultMap["email"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "email")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The user's provided name.
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+    }
+
+    public struct Image: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Photo"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, url: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Photo", "id": id, "url": url])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// URL of the photo
+      public var url: String? {
+        get {
+          return resultMap["url"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "url")
+        }
+      }
+    }
+  }
+
   public struct ProjectFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
@@ -16951,6 +17902,16 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
+        estimatedMin {
+          __typename
+          amount
+          currency
+        }
+        estimatedMax {
+          __typename
+          amount
+          currency
+        }
       }
       """
 
@@ -16962,6 +17923,8 @@ public enum GraphAPI {
         GraphQLField("cost", type: .object(Cost.selections)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("location", type: .nonNull(.object(Location.selections))),
+        GraphQLField("estimatedMin", type: .object(EstimatedMin.selections)),
+        GraphQLField("estimatedMax", type: .object(EstimatedMax.selections)),
       ]
     }
 
@@ -16971,8 +17934,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(cost: Cost? = nil, id: GraphQLID, location: Location) {
-      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.resultMap])
+    public init(cost: Cost? = nil, id: GraphQLID, location: Location, estimatedMin: EstimatedMin? = nil, estimatedMax: EstimatedMax? = nil) {
+      self.init(unsafeResultMap: ["__typename": "ShippingRule", "cost": cost.flatMap { (value: Cost) -> ResultMap in value.resultMap }, "id": id, "location": location.resultMap, "estimatedMin": estimatedMin.flatMap { (value: EstimatedMin) -> ResultMap in value.resultMap }, "estimatedMax": estimatedMax.flatMap { (value: EstimatedMax) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -17010,6 +17973,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue.resultMap, forKey: "location")
+      }
+    }
+
+    /// The estimated minimum shipping cost
+    public var estimatedMin: EstimatedMin? {
+      get {
+        return (resultMap["estimatedMin"] as? ResultMap).flatMap { EstimatedMin(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "estimatedMin")
+      }
+    }
+
+    /// The estimated maximum shipping cost
+    public var estimatedMax: EstimatedMax? {
+      get {
+        return (resultMap["estimatedMax"] as? ResultMap).flatMap { EstimatedMax(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "estimatedMax")
       }
     }
 
@@ -17121,6 +18104,108 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct EstimatedMin: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("amount", type: .scalar(String.self)),
+          GraphQLField("currency", type: .scalar(CurrencyCode.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Floating-point numeric value of monetary amount represented as a string
+      public var amount: String? {
+        get {
+          return resultMap["amount"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "amount")
+        }
+      }
+
+      /// Currency of the monetary amount
+      public var currency: CurrencyCode? {
+        get {
+          return resultMap["currency"] as? CurrencyCode
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "currency")
+        }
+      }
+    }
+
+    public struct EstimatedMax: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("amount", type: .scalar(String.self)),
+          GraphQLField("currency", type: .scalar(CurrencyCode.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Floating-point numeric value of monetary amount represented as a string
+      public var amount: String? {
+        get {
+          return resultMap["amount"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "amount")
+        }
+      }
+
+      /// Currency of the monetary amount
+      public var currency: CurrencyCode? {
+        get {
+          return resultMap["currency"] as? CurrencyCode
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "currency")
         }
       }
     }

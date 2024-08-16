@@ -1,0 +1,16 @@
+# Minimal version of ProjectFragment, containing only the fields needed for PPO.
+
+fragment PPOProjectFragment on Project {
+  creator {
+    email
+    id
+    name
+  }
+  image {
+    id
+    url(width: 1024)
+  }
+  name
+  pid
+  slug
+}

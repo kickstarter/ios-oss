@@ -17,6 +17,14 @@ final class ShippingRule_ShippingRuleFragmentTests: XCTestCase {
         displayableName: "Canada",
         id: "TG9jYXRpb24tMjM0MjQ3NzU=",
         name: "Canada"
+      ),
+      estimatedMin: GraphAPI.ShippingRuleFragment.EstimatedMin(
+        amount: "10.00",
+        currency: GraphAPI.CurrencyCode.usd
+      ),
+      estimatedMax: GraphAPI.ShippingRuleFragment.EstimatedMax(
+        amount: "20.00",
+        currency: GraphAPI.CurrencyCode.usd
       )
     )
 
