@@ -34,16 +34,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
   public weak var delegate: NoShippingPledgeViewControllerDelegate?
 
-  private lazy var descriptionSectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var projectTitleLabel = UILabel(frame: .zero)
-
-  private lazy var sectionSeparatorViews = {
-    [self.descriptionSectionSeparator]
-  }()
 
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
@@ -55,17 +46,6 @@ final class NoShippingPledgeViewController: UIViewController,
     PledgeDisclaimerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
-  }()
-
-  private lazy var descriptionSectionViews = {
-    [self.projectTitleLabel, self.descriptionSectionSeparator]
-  }()
-
-  private lazy var inputsSectionViews = {
-    [
-      self.localPickupLocationView,
-      self.pledgeAmountViewController.view
-    ]
   }()
 
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -165,17 +145,11 @@ final class NoShippingPledgeViewController: UIViewController,
       |> ksr_addSubviewToParent()
 
     let childViewControllers = [
-      self.pledgeAmountSummaryViewController,
-      self.pledgeAmountViewController,
       self.pledgeRewardsSummaryViewController,
       self.paymentMethodsViewController
     ]
 
     let arrangedInsetSubviews = [
-      self.descriptionSectionViews,
-      [self.pledgeAmountSummaryViewController.view],
-      self.inputsSectionViews,
-      [self.pledgeRewardsSummaryViewController.view],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -205,13 +179,6 @@ final class NoShippingPledgeViewController: UIViewController,
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
-
-    self.sectionSeparatorViews.forEach { view in
-      _ = view.heightAnchor.constraint(equalToConstant: 1)
-        |> \.isActive .~ true
-
-      view.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
   }
 
   // MARK: - Styles
@@ -236,9 +203,6 @@ final class NoShippingPledgeViewController: UIViewController,
 
     _ = self.rootInsetStackView
       |> rootInsetStackViewStyle
-
-    _ = self.sectionSeparatorViews
-      ||> separatorStyleDark
 
     _ = self.paymentMethodsViewController.view
       |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
@@ -350,13 +314,10 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitle
     self.projectTitleLabel.rac.hidden = self.viewModel.outputs.projectTitleLabelHidden
-    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
-    self.pledgeAmountSummaryViewController.view.rac.hidden
-      = self.viewModel.outputs.pledgeAmountSummaryViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()
