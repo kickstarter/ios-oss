@@ -134,7 +134,7 @@ public final class RewardAddOnCardView: UIView {
     _ = self.estimatedShippingStackView
       |> includedItemsStackViewStyle
 
-    // TODO: Update string with translations
+    // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
     _ = self.estimatedShippingTitleLabel
       |> baseRewardLabelStyle
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)

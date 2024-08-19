@@ -682,6 +682,10 @@ public func estimatedShippingText(for reward: Reward, selectedShippingRule: Ship
   let formattedMin = String(format: "%.0f", estimatedMin)
   let formattedMax = String(format: "%.0f", estimatedMax)
 
-  // TODO: Update string with translations
-  return "About $\(formattedMin)-$\(formattedMax)"
+  // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
+  let shippingString: String = formattedMin == formattedMax
+    ? "About $\(formattedMin)"
+    : "About $\(formattedMin)-$\(formattedMax)"
+
+  return shippingString
 }
