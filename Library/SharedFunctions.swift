@@ -695,6 +695,8 @@ public func estimatedShippingConversionText(
   _ reward: Reward,
   selectedShippingRule: ShippingRule
 ) -> String {
+  guard project.stats.needsConversion else { return "" }
+
   /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
   guard let shippingRules = reward.shippingRules,
         let selectedShippingRule = shippingRules
