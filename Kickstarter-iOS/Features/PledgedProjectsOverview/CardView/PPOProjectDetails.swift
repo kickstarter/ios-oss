@@ -1,6 +1,7 @@
 import Foundation
 import Kingfisher
 import KsApi
+import Library
 import SwiftUI
 
 struct PPOProjectDetails: View {
@@ -13,7 +14,7 @@ struct PPOProjectDetails: View {
       KFImage(self.imageUrl)
         .resizable()
         .clipShape(Constants.imageShape)
-        .aspectRatio(Constants.imageAspectRatio, contentMode: .fit)
+        .aspectRatio(Constants.imageAspectRatio, contentMode: Constants.imageContentMode)
         .frame(width: Constants.imageWidth)
       Spacer()
         .frame(width: Constants.spacing)
@@ -21,15 +22,18 @@ struct PPOProjectDetails: View {
         if let title {
           Text(title)
             .font(Font(Constants.titleFont))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(2)
+            .foregroundStyle(Color(Constants.titleTextColor))
+            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
+            .lineLimit(Constants.titleLineLimit)
         }
-        // TODO: Localize
-        Text("\(self.pledge.symbol ?? "")\(self.pledge.amount ?? "") pledged")
-          .font(Font(Constants.subtitleFont))
-          .foregroundStyle(Color(Constants.subtitleTextColor))
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .lineLimit(1)
+        if let symbol = pledge.symbol, let amount = pledge.amount {
+          // TODO: Localize
+          Text("\(symbol)\(amount) pledged")
+            .font(Font(Constants.subtitleFont))
+            .foregroundStyle(Color(Constants.subtitleTextColor))
+            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
+            .lineLimit(Constants.subtitleLineLimit)
+        }
       }
     }
     .fixedSize(horizontal: false, vertical: true)
@@ -37,13 +41,23 @@ struct PPOProjectDetails: View {
   }
 
   private enum Constants {
-    static let imageShape = RoundedRectangle(cornerRadius: 4)
+    static let spacing: CGFloat = Styles.grid(1)
+
+    static let imageShape = RoundedRectangle(cornerRadius: Styles.cornerRadius)
     static let imageAspectRatio: CGFloat = 16 / 9
+    static let imageContentMode = ContentMode.fit
     static let imageWidth: CGFloat = 85
-    static let spacing: CGFloat = 8
+
     static let titleFont = UIFont.ksr_caption1().bolded
+    static let titleTextColor = UIColor.ksr_black
+    static let titleLineLimit = 2
+
     static let subtitleFont = UIFont.ksr_footnote()
     static let subtitleTextColor = UIColor.ksr_support_400
+    static let subtitleLineLimit = 1
+
+    static let textMaxWidth = CGFloat.infinity
+    static let textAlignment = Alignment.leading
   }
 }
 
