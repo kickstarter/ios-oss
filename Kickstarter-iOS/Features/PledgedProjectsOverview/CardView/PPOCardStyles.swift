@@ -5,6 +5,7 @@ import SwiftUI
 class PPOCardStyles: ObservableObject {
   let alert = Alert()
   let projectDetails = ProjectDetails()
+  let projectCreator = ProjectCreator()
 
   class Alert: ObservableObject {
     let warningForegroundColor = UIColor.ksr_support_400
@@ -40,5 +41,19 @@ class PPOCardStyles: ObservableObject {
 
     let textMaxWidth = CGFloat.infinity
     let textAlignment = Alignment.leading
+  }
+
+  class ProjectCreator: ObservableObject {
+    let createdByFont = UIFont.ksr_caption2()
+    let createdByColor = UIColor.ksr_support_400
+    let sendMessageFont = UIFont.ksr_caption2()
+    let sendMessageColor = UIColor.ksr_create_700
+    let chevronSize: CGFloat = 10
+    let chevronOffset = CGSize(width: 0, height: 2)
+    let spacerWidth = Styles.grid(1)
+    let textLineLimit = 1
+    let labelMaxWidth = CGFloat.infinity
+    let labelAlignment = Alignment.leading
+    let buttonAlignment = Alignment.trailing
   }
 }
