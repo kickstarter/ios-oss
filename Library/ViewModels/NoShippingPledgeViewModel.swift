@@ -64,8 +64,6 @@ public protocol NoShippingPledgeViewModelOutputs {
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var projectTitle: Signal<String, Never> { get }
-  var projectTitleLabelHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -99,10 +97,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
-
-    self.projectTitleLabelHidden = context
-      .zip(with: baseReward)
-      .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
@@ -613,6 +607,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
+      amountChangedAndValid,
       paymentMethodChangedAndValid,
       context
     )
@@ -794,15 +789,13 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       project,
-      pledgeTotal,
+      pledgeTotal.skipRepeats(),
       isLoggedIn,
       isEnabled,
       context,
       willRetryPaymentMethod
     )
     .map { $0 as NoShippingPledgeViewCTAContainerViewData }
-
-    self.projectTitle = project.map(\.name)
 
     self.title = context.map { $0.title }
 
@@ -1020,8 +1013,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let projectTitle: Signal<String, Never>
-  public let projectTitleLabelHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
@@ -1111,14 +1102,15 @@ private func paymentMethodValid(
 }
 
 private func allValuesChangedAndValid(
+  amountValid: Bool,
   paymentSourceValid: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
-    return paymentSourceValid
+    return amountValid || paymentSourceValid
   }
 
-  return true
+  return amountValid
 }
 
 // MARK: - Helper Functions

@@ -32,8 +32,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
-  private let descriptionSectionSeparatorHidden = TestObserver<Bool, Never>()
-
   private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
   private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
   private let goToApplePayPaymentAuthorizationAllRewardsTotal = TestObserver<Double, Never>()
@@ -50,13 +48,10 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
-  private let projectTitle = TestObserver<String, Never>()
-  private let projectTitleLabelHidden = TestObserver<Bool, Never>()
   private let showApplePayAlertMessage = TestObserver<String, Never>()
   private let showApplePayAlertTitle = TestObserver<String, Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showWebHelp = TestObserver<HelpType, Never>()
-  private let summarySectionSeparatorHidden = TestObserver<Bool, Never>()
   private let title = TestObserver<String, Never>()
 
   let shippingRule = ShippingRule.template
@@ -92,10 +87,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       .observe(self.configureStripeIntegrationMerchantId.observer)
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
-
-    self.vm.outputs.projectTitle.observe(self.projectTitle.observer)
-    self.vm.outputs.projectTitleLabelHidden.observe(self.projectTitleLabelHidden.observer)
-    self.vm.outputs.descriptionSectionSeparatorHidden.observe(self.descriptionSectionSeparatorHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
       .observe(self.goToApplePayPaymentAuthorizationProject.observer)
@@ -181,14 +172,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([false])
     }
   }
 
@@ -227,14 +213,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([false])
     }
   }
 
@@ -273,14 +254,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([false])
     }
   }
 
@@ -319,14 +295,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([false])
     }
   }
 
@@ -375,14 +346,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([true])
 
       let pledgeAmountData: PledgeAmountData = (amount: 70, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
@@ -433,15 +399,10 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([true])
 
       let paymentSourceSelected = PaymentSourceSelected.savedCreditCard(backing.paymentSource!.id!, "pm_fake")
 
@@ -496,14 +457,9 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.projectTitle.assertValues(["The Project"])
-      self.projectTitleLabelHidden.assertValues([true])
-
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
-      self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([true])
 
       let pledgeAmountData: PledgeAmountData = (amount: 12.0, min: 1.0, max: 10_000, isValid: true)
 
