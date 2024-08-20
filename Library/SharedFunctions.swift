@@ -660,3 +660,32 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
     existingReward.shipping.preference
     .isAny(of: Reward.Shipping.Preference.none)
 }
+
+public func estimatedShippingText(for reward: Reward, selectedShippingRule: ShippingRule) -> String {
+  guard reward.shipping.enabled else { return "" }
+
+  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
+  guard let shippingRules = reward.shippingRules,
+        let currentRewardShippingRule = shippingRules
+        .first(where: { $0.location.country == selectedShippingRule.location.country })
+  else {
+    return ""
+  }
+
+  guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount.rounded(.towardZero),
+        let estimatedMax = currentRewardShippingRule.estimatedMax?.amount.rounded(.towardZero),
+        estimatedMin > 0 || estimatedMax > 0 else {
+    return ""
+  }
+
+  /// Drop digits after the decimal.
+  let formattedMin = String(format: "%.0f", estimatedMin)
+  let formattedMax = String(format: "%.0f", estimatedMax)
+
+  // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
+  let shippingString: String = formattedMin == formattedMax
+    ? "About $\(formattedMin)"
+    : "About $\(formattedMin)-$\(formattedMax)"
+
+  return shippingString
+}
