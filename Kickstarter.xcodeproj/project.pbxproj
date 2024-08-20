@@ -1125,6 +1125,7 @@
 		A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */; };
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
+		AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA592782C5C708000482087 /* PPOProjectDetails.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
@@ -2762,6 +2763,7 @@
 		A7F761741C85FA40005405ED /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
+		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
@@ -6683,6 +6685,7 @@
 		AAD2BEE72C59B964003D8B95 /* CardView */ = {
 			isa = PBXGroup;
 			children = (
+				AAA592782C5C708000482087 /* PPOProjectDetails.swift */,
 				AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */,
 			);
 			path = CardView;
@@ -8426,6 +8429,7 @@
 				473DE014273C551C0033331D /* ProjectRisksDisclaimerCell.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
+				AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */,
 				777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
