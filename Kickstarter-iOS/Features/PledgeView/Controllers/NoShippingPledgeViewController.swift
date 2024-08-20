@@ -280,8 +280,9 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.viewModel.outputs.configureEstimatedShippingView
       .observeForUI()
-      .observeValues { [weak self] string in
-        self?.configureEstimatedShippingView(with: (string, "About ..."))
+      .observeValues { [weak self] strings in
+        let (estimatedShippingText, estimatedConversionText) = strings
+        self?.configureEstimatedShippingView(with: (estimatedShippingText, estimatedConversionText))
       }
 
     self.viewModel.outputs.estimatedShippingViewHidden
@@ -452,6 +453,7 @@ final class NoShippingPledgeViewController: UIViewController,
     self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
 
     self.rootInsetStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.rootInsetStackView.layoutIfNeeded()
   }
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
