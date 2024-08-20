@@ -47,7 +47,6 @@ struct PPOProjectDetails: View {
     static let imageShape = RoundedRectangle(cornerRadius: Styles.cornerRadius)
     static let imageAspectRatio: CGFloat = 16 / 9
     static let imageContentMode = ContentMode.fit
-    static let imageWidth: CGFloat = 85
 
     static let titleFont = UIFont.ksr_caption1().bolded
     static let titleTextColor = UIColor.ksr_black
