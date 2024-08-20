@@ -10,10 +10,13 @@ struct PPOProjectCreator: View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Created by **\(self.creatorName)**")
-        .font(Font(style.projectCreator.createdByFont))
-        .foregroundStyle(Color(style.projectCreator.createdByColor))
-        .frame(maxWidth: style.projectCreator.labelMaxWidth, alignment: style.projectCreator.labelAlignment)
-        .lineLimit(style.projectCreator.textLineLimit)
+        .font(Font(self.style.projectCreator.createdByFont))
+        .foregroundStyle(Color(self.style.projectCreator.createdByColor))
+        .frame(
+          maxWidth: self.style.projectCreator.labelMaxWidth,
+          alignment: self.style.projectCreator.labelAlignment
+        )
+        .lineLimit(self.style.projectCreator.textLineLimit)
 
       Button(action: {
         // TODO: Action
@@ -21,20 +24,20 @@ struct PPOProjectCreator: View {
         // TODO: Localize
         Text("Send a message")
       })
-      .font(Font(style.projectCreator.sendMessageFont))
-      .foregroundStyle(Color(style.projectCreator.sendMessageColor))
-      .frame(alignment: style.projectCreator.buttonAlignment)
-      .lineLimit(style.projectCreator.textLineLimit)
+      .font(Font(self.style.projectCreator.sendMessageFont))
+      .foregroundStyle(Color(self.style.projectCreator.sendMessageColor))
+      .frame(alignment: self.style.projectCreator.buttonAlignment)
+      .lineLimit(self.style.projectCreator.textLineLimit)
 
       Spacer()
-        .frame(width: style.projectCreator.spacerWidth)
+        .frame(width: self.style.projectCreator.spacerWidth)
 
       Image("chevron-right")
         .resizable()
         .scaledToFit()
-        .frame(width: style.projectCreator.chevronSize, height: style.projectCreator.chevronSize)
-        .offset(style.projectCreator.chevronOffset)
-        .foregroundStyle(Color(style.projectCreator.sendMessageColor))
+        .frame(width: self.style.projectCreator.chevronSize, height: self.style.projectCreator.chevronSize)
+        .offset(self.style.projectCreator.chevronOffset)
+        .foregroundStyle(Color(self.style.projectCreator.sendMessageColor))
     }
     .frame(maxWidth: .infinity)
   }
