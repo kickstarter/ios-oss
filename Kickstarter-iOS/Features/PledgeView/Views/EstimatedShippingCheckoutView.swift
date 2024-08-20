@@ -26,7 +26,7 @@ struct EstimatedShippingCheckoutView: View {
         .foregroundStyle(Color(UIColor.ksr_support_400))
       }
 
-      VStack(alignment: .leading, spacing: Constants.defaultSpacing) {
+      VStack(alignment: .trailing, spacing: Constants.defaultSpacing) {
         Text(self.estimatedCost)
           .font(Font(UIFont.ksr_subhead()))
           .bold()
