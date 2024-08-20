@@ -23,6 +23,7 @@ struct EstimatedShippingCheckoutView: View {
           "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
         )
         .font(Font(UIFont.ksr_subhead(size: 11)))
+        .foregroundStyle(Color(UIColor.ksr_support_400))
       }
 
       VStack(alignment: .leading, spacing: Constants.defaultSpacing) {
@@ -31,6 +32,7 @@ struct EstimatedShippingCheckoutView: View {
           .bold()
         Text(self.aboutConversion)
           .font(Font(UIFont.ksr_subhead(size: 12)))
+          .foregroundStyle(Color(UIColor.ksr_support_400))
       }
     }
     .frame(maxHeight: Constants.maxHeight)

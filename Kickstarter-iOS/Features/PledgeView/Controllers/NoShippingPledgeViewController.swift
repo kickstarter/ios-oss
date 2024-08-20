@@ -81,6 +81,12 @@ final class NoShippingPledgeViewController: UIViewController,
     NoShippingPledgeRewardsSummaryTotalViewController.instantiate()
   }()
 
+  private lazy var estimatedShippingViewContainer =
+    UIHostingController(rootView: EstimatedShippingCheckoutView(
+      estimatedCost: "",
+      aboutConversion: ""
+    ))
+
   private lazy var pledgeCTAContainerView: NoShippingPledgeViewCTAContainerView = {
     NoShippingPledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -274,8 +280,14 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.viewModel.outputs.configureEstimatedShippingView
       .observeForUI()
-      .observeValues { [weak self] strings in
-        self?.configureEstimatedShippingView(with: strings)
+      .observeValues { [weak self] string in
+        self?.configureEstimatedShippingView(with: (string, "About ..."))
+      }
+
+    self.viewModel.outputs.estimatedShippingViewHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.estimatedShippingViewContainer.view.isHidden = isHidden
       }
 
     self.viewModel.outputs.configurePledgeViewCTAContainerView
@@ -429,16 +441,17 @@ final class NoShippingPledgeViewController: UIViewController,
 
   private func configureEstimatedShippingView(with strings: (String, String)) {
     let (estimatedCost, aboutConversion) = strings
-
-    let estimatedShippingView = UIHostingController(rootView: EstimatedShippingCheckoutView(
+    let estimatedShippingView = EstimatedShippingCheckoutView(
       estimatedCost: estimatedCost,
       aboutConversion: aboutConversion
-    ))
-    estimatedShippingView.view.clipsToBounds = true
-    estimatedShippingView.view.layer.masksToBounds = true
-    estimatedShippingView.view.layer.cornerRadius = Layout.Style.cornerRadius
+    )
 
-    self.rootInsetStackView.addArrangedSubview(estimatedShippingView.view)
+    self.estimatedShippingViewContainer.rootView = estimatedShippingView
+    self.estimatedShippingViewContainer.view.clipsToBounds = true
+    self.estimatedShippingViewContainer.view.layer.masksToBounds = true
+    self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
+
+    self.rootInsetStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
   }
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {

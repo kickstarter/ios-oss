@@ -42,7 +42,7 @@ public protocol NoShippingPledgeViewModelInputs {
 
 public protocol NoShippingPledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
+  var configureEstimatedShippingView: Signal<String, Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
@@ -54,6 +54,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
+  var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
@@ -307,8 +308,17 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
     )
 
-    self.configureEstimatedShippingView = initialData
-      .map { _ in ("$12 - $20", "About $15-$22") }
+    self.configureEstimatedShippingView = Signal.combineLatest(baseReward, selectedShippingRule)
+      .map { reward, shippingRule in
+        guard let rule = shippingRule else { return "" }
+
+        return estimatedShippingText(for: reward, selectedShippingRule: rule)
+      }
+
+    self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
+      .map { estimatedShippingViewTest, reward in
+        reward.shipping.enabled == false || estimatedShippingViewTest.isEmpty
+      }
 
     // MARK: - Apple Pay
 
@@ -995,7 +1005,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configureEstimatedShippingView: Signal<(String, String), Never>
+  public let configureEstimatedShippingView: Signal<String, Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
@@ -1007,6 +1017,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
+  public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
