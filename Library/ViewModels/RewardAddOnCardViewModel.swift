@@ -103,8 +103,11 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .map(itemsLabelAttributedText)
       .skipNil()
 
+    // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
     self.estimatedShippingLabelText = Signal.combineLatest(reward, shippingRule)
-      .map { reward, shippingRule in estimatedShippingText(for: reward, selectedShippingRule: shippingRule) }
+      .map { reward, shippingRule in
+        "About \(estimatedShippingText(for: reward, selectedShippingRule: shippingRule))"
+      }
 
     self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
       .map { reward, text in
