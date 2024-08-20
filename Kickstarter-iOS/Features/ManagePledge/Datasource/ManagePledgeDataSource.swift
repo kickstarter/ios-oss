@@ -13,7 +13,7 @@ internal final class ManagePledgeDataSource: ValueCellDataSource {
     self.clearValues()
 
     let values = rewards.map { reward -> RewardCardViewData in
-      (project, reward, .manage)
+      (project, reward, .manage, nil)
     }
 
     self.set(

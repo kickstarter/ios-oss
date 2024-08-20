@@ -13,7 +13,7 @@ final class RewardsCollectionViewDataSourceTests: XCTestCase {
 
   func testLoadRewards() {
     let project = Project.cosmicSurgery
-    let rewardsData = project.rewards.map { reward -> RewardCardViewData in (project, reward, .pledge) }
+    let rewardsData = project.rewards.map { reward -> RewardCardViewData in (project, reward, .pledge, nil) }
 
     self.dataSource.load(rewardsData)
 

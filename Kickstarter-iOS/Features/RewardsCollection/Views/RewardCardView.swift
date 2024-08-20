@@ -37,6 +37,10 @@ public final class RewardCardView: UIView {
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let titleStackView = UIStackView(frame: .zero)
 
+  private let estimatedShippingStackView = UIStackView(frame: .zero)
+  private let estimatedShippingTitleLabel = UILabel(frame: .zero)
+  private let estimatedShippingLabel = UILabel(frame: .zero)
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -62,7 +66,7 @@ public final class RewardCardView: UIView {
     _ = self
       |> checkoutWhiteBackgroundStyle
 
-    _ = [
+    var stackViews = [
       self.baseStackView,
       self.priceStackView,
       self.descriptionStackView,
@@ -70,6 +74,12 @@ public final class RewardCardView: UIView {
       self.estimatedDeliveryStackView,
       self.rewardLocationStackView
     ]
+
+    if featureNoShippingAtCheckout() {
+      stackViews.insert(self.estimatedShippingStackView, at: 4)
+    }
+
+    _ = stackViews
       ||> { stackView in
         stackView
           |> sectionStackViewStyle
@@ -123,6 +133,28 @@ public final class RewardCardView: UIView {
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
+    _ = self.estimatedShippingStackView
+      |> includedItemsStackViewStyle
+
+    _ = self.estimatedShippingTitleLabel
+      |> baseRewardLabelStyle
+      |> sectionTitleLabelStyle
+
+    // TODO: Translate string
+    _ = self.estimatedShippingTitleLabel
+      |> \.text %~ { _ in "Estimated Shipping" }
+      |> \.textColor .~ UIColor.ksr_support_400
+
+    _ = self.estimatedShippingLabel
+      |> baseRewardLabelStyle
+      |> sectionBodyLabelStyle
+
+    _ = self.estimatedShippingStackView.subviews
+      .dropFirst()
+      .compactMap { $0 as? UILabel }
+      ||> baseRewardLabelStyle
+      ||> sectionBodyLabelStyle
+
     _ = self.rewardLocationStackView
       |> includedItemsStackViewStyle
 
@@ -166,6 +198,8 @@ public final class RewardCardView: UIView {
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
+    self.estimatedShippingStackView.rac.hidden = self.viewModel.outputs.estimatedShippingStackViewHidden
+    self.estimatedShippingLabel.rac.text = self.viewModel.outputs.estimatedShippingLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.rewardLocationStackView.rac.hidden = self.viewModel.outputs.rewardLocationStackViewHidden
@@ -209,7 +243,7 @@ public final class RewardCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    let baseSubviews = [
+    var baseSubviews = [
       self.titleStackView,
       self.rewardTitleLabel,
       self.descriptionStackView,
@@ -219,6 +253,10 @@ public final class RewardCardView: UIView {
       self.pillsView
     ]
 
+    if featureNoShippingAtCheckout() {
+      baseSubviews.insert(self.estimatedShippingStackView, at: 4)
+    }
+
     _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -227,6 +265,11 @@ public final class RewardCardView: UIView {
 
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    if featureNoShippingAtCheckout() {
+      _ = ([self.estimatedShippingTitleLabel, self.estimatedShippingLabel], self.estimatedShippingStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+    }
 
     _ = ([self.estimatedDeliveryTitleLabel, self.estimatedDeliveryDateLabel], self.estimatedDeliveryStackView)
       |> ksr_addArrangedSubviewsToStackView()

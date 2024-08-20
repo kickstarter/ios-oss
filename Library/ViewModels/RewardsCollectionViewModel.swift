@@ -71,7 +71,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map { project, rewards in
         rewards
           .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge) }
+          .map { reward in (project, reward, .pledge, nil) }
       }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
