@@ -8,6 +8,7 @@ struct PPOProjectDetails: View {
   let imageUrl: URL?
   let title: String?
   let pledge: GraphAPI.MoneyFragment
+  let leadingColumnWidth: CGFloat
 
   var body: some View {
     HStack {
@@ -15,7 +16,7 @@ struct PPOProjectDetails: View {
         .resizable()
         .clipShape(Constants.imageShape)
         .aspectRatio(Constants.imageAspectRatio, contentMode: Constants.imageContentMode)
-        .frame(width: Constants.imageWidth)
+        .frame(width: self.leadingColumnWidth)
       Spacer()
         .frame(width: Constants.spacing)
       VStack {
@@ -63,16 +64,22 @@ struct PPOProjectDetails: View {
 
 #Preview {
   VStack {
-    PPOProjectDetails(
-      imageUrl: URL(string: "http:///")!,
-      title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-      pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$")
-    )
-    PPOProjectDetails(
-      imageUrl: URL(string: "http:///")!,
-      title: "One line",
-      pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$")
-    )
+    GeometryReader(content: { geometry in
+      PPOProjectDetails(
+        imageUrl: URL(string: "http:///")!,
+        title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+        pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
+        leadingColumnWidth: geometry.size.width / 4
+      )
+    })
+    GeometryReader(content: { geometry in
+      PPOProjectDetails(
+        imageUrl: URL(string: "http:///")!,
+        title: "One line",
+        pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
+        leadingColumnWidth: geometry.size.width / 4
+      )
+    })
   }
   .padding(28)
 }
