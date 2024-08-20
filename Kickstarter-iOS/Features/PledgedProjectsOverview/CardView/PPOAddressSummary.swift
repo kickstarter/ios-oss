@@ -3,6 +3,7 @@ import SwiftUI
 
 struct PPOAddressSummary: View {
   let address: String
+  let leadingColumnWidth: CGFloat
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -11,7 +12,7 @@ struct PPOAddressSummary: View {
         .lineLimit(nil)
         .font(Font(Constants.labelFont))
         .foregroundStyle(Color(Constants.labelColor))
-        .frame(width: Constants.labelWidth, alignment: .leading)
+        .frame(width: self.leadingColumnWidth, alignment: .leading)
         .multilineTextAlignment(.leading)
 
       Text(self.address)
@@ -25,7 +26,6 @@ struct PPOAddressSummary: View {
   }
 
   private enum Constants {
-    static let labelWidth: CGFloat = 85
     static let labelFont = UIFont.ksr_caption1().bolded
     static let labelColor = UIColor.ksr_black
     static let addressFont = UIFont.ksr_caption1()
@@ -35,12 +35,17 @@ struct PPOAddressSummary: View {
 
 #Preview {
   VStack(spacing: 28) {
-    PPOAddressSummary(address: """
-      Firsty Lasty
-      123 First Street, Apt #5678
-      Los Angeles, CA 90025-1234
-      United States
-    """)
+    GeometryReader(content: { geometry in
+      PPOAddressSummary(
+        address: """
+          Firsty Lasty
+          123 First Street, Apt #5678
+          Los Angeles, CA 90025-1234
+          United States
+        """,
+        leadingColumnWidth: geometry.size.width / 4
+      )
+    })
   }
   .padding(28)
 }
