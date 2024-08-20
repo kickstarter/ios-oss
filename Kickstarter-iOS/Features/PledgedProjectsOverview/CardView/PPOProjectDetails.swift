@@ -9,55 +9,46 @@ struct PPOProjectDetails: View {
   let title: String?
   let pledge: GraphAPI.MoneyFragment
   let leadingColumnWidth: CGFloat
+  @EnvironmentObject var style: PPOCardStyles
 
   var body: some View {
     HStack {
       KFImage(self.imageUrl)
         .resizable()
-        .clipShape(Constants.imageShape)
-        .aspectRatio(Constants.imageAspectRatio, contentMode: Constants.imageContentMode)
+        .clipShape(self.style.projectDetails.imageShape)
+        .aspectRatio(
+          self.style.projectDetails.imageAspectRatio,
+          contentMode: self.style.projectDetails.imageContentMode
+        )
         .frame(width: self.leadingColumnWidth)
       Spacer()
-        .frame(width: Constants.spacing)
+        .frame(width: self.style.projectDetails.spacing)
       VStack {
         if let title {
           Text(title)
-            .font(Font(Constants.titleFont))
-            .foregroundStyle(Color(Constants.titleTextColor))
-            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
-            .lineLimit(Constants.titleLineLimit)
+            .font(Font(self.style.projectDetails.titleFont))
+            .foregroundStyle(Color(self.style.projectDetails.titleTextColor))
+            .frame(
+              maxWidth: self.style.projectDetails.textMaxWidth,
+              alignment: self.style.projectDetails.textAlignment
+            )
+            .lineLimit(self.style.projectDetails.titleLineLimit)
         }
         if let symbol = pledge.symbol, let amount = pledge.amount {
           // TODO: Localize
           Text("\(symbol)\(amount) pledged")
-            .font(Font(Constants.subtitleFont))
-            .foregroundStyle(Color(Constants.subtitleTextColor))
-            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
-            .lineLimit(Constants.subtitleLineLimit)
+            .font(Font(self.style.projectDetails.subtitleFont))
+            .foregroundStyle(Color(self.style.projectDetails.subtitleTextColor))
+            .frame(
+              maxWidth: self.style.projectDetails.textMaxWidth,
+              alignment: self.style.projectDetails.textAlignment
+            )
+            .lineLimit(self.style.projectDetails.subtitleLineLimit)
         }
       }
     }
     .fixedSize(horizontal: false, vertical: true)
     .frame(maxWidth: .infinity)
-  }
-
-  private enum Constants {
-    static let spacing: CGFloat = Styles.grid(1)
-
-    static let imageShape = RoundedRectangle(cornerRadius: Styles.cornerRadius)
-    static let imageAspectRatio: CGFloat = 16 / 9
-    static let imageContentMode = ContentMode.fit
-
-    static let titleFont = UIFont.ksr_caption1().bolded
-    static let titleTextColor = UIColor.ksr_black
-    static let titleLineLimit = 2
-
-    static let subtitleFont = UIFont.ksr_footnote()
-    static let subtitleTextColor = UIColor.ksr_support_400
-    static let subtitleLineLimit = 1
-
-    static let textMaxWidth = CGFloat.infinity
-    static let textAlignment = Alignment.leading
   }
 }
 
@@ -81,4 +72,5 @@ struct PPOProjectDetails: View {
     })
   }
   .padding(28)
+  .environmentObject(PPOCardStyles())
 }

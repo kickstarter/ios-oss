@@ -4,6 +4,7 @@ import SwiftUI
 
 class PPOCardStyles: ObservableObject {
   let alert = Alert()
+  let projectDetails = ProjectDetails()
 
   class Alert: ObservableObject {
     let warningForegroundColor = UIColor.ksr_support_400
@@ -20,5 +21,24 @@ class PPOCardStyles: ObservableObject {
     let cornerRadius: CGFloat = 6
     let font = UIFont.ksr_caption1().bolded
     let padding = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 8)
+  }
+
+  class ProjectDetails: ObservableObject {
+    let spacing: CGFloat = Styles.grid(1)
+
+    let imageShape = RoundedRectangle(cornerRadius: Styles.cornerRadius)
+    let imageAspectRatio: CGFloat = 16 / 9
+    let imageContentMode = ContentMode.fit
+
+    let titleFont = UIFont.ksr_caption1().bolded
+    let titleTextColor = UIColor.ksr_black
+    let titleLineLimit = 2
+
+    let subtitleFont = UIFont.ksr_footnote()
+    let subtitleTextColor = UIColor.ksr_support_400
+    let subtitleLineLimit = 1
+
+    let textMaxWidth = CGFloat.infinity
+    let textAlignment = Alignment.leading
   }
 }
