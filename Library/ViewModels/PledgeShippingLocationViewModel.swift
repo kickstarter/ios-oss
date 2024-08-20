@@ -54,7 +54,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       .map { $0.3 }
 
     let shippingShouldBeginLoading = reward
-      .map { $0.shipping.enabled }
+      .map { featureNoShippingAtCheckout() ? true : $0.shipping.enabled }
 
     let shippingRulesEvent = Signal.zip(project, reward)
       .filter { _, reward in featureNoShippingAtCheckout() ? true : reward.shipping.enabled }
