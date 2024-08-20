@@ -42,6 +42,7 @@ public protocol NoShippingPledgeViewModelInputs {
 
 public protocol NoShippingPledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
+  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
@@ -305,6 +306,9 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       self.termsOfUseTappedSignal,
       self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
     )
+
+    self.configureEstimatedShippingView = initialData
+      .map { _ in ("$12 - $20", "About $15-$22") }
 
     // MARK: - Apple Pay
 
@@ -991,6 +995,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
+  public let configureEstimatedShippingView: Signal<(String, String), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>

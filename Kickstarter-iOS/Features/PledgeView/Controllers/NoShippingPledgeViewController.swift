@@ -3,6 +3,7 @@ import Library
 import PassKit
 import Prelude
 import Stripe
+import SwiftUI
 import UIKit
 
 private enum Layout {
@@ -183,7 +184,10 @@ final class NoShippingPledgeViewController: UIViewController,
       ),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
+      self.rootScrollView.bottomAnchor.constraint(
+        equalTo: self.pledgeCTAContainerView.topAnchor,
+        constant: -Styles.grid(3)
+      ),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
@@ -266,6 +270,12 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] data in
         self?.pledgeAmountSummaryViewController.configureWith(data)
+      }
+
+    self.viewModel.outputs.configureEstimatedShippingView
+      .observeForUI()
+      .observeValues { [weak self] strings in
+        self?.configureEstimatedShippingView(with: strings)
       }
 
     self.viewModel.outputs.configurePledgeViewCTAContainerView
@@ -415,6 +425,20 @@ final class NoShippingPledgeViewController: UIViewController,
       return
     }
     self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
+  }
+
+  private func configureEstimatedShippingView(with strings: (String, String)) {
+    let (estimatedCost, aboutConversion) = strings
+
+    let estimatedShippingView = UIHostingController(rootView: EstimatedShippingCheckoutView(
+      estimatedCost: estimatedCost,
+      aboutConversion: aboutConversion
+    ))
+    estimatedShippingView.view.clipsToBounds = true
+    estimatedShippingView.view.layer.masksToBounds = true
+    estimatedShippingView.view.layer.cornerRadius = Layout.Style.cornerRadius
+
+    self.rootInsetStackView.addArrangedSubview(estimatedShippingView.view)
   }
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
