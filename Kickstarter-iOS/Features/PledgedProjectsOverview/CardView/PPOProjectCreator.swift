@@ -11,8 +11,8 @@ struct PPOProjectCreator: View {
       Text("Created by **\(self.creatorName)**")
         .font(Font(Constants.createdByFont))
         .foregroundStyle(Color(Constants.createdByColor))
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .lineLimit(1)
+        .frame(maxWidth: Constants.labelMaxWidth, alignment: Constants.labelAlignment)
+        .lineLimit(Constants.textLineLimit)
 
       Button(action: {
         // TODO: Action
@@ -22,11 +22,11 @@ struct PPOProjectCreator: View {
       })
       .font(Font(Constants.sendMessageFont))
       .foregroundStyle(Color(Constants.sendMessageColor))
-      .frame(alignment: .trailing)
-      .lineLimit(1)
+      .frame(alignment: Constants.buttonAlignment)
+      .lineLimit(Constants.textLineLimit)
 
       Spacer()
-        .frame(width: Styles.grid(1))
+        .frame(width: Constants.spacerWidth)
 
       Image("chevron-right")
         .resizable()
@@ -45,6 +45,11 @@ struct PPOProjectCreator: View {
     static let sendMessageColor = UIColor.ksr_create_700
     static let chevronSize: CGFloat = 10
     static let chevronOffset = CGSize(width: 0, height: 2)
+    static let spacerWidth = Styles.grid(1)
+    static let textLineLimit = 1
+    static let labelMaxWidth = CGFloat.infinity
+    static let labelAlignment = Alignment.leading
+    static let buttonAlignment = Alignment.trailing
   }
 }
 
