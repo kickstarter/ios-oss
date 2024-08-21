@@ -1045,6 +1045,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     let expectedGoToPledgeData = PledgeViewData(
       project: project,
       rewards: [reward],
+      bonusSupport: 0.0,
       selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: shippingRule.location.id,
@@ -1055,7 +1056,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.goToPledge.assertValues([expectedGoToPledgeData])
   }
 
-  func testGoToPledge_AddOnsIncluded() {
+  func testGoToPledge_AddOnsAndBonus() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
 
@@ -1123,6 +1124,15 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
 
+    let bonusAmount = 20.0
+    let pledgeAmountData = PledgeAmountData(
+      amount: bonusAmount,
+      min: bonusAmount,
+      max: bonusAmount,
+      isValid: true
+    )
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
     self.goToPledge.assertValueCount(0)
 
     self.vm.inputs.continueButtonTapped()
@@ -1142,6 +1152,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.goToPledge.values.last?.rewards.count,
       4
     )
+    XCTAssertEqual(self.goToPledge.values.last?.bonusSupport, bonusAmount)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)

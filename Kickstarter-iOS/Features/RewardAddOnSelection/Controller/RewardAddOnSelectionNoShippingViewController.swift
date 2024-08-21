@@ -262,9 +262,9 @@ extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDeleg
 extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
-    didUpdateWith _: PledgeAmountData
+    didUpdateWith data: PledgeAmountData
   ) {
-    // TODO:
+    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 

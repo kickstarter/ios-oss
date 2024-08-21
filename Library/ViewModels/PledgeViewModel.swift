@@ -39,11 +39,55 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 public struct PledgeViewData: Equatable {
   public let project: Project
   public let rewards: [Reward]
+  public let bonusSupport: Double?
   public let selectedShippingRule: ShippingRule?
   public let selectedQuantities: SelectedRewardQuantities
   public let selectedLocationId: Int?
   public let refTag: RefTag?
   public let context: PledgeViewContext
+
+  // Convenience initializer to allow `bonusSupport` to default to `nil`.
+  // TODO: Delete this when cleaning up the noShippingAtCheckout feature.
+  init(
+    project: Project,
+    rewards: [Reward],
+    selectedShippingRule: ShippingRule?,
+    selectedQuantities: SelectedRewardQuantities,
+    selectedLocationId: Int?,
+    refTag: RefTag?,
+    context: PledgeViewContext
+  ) {
+    self.project = project
+    self.rewards = rewards
+    self.bonusSupport = nil
+    self.selectedShippingRule = selectedShippingRule
+    self.selectedQuantities = selectedQuantities
+    self.selectedLocationId = selectedLocationId
+    self.refTag = refTag
+    self.context = context
+  }
+
+  // Explicitly define initializer for all fields so that it coexists with the convenience
+  // initializer. Can be deleted when the other initializer is no longer used.
+  init(
+    project: Project,
+    rewards: [Reward],
+    bonusSupport: Double?,
+    selectedShippingRule: ShippingRule?,
+    selectedQuantities: SelectedRewardQuantities,
+    selectedLocationId: Int?,
+    refTag: RefTag?,
+    context: PledgeViewContext
+  ) {
+    self.project = project
+    self.rewards = rewards
+    self.bonusSupport = bonusSupport
+    self.selectedShippingRule = selectedShippingRule
+    self.selectedQuantities = selectedQuantities
+    self.selectedLocationId = selectedLocationId
+    self.refTag = refTag
+    self.context = context
+  }
 }
 
 public protocol PledgeViewModelInputs {
