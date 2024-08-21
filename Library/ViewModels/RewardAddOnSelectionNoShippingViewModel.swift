@@ -156,6 +156,28 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       }
     )
 
+    // MARK: - Bonus support
+
+    /// Initial pledge amount is zero if not backed.
+    let initialAdditionalPledgeAmount = project.map {
+      $0.personalization.backing?.bonusAmount ?? 0.0
+    }
+
+    self.configurePledgeAmountViewWithData = Signal.combineLatest(
+      project,
+      baseReward,
+      initialAdditionalPledgeAmount
+    )
+    .map { project, reward, initialPledgeAmount in
+      (project, reward, initialPledgeAmount)
+    }
+
+    /// Called when pledge or bonus is updated by backer
+    let additionalPledgeAmount = Signal.merge(
+      initialAdditionalPledgeAmount,
+      self.pledgeAmountDataSignal.map { $0.amount }
+    )
+
     let totalSelectedAddOnsQuantity = Signal.combineLatest(
       latestSelectedQuantities,
       baseReward.map(\.id),
@@ -171,11 +193,17 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
         }
     }
 
-    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRule)
-      .map(isValid)
+    let enableContinueButton = Signal.combineLatest(
+      project,
+      initialAdditionalPledgeAmount,
+      self.pledgeAmountDataSignal,
+      latestSelectedQuantities,
+      shippingRule
+    )
+    .map(isValid)
 
     self.configureContinueCTAViewWithData = Signal.merge(
-      Signal.combineLatest(totalSelectedAddOnsQuantity, selectionChanged)
+      Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton)
         .map { qty, isValid in (qty, isValid, false) },
       configData.mapConst((0, true, true))
     )
@@ -195,28 +223,6 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     let selectedLocationId = Signal.merge(
       initialLocationId,
       shippingRule.map { $0?.location.id }
-    )
-
-    // MARK: - Bonus support
-
-    /// Initial pledge amount is zero if not backed.
-    let initialPledgeAmount = project.map {
-      $0.personalization.backing?.bonusAmount ?? 0.0
-    }
-
-    self.configurePledgeAmountViewWithData = Signal.combineLatest(
-      project,
-      baseReward,
-      initialPledgeAmount
-    )
-    .map { project, reward, initialPledgeAmount in
-      (project, reward, initialPledgeAmount)
-    }
-
-    /// Called when pledge or bonus is updated by backer
-    let additionalPledgeAmount = Signal.merge(
-      initialPledgeAmount,
-      self.pledgeAmountDataSignal.map { $0.amount }
     )
 
     self.goToPledge = Signal.combineLatest(
@@ -481,11 +487,18 @@ private func addOnReward(
 
 private func isValid(
   project: Project,
+  initialAdditionalPledgeAmount: Double,
+  pledgeAmountData: PledgeAmountData,
   latestSelectedQuantities: SelectedRewardQuantities,
   selectedShippingRule: ShippingRule?
 ) -> Bool {
+  if !pledgeAmountData.isValid { return false }
+
   guard let backing = project.personalization.backing else { return true }
 
-  return latestSelectedQuantities != selectedRewardQuantities(in: backing)
+  let addOnChanged = latestSelectedQuantities != selectedRewardQuantities(in: backing)
     || backing.locationId != selectedShippingRule?.location.id
+  let bonusChanged = pledgeAmountData.amount != initialAdditionalPledgeAmount
+
+  return addOnChanged || bonusChanged
 }
