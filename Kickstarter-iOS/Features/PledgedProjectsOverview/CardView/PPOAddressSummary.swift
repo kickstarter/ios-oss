@@ -9,25 +9,19 @@ struct PPOAddressSummary: View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Shipping address")
-        .font(Font(Constants.labelFont))
-        .foregroundStyle(Color(Constants.labelColor))
+        .font(Font(PPOCardStyles.title.font))
+        .foregroundStyle(Color(PPOCardStyles.title.color))
         .frame(width: self.leadingColumnWidth, alignment: Constants.textAlignment)
-        .multilineTextAlignment(Constants.textAlignment)
 
       Text(self.address)
-        .multilineTextAlignment(Constants.textAlignment)
-        .font(Font(Constants.addressFont))
-        .foregroundStyle(Color(Constants.addressColor))
+        .font(Font(PPOCardStyles.body.font))
+        .foregroundStyle(Color(PPOCardStyles.body.color))
         .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
     }
     .frame(maxWidth: Constants.maxWidth)
   }
 
   private enum Constants {
-    static let labelFont = UIFont.ksr_caption1().bolded
-    static let labelColor = UIColor.ksr_black
-    static let addressFont = UIFont.ksr_caption1()
-    static let addressColor = UIColor.ksr_black
     static let textAlignment = Alignment.leadingLastTextBaseline
     static let maxWidth = CGFloat.infinity
   }

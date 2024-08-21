@@ -23,6 +23,11 @@ enum PPOCardStyles {
     color: UIColor.ksr_support_400
   )
 
+  static let body = (
+    font: UIFont.ksr_caption1(),
+    color: UIColor.ksr_black
+  )
+
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice
 }
