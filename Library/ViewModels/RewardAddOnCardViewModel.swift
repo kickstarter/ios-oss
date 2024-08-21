@@ -28,6 +28,8 @@ public protocol RewardAddOnCardViewModelOutputs {
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
+  var estimatedShippingLabelText: Signal<String, Never> { get }
+  var estimatedShippingStackViewHidden: Signal<Bool, Never> { get }
   var notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never> { get }
   var pillsViewHidden: Signal<Bool, Never> { get }
   var quantityLabelText: Signal<String, Never> { get }
@@ -55,6 +57,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     let project: Signal<Project, Never> = configData.map(\.project)
     let reward: Signal<Reward, Never> = configData.map(\.reward)
     let selectedQuantities: Signal<SelectedRewardQuantities, Never> = configData.map(\.selectedQuantities)
+    let shippingRule: Signal<ShippingRule, Never> = configData.map(\.shippingRule).skipNil()
 
     let projectAndReward = Signal.zip(project, reward)
     let projectRewardShippingRule = configData.map {
@@ -99,6 +102,14 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     self.includedItemsLabelAttributedText = reward.map(\.rewardsItems)
       .map(itemsLabelAttributedText)
       .skipNil()
+
+    self.estimatedShippingLabelText = Signal.combineLatest(reward, shippingRule)
+      .map { reward, shippingRule in estimatedShippingText(for: reward, selectedShippingRule: shippingRule) }
+
+    self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
+      .map { reward, text in
+        reward.shipping.enabled == false || text.isEmpty
+      }
 
     self.reloadPills = projectAndReward.map(pillValues(project:reward:))
     self.pillsViewHidden = self.reloadPills.map { $0.isEmpty }
@@ -187,6 +198,8 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
+  public let estimatedShippingLabelText: Signal<String, Never>
+  public let estimatedShippingStackViewHidden: Signal<Bool, Never>
   public let notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never>
   public let pillsViewHidden: Signal<Bool, Never>
   public let quantityLabelText: Signal<String, Never>

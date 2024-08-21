@@ -70,18 +70,23 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       .skipNil()
       .take(first: 1)
 
-    self.reloadDataWithValues = Signal.combineLatest(project, rewards, filteredByLocationRewards)
-      .map { project, rewards, filteredByLocationRewards in
-        if !filteredByLocationRewards.isEmpty {
-          filteredByLocationRewards
-            .filter { reward in isStartDateBeforeToday(for: reward) }
-            .map { reward in (project, reward, .pledge) }
-        } else {
-          rewards
-            .filter { reward in isStartDateBeforeToday(for: reward) }
-            .map { reward in (project, reward, .pledge) }
-        }
+    self.reloadDataWithValues = Signal.combineLatest(
+      project,
+      rewards,
+      filteredByLocationRewards,
+      self.shippingRuleSelectedSignal.signal
+    )
+    .map { project, rewards, filteredByLocationRewards, shippingRule in
+      if !filteredByLocationRewards.isEmpty {
+        filteredByLocationRewards
+          .filter { reward in isStartDateBeforeToday(for: reward) }
+          .map { reward in (project, reward, .pledge, shippingRule) }
+      } else {
+        rewards
+          .filter { reward in isStartDateBeforeToday(for: reward) }
+          .map { reward in (project, reward, .pledge, nil) }
       }
+    }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
       .map { $0.count }
