@@ -1,8 +1,8 @@
+import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
   let alert: Alert
-  @EnvironmentObject var style: PPOCardStyles
 
   var body: some View {
     HStack {
@@ -10,45 +10,45 @@ struct PPOAlertFlag: View {
         .renderingMode(.template)
         .aspectRatio(contentMode: .fit)
         .foregroundStyle(self.foregroundColor)
-        .frame(width: self.style.alert.imageSize, height: self.style.alert.imageSize)
+        .frame(width: Constants.imageSize, height: Constants.imageSize)
       Spacer()
-        .frame(width: self.style.alert.spacerWidth)
+        .frame(width: Constants.spacerWidth)
       Text(self.alert.message)
-        .font(Font(self.style.alert.font))
+        .font(Font(PPOCardStyles.title.font))
         .foregroundStyle(self.foregroundColor)
     }
-    .padding(self.style.alert.padding)
+    .padding(Constants.padding)
     .background(self.backgroundColor)
     .clipShape(RoundedRectangle(cornerSize: CGSize(
-      width: self.style.alert.cornerRadius,
-      height: self.style.alert.cornerRadius
+      width: Constants.cornerRadius,
+      height: Constants.cornerRadius
     )))
   }
 
   var image: Image {
     switch self.alert.type {
     case .time:
-      Image(self.style.alert.timeImage)
+      Image(PPOCardStyles.timeImage)
     case .alert:
-      Image(self.style.alert.alertImage)
+      Image(PPOCardStyles.alertImage)
     }
   }
 
   var foregroundColor: Color {
     switch self.alert.icon {
     case .warning:
-      Color(uiColor: self.style.alert.warningForegroundColor)
+      Color(uiColor: PPOCardStyles.warningColor.foreground)
     case .alert:
-      Color(uiColor: self.style.alert.alertForegroundColor)
+      Color(uiColor: PPOCardStyles.alertColor.foreground)
     }
   }
 
   var backgroundColor: Color {
     switch self.alert.icon {
     case .warning:
-      Color(uiColor: self.style.alert.warningBackgroundColor)
+      Color(uiColor: PPOCardStyles.warningColor.background)
     case .alert:
-      Color(uiColor: self.style.alert.alertBackgroundColor)
+      Color(uiColor: PPOCardStyles.alertColor.background)
     }
   }
 
@@ -89,6 +89,14 @@ struct PPOAlertFlag: View {
       }
     }
   }
+
+  private enum Constants {
+    static let imageSize: CGFloat = 18
+    static let spacerWidth: CGFloat = 4
+    static let cornerRadius: CGFloat = 6
+    static let font = UIFont.ksr_caption1().bolded
+    static let padding = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 8)
+  }
 }
 
 #Preview("Stack of flags") {
@@ -99,5 +107,4 @@ struct PPOAlertFlag: View {
     PPOAlertFlag(alert: .init(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"))
     PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Card needs authentication"))
   }
-  .environmentObject(PPOCardStyles())
 }
