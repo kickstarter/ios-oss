@@ -38,8 +38,15 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.noShippingAtCheckout.rawValue: true]
+
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: mockService) {
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        remoteConfigClient: mockRemoteConfigClient
+      ) {
         let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
@@ -137,8 +144,15 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.noShippingAtCheckout.rawValue: true]
+
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: mockService) {
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        remoteConfigClient: mockRemoteConfigClient
+      ) {
         let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
         let data = PledgeViewData(
           project: project,
@@ -174,8 +188,15 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.noShippingAtCheckout.rawValue: true]
+
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: mockService) {
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        remoteConfigClient: mockRemoteConfigClient
+      ) {
         let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
@@ -221,8 +242,15 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.noShippingAtCheckout.rawValue: true]
+
     orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: mockService, language: language) {
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        remoteConfigClient: mockRemoteConfigClient
+      ) {
         let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
