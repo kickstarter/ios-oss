@@ -6,31 +6,76 @@ import SwiftUI
 struct PPOProjectCard: View {
   @ObservedObject var viewModel: PPOProjectCardViewModel
 
+  @State private var isUnread: Bool = false
+  @State private var alerts: [PPOProjectCardAlert] = []
+  @State private var imageURL: URL? = nil
+  @State private var title: String? = ""
+  @State private var pledge: GraphAPI.MoneyFragment? = nil
+  @State private var creatorName: String? = nil
+  @State private var address: String? = nil
+  @State private var primaryAction: PPOProjectCardAction? = nil
+  @State private var secondaryAction: PPOProjectCardAction? = nil
+  @State private var parentSize: CGSize = .zero
+
   var body: some View {
     VStack(spacing: Constants.spacing) {
       self.flagList
-      self.projectDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.projectDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.divider
       self.projectCreator
       self.divider
-      self.addressDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.actionButtons
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
+
     // round rectangle around the card
     .clipShape(self.cardRectangle)
     .overlay(self.cardRectangle.strokeBorder(
       Color(uiColor: Constants.borderColor),
       lineWidth: Constants.borderWidth
     ))
+
     // upper right corner badge
     .overlay(
       alignment: Constants.badgeAlignment,
-      content: { self.badge.opacity(self.viewModel.isUnread ? 1 : 0) }
+      content: { self.badge.opacity(self.isUnread ? 1 : 0) }
     )
+
     // insets
     .padding(.horizontal, Constants.outerPadding)
+
+    // observation
+    .onReceive(self.viewModel.isUnread, perform: { isUnread in
+      self.isUnread = isUnread
+    })
+    .onReceive(self.viewModel.alerts, perform: { alerts in
+      self.alerts = alerts
+    })
+    .onReceive(self.viewModel.imageURL, perform: { imageURL in
+      self.imageURL = imageURL
+    })
+    .onReceive(self.viewModel.title, perform: { title in
+      self.title = title
+    })
+    .onReceive(self.viewModel.pledge, perform: { pledge in
+      self.pledge = pledge
+    })
+    .onReceive(self.viewModel.creatorName, perform: { creatorName in
+      self.creatorName = creatorName
+    })
+    .onReceive(self.viewModel.address, perform: { address in
+      self.address = address
+    })
+    .onReceive(self.viewModel.actions, perform: { actions in
+      let (primary, secondary) = actions
+      self.primaryAction = primary
+      self.secondaryAction = secondary
+    })
+    .onReceive(self.viewModel.parentSize, perform: { size in
+      self.parentSize = size
+    })
   }
 
   @ViewBuilder
@@ -48,10 +93,10 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var flagList: some View {
-    if self.viewModel.alerts.isEmpty == false {
+    if self.alerts.isEmpty == false {
       HStack {
         VStack(alignment: .leading) {
-          ForEach(self.viewModel.alerts) { alert in
+          ForEach(self.alerts) { alert in
             PPOAlertFlag(alert: alert)
           }
         }
@@ -63,24 +108,28 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
-    PPOProjectDetails(
-      imageUrl: self.viewModel.imageURL,
-      title: self.viewModel.title,
-      pledge: self.viewModel.pledge,
-      leadingColumnWidth: leadingColumnWidth
-    )
-    .padding([.horizontal])
+    if let title = self.title, let pledge = self.pledge, let imageURL = self.imageURL {
+      PPOProjectDetails(
+        imageUrl: imageURL,
+        title: title,
+        pledge: pledge,
+        leadingColumnWidth: leadingColumnWidth
+      )
+      .padding([.horizontal])
+    }
   }
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(creatorName: self.viewModel.creatorName)
-      .padding([.horizontal])
+    if let creatorName = self.creatorName {
+      PPOProjectCreator(creatorName: creatorName)
+        .padding([.horizontal])
+    }
   }
 
   @ViewBuilder
   private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
-    if let address = self.viewModel.address {
+    if let address = self.address {
       PPOAddressSummary(address: address, leadingColumnWidth: leadingColumnWidth)
         .padding([.horizontal])
     }
@@ -111,11 +160,13 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var actionButtons: some View {
     HStack {
-      if let action = self.viewModel.secondaryAction {
-        self.button(for: action)
+      if let secondaryAction = self.secondaryAction {
+        self.button(for: secondaryAction)
       }
 
-      self.button(for: self.viewModel.primaryAction)
+      if let primaryAction = self.primaryAction {
+        self.button(for: primaryAction)
+      }
     }
     .padding([.horizontal])
   }

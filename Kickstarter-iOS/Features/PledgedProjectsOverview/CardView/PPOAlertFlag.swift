@@ -2,7 +2,7 @@ import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
-  let alert: PPOProjectCardViewModel.Alert
+  let alert: PPOProjectCardAlert
 
   var body: some View {
     HStack {
