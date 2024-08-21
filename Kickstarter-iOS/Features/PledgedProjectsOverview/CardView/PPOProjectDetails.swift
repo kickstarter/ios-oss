@@ -15,24 +15,33 @@ struct PPOProjectDetails: View {
       KFImage(self.imageUrl)
         .resizable()
         .clipShape(Constants.imageShape)
-        .aspectRatio(Constants.imageAspectRatio, contentMode: Constants.imageContentMode)
+        .aspectRatio(
+          Constants.imageAspectRatio,
+          contentMode: Constants.imageContentMode
+        )
         .frame(width: self.leadingColumnWidth)
       Spacer()
         .frame(width: Constants.spacing)
       VStack {
         if let title {
           Text(title)
-            .font(Font(Constants.titleFont))
-            .foregroundStyle(Color(Constants.titleTextColor))
-            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
+            .font(Font(PPOCardStyles.title.font))
+            .foregroundStyle(Color(PPOCardStyles.title.color))
+            .frame(
+              maxWidth: Constants.textMaxWidth,
+              alignment: Constants.textAlignment
+            )
             .lineLimit(Constants.titleLineLimit)
         }
         if let symbol = pledge.symbol, let amount = pledge.amount {
           // TODO: Localize
           Text("\(symbol)\(amount) pledged")
-            .font(Font(Constants.subtitleFont))
-            .foregroundStyle(Color(Constants.subtitleTextColor))
-            .frame(maxWidth: Constants.textMaxWidth, alignment: Constants.textAlignment)
+            .font(Font(PPOCardStyles.subtitle.font))
+            .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+            .frame(
+              maxWidth: Constants.textMaxWidth,
+              alignment: Constants.textAlignment
+            )
             .lineLimit(Constants.subtitleLineLimit)
         }
       }
@@ -48,12 +57,7 @@ struct PPOProjectDetails: View {
     static let imageAspectRatio: CGFloat = 16 / 9
     static let imageContentMode = ContentMode.fit
 
-    static let titleFont = UIFont.ksr_caption1().bolded
-    static let titleTextColor = UIColor.ksr_black
     static let titleLineLimit = 2
-
-    static let subtitleFont = UIFont.ksr_footnote()
-    static let subtitleTextColor = UIColor.ksr_support_400
     static let subtitleLineLimit = 1
 
     static let textMaxWidth = CGFloat.infinity
