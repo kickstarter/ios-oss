@@ -9,9 +9,12 @@ struct PPOProjectCreator: View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Created by **\(self.creatorName)**")
-        .font(Font(Constants.createdByFont))
-        .foregroundStyle(Color(Constants.createdByColor))
-        .frame(maxWidth: Constants.labelMaxWidth, alignment: Constants.labelAlignment)
+        .font(Font(PPOCardStyles.subtitle.font))
+        .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+        .frame(
+          maxWidth: Constants.labelMaxWidth,
+          alignment: Constants.labelAlignment
+        )
         .lineLimit(Constants.textLineLimit)
 
       Button(action: {
@@ -20,7 +23,7 @@ struct PPOProjectCreator: View {
         // TODO: Localize
         Text("Send a message")
       })
-      .font(Font(Constants.sendMessageFont))
+      .font(Font(PPOCardStyles.subtitle.font))
       .foregroundStyle(Color(Constants.sendMessageColor))
       .frame(alignment: Constants.buttonAlignment)
       .lineLimit(Constants.textLineLimit)
@@ -39,10 +42,6 @@ struct PPOProjectCreator: View {
   }
 
   private enum Constants {
-    static let createdByFont = UIFont.ksr_caption2()
-    static let createdByColor = UIColor.ksr_support_400
-    static let sendMessageFont = UIFont.ksr_caption2()
-    static let sendMessageColor = UIColor.ksr_create_700
     static let chevronSize: CGFloat = 10
     static let chevronOffset = CGSize(width: 0, height: 2)
     static let spacerWidth = Styles.grid(1)
@@ -50,6 +49,7 @@ struct PPOProjectCreator: View {
     static let labelMaxWidth = CGFloat.infinity
     static let labelAlignment = Alignment.leading
     static let buttonAlignment = Alignment.trailing
+    static let sendMessageColor = UIColor.ksr_create_700
   }
 }
 
