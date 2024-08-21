@@ -20,7 +20,7 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_NoShipping() {
+  func testView() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.localPickup .~ nil
@@ -38,9 +38,9 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
-        let controller = RewardAddOnSelectionViewController.instantiate()
+        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
@@ -56,72 +56,6 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testView_Shipping() {
-    let shippingRules = [
-      ShippingRule.template
-        |> ShippingRule.lens.location .~ .brooklyn,
-      ShippingRule.template
-        |> ShippingRule.lens.location .~ .canada,
-      ShippingRule.template
-        |> ShippingRule.lens.location .~ .australia
-    ]
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shipping.preference .~ .unrestricted
-      |> Reward.lens.localPickup .~ nil
-      |> Reward.lens.isAvailable .~ true
-
-    let shippingAddOn = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shipping.preference .~ .unrestricted
-      |> Reward.lens.shippingRulesExpanded .~ shippingRules
-      |> Reward.lens.localPickup .~ nil
-      |> Reward.lens.isAvailable .~ true
-
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-      |> Project.lens.rewardData.addOns .~ [shippingAddOn]
-
-    let mockService = MockService(
-      fetchShippingRulesResult: .success(shippingRules),
-      fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
-    )
-
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: mockService) {
-        let controller = RewardAddOnSelectionViewController.instantiate()
-        let data = PledgeViewData(
-          project: project,
-          rewards: [reward],
-          selectedShippingRule: nil,
-          selectedQuantities: [:],
-          selectedLocationId: nil,
-          refTag: nil,
-          context: .pledge
-        )
-        controller.configure(with: data)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 600
-
-        self.scheduler.advance()
-
-        controller.pledgeShippingLocationViewController(
-          PledgeShippingLocationViewController.instantiate(),
-          didSelect: .template
-        )
-
-        self.scheduler.advance(by: .seconds(1))
 
         assertSnapshot(
           matching: parent.view,
@@ -203,9 +137,9 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
-        let controller = RewardAddOnSelectionViewController.instantiate()
+        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
@@ -220,11 +154,6 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
-
-        controller.pledgeShippingLocationViewController(
-          PledgeShippingLocationViewController.instantiate(),
-          didSelect: shippingRule
-        )
 
         self.scheduler.advance(by: .seconds(1))
 
@@ -245,9 +174,9 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
-        let controller = RewardAddOnSelectionViewController.instantiate()
+        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
@@ -292,9 +221,9 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
-        let controller = RewardAddOnSelectionViewController.instantiate()
+        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
