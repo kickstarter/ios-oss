@@ -24,11 +24,11 @@ protocol PPOProjectCardViewModelOutputs {
 
 extension PPOProjectCardViewModelOutputs {
   var primaryAction: AnyPublisher<PPOProjectCardAction, Never> {
-    self.actions.map({ $0.0 }).eraseToAnyPublisher()
+    self.actions.map { $0.0 }.eraseToAnyPublisher()
   }
 
   var secondaryAction: AnyPublisher<PPOProjectCardAction?, Never> {
-    self.actions.map({ $0.1 }).eraseToAnyPublisher()
+    self.actions.map { $0.1 }.eraseToAnyPublisher()
   }
 }
 
