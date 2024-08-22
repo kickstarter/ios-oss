@@ -6,12 +6,14 @@ public protocol RewardAddOnSelectionNoShippingViewModelInputs {
   func beginRefresh()
   func configure(with data: PledgeViewData)
   func continueButtonTapped()
+  func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func rewardAddOnCardViewDidSelectQuantity(quantity: Int, rewardId: Int)
   func viewDidLoad()
 }
 
 public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
+  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -154,6 +156,28 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       }
     )
 
+    // MARK: - Bonus support
+
+    /// Initial pledge amount is zero if not backed.
+    let initialAdditionalPledgeAmount = project.map {
+      $0.personalization.backing?.bonusAmount ?? 0.0
+    }
+
+    self.configurePledgeAmountViewWithData = Signal.combineLatest(
+      project,
+      baseReward,
+      initialAdditionalPledgeAmount
+    )
+    .map { project, reward, initialPledgeAmount in
+      (project, reward, initialPledgeAmount)
+    }
+
+    /// Called when pledge or bonus is updated by backer
+    let additionalPledgeAmount = Signal.merge(
+      initialAdditionalPledgeAmount,
+      self.pledgeAmountDataSignal.map { $0.amount }
+    )
+
     let totalSelectedAddOnsQuantity = Signal.combineLatest(
       latestSelectedQuantities,
       baseReward.map(\.id),
@@ -169,11 +193,17 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
         }
     }
 
-    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRule)
-      .map(isValid)
+    let enableContinueButton = Signal.combineLatest(
+      project,
+      initialAdditionalPledgeAmount,
+      self.pledgeAmountDataSignal,
+      latestSelectedQuantities,
+      shippingRule
+    )
+    .map(isValid)
 
     self.configureContinueCTAViewWithData = Signal.merge(
-      Signal.combineLatest(totalSelectedAddOnsQuantity, selectionChanged)
+      Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton)
         .map { qty, isValid in (qty, isValid, false) },
       configData.mapConst((0, true, true))
     )
@@ -198,6 +228,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     self.goToPledge = Signal.combineLatest(
       project,
       selectedRewards,
+      additionalPledgeAmount,
       shippingRule,
       selectedQuantities,
       selectedLocationId,
@@ -206,12 +237,6 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     )
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
-
-    // Additional pledge amount is zero if not backed.
-    let additionalPledgeAmount = Signal.merge(
-      configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
-    )
 
     let allRewardsTotal = Signal.combineLatest(
       selectedRewards,
@@ -297,6 +322,8 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       }
   }
 
+  // MARK: - Inputs
+
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
   public func beginRefresh() {
     self.beginRefreshObserver.send(value: ())
@@ -310,6 +337,11 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
   private let continueButtonTappedProperty = MutableProperty(())
   public func continueButtonTapped() {
     self.continueButtonTappedProperty.value = ()
+  }
+
+  private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
+  public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
+    self.pledgeAmountObserver.send(value: data)
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -326,7 +358,10 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     self.rewardAddOnCardViewDidSelectQuantityProperty.value = (quantity, rewardId)
   }
 
+  // MARK: - Outputs
+
   public let configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never>
+  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
@@ -452,11 +487,18 @@ private func addOnReward(
 
 private func isValid(
   project: Project,
+  initialAdditionalPledgeAmount: Double,
+  pledgeAmountData: PledgeAmountData,
   latestSelectedQuantities: SelectedRewardQuantities,
   selectedShippingRule: ShippingRule?
 ) -> Bool {
+  if !pledgeAmountData.isValid { return false }
+
   guard let backing = project.personalization.backing else { return true }
 
-  return latestSelectedQuantities != selectedRewardQuantities(in: backing)
+  let addOnChanged = latestSelectedQuantities != selectedRewardQuantities(in: backing)
     || backing.locationId != selectedShippingRule?.location.id
+  let bonusChanged = pledgeAmountData.amount != initialAdditionalPledgeAmount
+
+  return addOnChanged || bonusChanged
 }

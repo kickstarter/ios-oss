@@ -35,6 +35,11 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
         return Strings.Continue_with_quantity_count_add_ons(quantity_count: quantity)
       }
 
+      // If bonus support is available, use "Continue" instead of "Skip"
+      if featureNoShippingAtCheckout() {
+        return Strings.Continue()
+      }
+
       return Strings.Skip_add_ons()
     }
 

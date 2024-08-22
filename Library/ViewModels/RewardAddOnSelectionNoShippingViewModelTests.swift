@@ -12,6 +12,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
   private let configureContinueCTAViewWithDataIsLoading = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataIsValid = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataQuantity = TestObserver<Int, Never>()
+  private let configurePledgeAmountViewWithData = TestObserver<PledgeAmountViewConfigData, Never>()
   private let endRefreshing = TestObserver<(), Never>()
   private let goToPledge = TestObserver<PledgeViewData, Never>()
   private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
@@ -28,6 +29,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       .observe(self.configureContinueCTAViewWithDataIsValid.observer)
     self.vm.outputs.configureContinueCTAViewWithData.map(third)
       .observe(self.configureContinueCTAViewWithDataIsLoading.observer)
+    self.vm.outputs.configurePledgeAmountViewWithData
+      .observe(self.configurePledgeAmountViewWithData.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSource.observe(self.loadAddOnRewardsIntoDataSource.observer)
@@ -807,6 +810,10 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      // Set pledge amount data so that data validation can occur.
+      let pledgeAmountData = PledgeAmountData(amount: 0, min: 0, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
@@ -846,6 +853,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let bonusAmount = 680.0
 
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
@@ -896,7 +905,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.locationId .~ shippingRule.location.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.bonusAmount .~ 680.0
+          |> Backing.lens.bonusAmount .~ bonusAmount
           |> Backing.lens.amount .~ 700.0
       )
 
@@ -940,6 +949,14 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
+
+      self.scheduler.advance()
+
+      // Validate and set bonus support
+      XCTAssertEqual(self.configurePledgeAmountViewWithData.lastValue?.currentAmount, bonusAmount)
+      let pledgeAmountData =
+        PledgeAmountData(amount: bonusAmount, min: 0, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.scheduler.advance()
 
@@ -1045,6 +1062,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     let expectedGoToPledgeData = PledgeViewData(
       project: project,
       rewards: [reward],
+      bonusSupport: 0.0,
       selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: shippingRule.location.id,
@@ -1055,7 +1073,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.goToPledge.assertValues([expectedGoToPledgeData])
   }
 
-  func testGoToPledge_AddOnsIncluded() {
+  func testGoToPledge_AddOnsAndBonus() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
 
@@ -1123,6 +1141,15 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
 
+    let bonusAmount = 20.0
+    let pledgeAmountData = PledgeAmountData(
+      amount: bonusAmount,
+      min: bonusAmount,
+      max: bonusAmount,
+      isValid: true
+    )
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
     self.goToPledge.assertValueCount(0)
 
     self.vm.inputs.continueButtonTapped()
@@ -1142,6 +1169,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.goToPledge.values.last?.rewards.count,
       4
     )
+    XCTAssertEqual(self.goToPledge.values.last?.bonusSupport, bonusAmount)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)

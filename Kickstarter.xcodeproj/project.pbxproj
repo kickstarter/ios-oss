@@ -341,6 +341,7 @@
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
 		392BB12A2C3BEB5600A5591B /* PPOEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */; };
 		392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */; };
+		392E1CC32C7678AD0065016B /* RewardAddOnSelectionNoShippingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392E1CC12C7678970065016B /* RewardAddOnSelectionNoShippingViewControllerTests.swift */; };
 		393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */; };
 		393E8DA32C5BE08500AEA968 /* PPOCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */; };
 		393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */; };
@@ -1969,6 +1970,7 @@
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
 		392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOEmptyStateView.swift; sourceTree = "<group>"; };
 		392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOEmptyStateViewTests.swift; sourceTree = "<group>"; };
+		392E1CC12C7678970065016B /* RewardAddOnSelectionNoShippingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionNoShippingViewControllerTests.swift; sourceTree = "<group>"; };
 		393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOBackingFragment.graphql; sourceTree = "<group>"; };
 		393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOCardFragment.graphql; sourceTree = "<group>"; };
 		393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOProjectFragment.graphql; sourceTree = "<group>"; };
@@ -4052,6 +4054,7 @@
 			isa = PBXGroup;
 			children = (
 				6035AFA82C517EDD007E28FC /* RewardAddOnSelectionNoShippingViewController.swift */,
+				392E1CC12C7678970065016B /* RewardAddOnSelectionNoShippingViewControllerTests.swift */,
 				8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */,
 				8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */,
 			);
@@ -8689,6 +8692,7 @@
 				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
 				70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */,
 				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
+				392E1CC32C7678AD0065016B /* RewardAddOnSelectionNoShippingViewControllerTests.swift in Sources */,
 				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
 				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
 				A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */,
