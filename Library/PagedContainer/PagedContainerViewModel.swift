@@ -8,13 +8,24 @@ public protocol TabBarPage: Identifiable {
   var badgeCount: Int? { get }
 }
 
-public class PagedContainerViewModel<Page: TabBarPage> {
-  // Internal
-  private var subscriptions = Set<AnyCancellable>()
+public protocol PagedContainerViewModelInputs {
+  associatedtype Page: TabBarPage
 
+  func viewWillAppear()
+  func configure(with children: [(Page, UIViewController)])
+  func didSelect(page: Page)
+}
+
+public protocol PagedContainerViewModelOutputs {
+  associatedtype Page: TabBarPage
+
+  var displayPage: AnyPublisher<(Page, UIViewController), Never> { get }
+  var pages: AnyPublisher<[(Page, UIViewController)], Never> { get }
+}
+
+public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelInputs, PagedContainerViewModelOutputs {
   init() {
     self.pages = self.configureWithChildrenSubject.eraseToAnyPublisher()
-    self.selectedPage = self.selectedPageSubject.eraseToAnyPublisher()
 
     self.displayPage = Publishers.CombineLatest(
       self.configureWithChildrenSubject,
@@ -48,29 +59,28 @@ public class PagedContainerViewModel<Page: TabBarPage> {
   }
 
   // Inputs
-  private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
-  func viewWillAppear() {
+  public func viewWillAppear() {
     self.viewWillAppearSubject.send(())
   }
 
-  private let configureWithChildrenSubject = CurrentValueSubject<[(Page, UIViewController)], Never>([])
-  func configure(with children: [(Page, UIViewController)]) {
+  public func configure(with children: [(Page, UIViewController)]) {
     self.configureWithChildrenSubject.send(children)
   }
 
-  private let selectedPageSubject = CurrentValueSubject<Page?, Never>(nil)
-  func didSelect(page: Page) {
-    if !self.isSelected(page: page) {
+  public func didSelect(page: Page) {
+    if self.selectedPageSubject.value?.id != page.id {
       self.selectedPageSubject.send(page)
     }
   }
 
-  func isSelected(page: Page) -> Bool {
-    self.selectedPageSubject.value?.id == page.id
-  }
-
   // Outputs
-  public let selectedPage: AnyPublisher<Page?, Never>
   public let displayPage: AnyPublisher<(Page, UIViewController), Never>
   public let pages: AnyPublisher<[(Page, UIViewController)], Never>
+
+  // Internal
+  private var subscriptions = Set<AnyCancellable>()
+
+  private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
+  private let configureWithChildrenSubject = CurrentValueSubject<[(Page, UIViewController)], Never>([])
+  private let selectedPageSubject = CurrentValueSubject<Page?, Never>(nil)
 }

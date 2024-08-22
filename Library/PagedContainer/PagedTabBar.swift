@@ -17,8 +17,9 @@ public struct PagedTabBar<Page: TabBarPage>: View {
       .onReceive(viewModel.pages) { pages in
         self.pages = pages.map { page, _ in page }
       }
-      .onReceive(viewModel.selectedPage) { selection in
-        self.selection = selection
+      .onReceive(viewModel.displayPage) { selection in
+        let (page, _) = selection
+        self.selection = page
       }
     }
   }

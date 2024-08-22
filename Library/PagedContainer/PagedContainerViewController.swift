@@ -33,12 +33,6 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
       .sink { [weak self] _, controller in
         self?.showChildController(controller)
       }.store(in: &self.subscriptions)
-
-    self.viewModel.selectedPage.receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        self?.renderTabBar()
-      }
-      .store(in: &self.subscriptions)
   }
 
   /*
