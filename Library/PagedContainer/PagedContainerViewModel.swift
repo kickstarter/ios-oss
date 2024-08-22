@@ -3,7 +3,10 @@ import Foundation
 import SwiftUI
 import UIKit
 
-var cancellables = Set<AnyCancellable>()
+public protocol TabBarPage: Identifiable {
+  var name: String { get }
+  var badgeCount: Int? { get }
+}
 
 public class PagedContainerViewModel<Page: TabBarPage> {
   // Internal
@@ -57,7 +60,13 @@ public class PagedContainerViewModel<Page: TabBarPage> {
 
   private let selectedPageSubject = CurrentValueSubject<Page?, Never>(nil)
   func didSelect(page: Page) {
-    self.selectedPageSubject.send(page)
+    if !self.isSelected(page: page) {
+      self.selectedPageSubject.send(page)
+    }
+  }
+
+  func isSelected(page: Page) -> Bool {
+    self.selectedPageSubject.value?.id == page.id
   }
 
   // Outputs

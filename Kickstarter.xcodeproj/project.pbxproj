@@ -487,7 +487,6 @@
 		6044532A2BA08F9000B8F485 /* PostCampaignPledgeRewardsSummaryHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453292BA08F9000B8F485 /* PostCampaignPledgeRewardsSummaryHeaderCell.swift */; };
 		6044532C2BA08FE100B8F485 /* PostCampaignPledgeRewardsSummaryTotalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6044532B2BA08FE100B8F485 /* PostCampaignPledgeRewardsSummaryTotalViewController.swift */; };
 		6044532E2BA0905600B8F485 /* PostCampaignPledgeRewardsSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6044532D2BA0905600B8F485 /* PostCampaignPledgeRewardsSummaryViewModel.swift */; };
-		6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
 		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
@@ -1125,6 +1124,7 @@
 		A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */; };
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
+		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
@@ -8262,6 +8262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */,
+				AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */,
 				4791BDE42717604C00DFE5D5 /* ProjectFAQsCell.swift in Sources */,
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */,
@@ -8552,7 +8553,6 @@
 				8A32FE0424D2336E00F79C72 /* EmpyStateView.swift in Sources */,
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
-				6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

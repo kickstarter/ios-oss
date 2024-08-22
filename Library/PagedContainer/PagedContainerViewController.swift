@@ -3,26 +3,13 @@ import Foundation
 import SwiftUI
 import UIKit
 
-private struct PagedTabBarContainer<Page: TabBarPage>: View {
-  @State private var pagesList: [Page] = []
-  var pages: AnyPublisher<[Page], Never>
-  var selection: Binding<Page?>?
-
-  var body: some View {
-    PagedTabBar(pages: self.pagesList, selection: self.selection)
-      .onReceive(self.pages, perform: { pages in
-        self.pagesList = pages
-      })
-  }
-}
-
 open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
   private weak var activeController: UIViewController? = nil
   private var subscriptions = Set<AnyCancellable>()
   private let viewModel = PagedContainerViewModel<Page>()
 
   private lazy var toggle = UIHostingController(
-    rootView: PagedTabBarContainer(pages: tabBarPages, selection: nil)
+    rootView: PagedTabBar(viewModel: self.viewModel)
   )
 
   private var tabBarPages: AnyPublisher<[Page], Never> {
@@ -48,10 +35,8 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
       }.store(in: &self.subscriptions)
 
     self.viewModel.selectedPage.receive(on: RunLoop.main)
-      .sink { [weak self] page in
-        if let self, let page {
-          self.renderTabBar(selectedPage: page)
-        }
+      .sink { [weak self] _ in
+        self?.renderTabBar()
       }
       .store(in: &self.subscriptions)
   }
@@ -108,6 +93,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
 
   public func setPagedViewControllers(_ controllers: [(Page, UIViewController)]) {
     self.viewModel.configure(with: controllers)
+    self.renderTabBar()
   }
 
   private func showChildController(_ controller: UIViewController) {
@@ -119,15 +105,8 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     self.activeController = controller
   }
 
-  private func renderTabBar(selectedPage: Page) {
-    let binding = Binding<Page?>(get: {
-      selectedPage
-    }) { [weak self] newPage in
-      if let page = newPage {
-        self?.viewModel.didSelect(page: page)
-      }
-    }
-    self.toggle.rootView = PagedTabBarContainer(pages: self.tabBarPages, selection: binding)
+  private func renderTabBar() {
+    self.toggle.rootView = PagedTabBar(viewModel: self.viewModel)
   }
 
   func displayChildViewController(_ controller: UIViewController) {
