@@ -181,6 +181,7 @@
 "Currency_USD" = "$ Dólar estadounidense (USD)";
 "Current_email" = "Correo electrónico actual";
 "Current_password" = "Contraseña actual";
+"Customize_your_reward" = "Customize your reward";
 "Customize_your_reward_with_optional_addons" = "Personaliza tu recompensa con complementos opcionales.";
 "Daily_digest" = "Resumen diario";
 "Daily_summary" = "Resumen diario";
@@ -215,6 +216,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Ingresa una cantidad inferior a %{max_pledge}.";
 "Environmental_commitments" = "Compromisos medioambientales";
 "Environmentally_friendly_factories" = "Fábricas ecológicas";
+"Estimated_Shipping" = "Estimated Shipping";
 "Estimated_delivery" = "Entrega estimada:";
 "Estimated_delivery_colon" = "Entrega estimada:";
 "Estimated_delivery_of" = "Entrega estimada de";
@@ -691,6 +693,7 @@
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "Este comentario está en revisión por una posible infracción de las <a href=\"%{community_guidelines}\">Reglas de la comunidad de Kickstarter.</a>";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
+"This_is_meant_to_give_you" = "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes.";
 "This_person_canceled_their_pledge" = "Esta persona canceló su contribución.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
 "This_post_is_for_backers_only" = "Esta publicación es únicamente para patrocinadores";
@@ -801,7 +804,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Has patrocinado <b>%{project_name}</b> con éxito y tu contribución por <b>%{pledge_total}</b> se ha recaudado.</p>\n<p>Recibirás la confirmación en %{user_email} cuando estemos por entregarte las recompensas para que puedas pagar los costos de envío e impuestos.</p>\n<p>Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Ayuda a correr la voz!</p>";
-"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Tu contribución de <b>%{pledge_total}</b> ayudará a que este proyecto cobre vida. Revisa tu correo electrónico para más detalles.";
 "You_launched_this_project_on_launch_date" = "Publicaste el proyecto el %{launch_date}. Encuentra las herramientas para creadores en nuestro sitio web.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";

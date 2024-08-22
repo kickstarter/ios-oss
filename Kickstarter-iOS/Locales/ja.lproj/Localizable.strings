@@ -181,6 +181,7 @@
 "Currency_USD" = "$ 米ドル (USD)";
 "Current_email" = "現在のメールアドレス";
 "Current_password" = "現在のパスワード";
+"Customize_your_reward" = "Customize your reward";
 "Customize_your_reward_with_optional_addons" = "オプションとしてアドオン (追加リワード) を追加しリワードをカスタマイズしましょう。";
 "Daily_digest" = "デイリーダイジェスト";
 "Daily_summary" = "1日1回の概要";
@@ -215,6 +216,7 @@
 "Enter_an_amount_less_than_max_pledge" = "%{max_pledge} 以下の額を入力してください。";
 "Environmental_commitments" = "環境への取り組み";
 "Environmentally_friendly_factories" = "環境に優しい工場";
+"Estimated_Shipping" = "Estimated Shipping";
 "Estimated_delivery" = "配達予定";
 "Estimated_delivery_colon" = "配達予定:";
 "Estimated_delivery_of" = "配送予定日";
@@ -691,6 +693,7 @@
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "このコメントは <a href=\"%{community_guidelines}\">Kickstarter のコミュニティガイドライン</a>に違反している可能性があるとして現在審査中です。";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
 "This_holiday_season_support_a_project_for_no_reward" = "このホリデーシーズンはぜひ、リワード無しでも「支援したい！」と思わせてくれるような、あなたの心に訴えかけるプロジェクトをサポートしてみませんか？";
+"This_is_meant_to_give_you" = "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes.";
 "This_person_canceled_their_pledge" = "このユーザーはプレッジをキャンセルしました。";
 "This_pledge_was_dropped_because_of_payment_errors" = "支払関連のエラーにより、このプレッジは取り消されました。";
 "This_post_is_for_backers_only" = "この投稿はバッカー向けです";
@@ -801,7 +804,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p><b>%{project_name}</b>にプレッジしました。これに伴い、<b>%{pledge_total}</b>のプレッジが収集されました。</p>\n<p>リワード配送の準備が整い次第、%{user_email} 宛てに確認メールが届き、配送料と税金の最終確認とお支払いを行うことができます。</p>\n<p>あなたのプレッジのおかげで、このプロジェクトが実現へと一歩近づきました。ありがとうございます。ぜひこのプロジェクトを沢山の人に知ってもらいましょう！</p>";
-"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "あなたの <b>%{pledge_total}</b> のプレッジがこのプロジェクトの実現をサポートします。詳しくはメールをご確認ください。";
 "You_launched_this_project_on_launch_date" = "%{launch_date} にこのプロジェクトをローンチしました。クリエイター向けツールにアクセスするには、Kickstarter ウェブサイトにアクセスしてください！";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "このリワードには、最低%{reward_minimum}のプレッジが必要です。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";

@@ -181,6 +181,7 @@
 "Currency_USD" = "$ US-Dollar (USD)";
 "Current_email" = "Derzeitige E-Mail";
 "Current_password" = "Derzeitiges Passwort";
+"Customize_your_reward" = "Customize your reward";
 "Customize_your_reward_with_optional_addons" = "Personalisiere deine Belohnung mit optionalen Add-ons.";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Daily_summary" = "Übersicht (einmal täglich)";
@@ -215,6 +216,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
 "Environmental_commitments" = "Verpflichtung zum Umweltschutz";
 "Environmentally_friendly_factories" = "Umweltfreundliche Fertigungsanlagen";
+"Estimated_Shipping" = "Estimated Shipping";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_colon" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_of" = "Voraussichtliches Lieferdatum";
@@ -691,6 +693,7 @@
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "Dieser Kommentar wird gerade geprüft, weil er möglicherweise gegen die <a href=\"%{community_guidelines}\">Community-Richtlinien von Kickstarter</a> verstößt.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_holiday_season_support_a_project_for_no_reward" = "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht.";
+"This_is_meant_to_give_you" = "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes.";
 "This_person_canceled_their_pledge" = "Diese Person hat ihren Finanzierungsbeitrag zurückgezogen.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Dieser Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen.";
 "This_post_is_for_backers_only" = "Dieser Beitrag ist nur für Unterstützer";
@@ -801,7 +804,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Du hast <b>%{project_name}</b> mit deinem Beitrag erfolgreich unterstützt. Dein Beitrag in Höhe von <b>%{pledge_total}</b> wurde eingezogen.</p>\n<p>Du erhältst eine E-Mail an %{user_email}, wenn deine Belohnungen zur Erfüllung bereit sind, damit du alles finalisieren und für Versand und Steuern zahlen kannst.</p>\n<p>Dank dir ist dieses Projekt seiner Realisierung einen Schritt nähergekommen. Erzähl auch deinen Freunden und Bekannten davon!</p>";
-"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Dein Beitrag in Höhe von <b>%{pledge_total}</b> wird dabei helfen, dieses Projekt Wirklichkeit werden zu lassen. Weitere Details findest du in der E-Mail, die du von uns erhalten hast.";
 "You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";

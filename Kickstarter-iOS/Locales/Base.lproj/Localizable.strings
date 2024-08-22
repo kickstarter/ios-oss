@@ -181,6 +181,7 @@
 "Currency_USD" = "$ US Dollar (USD)";
 "Current_email" = "Current email";
 "Current_password" = "Current password";
+"Customize_your_reward" = "Customize your reward";
 "Customize_your_reward_with_optional_addons" = "Customize your reward with optional add-ons.";
 "Daily_digest" = "Daily digest";
 "Daily_summary" = "Daily summary";
@@ -215,6 +216,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Enter an amount less than %{max_pledge}.";
 "Environmental_commitments" = "Environmental commitments";
 "Environmentally_friendly_factories" = "Environmentally friendly factories";
+"Estimated_Shipping" = "Estimated Shipping";
 "Estimated_delivery" = "Estimated delivery";
 "Estimated_delivery_colon" = "Estimated delivery:";
 "Estimated_delivery_of" = "Estimated delivery of";
@@ -691,6 +693,7 @@
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "This comment is under review for potentially violating <a href=\"%{community_guidelines}\">Kickstarter’s Community Guidelines.</a>";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "This_holiday_season_support_a_project_for_no_reward" = "This holiday season, support a project for no reward, just because it speaks to you.";
+"This_is_meant_to_give_you" = "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes.";
 "This_person_canceled_their_pledge" = "This person has canceled their pledge.";
 "This_pledge_was_dropped_because_of_payment_errors" = "This pledge was dropped because of payment errors.";
 "This_post_is_for_backers_only" = "This post is for backers only";

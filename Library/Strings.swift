@@ -1073,8 +1073,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -3006,6 +3005,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Customize your reward"
+
+   - **en**: "Customize your reward"
+   - **de**: "Customize your reward"
+   - **es**: "Customize your reward"
+   - **fr**: "Customize your reward"
+   - **ja**: "Customize your reward"
+  */
+  public static func Customize_your_reward() -> String {
+    return localizedString(
+      key: "Customize_your_reward",
+      defaultValue: "Customize your reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Customize your reward with optional add-ons."
 
    - **en**: "Customize your reward with optional add-ons."
@@ -3579,6 +3595,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Environmentally_friendly_factories",
       defaultValue: "Environmentally friendly factories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Estimated Shipping"
+
+   - **en**: "Estimated Shipping"
+   - **de**: "Estimated Shipping"
+   - **es**: "Estimated Shipping"
+   - **fr**: "Estimated Shipping"
+   - **ja**: "Estimated Shipping"
+  */
+  public static func Estimated_Shipping() -> String {
+    return localizedString(
+      key: "Estimated_Shipping",
+      defaultValue: "Estimated Shipping",
       count: nil,
       substitutions: [:]
     )
@@ -10257,18 +10290,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} others"
+   "%{friend_name} and %{remaining_count} other"
 
-   - **en**: "%{friend_name} and %{remaining_count} others"
-   - **de**: "%{friend_name} und %{remaining_count} weitere"
-   - **es**: "%{friend_name} y %{remaining_count} otros"
-   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **en**: "%{friend_name} and %{remaining_count} other"
+   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
+   - **es**: "%{friend_name} y %{remaining_count} persona más"
+   - **fr**: "%{friend_name} et %{remaining_count} autre"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} others",
+      defaultValue: "%{friend_name} and %{remaining_count} other",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -11274,6 +11307,23 @@ catch your eye?"
     return localizedString(
       key: "This_holiday_season_support_a_project_for_no_reward",
       defaultValue: "This holiday season, support a project for no reward, just because it speaks to you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+
+   - **en**: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+   - **de**: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+   - **es**: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+   - **fr**: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+   - **ja**: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
+  */
+  public static func This_is_meant_to_give_you() -> String {
+    return localizedString(
+      key: "This_is_meant_to_give_you",
+      defaultValue: "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes.",
       count: nil,
       substitutions: [:]
     )
@@ -13170,10 +13220,10 @@ Veuillez réessayer ultérieurement."
    "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
 
    - **en**: "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
-   - **de**: "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
-   - **es**: "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
-   - **fr**: "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
-   - **ja**: "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details."
+   - **de**: "Dein Beitrag in Höhe von <b>%{pledge_total}</b> wird dabei helfen, dieses Projekt Wirklichkeit werden zu lassen. Weitere Details findest du in der E-Mail, die du von uns erhalten hast."
+   - **es**: "Tu contribución de <b>%{pledge_total}</b> ayudará a que este proyecto cobre vida. Revisa tu correo electrónico para más detalles."
+   - **fr**: "Votre engagement de <b>%{pledge_total}</b> contribue à faire vivre ce projet. Consultez votre messagerie pour plus de détails."
+   - **ja**: "あなたの <b>%{pledge_total}</b> のプレッジがこのプロジェクトの実現をサポートします。詳しくはメールをご確認ください。"
   */
   public static func You_have_successfully_pledged_to_project_post_campaign_html_short(pledge_total: String) -> String {
     return localizedString(
@@ -19429,7 +19479,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22841,7 +22891,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25952,7 +26002,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -26904,7 +26954,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
