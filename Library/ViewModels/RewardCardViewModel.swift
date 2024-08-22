@@ -134,7 +134,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
           for: reward,
           project: project,
           selectedShippingRule: shippingRule
-        )
+        ) ?? ""
       }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
@@ -142,7 +142,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
       .map { reward, text in
-        reward.shipping.enabled == false || text.isEmpty
+        reward.shipping.enabled == false || text == nil
       }
   }
 

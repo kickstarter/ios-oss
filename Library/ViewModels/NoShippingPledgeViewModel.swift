@@ -42,7 +42,7 @@ public protocol NoShippingPledgeViewModelInputs {
 
 public protocol NoShippingPledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
+  var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
@@ -310,18 +310,23 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     self.configureEstimatedShippingView = Signal.combineLatest(project, baseReward, selectedShippingRule)
       .map { project, reward, shippingRule in
-        guard let rule = shippingRule else { return ("", "") }
+        guard let rule = shippingRule else { return (nil, nil) }
 
         return (
-          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
-          estimatedShippingConversionText(project, reward, selectedShippingRule: rule)
+          estimatedShippingText(
+            for: reward,
+            project: project,
+            selectedShippingRule: rule,
+            hasAboutPreface: false
+          ),
+          estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
         )
       }
 
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
         let (estimatedShipping, _) = estimatedShippingStrings
-        return reward.shipping.enabled == false || estimatedShipping.isEmpty
+        return reward.shipping.enabled == false || estimatedShipping == nil
       }
 
     // MARK: - Apple Pay
@@ -1009,7 +1014,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configureEstimatedShippingView: Signal<(String, String), Never>
+  public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>

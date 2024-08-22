@@ -664,22 +664,23 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
 public func estimatedShippingText(
   for reward: Reward,
   project: Project,
-  selectedShippingRule: ShippingRule
-) -> String {
-  guard reward.shipping.enabled else { return "" }
+  selectedShippingRule: ShippingRule,
+  hasAboutPreface: Bool = true
+) -> String? {
+  guard reward.shipping.enabled else { return nil }
 
   /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
   guard let shippingRules = reward.shippingRules,
         let currentRewardShippingRule = shippingRules
         .first(where: { $0.location.country == selectedShippingRule.location.country })
   else {
-    return ""
+    return nil
   }
 
   guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount.rounded(.towardZero),
         let estimatedMax = currentRewardShippingRule.estimatedMax?.amount.rounded(.towardZero),
         estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
+    return nil
   }
 
   let currentCountry = project.stats.currentCountry ?? Project.Country.us
@@ -706,10 +707,10 @@ public func estimatedShippingText(
 }
 
 public func estimatedShippingConversionText(
-  _ project: Project,
-  _ reward: Reward,
+  for reward: Reward,
+  project: Project,
   selectedShippingRule: ShippingRule
-) -> String {
+) -> String? {
   guard project.stats.needsConversion else { return "" }
 
   /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
@@ -717,13 +718,13 @@ public func estimatedShippingConversionText(
         let selectedShippingRule = shippingRules
         .first(where: { $0.location.country == selectedShippingRule.location.country })
   else {
-    return ""
+    return nil
   }
 
   guard let estimatedMin = selectedShippingRule.estimatedMin?.amount,
         let estimatedMax = selectedShippingRule.estimatedMax?.amount,
         estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
+    return nil
   }
 
   let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
@@ -734,21 +735,16 @@ public func estimatedShippingConversionText(
     convertedMin,
     country: currentCountry,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
-    roundingMode: .halfUp,
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2
+    roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     convertedMax,
     country: currentCountry,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
-    roundingMode: .halfUp,
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2
+    roundingMode: .halfUp
   )
 
-  // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
   let conversionText: String = formattedMin == formattedMax
     ? Strings.About_reward_amount(reward_amount: formattedMin)
     : Strings.About_reward_amount(reward_amount: "\(formattedMin)-\(formattedMax)")

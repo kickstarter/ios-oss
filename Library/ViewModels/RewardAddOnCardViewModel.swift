@@ -109,12 +109,12 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
           for: reward,
           project: project,
           selectedShippingRule: shippingRule
-        )
+        ) ?? ""
       }
 
     self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
       .map { reward, text in
-        reward.shipping.enabled == false || text.isEmpty
+        reward.shipping.enabled == false || text == nil
       }
 
     self.reloadPills = projectAndReward.map(pillValues(project:reward:))

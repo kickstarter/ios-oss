@@ -14,6 +14,7 @@ struct EstimatedShippingCheckoutView: View {
     public static let headerFontSize = 16.0
     public static let subHeaderFontSize = 11.0
     public static let conversionSubHeaderFontSize = 12.0
+    /// Font
     public static let headerFont = Font(UIFont.ksr_subhead(size: Constants.headerFontSize))
     public static let subHeaderFont = Font(UIFont.ksr_subhead(size: Constants.subHeaderFontSize))
     public static let conversionHeaderFont = Font(UIFont.ksr_subhead())
