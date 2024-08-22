@@ -313,7 +313,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         guard let rule = shippingRule else { return ("", "") }
 
         return (
-          estimatedShippingText(for: reward, selectedShippingRule: rule),
+          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
           estimatedShippingConversionText(project, reward, selectedShippingRule: rule)
         )
       }

@@ -661,7 +661,11 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
     .isAny(of: Reward.Shipping.Preference.none)
 }
 
-public func estimatedShippingText(for reward: Reward, selectedShippingRule: ShippingRule) -> String {
+public func estimatedShippingText(
+  for reward: Reward,
+  project: Project,
+  selectedShippingRule: ShippingRule
+) -> String {
   guard reward.shipping.enabled else { return "" }
 
   /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
@@ -678,10 +682,22 @@ public func estimatedShippingText(for reward: Reward, selectedShippingRule: Ship
     return ""
   }
 
-  /// Drop digits after the decimal.
-  let formattedMin = String(format: "%.0f", estimatedMin)
-  let formattedMax = String(format: "%.0f", estimatedMax)
+  let currentCountry = project.stats.currentCountry ?? Project.Country.us
 
+  let formattedMin = Format.currency(
+    estimatedMin,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+
+  let formattedMax = Format.currency(
+    estimatedMax,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+  
   let estimatedShippingString: String = formattedMin == formattedMax
     ? "$\(formattedMin)"
     : "$\(formattedMin)-$\(formattedMax)"
@@ -734,8 +750,8 @@ public func estimatedShippingConversionText(
 
   // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
   let conversionText: String = formattedMin == formattedMax
-    ? "About $\(String(format: "%.0f", formattedMin))"
-    : "About $\(String(format: "%.0f", formattedMin))-$\(String(format: "%.0f", formattedMax))"
+    ? Strings.About_reward_amount(reward_amount: formattedMin)
+    : Strings.About_reward_amount(reward_amount: "\(formattedMin)-\(formattedMax)")
 
   return conversionText
 }

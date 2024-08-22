@@ -137,7 +137,7 @@ public final class RewardAddOnCardView: UIView {
     _ = self.estimatedShippingTitleLabel
       |> baseRewardLabelStyle
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-    |> \.text %~ { _ in Strings.Estimated_Shipping() }
+      |> \.text %~ { _ in Strings.Estimated_Shipping() }
       |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.estimatedShippingLabel
