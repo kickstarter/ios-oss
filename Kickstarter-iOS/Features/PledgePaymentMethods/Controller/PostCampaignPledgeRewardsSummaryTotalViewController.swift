@@ -125,7 +125,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   _ = label
     |> checkoutTitleLabelStyle
     |> \.font .~ .ksr_subhead().bolded
-    |> \.text %~ { _ in Strings.Total() }
+    |> \.text %~ { _ in Strings.Pledge_amount() }
     |> \.backgroundColor .~ .ksr_white
 
   return label
