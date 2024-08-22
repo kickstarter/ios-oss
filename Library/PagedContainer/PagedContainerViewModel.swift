@@ -1,48 +1,67 @@
 import Combine
 import Foundation
+import SwiftUI
 import UIKit
 
-public class PagedContainerViewModel {
+var cancellables = Set<AnyCancellable>()
+
+public class PagedContainerViewModel<Page: TabBarPage> {
   // Internal
   private var subscriptions = Set<AnyCancellable>()
 
   init() {
-    self.pageTitles = self.configureWithChildrenSubject.map { controllers in
-      controllers.map { $0.title ?? "Page " }
-    }.eraseToAnyPublisher()
+    self.pages = self.configureWithChildrenSubject.eraseToAnyPublisher()
+    self.selectedPage = self.selectedPageSubject.eraseToAnyPublisher()
 
-    self.displayChildViewControllerAtIndex = Publishers.CombineLatest(
+    self.displayPage = Publishers.CombineLatest(
       self.configureWithChildrenSubject,
-      self.selectedIndex.compactMap { $0 }
+      self.selectedPageSubject
     )
-    .map { (controllers: [UIViewController], index: Int) -> (UIViewController, Int)? in
-      if index < controllers.count {
-        return (controllers[index], index)
-      } else {
-        return nil
-      }
-    }.compactMap { $0 }
+    .compactMap { combined -> (Page, UIViewController)? in
+      let (pages, selectedPage) = combined
+      return pages.first(where: { result in
+        let (page, _) = result
+        return page.id == selectedPage?.id
+      })
+    }
     .eraseToAnyPublisher()
+
+    self.viewWillAppearSubject
+      .combineLatest(self.selectedPageSubject) { _, selectedPage in selectedPage }
+      .filter { $0 == nil }
+      .combineLatest(self.pages) { _, pages in pages }
+      .compactMap { pages in
+        if let (firstPage, _) = pages.first {
+          return firstPage
+        } else {
+          return nil
+        }
+      }
+      .first()
+      .sink { [weak self] page in
+        self?.selectedPageSubject.send(page)
+      }
+      .store(in: &self.subscriptions)
   }
 
   // Inputs
+  private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
   func viewWillAppear() {
-    if self.selectedIndex.value == nil {
-      self.didSelectPage(atIndex: 0)
-    }
+    self.viewWillAppearSubject.send(())
   }
 
-  private let configureWithChildrenSubject = CurrentValueSubject<[UIViewController], Never>([])
-  func configure(withChildren children: [UIViewController]) {
+  private let configureWithChildrenSubject = CurrentValueSubject<[(Page, UIViewController)], Never>([])
+  func configure(with children: [(Page, UIViewController)]) {
     self.configureWithChildrenSubject.send(children)
   }
 
-  private let selectedIndex = CurrentValueSubject<Int?, Never>(nil)
-  func didSelectPage(atIndex index: Int) {
-    self.selectedIndex.send(index)
+  private let selectedPageSubject = CurrentValueSubject<Page?, Never>(nil)
+  func didSelect(page: Page) {
+    self.selectedPageSubject.send(page)
   }
 
   // Outputs
-  public let displayChildViewControllerAtIndex: AnyPublisher<(UIViewController, Int), Never>
-  public let pageTitles: AnyPublisher<[String], Never>
+  public let selectedPage: AnyPublisher<Page?, Never>
+  public let displayPage: AnyPublisher<(Page, UIViewController), Never>
+  public let pages: AnyPublisher<[(Page, UIViewController)], Never>
 }
