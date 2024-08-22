@@ -47,7 +47,7 @@ public struct PledgeViewData: Equatable {
   public let context: PledgeViewContext
 
   // Convenience initializer to allow `bonusSupport` to default to `nil`.
-  // TODO: Delete this when cleaning up the noShippingAtCheckout feature.
+  // TODO(MBL-1670): Delete this when cleaning up the noShippingAtCheckout feature.
   init(
     project: Project,
     rewards: [Reward],
