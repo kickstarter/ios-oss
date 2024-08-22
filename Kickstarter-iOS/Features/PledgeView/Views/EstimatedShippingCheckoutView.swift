@@ -6,6 +6,9 @@ struct EstimatedShippingCheckoutView: View {
   let aboutConversion: String
 
   private enum Constants {
+    public static let mainHeaderTextSize = 16.0
+    public static let mainSubHeaderTextSize = 11.0
+    public static let conversionSubHeaderTextSize = 12.0
     public static let maxHeight = 125.0
     public static let defaultSpacing = Styles.grid(1)
     public static let verticalPadding = Styles.grid(2)
@@ -17,12 +20,12 @@ struct EstimatedShippingCheckoutView: View {
     HStack(alignment: .top) {
       VStack(alignment: .leading, spacing: Constants.defaultSpacing) {
         Text("Estimated Shipping")
-          .font(Font(UIFont.ksr_subhead(size: 16)))
+          .font(Font(UIFont.ksr_subhead(size: Constants.mainHeaderTextSize)))
           .bold()
         Text(
           "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
         )
-        .font(Font(UIFont.ksr_subhead(size: 11)))
+        .font(Font(UIFont.ksr_subhead(size: Constants.mainSubHeaderTextSize)))
         .foregroundStyle(Color(UIColor.ksr_support_400))
       }
 
@@ -31,7 +34,7 @@ struct EstimatedShippingCheckoutView: View {
           .font(Font(UIFont.ksr_subhead()))
           .bold()
         Text(self.aboutConversion)
-          .font(Font(UIFont.ksr_subhead(size: 12)))
+          .font(Font(UIFont.ksr_subhead(size: Constants.conversionSubHeaderTextSize)))
           .foregroundStyle(Color(UIColor.ksr_support_400))
       }
     }
