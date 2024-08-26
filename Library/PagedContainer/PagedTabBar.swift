@@ -6,7 +6,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
 
   public var body: some View {
     HStack(spacing: Constants.spacing) {
-      ForEach(self.viewModel.pages, id: \.page.id) { (page, _) in
+      ForEach(self.viewModel.pages, id: \.page.id) { page, _ in
         self.tab(for: page)
       }
     }

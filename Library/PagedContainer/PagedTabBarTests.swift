@@ -24,13 +24,47 @@ final class PagedTabBarTests: TestCase {
     viewModel.didSelect(page: firstPage)
 
     let tabs = PagedTabBar(viewModel: viewModel)
-      .frame(width: size.width, height: size.height)
+      .frame(width: self.size.width, height: self.size.height)
 
     assertSnapshot(matching: tabs, as: .image, named: "firstTab")
 
     viewModel.didSelect(page: secondPage)
 
     assertSnapshot(matching: tabs, as: .image, named: "secondTab")
+  }
+
+  func testSecondTabBadge() {
+    let viewModel = PagedContainerViewModel<FakeTabBarPage>()
+    let firstPage = FakeTabBarPage(name: "First", badgeCount: nil)
+    let secondPage = FakeTabBarPage(name: "Second", badgeCount: 2)
+    viewModel.configure(with: [
+      (firstPage, UIViewController()),
+      (secondPage, UIViewController())
+    ])
+    viewModel.didSelect(page: firstPage)
+
+    let tabs = PagedTabBar(viewModel: viewModel)
+      .frame(width: self.size.width, height: self.size.height)
+
+    assertSnapshot(matching: tabs, as: .image, named: "long name")
+  }
+
+  func testThreeTabs() {
+    let viewModel = PagedContainerViewModel<FakeTabBarPage>()
+    let firstPage = FakeTabBarPage(name: "First", badgeCount: nil)
+    let secondPage = FakeTabBarPage(name: "Second", badgeCount: nil)
+    let thirdPage = FakeTabBarPage(name: "Third", badgeCount: nil)
+    viewModel.configure(with: [
+      (firstPage, UIViewController()),
+      (secondPage, UIViewController()),
+      (thirdPage, UIViewController())
+    ])
+    viewModel.didSelect(page: firstPage)
+
+    let tabs = PagedTabBar(viewModel: viewModel)
+      .frame(width: self.size.width, height: self.size.height)
+
+    assertSnapshot(matching: tabs, as: .image, named: "long name")
   }
 
   func testLongName() {
@@ -44,7 +78,7 @@ final class PagedTabBarTests: TestCase {
     viewModel.didSelect(page: firstPage)
 
     let tabs = PagedTabBar(viewModel: viewModel)
-      .frame(width: size.width, height: size.height)
+      .frame(width: self.size.width, height: self.size.height)
 
     assertSnapshot(matching: tabs, as: .image, named: "long name")
   }
@@ -60,7 +94,7 @@ final class PagedTabBarTests: TestCase {
     viewModel.didSelect(page: firstPage)
 
     let tabs = PagedTabBar(viewModel: viewModel)
-      .frame(width: size.width, height: size.height)
+      .frame(width: self.size.width, height: self.size.height)
 
     assertSnapshot(matching: tabs, as: .image, named: "long badge")
   }
@@ -76,7 +110,7 @@ final class PagedTabBarTests: TestCase {
     viewModel.didSelect(page: firstPage)
 
     let tabs = PagedTabBar(viewModel: viewModel)
-      .frame(width: size.width, height: size.height)
+      .frame(width: self.size.width, height: self.size.height)
 
     assertSnapshot(matching: tabs, as: .image, named: "no badges")
   }
@@ -92,7 +126,7 @@ final class PagedTabBarTests: TestCase {
     viewModel.didSelect(page: firstPage)
 
     let tabs = PagedTabBar(viewModel: viewModel)
-      .frame(width: size.width, height: size.height)
+      .frame(width: self.size.width, height: self.size.height)
 
     assertSnapshot(matching: tabs, as: .image, named: "no badges")
   }

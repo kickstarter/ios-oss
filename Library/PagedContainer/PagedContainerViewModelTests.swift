@@ -12,26 +12,27 @@ final class PagedContainerViewModelTests: XCTestCase {
 
   var subscriptions = Set<AnyCancellable>()
 
-  private func makeViewModel(tabs: [(String, Int?)] = [("Project alerts", 5), ("Activity feed", nil)]) -> PagedContainerViewModel<FakeTabBarPage> {
+  private func makeViewModel(tabs: [(String, Int?)] = [("Project alerts", 5), ("Activity feed", nil)])
+    -> PagedContainerViewModel<FakeTabBarPage> {
     let viewModel = PagedContainerViewModel<FakeTabBarPage>()
-    viewModel.configure(with: tabs.map({ name, badgeCount in
+    viewModel.configure(with: tabs.map { name, badgeCount in
       (FakeTabBarPage(name: name, badgeCount: badgeCount), UIViewController())
-    }))
+    })
     return viewModel
   }
 
   func testEnsureTabSelectedWhenViewAppears() throws {
-    let viewModel = makeViewModel()
+    let viewModel = self.makeViewModel()
     var foundPage: FakeTabBarPage? = nil
     let expectation = self.expectation(description: "Waiting for a page to be selected")
     viewModel.$displayPage
-      .compactMap({ $0 })
+      .compactMap { $0 }
       .first()
-      .sink { (page, _) in
+      .sink { page, _ in
         foundPage = page
         expectation.fulfill()
       }
-      .store(in: &subscriptions)
+      .store(in: &self.subscriptions)
 
     XCTAssertNil(foundPage)
 
@@ -43,7 +44,7 @@ final class PagedContainerViewModelTests: XCTestCase {
   }
 
   func testTabSelection() throws {
-    let viewModel = makeViewModel(tabs: [])
+    let viewModel = self.makeViewModel(tabs: [])
     let firstPage = FakeTabBarPage(name: "First", badgeCount: 1)
     let secondPage = FakeTabBarPage(name: "Second", badgeCount: nil)
     viewModel.configure(with: [
@@ -60,13 +61,13 @@ final class PagedContainerViewModelTests: XCTestCase {
 
     // the currently selected tab should be first page
     viewModel.$displayPage
-      .compactMap({ $0 })
+      .compactMap { $0 }
       .first()
-      .sink { (page, _) in
+      .sink { page, _ in
         existingPage = page
         existingExpectation.fulfill()
       }
-      .store(in: &subscriptions)
+      .store(in: &self.subscriptions)
 
     self.wait(for: [existingExpectation], timeout: 0.1)
     let existing = try XCTUnwrap(existingPage)
@@ -74,14 +75,14 @@ final class PagedContainerViewModelTests: XCTestCase {
     XCTAssertEqual(existing.badgeCount, firstPage.badgeCount)
 
     viewModel.$displayPage
-      .compactMap({ $0 })
+      .compactMap { $0 }
       .dropFirst()
       .first()
       .sink { page, _ in
         selectedPage = page
         selectedExpectation.fulfill()
       }
-      .store(in: &subscriptions)
+      .store(in: &self.subscriptions)
 
     XCTAssertNil(selectedPage)
     viewModel.didSelect(page: secondPage)

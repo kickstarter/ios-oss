@@ -30,7 +30,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     self.toggle.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
 
     self.viewModel.$displayPage.receive(on: RunLoop.main)
-      .compactMap({ $0 })
+      .compactMap { $0 }
       .sink { [weak self] _, controller in
         self?.showChildController(controller)
       }.store(in: &self.subscriptions)

@@ -23,7 +23,8 @@ public protocol PagedContainerViewModelOutputs: ObservableObject {
   var pages: [(page: Page, viewController: UIViewController)] { get }
 }
 
-public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelInputs, PagedContainerViewModelOutputs, ObservableObject {
+public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelInputs,
+  PagedContainerViewModelOutputs, ObservableObject {
   init() {
     Publishers.CombineLatest(
       self.configureWithChildrenSubject,
@@ -39,13 +40,13 @@ public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelI
     .sink(receiveValue: { page in
       self.displayPage = page
     })
-    .store(in: &subscriptions)
+    .store(in: &self.subscriptions)
 
     self.configureWithChildrenSubject
       .sink { pages in
         self.pages = pages
       }
-      .store(in: &subscriptions)
+      .store(in: &self.subscriptions)
 
     self.viewWillAppearSubject
       .combineLatest(self.selectedPageSubject) { _, selectedPage in selectedPage }
