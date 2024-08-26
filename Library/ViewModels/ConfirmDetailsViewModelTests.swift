@@ -995,7 +995,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
         refTag: nil,
         context: .pledge,
         checkoutId: "198336646",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: nil
       )
       self.createCheckoutSuccess.assertValue(expectedValue)
     }
