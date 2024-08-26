@@ -96,12 +96,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       calculatedShippingTotal
     )
 
-    /// Initial pledge amount is zero if not backed.
-    let initialPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backing.map(\.bonusAmount)
-    )
-    .take(first: 1)
+    /// If initial data includes a custom pledge amount, use that.
+    /// If not, bonus amount is 0 if there's no backing.
+    let initialPledgeAmount = Signal.zip(initialData.map(\.bonusSupport), project)
+      .map { bonusSupport, project in
+        if let bonusSupport { return bonusSupport }
+        if let backing = project.personalization.backing { return backing.bonusAmount }
+        return 0.0
+      }
 
     /// Called when pledge or bonus is updated by backer
     let additionalPledgeAmount = Signal.merge(
