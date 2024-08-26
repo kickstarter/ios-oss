@@ -128,8 +128,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardLocationStackViewHidden = reward
       .map { !isRewardLocalPickup($0) }
 
+    // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
     self.estimatedShippingLabelText = Signal.combineLatest(reward, currentShippingRule)
-      .map { reward, shippingRule in estimatedShippingText(for: reward, selectedShippingRule: shippingRule) }
+      .map { reward, shippingRule in
+        "About \(estimatedShippingText(for: reward, selectedShippingRule: shippingRule))"
+      }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()

@@ -683,11 +683,62 @@ public func estimatedShippingText(for reward: Reward, selectedShippingRule: Ship
   let formattedMax = String(format: "%.0f", estimatedMax)
 
   // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
-  let shippingString: String = formattedMin == formattedMax
-    ? "About $\(formattedMin)"
-    : "About $\(formattedMin)-$\(formattedMax)"
+  let estimatedShippingString: String = formattedMin == formattedMax
+    ? "$\(formattedMin)"
+    : "$\(formattedMin)-$\(formattedMax)"
 
-  return shippingString
+  return estimatedShippingString
+}
+
+public func estimatedShippingConversionText(
+  _ project: Project,
+  _ reward: Reward,
+  selectedShippingRule: ShippingRule
+) -> String {
+  guard project.stats.needsConversion else { return "" }
+
+  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
+  guard let shippingRules = reward.shippingRules,
+        let selectedShippingRule = shippingRules
+        .first(where: { $0.location.country == selectedShippingRule.location.country })
+  else {
+    return ""
+  }
+
+  guard let estimatedMin = selectedShippingRule.estimatedMin?.amount,
+        let estimatedMax = selectedShippingRule.estimatedMax?.amount,
+        estimatedMin > 0 || estimatedMax > 0 else {
+    return ""
+  }
+
+  let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+  let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+  let currentCountry = project.stats.currentCountry ?? Project.Country.us
+
+  let formattedMin = Format.currency(
+    convertedMin,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  )
+
+  let formattedMax = Format.currency(
+    convertedMax,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  )
+
+  // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
+  let conversionText: String = formattedMin == formattedMax
+    ? "About $\(String(format: "%.0f", formattedMin))"
+    : "About $\(String(format: "%.0f", formattedMin))-$\(String(format: "%.0f", formattedMax))"
+
+  return conversionText
 }
 
 public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {

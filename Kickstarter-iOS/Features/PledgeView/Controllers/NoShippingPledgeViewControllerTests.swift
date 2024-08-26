@@ -170,10 +170,56 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       }
   }
 
-  func testView_HasAddOns() {
-    let project = Project.template
+  func testView_ShowsEstimatedShippingView() {
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.id .~ 99
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
+        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+          let controller = NoShippingPledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward],
+            selectedShippingRule: shippingRule,
+            selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          self.allowLayoutPass()
+
+          assertSnapshot(
+            matching: parent.view,
+            as: .image(perceptualPrecision: 0.98),
+            named: "lang_\(language)_device_\(device)"
+          )
+        }
+      }
+  }
+
+  func testView_HasAddOns() {
+    let project = Project.template
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [shippingRule]
       |> Reward.lens.id .~ 99
     let addOnReward1 = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -185,7 +231,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
-      selectedShippingRule: nil,
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
       selectedLocationId: ShippingRule.template.id,
       refTag: .projectPage,
