@@ -10,7 +10,6 @@ struct EstimatedShippingCheckoutView: View {
     public static let defaultSpacing = Styles.grid(1)
     public static let verticalPadding = Styles.grid(2)
     public static let horizontalPadding = Styles.grid(4)
-    public static let maxViewHeight = 125.0
     /// Font
     public static let headerFontSize = 16.0
     public static let subHeaderFontSize = 11.0
@@ -47,7 +46,6 @@ struct EstimatedShippingCheckoutView: View {
           .foregroundStyle(Color(UIColor.ksr_support_400))
       }
     }
-    .frame(maxHeight: Constants.maxViewHeight)
     .padding(.vertical, Constants.verticalPadding)
     .padding(.horizontal, Constants.horizontalPadding)
   }

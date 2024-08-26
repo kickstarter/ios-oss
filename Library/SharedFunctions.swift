@@ -705,8 +705,8 @@ public func estimatedShippingConversionText(
     return ""
   }
 
-  guard let estimatedMin = selectedShippingRule.estimatedMin?.amount.rounded(.towardZero),
-        let estimatedMax = selectedShippingRule.estimatedMax?.amount.rounded(.towardZero),
+  guard let estimatedMin = selectedShippingRule.estimatedMin?.amount,
+        let estimatedMax = selectedShippingRule.estimatedMax?.amount,
         estimatedMin > 0 || estimatedMax > 0 else {
     return ""
   }
