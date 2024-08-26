@@ -664,8 +664,7 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
 public func estimatedShippingText(
   for reward: Reward,
   project: Project,
-  selectedShippingRule: ShippingRule,
-  hasAboutPreface: Bool = true
+  selectedShippingRule: ShippingRule
 ) -> String? {
   guard reward.shipping.enabled else { return nil }
 
@@ -698,10 +697,10 @@ public func estimatedShippingText(
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
-  
+
   let estimatedShippingString: String = formattedMin == formattedMax
-    ? "$\(formattedMin)"
-    : "$\(formattedMin)-$\(formattedMax)"
+    ? "\(formattedMin)"
+    : "\(formattedMin)-\(formattedMax)"
 
   return estimatedShippingString
 }
