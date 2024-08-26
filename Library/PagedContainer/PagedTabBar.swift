@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 public struct PagedTabBar<Page: TabBarPage>: View {
-  @ObservedObject var viewModel: PagedContainerViewModel<Page>
+  @StateObject var viewModel: PagedContainerViewModel<Page>
 
   public var body: some View {
     HStack(spacing: Constants.spacing) {
