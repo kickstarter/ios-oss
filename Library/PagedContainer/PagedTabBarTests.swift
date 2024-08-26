@@ -83,6 +83,22 @@ final class PagedTabBarTests: TestCase {
     assertSnapshot(matching: tabs, as: .image, named: "long name")
   }
 
+  func testLongGermanNames() {
+    let viewModel = PagedContainerViewModel<FakeTabBarPage>()
+    let firstPage = FakeTabBarPage(name: "Freundschaftsbezeigungen", badge: .count(1))
+    let secondPage = FakeTabBarPage(name: "Streichholzschächtelchen", badge: .none)
+    viewModel.configure(with: [
+      (firstPage, UIViewController()),
+      (secondPage, UIViewController())
+    ])
+    viewModel.didSelect(page: firstPage)
+
+    let tabs = PagedTabBar(viewModel: viewModel)
+      .frame(width: self.size.width, height: self.size.height)
+
+    assertSnapshot(matching: tabs, as: .image, named: "German")
+  }
+
   func testLongBadge() {
     let viewModel = PagedContainerViewModel<FakeTabBarPage>()
     let firstPage = FakeTabBarPage(name: "First", badge: .count(Int.max))

@@ -35,7 +35,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
         case let .count(badgeCount):
           Text("\(badgeCount)")
             .truncationMode(Constants.label.truncation)
-            .lineLimit(Constants.lineLimit)
+            .lineLimit(Constants.badge.lineLimit)
             .font(Font(Constants.badge.font))
             .foregroundStyle(Color(Constants.badge.labelColor))
             .padding(Constants.badge.padding)
@@ -67,7 +67,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
 
 private enum Constants {
   static let height: CGFloat = 46
-  static let lineLimit = 1
+  static let lineLimit = 2
   static let padding = Edge.Set.horizontal
   static let spacing: CGFloat = 0
 
@@ -93,7 +93,8 @@ private enum Constants {
     padding: EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5),
     style: RoundedCornerStyle.circular,
     alignment: Alignment.bottom,
-    dotSize: Styles.grid(1)
+    dotSize: Styles.grid(1),
+    lineLimit: 1
   )
 }
 
