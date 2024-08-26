@@ -4,7 +4,7 @@ import Library
 import SwiftUI
 
 struct PPOProjectCard: View {
-  @ObservedObject var viewModel: PPOProjectCardViewModel
+  @StateObject var viewModel: PPOProjectCardViewModel
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
