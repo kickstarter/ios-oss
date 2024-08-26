@@ -64,4 +64,36 @@ final class PagedTabBarTests: TestCase {
 
     assertSnapshot(matching: tabs, as: .image, named: "long badge")
   }
+
+  func testNoBadges() {
+    let viewModel = PagedContainerViewModel<FakeTabBarPage>()
+    let firstPage = FakeTabBarPage(name: "First", badgeCount: nil)
+    let secondPage = FakeTabBarPage(name: "Second", badgeCount: nil)
+    viewModel.configure(with: [
+      (firstPage, UIViewController()),
+      (secondPage, UIViewController())
+    ])
+    viewModel.didSelect(page: firstPage)
+
+    let tabs = PagedTabBar(viewModel: viewModel)
+      .frame(width: size.width, height: size.height)
+
+    assertSnapshot(matching: tabs, as: .image, named: "no badges")
+  }
+
+  func testNoBadgesLongNames() {
+    let viewModel = PagedContainerViewModel<FakeTabBarPage>()
+    let firstPage = FakeTabBarPage(name: "First really really really really long name", badgeCount: nil)
+    let secondPage = FakeTabBarPage(name: "Second really really really really long name", badgeCount: nil)
+    viewModel.configure(with: [
+      (firstPage, UIViewController()),
+      (secondPage, UIViewController())
+    ])
+    viewModel.didSelect(page: firstPage)
+
+    let tabs = PagedTabBar(viewModel: viewModel)
+      .frame(width: size.width, height: size.height)
+
+    assertSnapshot(matching: tabs, as: .image, named: "no badges")
+  }
 }

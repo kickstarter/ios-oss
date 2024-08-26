@@ -24,7 +24,8 @@ final class PagedContainerViewModelTests: XCTestCase {
     let viewModel = makeViewModel()
     var foundPage: FakeTabBarPage? = nil
     let expectation = self.expectation(description: "Waiting for a page to be selected")
-    viewModel.displayPage
+    viewModel.$displayPage
+      .compactMap({ $0 })
       .first()
       .sink { (page, _) in
         foundPage = page
@@ -58,7 +59,8 @@ final class PagedContainerViewModelTests: XCTestCase {
     let selectedExpectation = self.expectation(description: "Selected tab")
 
     // the currently selected tab should be first page
-    viewModel.displayPage
+    viewModel.$displayPage
+      .compactMap({ $0 })
       .first()
       .sink { (page, _) in
         existingPage = page
@@ -71,7 +73,8 @@ final class PagedContainerViewModelTests: XCTestCase {
     XCTAssertEqual(existing.name, firstPage.name)
     XCTAssertEqual(existing.badgeCount, firstPage.badgeCount)
 
-    viewModel.displayPage
+    viewModel.$displayPage
+      .compactMap({ $0 })
       .dropFirst()
       .first()
       .sink { page, _ in
