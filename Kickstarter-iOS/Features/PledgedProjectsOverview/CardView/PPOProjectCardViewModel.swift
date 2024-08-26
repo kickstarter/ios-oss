@@ -11,24 +11,26 @@ protocol PPOProjectCardViewModelOutputs {
   var sendMessageTapped: AnyPublisher<Void, Never> { get }
   var actionPerformed: AnyPublisher<PPOProjectCardAction, Never> { get }
 
-  var isUnread: AnyPublisher<Bool, Never> { get }
-  var alerts: AnyPublisher<[PPOProjectCardAlert], Never> { get }
-  var imageURL: AnyPublisher<URL, Never> { get }
-  var title: AnyPublisher<String, Never> { get }
-  var pledge: AnyPublisher<GraphAPI.MoneyFragment, Never> { get }
-  var creatorName: AnyPublisher<String, Never> { get }
-  var address: AnyPublisher<String?, Never> { get }
-  var actions: AnyPublisher<(PPOProjectCardAction, PPOProjectCardAction?), Never> { get }
-  var parentSize: AnyPublisher<CGSize, Never> { get }
+  var isUnread: Bool { get }
+  var alerts: [PPOProjectCardAlert] { get }
+  var imageURL: URL { get }
+  var title: String { get }
+  var pledge: GraphAPI.MoneyFragment { get }
+  var creatorName: String { get }
+  var address: String? { get }
+  var actions: (PPOProjectCardAction, PPOProjectCardAction?) { get }
+  var parentSize: CGSize { get }
 }
 
 extension PPOProjectCardViewModelOutputs {
-  var primaryAction: AnyPublisher<PPOProjectCardAction, Never> {
-    self.actions.map { $0.0 }.eraseToAnyPublisher()
+  var primaryAction: PPOProjectCardAction {
+    let (primary, _) = self.actions
+    return primary
   }
 
-  var secondaryAction: AnyPublisher<PPOProjectCardAction?, Never> {
-    self.actions.map { $0.1 }.eraseToAnyPublisher()
+  var secondaryAction: PPOProjectCardAction? {
+    let (_, secondary) = self.actions
+    return secondary
   }
 }
 
@@ -36,15 +38,15 @@ typealias PPOProjectCardViewModelType = Identifiable & ObservableObject & PPOPro
   PPOProjectCardViewModelOutputs
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
-  let isUnread: AnyPublisher<Bool, Never>
-  let alerts: AnyPublisher<[PPOProjectCardAlert], Never>
-  let imageURL: AnyPublisher<URL, Never>
-  let title: AnyPublisher<String, Never>
-  let pledge: AnyPublisher<GraphAPI.MoneyFragment, Never>
-  let creatorName: AnyPublisher<String, Never>
-  let address: AnyPublisher<String?, Never>
-  let actions: AnyPublisher<(PPOProjectCardAction, PPOProjectCardAction?), Never>
-  let parentSize: AnyPublisher<CGSize, Never>
+  @Published private(set) var isUnread: Bool
+  @Published private(set) var alerts: [PPOProjectCardAlert]
+  @Published private(set) var imageURL: URL
+  @Published private(set) var title: String
+  @Published private(set) var pledge: GraphAPI.MoneyFragment
+  @Published private(set) var creatorName: String
+  @Published private(set) var address: String?
+  @Published private(set) var actions: (PPOProjectCardAction, PPOProjectCardAction?)
+  @Published private(set) var parentSize: CGSize
 
   private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
   private let actionPerformedSubject = PassthroughSubject<PPOProjectCardViewModel.Action, Never>()
@@ -60,15 +62,15 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     actions: (PPOProjectCardViewModel.Action, PPOProjectCardViewModel.Action?),
     parentSize: CGSize
   ) {
-    self.isUnread = Just(isUnread).eraseToAnyPublisher()
-    self.alerts = Just(alerts).eraseToAnyPublisher()
-    self.imageURL = Just(imageURL).eraseToAnyPublisher()
-    self.title = Just(title).eraseToAnyPublisher()
-    self.pledge = Just(pledge).eraseToAnyPublisher()
-    self.creatorName = Just(creatorName).eraseToAnyPublisher()
-    self.address = Just(address).eraseToAnyPublisher()
-    self.actions = Just(actions).eraseToAnyPublisher()
-    self.parentSize = Just(parentSize).eraseToAnyPublisher()
+    self.isUnread = isUnread
+    self.alerts = alerts
+    self.imageURL = imageURL
+    self.title = title
+    self.pledge = pledge
+    self.creatorName = creatorName
+    self.address = address
+    self.actions = actions
+    self.parentSize = parentSize
   }
 
   // Inputs
