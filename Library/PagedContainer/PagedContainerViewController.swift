@@ -13,7 +13,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
   )
 
   private var tabBarPages: AnyPublisher<[Page], Never> {
-    self.viewModel.pages.map { $0.map { pair in
+    self.viewModel.$pages.map { $0.map { pair in
       let (page, _) = pair
       return page
     } }.eraseToAnyPublisher()
@@ -29,7 +29,8 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     self.toggle.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
     self.toggle.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
 
-    self.viewModel.displayPage.receive(on: RunLoop.main)
+    self.viewModel.$displayPage.receive(on: RunLoop.main)
+      .compactMap({ $0 })
       .sink { [weak self] _, controller in
         self?.showChildController(controller)
       }.store(in: &self.subscriptions)

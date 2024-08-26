@@ -2,31 +2,20 @@ import Foundation
 import SwiftUI
 
 public struct PagedTabBar<Page: TabBarPage>: View {
-  var viewModel: PagedContainerViewModel<Page>?
-  @State private var pages: [Page] = []
-  @State private var selection: Page? = nil
+  @ObservedObject var viewModel: PagedContainerViewModel<Page>
 
   public var body: some View {
-    if let viewModel {
-      HStack(spacing: Constants.spacing) {
-        ForEach(self.pages) { page in
-          self.tab(for: page)
-        }
-      }
-      .frame(height: Constants.height)
-      .onReceive(viewModel.pages) { pages in
-        self.pages = pages.map { page, _ in page }
-      }
-      .onReceive(viewModel.displayPage) { selection in
-        let (page, _) = selection
-        self.selection = page
+    HStack(spacing: Constants.spacing) {
+      ForEach(self.viewModel.pages, id: \.page.id) { (page, _) in
+        self.tab(for: page)
       }
     }
+    .frame(height: Constants.height)
   }
 
   @ViewBuilder
   private func tab(for page: Page) -> some View {
-    Button(action: { self.viewModel?.didSelect(page: page) }) {
+    Button(action: { self.viewModel.didSelect(page: page) }) {
       HStack {
         Text(page.name)
           .lineLimit(Constants.lineLimit)
@@ -65,7 +54,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
   }
 
   private func isSelected(page: Page) -> Bool {
-    self.selection?.id == page.id
+    self.viewModel.displayPage?.page.id == page.id
   }
 }
 

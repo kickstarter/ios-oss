@@ -16,18 +16,16 @@ public protocol PagedContainerViewModelInputs {
   func didSelect(page: Page)
 }
 
-public protocol PagedContainerViewModelOutputs {
+public protocol PagedContainerViewModelOutputs: ObservableObject {
   associatedtype Page: TabBarPage
 
-  var displayPage: AnyPublisher<(Page, UIViewController), Never> { get }
-  var pages: AnyPublisher<[(Page, UIViewController)], Never> { get }
+  var displayPage: (page: Page, viewController: UIViewController)? { get }
+  var pages: [(page: Page, viewController: UIViewController)] { get }
 }
 
-public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelInputs, PagedContainerViewModelOutputs {
+public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelInputs, PagedContainerViewModelOutputs, ObservableObject {
   init() {
-    self.pages = self.configureWithChildrenSubject.eraseToAnyPublisher()
-
-    self.displayPage = Publishers.CombineLatest(
+    Publishers.CombineLatest(
       self.configureWithChildrenSubject,
       self.selectedPageSubject
     )
@@ -38,12 +36,21 @@ public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelI
         return page.id == selectedPage?.id
       })
     }
-    .eraseToAnyPublisher()
+    .sink(receiveValue: { page in
+      self.displayPage = page
+    })
+    .store(in: &subscriptions)
+
+    self.configureWithChildrenSubject
+      .sink { pages in
+        self.pages = pages
+      }
+      .store(in: &subscriptions)
 
     self.viewWillAppearSubject
       .combineLatest(self.selectedPageSubject) { _, selectedPage in selectedPage }
       .filter { $0 == nil }
-      .combineLatest(self.pages) { _, pages in pages }
+      .combineLatest(self.$pages) { _, pages in pages }
       .compactMap { pages in
         if let (firstPage, _) = pages.first {
           return firstPage
@@ -74,8 +81,8 @@ public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelI
   }
 
   // Outputs
-  public let displayPage: AnyPublisher<(Page, UIViewController), Never>
-  public let pages: AnyPublisher<[(Page, UIViewController)], Never>
+  @Published public private(set) var displayPage: (page: Page, viewController: UIViewController)?
+  @Published public private(set) var pages: [(page: Page, viewController: UIViewController)] = []
 
   // Internal
   private var subscriptions = Set<AnyCancellable>()
