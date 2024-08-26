@@ -2,18 +2,6 @@ import Combine
 @testable import Library
 import XCTest
 
-/*
- public protocol PagedContainerViewModelInputs {
-   func viewWillAppear()
-   func configure(with children: [(Page, UIViewController)])
-   func didSelect(page: Page)
- }
-
- public protocol PagedContainerViewModelOutputs {
-   var displayPage: AnyPublisher<(Page, UIViewController), Never> { get }
-   var pages: AnyPublisher<[(Page, UIViewController)], Never> { get }
- }
- */
 final class PagedContainerViewModelTests: XCTestCase {
   struct FakeTabBarPage: TabBarPage {
     var name: String
