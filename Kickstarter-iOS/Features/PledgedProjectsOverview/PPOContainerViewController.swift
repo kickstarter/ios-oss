@@ -17,14 +17,14 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     activitiesViewController.title = "Activity Feed"
 
     self.setPagedViewControllers([
-      (.projectAlerts(badge: 5), ppoViewController),
-      (.activityFeed(badge: nil), activitiesViewController)
+      (.projectAlerts(.count(5)), ppoViewController),
+      (.activityFeed(.dot), activitiesViewController)
     ])
   }
 
   public enum Page: TabBarPage {
-    case projectAlerts(badge: Int?)
-    case activityFeed(badge: Int?)
+    case projectAlerts(TabBarBadge)
+    case activityFeed(TabBarBadge)
 
     // TODO: Localize
     public var name: String {
@@ -36,7 +36,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       }
     }
 
-    public var badgeCount: Int? {
+    public var badge: TabBarBadge {
       switch self {
       case let .projectAlerts(badge):
         badge

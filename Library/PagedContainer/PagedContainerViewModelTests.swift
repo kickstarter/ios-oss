@@ -5,7 +5,7 @@ import XCTest
 final class PagedContainerViewModelTests: XCTestCase {
   struct FakeTabBarPage: TabBarPage {
     var name: String
-    var badgeCount: Int?
+    var badge: TabBarBadge
 
     let id = UUID().uuidString
   }
@@ -16,7 +16,8 @@ final class PagedContainerViewModelTests: XCTestCase {
     -> PagedContainerViewModel<FakeTabBarPage> {
     let viewModel = PagedContainerViewModel<FakeTabBarPage>()
     viewModel.configure(with: tabs.map { name, badgeCount in
-      (FakeTabBarPage(name: name, badgeCount: badgeCount), UIViewController())
+      let badge: TabBarBadge = badgeCount.map { .count($0) } ?? .none
+      return (FakeTabBarPage(name: name, badge: badge), UIViewController())
     })
     return viewModel
   }
@@ -40,13 +41,13 @@ final class PagedContainerViewModelTests: XCTestCase {
     self.wait(for: [expectation], timeout: 0.1)
     let page = try XCTUnwrap(foundPage)
     XCTAssertEqual(page.name, "Project alerts")
-    XCTAssertEqual(page.badgeCount, 5)
+    XCTAssertEqual(page.badge.count, 5)
   }
 
   func testTabSelection() throws {
     let viewModel = self.makeViewModel(tabs: [])
-    let firstPage = FakeTabBarPage(name: "First", badgeCount: 1)
-    let secondPage = FakeTabBarPage(name: "Second", badgeCount: nil)
+    let firstPage = FakeTabBarPage(name: "First", badge: .count(1))
+    let secondPage = FakeTabBarPage(name: "Second", badge: .none)
     viewModel.configure(with: [
       (firstPage, UIViewController()),
       (secondPage, UIViewController())
@@ -72,7 +73,7 @@ final class PagedContainerViewModelTests: XCTestCase {
     self.wait(for: [existingExpectation], timeout: 0.1)
     let existing = try XCTUnwrap(existingPage)
     XCTAssertEqual(existing.name, firstPage.name)
-    XCTAssertEqual(existing.badgeCount, firstPage.badgeCount)
+    XCTAssertEqual(existing.badge.count, firstPage.badge.count)
 
     viewModel.$displayPage
       .compactMap { $0 }
@@ -89,6 +90,6 @@ final class PagedContainerViewModelTests: XCTestCase {
     self.wait(for: [selectedExpectation], timeout: 0.1)
     let selected = try XCTUnwrap(selectedPage)
     XCTAssertEqual(selected.name, secondPage.name)
-    XCTAssertEqual(selected.badgeCount, secondPage.badgeCount)
+    XCTAssertEqual(selected.badge.count, secondPage.badge.count)
   }
 }

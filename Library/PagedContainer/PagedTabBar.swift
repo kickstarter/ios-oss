@@ -25,7 +25,14 @@ public struct PagedTabBar<Page: TabBarPage>: View {
             self.isSelected(page: page) ? Constants.label.color.selected : Constants
               .label.color.deselected
           ))
-        if let badgeCount = page.badgeCount {
+        switch page.badge {
+        case .none:
+          EmptyView()
+        case .dot:
+          Circle()
+            .fill(Color(Constants.badge.backgroundColor))
+            .frame(width: Constants.badge.dotSize, height: Constants.badge.dotSize, alignment: .center)
+        case let .count(badgeCount):
           Text("\(badgeCount)")
             .truncationMode(Constants.label.truncation)
             .lineLimit(Constants.lineLimit)
@@ -85,22 +92,23 @@ private enum Constants {
     backgroundColor: UIColor.red,
     padding: EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5),
     style: RoundedCornerStyle.circular,
-    alignment: Alignment.bottom
+    alignment: Alignment.bottom,
+    dotSize: Styles.grid(1)
   )
 }
 
 #Preview {
   struct FakeTabBarPage: TabBarPage {
     var name: String
-    var badgeCount: Int?
+    var badge: TabBarBadge
 
     let id = UUID().uuidString
   }
 
   let viewModel = PagedContainerViewModel<FakeTabBarPage>()
   viewModel.configure(with: [
-    (FakeTabBarPage(name: "Project alerts", badgeCount: 5), UIViewController()),
-    (FakeTabBarPage(name: "Activity feed", badgeCount: nil), UIViewController())
+    (FakeTabBarPage(name: "Project alerts", badge: .count(5)), UIViewController()),
+    (FakeTabBarPage(name: "Activity feed", badge: .none), UIViewController())
   ])
   return PagedTabBar<FakeTabBarPage>(viewModel: viewModel)
     .frame(maxWidth: .infinity)

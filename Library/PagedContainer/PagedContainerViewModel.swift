@@ -3,9 +3,24 @@ import Foundation
 import SwiftUI
 import UIKit
 
+public enum TabBarBadge {
+  case none
+  case dot
+  case count(Int)
+
+  var count: Int? {
+    switch self {
+    case let .count(count):
+      count
+    case .none, .dot:
+      nil
+    }
+  }
+}
+
 public protocol TabBarPage: Identifiable {
   var name: String { get }
-  var badgeCount: Int? { get }
+  var badge: TabBarBadge { get }
 }
 
 public protocol PagedContainerViewModelInputs {
