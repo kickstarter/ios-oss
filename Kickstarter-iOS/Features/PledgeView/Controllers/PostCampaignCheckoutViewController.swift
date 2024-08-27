@@ -329,11 +329,14 @@ final class PostCampaignCheckoutViewController: UIViewController,
       }
   }
 
-  private func configureEstimatedShippingView(with strings: (String, String)) {
-    let (estimatedCost, aboutConversion) = strings
+  private func configureEstimatedShippingView(with strings: (String?, String?)) {
+    let (estimatedString, aboutConversion) = strings
+
+    guard let estimatedCost = estimatedString else { return }
+
     let estimatedShippingView = EstimatedShippingCheckoutView(
       estimatedCost: estimatedCost,
-      aboutConversion: aboutConversion
+      aboutConversion: aboutConversion ?? ""
     )
 
     self.estimatedShippingViewContainer.rootView = estimatedShippingView

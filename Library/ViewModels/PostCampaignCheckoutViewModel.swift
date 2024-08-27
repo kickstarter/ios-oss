@@ -52,7 +52,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
-  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
+  var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -145,15 +145,15 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let rule = shippingRule, let reward = baseReward else { return ("", "") }
 
         return (
-          estimatedShippingText(for: reward, selectedShippingRule: rule),
-          estimatedShippingConversionText(project, reward, selectedShippingRule: rule)
+          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
+          estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
         )
       }
 
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
         let (estimatedShipping, _) = estimatedShippingStrings
-        return reward?.shipping.enabled == false || estimatedShipping.isEmpty
+        return reward?.shipping.enabled == false || estimatedShipping == nil
       }
 
     // MARK: Validate Checkout Details On Submit
@@ -543,7 +543,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   // MARK: - Outputs
 
-  public let configureEstimatedShippingView: Signal<(String, String), Never>
+  public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,

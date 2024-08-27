@@ -316,8 +316,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           estimatedShippingText(
             for: reward,
             project: project,
-            selectedShippingRule: rule,
-            hasAboutPreface: false
+            selectedShippingRule: rule
           ),
           estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
         )
