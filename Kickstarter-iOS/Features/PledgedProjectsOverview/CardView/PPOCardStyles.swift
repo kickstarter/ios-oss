@@ -30,4 +30,6 @@ enum PPOCardStyles {
 
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice
+
+  static let badgeColor = UIColor.hex(0xFF3B30)
 }
