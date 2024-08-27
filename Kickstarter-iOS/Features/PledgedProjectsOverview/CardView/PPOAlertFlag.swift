@@ -2,7 +2,7 @@ import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
-  let alert: Alert
+  let alert: PPOProjectCardAlert
 
   var body: some View {
     HStack {
@@ -49,44 +49,6 @@ struct PPOAlertFlag: View {
       Color(uiColor: PPOCardStyles.warningColor.background)
     case .alert:
       Color(uiColor: PPOCardStyles.alertColor.background)
-    }
-  }
-
-  struct Alert: Identifiable {
-    let type: AlertType
-    let icon: AlertIcon
-    let message: String
-
-    var id: String {
-      "\(self.type)-\(self.icon)-\(self.message)"
-    }
-
-    enum AlertType: Identifiable {
-      case time
-      case alert
-
-      var id: String {
-        switch self {
-        case .time:
-          "time"
-        case .alert:
-          "alert"
-        }
-      }
-    }
-
-    enum AlertIcon: Identifiable {
-      case warning
-      case alert
-
-      var id: String {
-        switch self {
-        case .warning:
-          "warning"
-        case .alert:
-          "alert"
-        }
-      }
     }
   }
 
