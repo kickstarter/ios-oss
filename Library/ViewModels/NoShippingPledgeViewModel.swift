@@ -124,13 +124,18 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map(calculateAllRewardsTotal)
 
-    // Initial pledge amount is zero if not backed.
-    let initialAdditionalPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backing.map(\.bonusAmount)
-    )
-    .take(first: 1)
+    // Initial pledge amount is zero if not backed and not set previously in the flow.
+    let initialAdditionalPledgeAmount = initialData.map {
+      if let bonusSupport = $0.bonusSupport {
+        return bonusSupport
+      } else if let backing = $0.project.personalization.backing {
+        return backing.bonusAmount
+      } else {
+        return 0.0
+      }
+    }
 
+    // TODO(MBL-1670): Delete the additional pledge amount, any validation, and the stepper class.
     let additionalPledgeAmount = Signal.merge(
       self.pledgeAmountDataSignal.map { $0.amount },
       initialAdditionalPledgeAmount
