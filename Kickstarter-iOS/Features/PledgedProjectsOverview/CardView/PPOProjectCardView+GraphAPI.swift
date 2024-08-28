@@ -29,7 +29,8 @@ extension PPOProjectCardViewModel {
     // TODO: Implement
     let address: String? = nil
 
-    let alerts: [PPOProjectCardViewModel.Alert] = node.fragments.ppoCardFragment.flags?.compactMap { PPOProjectCardViewModel.Alert(flag: $0) } ?? []
+    let alerts: [PPOProjectCardViewModel.Alert] = node.fragments.ppoCardFragment.flags?
+      .compactMap { PPOProjectCardViewModel.Alert(flag: $0) } ?? []
 
     // TODO: Implement
     let action = PPOProjectCardViewModel.Action.confirmAddress
@@ -56,18 +57,18 @@ extension PPOProjectCardViewModel.Alert {
   init?(flag: GraphAPI.PpoCardFragment.Flag) {
     let alertType: PPOProjectCardViewModel.Alert.AlertType? = switch flag.type {
     case "alert":
-        .alert
+      .alert
     case "time":
-        .time
+      .time
     default:
-        nil
+      nil
     }
 
     let alertIcon: PPOProjectCardViewModel.Alert.AlertIcon? = switch flag.icon {
     case "alert":
-        .alert
+      .alert
     case "warning":
-        .warning
+      .warning
     default:
       nil
     }

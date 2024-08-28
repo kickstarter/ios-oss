@@ -9,21 +9,22 @@ struct PPOView: View {
   var body: some View {
     GeometryReader { _ in
       ScrollView {
-        switch self.viewModel.state {
-        case .notStarted:
-          Text("Not loaded")
-        case let .loading(data):
-          Text("Loading")
-        case let .loaded(data, _):
-          ForEach(data) { viewModel in
+        switch self.viewModel.results {
+        case .loading, .someLoaded, .allLoaded:
+          ForEach(self.viewModel.results.values) { viewModel in
             PPOProjectCard(viewModel: viewModel)
           }
           .padding(.vertical)
+        case .unloaded:
+          Text("Not loaded")
         case .empty:
           PPOEmptyStateView(tabBarController: self.tabBarController)
-        case let .failed(error):
+        case let .error(error):
           Text("Failed: \(error)")
         }
+      }
+      .refreshable {
+        self.viewModel.pullToRefresh()
       }
       .frame(maxWidth: .infinity, alignment: .center)
       .onAppear(perform: {

@@ -34,7 +34,8 @@ extension PPOProjectCardViewModelOutputs {
   }
 }
 
-typealias PPOProjectCardViewModelType = Identifiable & ObservableObject & PPOProjectCardViewModelInputs &
+typealias PPOProjectCardViewModelType = Equatable & Identifiable & ObservableObject &
+  PPOProjectCardViewModelInputs &
   PPOProjectCardViewModelOutputs
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
@@ -92,6 +93,19 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   typealias Action = PPOProjectCardAction
   typealias Alert = PPOProjectCardAlert
+
+  // Add this static function at the end of the class
+  static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
+    lhs.isUnread == rhs.isUnread &&
+      lhs.alerts == rhs.alerts &&
+      lhs.imageURL == rhs.imageURL &&
+      lhs.title == rhs.title &&
+      lhs.pledge == rhs.pledge &&
+      lhs.creatorName == rhs.creatorName &&
+      lhs.address == rhs.address &&
+      lhs.actions == rhs.actions &&
+      lhs.parentSize == rhs.parentSize
+  }
 }
 
 // Types
@@ -188,5 +202,17 @@ struct PPOProjectCardAlert: Identifiable {
         "alert"
       }
     }
+  }
+}
+
+extension PPOProjectCardAlert: Equatable {}
+
+extension PPOProjectCardAction: Equatable {}
+
+extension GraphAPI.MoneyFragment: Equatable {
+  public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
+    return lhs.amount == rhs.amount &&
+           lhs.currency == rhs.currency &&
+           lhs.symbol == rhs.symbol
   }
 }
