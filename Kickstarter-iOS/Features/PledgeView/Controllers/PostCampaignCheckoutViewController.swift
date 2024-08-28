@@ -155,13 +155,10 @@ final class PostCampaignCheckoutViewController: UIViewController,
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
-      self.rootStackView.topAnchor.constraint(equalTo: self.rootScrollView.topAnchor),
-      self.rootStackView.leftAnchor.constraint(equalTo: self.rootScrollView.leftAnchor),
-      self.rootStackView.rightAnchor.constraint(equalTo: self.rootScrollView.rightAnchor),
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.rootScrollView.bottomAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
   }
 
