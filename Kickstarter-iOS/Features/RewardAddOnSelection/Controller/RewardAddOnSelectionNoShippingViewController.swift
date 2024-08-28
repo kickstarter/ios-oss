@@ -136,7 +136,6 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
     _ = self.headerLabel
       |> \.numberOfLines .~ 0
       |> \.font .~ UIFont.ksr_title2().bolded
-      |> \.text .~ Strings.Customize_your_reward_with_optional_addons()
 
     _ = self.headerRootStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true
@@ -149,6 +148,8 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.headerLabel.rac.text = self.viewModel.outputs.headerTitle
 
     self.viewModel.outputs.configureContinueCTAViewWithData
       .observeForUI()
