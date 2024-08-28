@@ -165,8 +165,8 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
       RemoteConfigFeature.noShippingAtCheckout.rawValue: true
     ]
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
-      .forEach { language, device, currentUser in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
           let controller = PostCampaignCheckoutViewController.instantiate()
           let data = PostCampaignCheckoutData(
@@ -188,16 +188,12 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
 
           self.scheduler.advance(by: .seconds(1))
 
-          let loggedIn = currentUser != nil
-          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
-          if loggedIn { parent.view.frame.size.height = 1_200 }
-
           self.allowLayoutPass()
 
           assertSnapshot(
             matching: parent.view,
             as: .image(perceptualPrecision: 0.98),
-            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+            named: "lang_\(language)_device_\(device)"
           )
         }
       }
@@ -292,24 +288,21 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
       RemoteConfigFeature.noShippingAtCheckout.rawValue: true
     ]
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
-      .forEach { language, device, currentUser in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
           let controller = PostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-          self.scheduler.advance(by: .seconds(1))
 
-          let loggedIn = currentUser != nil
-          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
-          if loggedIn { parent.view.frame.size.height = 1_200 }
+          self.scheduler.advance(by: .seconds(1))
 
           self.allowLayoutPass()
 
           assertSnapshot(
             matching: parent.view,
             as: .image(perceptualPrecision: 0.98),
-            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+            named: "lang_\(language)_device_\(device)"
           )
         }
       }
