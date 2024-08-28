@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-final class NoShippingPledgeViewControllerTests: TestCase {
+final class PostCampaignCheckoutViewControllerTests: TestCase {
   private let userWithCards = GraphUser.template |> \.storedCards .~ UserCreditCards(
     storedCards: [
       UserCreditCards.visa,
@@ -43,17 +43,27 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         language: language,
         remoteConfigClient: mockConfigClient
       ) {
-        let controller = NoShippingPledgeViewController.instantiate()
+        let controller = PostCampaignCheckoutViewController.instantiate()
 
+        let shippingRule = ShippingRule.template
+          |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
+          |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
         let reward = Reward.template
-        let data = PledgeViewData(
+          |> Reward.lens.shipping.enabled .~ true
+          |> Reward.lens.shippingRules .~ [shippingRule]
+        let data = PostCampaignCheckoutData(
           project: project,
+          baseReward: reward,
           rewards: [reward],
-          selectedShippingRule: nil,
-          selectedQuantities: [reward.id: 1],
-          selectedLocationId: nil,
+          selectedQuantities: [:],
+          bonusAmount: 0,
+          total: 5,
+          shipping: nil,
           refTag: nil,
-          context: .pledge
+          context: .pledge,
+          checkoutId: "0",
+          backingId: "backingId",
+          selectedShippingRule: .template
         )
         controller.configure(with: data)
 
@@ -101,16 +111,21 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         language: language,
         remoteConfigClient: mockConfigClient
       ) {
-        let controller = NoShippingPledgeViewController.instantiate()
+        let controller = PostCampaignCheckoutViewController.instantiate()
         let reward = Reward.noReward
-        let data = PledgeViewData(
+        let data = PostCampaignCheckoutData(
           project: project,
+          baseReward: reward,
           rewards: [reward],
-          selectedShippingRule: nil,
-          selectedQuantities: [reward.id: 1],
-          selectedLocationId: nil,
+          selectedQuantities: [:],
+          bonusAmount: 0,
+          total: 5,
+          shipping: nil,
           refTag: nil,
-          context: .pledge
+          context: .pledge,
+          checkoutId: "0",
+          backingId: "backingId",
+          selectedShippingRule: .template
         )
         controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -130,6 +145,19 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   }
 
   func testView_ShowsShippingSummaryViewSection() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.amount .~ 695.0
+          |> Backing.lens.bonusAmount .~ 695.0
+          |> Backing.lens.shippingAmount .~ 0
+      )
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
     let mockConfigClient = MockRemoteConfigClient()
@@ -140,15 +168,20 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = NoShippingPledgeViewController.instantiate()
-          let data = PledgeViewData(
-            project: .template,
-            rewards: [reward, .noReward],
-            selectedShippingRule: nil,
-            selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
-            selectedLocationId: nil,
+          let controller = PostCampaignCheckoutViewController.instantiate()
+          let data = PostCampaignCheckoutData(
+            project: project,
+            baseReward: reward,
+            rewards: [reward],
+            selectedQuantities: [:],
+            bonusAmount: 0,
+            total: 5,
+            shipping: nil,
             refTag: nil,
-            context: .pledge
+            context: .pledge,
+            checkoutId: "0",
+            backingId: "backingId",
+            selectedShippingRule: .template
           )
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -167,6 +200,19 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   }
 
   func testView_ShowsEstimatedShippingView() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.amount .~ 695.0
+          |> Backing.lens.bonusAmount .~ 695.0
+          |> Backing.lens.shippingAmount .~ 0
+      )
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
       |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
@@ -182,15 +228,20 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = NoShippingPledgeViewController.instantiate()
-          let data = PledgeViewData(
-            project: .template,
+          let controller = PostCampaignCheckoutViewController.instantiate()
+          let data = PostCampaignCheckoutData(
+            project: project,
+            baseReward: reward,
             rewards: [reward],
-            selectedShippingRule: shippingRule,
-            selectedQuantities: [reward.id: 1],
-            selectedLocationId: nil,
+            selectedQuantities: [:],
+            bonusAmount: 0,
+            total: 5,
+            shipping: nil,
             refTag: nil,
-            context: .pledge
+            context: .pledge,
+            checkoutId: "0",
+            backingId: "backingId",
+            selectedShippingRule: .template
           )
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -217,21 +268,20 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRules .~ [shippingRule]
       |> Reward.lens.id .~ 99
-    let addOnReward1 = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.id .~ 1
-    let addOnReward2 = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.id .~ 2
 
-    let data = PledgeViewData(
+    let data = PostCampaignCheckoutData(
       project: project,
-      rewards: [reward, addOnReward1, addOnReward2],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
-      selectedLocationId: ShippingRule.template.id,
-      refTag: .projectPage,
-      context: .pledge
+      baseReward: reward,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .pledge,
+      checkoutId: "0",
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
@@ -241,9 +291,10 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
           self.scheduler.advance(by: .seconds(1))
 
           self.allowLayoutPass()

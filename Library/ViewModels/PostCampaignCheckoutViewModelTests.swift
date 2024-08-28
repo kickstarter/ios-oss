@@ -109,7 +109,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         refTag: nil,
         context: .pledge,
         checkoutId: "0",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: .template
       )
 
       self.vm.inputs.configure(with: data)
@@ -140,7 +141,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         refTag: nil,
         context: .pledge,
         checkoutId: "0",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: .template
       )
 
       self.vm.inputs.configure(with: data)
@@ -168,7 +170,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -213,7 +216,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -264,7 +268,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -317,7 +322,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -364,7 +370,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -425,7 +432,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -476,7 +484,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .pledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -546,7 +555,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .latePledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -606,7 +616,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .latePledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -657,7 +668,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       refTag: nil,
       context: .latePledge,
       checkoutId: "0",
-      backingId: "backingId"
+      backingId: "backingId",
+      selectedShippingRule: .template
     )
 
     withEnvironment(apiService: mockService) {
@@ -710,7 +722,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         refTag: nil,
         context: .latePledge,
         checkoutId: "0",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: .template
       )
 
       self.vm.inputs.configure(with: data)
@@ -745,7 +758,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         refTag: nil,
         context: .latePledge,
         checkoutId: "0",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: .template
       )
 
       self.vm.inputs.configure(with: data)
