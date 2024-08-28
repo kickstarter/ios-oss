@@ -23,11 +23,11 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configureContinueCTAViewWithData.map(first)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.selectedQuantity)
       .observe(self.configureContinueCTAViewWithDataQuantity.observer)
-    self.vm.outputs.configureContinueCTAViewWithData.map(second)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.isValid)
       .observe(self.configureContinueCTAViewWithDataIsValid.observer)
-    self.vm.outputs.configureContinueCTAViewWithData.map(third)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.isLoading)
       .observe(self.configureContinueCTAViewWithDataIsLoading.observer)
     self.vm.outputs.configurePledgeAmountViewWithData
       .observe(self.configurePledgeAmountViewWithData.observer)
