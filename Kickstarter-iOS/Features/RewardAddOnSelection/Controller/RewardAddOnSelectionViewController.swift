@@ -255,7 +255,7 @@ extension RewardAddOnSelectionViewController: PledgeShippingLocationViewControll
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController, _: Bool) {
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
