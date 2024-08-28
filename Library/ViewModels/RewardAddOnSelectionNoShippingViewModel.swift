@@ -58,8 +58,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     self.headerTitle = hasAddOns.map { (hasAddons: Bool) -> String in
       hasAddons
         ? Strings.Customize_your_reward_with_optional_addons()
-        // TODO(MBL-1667): Use translated string.
-        : "Customize your reward"
+        : Strings.Customize_your_reward()
     }
 
     // Only fetch add-ons if the base reward has add-ons.
