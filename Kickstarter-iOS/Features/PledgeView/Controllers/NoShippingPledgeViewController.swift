@@ -282,7 +282,7 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] strings in
         let (estimatedShippingText, estimatedConversionText) = strings
-        self?.configureEstimatedShippingView(with: (estimatedShippingText, estimatedConversionText))
+        self?.configureEstimatedShippingView(estimatedShippingText, estimatedConversionText)
       }
 
     self.viewModel.outputs.estimatedShippingViewHidden
@@ -440,8 +440,13 @@ final class NoShippingPledgeViewController: UIViewController,
     self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
   }
 
-  private func configureEstimatedShippingView(with strings: (String, String)) {
-    let (estimatedCost, aboutConversion) = strings
+  private func configureEstimatedShippingView(
+    _ estimatedShippingText: String?,
+    _ estimatedConversionText: String?
+  ) {
+    guard let estimatedCost = estimatedShippingText,
+          let aboutConversion = estimatedConversionText else { return }
+
     let estimatedShippingView = EstimatedShippingCheckoutView(
       estimatedCost: estimatedCost,
       aboutConversion: aboutConversion
