@@ -16,6 +16,7 @@ public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
+  var headerTitle: Signal<String, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
   var loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -53,6 +54,13 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       slug,
       slug.takeWhen(self.beginRefreshSignal)
     )
+
+    self.headerTitle = hasAddOns.map { (hasAddons: Bool) -> String in
+      hasAddons
+        ? Strings.Customize_your_reward_with_optional_addons()
+        // TODO(MBL-1667): Use translated string.
+        : "Customize your reward"
+    }
 
     // Only fetch add-ons if the base reward has add-ons.
     let fetchAddOnsWithSlug = Signal.combineLatest(
@@ -384,6 +392,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
+  public let headerTitle: Signal<String, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
   public let loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never>
