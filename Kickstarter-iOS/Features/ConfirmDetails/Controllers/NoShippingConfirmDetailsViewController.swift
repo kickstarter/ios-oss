@@ -309,23 +309,6 @@ extension NoShippingConfirmDetailsViewController: PledgeAmountViewControllerDele
   }
 }
 
-// MARK: - PledgeShippingLocationViewControllerDelegate
-
-extension NoShippingConfirmDetailsViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
-  ) {
-    self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _: PledgeShippingLocationViewController,
-    _: Bool
-  ) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
-}
-
 // MARK: - ConfirmDetailsContinueCTAViewDelegate
 
 extension NoShippingConfirmDetailsViewController: ConfirmDetailsContinueCTAViewDelegate {
