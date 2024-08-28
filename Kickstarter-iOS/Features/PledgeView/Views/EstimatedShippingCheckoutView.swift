@@ -46,6 +46,7 @@ struct EstimatedShippingCheckoutView: View {
           .foregroundStyle(Color(UIColor.ksr_support_400))
       }
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(.vertical, Constants.verticalPadding)
     .padding(.horizontal, Constants.horizontalPadding)
   }

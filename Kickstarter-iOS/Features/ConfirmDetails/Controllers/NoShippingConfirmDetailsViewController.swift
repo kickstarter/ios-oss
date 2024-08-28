@@ -80,7 +80,7 @@ final class NoShippingConfirmDetailsViewController: UIViewController, MessageBan
 
   private var sessionStartedObserver: Any?
 
-  private let viewModel: ConfirmDetailsViewModelType = ConfirmDetailsViewModel()
+  private let viewModel: NoShippingConfirmDetailsViewModelType = NoShippingConfirmDetailsViewModel()
 
   // MARK: - Lifecycle
 

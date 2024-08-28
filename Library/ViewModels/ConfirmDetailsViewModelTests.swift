@@ -962,15 +962,16 @@ final class ConfirmDetailsViewModelTests: TestCase {
         projectCountry: .us,
         total: 3
       )
-      self.vm.inputs.shippingRuleSelected(
-        ShippingRule(
-          cost: expectedShipping.total,
-          id: nil,
-          location: .losAngeles,
-          estimatedMin: Money(amount: 1.0),
-          estimatedMax: Money(amount: 10.0)
-        )
+
+      let selectedShippingRule = ShippingRule(
+        cost: expectedShipping.total,
+        id: nil,
+        location: .losAngeles,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
       )
+
+      self.vm.inputs.shippingRuleSelected(selectedShippingRule)
 
       let expectedBonus = 5.0
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -995,7 +996,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
         refTag: nil,
         context: .pledge,
         checkoutId: "198336646",
-        backingId: "backingId"
+        backingId: "backingId",
+        selectedShippingRule: selectedShippingRule
       )
       self.createCheckoutSuccess.assertValue(expectedValue)
     }
