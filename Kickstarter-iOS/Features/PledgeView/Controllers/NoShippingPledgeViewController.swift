@@ -143,15 +143,12 @@ final class NoShippingPledgeViewController: UIViewController,
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
+    self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.pledgeCTAContainerView)
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.pledgeCTAContainerView, self.view)
-      |> ksr_addSubviewToParent()
 
     let childViewControllers = [
       self.pledgeRewardsSummaryViewController,
@@ -160,14 +157,13 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let arrangedInsetSubviews = [
       self.paymentMethodsSectionViews,
-      self.confirmationSectionViews,
-      [self.pledgeRewardsSummaryViewController.view]
+      self.confirmationSectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    _ = ([self.titleLabel, self.rootInsetStackView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    self.rootStackView.addArrangedSubview(self.titleLabel)
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
@@ -178,26 +174,22 @@ final class NoShippingPledgeViewController: UIViewController,
       viewController.didMove(toParent: self)
     }
 
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
+
     self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(
-        equalTo: self.view.safeAreaLayoutGuide.topAnchor,
-        constant: Styles.grid(1)
-      ),
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.rootScrollView.bottomAnchor.constraint(
-        equalTo: self.pledgeCTAContainerView.topAnchor,
-        constant: -Styles.grid(3)
-      ),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
   }
 
@@ -206,26 +198,19 @@ final class NoShippingPledgeViewController: UIViewController,
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> checkoutBackgroundStyle
+    self.view.backgroundColor = UIColor.ksr_support_100
 
-    _ = self.titleLabel
-      |> titleLabelStyle
+    titleLabelStyle(self.titleLabel)
 
-    _ = self.pledgeDisclaimerView
-      |> pledgeDisclaimerViewStyle
+    rootScrollViewStyle(self.rootScrollView)
 
-    _ = self.rootScrollView
-      |> rootScrollViewStyle
+    rootStackViewStyle(self.rootStackView)
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
+    rootInsetStackViewStyle(self.rootInsetStackView)
 
-    _ = self.rootInsetStackView
-      |> rootInsetStackViewStyle
+    roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
 
-    _ = self.paymentMethodsViewController.view
-      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+    roundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
@@ -282,7 +267,7 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] strings in
         let (estimatedShippingText, estimatedConversionText) = strings
-        self?.configureEstimatedShippingView(with: (estimatedShippingText, estimatedConversionText))
+        self?.configureEstimatedShippingView(estimatedShippingText, estimatedConversionText)
       }
 
     self.viewModel.outputs.estimatedShippingViewHidden
@@ -440,20 +425,37 @@ final class NoShippingPledgeViewController: UIViewController,
     self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
   }
 
-  private func configureEstimatedShippingView(with strings: (String, String)) {
-    let (estimatedCost, aboutConversion) = strings
+  private func configureEstimatedShippingView(_ estimatedCost: String, _ aboutConversion: String) {
     let estimatedShippingView = EstimatedShippingCheckoutView(
       estimatedCost: estimatedCost,
       aboutConversion: aboutConversion
     )
 
     self.estimatedShippingViewContainer.rootView = estimatedShippingView
+    self.estimatedShippingViewContainer.view.translatesAutoresizingMaskIntoConstraints = false
     self.estimatedShippingViewContainer.view.clipsToBounds = true
     self.estimatedShippingViewContainer.view.layer.masksToBounds = true
     self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
 
-    self.rootInsetStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
-    self.rootInsetStackView.layoutIfNeeded()
+    self.rootStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.estimatedShippingViewContainer.didMove(toParent: self)
+
+    NSLayoutConstraint.activate([
+      self.estimatedShippingViewContainer.view.topAnchor.constraint(
+        equalTo: self.pledgeRewardsSummaryViewController.view.bottomAnchor,
+        constant: Layout.Margin.topBottom
+      ),
+      self.estimatedShippingViewContainer.view.bottomAnchor
+        .constraint(equalTo: self.rootStackView.bottomAnchor),
+      self.estimatedShippingViewContainer.view.leadingAnchor.constraint(
+        equalTo: self.rootStackView.leadingAnchor
+      ),
+      self.estimatedShippingViewContainer.view.trailingAnchor.constraint(
+        equalTo: self.rootStackView.trailingAnchor
+      )
+    ])
+
+    self.rootStackView.layoutIfNeeded()
   }
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
@@ -598,38 +600,43 @@ extension NoShippingPledgeViewController: PledgeDisclaimerViewDelegate {
 
 // MARK: - Styles
 
-private let pledgeDisclaimerViewStyle: ViewStyle = { view in
-  view
-    |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+private func roundedViewStyle(_ view: UIView, cornerRadius: CGFloat) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = cornerRadius
 }
 
-private let rootScrollViewStyle: ScrollStyle = { scrollView in
-  scrollView
-    |> \.showsVerticalScrollIndicator .~ false
-    |> \.alwaysBounceVertical .~ true
+private func rootScrollViewStyle(_ scrollView: UIScrollView) {
+  scrollView.showsVerticalScrollIndicator = false
+  scrollView.alwaysBounceVertical = true
 }
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: 0,
-      leftRight: Layout.Margin.leftRight
-    )
+private func rootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(2)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: ConfirmDetailsLayout.Margin.topBottom,
+    leftRight: 0
+  )
 }
 
-private let rootInsetStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
+private func rootInsetStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(4)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: ConfirmDetailsLayout.Margin.topBottom,
+    leftRight: ConfirmDetailsLayout.Margin.leftRight
+  )
 }
 
 public func titleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
-  label.layoutMargins = UIEdgeInsets(topBottom: Layout.Margin.topBottom, leftRight: Styles.grid(3))
+  label.layoutMargins = UIEdgeInsets(
+    topBottom: Styles.grid(4),
+    leftRight: Styles.grid(6)
+  )
 }
