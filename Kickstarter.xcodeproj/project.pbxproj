@@ -367,6 +367,7 @@
 		39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */; };
 		39B8507C2C3EC52D0045CBA5 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */; };
 		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
+		39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
@@ -1998,6 +1999,7 @@
 		39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerViewTests.swift; sourceTree = "<group>"; };
 		39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPledgeViewStyles.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
 		471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectPamphletMainCell.xib; sourceTree = "<group>"; };
@@ -4041,6 +4043,7 @@
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				60E1BB262C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift */,
 				60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */,
+				39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -8346,6 +8349,7 @@
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */,
+				39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				7727494523F350EE0065E9F2 /* CategorySelectionViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,

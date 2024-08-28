@@ -231,8 +231,8 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
 
     self.configureContinueCTAViewWithData = Signal.merge(
       Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton)
-        .map { qty, isValid in (qty, isValid, false) },
-      hasAddOns.map { (0, true, $0) } // Button is loading if there are add-ons to fetch.
+        .map { qty, isValid in (qty, isValid, false, nil) },
+      hasAddOns.map { (0, true, $0, nil) } // Button is loading if there are add-ons to fetch.
     )
 
     let selectedRewards = baseRewardAndAddOnRewards
