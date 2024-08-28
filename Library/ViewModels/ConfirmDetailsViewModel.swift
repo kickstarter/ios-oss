@@ -331,6 +331,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
+      selectedShippingRule,
       pledgeTotal,
       refTag
     )
@@ -344,7 +345,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       .takeWhen(isLoggedInAndContinueButtonTapped)
       .filter { isLoggedIn, _ in isLoggedIn }
       .map { _, pledgeDetailsData in
-        let (project, rewards, selectedQuantities, pledgeTotal, refTag) = pledgeDetailsData
+        let (project, rewards, selectedQuantities, selectedShippingRule, pledgeTotal, refTag) = pledgeDetailsData
         let rewardsIDs: [String] = rewards.first?.isNoReward == true
           ? []
           : rewards.flatMap { reward -> [String] in
@@ -357,7 +358,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         return CreateCheckoutInput(
           projectId: project.graphID,
           amount: String(format: "%.2f", pledgeTotal),
-          locationId: "\(project.location.id)",
+          locationId: "\(selectedShippingRule?.location.id)",
           rewardIds: rewardsIDs,
           refParam: refTag?.stringTag
         )

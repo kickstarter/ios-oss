@@ -1,36 +1,38 @@
 import Combine
 import Foundation
+import SwiftUI
 import UIKit
 
-open class PagedContainerViewController: UIViewController {
+open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
   private weak var activeController: UIViewController? = nil
   private var subscriptions = Set<AnyCancellable>()
-  private let viewModel = PagedContainerViewModel()
+  private let viewModel = PagedContainerViewModel<Page>()
 
-  // TODO: Use the correct page control, per the designs.
-  // This may exist already in SortPagerViewController, or we can write one in SwiftUI.
-  private lazy var toggle = UISegmentedControl(
-    frame: .zero,
-    actions: []
+  private lazy var toggle = UIHostingController(
+    rootView: PagedTabBar(viewModel: self.viewModel)
   )
+
+  private var tabBarPages: AnyPublisher<[Page], Never> {
+    self.viewModel.$pages.map { $0.map { pair in
+      let (page, _) = pair
+      return page
+    } }.eraseToAnyPublisher()
+  }
 
   open override func viewDidLoad() {
     super.viewDidLoad()
 
     self.view.backgroundColor = .white
-    self.view.addSubview(self.toggle)
-    self.toggle.translatesAutoresizingMaskIntoConstraints = false
-    self.toggle.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-    self.toggle.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+    addChild(self.toggle)
+    self.view.addSubview(self.toggle.view)
+    self.toggle.view.translatesAutoresizingMaskIntoConstraints = false
+    self.toggle.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+    self.toggle.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
 
-    self.viewModel.pageTitles
-      .sink { [weak self] titles in
-        self?.configureSegmentedControl(withTitles: titles)
-      }.store(in: &self.subscriptions)
-
-    self.viewModel.displayChildViewControllerAtIndex.receive(on: RunLoop.main)
-      .sink { [weak self] controller, index in
-        self?.showChildController(controller, atIndex: index)
+    self.viewModel.$displayPage.receive(on: RunLoop.main)
+      .compactMap { $0 }
+      .sink { [weak self] _, controller in
+        self?.showChildController(controller)
       }.store(in: &self.subscriptions)
   }
 
@@ -84,33 +86,22 @@ open class PagedContainerViewController: UIViewController {
     }
   }
 
-  public func setPagedViewControllers(_ controllers: [UIViewController]) {
-    self.viewModel.configure(withChildren: controllers)
+  public func setPagedViewControllers(_ controllers: [(Page, UIViewController)]) {
+    self.viewModel.configure(with: controllers)
+    self.renderTabBar()
   }
 
-  private func configureSegmentedControl(withTitles titles: [String]) {
-    self.toggle.removeAllSegments()
-
-    for (idx, title) in titles.enumerated() {
-      let action = UIAction(
-        title: title,
-        handler: { [weak self] _ in self?.viewModel.didSelectPage(atIndex: idx) }
-      )
-      self.toggle.insertSegment(action: action, at: idx, animated: false)
-    }
-  }
-
-  private func showChildController(_ controller: UIViewController, atIndex index: Int) {
-    if self.toggle.selectedSegmentIndex == UISegmentedControl.noSegment {
-      self.toggle.selectedSegmentIndex = index
-    }
-
+  private func showChildController(_ controller: UIViewController) {
     if let activeController = self.activeController {
       self.stopDisplayingChildViewController(activeController)
     }
 
     self.displayChildViewController(controller)
     self.activeController = controller
+  }
+
+  private func renderTabBar() {
+    self.toggle.rootView = PagedTabBar(viewModel: self.viewModel)
   }
 
   func displayChildViewController(_ controller: UIViewController) {
@@ -125,7 +116,7 @@ open class PagedContainerViewController: UIViewController {
     self.view.addSubview(childView)
 
     childView.translatesAutoresizingMaskIntoConstraints = false
-    childView.topAnchor.constraint(equalTo: self.toggle.bottomAnchor).isActive = true
+    childView.topAnchor.constraint(equalTo: self.toggle.view.bottomAnchor).isActive = true
     childView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor).isActive = true
     childView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor).isActive = true
     childView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
