@@ -108,6 +108,11 @@ final class NoShippingPledgeViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var estimatedShippingStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private var sessionStartedObserver: Any?
   private let viewModel: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
 
@@ -156,13 +161,13 @@ final class NoShippingPledgeViewController: UIViewController,
     ]
 
     let arrangedInsetSubviews = [
+      [self.titleLabel],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    self.rootStackView.addArrangedSubview(self.titleLabel)
     self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     arrangedInsetSubviews.forEach { view in
@@ -175,6 +180,8 @@ final class NoShippingPledgeViewController: UIViewController,
     }
 
     self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
+
+    self.rootStackView.addArrangedSubview(self.estimatedShippingStackView)
 
     self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
@@ -207,6 +214,8 @@ final class NoShippingPledgeViewController: UIViewController,
     rootStackViewStyle(self.rootStackView)
 
     rootInsetStackViewStyle(self.rootInsetStackView)
+
+    rootInsetStackViewStyle(self.estimatedShippingStackView)
 
     roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
 
@@ -437,25 +446,10 @@ final class NoShippingPledgeViewController: UIViewController,
     self.estimatedShippingViewContainer.view.layer.masksToBounds = true
     self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
 
-    self.rootStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.estimatedShippingStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
     self.estimatedShippingViewContainer.didMove(toParent: self)
 
-    NSLayoutConstraint.activate([
-      self.estimatedShippingViewContainer.view.topAnchor.constraint(
-        equalTo: self.pledgeRewardsSummaryViewController.view.bottomAnchor,
-        constant: Layout.Margin.topBottom
-      ),
-      self.estimatedShippingViewContainer.view.bottomAnchor
-        .constraint(equalTo: self.rootStackView.bottomAnchor),
-      self.estimatedShippingViewContainer.view.leadingAnchor.constraint(
-        equalTo: self.rootStackView.leadingAnchor
-      ),
-      self.estimatedShippingViewContainer.view.trailingAnchor.constraint(
-        equalTo: self.rootStackView.trailingAnchor
-      )
-    ])
-
-    self.rootStackView.layoutIfNeeded()
+    self.estimatedShippingStackView.layoutIfNeeded()
   }
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
@@ -635,8 +629,4 @@ public func titleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
-  label.layoutMargins = UIEdgeInsets(
-    topBottom: Styles.grid(4),
-    leftRight: Styles.grid(6)
-  )
 }

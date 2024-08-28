@@ -73,6 +73,11 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var estimatedShippingStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let viewModel: PostCampaignCheckoutViewModelType =
     PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
@@ -135,6 +140,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
     self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
 
+    self.rootStackView.addArrangedSubview(self.estimatedShippingStackView)
+
     self.addChild(self.paymentMethodsViewController)
     self.paymentMethodsViewController.didMove(toParent: self)
 
@@ -181,13 +188,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
     self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
     self.rootStackView.spacing = Styles.grid(1)
 
-    self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
-    self.rootInsetStackView.spacing = Styles.grid(4)
-    self.rootInsetStackView.isLayoutMarginsRelativeArrangement = true
-    self.rootInsetStackView.layoutMargins = UIEdgeInsets(
-      topBottom: ConfirmDetailsLayout.Margin.topBottom,
-      leftRight: ConfirmDetailsLayout.Margin.leftRight
-    )
+    rootInsetStackViewStyle(self.rootInsetStackView)
+    rootInsetStackViewStyle(self.estimatedShippingStackView)
 
     roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
 
@@ -349,25 +351,10 @@ final class PostCampaignCheckoutViewController: UIViewController,
     self.estimatedShippingViewContainer.view.layer.masksToBounds = true
     self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
 
-    self.rootStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.estimatedShippingStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
     self.estimatedShippingViewContainer.didMove(toParent: self)
 
-    NSLayoutConstraint.activate([
-      self.estimatedShippingViewContainer.view.topAnchor.constraint(
-        equalTo: self.pledgeRewardsSummaryViewController.view.bottomAnchor,
-        constant: Layout.Margin.topBottom
-      ),
-      self.estimatedShippingViewContainer.view.bottomAnchor
-        .constraint(equalTo: self.rootStackView.bottomAnchor),
-      self.estimatedShippingViewContainer.view.leadingAnchor.constraint(
-        equalTo: self.rootStackView.leadingAnchor
-      ),
-      self.estimatedShippingViewContainer.view.trailingAnchor.constraint(
-        equalTo: self.rootStackView.trailingAnchor
-      )
-    ])
-
-    self.rootStackView.layoutIfNeeded()
+    self.estimatedShippingStackView.layoutIfNeeded()
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
@@ -511,4 +498,14 @@ public func roundedStyle(_ view: UIView, cornerRadius: CGFloat = Styles.cornerRa
   view.clipsToBounds = true
   view.layer.masksToBounds = true
   view.layer.cornerRadius = cornerRadius
+}
+
+private func rootInsetStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(4)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: ConfirmDetailsLayout.Margin.topBottom,
+    leftRight: ConfirmDetailsLayout.Margin.leftRight
+  )
 }
