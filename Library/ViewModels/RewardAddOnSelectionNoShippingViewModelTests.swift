@@ -46,6 +46,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -99,6 +100,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.local
       |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -135,6 +137,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
     let reward = Reward.template
+      |> Reward.lens.hasAddOns .~ true
+
     let project = Project.template
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
@@ -166,6 +170,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -236,6 +241,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -301,6 +307,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
 
     let baseReward = Reward.template
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     // regular, no limit add-on.
     let addOn1 = Reward.template
@@ -437,6 +444,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -544,6 +552,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -644,6 +653,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -744,6 +754,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -864,6 +875,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -1081,6 +1093,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -1174,6 +1187,108 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn4.id], 4)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
+    XCTAssertEqual(self.goToPledge.values.last?.refTag, .activity)
+    XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)
+  }
+
+  func testGoToPledge_NoReward() {
+    let reward = Reward.noReward
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedShippingRule: nil,
+      selectedQuantities: [:],
+      selectedLocationId: nil,
+      refTag: .activity,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    self.goToPledge.assertValueCount(0)
+
+    self.vm.inputs.continueButtonTapped()
+
+    self.goToPledge.assertValueCount(1)
+    XCTAssertEqual(self.goToPledge.values.last?.project, project)
+    XCTAssertEqual(self.goToPledge.values.last?.rewards.count, 1)
+  }
+
+  func testGoToPledge_NoAddOns() {
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedShippingRule: shippingRule,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .activity,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    let bonusAmount = 20.0
+    let pledgeAmountData = PledgeAmountData(
+      amount: bonusAmount,
+      min: bonusAmount,
+      max: bonusAmount,
+      isValid: true
+    )
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+    self.goToPledge.assertValueCount(0)
+
+    self.vm.inputs.continueButtonTapped()
+
+    XCTAssertEqual(
+      ["Page Viewed", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("session_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("project_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("user_"))
+
+    self.goToPledge.assertValueCount(1)
+    XCTAssertEqual(self.goToPledge.values.last?.project, project)
+    XCTAssertEqual(
+      self.goToPledge.values.last?.rewards.count, 1
+    )
+    XCTAssertEqual(self.goToPledge.values.last?.bonusSupport, bonusAmount)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
     XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
     XCTAssertEqual(self.goToPledge.values.last?.refTag, .activity)
     XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)

@@ -345,7 +345,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       .takeWhen(isLoggedInAndContinueButtonTapped)
       .filter { isLoggedIn, _ in isLoggedIn }
       .map { _, pledgeDetailsData in
-        let (project, rewards, selectedQuantities, selectedShippingRule, pledgeTotal, refTag) = pledgeDetailsData
+        let (
+          project,
+          rewards,
+          selectedQuantities,
+          selectedShippingRule,
+          pledgeTotal,
+          refTag
+        ) = pledgeDetailsData
         let rewardsIDs: [String] = rewards.first?.isNoReward == true
           ? []
           : rewards.flatMap { reward -> [String] in
@@ -389,12 +396,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         bonusOrPledgeUpdatedAmount,
         optionalShippingSummaryData,
         pledgeTotal,
-        baseReward
+        baseReward,
+        selectedShippingRule
       )
     )
     .map { checkoutAndBackingId, otherData -> PostCampaignCheckoutData in
       let (checkoutId, backingId) = checkoutAndBackingId
-      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
+      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward, shippingRule) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -415,7 +423,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         refTag: initialData.refTag,
         context: initialData.context,
         checkoutId: checkoutId,
-        backingId: backingId
+        backingId: backingId,
+        selectedShippingRule: shippingRule
       )
     }
 

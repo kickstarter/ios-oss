@@ -16,6 +16,7 @@ public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
+  var headerTitle: Signal<String, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
   var loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -45,12 +46,28 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     let initialLocationId = configData.map(\.selectedLocationId)
     let selectedShippingRule = configData.map(\.selectedShippingRule)
 
+    let hasAddOns = baseReward.map(\.hasAddOns)
+
     let slug = project.map(\.slug)
 
-    let fetchAddOnsWithSlug = Signal.merge(
+    let refreshAddons = Signal.merge(
       slug,
       slug.takeWhen(self.beginRefreshSignal)
     )
+
+    self.headerTitle = hasAddOns.map { (hasAddons: Bool) -> String in
+      hasAddons
+        ? Strings.Customize_your_reward_with_optional_addons()
+        // TODO(MBL-1667): Use translated string.
+        : "Customize your reward"
+    }
+
+    // Only fetch add-ons if the base reward has add-ons.
+    let fetchAddOnsWithSlug = Signal.combineLatest(
+      refreshAddons,
+      hasAddOns.filter(isTrue)
+    )
+    .map(first)
 
     let shippingRule = Signal.merge(
       selectedShippingRule,
@@ -70,7 +87,13 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     }
 
     self.startRefreshing = self.beginRefreshSignal
-    self.endRefreshing = projectEvent.filter { $0.isTerminating }.ignoreValues()
+    self.endRefreshing = Signal.merge(
+      projectEvent.filter { $0.isTerminating }.ignoreValues(),
+      // If there aren't add-ons to fetch, end refresh immediately.
+      hasAddOns.takeWhen(self.beginRefreshSignal).filter(isFalse)
+        .ksr_delay(.milliseconds(100), on: AppEnvironment.current.scheduler)
+        .ignoreValues()
+    )
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
@@ -145,15 +168,20 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       self.loadAddOnRewardsIntoDataSource
     )
 
-    let allRewards = dataSourceItems.map { items in
-      items.compactMap { item -> Reward? in item.rewardAddOnCardViewData?.reward }
-    }
+    let allAddOnRewards = Signal.merge(
+      // All add-ons from the data source.
+      dataSourceItems.map { items in
+        items.compactMap {
+          item -> Reward? in item.rewardAddOnCardViewData?.reward
+        }
+      },
+      // No add-ons (and data source is not initialized) if the reward doesn't have add-ons.
+      hasAddOns.filter(isFalse).mapConst([])
+    )
 
     let baseRewardAndAddOnRewards = Signal.combineLatest(
       baseReward,
-      dataSourceItems.map { items in
-        items.compactMap { item -> Reward? in item.rewardAddOnCardViewData?.reward }
-      }
+      allAddOnRewards
     )
 
     // MARK: - Bonus support
@@ -181,7 +209,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     let totalSelectedAddOnsQuantity = Signal.combineLatest(
       latestSelectedQuantities,
       baseReward.map(\.id),
-      allRewards.map { $0.map(\.id) }
+      allAddOnRewards.map { $0.map(\.id) }
     )
     .map { quantities, baseRewardId, addOnRewardIds in
       quantities
@@ -205,7 +233,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     self.configureContinueCTAViewWithData = Signal.merge(
       Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton)
         .map { qty, isValid in (qty, isValid, false) },
-      configData.mapConst((0, true, true))
+      hasAddOns.map { (0, true, $0) } // Button is loading if there are add-ons to fetch.
     )
 
     let selectedRewards = baseRewardAndAddOnRewards
@@ -364,6 +392,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
+  public let headerTitle: Signal<String, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
   public let loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never>
