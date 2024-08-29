@@ -76,6 +76,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
+      |> \.isHidden .~ true
 
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
@@ -198,6 +199,15 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
         } else {
           self.goToPledge(data: data)
         }
+      }
+
+    self.viewModel.outputs.rewardsCollectionViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] shimmerLoadingViewIsHidden in
+        guard let self else { return }
+
+        self.collectionView.isHidden = !shimmerLoadingViewIsHidden
+        self.collectionView.layoutIfNeeded()
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
@@ -410,7 +420,13 @@ extension WithShippingRewardsCollectionViewController: PledgeShippingLocationVie
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(
+    _: PledgeShippingLocationViewController,
+    _ shimmerLoadingViewIsHidden: Bool
+  ) {
+    self.viewModel.inputs.pledgeShippingLocationViewControllerDidUpdate(shimmerLoadingViewIsHidden)
+  }
+
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
     self.viewModel.inputs.shippingLocationViewDidFailToLoad()
   }
