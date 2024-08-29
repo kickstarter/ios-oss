@@ -145,8 +145,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let rule = shippingRule, let reward = baseReward else { return ("", "") }
 
         return (
-          estimatedShippingText(for: reward, selectedShippingRule: rule),
-          estimatedShippingConversionText(project, reward, selectedShippingRule: rule)
+          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
+          estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
         )
       }
 
