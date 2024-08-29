@@ -23,18 +23,15 @@ struct EstimatedShippingCheckoutView: View {
     )
   }
 
-  // TODO: Update strings with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
   var body: some View {
     HStack(alignment: .top) {
       VStack(alignment: .leading, spacing: Constants.defaultSpacing) {
-        Text("Estimated Shipping")
+        Text(Strings.Estimated_Shipping())
           .font(Constants.headerFont)
           .bold()
-        Text(
-          "This is meant to give you an idea of what shipping might cost. Once the creator is ready to fulfill your reward, you’ll return to pay shipping and applicable taxes."
-        )
-        .font(Constants.subHeaderFont)
-        .foregroundStyle(Color(UIColor.ksr_support_400))
+        Text(Strings.This_is_meant_to_give_you())
+          .font(Constants.subHeaderFont)
+          .foregroundStyle(Color(UIColor.ksr_support_400))
       }
 
       VStack(alignment: .trailing, spacing: Constants.defaultSpacing) {
