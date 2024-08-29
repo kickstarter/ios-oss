@@ -203,6 +203,7 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       goToPledgeBackedConfirmed
     )
 
+    /// Temporary loading state solution. Proper designs will be explored in this ticket [mbl-1678](https://kickstarter.atlassian.net/browse/MBL-1678)
     self.rewardsCollectionViewIsHidden = self.pledgeShippingLocationViewControllerDidUpdateProperty.signal
       .map { $0 }
 
