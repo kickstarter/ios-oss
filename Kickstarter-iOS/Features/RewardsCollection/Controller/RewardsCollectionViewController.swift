@@ -33,7 +33,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
-  public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
@@ -287,35 +286,19 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   private func goToPledge(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let pledgeViewController = NoShippingPledgeViewController.instantiate()
-      pledgeViewController.delegate = self.noShippingPledgeViewDelegate
-      pledgeViewController.configure(with: data)
+    let pledgeViewController = PledgeViewController.instantiate()
+    pledgeViewController.delegate = self.pledgeViewDelegate
+    pledgeViewController.configure(with: data)
 
-      self.navigationController?.pushViewController(pledgeViewController, animated: true)
-    } else {
-      let pledgeViewController = PledgeViewController.instantiate()
-      pledgeViewController.delegate = self.pledgeViewDelegate
-      pledgeViewController.configure(with: data)
-
-      self.navigationController?.pushViewController(pledgeViewController, animated: true)
-    }
+    self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
   private func goToConfirmDetails(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
+    let vc = ConfirmDetailsViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = ConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showEditRewardConfirmationPrompt(title: String, message: String) {

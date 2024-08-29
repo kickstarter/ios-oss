@@ -215,16 +215,16 @@ final class RewardAddOnSelectionViewController: UIViewController {
     let vc = ConfirmDetailsViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
-    
+
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToPledge(data: PledgeViewData) {
-      let vc = PledgeViewController.instantiate()
-      vc.delegate = self.pledgeViewDelegate
-      vc.configure(with: data)
+    let vc = PledgeViewController.instantiate()
+    vc.delegate = self.pledgeViewDelegate
+    vc.configure(with: data)
 
-      self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
