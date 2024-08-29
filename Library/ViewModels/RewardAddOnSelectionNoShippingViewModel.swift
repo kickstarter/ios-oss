@@ -282,7 +282,7 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
       project.map { $0.personalization.backing }.skipNil().map(\.amount),
       combinedPledgeTotal
     )
-
+    
     // MARK: - Tracking
 
     // shippingRule needs to be set for the event is fired
