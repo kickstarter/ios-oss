@@ -113,7 +113,7 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
     self.viewModel.outputs.pledgeAmountText
       .observeForUI()
       .observeValues { [weak self] text in
-        self?.pledgeAmount.text = text
+        self?.pledgeAmount.attributedText = text
       }
   }
 

@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -6,7 +7,7 @@ public typealias RewardAddOnSelectionContinueCTAViewData = (
   selectedQuantity: Int,
   isValid: Bool,
   isLoading: Bool,
-  pledgeAmount: Int? // Only shows if passed in.
+  pledgeAmount: NSAttributedString? // Only shows pledge amount section if this is set.
 )
 
 public protocol RewardAddOnSelectionContinueCTAViewModelInputs {
@@ -18,7 +19,7 @@ public protocol RewardAddOnSelectionContinueCTAViewModelOutputs {
   var buttonTitle: Signal<String, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var pledgeAmountHidden: Signal<Bool, Never> { get }
-  var pledgeAmountText: Signal<String, Never> { get }
+  var pledgeAmountText: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol RewardAddOnSelectionContinueCTAViewModelType {
@@ -34,7 +35,7 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
     let isLoading = self.configDataProperty.signal.skipNil().map(\.isLoading)
     let pledgeAmount = self.configDataProperty.signal.skipNil().map(\.pledgeAmount)
 
-    self.pledgeAmountText = pledgeAmount.skipNil().map { "\($0)" }
+    self.pledgeAmountText = pledgeAmount.skipNil()
 
     self.pledgeAmountHidden = pledgeAmount.map(isNil)
 
@@ -69,7 +70,7 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
   public let buttonTitle: Signal<String, Never>
   public let isLoading: Signal<Bool, Never>
   public let pledgeAmountHidden: Signal<Bool, Never>
-  public let pledgeAmountText: Signal<String, Never>
+  public let pledgeAmountText: Signal<NSAttributedString, Never>
 
   public var inputs: RewardAddOnSelectionContinueCTAViewModelInputs { return self }
   public var outputs: RewardAddOnSelectionContinueCTAViewModelOutputs { return self }
