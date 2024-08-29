@@ -78,8 +78,8 @@ final class NoShippingPostCampaignViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: PostCampaignCheckoutViewModelType =
-    PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
+  private let viewModel: NoShippingPostCampaignCheckoutViewModelType =
+    NoShippingPostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
   // MARK: - Lifecycle
 
