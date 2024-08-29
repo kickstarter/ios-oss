@@ -37,10 +37,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         return data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor
       },
       requestFromParams: { () in
-        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: 20)
+        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
       },
       requestFromCursor: { cursor in
-        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: cursor, limit: 20)
+        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: cursor, limit: Constants.pageSize)
       }
     )
     self.paginator = paginator
@@ -100,4 +100,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
+
+  private enum Constants {
+    static let pageSize = 20
+  }
 }

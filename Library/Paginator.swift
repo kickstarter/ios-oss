@@ -64,17 +64,13 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
 
     public var values: [Value] {
       switch self {
-      case .unloaded:
-        []
       case let .loading(previous):
         previous.values
       case let .someLoaded(values, _):
         values
       case let .allLoaded(values):
         values
-      case .empty:
-        []
-      case .error:
+      case .unloaded, .empty, .error:
         []
       }
     }
