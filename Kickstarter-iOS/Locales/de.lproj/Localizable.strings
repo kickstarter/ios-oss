@@ -13,8 +13,10 @@
 "Add_new_card" = "Kreditkarte hinzufügen";
 "Add_ons" = "Add-ons";
 "Add_ons_unavailable" = "Add-ons nicht verfügbar";
+"Address_confirmed_need_to_change_your_address_before_it_locks" = "Adresse bestätigt! Du möchtest deine Adresse ändern, bevor sie gesperrt wird? Ruf deine Unterstützungsdetails auf unserer Website auf.";
 "After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Nach dem 5. September 2023 ist das Dashboard nur noch auf unserer Website verfügbar.";
 "Alert" = "Hinweis";
+"Alerts_count" = "Wichtige Hinweise (%{count})";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
 "All_Crafts_Projects" = "Alle Projekte der Kategorie Kunsthandwerk";
@@ -51,6 +53,8 @@
 "Ask_a_question" = "Eine Frage stellen";
 "Ask_me_anything" = "Frage stellen";
 "Ask_the_project_creator_directly" = "Wende dich bitte direkt an den Projektgründer.";
+"Authentication_failed_please_try_again" = "Authentifizierung fehlgeschlagen. Bitte versuch es noch einmal.";
+"Authentication_success_please_pull_to_refresh" = "Authentifizierung erfolgreich. Bitte ziehe, um die Seite zu aktualisieren.";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
 "Back_it_because_you_believe_in_it" = "Du glaubst an dieses Projekt. Unterstütze es.";
@@ -67,6 +71,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Unterstützer haben Projektgründern auf Kickstarter dabei geholfen, kreative Ideen zu verwirklichen.";
+"Backing_details" = "Details zum Finanzierungsbeitrag";
 "Backing_means_supporting" = "Die Unterstützung eines Projekts bedeutet, eine kreative Idee zu unterstützen, unabhängig vom Ergebnis.";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
@@ -181,6 +186,7 @@
 "Currency_USD" = "$ US-Dollar (USD)";
 "Current_email" = "Derzeitige E-Mail";
 "Current_password" = "Derzeitiges Passwort";
+"Customize_your_reward" = "Belohnung anpassen";
 "Customize_your_reward_with_optional_addons" = "Personalisiere deine Belohnung mit optionalen Add-ons.";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Daily_summary" = "Übersicht (einmal täglich)";
@@ -215,6 +221,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
 "Environmental_commitments" = "Verpflichtung zum Umweltschutz";
 "Environmentally_friendly_factories" = "Umweltfreundliche Fertigungsanlagen";
+"Estimated_Shipping" = "Geschätzte Versandkosten";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_colon" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_of" = "Voraussichtliches Lieferdatum";
@@ -495,6 +502,7 @@
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_activity" = "Projektaktivität";
+"Project_alerts" = "Wichtige Projekthinweise";
 "Project_cancelled" = "Projekt abgebrochen";
 "Project_creators_and_their" = "Projektgründer dürfen keine Falschdarstellungen abgeben zu ihrer Person, der Teilnahme von Drittanbietern oder dem Grad der Unterstützung ihres Projekts.";
 "Project_goal_and_pledge" = "Es wird eine ungefähre Umrechnung des Finanzierungsziels und der Finanzierungsbeiträge angezeigt. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht.";
@@ -583,6 +591,7 @@
 "Saves_project" = "Speichert dieses Projekt.";
 "Say_something_kind" = "Sag etwas Nettes ...";
 "Security_code" = "Sicherheitscode";
+"See_all_backed__projects" = "Alle unterstützten Projekte ansehen";
 "See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
 "See_our_suggestions" = "Unsere Empfehlungen ansehen ▸";
 "See_rewards" = "Belohnungen ansehen";
@@ -638,6 +647,7 @@
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hier ist etwas schiefgelaufen, deine Zahlungsweise konnte leider nicht entfernt werden. Bitte versuche es noch einmal.";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
 "Something_went_wrong_pull_to_refresh" = "Da hat etwas nicht geklappt, bitte nach unten streichen.";
+"Something_went_wrong_pull_to_refresh_no_period" = "Da hat etwas nicht geklappt – ziehe, um die Seite zu aktualisieren";
 "Spam" = "Spam";
 "Start_the_request" = "Daten zusammenstellen";
 "Starting_soon" = "Beginnt in Kürze";
@@ -691,6 +701,7 @@
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "Dieser Kommentar wird gerade geprüft, weil er möglicherweise gegen die <a href=\"%{community_guidelines}\">Community-Richtlinien von Kickstarter</a> verstößt.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_holiday_season_support_a_project_for_no_reward" = "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht.";
+"This_is_meant_to_give_you" = "Das soll dir eine Vorstellung von den Versandkosten geben. Nachdem der Projektgründer bereit ist, deine Belohnung zu erfüllen, kannst du hier die Versandkosten und anfallende Steuern bezahlen.";
 "This_person_canceled_their_pledge" = "Diese Person hat ihren Finanzierungsbeitrag zurückgezogen.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Dieser Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen.";
 "This_post_is_for_backers_only" = "Dieser Beitrag ist nur für Unterstützer";
@@ -780,6 +791,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "What_parts_of_your_project_will_use_AI_generated_content" = "Bei welchen Teilen deines Projekts kommen KI-generierte Inhalte zum Einsatz? Bitte beantworte die Frage so konkret wie möglich.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen aktiviert wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion deaktiviert wurde, werden diese Daten endgültig gelöscht.";
+"When_projects_youve_backed_need_your_attention_youll_see_them_here" = "Wenn Projekte, die du unterstützt, deine Aufmerksamkeit brauchen, siehst du sie hier.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
 "Working_on_it" = "Working on it";
@@ -801,7 +813,7 @@
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Du hast <b>%{project_name}</b> mit deinem Beitrag erfolgreich unterstützt. Dein Beitrag in Höhe von <b>%{pledge_total}</b> wurde eingezogen.</p>\n<p>Du erhältst eine E-Mail an %{user_email}, wenn deine Belohnungen zur Erfüllung bereit sind, damit du alles finalisieren und für Versand und Steuern zahlen kannst.</p>\n<p>Dank dir ist dieses Projekt seiner Realisierung einen Schritt nähergekommen. Erzähl auch deinen Freunden und Bekannten davon!</p>";
-"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
+"You_have_successfully_pledged_to_project_post_campaign_html_short" = "Dein Beitrag in Höhe von <b>%{pledge_total}</b> wird dabei helfen, dieses Projekt Wirklichkeit werden zu lassen. Weitere Details findest du in der E-Mail, die du von uns erhalten hast.";
 "You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
@@ -832,9 +844,11 @@
 "Your_shipping_location" = "Dein Versand-Standort";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
+"Youre_all_caught_up" = "Alles erledigt!";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "Du wurdest erfolgreich authentifiziert! Ziehe, um die Seite zu aktualisieren.";
 "Youve_canceled_your_pledge" = "Dein Finanzierungsbeitrag wurde abgebrochen.";
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Du hast den Finanzierungsbeitrag in Höhe von <b>%{pledge_amount}</b> für das Projekt <b>%{project_name}</b> zurückgezogen.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
