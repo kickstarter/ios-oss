@@ -212,7 +212,7 @@ extension PPOProjectCardAction: Equatable {}
 extension GraphAPI.MoneyFragment: Equatable {
   public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
     return lhs.amount == rhs.amount &&
-           lhs.currency == rhs.currency &&
-           lhs.symbol == rhs.symbol
+      lhs.currency == rhs.currency &&
+      lhs.symbol == rhs.symbol
   }
 }
