@@ -217,7 +217,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
     let vc = NoShippingConfirmDetailsViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
-    
+
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
