@@ -5,7 +5,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class PostCampaignCheckoutViewModelTests: TestCase {
+final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
 
@@ -110,7 +110,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         context: .pledge,
         checkoutId: "0",
         backingId: "backingId",
-        selectedShippingRule: .template
+        selectedShippingRule: ShippingRule.template
       )
 
       self.vm.inputs.configure(with: data)
@@ -142,7 +142,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         context: .pledge,
         checkoutId: "0",
         backingId: "backingId",
-        selectedShippingRule: .template
+        selectedShippingRule: ShippingRule.template
       )
 
       self.vm.inputs.configure(with: data)
@@ -171,7 +171,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -217,7 +217,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -269,7 +269,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -323,7 +323,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -371,7 +371,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -433,7 +433,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -485,7 +485,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .pledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -556,7 +556,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .latePledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -617,7 +617,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .latePledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -669,7 +669,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       context: .latePledge,
       checkoutId: "0",
       backingId: "backingId",
-      selectedShippingRule: .template
+      selectedShippingRule: ShippingRule.template
     )
 
     withEnvironment(apiService: mockService) {
@@ -723,7 +723,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         context: .latePledge,
         checkoutId: "0",
         backingId: "backingId",
-        selectedShippingRule: .template
+        selectedShippingRule: ShippingRule.template
       )
 
       self.vm.inputs.configure(with: data)
@@ -759,7 +759,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
         context: .latePledge,
         checkoutId: "0",
         backingId: "backingId",
-        selectedShippingRule: .template
+        selectedShippingRule: ShippingRule.template
       )
 
       self.vm.inputs.configure(with: data)
