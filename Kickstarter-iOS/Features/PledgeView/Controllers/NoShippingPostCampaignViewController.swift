@@ -495,3 +495,9 @@ private func rootInsetStackViewStyle(_ stackView: UIStackView) {
     leftRight: ConfirmDetailsLayout.Margin.leftRight
   )
 }
+
+public func roundedStyle(_ view: UIView, cornerRadius: CGFloat = Styles.cornerRadius) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = cornerRadius
+}
