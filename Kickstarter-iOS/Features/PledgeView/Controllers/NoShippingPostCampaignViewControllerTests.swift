@@ -43,7 +43,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
         language: language,
         remoteConfigClient: mockConfigClient
       ) {
-        let controller = PostCampaignCheckoutViewController.instantiate()
+        let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
 
         let shippingRule = ShippingRule.template
           |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
@@ -111,7 +111,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
         language: language,
         remoteConfigClient: mockConfigClient
       ) {
-        let controller = PostCampaignCheckoutViewController.instantiate()
+        let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
         let reward = Reward.noReward
         let data = PostCampaignCheckoutData(
           project: project,
@@ -168,7 +168,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignCheckoutViewController.instantiate()
+          let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
           let data = PostCampaignCheckoutData(
             project: project,
             baseReward: reward,
@@ -228,7 +228,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignCheckoutViewController.instantiate()
+          let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
           let data = PostCampaignCheckoutData(
             project: project,
             baseReward: reward,
@@ -291,7 +291,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignCheckoutViewController.instantiate()
+          let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

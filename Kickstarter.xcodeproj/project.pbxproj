@@ -461,7 +461,7 @@
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
 		6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633529B9023300B87B39 /* GraphUserEmailTests.swift */; };
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
-		601342EC2C81414000B851FA /* NoShippingPostCampaignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* NoShippingPostCampaignViewController.swift */; };
+		601342EC2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */; };
 		601342EF2C81419C00B851FA /* NoShippingPostCampaignViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */; };
 		601342F12C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F02C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift */; };
 		601342F32C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F22C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift */; };
@@ -2110,7 +2110,7 @@
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
 		6008633529B9023300B87B39 /* GraphUserEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTests.swift; sourceTree = "<group>"; };
 		6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAppTrackingTransparency.swift; sourceTree = "<group>"; };
-		601342EB2C81414000B851FA /* NoShippingPostCampaignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignViewController.swift; sourceTree = "<group>"; };
+		601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
 		601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignViewControllerTests.swift; sourceTree = "<group>"; };
 		601342F02C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewModel.swift; sourceTree = "<group>"; };
 		601342F22C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewModelTests.swift; sourceTree = "<group>"; };
@@ -3831,7 +3831,7 @@
 				395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */,
 				395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */,
 				60E1BB562C7D0BC5007D723B /* PostCampaignCheckoutViewControllerTests.swift */,
-				601342EB2C81414000B851FA /* NoShippingPostCampaignViewController.swift */,
+				601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */,
 				601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */,
 				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
 				6035AFAE2C594717007E28FC /* NoShippingPledgeViewController.swift */,
@@ -8645,7 +8645,7 @@
 				8A32FE0424D2336E00F79C72 /* EmpyStateView.swift in Sources */,
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
-				601342EC2C81414000B851FA /* NoShippingPostCampaignViewController.swift in Sources */,
+				601342EC2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
