@@ -671,4 +671,32 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertTrue(isRewardDigital(reward))
   }
+
+  func test_estimatedShippingText() {
+    let rewardShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 2)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 7)
+    let addOnShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 1)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 5)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.shippingRules .~ [rewardShippingRule]
+      |> Reward.lens.id .~ 99
+    let addOn = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shippingRules .~ [addOnShippingRule]
+
+    let project = Project.template
+
+    let estimatedShipping = estimatedShippingText(
+      for: [reward, addOn],
+      project: project,
+      selectedShippingRule: .template
+    )
+
+    XCTAssertEqual(estimatedShipping, "$1-$7")
+  }
 }
