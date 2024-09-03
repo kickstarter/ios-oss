@@ -22,7 +22,6 @@ final class RewardAddOnSelectionViewController: UIViewController {
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
-  public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -213,35 +212,19 @@ final class RewardAddOnSelectionViewController: UIViewController {
   // MARK: Functions
 
   private func goToConfirmDetails(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
+    let vc = ConfirmDetailsViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = ConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToPledge(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingPledgeViewController.instantiate()
-      vc.delegate = self.noShippingPledgeViewDelegate
-      vc.configure(with: data)
+    let vc = PledgeViewController.instantiate()
+    vc.delegate = self.pledgeViewDelegate
+    vc.configure(with: data)
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = PledgeViewController.instantiate()
-      vc.delegate = self.pledgeViewDelegate
-      vc.configure(with: data)
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
