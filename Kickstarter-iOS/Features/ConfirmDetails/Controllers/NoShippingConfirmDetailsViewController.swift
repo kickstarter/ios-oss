@@ -290,7 +290,7 @@ final class NoShippingConfirmDetailsViewController: UIViewController, MessageBan
   }
 
   private func goToCheckout(data: PostCampaignCheckoutData) {
-    let vc = PostCampaignCheckoutViewController.instantiate()
+    let vc = NoShippingPostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
 

@@ -23,7 +23,7 @@ public protocol WithShippingRewardsCollectionViewModelOutputs {
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToAddOnSelection: Signal<PledgeViewData, Never> { get }
-  var goToPledge: Signal<PledgeViewData, Never> { get }
+  var goToCustomizeYourReward: Signal<PledgeViewData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewIsHidden: Signal<Bool, Never> { get }
@@ -198,7 +198,8 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       goToAddOnSelectionNotBackedWithAddOns,
       goToAddOnSelectionBackedConfirmed
     )
-    self.goToPledge = Signal.merge(
+
+    self.goToCustomizeYourReward = Signal.merge(
       goToPledgeNotBackedWithAddOns,
       goToPledgeBackedConfirmed
     )
@@ -383,7 +384,7 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToAddOnSelection: Signal<PledgeViewData, Never>
-  public let goToPledge: Signal<PledgeViewData, Never>
+  public let goToCustomizeYourReward: Signal<PledgeViewData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewIsHidden: Signal<Bool, Never>
