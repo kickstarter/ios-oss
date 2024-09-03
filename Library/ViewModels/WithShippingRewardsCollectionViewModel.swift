@@ -66,9 +66,14 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       .map(first)
       .map(titleForContext)
 
-    self.scrollToBackedRewardIndexPath = Signal.combineLatest(project, rewards)
+    self.scrollToBackedRewardIndexPath = Signal.combineLatest(project, rewards, filteredByLocationRewards)
       .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
-      .map(backedReward(_:rewards:))
+      .map { project, rewards, filteredRewardsByLocation in
+        backedReward(
+          project,
+          rewards: filteredRewardsByLocation.isEmpty ? rewards : filteredRewardsByLocation
+        )
+      }
       .skipNil()
       .take(first: 1)
 
