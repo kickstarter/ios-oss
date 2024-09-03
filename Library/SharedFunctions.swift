@@ -662,25 +662,16 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
 }
 
 public func estimatedShippingText(
-  for reward: Reward,
+  for rewards: [Reward],
   project: Project,
   selectedShippingRule: ShippingRule
 ) -> String {
-  guard reward.shipping.enabled else { return "" }
+  let (estimatedMin, estimatedMax) = estimatedMinMax(
+    from: rewards,
+    selectedShippingRule: selectedShippingRule
+  )
 
-  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
-  guard let shippingRules = reward.shippingRules,
-        let currentRewardShippingRule = shippingRules
-        .first(where: { $0.location.country == selectedShippingRule.location.country })
-  else {
-    return ""
-  }
-
-  guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount,
-        let estimatedMax = currentRewardShippingRule.estimatedMax?.amount,
-        estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
-  }
+  guard estimatedMin > 0, estimatedMax > 0 else { return "" }
 
   let currentCountry = project.stats.currentCountry ?? Project.Country.us
 
@@ -706,25 +697,18 @@ public func estimatedShippingText(
 }
 
 public func estimatedShippingConversionText(
-  for reward: Reward,
+  for rewards: [Reward],
   project: Project,
   selectedShippingRule: ShippingRule
 ) -> String {
   guard project.stats.needsConversion else { return "" }
 
-  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
-  guard let shippingRules = reward.shippingRules,
-        let selectedShippingRule = shippingRules
-        .first(where: { $0.location.country == selectedShippingRule.location.country })
-  else {
-    return ""
-  }
+  let (estimatedMin, estimatedMax) = estimatedMinMax(
+    from: rewards,
+    selectedShippingRule: selectedShippingRule
+  )
 
-  guard let estimatedMin = selectedShippingRule.estimatedMin?.amount,
-        let estimatedMax = selectedShippingRule.estimatedMax?.amount,
-        estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
-  }
+  guard estimatedMin > 0, estimatedMax > 0 else { return "" }
 
   let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
   let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
@@ -763,4 +747,48 @@ public func attributedCurrency(withProject project: Project, total: Double) -> N
     defaultAttributes: defaultAttributes,
     superscriptAttributes: checkoutCurrencySuperscriptAttributes()
   )
+}
+
+private func estimatedMinMax(
+  from rewards: [Reward],
+  selectedShippingRule: ShippingRule
+) -> (Double, Double) {
+  var min: Double = 0
+  var max: Double = 0
+
+  rewards.forEach { reward in
+    guard reward.shipping.enabled, let shippingRules = reward.shippingRules else { return }
+
+    /// if the current reward's shipping is unrestricted then
+
+    var shippingRule: ShippingRule?
+
+    /// If the reward's shipping prefernce is Anywhere in the world, us it's first and only shipping rule.
+    /// Else use the rule that  matches the selected shipping rule (from the locations dropdown).
+    shippingRule = reward.shipping.preference == .unrestricted
+      ? shippingRules.first
+      : shippingRules
+      .first(where: { $0.location.country == selectedShippingRule.location.country })
+
+    guard let shipping = shippingRule else { return }
+
+    /// Verify there are estimated amounts greater than 0
+    guard let estimatedMin = shipping.estimatedMin?.amount,
+          let estimatedMax = shipping.estimatedMax?.amount,
+          estimatedMin > 0 || estimatedMax > 0 else {
+      return
+    }
+
+    /// Only update min if the current rewards esitmatedMin is smaller.
+    if min == 0 || estimatedMin < min {
+      min = estimatedMin
+    }
+
+    /// Only update max if the current rewards esitmatedMax is bigger.
+    if max == 0 || estimatedMax > max {
+      max = estimatedMax
+    }
+  }
+
+  return (min, max)
 }
