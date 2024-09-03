@@ -5,39 +5,7 @@ import Prelude
 import ReactiveSwift
 import Stripe
 
-public struct PostCampaignCheckoutData: Equatable {
-  public let project: Project
-  public let baseReward: Reward
-  public let rewards: [Reward]
-  public let selectedQuantities: SelectedRewardQuantities
-  public let bonusAmount: Double?
-  public let total: Double
-  public let shipping: PledgeShippingSummaryViewData?
-  public let refTag: RefTag?
-  public let context: PledgeViewContext
-  public let checkoutId: String
-  public let backingId: String
-  public let selectedShippingRule: ShippingRule?
-}
-
-public struct PostCampaignPaymentAuthorizationData: Equatable {
-  public let project: Project
-  public let hasNoReward: Bool
-  public let subtotal: Double
-  public let bonus: Double
-  public let shipping: Double
-  public let total: Double
-  public let merchantIdentifier: String
-  public let paymentIntent: String
-}
-
-public struct PaymentSourceValidation {
-  public let paymentIntentClientSecret: String
-  public let selectedCardStripeCardId: String?
-  public let requiresConfirmation: Bool
-}
-
-public protocol PostCampaignCheckoutViewModelInputs {
+public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func checkoutTerminated()
   func configure(with data: PostCampaignCheckoutData)
   func confirmPaymentSuccessful(clientSecret: String)
@@ -51,7 +19,8 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func applePayContextDidComplete()
 }
 
-public protocol PostCampaignCheckoutViewModelOutputs {
+public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
+  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -59,6 +28,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
+  var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -68,14 +38,14 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
-public protocol PostCampaignCheckoutViewModelType {
-  var inputs: PostCampaignCheckoutViewModelInputs { get }
-  var outputs: PostCampaignCheckoutViewModelOutputs { get }
+public protocol NoShippingPostCampaignCheckoutViewModelType {
+  var inputs: NoShippingPostCampaignCheckoutViewModelInputs { get }
+  var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { get }
 }
 
-public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
-  PostCampaignCheckoutViewModelInputs,
-  PostCampaignCheckoutViewModelOutputs {
+public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignCheckoutViewModelType,
+  NoShippingPostCampaignCheckoutViewModelInputs,
+  NoShippingPostCampaignCheckoutViewModelOutputs {
   let stripeIntentService: StripeIntentServiceType
 
   public init(stripeIntentService: StripeIntentServiceType) {
@@ -92,6 +62,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let checkoutId = initialData.map(\.checkoutId)
     let backingId = initialData.map(\.backingId)
     let baseReward = initialData.map(\.rewards).map(\.first)
+    let project = initialData.map(\.project)
+    let selectedShippingRule = initialData.map(\.selectedShippingRule)
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(initialData, checkoutId)
       .compactMap { data, checkoutId -> PledgePaymentMethodsValue? in
@@ -135,6 +107,22 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
+
+    self.configureEstimatedShippingView = Signal.combineLatest(project, baseReward, selectedShippingRule)
+      .map { project, baseReward, shippingRule in
+        guard let rule = shippingRule, let reward = baseReward else { return ("", "") }
+
+        return (
+          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
+          estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
+        )
+      }
+
+    self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
+      .map { estimatedShippingStrings, reward in
+        let (estimatedShipping, _) = estimatedShippingStrings
+        return reward?.shipping.enabled == false || estimatedShipping.isEmpty
+      }
 
     // MARK: Validate Checkout Details On Submit
 
@@ -523,6 +511,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   // MARK: - Outputs
 
+  public let configureEstimatedShippingView: Signal<(String, String), Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
@@ -531,6 +520,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
+  public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
@@ -539,6 +529,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let checkoutComplete: Signal<ThanksPageData, Never>
   public let checkoutError: Signal<ErrorEnvelope, Never>
 
-  public var inputs: PostCampaignCheckoutViewModelInputs { return self }
-  public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
+  public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
+  public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
 }
