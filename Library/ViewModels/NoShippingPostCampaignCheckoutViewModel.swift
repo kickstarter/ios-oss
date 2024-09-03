@@ -61,6 +61,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let context = initialData.map(\.context)
     let checkoutId = initialData.map(\.checkoutId)
     let backingId = initialData.map(\.backingId)
+    let rewards = initialData.map(\.rewards)
     let baseReward = initialData.map(\.rewards).map(\.first)
     let project = initialData.map(\.project)
     let selectedShippingRule = initialData.map(\.selectedShippingRule)
@@ -108,13 +109,13 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       )
     }
 
-    self.configureEstimatedShippingView = Signal.combineLatest(project, baseReward, selectedShippingRule)
-      .map { project, baseReward, shippingRule in
-        guard let rule = shippingRule, let reward = baseReward else { return ("", "") }
+    self.configureEstimatedShippingView = Signal.combineLatest(project, rewards, selectedShippingRule)
+      .map { project, rewards, shippingRule in
+        guard let rule = shippingRule else { return ("", "") }
 
         return (
-          estimatedShippingText(for: reward, project: project, selectedShippingRule: rule),
-          estimatedShippingConversionText(for: reward, project: project, selectedShippingRule: rule)
+          estimatedShippingText(for: rewards, project: project, selectedShippingRule: rule),
+          estimatedShippingConversionText(for: rewards, project: project, selectedShippingRule: rule)
         )
       }
 

@@ -105,7 +105,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
 
     self.estimatedShippingLabelText = Signal.combineLatest(reward, project, shippingRule)
       .map { reward, project, shippingRule in
-        estimatedShippingText(for: reward, project: project, selectedShippingRule: shippingRule)
+        estimatedShippingText(for: [reward], project: project, selectedShippingRule: shippingRule)
       }
 
     self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
