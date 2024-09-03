@@ -224,8 +224,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     self.configureContinueCTAViewWithData = Signal.merge(
       Signal.combineLatest(totalSelectedAddOnsQuantity, selectionChanged)
-        .map { qty, isValid in (qty, isValid, false) },
-      configData.mapConst((0, true, true))
+        .map { qty, isValid in (qty, isValid, false, nil) },
+      configData.mapConst((0, true, true, nil))
     )
 
     let selectedRewards = baseRewardAndAddOnRewards

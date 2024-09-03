@@ -85,11 +85,12 @@ final class NoShippingPledgeViewCTAContainerView: UIView {
     _ = self
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    titleAndAmountStackViewStyle(self.titleAndAmountStackView)
+    PledgeViewStyles.pledgeAmountStackViewStyle(self.titleAndAmountStackView)
 
-    titleStyle(self.titleLabel)
+    PledgeViewStyles.pledgeAmountHeadingStyle(self.titleLabel)
+    self.titleLabel.text = Strings.Total_amount()
 
-    amountStyle(self.amountLabel)
+    PledgeViewStyles.pledgeAmountValueStyle(self.amountLabel)
 
     applePayStyle(self.applePayButton)
 
@@ -114,8 +115,7 @@ final class NoShippingPledgeViewCTAContainerView: UIView {
     _ = self.submitButton
       |> greenButtonStyle
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
+    PledgeViewStyles.rootPledgeCTAStackViewStyle(self.rootStackView)
   }
 
   // MARK: - View Model
@@ -248,38 +248,6 @@ extension NoShippingPledgeViewCTAContainerView: UITextViewDelegate {
 }
 
 // MARK: - Styles
-
-private func titleStyle(_ label: UILabel) {
-  label.accessibilityTraits = UIAccessibilityTraits.header
-  label.adjustsFontForContentSizeCategory = true
-  label.font = UIFont.ksr_headline(size: 16).bolded
-  label.numberOfLines = 0
-  label.text = Strings.Total_amount()
-}
-
-private func amountStyle(_ label: UILabel) {
-  label.adjustsFontForContentSizeCategory = true
-  label.textAlignment = NSTextAlignment.right
-  label.isAccessibilityElement = true
-  label.minimumScaleFactor = 0.75
-}
-
-private func titleAndAmountStackViewStyle(_ stackView: UIStackView) {
-  stackView.backgroundColor = .ksr_white
-  stackView.layoutMargins = UIEdgeInsets(leftRight: Styles.gridHalf(4))
-}
-
-private func rootStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.isLayoutMarginsRelativeArrangement = true
-  stackView.layoutMargins = UIEdgeInsets.init(
-    top: Styles.grid(2),
-    left: Styles.grid(3),
-    bottom: Styles.grid(0),
-    right: Styles.grid(3)
-  )
-  stackView.spacing = Styles.grid(1)
-}
 
 private func ctaStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .horizontal

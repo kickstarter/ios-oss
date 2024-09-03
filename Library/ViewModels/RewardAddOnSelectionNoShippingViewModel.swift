@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -229,12 +230,6 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     )
     .map(isValid)
 
-    self.configureContinueCTAViewWithData = Signal.merge(
-      Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton)
-        .map { qty, isValid in (qty, isValid, false) },
-      hasAddOns.map { (0, true, $0) } // Button is loading if there are add-ons to fetch.
-    )
-
     let selectedRewards = baseRewardAndAddOnRewards
       .combineLatest(with: latestSelectedQuantities)
       .map(unpack)
@@ -281,6 +276,18 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     let pledgeTotal = Signal.merge(
       project.map { $0.personalization.backing }.skipNil().map(\.amount),
       combinedPledgeTotal
+    )
+
+    let attibutedPledgeTotal = Signal.combineLatest(project, pledgeTotal).map(attributedCurrency)
+
+    self.configureContinueCTAViewWithData = Signal.merge(
+      // Updated values.
+      Signal.combineLatest(totalSelectedAddOnsQuantity, enableContinueButton, attibutedPledgeTotal)
+        .map { qty, isValid, total in (qty, isValid, false, total) },
+      // Initial values. Note that button only loads if there are add-ons to fetch.
+      Signal.combineLatest(hasAddOns, attibutedPledgeTotal)
+        .map { hasAddOns, total in (0, true, hasAddOns, total) }
+        .take(first: 1)
     )
 
     // MARK: - Tracking
