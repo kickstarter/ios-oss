@@ -189,10 +189,10 @@ private func items(
   }
   var items = [headerItem] + rewardItems
 
-  if featureNoShippingAtCheckout() == false {
-    // MARK: Shipping
+  if let shipping = data.shipping {
+    if shipping.total > 0 {
+      // MARK: Shipping
 
-    if let shipping = data.shipping {
       let shippingAmountAttributedText = attributedRewardCurrency(
         with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
       )
