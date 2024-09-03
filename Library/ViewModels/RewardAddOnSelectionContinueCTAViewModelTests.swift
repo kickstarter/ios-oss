@@ -25,7 +25,7 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
   func testButtonEnabled_Valid() {
     self.buttonEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: (0, true, false))
+    self.vm.inputs.configure(with: (0, true, false, nil))
 
     self.buttonEnabled.assertValues([true])
   }
@@ -33,7 +33,7 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
   func testButtonEnabled_Invalid() {
     self.buttonEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: (0, false, false))
+    self.vm.inputs.configure(with: (0, false, false, nil))
 
     self.buttonEnabled.assertValues([false])
   }
@@ -41,7 +41,7 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
   func testButtonIsLoading_IsLoading() {
     self.isLoading.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: (0, true, true))
+    self.vm.inputs.configure(with: (0, true, true, nil))
 
     self.isLoading.assertValues([true])
   }
@@ -49,7 +49,7 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
   func testButtonIsLoading_IsNotLoading() {
     self.isLoading.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: (0, false, false))
+    self.vm.inputs.configure(with: (0, false, false, nil))
 
     self.isLoading.assertValues([false])
   }
@@ -57,19 +57,19 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
   func testButtonTitle() {
     self.buttonTitle.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: (0, true, false))
+    self.vm.inputs.configure(with: (0, true, false, nil))
 
     self.buttonTitle.assertValues(["Skip add-ons"])
 
-    self.vm.inputs.configure(with: (2, true, false))
+    self.vm.inputs.configure(with: (2, true, false, nil))
 
     self.buttonTitle.assertValues(["Skip add-ons", "Continue with 2 add-ons"])
 
-    self.vm.inputs.configure(with: (0, true, false))
+    self.vm.inputs.configure(with: (0, true, false, nil))
 
     self.buttonTitle.assertValues(["Skip add-ons", "Continue with 2 add-ons", "Skip add-ons"])
 
-    self.vm.inputs.configure(with: (1, true, false))
+    self.vm.inputs.configure(with: (1, true, false, nil))
 
     self.buttonTitle.assertValues([
       "Skip add-ons",
