@@ -7,7 +7,9 @@ struct TestEnvelope {
   let cursor: Int?
 
   var publisher: AnyPublisher<TestEnvelope, ConcreteError> {
-    return Just(self).setFailureType(to: ConcreteError.self).eraseToAnyPublisher()
+    return Just(self).setFailureType(to: ConcreteError.self)
+      .delay(for: 0.01, tolerance: 0.01, scheduler: RunLoop.main)
+      .eraseToAnyPublisher()
   }
 }
 
@@ -21,7 +23,7 @@ final class PaginatorTests: XCTestCase {
     _ = XCTWaiter.wait(for: [expectation(description: "Wait a tiny interval of time.")], timeout: 0.05)
   }
 
-  func testPaginator_initialState_isUnloaded() {
+  func testPaginator_initialResults_isUnloaded() {
     let paginator = Paginator<TestEnvelope, Int, Int?, ConcreteError, Int>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
@@ -29,9 +31,9 @@ final class PaginatorTests: XCTestCase {
       requestFromCursor: { _ in TestEnvelope(values: [], cursor: nil).publisher }
     )
 
-    XCTAssertEqual(paginator.state, .unloaded)
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [])
+    XCTAssertEqual(paginator.results, .unloaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [])
   }
 
   func testPaginator_requestFirstPage_loadsFirstPage() {
@@ -43,15 +45,15 @@ final class PaginatorTests: XCTestCase {
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [], "Values should not have loaded yet")
+    XCTAssertTrue(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [], "Values should not have loaded yet")
 
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [1, 2, 3])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .allLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3]))
   }
 
   func testPaginator_requestFirstPage_noResults_isEmpty() {
@@ -63,15 +65,15 @@ final class PaginatorTests: XCTestCase {
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [], "Values should not have loaded yet")
+    XCTAssertTrue(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [], "Values should not have loaded yet")
 
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .empty)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .empty)
   }
 
   func testPaginator_requestNextPage_hasCursor_loadsNextPage() {
@@ -95,26 +97,26 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.state, .someLoaded)
-    XCTAssertEqual(paginator.values, [1, 2, 3])
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .someLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2))
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6, 7, 8, 9])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .allLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6, 7, 8, 9]))
   }
 
   func testPaginator_requestNextPage_returnsNoCursor_finishes() {
@@ -136,24 +138,24 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.state, .someLoaded)
-    XCTAssertEqual(paginator.values, [1, 2, 3])
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .allLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
 
     paginator.requestNextPage()
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.state, .allLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
 
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6])
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
   }
 
   func testPaginator_requestNextPage_returnsNoResults_finishes() {
@@ -177,24 +179,24 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.state, .someLoaded)
-    XCTAssertEqual(paginator.values, [1, 2, 3])
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6])
-    XCTAssertNil(paginator.error)
-    XCTAssertEqual(paginator.state, .someLoaded)
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
+    XCTAssertNil(paginator.results.error)
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2))
 
     paginator.requestNextPage()
     self.waitTinyInterval()
 
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.state, .allLoaded)
-    XCTAssertEqual(paginator.values, [1, 2, 3, 4, 5, 6])
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
+    XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
   }
 
   func testPaginator_cancel_cancelsPendingRequests() {
@@ -206,16 +208,16 @@ final class PaginatorTests: XCTestCase {
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     // Don't wait the time interval for the request to complete
     paginator.cancel()
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.values, [], "Cancel should have kept the new values from loading")
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results.values, [], "Cancel should have kept the new values from loading")
 
     // Now wait, and double-check
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [], "Cancel should have kept the new values from loading")
+    XCTAssertEqual(paginator.results.values, [], "Cancel should have kept the new values from loading")
   }
 
   func testPaginator_requestNextPage_whileLoading_doesNothing() {
@@ -227,13 +229,13 @@ final class PaginatorTests: XCTestCase {
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     paginator.requestNextPage()
 
     self.waitTinyInterval()
     XCTAssertEqual(
-      paginator.values,
+      paginator.results.values,
       [1, 2, 3],
       "Second page should not have loaded while first page was still loading"
     )
@@ -248,14 +250,14 @@ final class PaginatorTests: XCTestCase {
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [1, 2, 3])
-    XCTAssertFalse(paginator.isLoading)
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
+    XCTAssertFalse(paginator.results.isLoading)
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     // Don't let it load, request the first page again
     paginator.requestFirstPage(withParams: ())
@@ -263,7 +265,7 @@ final class PaginatorTests: XCTestCase {
     self.waitTinyInterval()
 
     XCTAssertEqual(
-      paginator.values,
+      paginator.results.values,
       [1, 2, 3],
       "Second page should not have loaded, because it should have been canceled by reloading the first page"
     )
@@ -274,19 +276,21 @@ final class PaginatorTests: XCTestCase {
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
       requestFromParams: { _ in
-        Fail(outputType: TestEnvelope.self, failure: ConcreteError()).eraseToAnyPublisher()
+        Fail(outputType: TestEnvelope.self, failure: ConcreteError())
+          .delay(for: 0.01, tolerance: 0.01, scheduler: RunLoop.main)
+          .eraseToAnyPublisher()
       },
       requestFromCursor: { _ in Empty().eraseToAnyPublisher() }
     )
 
     paginator.requestFirstPage(withParams: ())
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [])
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.state, .error)
-    XCTAssertNotNil(paginator.error)
+    XCTAssertEqual(paginator.results.values, [])
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results, .error(ConcreteError()))
+    XCTAssertNotNil(paginator.results.error)
   }
 
   func testPaginator_requestNextPage_withError_setsError() {
@@ -295,21 +299,23 @@ final class PaginatorTests: XCTestCase {
       cursorFromEnvelope: cursorFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { _ in
-        Fail(outputType: TestEnvelope.self, failure: ConcreteError()).eraseToAnyPublisher()
+        Fail(outputType: TestEnvelope.self, failure: ConcreteError())
+          .delay(for: 0.01, tolerance: 0.01, scheduler: RunLoop.main)
+          .eraseToAnyPublisher()
       }
     )
 
     paginator.requestFirstPage(withParams: ())
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [1, 2, 3])
+    XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
-    XCTAssertTrue(paginator.isLoading)
+    XCTAssertTrue(paginator.results.isLoading)
 
     self.waitTinyInterval()
-    XCTAssertEqual(paginator.values, [1, 2, 3])
-    XCTAssertFalse(paginator.isLoading)
-    XCTAssertEqual(paginator.state, .error)
-    XCTAssertNotNil(paginator.error)
+    XCTAssertEqual(paginator.results.values, [])
+    XCTAssertFalse(paginator.results.isLoading)
+    XCTAssertEqual(paginator.results, .error(ConcreteError()))
+    XCTAssertNotNil(paginator.results.error)
   }
 }
