@@ -71,9 +71,24 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         paginator.requestNextPage()
       }
       .store(in: &self.cancellables)
+
+    // TODO: Send actual banner messages in response to card actions instead.
+    self.shouldSendSampleMessageSubject
+      .sink { [weak self] _ in
+//        self?.bannerViewModel = MessageBannerViewViewModel((
+//          .success,
+//          "Survey submitted! Need to change your address? Visit your backing details on our website."
+//        ))
+        self?.bannerViewModel = MessageBannerViewViewModel((.success, "Your payment has been processed."))
+      }
+      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
+
+  func shouldSendSampleMessage() {
+    self.shouldSendSampleMessageSubject.send(())
+  }
 
   func viewDidAppear() {
     self.viewDidAppearSubject.send(())
@@ -89,6 +104,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   // MARK: - Outputs
 
+  @Published var bannerViewModel: MessageBannerViewViewModel? = nil
   @Published var results = PPOViewModelPaginator.Results.unloaded
 
   // MARK: - Private
@@ -98,6 +114,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
+  private let shouldSendSampleMessageSubject = PassthroughSubject<(), Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 

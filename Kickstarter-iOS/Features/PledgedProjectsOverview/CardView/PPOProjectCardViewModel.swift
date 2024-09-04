@@ -74,7 +74,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.parentSize = parentSize
   }
 
-  // Inputs
+  // MARK: - Inputs
 
   func sendCreatorMessage() {
     self.sendCreatorMessageSubject.send(())
@@ -84,17 +84,20 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.actionPerformedSubject.send(action)
   }
 
-  // Outputs
+  // MARK: - Outputs
 
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
-  // Helpers
+  // MARK: - Helpers
 
   typealias Action = PPOProjectCardAction
   typealias Alert = PPOProjectCardAlert
 
-  // Add this static function at the end of the class
+  // MARK: - Equatable
+
+  // For some reason this isn't generated because of the `actions` tuple
+  // If that ever is fixed, this can be removed in favor of a synthesized Equatable implementation
   static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
     lhs.isUnread == rhs.isUnread &&
       lhs.alerts == rhs.alerts &&
@@ -108,9 +111,9 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   }
 }
 
-// Types
+// MARK: - Types
 
-enum PPOProjectCardAction: Identifiable {
+enum PPOProjectCardAction: Identifiable, Equatable {
   case confirmAddress
   case editAddress
   case completeSurvey
@@ -167,7 +170,7 @@ enum PPOProjectCardAction: Identifiable {
   }
 }
 
-struct PPOProjectCardAlert: Identifiable {
+struct PPOProjectCardAlert: Identifiable, Equatable {
   let type: AlertType
   let icon: AlertIcon
   let message: String
@@ -204,10 +207,6 @@ struct PPOProjectCardAlert: Identifiable {
     }
   }
 }
-
-extension PPOProjectCardAlert: Equatable {}
-
-extension PPOProjectCardAction: Equatable {}
 
 extension GraphAPI.MoneyFragment: Equatable {
   public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
