@@ -10,7 +10,8 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
     didSelect shippingRule: ShippingRule
   )
   func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _ viewController: PledgeShippingLocationViewController
+    _ viewController: PledgeShippingLocationViewController,
+    _ shimmerLoadingViewIsHidden: Bool
   )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
@@ -134,9 +135,9 @@ final class PledgeShippingLocationViewController: UIViewController {
       self.viewModel.outputs.shippingLocationButtonTitle
     )
     .observeForUI()
-    .observeValues { [weak self] _ in
+    .observeValues { [weak self] _, _, _, shimmerLoadingViewIsHidden, _ in
       guard let self = self else { return }
-      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self)
+      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self, shimmerLoadingViewIsHidden)
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingRule

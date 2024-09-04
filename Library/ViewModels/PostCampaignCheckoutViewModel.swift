@@ -52,7 +52,6 @@ public protocol PostCampaignCheckoutViewModelInputs {
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
-  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -60,7 +59,6 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -94,8 +92,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let checkoutId = initialData.map(\.checkoutId)
     let backingId = initialData.map(\.backingId)
     let baseReward = initialData.map(\.rewards).map(\.first)
-    let project = initialData.map(\.project)
-    let selectedShippingRule = initialData.map(\.selectedShippingRule)
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(initialData, checkoutId)
       .compactMap { data, checkoutId -> PledgePaymentMethodsValue? in
@@ -139,22 +135,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
-
-    self.configureEstimatedShippingView = Signal.combineLatest(project, baseReward, selectedShippingRule)
-      .map { project, baseReward, shippingRule in
-        guard let rule = shippingRule, let reward = baseReward else { return ("", "") }
-
-        return (
-          estimatedShippingText(for: reward, selectedShippingRule: rule),
-          estimatedShippingConversionText(project, reward, selectedShippingRule: rule)
-        )
-      }
-
-    self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
-      .map { estimatedShippingStrings, reward in
-        let (estimatedShipping, _) = estimatedShippingStrings
-        return reward?.shipping.enabled == false || estimatedShipping.isEmpty
-      }
 
     // MARK: Validate Checkout Details On Submit
 
@@ -543,7 +523,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   // MARK: - Outputs
 
-  public let configureEstimatedShippingView: Signal<(String, String), Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
@@ -552,7 +531,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>

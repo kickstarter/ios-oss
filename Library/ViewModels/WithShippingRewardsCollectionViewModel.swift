@@ -6,6 +6,7 @@ import UIKit
 public protocol WithShippingRewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func confirmedEditReward()
+  func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool)
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
@@ -22,9 +23,10 @@ public protocol WithShippingRewardsCollectionViewModelOutputs {
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToAddOnSelection: Signal<PledgeViewData, Never> { get }
-  var goToPledge: Signal<PledgeViewData, Never> { get }
+  var goToCustomizeYourReward: Signal<PledgeViewData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
+  var rewardsCollectionViewIsHidden: Signal<Bool, Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
@@ -196,10 +198,15 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       goToAddOnSelectionNotBackedWithAddOns,
       goToAddOnSelectionBackedConfirmed
     )
-    self.goToPledge = Signal.merge(
+
+    self.goToCustomizeYourReward = Signal.merge(
       goToPledgeNotBackedWithAddOns,
       goToPledgeBackedConfirmed
     )
+
+    /// Temporary loading state solution. Proper designs will be explored in this ticket [mbl-1678](https://kickstarter.atlassian.net/browse/MBL-1678)
+    self.rewardsCollectionViewIsHidden = self.pledgeShippingLocationViewControllerDidUpdateProperty.signal
+      .map { $0 }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -323,6 +330,11 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
     self.confirmedEditRewardProperty.value = ()
   }
 
+  private let pledgeShippingLocationViewControllerDidUpdateProperty = MutableProperty<Bool>(false)
+  public func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool) {
+    self.pledgeShippingLocationViewControllerDidUpdateProperty.value = shimmerLoadingViewIsHidden
+  }
+
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
   public func rewardCellShouldShowDividerLine(_ show: Bool) {
     self.rewardCellShouldShowDividerLineProperty.value = show
@@ -372,9 +384,10 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToAddOnSelection: Signal<PledgeViewData, Never>
-  public let goToPledge: Signal<PledgeViewData, Never>
+  public let goToCustomizeYourReward: Signal<PledgeViewData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
+  public let rewardsCollectionViewIsHidden: Signal<Bool, Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
   public var shippingLocationViewHidden: Signal<Bool, Never>

@@ -17,6 +17,20 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pledgeAmount: UILabel = { UILabel(frame: .zero) }()
+
+  private lazy var pledgeHeading: UILabel = { UILabel(frame: .zero) }()
+
+  private lazy var pledgeAmountStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let viewModel: RewardAddOnSelectionContinueCTAViewModelType
     = RewardAddOnSelectionContinueCTAViewModel()
 
@@ -55,6 +69,13 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
         CACornerMask.layerMinXMinYCorner
       ]
 
+    PledgeViewStyles.rootPledgeCTAStackViewStyle(self.rootStackView)
+    self.rootStackView.layoutMargins = UIEdgeInsets.zero
+    PledgeViewStyles.pledgeAmountStackViewStyle(self.pledgeAmountStackView)
+    PledgeViewStyles.pledgeAmountValueStyle(self.pledgeAmount)
+    PledgeViewStyles.pledgeAmountHeadingStyle(self.pledgeHeading)
+    self.pledgeHeading.text = Strings.Pledge_amount()
+
     _ = self.continueButton
       |> greenButtonStyle
 
@@ -70,6 +91,7 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
     super.bindViewModel()
 
     self.continueButton.rac.enabled = self.viewModel.outputs.buttonEnabled
+    self.pledgeAmountStackView.rac.hidden = self.viewModel.outputs.pledgeAmountHidden
 
     self.viewModel.outputs.buttonTitle
       .observeForUI()
@@ -87,6 +109,12 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
       .observeValues { [weak self] isLoading in
         self?.continueButton.isLoading = isLoading
       }
+
+    self.viewModel.outputs.pledgeAmountText
+      .observeForUI()
+      .observeValues { [weak self] text in
+        self?.pledgeAmount.attributedText = text
+      }
   }
 
   // MARK: - Configuration
@@ -98,9 +126,15 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
   // MARK: Functions
 
   private func configureSubviews() {
-    _ = (self.continueButton, self)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    self.rootStackView.addArrangedSubview(self.pledgeAmountStackView)
+    self.rootStackView.addArrangedSubview(self.continueButton)
+
+    self.pledgeAmountStackView.addArrangedSubview(self.pledgeHeading)
+    self.pledgeAmountStackView.addArrangedSubview(self.pledgeAmount)
   }
 
   private func setupConstraints() {

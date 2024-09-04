@@ -360,7 +360,10 @@ extension ConfirmDetailsViewController: PledgeShippingLocationViewControllerDele
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(
+    _: PledgeShippingLocationViewController,
+    _: Bool
+  ) {}
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
