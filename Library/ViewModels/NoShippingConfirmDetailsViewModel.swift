@@ -305,10 +305,14 @@ public class NoShippingConfirmDetailsViewModel: NoShippingConfirmDetailsViewMode
             return [String](repeating: reward.graphID, count: count)
           }
 
+        let locationId = selectedShippingRule == nil
+          ? nil
+          : String(selectedShippingRule!.location.id)
+
         return CreateCheckoutInput(
           projectId: project.graphID,
           amount: String(format: "%.2f", pledgeTotal),
-          locationId: "\(selectedShippingRule?.location.id)",
+          locationId: locationId,
           rewardIds: rewardsIDs,
           refParam: refTag?.stringTag
         )
