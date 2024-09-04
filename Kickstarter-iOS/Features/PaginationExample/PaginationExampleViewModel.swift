@@ -28,29 +28,29 @@ internal class PaginationExampleViewModel: ObservableObject {
       }
     )
 
-    self.paginator.$values.map { projects in
+    self.paginator.$results.map(\.values).map { projects in
       projects.map { ($0.id, $0.name) }
     }.assign(to: &self.$projectIdsAndTitles)
 
-    let canLoadMore = self.paginator.$state.map { state in
-      state == .someLoaded || state == .unloaded
-    }
+    Publishers.CombineLatest(
+      self.paginator.$results.map(\.isLoading),
+      self.paginator.$results.map(\.canLoadMore)
+    )
+    .map { isLoading, canLoadMore in
+      isLoading || canLoadMore
+    }.assign(to: &self.$showProgressView)
 
-    Publishers.CombineLatest(self.paginator.$isLoading, canLoadMore)
-      .map { isLoading, canLoadMore in
-        isLoading || canLoadMore
-      }.assign(to: &self.$showProgressView)
-
-    self.paginator.$state.map { [weak self] state in
+    self.paginator.$results.map { state in
       switch state {
-      case .error:
-        let errorText = self?.paginator.error?.errorMessages.first ?? "Unknown error"
+      case let .error(error):
+        let errorText = error.errorMessages.first ?? "Unknown error"
         return "Error: \(errorText)"
       case .unloaded:
         return "Waiting to load"
-      case .someLoaded:
-        let count = self?.paginator.values.count ?? 0
-        return "Got \(count) results; more are available"
+      case .loading:
+        return "Loading"
+      case let .someLoaded(values, _):
+        return "Got \(values.count) results; more are available"
       case .allLoaded:
         return "Loaded all results"
       case .empty:
@@ -68,13 +68,13 @@ internal class PaginationExampleViewModel: ObservableObject {
   }
 
   func didShowProgressView() {
-    if self.paginator.isLoading {
+    if self.paginator.results.isLoading {
       return
     }
 
-    if self.paginator.state == .someLoaded {
+    if self.paginator.results.canLoadMore {
       self.paginator.requestNextPage()
-    } else if self.paginator.state == .unloaded {
+    } else if case .unloaded = self.paginator.results {
       self.paginator.requestFirstPage(withParams: self.searchParams)
     }
   }
