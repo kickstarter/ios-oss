@@ -290,6 +290,7 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        bonusSupport: 10.0,
         selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
@@ -300,7 +301,7 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum + 10.0])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
       self.pledgeAmountViewHidden.assertValues([false])
@@ -309,14 +310,14 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76])
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([20, 76])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
 
       let data2 = (amount: 93.0, min: 10.0, max: 10_000.0, isValid: true)
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
-      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76, 103])
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([20, 76, 103])
       self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
