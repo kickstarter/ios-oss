@@ -1,6 +1,13 @@
 import Foundation
 import KsApi
 
+private enum Constants {
+  static let paymentFailed = "Tier1PaymentFailed"
+  static let confirmAddress = "Tier1AddressLockingSoon"
+  static let completeSurvey = "Tier1OpenSurvey"
+  static let authenticationRequired = "Tier1PaymentAuthenticationRequired"
+}
+
 extension PPOProjectCardViewModel {
   convenience init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledge.Edge.Node) {
     let card = node.fragments.ppoCardFragment
@@ -23,16 +30,16 @@ extension PPOProjectCardViewModel {
     let primaryAction: PPOProjectCardViewModel.Action
     let secondaryAction: PPOProjectCardViewModel.Action?
     switch card.tierType {
-    case "Tier1PaymentFailed":
+    case Constants.paymentFailed:
       primaryAction = .fixPayment
       secondaryAction = nil
-    case "Tier1AddressLockingSoon":
+    case Constants.confirmAddress:
       primaryAction = .confirmAddress
       secondaryAction = .editAddress
-    case "Tier1OpenSurvey":
+    case Constants.completeSurvey:
       primaryAction = .completeSurvey
       secondaryAction = nil
-    case "Tier1PaymentAuthenticationRequired":
+    case Constants.authenticationRequired:
       primaryAction = .authenticateCard
       secondaryAction = nil
     case .some(_), .none:
