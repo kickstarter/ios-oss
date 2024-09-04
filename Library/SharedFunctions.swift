@@ -759,11 +759,9 @@ private func estimatedMinMax(
   rewards.forEach { reward in
     guard reward.shipping.enabled, let shippingRules = reward.shippingRules else { return }
 
-    /// if the current reward's shipping is unrestricted then
-
     var shippingRule: ShippingRule?
 
-    /// If the reward's shipping prefernce is Anywhere in the world, us it's first and only shipping rule.
+    /// If the reward's shipping prefernce is Anywhere in the world, use it's first and only shipping rule.
     /// Else use the rule that  matches the selected shipping rule (from the locations dropdown).
     shippingRule = reward.shipping.preference == .unrestricted
       ? shippingRules.first
@@ -779,15 +777,8 @@ private func estimatedMinMax(
       return
     }
 
-    /// Only update min if the current rewards esitmatedMin is smaller.
-    if min == 0 || estimatedMin < min {
-      min = estimatedMin
-    }
-
-    /// Only update max if the current rewards esitmatedMax is bigger.
-    if max == 0 || estimatedMax > max {
-      max = estimatedMax
-    }
+    min = min == 0 ? estimatedMin : min + estimatedMin
+    max = max == 0 ? estimatedMax : max + estimatedMax
   }
 
   return (min, max)

@@ -697,6 +697,6 @@ final class SharedFunctionsTests: TestCase {
       selectedShippingRule: .template
     )
 
-    XCTAssertEqual(estimatedShipping, "$1-$7")
+    XCTAssertEqual(estimatedShipping, "$3-$12")
   }
 }
