@@ -3,48 +3,52 @@ import KsApi
 
 extension PPOProjectCardViewModel {
   convenience init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledge.Edge.Node) {
-    // TODO: Implement
-    let isUnread = true
+    let card = node.fragments.ppoCardFragment
+    let backing = card.backing?.fragments.ppoBackingFragment
+    let project = backing?.project?.fragments.ppoProjectFragment
 
-    let imageURL = node.fragments.ppoCardFragment
-      .backing?.fragments.ppoBackingFragment
-      .project?.fragments.ppoProjectFragment
-      .image?.url
+    let imageURL = project?.image?.url
       .flatMap { URL(string: $0) }
 
-    let title = node.fragments.ppoCardFragment
-      .backing?.fragments.ppoBackingFragment
-      .project?.fragments.ppoProjectFragment
-      .name
+    let title = project?.name
+    let pledge = backing?.amount.fragments.moneyFragment
+    let creatorName = project?.creator?.name
 
-    let pledge = node.fragments.ppoCardFragment
-      .backing?.fragments.ppoBackingFragment
-      .amount.fragments.moneyFragment
-
-    let creatorName = node.fragments.ppoCardFragment
-      .backing?.fragments.ppoBackingFragment
-      .project?.fragments.ppoProjectFragment
-      .creator?.name
-
-    // TODO: Implement
+    // TODO: Implement [MBL-1695]
     let address: String? = nil
 
-    let alerts: [PPOProjectCardViewModel.Alert] = node.fragments.ppoCardFragment.flags?
+    let alerts: [PPOProjectCardViewModel.Alert] = card.flags?
       .compactMap { PPOProjectCardViewModel.Alert(flag: $0) } ?? []
 
-    // TODO: Implement
-    let action = PPOProjectCardViewModel.Action.confirmAddress
+    let primaryAction: PPOProjectCardViewModel.Action
+    let secondaryAction: PPOProjectCardViewModel.Action?
+    switch card.tierType {
+    case "Tier1PaymentFailed":
+      primaryAction = .fixPayment
+      secondaryAction = nil
+    case "Tier1AddressLockingSoon":
+      primaryAction = .confirmAddress
+      secondaryAction = .editAddress
+    case "Tier1OpenSurvey":
+      primaryAction = .completeSurvey
+      secondaryAction = nil
+    case "Tier1PaymentAuthenticationRequired":
+      primaryAction = .authenticateCard
+      secondaryAction = nil
+    case .some(_), .none:
+      return nil
+    }
 
     if let imageURL, let title, let pledge, let creatorName {
       self.init(
-        isUnread: isUnread,
+        isUnread: true,
         alerts: alerts,
         imageURL: imageURL,
         title: title,
         pledge: pledge,
         creatorName: creatorName,
         address: address,
-        actions: (action, nil),
+        actions: (primaryAction, secondaryAction),
         parentSize: .zero
       )
     } else {

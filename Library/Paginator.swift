@@ -139,12 +139,13 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         var allValues = shouldClear ? [] : previousResults.values
         allValues.append(contentsOf: newValues)
 
-        let results: Results = if allValues.count == 0 {
-          .empty
+        let results: Results
+        if allValues.count == 0 {
+          results = .empty
         } else if let nextCursor, !newValues.isEmpty {
-          .someLoaded(values: allValues, cursor: nextCursor)
+          results = .someLoaded(values: allValues, cursor: nextCursor)
         } else {
-          .allLoaded(values: allValues)
+          results = .allLoaded(values: allValues)
         }
         return results
       }

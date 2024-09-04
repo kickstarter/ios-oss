@@ -34,6 +34,7 @@ struct PPOView: View {
           self.isBannerFocused = self.viewModel.bannerViewModel != nil
         }
       })
+      .onAppear(perform: { self.viewModel.viewDidAppear() })
     }
   }
 }
