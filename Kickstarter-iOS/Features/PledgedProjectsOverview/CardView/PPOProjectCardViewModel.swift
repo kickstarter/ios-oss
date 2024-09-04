@@ -34,7 +34,8 @@ extension PPOProjectCardViewModelOutputs {
   }
 }
 
-typealias PPOProjectCardViewModelType = Identifiable & ObservableObject & PPOProjectCardViewModelInputs &
+typealias PPOProjectCardViewModelType = Equatable & Identifiable & ObservableObject &
+  PPOProjectCardViewModelInputs &
   PPOProjectCardViewModelOutputs
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
@@ -73,7 +74,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.parentSize = parentSize
   }
 
-  // Inputs
+  // MARK: - Inputs
 
   func sendCreatorMessage() {
     self.sendCreatorMessageSubject.send(())
@@ -83,20 +84,36 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.actionPerformedSubject.send(action)
   }
 
-  // Outputs
+  // MARK: - Outputs
 
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
-  // Helpers
+  // MARK: - Helpers
 
   typealias Action = PPOProjectCardAction
   typealias Alert = PPOProjectCardAlert
+
+  // MARK: - Equatable
+
+  // For some reason this isn't generated because of the `actions` tuple
+  // If that ever is fixed, this can be removed in favor of a synthesized Equatable implementation
+  static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
+    lhs.isUnread == rhs.isUnread &&
+      lhs.alerts == rhs.alerts &&
+      lhs.imageURL == rhs.imageURL &&
+      lhs.title == rhs.title &&
+      lhs.pledge == rhs.pledge &&
+      lhs.creatorName == rhs.creatorName &&
+      lhs.address == rhs.address &&
+      lhs.actions == rhs.actions &&
+      lhs.parentSize == rhs.parentSize
+  }
 }
 
-// Types
+// MARK: - Types
 
-enum PPOProjectCardAction: Identifiable {
+enum PPOProjectCardAction: Identifiable, Equatable {
   case confirmAddress
   case editAddress
   case completeSurvey
@@ -153,7 +170,7 @@ enum PPOProjectCardAction: Identifiable {
   }
 }
 
-struct PPOProjectCardAlert: Identifiable {
+struct PPOProjectCardAlert: Identifiable, Equatable {
   let type: AlertType
   let icon: AlertIcon
   let message: String
@@ -188,5 +205,13 @@ struct PPOProjectCardAlert: Identifiable {
         "alert"
       }
     }
+  }
+}
+
+extension GraphAPI.MoneyFragment: Equatable {
+  public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
+    return lhs.amount == rhs.amount &&
+      lhs.currency == rhs.currency &&
+      lhs.symbol == rhs.symbol
   }
 }
