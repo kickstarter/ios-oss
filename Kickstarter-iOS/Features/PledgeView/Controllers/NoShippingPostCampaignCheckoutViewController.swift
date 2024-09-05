@@ -147,9 +147,6 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
     self.addChild(self.pledgeRewardsSummaryViewController)
     self.pledgeRewardsSummaryViewController.didMove(toParent: self)
-
-    self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-    self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
