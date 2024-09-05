@@ -189,22 +189,20 @@ private func items(
   }
   var items = [headerItem] + rewardItems
 
-  if let shipping = data.shipping {
-    if shipping.total > 0 {
-      // MARK: Shipping
+  // MARK: Shipping
 
-      let shippingAmountAttributedText = attributedRewardCurrency(
-        with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
-      )
+  if let shipping = data.shipping, shipping.total > 0 {
+    let shippingAmountAttributedText = attributedRewardCurrency(
+      with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
+    )
 
-      let shippingItem = PostCampaignRewardsSummaryItem.reward((
-        headerText: nil,
-        text: Strings.Shipping_to_country(country: shipping.locationName),
-        amount: shippingAmountAttributedText
-      ))
+    let shippingItem = PostCampaignRewardsSummaryItem.reward((
+      headerText: nil,
+      text: Strings.Shipping_to_country(country: shipping.locationName),
+      amount: shippingAmountAttributedText
+    ))
 
-      items.append(shippingItem)
-    }
+    items.append(shippingItem)
   }
 
   // MARK: Bonus
