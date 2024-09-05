@@ -761,7 +761,7 @@ private func estimatedMinMax(
 
     var shippingRule: ShippingRule?
 
-    /// If the reward's shipping prefernce is Anywhere in the world, use it's first and only shipping rule.
+    /// If the reward's shipping prefernce is Anywhere in the world, use its first and only shipping rule.
     /// Else use the rule that  matches the selected shipping rule (from the locations dropdown).
     shippingRule = reward.shipping.preference == .unrestricted
       ? shippingRules.first
@@ -777,8 +777,8 @@ private func estimatedMinMax(
       return
     }
 
-    min = min == 0 ? estimatedMin : min + estimatedMin
-    max = max == 0 ? estimatedMax : max + estimatedMax
+    min += estimatedMin
+    max += estimatedMax
   }
 
   return (min, max)
