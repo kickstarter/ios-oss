@@ -411,9 +411,7 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
     ])
   }
 
-  // TODO(MBL-1687): This test should be fixed when the corresponding flow works.
-  func testContinueButton_CallsCreateBackingMutation_Success() throws {
-    throw XCTSkip()
+  func testContinueButton_CallsCreateBackingMutation_Success() {
     let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
     let createCheckout = CreateCheckoutEnvelope.Checkout(
       id: expectedId,
@@ -438,10 +436,26 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
 
       let expectedRewards = [reward, addOnReward1]
       let selectedQuantities = [reward.id: 1, addOnReward1.id: 1]
+
+      let expectedShipping = PledgeShippingSummaryViewData(
+        locationName: "United States",
+        omitUSCurrencyCode: true,
+        projectCountry: .us,
+        total: 3
+      )
+
+      let selectedShippingRule = ShippingRule(
+        cost: expectedShipping.total,
+        id: 47,
+        location: .usa,
+        estimatedMin: Money(amount: 1.0),
+        estimatedMax: Money(amount: 10.0)
+      )
+
       let data = PledgeViewData(
         project: project,
         rewards: expectedRewards,
-        selectedShippingRule: nil,
+        selectedShippingRule: selectedShippingRule,
         selectedQuantities: selectedQuantities,
         selectedLocationId: ShippingRule.template.id,
         refTag: nil,
@@ -450,21 +464,6 @@ final class NoShippingConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-
-      let expectedShipping = PledgeShippingSummaryViewData(
-        locationName: "Los Angeles, CA",
-        omitUSCurrencyCode: true,
-        projectCountry: .us,
-        total: 3
-      )
-
-      let selectedShippingRule = ShippingRule(
-        cost: expectedShipping.total,
-        id: nil,
-        location: .losAngeles,
-        estimatedMin: Money(amount: 1.0),
-        estimatedMax: Money(amount: 10.0)
-      )
 
       let expectedBonus = 5.0
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
