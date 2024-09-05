@@ -130,7 +130,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.estimatedShippingLabelText = Signal.combineLatest(reward, project, currentShippingRule)
       .map { reward, project, shippingRule in
-        estimatedShippingText(for: reward, project: project, selectedShippingRule: shippingRule)
+        estimatedShippingText(for: [reward], project: project, selectedShippingRule: shippingRule)
       }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
