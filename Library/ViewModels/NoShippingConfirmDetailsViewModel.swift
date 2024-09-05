@@ -305,9 +305,7 @@ public class NoShippingConfirmDetailsViewModel: NoShippingConfirmDetailsViewMode
             return [String](repeating: reward.graphID, count: count)
           }
 
-        let locationId = selectedShippingRule == nil
-          ? nil
-          : String(selectedShippingRule!.location.id)
+        let locationId = selectedShippingRule.flatMap { String($0.location.id) }
 
         return CreateCheckoutInput(
           projectId: project.graphID,
