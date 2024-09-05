@@ -362,10 +362,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             return [String](repeating: reward.graphID, count: count)
           }
 
+        let locationId = selectedShippingRule.flatMap { String($0.location.id) }
+
         return CreateCheckoutInput(
           projectId: project.graphID,
           amount: String(format: "%.2f", pledgeTotal),
-          locationId: "\(selectedShippingRule?.location.id)",
+          locationId: locationId,
           rewardIds: rewardsIDs,
           refParam: refTag?.stringTag
         )
