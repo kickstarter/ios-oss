@@ -1076,7 +1076,8 @@ private func amountValid(
    that is, in `RewardAddOnSelectionViewController` we don't navigate further unless the selection changes.
    */
   return [
-    pledgeAmountData.amount != initialAdditionalPledgeAmount || reward.hasAddOns,
+    pledgeAmountData
+      .amount != initialAdditionalPledgeAmount || (reward.hasAddOns || featureNoShippingAtCheckout()),
     pledgeAmountData.isValid
   ]
   .allSatisfy(isTrue)
