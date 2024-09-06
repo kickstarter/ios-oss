@@ -665,13 +665,13 @@ public func estimatedShippingText(
   for rewards: [Reward],
   project: Project,
   selectedShippingRule: ShippingRule
-) -> String {
+) -> String? {
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
     selectedShippingRule: selectedShippingRule
   )
 
-  guard estimatedMin > 0, estimatedMax > 0 else { return "" }
+  guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
   let currentCountry = project.stats.currentCountry ?? Project.Country.us
 
@@ -700,15 +700,15 @@ public func estimatedShippingConversionText(
   for rewards: [Reward],
   project: Project,
   selectedShippingRule: ShippingRule
-) -> String {
-  guard project.stats.needsConversion else { return "" }
+) -> String? {
+  guard project.stats.needsConversion else { return nil }
 
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
     selectedShippingRule: selectedShippingRule
   )
 
-  guard estimatedMin > 0, estimatedMax > 0 else { return "" }
+  guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
   let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
   let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
