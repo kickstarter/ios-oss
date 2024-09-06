@@ -120,18 +120,18 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
     self.view.addSubview(self.rootScrollView)
     self.view.addSubview(self.pledgeCTAContainerView)
 
-    self.rootScrollView.addSubview(self.rootStackView)
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
-    // Configure root stack view.
     self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
-    // Configure inset views.
     let arrangedInsetSubviews = [
       self.titleLabel,
       self.paymentMethodsViewController.view,
       self.pledgeDisclaimerView
     ]
-    .flatMap { $0 }
+    .compactMap { $0 }
     .compact()
 
     arrangedInsetSubviews.forEach { view in
@@ -184,6 +184,11 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
     self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
     self.rootStackView.spacing = Styles.grid(1)
+    self.rootStackView.isLayoutMarginsRelativeArrangement = true
+    self.rootStackView.layoutMargins = UIEdgeInsets(
+      topBottom: ConfirmDetailsLayout.Margin.topBottom,
+      leftRight: 0
+    )
 
     rootInsetStackViewStyle(self.rootInsetStackView)
     rootInsetStackViewStyle(self.estimatedShippingStackView)
