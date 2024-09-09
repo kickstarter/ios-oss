@@ -103,8 +103,8 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .map(itemsLabelAttributedText)
       .skipNil()
 
-    self.estimatedShippingLabelText = Signal.combineLatest(reward, project, shippingRule, selectedQuantities)
-      .map { reward, project, shippingRule, _ in
+    self.estimatedShippingLabelText = Signal.combineLatest(reward, project, shippingRule)
+      .map { reward, project, shippingRule in
         guard let shipping = shippingRule else { return nil }
 
         return estimatedShippingText(for: [reward], project: project, selectedShippingRule: shipping)
