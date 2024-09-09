@@ -664,11 +664,13 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
 public func estimatedShippingText(
   for rewards: [Reward],
   project: Project,
-  selectedShippingRule: ShippingRule
+  selectedShippingRule: ShippingRule,
+  selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
-    selectedShippingRule: selectedShippingRule
+    selectedShippingRule: selectedShippingRule,
+    selectedQuantities: selectedQuantities
   )
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
@@ -699,13 +701,15 @@ public func estimatedShippingText(
 public func estimatedShippingConversionText(
   for rewards: [Reward],
   project: Project,
-  selectedShippingRule: ShippingRule
+  selectedShippingRule: ShippingRule,
+  selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
   guard project.stats.needsConversion else { return nil }
 
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
-    selectedShippingRule: selectedShippingRule
+    selectedShippingRule: selectedShippingRule,
+    selectedQuantities: selectedQuantities
   )
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
@@ -751,7 +755,8 @@ public func attributedCurrency(withProject project: Project, total: Double) -> N
 
 private func estimatedMinMax(
   from rewards: [Reward],
-  selectedShippingRule: ShippingRule
+  selectedShippingRule: ShippingRule,
+  selectedQuantities: SelectedRewardQuantities?
 ) -> (Double, Double) {
   var min: Double = 0
   var max: Double = 0
@@ -777,8 +782,8 @@ private func estimatedMinMax(
       return
     }
 
-    min += estimatedMin
-    max += estimatedMax
+    min += estimatedMin * Double(selectedQuantities?[reward.id] ?? 1)
+    max += estimatedMax * Double(selectedQuantities?[reward.id] ?? 1)
   }
 
   return (min, max)

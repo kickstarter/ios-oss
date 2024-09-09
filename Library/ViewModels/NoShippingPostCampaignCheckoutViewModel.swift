@@ -65,6 +65,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let baseReward = initialData.map(\.rewards).map(\.first)
     let project = initialData.map(\.project)
     let selectedShippingRule = initialData.map(\.selectedShippingRule)
+    let selectedQuantities = initialData.map(\.selectedQuantities)
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(initialData, checkoutId)
       .compactMap { data, checkoutId -> PledgePaymentMethodsValue? in
@@ -109,15 +110,30 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       )
     }
 
-    self.configureEstimatedShippingView = Signal.combineLatest(project, rewards, selectedShippingRule)
-      .map { project, rewards, shippingRule in
-        guard let rule = shippingRule else { return (nil, nil) }
+    self.configureEstimatedShippingView = Signal.combineLatest(
+      project,
+      rewards,
+      selectedShippingRule,
+      selectedQuantities
+    )
+    .map { project, rewards, shippingRule, selectedQuantities in
+      guard let rule = shippingRule else { return (nil, nil) }
 
-        return (
-          estimatedShippingText(for: rewards, project: project, selectedShippingRule: rule),
-          estimatedShippingConversionText(for: rewards, project: project, selectedShippingRule: rule)
+      return (
+        estimatedShippingText(
+          for: rewards,
+          project: project,
+          selectedShippingRule: rule,
+          selectedQuantities: selectedQuantities
+        ),
+        estimatedShippingConversionText(
+          for: rewards,
+          project: project,
+          selectedShippingRule: rule,
+          selectedQuantities: selectedQuantities
         )
-      }
+      )
+    }
 
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
