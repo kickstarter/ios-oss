@@ -21,6 +21,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.configureViews()
     self.bindViewModel()
+    self.setupConstraints()
   }
 
   @available(*, unavailable)
@@ -92,6 +93,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     _ = ([self.headerLabel, self.titleLabel], self.labelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor)
+    ])
   }
 
   override func layoutSubviews() {
