@@ -34,7 +34,7 @@ public protocol RewardCardViewModelOutputs {
   var estimatedShippingStackViewHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryStackViewHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
-  var estimatedShippingLabelText: Signal<String, Never> { get }
+  var estimatedShippingLabelText: Signal<String?, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
@@ -62,7 +62,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     let project: Signal<Project, Never> = configData.map(\.project)
     let reward: Signal<Reward, Never> = configData.map(\.reward)
-    let currentShippingRule: Signal<ShippingRule, Never> = configData.map(\.currentShippingRule).skipNil()
+    let currentShippingRule: Signal<ShippingRule?, Never> = configData.map(\.currentShippingRule)
 
     let projectAndReward = Signal.zip(project, reward)
 
@@ -130,16 +130,21 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.estimatedShippingLabelText = Signal.combineLatest(reward, project, currentShippingRule)
       .map { reward, project, shippingRule in
-        estimatedShippingText(for: [reward], project: project, selectedShippingRule: shippingRule)
+        guard let shipping = shippingRule else { return nil }
+
+        return estimatedShippingText(for: [reward], project: project, selectedShippingRule: shipping)
       }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
 
-    self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
-      .map { reward, text in
-        reward.shipping.enabled == false || text.isEmpty
-      }
+    self.estimatedShippingStackViewHidden = Signal.combineLatest(
+      reward,
+      self.estimatedShippingLabelText.signal
+    )
+    .map { reward, text in
+      reward.shipping.enabled == false || text == nil
+    }
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -159,7 +164,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let estimatedShippingStackViewHidden: Signal<Bool, Never>
   public let estimatedDeliveryStackViewHidden: Signal<Bool, Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
-  public let estimatedShippingLabelText: Signal<String, Never>
+  public let estimatedShippingLabelText: Signal<String?, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>

@@ -20,7 +20,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelInputs {
 }
 
 public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
-  var configureEstimatedShippingView: Signal<(String, String), Never> { get }
+  var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -111,7 +111,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     self.configureEstimatedShippingView = Signal.combineLatest(project, rewards, selectedShippingRule)
       .map { project, rewards, shippingRule in
-        guard let rule = shippingRule else { return ("", "") }
+        guard let rule = shippingRule else { return (nil, nil) }
 
         return (
           estimatedShippingText(for: rewards, project: project, selectedShippingRule: rule),
@@ -122,7 +122,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
         let (estimatedShipping, _) = estimatedShippingStrings
-        return reward?.shipping.enabled == false || estimatedShipping.isEmpty
+        return reward?.shipping.enabled == false || estimatedShipping == nil
       }
 
     // MARK: Validate Checkout Details On Submit
@@ -512,7 +512,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
   // MARK: - Outputs
 
-  public let configureEstimatedShippingView: Signal<(String, String), Never>
+  public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
