@@ -117,7 +117,7 @@ private func labelStyle(_ label: UILabel) {
 }
 
 private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .top)
+  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
   let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
   let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
   let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
