@@ -10,7 +10,9 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     = ManageViewPledgeRewardReceivedViewModel()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var labelStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var deliveryLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var shippingLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var toggleViewController: ToggleViewController = {
     ToggleViewController(nibName: nil, bundle: nil)
   }()
@@ -38,7 +40,10 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.toggleViewController.view], self.rootStackView)
+    _ = ([self.deliveryLabel, self.shippingLabel], self.labelStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.labelStackView, self.toggleViewController.view], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -68,6 +73,11 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       |> \.spacing .~ Styles.grid(1)
       |> \.insetsLayoutMarginsFromSafeArea .~ false
 
+    self.labelStackView.isLayoutMarginsRelativeArrangement = true
+    self.labelStackView.axis = .vertical
+    self.labelStackView.spacing = Styles.grid(2)
+    self.labelStackView.insetsLayoutMarginsFromSafeArea = false
+
     _ = self.toggleViewController.titleLabel
       |> checkoutTitleLabelStyle
       |> \.font .~ UIFont.ksr_subhead()
@@ -84,7 +94,9 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.titleLabel.rac.attributedText = self.viewModel.outputs.estimatedDeliveryDateLabelAttributedText
+    self.deliveryLabel.rac.attributedText = self.viewModel.outputs.estimatedDeliveryDateLabelAttributedText
+    self.shippingLabel.rac.attributedText = self.viewModel.outputs.estimatedShippingAttributedText
+    self.shippingLabel.rac.hidden = self.viewModel.outputs.estimatedShippingHidden
     self.toggleViewController.toggle.rac.on = self.viewModel.outputs.rewardReceived
     self.toggleViewController.view.rac.hidden = self.viewModel.outputs.rewardReceivedHidden
 

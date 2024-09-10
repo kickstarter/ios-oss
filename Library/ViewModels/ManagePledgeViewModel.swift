@@ -226,21 +226,76 @@ public final class ManagePledgeViewModel:
       shouldBeginRefresh.ignoreValues()
     )
 
+    // MARK: - ManageViewPledgeRewardReceivedViewData
+
     let latestRewardDeliveryDate = self.loadProjectAndRewardsIntoDataSource.map { _, rewards in
       rewards
         .compactMap { $0.estimatedDeliveryOn }
         .reduce(0) { accum, value in max(accum, value) }
     }
 
-    self.configureRewardReceivedWithData = Signal.combineLatest(project, backing, latestRewardDeliveryDate)
-      .map { project, backing, latestRewardDeliveryDate in
-        ManageViewPledgeRewardReceivedViewData(
-          project: project,
-          backerCompleted: backing.backerCompleted ?? false,
-          estimatedDeliveryOn: latestRewardDeliveryDate,
-          backingState: backing.status
+    let baseReward = backing.map(\.reward).skipNil()
+
+    let shippingRules = Signal.combineLatest(project, baseReward.filter { $0.shipping.enabled })
+      .switchMap { project, reward in
+        AppEnvironment.current.apiService.fetchRewardShippingRules(
+          projectId: project.id,
+          rewardId: reward.id
         )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map(ShippingRulesEnvelope.lens.shippingRules.view)
+        .retry(upTo: 3)
+        .materialize()
       }
+      .values()
+
+    let shippingRule = Signal.combineLatest(backing, shippingRules)
+      .map { backing, shippingRules -> ShippingRule? in
+        guard let locationId = backing.locationId else { return nil }
+        return shippingRules.first(where: { $0.location.id == locationId })
+      }
+
+    let estimatedShipping = Signal.combineLatest(
+      shippingRule,
+      backing,
+      self.loadProjectAndRewardsIntoDataSource
+    )
+    .map { rule, backing, projectAndRewards -> String? in
+      let (project, rewards) = projectAndRewards
+      guard let rule,
+            let range = estimatedShippingText(
+              for: rewards,
+              project: project,
+              selectedShippingRule: rule,
+              selectedQuantities: selectedRewardQuantities(in: backing)
+            )
+      else { return nil }
+
+      return Strings.About_reward_amount(reward_amount: range)
+    }
+
+    let estimatedShippingAllRewards = Signal.merge(
+      estimatedShipping,
+      baseReward.filter { !$0.shipping.enabled }.mapConst(nil)
+    )
+
+    self.configureRewardReceivedWithData = Signal.combineLatest(
+      project,
+      backing,
+      latestRewardDeliveryDate,
+      estimatedShippingAllRewards
+    )
+    .map { project, backing, latestRewardDeliveryDate, estimatedShipping in
+      ManageViewPledgeRewardReceivedViewData(
+        project: project,
+        backerCompleted: backing.backerCompleted ?? false,
+        estimatedDeliveryOn: latestRewardDeliveryDate,
+        backingState: backing.status,
+        estimatedShipping: estimatedShipping
+      )
+    }
+
+    // MARK: - Menu options
 
     let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
@@ -560,7 +615,7 @@ private func managePledgeSummaryViewData(
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: backing.reward?.shipping.enabled == false,
+    shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup
   )
 }

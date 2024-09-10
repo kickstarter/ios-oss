@@ -8,6 +8,7 @@ public struct ManageViewPledgeRewardReceivedViewData: Equatable {
   public let backerCompleted: Bool
   public let estimatedDeliveryOn: TimeInterval
   public let backingState: Backing.Status
+  public let estimatedShipping: String?
 }
 
 public protocol ManageViewPledgeRewardReceivedViewModelInputs {
@@ -19,6 +20,8 @@ public protocol ManageViewPledgeRewardReceivedViewModelInputs {
 public protocol ManageViewPledgeRewardReceivedViewModelOutputs {
   var cornerRadius: Signal<CGFloat, Never> { get }
   var estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var estimatedShippingAttributedText: Signal<NSAttributedString, Never> { get }
+  var estimatedShippingHidden: Signal<Bool, Never> { get }
   var layoutMargins: Signal<UIEdgeInsets, Never> { get }
   var marginWidth: Signal<CGFloat, Never> { get }
   var rewardReceived: Signal<Bool, Never> { get }
@@ -78,6 +81,12 @@ public class ManageViewPledgeRewardReceivedViewModel:
     self.estimatedDeliveryDateLabelAttributedText = data.map(\.estimatedDeliveryOn)
       .map(estimatedDeliveryAttributedText)
 
+    self.estimatedShippingAttributedText = data.map(\.estimatedShipping).skipNil()
+      .map(formatEstimatedShipping)
+
+    self.estimatedShippingHidden = data.map(\.estimatedShipping)
+      .map { !featureNoShippingAtCheckout() || $0 == nil }
+
     self.rewardReceivedHidden = data.map(\.backingState).map { state in state != .collected }
     self.cornerRadius = self.rewardReceivedHidden.map { $0 ? 0 : Styles.grid(2) }
     self.layoutMargins = self.rewardReceivedHidden.map { $0 ? .zero : .init(all: Styles.gridHalf(5)) }
@@ -101,6 +110,8 @@ public class ManageViewPledgeRewardReceivedViewModel:
 
   public let cornerRadius: Signal<CGFloat, Never>
   public let estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never>
+  public let estimatedShippingAttributedText: Signal<NSAttributedString, Never>
+  public let estimatedShippingHidden: Signal<Bool, Never>
   public let layoutMargins: Signal<UIEdgeInsets, Never>
   public let marginWidth: Signal<CGFloat, Never>
   public let rewardReceived: Signal<Bool, Never>
@@ -108,6 +119,12 @@ public class ManageViewPledgeRewardReceivedViewModel:
 
   public var inputs: ManageViewPledgeRewardReceivedViewModelInputs { return self }
   public var outputs: ManageViewPledgeRewardReceivedViewModelOutputs { return self }
+}
+
+private func formatEstimatedShipping(with shippingRange: String) -> NSAttributedString {
+  // In this UI, the title and value are simply separated by a space.
+  let totalString = "\(Strings.Estimated_Shipping()) \(shippingRange)"
+  return attributedText(totalString: totalString, valueSubstring: shippingRange)
 }
 
 private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttributedString {
@@ -118,15 +135,19 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
   )
   let string = Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
 
+  return attributedText(totalString: string, valueSubstring: dateString)
+}
+
+private func attributedText(totalString: String, valueSubstring: String) -> NSAttributedString {
   let font = UIFont.ksr_subhead()
 
   let attributedText = NSMutableAttributedString(
-    attributedString: string
+    attributedString: totalString
       .attributed(
         with: font,
         foregroundColor: .ksr_support_400,
         attributes: [:],
-        bolding: [string.replacingOccurrences(of: dateString, with: "")]
+        bolding: [totalString.replacingOccurrences(of: valueSubstring, with: "")]
       )
   )
 
@@ -135,7 +156,7 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
       .font: font,
       .foregroundColor: UIColor.ksr_support_700
     ],
-    range: (string as NSString).range(of: dateString)
+    range: (totalString as NSString).range(of: valueSubstring)
   )
 
   return attributedText

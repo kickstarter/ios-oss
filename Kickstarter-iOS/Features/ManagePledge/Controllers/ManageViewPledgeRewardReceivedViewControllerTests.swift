@@ -25,7 +25,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       project: .template,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .collected
+      backingState: .collected,
+      estimatedShipping: nil
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
@@ -52,7 +53,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       project: .template,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .collected
+      backingState: .collected,
+      estimatedShipping: nil
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
