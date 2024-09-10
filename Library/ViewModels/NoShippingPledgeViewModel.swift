@@ -313,15 +313,30 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
     )
 
-    self.configureEstimatedShippingView = Signal.combineLatest(project, rewards, selectedShippingRule)
-      .map { project, rewards, shippingRule in
-        guard let rule = shippingRule else { return (nil, nil) }
+    self.configureEstimatedShippingView = Signal.combineLatest(
+      project,
+      rewards,
+      selectedShippingRule,
+      selectedQuantities
+    )
+    .map { project, rewards, shippingRule, selectedQuantities in
+      guard let rule = shippingRule else { return (nil, nil) }
 
-        return (
-          estimatedShippingText(for: rewards, project: project, selectedShippingRule: rule),
-          estimatedShippingConversionText(for: rewards, project: project, selectedShippingRule: rule)
+      return (
+        estimatedShippingText(
+          for: rewards,
+          project: project,
+          selectedShippingRule: rule,
+          selectedQuantities: selectedQuantities
+        ),
+        estimatedShippingConversionText(
+          for: rewards,
+          project: project,
+          selectedShippingRule: rule,
+          selectedQuantities: selectedQuantities
         )
-      }
+      )
+    }
 
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
