@@ -238,8 +238,8 @@ public final class ManagePledgeViewModel:
       backing,
       self.loadProjectAndRewardsIntoDataSource
     )
-      .map(unpack)
-      .map { backing, project, rewards -> String? in
+    .map(unpack)
+    .map { backing, project, rewards -> String? in
       guard let locationId = backing.locationId,
             let range = estimatedShippingText(
               for: rewards,
@@ -251,7 +251,6 @@ public final class ManagePledgeViewModel:
 
       return Strings.About_reward_amount(reward_amount: range)
     }
-
 
     self.configureRewardReceivedWithData = Signal.combineLatest(
       project,
