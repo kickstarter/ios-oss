@@ -78,6 +78,8 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var sessionStartedObserver: Any?
+
   private let viewModel: NoShippingPostCampaignCheckoutViewModelType =
     NoShippingPostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
@@ -112,6 +114,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
   deinit {
     self.hideProcessingView()
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
@@ -203,6 +206,8 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
     self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
       .observeForUI()
       .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
@@ -251,6 +256,11 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
       }
 
     self.viewModel.outputs.goToLoginSignup

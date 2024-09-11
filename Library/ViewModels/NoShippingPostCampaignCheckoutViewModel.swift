@@ -14,6 +14,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
+  func userSessionStarted()
   func viewDidLoad()
   func applePayButtonTapped()
   func applePayContextDidCreatePayment(with paymentMethodId: String)
@@ -31,6 +32,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -68,6 +70,12 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let project = initialData.map(\.project)
     let selectedShippingRule = initialData.map(\.selectedShippingRule)
     let selectedQuantities = initialData.map(\.selectedQuantities)
+
+    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
+
+    self.paymentMethodsViewHidden = isLoggedIn.map(negate)
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(initialData, checkoutId)
       .compactMap { data, checkoutId -> PledgePaymentMethodsValue? in
@@ -384,11 +392,12 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       pledgeButtonEnabled,
-      context
+      context,
+      isLoggedIn
     )
-    .map { pledgeButtonEnabled, context in
+    .map { pledgeButtonEnabled, context, isLoggedIn in
       PledgeViewCTAContainerViewData(
-        isLoggedIn: true, // Users should always be logged in when they get to the Checkout screen.
+        isLoggedIn: isLoggedIn,
         isEnabled: pledgeButtonEnabled,
         context: context,
         willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
@@ -513,6 +522,11 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.termsOfUseTappedObserver.send(value: helpType)
   }
 
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -550,6 +564,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
