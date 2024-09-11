@@ -119,7 +119,7 @@ private func headerLabelStyle(_ label: UILabel) {
 
 private func labelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = UIColor.ksr_support_400
+  label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
   label.numberOfLines = 0
 }
 
