@@ -326,13 +326,13 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         estimatedShippingText(
           for: rewards,
           project: project,
-          selectedShippingRule: rule,
+          locationId: rule.location.id,
           selectedQuantities: selectedQuantities
         ),
         estimatedShippingConversionText(
           for: rewards,
           project: project,
-          selectedShippingRule: rule,
+          locationId: rule.location.id,
           selectedQuantities: selectedQuantities
         )
       )

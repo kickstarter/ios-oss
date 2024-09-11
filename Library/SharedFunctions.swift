@@ -664,12 +664,12 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
 public func estimatedShippingText(
   for rewards: [Reward],
   project: Project,
-  selectedShippingRule: ShippingRule,
+  locationId: Int,
   selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
-    selectedShippingRule: selectedShippingRule,
+    locationId: locationId,
     selectedQuantities: selectedQuantities
   )
 
@@ -701,14 +701,14 @@ public func estimatedShippingText(
 public func estimatedShippingConversionText(
   for rewards: [Reward],
   project: Project,
-  selectedShippingRule: ShippingRule,
+  locationId: Int,
   selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
   guard project.stats.needsConversion else { return nil }
 
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
-    selectedShippingRule: selectedShippingRule,
+    locationId: locationId,
     selectedQuantities: selectedQuantities
   )
 
@@ -755,7 +755,7 @@ public func attributedCurrency(withProject project: Project, total: Double) -> N
 
 private func estimatedMinMax(
   from rewards: [Reward],
-  selectedShippingRule: ShippingRule,
+  locationId: Int,
   selectedQuantities: SelectedRewardQuantities?
 ) -> (Double, Double) {
   var min: Double = 0
@@ -771,7 +771,7 @@ private func estimatedMinMax(
     shippingRule = reward.shipping.preference == .unrestricted
       ? shippingRules.first
       : shippingRules
-      .first(where: { $0.location.country == selectedShippingRule.location.country })
+      .first(where: { $0.location.id == locationId })
 
     guard let shipping = shippingRule else { return }
 
