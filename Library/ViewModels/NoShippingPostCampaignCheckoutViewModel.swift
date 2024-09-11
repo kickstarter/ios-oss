@@ -10,6 +10,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected)
+  func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
@@ -29,6 +30,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -62,7 +64,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let checkoutId = initialData.map(\.checkoutId)
     let backingId = initialData.map(\.backingId)
     let rewards = initialData.map(\.rewards)
-    let baseReward = initialData.map(\.rewards).map(\.first)
+    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
     let project = initialData.map(\.project)
     let selectedShippingRule = initialData.map(\.selectedShippingRule)
     let selectedQuantities = initialData.map(\.selectedQuantities)
@@ -138,8 +140,11 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
       .map { estimatedShippingStrings, reward in
         let (estimatedShipping, _) = estimatedShippingStrings
-        return reward?.shipping.enabled == false || estimatedShipping == nil
+        return reward.shipping.enabled == false || estimatedShipping == nil
       }
+
+    self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
+      .map { (LoginIntent.backProject, $0.0, $0.1) }
 
     // MARK: Validate Checkout Details On Submit
 
@@ -357,9 +362,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     let thanksPageData = Signal.combineLatest(initialData, baseReward)
       .map { initialData, baseReward -> ThanksPageData? in
-        guard let reward = baseReward else { return nil }
-
-        return (initialData.project, reward, nil, initialData.total)
+        (initialData.project, baseReward, nil, initialData.total)
       }
 
     self.checkoutComplete = thanksPageData.skipNil()
@@ -489,6 +492,11 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.creditCardSelectedProperty.value = source
   }
 
+  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
+  public func goToLoginSignupTapped() {
+    self.goToLoginSignupObserver.send(value: ())
+  }
+
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
@@ -538,6 +546,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>

@@ -253,6 +253,12 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+      }
+
     self.viewModel.outputs.validateCheckoutSuccess
       .observeForControllerAction()
       .observeValues { [weak self] validation in
@@ -308,6 +314,19 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.present(navigationController, animated: true)
+  }
 
   private func confirmPayment(with validation: PaymentSourceValidation) {
     guard validation.requiresConfirmation else {
@@ -393,6 +412,7 @@ extension NoShippingPostCampaignCheckoutViewController: PledgeDisclaimerViewDele
 extension NoShippingPostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
+    self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
