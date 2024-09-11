@@ -21,6 +21,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.configureViews()
     self.bindViewModel()
+    self.setupConstraints()
   }
 
   @available(*, unavailable)
@@ -94,6 +95,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor)
+    ])
+  }
+
   override func layoutSubviews() {
     super.layoutSubviews()
     self.headerLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
@@ -112,12 +119,12 @@ private func headerLabelStyle(_ label: UILabel) {
 
 private func labelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = UIColor.ksr_support_400
+  label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
   label.numberOfLines = 0
 }
 
 private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .top)
+  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
   let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
   let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
   let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)

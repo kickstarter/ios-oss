@@ -144,6 +144,7 @@ private func items(
 
   let headerItem = PledgeExpandableRewardsHeaderItem.header((
     headerText: nil,
+    showHeader: true,
     text: estimatedDeliveryString,
     amount: totalAmountAttributedText
   ))
@@ -161,6 +162,7 @@ private func items(
 
     return PledgeExpandableRewardsHeaderItem.reward((
       headerText: nil,
+      showHeader: true,
       text: itemString,
       amount: amountAttributedText
     ))
