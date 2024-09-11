@@ -23,7 +23,7 @@ final class PledgeExpandableHeaderRewardCellViewModelTests: TestCase {
     let text = "Text"
     let amount = NSAttributedString(string: "Test string")
 
-    self.vm.inputs.configure(with: (nil, text, amount))
+    self.vm.inputs.configure(with: (nil, true, text, amount))
 
     self.amountAttributedText.assertValues([amount])
     self.labelText.assertValues([text])
