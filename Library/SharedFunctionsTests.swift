@@ -720,7 +720,7 @@ final class SharedFunctionsTests: TestCase {
     let estimatedShipping = estimatedShippingText(
       for: [reward, addOn],
       project: project,
-      selectedShippingRule: .template
+      locationId: ShippingRule.template.location.id
     )
 
     XCTAssertEqual(estimatedShipping, "$3-$12")
@@ -753,7 +753,7 @@ final class SharedFunctionsTests: TestCase {
     let estimatedShipping = estimatedShippingText(
       for: [reward, addOn],
       project: project,
-      selectedShippingRule: .template,
+      locationId: ShippingRule.template.location.id,
       selectedQuantities: selectedQuantities
     )
 

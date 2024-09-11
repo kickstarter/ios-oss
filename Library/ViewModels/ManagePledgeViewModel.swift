@@ -234,39 +234,17 @@ public final class ManagePledgeViewModel:
         .reduce(0) { accum, value in max(accum, value) }
     }
 
-    let baseReward = backing.map(\.reward).skipNil()
-
-    let shippingRules = Signal.combineLatest(project, baseReward.filter { $0.shipping.enabled })
-      .switchMap { project, reward in
-        AppEnvironment.current.apiService.fetchRewardShippingRules(
-          projectId: project.id,
-          rewardId: reward.id
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map(ShippingRulesEnvelope.lens.shippingRules.view)
-        .retry(upTo: 3)
-        .materialize()
-      }
-      .values()
-
-    let shippingRule = Signal.combineLatest(backing, shippingRules)
-      .map { backing, shippingRules -> ShippingRule? in
-        guard let locationId = backing.locationId else { return nil }
-        return shippingRules.first(where: { $0.location.id == locationId })
-      }
-
     let estimatedShipping = Signal.combineLatest(
-      shippingRule,
       backing,
       self.loadProjectAndRewardsIntoDataSource
     )
-    .map { rule, backing, projectAndRewards -> String? in
-      let (project, rewards) = projectAndRewards
-      guard let rule,
+    .map(unpack)
+    .map { backing, project, rewards -> String? in
+      guard let locationId = backing.locationId,
             let range = estimatedShippingText(
               for: rewards,
               project: project,
-              selectedShippingRule: rule,
+              locationId: locationId,
               selectedQuantities: selectedRewardQuantities(in: backing)
             )
       else { return nil }
@@ -274,16 +252,11 @@ public final class ManagePledgeViewModel:
       return Strings.About_reward_amount(reward_amount: range)
     }
 
-    let estimatedShippingAllRewards = Signal.merge(
-      estimatedShipping,
-      baseReward.filter { !$0.shipping.enabled }.mapConst(nil)
-    )
-
     self.configureRewardReceivedWithData = Signal.combineLatest(
       project,
       backing,
       latestRewardDeliveryDate,
-      estimatedShippingAllRewards
+      estimatedShipping
     )
     .map { project, backing, latestRewardDeliveryDate, estimatedShipping in
       ManageViewPledgeRewardReceivedViewData(
