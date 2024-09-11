@@ -5,6 +5,7 @@ import ReactiveSwift
 
 public typealias PledgeExpandableHeaderRewardCellData = (
   headerText: NSAttributedString?,
+  showHeader: Bool,
   text: String,
   amount: NSAttributedString
 )
@@ -28,9 +29,13 @@ public final class PledgeExpandableHeaderRewardCellViewModel: PledgeExpandableHe
   PledgeExpandableHeaderRewardCellViewModelInputs, PledgeExpandableHeaderRewardCellViewModelOutputs {
   public init() {
     let data = self.configureWithDataProperty.signal.skipNil()
+    let showHeader = data.map(\.showHeader)
 
     self.amountAttributedText = data.map(\.amount)
-    self.headerLabelText = data.map(\.headerText)
+    self.headerLabelText = Signal.combineLatest(data, showHeader)
+      .map { data, showHeader in
+        showHeader == true ? data.headerText : nil
+      }
     self.labelText = data.map(\.text)
   }
 

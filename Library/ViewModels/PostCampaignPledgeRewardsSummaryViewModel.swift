@@ -151,6 +151,7 @@ private func items(
 
   let headerItem = PostCampaignRewardsSummaryItem.header((
     headerText: nil,
+    showHeader: true,
     text: estimatedDeliveryString ?? "",
     amount: NSAttributedString(string: "")
   ))
@@ -183,6 +184,8 @@ private func items(
 
     return PostCampaignRewardsSummaryItem.reward((
       headerText: headerAttributedText,
+      showHeader: data.rewards.firstIndex(of: reward)! < 2,
+      /// only show header text if the item is the base reward or the first add-on.
       text: itemString,
       amount: amountAttributedText
     ))
@@ -198,6 +201,7 @@ private func items(
 
     let shippingItem = PostCampaignRewardsSummaryItem.reward((
       headerText: nil,
+      showHeader: true,
       text: Strings.Shipping_to_country(country: shipping.locationName),
       amount: shippingAmountAttributedText
     ))
@@ -214,6 +218,7 @@ private func items(
 
     let bonusItem = PostCampaignRewardsSummaryItem.reward((
       headerText: nil,
+      showHeader: true,
       text: Strings.Bonus_support(),
       amount: bonusAmountAttributedText
     ))
