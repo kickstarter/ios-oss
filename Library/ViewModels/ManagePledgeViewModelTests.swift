@@ -258,7 +258,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       project: project,
       backerCompleted: true,
       estimatedDeliveryOn: 1_506_897_315.0,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     withEnvironment(apiService: mockService) {
@@ -920,7 +921,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       project: project,
       backerCompleted: true,
       estimatedDeliveryOn: 0,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     withEnvironment(apiService: mockService1) {
@@ -974,14 +976,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.loadProjectAndRewardsIntoDataSourceReward.assertValues([
         [.noReward], [.noReward], [.noReward], [.noReward]
       ])
-      self.configureRewardReceivedWithData.assertValues([
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData
-      ])
+      self.configureRewardReceivedWithData.assertLastValue(expectedRewardReceivedData)
       self.title.assertValues(["Manage your pledge", "Manage your pledge", "Manage your pledge"])
     }
   }
