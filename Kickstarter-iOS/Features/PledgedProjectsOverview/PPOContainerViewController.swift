@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import Library
 import SwiftUI
@@ -9,8 +10,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let tabBarController = self.tabBarController as? RootTabBarViewController
-    let ppoViewController = UIHostingController(rootView: PPOView(tabBarController: tabBarController))
+    let ppoView = PPOView()
+    let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
     let activitiesViewController = ActivitiesViewController.instantiate()
@@ -20,6 +21,18 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       (.projectAlerts(.count(5)), ppoViewController),
       (.activityFeed(.dot), activitiesViewController)
     ])
+
+    let tabBarController = self.tabBarController as? RootTabBarViewController
+
+    ppoView.viewModel.navigationEvents.sink { nav in
+      switch nav {
+      case .backingPage:
+        tabBarController?.switchToProfile()
+      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
+        // TODO MBL-1451
+        break
+      }
+    }.store(in: &self.subscriptions)
   }
 
   public enum Page: TabBarPage {
@@ -49,4 +62,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       self.name
     }
   }
+
+  private var subscriptions = Set<AnyCancellable>()
 }
