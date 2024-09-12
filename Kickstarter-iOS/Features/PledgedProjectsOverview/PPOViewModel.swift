@@ -186,6 +186,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
+  private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
+
   private var cancellables: Set<AnyCancellable> = []
 
   private enum Constants {
