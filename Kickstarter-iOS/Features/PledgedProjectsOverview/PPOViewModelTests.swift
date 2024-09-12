@@ -241,6 +241,50 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 7)
   }
 
+  func testNavigationBackedProjects() {
+    verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backingPage)
+  }
+
+  func testNavigationConfirmAddress() {
+    verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+  }
+
+  func testNavigationContactCreator() {
+    verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+  }
+
+  func testNavigationFix3DSChallenge() {
+    verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+  }
+
+  func testNavigationFixPaymentMethod() {
+    verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+  }
+
+  func testNavigationOpenSurvey() {
+    verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+  }
+
+  private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
+    let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
+
+    var values: [PPONavigationEvent] = []
+    self.viewModel.navigationEvents.first().collect()
+      .sink(receiveValue: { v in values = v })
+      .store(in: &self.cancellables)
+
+    closure()
+
+    let afterResults: PPOViewModelPaginator.Results = self.viewModel.results
+
+    XCTAssertEqual(values.count, 1)
+    guard case event = values[0] else {
+      return XCTFail()
+    }
+
+    XCTAssertEqual(beforeResults, afterResults)
+  }
+
   private func pledgedProjectsData(
     cursors: ClosedRange<Int> = 1...3,
     hasNextPage: Bool = false

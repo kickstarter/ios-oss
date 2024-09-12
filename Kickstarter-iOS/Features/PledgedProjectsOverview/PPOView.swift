@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct PPOView: View {
-  weak var tabBarController: RootTabBarViewController?
-  @StateObject private var viewModel = PPOViewModel()
+  @StateObject var viewModel = PPOViewModel()
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
