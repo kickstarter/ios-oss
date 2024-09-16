@@ -96,12 +96,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       calculatedShippingTotal
     )
 
-    /// Initial pledge amount is zero if not backed.
-    let initialPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backing.map(\.bonusAmount)
-    )
-    .take(first: 1)
+    /// If initial data includes a custom pledge amount, use that.
+    /// If not, bonus amount is 0 if there's no backing.
+    let initialPledgeAmount = Signal.zip(initialData.map(\.bonusSupport), project)
+      .map { bonusSupport, project in
+        if let bonusSupport { return bonusSupport }
+        if let backing = project.personalization.backing { return backing.bonusAmount }
+        return 0.0
+      }
 
     /// Called when pledge or bonus is updated by backer
     let additionalPledgeAmount = Signal.merge(
@@ -329,6 +331,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
+      selectedShippingRule,
       pledgeTotal,
       refTag
     )
@@ -342,7 +345,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       .takeWhen(isLoggedInAndContinueButtonTapped)
       .filter { isLoggedIn, _ in isLoggedIn }
       .map { _, pledgeDetailsData in
-        let (project, rewards, selectedQuantities, pledgeTotal, refTag) = pledgeDetailsData
+        let (
+          project,
+          rewards,
+          selectedQuantities,
+          selectedShippingRule,
+          pledgeTotal,
+          refTag
+        ) = pledgeDetailsData
         let rewardsIDs: [String] = rewards.first?.isNoReward == true
           ? []
           : rewards.flatMap { reward -> [String] in
@@ -352,10 +362,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             return [String](repeating: reward.graphID, count: count)
           }
 
+        let locationId = selectedShippingRule.flatMap { String($0.location.id) }
+
         return CreateCheckoutInput(
           projectId: project.graphID,
           amount: String(format: "%.2f", pledgeTotal),
-          locationId: "\(project.location.id)",
+          locationId: locationId,
           rewardIds: rewardsIDs,
           refParam: refTag?.stringTag
         )
@@ -386,12 +398,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         bonusOrPledgeUpdatedAmount,
         optionalShippingSummaryData,
         pledgeTotal,
-        baseReward
+        baseReward,
+        selectedShippingRule
       )
     )
     .map { checkoutAndBackingId, otherData -> PostCampaignCheckoutData in
       let (checkoutId, backingId) = checkoutAndBackingId
-      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward) = otherData
+      let (initialData, bonusOrReward, shipping, pledgeTotal, baseReward, shippingRule) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
       if let reward = rewards.first, reward.isNoReward {
@@ -412,7 +425,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         refTag: initialData.refTag,
         context: initialData.context,
         checkoutId: checkoutId,
-        backingId: backingId
+        backingId: backingId,
+        selectedShippingRule: shippingRule
       )
     }
 

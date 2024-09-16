@@ -10,9 +10,9 @@ final class PledgeExpandableRewardsHeaderDataSourceTests: XCTestCase {
 
   func testLoadValues() {
     let items: [PledgeExpandableRewardsHeaderItem] = [
-      .header(("Header title", NSAttributedString(string: "$800"))),
-      .reward(("Reward title", NSAttributedString(string: "$400"))),
-      .reward(("Reward title", NSAttributedString(string: "$400")))
+      .header((nil, true, "Header title", NSAttributedString(string: "$800"))),
+      .reward((nil, true, "Reward title", NSAttributedString(string: "$400"))),
+      .reward((nil, true, "Reward title", NSAttributedString(string: "$400")))
     ]
 
     self.dataSource.load(items)

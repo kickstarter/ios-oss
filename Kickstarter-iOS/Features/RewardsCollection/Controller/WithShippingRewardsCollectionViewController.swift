@@ -76,6 +76,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
+      |> \.isHidden .~ true
 
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
@@ -179,19 +180,24 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
     self.viewModel.outputs.goToAddOnSelection
       .observeForControllerAction()
       .observeValues { [weak self] data in
-        self?.goToAddOnSelection(data: data)
+        self?.goToNoShippingAddOnSelection(data: data)
       }
 
-    self.viewModel.outputs.goToPledge
+    self.viewModel.outputs.goToCustomizeYourReward
       .observeForControllerAction()
       .observeValues { [weak self] data in
         guard let self else { return }
+        /// Goes to screen that only has the pledge amount or bonus amount selectors
+        self.goToNoShippingAddOnSelection(data: data)
+      }
 
-        if data.context == .latePledge {
-          self.goToConfirmDetails(data: data)
-        } else {
-          self.goToPledge(data: data)
-        }
+    self.viewModel.outputs.rewardsCollectionViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] shimmerLoadingViewIsHidden in
+        guard let self else { return }
+
+        self.collectionView.isHidden = !shimmerLoadingViewIsHidden
+        self.collectionView.layoutIfNeeded()
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
@@ -295,52 +301,12 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
       ?|> \.isActive .~ !isHidden
   }
 
-  private func goToAddOnSelection(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
-      vc.pledgeViewDelegate = self.pledgeViewDelegate
-      vc.configure(with: data)
-      vc.navigationItem.title = self.title
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = RewardAddOnSelectionViewController.instantiate()
-      vc.pledgeViewDelegate = self.pledgeViewDelegate
-      vc.configure(with: data)
-      vc.navigationItem.title = self.title
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
-  }
-
-  private func goToPledge(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let pledgeViewController = NoShippingPledgeViewController.instantiate()
-      pledgeViewController.delegate = self.noShippingPledgeViewDelegate
-      pledgeViewController.configure(with: data)
-
-      self.navigationController?.pushViewController(pledgeViewController, animated: true)
-    } else {
-      let pledgeViewController = PledgeViewController.instantiate()
-      pledgeViewController.delegate = self.pledgeViewDelegate
-      pledgeViewController.configure(with: data)
-
-      self.navigationController?.pushViewController(pledgeViewController, animated: true)
-    }
-  }
-
-  private func goToConfirmDetails(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = ConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+  private func goToNoShippingAddOnSelection(data: PledgeViewData) {
+    let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
+    vc.pledgeViewDelegate = self.pledgeViewDelegate
+    vc.configure(with: data)
+    vc.navigationItem.title = self.title
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showEditRewardConfirmationPrompt(title: String, message: String) {
@@ -420,7 +386,13 @@ extension WithShippingRewardsCollectionViewController: PledgeShippingLocationVie
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(
+    _: PledgeShippingLocationViewController,
+    _ shimmerLoadingViewIsHidden: Bool
+  ) {
+    self.viewModel.inputs.pledgeShippingLocationViewControllerDidUpdate(shimmerLoadingViewIsHidden)
+  }
+
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
     self.viewModel.inputs.shippingLocationViewDidFailToLoad()
   }

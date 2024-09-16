@@ -28,7 +28,7 @@ public protocol RewardAddOnCardViewModelOutputs {
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
-  var estimatedShippingLabelText: Signal<String, Never> { get }
+  var estimatedShippingLabelText: Signal<String?, Never> { get }
   var estimatedShippingStackViewHidden: Signal<Bool, Never> { get }
   var notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never> { get }
   var pillsViewHidden: Signal<Bool, Never> { get }
@@ -57,7 +57,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     let project: Signal<Project, Never> = configData.map(\.project)
     let reward: Signal<Reward, Never> = configData.map(\.reward)
     let selectedQuantities: Signal<SelectedRewardQuantities, Never> = configData.map(\.selectedQuantities)
-    let shippingRule: Signal<ShippingRule, Never> = configData.map(\.shippingRule).skipNil()
+    let shippingRule: Signal<ShippingRule?, Never> = configData.map(\.shippingRule)
 
     let projectAndReward = Signal.zip(project, reward)
     let projectRewardShippingRule = configData.map {
@@ -103,12 +103,16 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .map(itemsLabelAttributedText)
       .skipNil()
 
-    self.estimatedShippingLabelText = Signal.combineLatest(reward, shippingRule)
-      .map { reward, shippingRule in estimatedShippingText(for: reward, selectedShippingRule: shippingRule) }
+    self.estimatedShippingLabelText = Signal.combineLatest(reward, project, shippingRule)
+      .map { reward, project, shippingRule in
+        guard let locationId = shippingRule?.location.id else { return nil }
+
+        return estimatedShippingText(for: [reward], project: project, locationId: locationId)
+      }
 
     self.estimatedShippingStackViewHidden = Signal.combineLatest(reward, self.estimatedShippingLabelText)
       .map { reward, text in
-        reward.shipping.enabled == false || text.isEmpty
+        reward.shipping.enabled == false || text == nil
       }
 
     self.reloadPills = projectAndReward.map(pillValues(project:reward:))
@@ -198,7 +202,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
-  public let estimatedShippingLabelText: Signal<String, Never>
+  public let estimatedShippingLabelText: Signal<String?, Never>
   public let estimatedShippingStackViewHidden: Signal<Bool, Never>
   public let notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never>
   public let pillsViewHidden: Signal<Bool, Never>

@@ -17,6 +17,12 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  /// Bonus support
+  private lazy var pledgeAmountViewController = {
+    PledgeAmountViewController.instantiate()
+      |> \.delegate .~ self
+  }()
+
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
   public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
@@ -94,8 +100,11 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent(priority: UILayoutPriority(rawValue: 999))
 
-    _ = ([self.headerLabel], self.headerRootStackView)
+    _ = ([self.headerLabel, self.pledgeAmountViewController.view], self.headerRootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.addChild(self.pledgeAmountViewController)
+    self.pledgeAmountViewController.didMove(toParent: self)
   }
 
   private func setupConstraints() {
@@ -127,7 +136,6 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
     _ = self.headerLabel
       |> \.numberOfLines .~ 0
       |> \.font .~ UIFont.ksr_title2().bolded
-      |> \.text .~ Strings.Customize_your_reward_with_optional_addons()
 
     _ = self.headerRootStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true
@@ -141,10 +149,18 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.headerLabel.rac.text = self.viewModel.outputs.headerTitle
+
     self.viewModel.outputs.configureContinueCTAViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.continueCTAView.configure(with: data)
+      }
+
+    self.viewModel.outputs.configurePledgeAmountViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.pledgeAmountViewController.configureWith(value: data)
       }
 
     self.viewModel.outputs.loadAddOnRewardsIntoDataSourceAndReloadTableView
@@ -198,35 +214,19 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   // MARK: Functions
 
   private func goToConfirmDetails(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
+    let vc = NoShippingConfirmDetailsViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = ConfirmDetailsViewController.instantiate()
-      vc.configure(with: data)
-      vc.title = self.title
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToPledge(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingPledgeViewController.instantiate()
-      vc.delegate = self.noShippingPledgeViewDelegate
-      vc.configure(with: data)
+    let vc = NoShippingPledgeViewController.instantiate()
+    vc.delegate = self.noShippingPledgeViewDelegate
+    vc.configure(with: data)
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = PledgeViewController.instantiate()
-      vc.delegate = self.pledgeViewDelegate
-      vc.configure(with: data)
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
@@ -239,6 +239,17 @@ extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDeleg
     rewardId: Int
   ) {
     self.viewModel.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: quantity, rewardId: rewardId)
+  }
+}
+
+// MARK: - PledgeAmountViewControllerDelegate
+
+extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControllerDelegate {
+  func pledgeAmountViewController(
+    _: PledgeAmountViewController,
+    didUpdateWith data: PledgeAmountData
+  ) {
+    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 

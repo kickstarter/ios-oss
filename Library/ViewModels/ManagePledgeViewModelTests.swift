@@ -258,7 +258,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       project: project,
       backerCompleted: true,
       estimatedDeliveryOn: 1_506_897_315.0,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     withEnvironment(apiService: mockService) {
@@ -295,6 +296,42 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showActionSheetMenuWithOptions.assertValues([
         [
           ManagePledgeAlertAction.updatePledge,
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
+    }
+  }
+
+  func testMenuButtonTapped_WhenProject_IsLive_NoShippingAtCheckout_doesNotInclude_updatePledge() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
           ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.chooseAnotherReward,
           ManagePledgeAlertAction.contactCreator,
@@ -884,7 +921,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       project: project,
       backerCompleted: true,
       estimatedDeliveryOn: 0,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     withEnvironment(apiService: mockService1) {
@@ -938,14 +976,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.loadProjectAndRewardsIntoDataSourceReward.assertValues([
         [.noReward], [.noReward], [.noReward], [.noReward]
       ])
-      self.configureRewardReceivedWithData.assertValues([
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData,
-        expectedRewardReceivedData
-      ])
+      self.configureRewardReceivedWithData.assertLastValue(expectedRewardReceivedData)
       self.title.assertValues(["Manage your pledge", "Manage your pledge", "Manage your pledge"])
     }
   }

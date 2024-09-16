@@ -367,7 +367,7 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
   let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
-  let isAvailableForExistingBackerToEdit = (isBacking && reward.hasAddOns)
+  let isAvailableForExistingBackerToEdit = (isBacking && (reward.hasAddOns || featureNoShippingAtCheckout()))
 
   if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {
     return [
@@ -661,31 +661,130 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
     .isAny(of: Reward.Shipping.Preference.none)
 }
 
-public func estimatedShippingText(for reward: Reward, selectedShippingRule: ShippingRule) -> String {
-  guard reward.shipping.enabled else { return "" }
+public func estimatedShippingText(
+  for rewards: [Reward],
+  project: Project,
+  locationId: Int,
+  selectedQuantities: SelectedRewardQuantities? = nil
+) -> String? {
+  let (estimatedMin, estimatedMax) = estimatedMinMax(
+    from: rewards,
+    locationId: locationId,
+    selectedQuantities: selectedQuantities
+  )
 
-  /// Make sure the current reward has shipping rules and that one of them matches the selected shipping rule (from the locations dropdown).
-  guard let shippingRules = reward.shippingRules,
-        let currentRewardShippingRule = shippingRules
-        .first(where: { $0.location.country == selectedShippingRule.location.country })
-  else {
-    return ""
+  guard estimatedMin > 0, estimatedMax > 0 else { return nil }
+
+  let currentCountry = project.stats.currentCountry ?? Project.Country.us
+
+  let formattedMin = Format.currency(
+    estimatedMin,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+
+  let formattedMax = Format.currency(
+    estimatedMax,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+
+  let estimatedShippingString: String = formattedMin == formattedMax
+    ? "\(formattedMin)"
+    : "\(formattedMin)-\(formattedMax)"
+
+  return estimatedShippingString
+}
+
+public func estimatedShippingConversionText(
+  for rewards: [Reward],
+  project: Project,
+  locationId: Int,
+  selectedQuantities: SelectedRewardQuantities? = nil
+) -> String? {
+  guard project.stats.needsConversion else { return nil }
+
+  let (estimatedMin, estimatedMax) = estimatedMinMax(
+    from: rewards,
+    locationId: locationId,
+    selectedQuantities: selectedQuantities
+  )
+
+  guard estimatedMin > 0, estimatedMax > 0 else { return nil }
+
+  let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+  let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+  let currentCountry = project.stats.currentCountry ?? Project.Country.us
+
+  let formattedMin = Format.currency(
+    convertedMin,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+
+  let formattedMax = Format.currency(
+    convertedMax,
+    country: currentCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    roundingMode: .halfUp
+  )
+
+  let conversionText: String = formattedMin == formattedMax
+    ? Strings.About_reward_amount(reward_amount: formattedMin)
+    : Strings.About_reward_amount(reward_amount: "\(formattedMin)-\(formattedMax)")
+
+  return conversionText
+}
+
+public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
+  return Format.attributedCurrency(
+    total,
+    country: projectCurrencyCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    defaultAttributes: defaultAttributes,
+    superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+  )
+}
+
+private func estimatedMinMax(
+  from rewards: [Reward],
+  locationId: Int,
+  selectedQuantities: SelectedRewardQuantities?
+) -> (Double, Double) {
+  var min: Double = 0
+  var max: Double = 0
+
+  rewards.forEach { reward in
+    guard reward.shipping.enabled, let shippingRules = reward.shippingRules else { return }
+
+    var shippingRule: ShippingRule?
+
+    /// If the reward's shipping prefernce is Anywhere in the world, use its first and only shipping rule.
+    /// Else use the rule that  matches the selected shipping rule (from the locations dropdown).
+    shippingRule = reward.shipping.preference == .unrestricted
+      ? shippingRules.first
+      : shippingRules
+      .first(where: { $0.location.id == locationId })
+
+    guard let shipping = shippingRule else { return }
+
+    /// Verify there are estimated amounts greater than 0
+    guard let estimatedMin = shipping.estimatedMin?.amount,
+          let estimatedMax = shipping.estimatedMax?.amount,
+          estimatedMin > 0 || estimatedMax > 0 else {
+      return
+    }
+
+    min += estimatedMin * Double(selectedQuantities?[reward.id] ?? 1)
+    max += estimatedMax * Double(selectedQuantities?[reward.id] ?? 1)
   }
 
-  guard let estimatedMin = currentRewardShippingRule.estimatedMin?.amount.rounded(.towardZero),
-        let estimatedMax = currentRewardShippingRule.estimatedMax?.amount.rounded(.towardZero),
-        estimatedMin > 0 || estimatedMax > 0 else {
-    return ""
-  }
-
-  /// Drop digits after the decimal.
-  let formattedMin = String(format: "%.0f", estimatedMin)
-  let formattedMax = String(format: "%.0f", estimatedMax)
-
-  // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
-  let shippingString: String = formattedMin == formattedMax
-    ? "About $\(formattedMin)"
-    : "About $\(formattedMin)-$\(formattedMax)"
-
-  return shippingString
+  return (min, max)
 }

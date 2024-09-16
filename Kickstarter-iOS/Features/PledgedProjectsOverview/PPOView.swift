@@ -9,7 +9,6 @@ struct PPOView: View {
   var body: some View {
     GeometryReader { reader in
       ScrollView {
-        Text(self.viewModel.greeting)
         // TODO: Show empty state view if user is logged in and has no PPO updates.
         //      PPOEmptyStateView(tabBarController: self.tabBarController)
 
@@ -35,6 +34,7 @@ struct PPOView: View {
           self.isBannerFocused = self.viewModel.bannerViewModel != nil
         }
       })
+      .onAppear(perform: { self.viewModel.viewDidAppear() })
     }
   }
 }

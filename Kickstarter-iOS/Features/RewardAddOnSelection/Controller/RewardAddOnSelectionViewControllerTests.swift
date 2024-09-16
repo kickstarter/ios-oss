@@ -38,7 +38,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
@@ -98,7 +98,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
         let data = PledgeViewData(
@@ -203,7 +203,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
         let data = PledgeViewData(
@@ -245,7 +245,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
@@ -292,7 +292,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 

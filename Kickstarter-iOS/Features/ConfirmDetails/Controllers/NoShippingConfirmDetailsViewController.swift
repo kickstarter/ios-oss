@@ -80,7 +80,7 @@ final class NoShippingConfirmDetailsViewController: UIViewController, MessageBan
 
   private var sessionStartedObserver: Any?
 
-  private let viewModel: ConfirmDetailsViewModelType = ConfirmDetailsViewModel()
+  private let viewModel: NoShippingConfirmDetailsViewModelType = NoShippingConfirmDetailsViewModel()
 
   // MARK: - Lifecycle
 
@@ -290,7 +290,7 @@ final class NoShippingConfirmDetailsViewController: UIViewController, MessageBan
   }
 
   private func goToCheckout(data: PostCampaignCheckoutData) {
-    let vc = PostCampaignCheckoutViewController.instantiate()
+    let vc = NoShippingPostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
 
@@ -307,20 +307,6 @@ extension NoShippingConfirmDetailsViewController: PledgeAmountViewControllerDele
   ) {
     self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
-}
-
-// MARK: - PledgeShippingLocationViewControllerDelegate
-
-extension NoShippingConfirmDetailsViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
-  ) {
-    self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
-  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - ConfirmDetailsContinueCTAViewDelegate

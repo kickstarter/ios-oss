@@ -17,6 +17,7 @@ public struct PostCampaignCheckoutData: Equatable {
   public let context: PledgeViewContext
   public let checkoutId: String
   public let backingId: String
+  public let selectedShippingRule: ShippingRule?
 }
 
 public struct PostCampaignPaymentAuthorizationData: Equatable {
