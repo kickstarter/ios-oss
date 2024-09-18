@@ -1453,12 +1453,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
         checkoutId: "1",
         estimatedDelivery: 1_506_897_315.0,
         paymentType: "apple_pay",
-        revenueInUsd: 5,
+        revenueInUsd: 10,
         rewardId: "1",
         rewardMinimumUsd: 5.00,
         rewardTitle: "My Reward",
         shippingEnabled: true,
-        shippingAmountUsd: 0,
+        shippingAmountUsd: 5.0,
         userHasStoredApplePayCard: true
       )
 
@@ -1671,12 +1671,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
         paymentType: "credit_card",
-        revenueInUsd: 43.00,
+        revenueInUsd: 58.00,
         rewardId: String(reward.id),
         rewardMinimumUsd: 10.00,
         rewardTitle: reward.title,
         shippingEnabled: true,
-        shippingAmountUsd: 0,
+        shippingAmountUsd: 15.0,
         userHasStoredApplePayCard: true
       )
 
@@ -3857,7 +3857,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         |> Project.lens.rewardData.rewards .~ [reward]
 
       let defaultShippingRule = ShippingRule(
-        cost: 10,
+        cost: 0,
         id: 1,
         location: .brooklyn,
         estimatedMin: Money(amount: 1.0),
@@ -3867,7 +3867,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
-        selectedShippingRule: shippingRule,
+        selectedShippingRule: defaultShippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: defaultShippingRule.location.id,
         refTag: .activity,
@@ -5086,7 +5086,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("1", segmentClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(50.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
+    XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)

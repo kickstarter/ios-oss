@@ -124,6 +124,18 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map(calculateAllRewardsTotal)
 
+    let calculatedShippingTotal = Signal.combineLatest(
+      selectedShippingRule.skipNil(),
+      rewards,
+      selectedQuantities
+    )
+    .map(calculateShippingTotal)
+
+    let allRewardsShippingTotal = Signal.merge(
+      selectedShippingRule.filter(isNil).mapConst(0.0),
+      calculatedShippingTotal
+    )
+
     // Initial pledge amount is zero if not backed and not set previously in the flow.
     let initialAdditionalPledgeAmount = initialData.map {
       if let bonusSupport = $0.bonusSupport {
@@ -215,7 +227,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
      */
     let calculatedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      additionalPledgeAmount.mapConst(0),
+      allRewardsShippingTotal,
       allRewardsTotal
     )
     .map(calculatePledgeTotal)
@@ -230,18 +242,29 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context.map { $0.confirmationLabelHidden }
     )
 
+    let shippingSummaryViewData = Signal.combineLatest(
+      selectedShippingRule.skipNil().map(\.location.localizedName),
+      project.map(\.stats.omitUSCurrencyCode),
+      project.map { project in
+        projectCountry(forCurrency: project.stats.currency) ?? project.country
+      },
+      allRewardsShippingTotal
+    )
+    .map(PledgeShippingSummaryViewData.init)
+
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
       initialData,
       pledgeTotal,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      shippingSummaryViewData
     )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount in
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping in
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
         projectCountry: data.project.country,
         omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-        shipping: nil
+        shipping: shipping
       )
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
@@ -729,10 +752,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       createBackingDataAndIsApplePay,
       checkoutIdProperty.signal,
       baseReward,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount
-      -> (CreateBackingData, Bool, String?, Reward, Double) in
+    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
+      -> (CreateBackingData, Bool, String?, Reward, Double, Double) in
       let (data, isApplePay) = dataAndIsApplePay
       guard let checkoutId = checkoutId else {
         return (
@@ -740,7 +764,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           isApplePay,
           nil,
           baseReward,
-          additionalPledgeAmount
+          additionalPledgeAmount,
+          shippingTotal
         )
       }
       return (
@@ -748,10 +773,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         isApplePay,
         String(checkoutId),
         baseReward,
-        additionalPledgeAmount
+        additionalPledgeAmount,
+        shippingTotal
       )
     }
-    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount
+    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
       -> ThanksPageData? in
       let checkoutPropsData = checkoutProperties(
         from: data.project,
@@ -760,7 +786,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         selectedQuantities: data.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
         pledgeTotal: data.pledgeTotal,
-        shippingTotal: 0,
+        shippingTotal: shippingTotal,
         checkoutId: checkoutId,
         isApplePay: isApplePay
       )
