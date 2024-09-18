@@ -49,7 +49,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
-          selectedShippingRule: nil,
+          selectedShippingRule: .template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
           refTag: nil,
@@ -144,7 +144,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
-            selectedShippingRule: nil,
+            selectedShippingRule: .template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
