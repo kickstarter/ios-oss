@@ -525,22 +525,22 @@ final class FormatTests: TestCase {
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST
-    
+
     withEnvironment(calendar: calEST) {
       let date = Format.date(from: dateString, dateFormat: format, timeZone: timeZone)
       XCTAssertEqual(date?.description, "2018-01-01 12:00:00 a.m. +0000")
     }
-    
+
     withEnvironment(calendar: calEST) {
       let date = Format.date(from: dateString, dateFormat: format)
       XCTAssertEqual(date?.description, "2018-01-01 5:00:00 a.m. +0000")
     }
-    
+
     withEnvironment {
       let date = Format.date(from: dateString, dateFormat: format, timeZone: PST)
       XCTAssertEqual(date?.description, "2018-01-01 8:00:00 a.m. +0000")
     }
-    
+
     // Test different format
     withEnvironment(calendar: calEST) {
       let date = Format.date(from: "2018-01-14", dateFormat: "yyyy-MM-dd")

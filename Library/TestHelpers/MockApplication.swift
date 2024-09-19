@@ -12,11 +12,11 @@ final class MockApplication: UIApplicationType {
     self.canOpenURLWasCalled = true
     return self.canOpenURL
   }
-  
+
   func open(
     _: URL,
     options _: [UIApplication.OpenExternalURLOptionsKey: Any],
-    completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+    completionHandler _: (@MainActor @Sendable (Bool) -> Void)?
   ) {
     self.openUrlWasCalled = true
   }
