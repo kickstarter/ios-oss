@@ -140,9 +140,8 @@ public final class RewardCardView: UIView {
       |> baseRewardLabelStyle
       |> sectionTitleLabelStyle
 
-    // TODO: Translate string
     _ = self.estimatedShippingTitleLabel
-      |> \.text %~ { _ in "Estimated Shipping" }
+      |> \.text .~ Strings.Estimated_Shipping()
       |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.estimatedShippingLabel
@@ -199,7 +198,6 @@ public final class RewardCardView: UIView {
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.estimatedShippingStackView.rac.hidden = self.viewModel.outputs.estimatedShippingStackViewHidden
-    self.estimatedShippingLabel.rac.text = self.viewModel.outputs.estimatedShippingLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.rewardLocationStackView.rac.hidden = self.viewModel.outputs.rewardLocationStackViewHidden
@@ -233,6 +231,14 @@ public final class RewardCardView: UIView {
       .observeForUI()
       .observeValues { [weak self] values in
         self?.configurePillsView(values)
+      }
+
+    self.viewModel.outputs.estimatedShippingLabelText
+      .observeForUI()
+      .observeValues { [weak self] text in
+        guard let labelText = text else { return }
+
+        self?.estimatedShippingLabel.text = labelText
       }
   }
 

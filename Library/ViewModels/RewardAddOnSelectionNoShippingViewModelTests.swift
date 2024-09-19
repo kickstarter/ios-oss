@@ -12,6 +12,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
   private let configureContinueCTAViewWithDataIsLoading = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataIsValid = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataQuantity = TestObserver<Int, Never>()
+  private let configureContinueCTAViewWithDataPledgeAmount = TestObserver<NSAttributedString?, Never>()
+  private let configurePledgeAmountViewWithData = TestObserver<PledgeAmountViewConfigData, Never>()
   private let endRefreshing = TestObserver<(), Never>()
   private let goToPledge = TestObserver<PledgeViewData, Never>()
   private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
@@ -22,12 +24,16 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configureContinueCTAViewWithData.map(first)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.selectedQuantity)
       .observe(self.configureContinueCTAViewWithDataQuantity.observer)
-    self.vm.outputs.configureContinueCTAViewWithData.map(second)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.isValid)
       .observe(self.configureContinueCTAViewWithDataIsValid.observer)
-    self.vm.outputs.configureContinueCTAViewWithData.map(third)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.isLoading)
       .observe(self.configureContinueCTAViewWithDataIsLoading.observer)
+    self.vm.outputs.configureContinueCTAViewWithData.map(\.pledgeAmount)
+      .observe(self.configureContinueCTAViewWithDataPledgeAmount.observer)
+    self.vm.outputs.configurePledgeAmountViewWithData
+      .observe(self.configurePledgeAmountViewWithData.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSource.observe(self.loadAddOnRewardsIntoDataSource.observer)
@@ -43,6 +49,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -96,6 +103,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.local
       |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -132,6 +140,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
     let reward = Reward.template
+      |> Reward.lens.hasAddOns .~ true
+
     let project = Project.template
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
@@ -163,6 +173,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -233,6 +244,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -298,6 +310,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
 
     let baseReward = Reward.template
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     // regular, no limit add-on.
     let addOn1 = Reward.template
@@ -434,6 +447,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -541,6 +555,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
@@ -641,6 +656,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -741,6 +757,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.pledgeAmount .~ 10.0
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -774,13 +792,14 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [addOn1, addOn2, addOn3, addOn4]
 
-    let expected = [addOn1, addOn2, addOn3, addOn4].map { reward in
+    // Expected data with no add-ons selected.
+    let expected = [addOn1, addOn2, addOn3, addOn4].map { addOn in
       RewardAddOnCardViewData(
         project: project,
-        reward: reward,
+        reward: addOn,
         context: .pledge,
         shippingRule: shippingRule,
-        selectedQuantities: [:]
+        selectedQuantities: [reward.id: 1]
       )
     }
     .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
@@ -790,6 +809,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsLoading.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataPledgeAmount.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -798,7 +818,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedShippingRule: shippingRule,
-        selectedQuantities: [:],
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: nil,
         context: .pledge
@@ -806,6 +826,10 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      // Set pledge amount data so that data validation can occur.
+      let pledgeAmountData = PledgeAmountData(amount: 0, min: 0, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
@@ -822,6 +846,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0])
       self.configureContinueCTAViewWithDataIsValid.assertValues([true, true])
       self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false])
+      XCTAssertEqual(self.configureContinueCTAViewWithDataPledgeAmount.lastValue??.string, "$10.00")
 
       self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 5, rewardId: 1)
 
@@ -835,9 +860,10 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues(
         [expected], "TableView does not reload again"
       )
-      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0, 0, 5, 5])
-      self.configureContinueCTAViewWithDataIsValid.assertValues([true, true, true, true, true])
-      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false, false, false, false])
+      self.configureContinueCTAViewWithDataQuantity.assertLastValue(5)
+      self.configureContinueCTAViewWithDataIsValid.assertLastValue(true)
+      self.configureContinueCTAViewWithDataIsLoading.assertLastValue(false)
+      XCTAssertEqual(self.configureContinueCTAViewWithDataPledgeAmount.lastValue??.string, "$60.00")
     }
   }
 
@@ -847,6 +873,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
+    let bonusAmount = 680.0
+
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
 
@@ -855,6 +883,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -895,9 +924,8 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.locationId .~ shippingRule.location.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.bonusAmount .~ 680.0
-          |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.bonusAmount .~ bonusAmount
+          |> Backing.lens.amount .~ 690.0
       )
 
     let expected = [addOn1, addOn2, addOn3, addOn4].map { addOn in
@@ -920,6 +948,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsLoading.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataPledgeAmount.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -928,7 +957,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedShippingRule: shippingRule,
-        selectedQuantities: [:],
+        selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: nil,
         context: .pledge
@@ -943,6 +972,14 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      // Validate and set bonus support
+      XCTAssertEqual(self.configurePledgeAmountViewWithData.lastValue?.currentAmount, bonusAmount)
+      let pledgeAmountData =
+        PledgeAmountData(amount: bonusAmount, min: 0, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.scheduler.advance()
+
       self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
       XCTAssertEqual(
@@ -952,6 +989,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.configureContinueCTAViewWithDataQuantity.assertValues([0, 3])
       self.configureContinueCTAViewWithDataIsValid.assertValues([true, false])
       self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false])
+      XCTAssertEqual(self.configureContinueCTAViewWithDataPledgeAmount.lastValue??.string, "$720.00")
 
       self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 5, rewardId: 1)
 
@@ -965,9 +1003,10 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues(
         [expected], "TableView does not reload again"
       )
-      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 3, 3, 6, 6])
-      self.configureContinueCTAViewWithDataIsValid.assertValues([true, false, false, false, true])
-      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false, false, false, false])
+      self.configureContinueCTAViewWithDataQuantity.assertLastValue(6)
+      self.configureContinueCTAViewWithDataIsValid.assertLastValue(true)
+      self.configureContinueCTAViewWithDataIsLoading.assertLastValue(false)
+      XCTAssertEqual(self.configureContinueCTAViewWithDataPledgeAmount.lastValue??.string, "$750.00")
     }
   }
 
@@ -1045,6 +1084,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     let expectedGoToPledgeData = PledgeViewData(
       project: project,
       rewards: [reward],
+      bonusSupport: 0.0,
       selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1],
       selectedLocationId: shippingRule.location.id,
@@ -1055,7 +1095,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.goToPledge.assertValues([expectedGoToPledgeData])
   }
 
-  func testGoToPledge_AddOnsIncluded() {
+  func testGoToPledge_AddOnsAndBonus() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
 
@@ -1063,6 +1103,7 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.hasAddOns .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
@@ -1123,6 +1164,15 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
 
+    let bonusAmount = 20.0
+    let pledgeAmountData = PledgeAmountData(
+      amount: bonusAmount,
+      min: bonusAmount,
+      max: bonusAmount,
+      isValid: true
+    )
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
     self.goToPledge.assertValueCount(0)
 
     self.vm.inputs.continueButtonTapped()
@@ -1142,10 +1192,113 @@ final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
       self.goToPledge.values.last?.rewards.count,
       4
     )
+    XCTAssertEqual(self.goToPledge.values.last?.bonusSupport, bonusAmount)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)
     XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn4.id], 4)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
+    XCTAssertEqual(self.goToPledge.values.last?.refTag, .activity)
+    XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)
+  }
+
+  func testGoToPledge_NoReward() {
+    let reward = Reward.noReward
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedShippingRule: nil,
+      selectedQuantities: [:],
+      selectedLocationId: nil,
+      refTag: .activity,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    self.goToPledge.assertValueCount(0)
+
+    self.vm.inputs.continueButtonTapped()
+
+    self.goToPledge.assertValueCount(1)
+    XCTAssertEqual(self.goToPledge.values.last?.project, project)
+    XCTAssertEqual(self.goToPledge.values.last?.rewards.count, 1)
+  }
+
+  func testGoToPledge_NoAddOns() {
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedShippingRule: shippingRule,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .activity,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    let bonusAmount = 20.0
+    let pledgeAmountData = PledgeAmountData(
+      amount: bonusAmount,
+      min: bonusAmount,
+      max: bonusAmount,
+      isValid: true
+    )
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+    self.goToPledge.assertValueCount(0)
+
+    self.vm.inputs.continueButtonTapped()
+
+    XCTAssertEqual(
+      ["Page Viewed", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("session_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("project_"))
+    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("user_"))
+
+    self.goToPledge.assertValueCount(1)
+    XCTAssertEqual(self.goToPledge.values.last?.project, project)
+    XCTAssertEqual(
+      self.goToPledge.values.last?.rewards.count, 1
+    )
+    XCTAssertEqual(self.goToPledge.values.last?.bonusSupport, bonusAmount)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
     XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
     XCTAssertEqual(self.goToPledge.values.last?.refTag, .activity)
     XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)

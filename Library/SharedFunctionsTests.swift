@@ -149,7 +149,8 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
-  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed() {
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed_FeatureNoShippingAtCheckout_False(
+  ) {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 5
@@ -164,6 +165,31 @@ final class SharedFunctionsTests: TestCase {
       )
 
     XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+  }
+
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed_FeatureNoShippingAtCheckout_True(
+  ) {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    let reward = Reward.template
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 5
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    }
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Unavailable_Backed() {
@@ -670,5 +696,67 @@ final class SharedFunctionsTests: TestCase {
       .shipping .~ (.template |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.none)
 
     XCTAssertTrue(isRewardDigital(reward))
+  }
+
+  func test_estimatedShippingText() {
+    let rewardShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 2)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 7)
+    let addOnShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 1)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 5)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.shippingRules .~ [rewardShippingRule]
+      |> Reward.lens.id .~ 99
+    let addOn = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shippingRules .~ [addOnShippingRule]
+
+    let project = Project.template
+
+    let estimatedShipping = estimatedShippingText(
+      for: [reward, addOn],
+      project: project,
+      locationId: ShippingRule.template.location.id
+    )
+
+    XCTAssertEqual(estimatedShipping, "$3-$12")
+  }
+
+  func test_estimatedShippingText_IncludesSelectedQuantities() {
+    let rewardShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 1)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 10)
+    let addOnShippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 1)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 5)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.shippingRules .~ [rewardShippingRule]
+      |> Reward.lens.id .~ 99
+    let addOn = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shippingRules .~ [addOnShippingRule]
+
+    let project = Project.template
+
+    let selectedQuantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn.id: 2
+    ]
+
+    let estimatedShipping = estimatedShippingText(
+      for: [reward, addOn],
+      project: project,
+      locationId: ShippingRule.template.location.id,
+      selectedQuantities: selectedQuantities
+    )
+
+    XCTAssertEqual(estimatedShipping, "$3-$20")
   }
 }

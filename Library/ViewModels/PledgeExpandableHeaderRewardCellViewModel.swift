@@ -4,6 +4,8 @@ import Prelude
 import ReactiveSwift
 
 public typealias PledgeExpandableHeaderRewardCellData = (
+  headerText: NSAttributedString?,
+  showHeader: Bool,
   text: String,
   amount: NSAttributedString
 )
@@ -14,6 +16,7 @@ public protocol PledgeExpandableHeaderRewardCellViewModelInputs {
 
 public protocol PledgeExpandableHeaderRewardCellViewModelOutputs {
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
+  var headerLabelText: Signal<NSAttributedString?, Never> { get }
   var labelText: Signal<String, Never> { get }
 }
 
@@ -26,8 +29,13 @@ public final class PledgeExpandableHeaderRewardCellViewModel: PledgeExpandableHe
   PledgeExpandableHeaderRewardCellViewModelInputs, PledgeExpandableHeaderRewardCellViewModelOutputs {
   public init() {
     let data = self.configureWithDataProperty.signal.skipNil()
+    let showHeader = data.map(\.showHeader)
 
     self.amountAttributedText = data.map(\.amount)
+    self.headerLabelText = Signal.combineLatest(data, showHeader)
+      .map { data, showHeader in
+        showHeader == true ? data.headerText : nil
+      }
     self.labelText = data.map(\.text)
   }
 
@@ -37,6 +45,7 @@ public final class PledgeExpandableHeaderRewardCellViewModel: PledgeExpandableHe
   }
 
   public let amountAttributedText: Signal<NSAttributedString, Never>
+  public let headerLabelText: Signal<NSAttributedString?, Never>
   public let labelText: Signal<String, Never>
 
   public var inputs: PledgeExpandableHeaderRewardCellViewModelInputs { return self }

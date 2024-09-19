@@ -134,11 +134,10 @@ public final class RewardAddOnCardView: UIView {
     _ = self.estimatedShippingStackView
       |> includedItemsStackViewStyle
 
-    // TODO: Update string with translations [mbl-1667](https://kickstarter.atlassian.net/browse/MBL-1667)
     _ = self.estimatedShippingTitleLabel
       |> baseRewardLabelStyle
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.text %~ { _ in "Estimated Shipping" }
+      |> \.text %~ { _ in Strings.Estimated_Shipping() }
       |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.estimatedShippingLabel
@@ -213,7 +212,6 @@ public final class RewardAddOnCardView: UIView {
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.includedItemsLabel.rac.attributedText = self.viewModel.outputs.includedItemsLabelAttributedText
     self.estimatedShippingStackView.rac.hidden = self.viewModel.outputs.estimatedShippingStackViewHidden
-    self.estimatedShippingLabel.rac.text = self.viewModel.outputs.estimatedShippingLabelText
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.pillsView.rac.hidden = self.viewModel.outputs.pillsViewHidden
     self.quantityLabel.rac.text = self.viewModel.outputs.quantityLabelText
@@ -244,6 +242,14 @@ public final class RewardAddOnCardView: UIView {
     self.viewModel.outputs.generateNotificationWarningFeedback
       .observeForUI()
       .observeValues { generateNotificationWarningFeedback() }
+
+    self.viewModel.outputs.estimatedShippingLabelText
+      .observeForUI()
+      .observeValues { [weak self] text in
+        guard let labelText = text else { return }
+
+        self?.estimatedShippingLabel.text = labelText
+      }
   }
 
   // MARK: - Private Helpers

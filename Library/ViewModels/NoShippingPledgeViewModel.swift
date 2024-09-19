@@ -4,6 +4,15 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
+public typealias NoShippingPledgeViewCTAContainerViewData = (
+  project: Project,
+  total: Double,
+  isLoggedIn: Bool,
+  isEnabled: Bool,
+  context: PledgeViewContext,
+  willRetryPaymentMethod: Bool
+)
+
 public typealias PaymentAuthorizationDataNoShipping = (
   project: Project,
   reward: Reward,
@@ -33,16 +42,19 @@ public protocol NoShippingPledgeViewModelInputs {
 
 public protocol NoShippingPledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
+  var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
-  var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var configurePledgeRewardsSummaryViewWithData: Signal<
+    (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
+    Never
+  > { get }
+  var configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
-  var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
+  var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
@@ -54,13 +66,9 @@ public protocol NoShippingPledgeViewModelOutputs {
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var projectTitle: Signal<String, Never> { get }
-  var projectTitleLabelHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var summarySectionSeparatorHidden: Signal<Bool, Never> { get }
-  var rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -92,12 +100,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
-    self.projectTitleLabelHidden = context
-      .zip(with: baseReward)
-      .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
-
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.summarySectionSeparatorHidden = self.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
       (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
     }
@@ -121,13 +124,30 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map(calculateAllRewardsTotal)
 
-    // Initial pledge amount is zero if not backed.
-    let initialAdditionalPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backing.map(\.bonusAmount)
+    let calculatedShippingTotal = Signal.combineLatest(
+      selectedShippingRule.skipNil(),
+      rewards,
+      selectedQuantities
     )
-    .take(first: 1)
+    .map(calculateShippingTotal)
 
+    let allRewardsShippingTotal = Signal.merge(
+      selectedShippingRule.filter(isNil).mapConst(0.0),
+      calculatedShippingTotal
+    )
+
+    // Initial pledge amount is zero if not backed and not set previously in the flow.
+    let initialAdditionalPledgeAmount = initialData.map {
+      if let bonusSupport = $0.bonusSupport {
+        return bonusSupport
+      } else if let backing = $0.project.personalization.backing {
+        return backing.bonusAmount
+      } else {
+        return 0.0
+      }
+    }
+
+    // TODO(MBL-1670): Delete the additional pledge amount, any validation, and the stepper class.
     let additionalPledgeAmount = Signal.merge(
       self.pledgeAmountDataSignal.map { $0.amount },
       initialAdditionalPledgeAmount
@@ -207,7 +227,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
      */
     let calculatedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
-      additionalPledgeAmount.mapConst(0),
+      allRewardsShippingTotal,
       allRewardsTotal
     )
     .map(calculatePledgeTotal)
@@ -222,13 +242,37 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context.map { $0.confirmationLabelHidden }
     )
 
-    self.configureSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndConfirmationLabelHidden,
-      pledgeTotal
+    let shippingSummaryViewData = Signal.combineLatest(
+      selectedShippingRule.skipNil().map(\.location.localizedName),
+      project.map(\.stats.omitUSCurrencyCode),
+      project.map { project in
+        projectCountry(forCurrency: project.stats.currency) ?? project.country
+      },
+      allRewardsShippingTotal
     )
-    .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
-    .map(pledgeSummaryViewData)
+    .map(PledgeShippingSummaryViewData.init)
+
+    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
+      initialData,
+      pledgeTotal,
+      additionalPledgeAmount,
+      shippingSummaryViewData
+    )
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping in
+      let rewardsData = PostCampaignRewardsSummaryViewData(
+        rewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
+        projectCountry: data.project.country,
+        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
+        shipping: shipping
+      )
+      let pledgeData = PledgeSummaryViewData(
+        project: data.project,
+        total: pledgeTotal,
+        confirmationLabelHidden: true
+      )
+      return (rewardsData, additionalPledgeAmount, pledgeData)
+    }
 
     self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
       projectAndReward,
@@ -291,6 +335,37 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       self.termsOfUseTappedSignal,
       self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
     )
+
+    self.configureEstimatedShippingView = Signal.combineLatest(
+      project,
+      rewards,
+      selectedShippingRule,
+      selectedQuantities
+    )
+    .map { project, rewards, shippingRule, selectedQuantities in
+      guard let rule = shippingRule else { return (nil, nil) }
+
+      return (
+        estimatedShippingText(
+          for: rewards,
+          project: project,
+          locationId: rule.location.id,
+          selectedQuantities: selectedQuantities
+        ),
+        estimatedShippingConversionText(
+          for: rewards,
+          project: project,
+          locationId: rule.location.id,
+          selectedQuantities: selectedQuantities
+        )
+      )
+    }
+
+    self.estimatedShippingViewHidden = Signal.combineLatest(self.configureEstimatedShippingView, baseReward)
+      .map { estimatedShippingStrings, reward in
+        let (estimatedShipping, _) = estimatedShippingStrings
+        return reward.shipping.enabled == false || estimatedShipping == nil
+      }
 
     // MARK: - Apple Pay
 
@@ -677,10 +752,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       createBackingDataAndIsApplePay,
       checkoutIdProperty.signal,
       baseReward,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount
-      -> (CreateBackingData, Bool, String?, Reward, Double) in
+    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
+      -> (CreateBackingData, Bool, String?, Reward, Double, Double) in
       let (data, isApplePay) = dataAndIsApplePay
       guard let checkoutId = checkoutId else {
         return (
@@ -688,7 +764,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           isApplePay,
           nil,
           baseReward,
-          additionalPledgeAmount
+          additionalPledgeAmount,
+          shippingTotal
         )
       }
       return (
@@ -696,10 +773,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         isApplePay,
         String(checkoutId),
         baseReward,
-        additionalPledgeAmount
+        additionalPledgeAmount,
+        shippingTotal
       )
     }
-    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount
+    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
       -> ThanksPageData? in
       let checkoutPropsData = checkoutProperties(
         from: data.project,
@@ -708,7 +786,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         selectedQuantities: data.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
         pledgeTotal: data.pledgeTotal,
-        shippingTotal: 0,
+        shippingTotal: shippingTotal,
         checkoutId: checkoutId,
         isApplePay: isApplePay
       )
@@ -774,42 +852,14 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      project,
+      pledgeTotal.skipRepeats(),
       isLoggedIn,
       isEnabled,
       context,
       willRetryPaymentMethod
     )
-    .map { $0 as PledgeViewCTAContainerViewData }
-
-    self.configureExpandableRewardsHeaderWithData = Signal.zip(
-      baseReward.map(\.isNoReward).filter(isFalse),
-      project,
-      rewards,
-      selectedQuantities
-    )
-    .map { _, project, rewards, selectedQuantities in
-      guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
-        return (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
-      }
-
-      return (rewards, selectedQuantities, projectCurrencyCountry, project.stats.omitUSCurrencyCode)
-    }
-    .map(PledgeExpandableRewardsHeaderViewData.init)
-
-    self.expandableRewardsHeaderViewHidden = Signal.zip(context, baseReward)
-      .map { context, reward in
-        if context.isAny(of: .pledge, .updateReward) {
-          return reward.isNoReward
-        }
-
-        return context.expandableRewardViewHidden
-      }
-
-    self.rootStackViewLayoutMargins = self.expandableRewardsHeaderViewHidden.map { hidden in
-      hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
-    }
-
-    self.projectTitle = project.map(\.name)
+    .map { $0 as NoShippingPledgeViewCTAContainerViewData }
 
     self.title = context.map { $0.title }
 
@@ -1005,16 +1055,19 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
+  public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
-  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let configurePledgeRewardsSummaryViewWithData: Signal<
+    (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
+    Never
+  >
+  public let configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
-  public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
+  public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
@@ -1026,13 +1079,9 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let projectTitle: Signal<String, Never>
-  public let projectTitleLabelHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let summarySectionSeparatorHidden: Signal<Bool, Never>
-  public let rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never>
   public let title: Signal<String, Never>
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
@@ -1068,7 +1117,8 @@ private func amountValid(
    that is, in `RewardAddOnSelectionViewController` we don't navigate further unless the selection changes.
    */
   return [
-    pledgeAmountData.amount != initialAdditionalPledgeAmount || reward.hasAddOns,
+    pledgeAmountData
+      .amount != initialAdditionalPledgeAmount || (reward.hasAddOns || featureNoShippingAtCheckout()),
     pledgeAmountData.isValid
   ]
   .allSatisfy(isTrue)

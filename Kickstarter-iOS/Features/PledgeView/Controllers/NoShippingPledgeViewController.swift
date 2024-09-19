@@ -3,6 +3,7 @@ import Library
 import PassKit
 import Prelude
 import Stripe
+import SwiftUI
 import UIKit
 
 private enum Layout {
@@ -34,21 +35,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
   public weak var delegate: NoShippingPledgeViewControllerDelegate?
 
-  private lazy var descriptionSectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var projectTitleLabel = UILabel(frame: .zero)
-
-  private lazy var sectionSeparatorViews = {
-    [self.descriptionSectionSeparator, self.summarySectionSeparator]
-  }()
-
-  private lazy var summarySectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
@@ -60,22 +47,6 @@ final class NoShippingPledgeViewController: UIViewController,
     PledgeDisclaimerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
-  }()
-
-  private lazy var descriptionSectionViews = {
-    [self.projectTitleLabel, self.descriptionSectionSeparator]
-  }()
-
-  private lazy var pledgeExpandableRewardsHeaderViewController = {
-    PledgeExpandableRewardsHeaderViewController(nibName: nil, bundle: nil)
-      |> \.animatingViewDelegate .~ self.view
-  }()
-
-  private lazy var inputsSectionViews = {
-    [
-      self.localPickupLocationView,
-      self.pledgeAmountViewController.view
-    ]
   }()
 
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -106,19 +77,18 @@ final class NoShippingPledgeViewController: UIViewController,
     PledgeLocalPickupView(frame: .zero)
   }()
 
-  private lazy var summarySectionViews = {
-    [
-      self.summarySectionSeparator,
-      self.summaryViewController.view
-    ]
+  private lazy var pledgeRewardsSummaryViewController = {
+    NoShippingPledgeRewardsSummaryTotalViewController.instantiate()
   }()
 
-  private lazy var summaryViewController = {
-    PledgeSummaryViewController.instantiate()
-  }()
+  private lazy var estimatedShippingViewContainer =
+    UIHostingController(rootView: EstimatedShippingCheckoutView(
+      estimatedCost: "",
+      aboutConversion: ""
+    ))
 
-  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
-    PledgeViewCTAContainerView(frame: .zero)
+  private lazy var pledgeCTAContainerView: NoShippingPledgeViewCTAContainerView = {
+    NoShippingPledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
   }()
@@ -138,6 +108,11 @@ final class NoShippingPledgeViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var estimatedShippingStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private var sessionStartedObserver: Any?
   private let viewModel: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
 
@@ -152,6 +127,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
+
+    self.titleLabel.text = Strings.Checkout()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
@@ -171,44 +148,27 @@ final class NoShippingPledgeViewController: UIViewController,
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
+    self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.pledgeCTAContainerView)
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.pledgeCTAContainerView, self.view)
-      |> ksr_addSubviewToParent()
-
     let childViewControllers = [
-      self.pledgeExpandableRewardsHeaderViewController,
-      self.pledgeAmountSummaryViewController,
-      self.pledgeAmountViewController,
-      self.summaryViewController,
+      self.pledgeRewardsSummaryViewController,
       self.paymentMethodsViewController
     ]
 
-    let arrangedSubviews = [
-      self.pledgeExpandableRewardsHeaderViewController.view,
-      self.rootInsetStackView
-    ]
-    .compact()
-
     let arrangedInsetSubviews = [
-      self.descriptionSectionViews,
-      [self.pledgeAmountSummaryViewController.view],
-      self.inputsSectionViews,
-      self.summarySectionViews,
+      [self.titleLabel],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    arrangedSubviews.forEach { view in
-      self.rootStackView.addArrangedSubview(view)
-    }
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
@@ -219,28 +179,25 @@ final class NoShippingPledgeViewController: UIViewController,
       viewController.didMove(toParent: self)
     }
 
-    self.rootStackView
-      .setCustomSpacing(Styles.grid(2), after: self.pledgeExpandableRewardsHeaderViewController.view)
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
+
+    self.rootStackView.addArrangedSubview(self.estimatedShippingStackView)
+
+    self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
-
-    self.sectionSeparatorViews.forEach { view in
-      _ = view.heightAnchor.constraint(equalToConstant: 1)
-        |> \.isActive .~ true
-
-      view.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
   }
 
   // MARK: - Styles
@@ -248,35 +205,34 @@ final class NoShippingPledgeViewController: UIViewController,
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> checkoutBackgroundStyle
+    self.view.backgroundColor = UIColor.ksr_support_100
 
-    _ = self.pledgeDisclaimerView
-      |> pledgeDisclaimerViewStyle
+    titleLabelStyle(self.titleLabel)
 
-    _ = self.projectTitleLabel
-      |> projectTitleLabelStyle
+    rootScrollViewStyle(self.rootScrollView)
 
-    _ = self.rootScrollView
-      |> rootScrollViewStyle
+    rootStackViewStyle(self.rootStackView)
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
+    rootInsetStackViewStyle(self.rootInsetStackView)
 
-    _ = self.rootInsetStackView
-      |> rootInsetStackViewStyle
+    rootInsetStackViewStyle(self.estimatedShippingStackView)
 
-    _ = self.sectionSeparatorViews
-      ||> separatorStyleDark
+    roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
 
-    _ = self.paymentMethodsViewController.view
-      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+    roundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self
+          ?|> \.title .~ title
+      }
 
     self.viewModel.outputs.beginSCAFlowWithClientSecret
       .observeForUI()
@@ -297,22 +253,37 @@ final class NoShippingPledgeViewController: UIViewController,
         STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
 
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
+
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.pledgeAmountViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.configureExpandableRewardsHeaderWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeExpandableRewardsHeaderViewController.configure(with: data)
-      }
-
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.pledgeAmountSummaryViewController.configureWith(data)
+      }
+
+    self.viewModel.outputs.configureEstimatedShippingView
+      .observeForUI()
+      .observeValues { [weak self] estimatedShippingText, estimatedConversionText in
+        guard let shippingText = estimatedShippingText else { return }
+
+        self?.configureEstimatedShippingView(shippingText, estimatedConversionText)
+      }
+
+    self.viewModel.outputs.estimatedShippingViewHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.estimatedShippingViewContainer.view.isHidden = isHidden
       }
 
     self.viewModel.outputs.configurePledgeViewCTAContainerView
@@ -327,11 +298,6 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
-    self.viewModel.outputs.configureSummaryViewControllerWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.summaryViewController.configure(with: data)
-      }
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
@@ -381,30 +347,14 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitle
-    self.projectTitleLabel.rac.hidden = self.viewModel.outputs.projectTitleLabelHidden
-    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
-    self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
-
-    self.viewModel.outputs.rootStackViewLayoutMargins
-      .observeForUI()
-      .observeValues { [weak self] margins in
-        self?.rootStackView.layoutMargins = margins
-      }
-
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
-    self.pledgeAmountSummaryViewController.view.rac.hidden
-      = self.viewModel.outputs.pledgeAmountSummaryViewHidden
-    self.pledgeExpandableRewardsHeaderViewController.view.rac.hidden
-      = self.viewModel.outputs.expandableRewardsHeaderViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()
       .observeValues { [weak self] title in
-        guard let self = self else { return }
-
+        guard let self else { return }
         _ = self
           |> \.title %~ { _ in title }
       }
@@ -485,6 +435,24 @@ final class NoShippingPledgeViewController: UIViewController,
     self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
   }
 
+  private func configureEstimatedShippingView(_ estimatedCost: String, _ aboutConversion: String?) {
+    let estimatedShippingView = EstimatedShippingCheckoutView(
+      estimatedCost: estimatedCost,
+      aboutConversion: aboutConversion ?? ""
+    )
+
+    self.estimatedShippingViewContainer.rootView = estimatedShippingView
+    self.estimatedShippingViewContainer.view.translatesAutoresizingMaskIntoConstraints = false
+    self.estimatedShippingViewContainer.view.clipsToBounds = true
+    self.estimatedShippingViewContainer.view.layer.masksToBounds = true
+    self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
+
+    self.estimatedShippingStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.estimatedShippingViewContainer.didMove(toParent: self)
+
+    self.estimatedShippingStackView.layoutIfNeeded()
+  }
+
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
     let loginSignupViewController = LoginToutViewController.configuredWith(
       loginIntent: intent,
@@ -493,7 +461,6 @@ final class NoShippingPledgeViewController: UIViewController,
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let navigationBarHeight = navigationController.navigationBar.bounds.height
 
     self.present(navigationController, animated: true)
   }
@@ -505,6 +472,17 @@ final class NoShippingPledgeViewController: UIViewController,
       .confirmSetupIntent(setupIntentConfirmParams, with: self) { [weak self] status, _, error in
         self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
       }
+  }
+}
+
+// MARK: - PledgeAmountViewControllerDelegate
+
+extension NoShippingPledgeViewController: PledgeAmountViewControllerDelegate {
+  func pledgeAmountViewController(
+    _: PledgeAmountViewController,
+    didUpdateWith data: PledgeAmountData
+  ) {
+    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 
@@ -554,7 +532,7 @@ extension NoShippingPledgeViewController: PKPaymentAuthorizationViewControllerDe
 
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
-extension NoShippingPledgeViewController: PledgeViewCTAContainerViewDelegate {
+extension NoShippingPledgeViewController: NoShippingPledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
@@ -573,17 +551,6 @@ extension NoShippingPledgeViewController: PledgeViewCTAContainerViewDelegate {
   func termsOfUseTapped(with helpType: HelpType) {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
-  }
-}
-
-// MARK: - PledgeAmountViewControllerDelegate
-
-extension NoShippingPledgeViewController: PledgeAmountViewControllerDelegate {
-  func pledgeAmountViewController(
-    _: PledgeAmountViewController,
-    didUpdateWith data: PledgeAmountData
-  ) {
-    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 
@@ -628,37 +595,39 @@ extension NoShippingPledgeViewController: PledgeDisclaimerViewDelegate {
 
 // MARK: - Styles
 
-private let pledgeDisclaimerViewStyle: ViewStyle = { view in
-  view
-    |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+private func roundedViewStyle(_ view: UIView, cornerRadius: CGFloat) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = cornerRadius
 }
 
-private let projectTitleLabelStyle: LabelStyle = { label in
-  label
-    |> \.font .~ UIFont.ksr_body().bolded
-    |> \.numberOfLines .~ 0
+private func rootScrollViewStyle(_ scrollView: UIScrollView) {
+  scrollView.showsVerticalScrollIndicator = false
+  scrollView.alwaysBounceVertical = true
 }
 
-private let rootScrollViewStyle: ScrollStyle = { scrollView in
-  scrollView
-    |> \.showsVerticalScrollIndicator .~ false
-    |> \.alwaysBounceVertical .~ true
+private func rootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(2)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: ConfirmDetailsLayout.Margin.topBottom,
+    leftRight: 0
+  )
 }
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
+private func rootInsetStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(4)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: ConfirmDetailsLayout.Margin.topBottom,
+    leftRight: ConfirmDetailsLayout.Margin.leftRight
+  )
 }
 
-private let rootInsetStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: 0,
-      leftRight: Layout.Margin.leftRight
-    )
+public func titleLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 1
+  label.textColor = UIColor.ksr_support_700
+  label.font = UIFont.ksr_title2().bolded
 }

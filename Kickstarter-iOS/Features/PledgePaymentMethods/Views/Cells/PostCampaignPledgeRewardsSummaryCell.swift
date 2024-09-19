@@ -7,6 +7,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
   private lazy var amountLabel: UILabel = UILabel(frame: .zero)
   private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
+  private lazy var labelsStackView: UIStackView = UIStackView(frame: .zero)
+  private lazy var headerLabel: UILabel = UILabel(frame: .zero)
   private lazy var titleLabel: UILabel = UILabel(frame: .zero)
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
@@ -19,6 +21,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.configureViews()
     self.bindViewModel()
+    self.setupConstraints()
   }
 
   @available(*, unavailable)
@@ -39,8 +42,11 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
 
+    _ = self.labelsStackView
+      |> labelStackViewStyle
+
     _ = self.titleLabel
-      |> titleLabelStyle
+      |> labelStyle
 
     self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -52,6 +58,14 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+
+    self.viewModel.outputs.headerLabelText
+      .observeForUI()
+      .observeValues { [weak self] text in
+        guard let self, text != nil else { return }
+        self.headerLabel.attributedText = text
+        self.headerLabel.setNeedsLayout()
+      }
 
     self.viewModel.outputs.labelText
       .observeForUI()
@@ -74,12 +88,22 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.amountLabel], self.rootStackView)
+    _ = ([self.labelsStackView, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.headerLabel, self.titleLabel], self.labelsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor)
+    ])
   }
 
   override func layoutSubviews() {
     super.layoutSubviews()
+    self.headerLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     super.layoutSubviews()
   }
@@ -87,16 +111,20 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let titleLabelStyle: LabelStyle = { label in
+private func headerLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = UIColor.ksr_support_400
+  label.textColor = UIColor.ksr_black
   label.numberOfLines = 0
+}
 
-  return label
+private func labelStyle(_ label: UILabel) {
+  label.font = UIFont.ksr_subhead().bolded
+  label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
+  label.numberOfLines = 0
 }
 
 private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .top)
+  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
   let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
   let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
   let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
@@ -115,4 +143,12 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
 
     return stackView
   }
+}
+
+private func labelStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.distribution = .fill
+  stackView.alignment = .fill
+  stackView.spacing = Styles.grid(1)
+  stackView.isLayoutMarginsRelativeArrangement = true
 }

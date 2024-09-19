@@ -11,6 +11,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
   private let vm: ManageViewPledgeRewardReceivedViewModelType = ManageViewPledgeRewardReceivedViewModel()
 
   private let estimatedDeliveryDateLabelAttributedText = TestObserver<String, Never>()
+  private let estimatedShippingAttributedText = TestObserver<String, Never>()
   private let cornerRadius = TestObserver<CGFloat, Never>()
   private let layoutMargins = TestObserver<UIEdgeInsets, Never>()
   private let marginWidth = TestObserver<CGFloat, Never>()
@@ -23,6 +24,9 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.outputs.estimatedDeliveryDateLabelAttributedText
       .map { $0.string }
       .observe(self.estimatedDeliveryDateLabelAttributedText.observer)
+    self.vm.outputs.estimatedShippingAttributedText
+      .map { $0.string }
+      .observe(self.estimatedShippingAttributedText.observer)
     self.vm.outputs.cornerRadius.observe(self.cornerRadius.observer)
     self.vm.outputs.layoutMargins.observe(self.layoutMargins.observer)
     self.vm.outputs.marginWidth.observe(self.marginWidth.observer)
@@ -30,7 +34,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.outputs.rewardReceivedHidden.observe(self.rewardReceivedHidden.observer)
   }
 
-  func testEstimatedDeliveryDateLabelAttributedText() {
+  func testAttributedText() {
     let backing = Backing.template
       |> Backing.lens.backerCompleted .~ false
 
@@ -41,7 +45,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: "About $1-$10"
     )
 
     self.estimatedDeliveryDateLabelAttributedText.assertDidNotEmitValue()
@@ -50,138 +55,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.estimatedDeliveryDateLabelAttributedText.assertValues(["Estimated delivery October 2016"])
-  }
-
-  func testLayoutMargins_NotCollected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
-    )
-
-    self.layoutMargins.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.layoutMargins.assertValues([.zero])
-  }
-
-  func testLayoutMargins_Collected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .collected
-    )
-
-    self.layoutMargins.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.layoutMargins.assertValues([.init(all: Styles.gridHalf(5))])
-  }
-
-  func testCornerRadius_NotCollected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
-    )
-
-    self.cornerRadius.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.cornerRadius.assertValues([0])
-  }
-
-  func testCornerRadius_Collected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .collected
-    )
-
-    self.cornerRadius.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.cornerRadius.assertValues([Styles.grid(2)])
-  }
-
-  func testMarginWidth_NotCollected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
-    )
-
-    self.marginWidth.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.marginWidth.assertValues([0])
-  }
-
-  func testMarginWidth_Collected() {
-    let backing = Backing.template
-      |> Backing.lens.backerCompleted .~ false
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let data = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: false,
-      estimatedDeliveryOn: 1_475_361_315,
-      backingState: .collected
-    )
-
-    self.marginWidth.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(data)
-    self.vm.inputs.viewDidLoad()
-
-    self.marginWidth.assertValues([1])
+    self.estimatedShippingAttributedText.assertValues(["Estimated Shipping About $1-$10"])
   }
 
   func testRewardReceived_NotReceived() {
@@ -195,7 +69,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     self.vm.inputs.configureWith(data)
@@ -215,7 +90,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: true,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     self.vm.inputs.configureWith(data)
@@ -235,7 +111,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     withEnvironment(apiService: MockService(backingUpdate: .template), currentUser: User.template) {
@@ -269,7 +146,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .dropped
+      backingState: .dropped,
+      estimatedShipping: nil
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -293,7 +171,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .pledged
+      backingState: .pledged,
+      estimatedShipping: nil
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -317,7 +196,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .preauth
+      backingState: .preauth,
+      estimatedShipping: nil
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -341,7 +221,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .canceled
+      backingState: .canceled,
+      estimatedShipping: nil
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -365,7 +246,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       project: project,
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
-      backingState: .dropped
+      backingState: .dropped,
+      estimatedShipping: nil
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()

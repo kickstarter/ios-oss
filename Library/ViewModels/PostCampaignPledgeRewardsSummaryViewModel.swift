@@ -150,6 +150,8 @@ private func items(
   // MARK: Header
 
   let headerItem = PostCampaignRewardsSummaryItem.header((
+    headerText: nil,
+    showHeader: true,
     text: estimatedDeliveryString ?? "",
     amount: NSAttributedString(string: "")
   ))
@@ -162,43 +164,61 @@ private func items(
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
+    var headerAttributedText: NSAttributedString?
+
+    if featureNoShippingAtCheckout() == true {
+      let headerText = reward == data.rewards.first ? Strings.backer_modal_reward_title() : Strings.Add_ons()
+      headerAttributedText = NSAttributedString(
+        string: headerText,
+        attributes: [
+          .foregroundColor: UIColor.ksr_black,
+          .font: UIFont.ksr_subhead().bolded
+        ]
+      )
+    }
+
     let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
     let amountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PostCampaignRewardsSummaryItem.reward((
+      headerText: headerAttributedText,
+      showHeader: data.rewards.firstIndex(of: reward)! < 2,
+      /// only show header text if the item is the base reward or the first add-on.
       text: itemString,
       amount: amountAttributedText
     ))
   }
   var items = [headerItem] + rewardItems
 
-  if featureNoShippingAtCheckout() == false {
-    // MARK: Shipping
+  // MARK: Shipping
 
-    if let shipping = data.shipping {
-      let shippingAmountAttributedText = attributedRewardCurrency(
-        with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
-      )
+  if let shipping = data.shipping, shipping.total > 0 {
+    let shippingAmountAttributedText = attributedRewardCurrency(
+      with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
+    )
 
-      let shippingItem = PostCampaignRewardsSummaryItem.reward((
-        text: Strings.Shipping_to_country(country: shipping.locationName),
-        amount: shippingAmountAttributedText
-      ))
+    let shippingItem = PostCampaignRewardsSummaryItem.reward((
+      headerText: nil,
+      showHeader: true,
+      text: Strings.Shipping_to_country(country: shipping.locationName),
+      amount: shippingAmountAttributedText
+    ))
 
-      items.append(shippingItem)
-    }
+    items.append(shippingItem)
   }
 
   // MARK: Bonus
 
-  if let bonus = bonusAmount {
+  if let bonus = bonusAmount, bonus > 0 {
     let bonusAmountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     let bonusItem = PostCampaignRewardsSummaryItem.reward((
+      headerText: nil,
+      showHeader: true,
       text: Strings.Bonus_support(),
       amount: bonusAmountAttributedText
     ))

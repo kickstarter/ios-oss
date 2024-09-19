@@ -267,12 +267,10 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 // MARK: - Functions
 
 private func initialPledgeAmount(
-  from project: Project,
+  from _: Project,
   currentAmount: Double,
   minValue: Double
 ) -> Double {
-  guard userIsBackingProject(project) else { return minValue }
-
   return max(currentAmount, minValue)
 }
 

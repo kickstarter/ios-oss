@@ -226,21 +226,49 @@ public final class ManagePledgeViewModel:
       shouldBeginRefresh.ignoreValues()
     )
 
+    // MARK: - ManageViewPledgeRewardReceivedViewData
+
     let latestRewardDeliveryDate = self.loadProjectAndRewardsIntoDataSource.map { _, rewards in
       rewards
         .compactMap { $0.estimatedDeliveryOn }
         .reduce(0) { accum, value in max(accum, value) }
     }
 
-    self.configureRewardReceivedWithData = Signal.combineLatest(project, backing, latestRewardDeliveryDate)
-      .map { project, backing, latestRewardDeliveryDate in
-        ManageViewPledgeRewardReceivedViewData(
-          project: project,
-          backerCompleted: backing.backerCompleted ?? false,
-          estimatedDeliveryOn: latestRewardDeliveryDate,
-          backingState: backing.status
-        )
-      }
+    let estimatedShipping = Signal.combineLatest(
+      backing,
+      self.loadProjectAndRewardsIntoDataSource
+    )
+    .map(unpack)
+    .map { backing, project, rewards -> String? in
+      guard let locationId = backing.locationId,
+            let range = estimatedShippingText(
+              for: rewards,
+              project: project,
+              locationId: locationId,
+              selectedQuantities: selectedRewardQuantities(in: backing)
+            )
+      else { return nil }
+
+      return Strings.About_reward_amount(reward_amount: range)
+    }
+
+    self.configureRewardReceivedWithData = Signal.combineLatest(
+      project,
+      backing,
+      latestRewardDeliveryDate,
+      estimatedShipping
+    )
+    .map { project, backing, latestRewardDeliveryDate, estimatedShipping in
+      ManageViewPledgeRewardReceivedViewData(
+        project: project,
+        backerCompleted: backing.backerCompleted ?? false,
+        estimatedDeliveryOn: latestRewardDeliveryDate,
+        backingState: backing.status,
+        estimatedShipping: estimatedShipping
+      )
+    }
+
+    // MARK: - Menu options
 
     let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
@@ -560,7 +588,7 @@ private func managePledgeSummaryViewData(
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: backing.reward?.shipping.enabled == false,
+    shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup
   )
 }
