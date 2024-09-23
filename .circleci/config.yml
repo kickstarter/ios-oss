@@ -9,8 +9,7 @@ aws_cli_setup: &aws_cli_setup
   role-arn: $AWS_ROLE_ARN
 
 # Keep xcode version in sync with `.fastlane/Fastfile`
-# circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
-xcode_version: &xcode_version 16.0.0
+xcode_version: &xcode_version 15.2.0
 iphone_name: &iphone_name iPhone SE (3rd generation)
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
@@ -41,9 +40,7 @@ test_job: &test_job
         at: .
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
-        # iOS 17.5 is minimum supported runtime by circle-ci -> 16.0 (16A242d)
-        # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15048/manifest.txt
-        version: "17.5"
+        version: "17.2"
         platform: "iOS"
         device: "iPhone SE (3rd generation)"
     - run:
