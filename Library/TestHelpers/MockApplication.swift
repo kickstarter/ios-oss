@@ -13,6 +13,7 @@ final class MockApplication: UIApplicationType {
     return self.canOpenURL
   }
 
+  #if compiler(>=6.0) // Compiler flag for Xcode >= 16
   func open(
     _: URL,
     options _: [UIApplication.OpenExternalURLOptionsKey: Any],
@@ -20,4 +21,13 @@ final class MockApplication: UIApplicationType {
   ) {
     self.openUrlWasCalled = true
   }
+  #else
+  func open(
+    _: URL,
+    options _: [UIApplication.OpenExternalURLOptionsKey: Any],
+    completionHandler _: ((Bool) -> Void)?
+  ) {
+    self.openUrlWasCalled = true
+  }
+  #endif
 }
