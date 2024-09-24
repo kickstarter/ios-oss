@@ -85,7 +85,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
   // MARK: - Lifecycle
 
-  func configure(with data: PostCampaignCheckoutData) {
+  func configure(with data: PledgeViewData) {
     self.viewModel.inputs.configure(with: data)
   }
 
