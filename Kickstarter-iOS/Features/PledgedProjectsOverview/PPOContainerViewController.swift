@@ -4,13 +4,19 @@ import Library
 import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
+  var ppoViewModel = PPOViewModel()
+
   public override func viewDidLoad() {
     super.viewDidLoad()
 
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let ppoView = PPOView()
+    let ppoView = PPOView(viewModel: Binding(get: {
+      self.ppoViewModel
+    }, set: {
+      self.ppoViewModel = $0
+    }))
     let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
@@ -23,6 +29,14 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     ])
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
+
+    ppoViewModel.$results.sink { [weak self] results in
+      let badge: TabBarBadge = results.values.count > 0 ? .count(results.values.count) : .none
+      self?.setPagedViewControllers([
+        (.projectAlerts(badge), ppoViewController),
+        (.activityFeed(.dot), activitiesViewController)
+      ])
+    }.store(in: &self.subscriptions)
 
     ppoView.viewModel.navigationEvents.sink { nav in
       switch nav {
