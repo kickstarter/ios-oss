@@ -242,38 +242,47 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationBackedProjects() {
-    verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backingPage)
+    self.verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backingPage)
   }
 
   func testNavigationConfirmAddress() {
-    verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+    self.verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
   }
 
   func testNavigationContactCreator() {
-    verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+    self.verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
   }
 
   func testNavigationFix3DSChallenge() {
-    verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+    self.verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
   }
 
   func testNavigationFixPaymentMethod() {
-    verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+    self.verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
   }
 
   func testNavigationOpenSurvey() {
-    verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+    self.verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
   }
 
+  // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
   private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
     let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
 
+    let expectation = self.expectation(description: "VerifyNavigationEvent \(event)")
+
     var values: [PPONavigationEvent] = []
-    self.viewModel.navigationEvents.first().collect()
-      .sink(receiveValue: { v in values = v })
+    self.viewModel.navigationEvents
+      .collect(.byTime(DispatchQueue.main, 0.1))
+      .sink(receiveValue: { v in
+        values = v
+        expectation.fulfill()
+      })
       .store(in: &self.cancellables)
 
     closure()
+
+    self.wait(for: [expectation], timeout: 1)
 
     let afterResults: PPOViewModelPaginator.Results = self.viewModel.results
 

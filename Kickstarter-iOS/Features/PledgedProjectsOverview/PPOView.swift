@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PPOView: View {
-  @Binding var viewModel: PPOViewModel
+  @ObservedObject var viewModel: PPOViewModel
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
@@ -39,5 +39,5 @@ struct PPOView: View {
 }
 
 #Preview {
-  PPOView(viewModel: Binding.constant(PPOViewModel()))
+  PPOView(viewModel: PPOViewModel())
 }

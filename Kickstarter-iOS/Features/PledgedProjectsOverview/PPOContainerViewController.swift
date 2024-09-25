@@ -4,7 +4,7 @@ import Library
 import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
-  var ppoViewModel = PPOViewModel()
+  private var ppoViewModel = PPOViewModel()
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -12,11 +12,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let ppoView = PPOView(viewModel: Binding(get: {
-      self.ppoViewModel
-    }, set: {
-      self.ppoViewModel = $0
-    }))
+    let ppoView = PPOView(viewModel: self.ppoViewModel)
     let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
@@ -30,7 +26,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
-    ppoViewModel.$results.sink { [weak self] results in
+    self.ppoViewModel.$results.sink { [weak self] results in
       let badge: TabBarBadge = results.values.count > 0 ? .count(results.values.count) : .none
       self?.setPagedViewControllers([
         (.projectAlerts(badge), ppoViewController),
@@ -43,7 +39,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       case .backingPage:
         tabBarController?.switchToProfile()
       case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
-        // TODO MBL-1451
+        // TODO: MBL-1451
         break
       }
     }.store(in: &self.subscriptions)
