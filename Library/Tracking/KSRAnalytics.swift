@@ -42,8 +42,10 @@ public final class KSRAnalytics {
     case messages // MessagesViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card"
+    case pledgeManager = "pledge_manager" // PPOView
     case pledgeScreen = "pledge" // PledgeViewController
     case project // ProjectPageViewController
+    case projectAlerts = "project_alerts" // PPOView
     case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
@@ -136,15 +138,20 @@ public final class KSRAnalytics {
   public enum CTAContext {
     case addOnsContinue
     case blockUser
+    case confirmInitiate
+    case confirmSubmit
     case creatorDashboard
     case creatorDetails
     case discover
     case discoverFilter
     case discoverSort
+    case edit
+    case fixPledgeInitiate
     case forgotPassword
     case logInInitiate
     case logInOrSignUp
     case logInSubmit
+    case messageCreatorInitiate
     case pledgeConfirm
     case pledgeInitiate
     case pledgeSubmit
@@ -155,18 +162,24 @@ public final class KSRAnalytics {
     case search
     case signUpInitiate
     case signUpSubmit
+    case surveyResponseInitiate
     case watchProject
 
     var trackingString: String {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
       case .blockUser: return "block_user"
+      case .confirmInitiate: return "confirm_initiate"
+      case .confirmSubmit: return "confirm_submit"
       case .creatorDashboard: return "creator_dashboard"
       case .creatorDetails: return "creator_details"
       case .discover: return "discover"
       case .discoverFilter: return "discover_filter"
       case .discoverSort: return "discover_sort"
+      case .edit: return "edit"
+      case .fixPledgeInitiate: return "fix_pledge_initiate"
       case .forgotPassword: return "forgot_password"
+      case .messageCreatorInitiate: return "message_creator_initiate"
       case .pledgeInitiate: return "pledge_initiate"
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
@@ -180,6 +193,7 @@ public final class KSRAnalytics {
       case .search: return "search"
       case .signUpInitiate: return "sign_up_initiate"
       case .signUpSubmit: return "sign_up_submit"
+      case .surveyResponseInitiate: return "survey_response_initiate"
       case .watchProject: return "watch_project"
       }
     }
@@ -267,6 +281,7 @@ public final class KSRAnalytics {
    */
   public enum SectionContext {
     case backed
+    case backerSurvey
     case comments
     case dashboard
     case overview
@@ -277,6 +292,7 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .backed: return "backed"
+      case .backerSurvey: return "backer_survey"
       case .comments: return "comments"
       case .dashboard: return "dashboard"
       case .overview: return "overview"
@@ -311,6 +327,7 @@ public final class KSRAnalytics {
    Contextual details about an event that was fired that aren't captured in other context properties
    */
   public enum TypeContext {
+    case address
     case allProjects
     case amountGoal
     case amountPledged
@@ -419,6 +436,7 @@ public final class KSRAnalytics {
       case .unwatch: return "unwatch"
       case .watch: return "watch"
       case .watched: return "watched"
+      case .address: return "address"
       }
     }
   }
@@ -509,6 +527,31 @@ public final class KSRAnalytics {
     let userHasStoredApplePayCard: Bool
   }
 
+  public struct PledgedProjectOverviewProperties {
+    let addressLocksSoonCount: Int
+    let surveyAvailableCount: Int
+    let paymentFailedCount: Int
+    let cardAuthRequiredCount: Int
+    let total: Int
+    let page: Int?
+
+    public init(
+      addressLocksSoonCount: Int,
+      surveyAvailableCount: Int,
+      paymentFailedCount: Int,
+      cardAuthRequiredCount: Int,
+      total: Int,
+      page: Int?
+    ) {
+      self.addressLocksSoonCount = addressLocksSoonCount
+      self.surveyAvailableCount = surveyAvailableCount
+      self.paymentFailedCount = paymentFailedCount
+      self.cardAuthRequiredCount = cardAuthRequiredCount
+      self.total = total
+      self.page = page
+    }
+  }
+
   public init(
     bundle: NSBundleType = Bundle.main,
     config: Config? = nil,
@@ -549,6 +592,117 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
+    )
+  }
+
+  // MARK: - Pledged Project Overview Events
+
+  public func trackPPODashboardOpens(properties: PledgedProjectOverviewProperties) {
+    let properties = contextProperties(page: .projectAlerts)
+      .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+    self.track(
+      event: SegmentEvent.pageViewed.rawValue,
+      properties: properties
+    )
+  }
+
+  public func trackPPOMessagingCreator(
+    from project: Project,
+    creatorUID: String,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let properties = contextProperties(ctaContext: .messageCreatorInitiate, page: .projectAlerts)
+      .withAllValuesFrom(projectProperties(from: project))
+      .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+      .withAllValuesFrom(["interaction_target_uid": creatorUID])
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: properties
+    )
+  }
+
+  public func trackPPOFixingPaymentFailure(
+    project: Project,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(ctaContext: .fixPledgeInitiate, page: .projectAlerts)
+      .withAllValuesFrom(projectProperties(from: project))
+      .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOOpeningSurvey(
+    project: Project,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .surveyResponseInitiate,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOInitiateConfirmingAddress(
+    project: Project,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .confirmInitiate,
+      page: .projectAlerts,
+      typeContext: .address
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOSubmitAddressConfirmation(
+    project: Project,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .confirmSubmit,
+      page: .projectAlerts,
+      typeContext: .address
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOEditAddress(
+    project: Project,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .edit,
+      page: .projectAlerts,
+      typeContext: .address
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
     )
   }
 
@@ -1336,6 +1490,27 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   props["user_activity_keywords"] = Array(userActivity.keywords)
 
   return props
+}
+
+// MARK: - Pledged Project Overview Properties
+
+private func pledgedProjectOverviewProperties(
+  from properties: KSRAnalytics
+    .PledgedProjectOverviewProperties
+) -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["notification_count_address_locks_soon"] = properties.addressLocksSoonCount
+  result["notification_count_survey_available"] = properties.surveyAvailableCount
+  result["notification_count_payment_failed"] = properties.paymentFailedCount
+  result["notification_count_card_auth_required"] = properties.cardAuthRequiredCount
+  result["notification_count_total"] = properties.total
+
+  if let page = properties.page {
+    result["context_page_number"] = page
+  }
+
+  return result
 }
 
 // MARK: - Pledge Properties
