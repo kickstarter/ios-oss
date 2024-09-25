@@ -85,8 +85,8 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
   // MARK: - Configuration
 
-  internal func configure(with data: PledgeSummaryViewData) {
-    self.viewModel.inputs.configure(with: data)
+  internal func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool) {
+    self.viewModel.inputs.configure(with: data, pledgeHasNoReward: pledgeHasNoReward)
   }
 }
 
@@ -125,7 +125,6 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   _ = label
     |> checkoutTitleLabelStyle
     |> \.font .~ .ksr_subhead().bolded
-    |> \.text %~ { _ in Strings.Pledge_amount() }
     |> \.backgroundColor .~ .ksr_white
 
   return label

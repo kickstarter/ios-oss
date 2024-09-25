@@ -142,10 +142,13 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     self.viewModel.outputs.configurePledgeTotalViewWithData
       .observeForUI()
-      .observeValues { [weak self] data in
+      .observeValues { [weak self] pledgeSummaryData, pledgeHasNoReward in
         guard let self else { return }
 
-        self.pledgeTotalViewController.configure(with: data)
+        self.pledgeTotalViewController.configure(
+          with: pledgeSummaryData,
+          pledgeHasNoReward: pledgeHasNoReward
+        )
       }
   }
 

@@ -10,7 +10,7 @@ public typealias PledgeSummaryViewData = (
 )
 
 public protocol PledgeSummaryViewModelInputs {
-  func configure(with data: PledgeSummaryViewData)
+  func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool?)
   func tapped(_ url: URL)
   func viewDidLoad()
 }
@@ -32,10 +32,13 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
   public init() {
     let initialData = Signal.combineLatest(
-      self.configureWithDataProperty.signal.skipNil(),
+      self.configureWithDataProperty.signal.skipNil().map { pledgeSummaryData, _ in pledgeSummaryData },
       self.viewDidLoadProperty.signal
     )
     .map(first)
+
+    let pledgeHasNoReward = self.configureWithDataProperty.signal.skipNil()
+      .map { _, pledgeHasNoReward in pledgeHasNoReward }
 
     let projectAndPledgeTotal = initialData
       .map { project, total, _ in (project, total) }
@@ -93,9 +96,9 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       }
   }
 
-  private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
-  public func configure(with data: PledgeSummaryViewData) {
-    self.configureWithDataProperty.value = data
+  private let configureWithDataProperty = MutableProperty<(PledgeSummaryViewData, Bool?)?>(nil)
+  public func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool?) {
+    self.configureWithDataProperty.value = (data, pledgeHasNoReward)
   }
 
   private let (tappedUrlSignal, tappedUrlObserver) = Signal<URL, Never>.pipe()

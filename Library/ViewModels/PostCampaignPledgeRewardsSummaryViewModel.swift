@@ -47,7 +47,8 @@ public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelOutputs {
-  var configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never> { get }
+  /// Passes the pledge summary data and a bool that indicates whether the backer is pledging without a reward.
+  var configurePledgeTotalViewWithData: Signal<(PledgeSummaryViewData, Bool), Never> { get }
   var loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never> { get }
 }
 
@@ -111,8 +112,9 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     .map(items)
 
     self.configurePledgeTotalViewWithData = data.map { data in
-      let (_, _, pledgeSummaryData) = data
-      return pledgeSummaryData
+      let (rewardData, _, pledgeSummaryData) = data
+      let pledgeHasNoReward = rewardData.rewards.count == 1 && rewardData.rewards.first?.isNoReward == true
+      return (pledgeSummaryData, pledgeHasNoReward)
     }
   }
 
@@ -131,7 +133,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never>
+  public let configurePledgeTotalViewWithData: Signal<(PledgeSummaryViewData, Bool), Never>
   public let loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never>
 
   public var inputs: PostCampaignPledgeRewardsSummaryViewModelInputs { return self }
@@ -159,7 +161,6 @@ private func items(
   // MARK: Rewards
 
   let rewardItems = data.rewards.compactMap { reward -> PostCampaignRewardsSummaryItem? in
-    guard let title = reward.title else { return nil }
 
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
@@ -211,7 +212,6 @@ private func items(
 
   // MARK: Bonus
 
-  if let bonus = bonusAmount, bonus > 0 {
     let bonusAmountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
