@@ -21,6 +21,7 @@ public protocol PledgeSummaryViewModelOutputs {
   var confirmationLabelHidden: Signal<Bool, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var totalConversionLabelText: Signal<String, Never> { get }
+  var titleLabelText: Signal<String, Never> { get }
 }
 
 public protocol PledgeSummaryViewModelType {
@@ -76,6 +77,13 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     }
     .skipNil()
 
+    self.titleLabelText = pledgeHasNoReward
+      .map { hasNoRewards in
+        featureNoShippingAtCheckout() && hasNoRewards != nil && hasNoRewards == true
+          ? Strings.Pledge_without_a_reward()
+          : Strings.Pledge_amount()
+      }
+
     self.confirmationLabelAttributedText = projectAndPledgeTotal
       .map { project, pledgeTotal in
         attributedConfirmationString(
@@ -116,6 +124,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   public let confirmationLabelHidden: Signal<Bool, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let totalConversionLabelText: Signal<String, Never>
+  public let titleLabelText: Signal<String, Never>
 
   public var inputs: PledgeSummaryViewModelInputs { return self }
   public var outputs: PledgeSummaryViewModelOutputs { return self }
