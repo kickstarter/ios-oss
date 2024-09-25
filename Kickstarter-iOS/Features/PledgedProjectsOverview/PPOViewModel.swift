@@ -89,6 +89,18 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
+    // Route navigation events
+    Publishers.Merge6(
+      self.openBackedProjectsSubject.map { PPONavigationEvent.backingPage },
+      self.fixPaymentMethodSubject.map { PPONavigationEvent.fixPaymentMethod },
+      self.fix3DSChallengeSubject.map { PPONavigationEvent.fix3DSChallenge },
+      self.openSurveySubject.map { PPONavigationEvent.survey },
+      self.confirmAddressSubject.map { PPONavigationEvent.confirmAddress },
+      self.contactCreatorSubject.map { PPONavigationEvent.contactCreator }
+    )
+    .subscribe(self.navigationEventSubject)
+    .store(in: &self.cancellables)
+
     // TODO: Send actual banner messages in response to card actions instead.
     self.shouldSendSampleMessageSubject
       .sink { [weak self] _ in
@@ -119,28 +131,30 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.pullToRefreshSubject.send(())
   }
 
+  // TODO: Add any additional properties for routing (MBL-1451)
+
   func openBackedProjects() {
-    self.navigationEventSubject.send(.backingPage)
+    self.openBackedProjectsSubject.send(())
   }
 
   func fixPaymentMethod() {
-    self.navigationEventSubject.send(.fixPaymentMethod)
+    self.fixPaymentMethodSubject.send(())
   }
 
   func fix3DSChallenge() {
-    self.navigationEventSubject.send(.fix3DSChallenge)
+    self.fix3DSChallengeSubject.send(())
   }
 
   func openSurvey() {
-    self.navigationEventSubject.send(.survey)
+    self.openSurveySubject.send(())
   }
 
   func confirmAddress() {
-    self.navigationEventSubject.send(.confirmAddress)
+    self.confirmAddressSubject.send(())
   }
 
   func contactCreator() {
-    self.navigationEventSubject.send(.contactCreator)
+    self.contactCreatorSubject.send(())
   }
 
   // MARK: - Outputs
@@ -149,7 +163,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   @Published var results = PPOViewModelPaginator.Results.unloaded
 
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
-    navigationEventSubject.eraseToAnyPublisher()
+    self.navigationEventSubject.eraseToAnyPublisher()
   }
 
   // MARK: - Private
@@ -160,6 +174,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
   private let shouldSendSampleMessageSubject = PassthroughSubject<(), Never>()
+  private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
+  private let fixPaymentMethodSubject = PassthroughSubject<Void, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<Void, Never>()
+  private let openSurveySubject = PassthroughSubject<Void, Never>()
+  private let confirmAddressSubject = PassthroughSubject<Void, Never>()
+  private let contactCreatorSubject = PassthroughSubject<Void, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
