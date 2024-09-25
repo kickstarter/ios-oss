@@ -161,6 +161,7 @@ private func items(
   // MARK: Rewards
 
   let rewardItems = data.rewards.compactMap { reward -> PostCampaignRewardsSummaryItem? in
+    guard reward.isNoReward == false, let title = reward.title else { return nil }
 
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
@@ -212,6 +213,7 @@ private func items(
 
   // MARK: Bonus
 
+  if let bonus = bonusAmount, bonus > 0, rewardItems.isEmpty == false {
     let bonusAmountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
