@@ -79,7 +79,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
     self.titleLabelText = pledgeHasNoReward
       .map { hasNoRewards in
-        featureNoShippingAtCheckout() && hasNoRewards != nil && hasNoRewards == true
+        featureNoShippingAtCheckout() && hasNoRewards == true
           ? Strings.Pledge_without_a_reward()
           : Strings.Pledge_amount()
       }
