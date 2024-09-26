@@ -46,7 +46,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
-    self.vm.inputs.configure(with: (project, total: 30, false))
+    self.vm.inputs.configure(with: (project, total: 30, false), pledgeHasNoReward: false)
     self.vm.inputs.viewDidLoad()
 
     self.amountLabelText.assertValues(["$30.00"], "Total is added to reward minimum")
@@ -57,7 +57,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
-    self.vm.inputs.configure(with: (project, total: 30, false))
+    self.vm.inputs.configure(with: (project, total: 30, false), pledgeHasNoReward: false)
     self.vm.inputs.viewDidLoad()
 
     self.amountLabelText.assertValues([" MX$ 30.00"], "Total is added to reward minimum")
@@ -67,7 +67,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
-    self.vm.inputs.configure(with: (project, total: 10, false))
+    self.vm.inputs.configure(with: (project, total: 10, false), pledgeHasNoReward: true)
 
     self.vm.inputs.viewDidLoad()
 
@@ -80,7 +80,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.country .~ Project.Country.us
     let pledgeSummaryViewData = PledgeSummaryViewData(project, total: 10, false)
 
-    self.vm.inputs.configure(with: pledgeSummaryViewData)
+    self.vm.inputs.configure(with: pledgeSummaryViewData, pledgeHasNoReward: true)
 
     self.vm.inputs.viewDidLoad()
 
@@ -93,7 +93,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
-    self.vm.inputs.configure(with: (project, total: 10, false))
+    self.vm.inputs.configure(with: (project, total: 10, false), pledgeHasNoReward: true)
     self.vm.inputs.viewDidLoad()
 
     self.totalConversionLabelText.assertValues(["About £20.00"])
@@ -105,7 +105,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
-    self.vm.inputs.configure(with: (project, total: 20, false))
+    self.vm.inputs.configure(with: (project, total: 20, false), pledgeHasNoReward: false)
     self.vm.inputs.viewDidLoad()
 
     self.totalConversionLabelText.assertValues(["About £40.00"])
@@ -117,7 +117,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    self.vm.inputs.configure(with: (project, total: 10, false))
+    self.vm.inputs.configure(with: (project, total: 10, false), pledgeHasNoReward: false)
     self.vm.inputs.viewDidLoad()
 
     self.totalConversionLabelText.assertDidNotEmitValue()
@@ -141,7 +141,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.currency .~ Currency.USD.rawValue
 
-      self.vm.inputs.configure(with: (project: project, total: 10, false))
+      self.vm.inputs.configure(with: (project: project, total: 10, false), pledgeHasNoReward: false)
       self.vm.inputs.viewDidLoad()
 
       self.confirmationLabelHidden.assertValues([false])
@@ -170,7 +170,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.currency .~ Currency.USD.rawValue
 
-      self.vm.inputs.configure(with: (project: project, total: 10, true))
+      self.vm.inputs.configure(with: (project: project, total: 10, true), pledgeHasNoReward: false)
       self.vm.inputs.viewDidLoad()
 
       self.confirmationLabelHidden.assertValues([true])
@@ -200,7 +200,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         |> Project.lens.stats.currency .~ Currency.HKD.rawValue
         |> Project.lens.country .~ .us
 
-      self.vm.inputs.configure(with: (project: project, total: 10, false))
+      self.vm.inputs.configure(with: (project: project, total: 10, false), pledgeHasNoReward: false)
       self.vm.inputs.viewDidLoad()
 
       self.confirmationLabelHidden.assertValues([false])
