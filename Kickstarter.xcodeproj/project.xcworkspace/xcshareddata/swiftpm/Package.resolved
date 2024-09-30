@@ -1,4 +1,5 @@
 {
+  "originHash" : "46d9839cc0c2b9218e241e2a4a4b7f61bb0bb12e40ca932216752019df94d51a",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -59,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/microsoft/appcenter-sdk-apple",
       "state" : {
-        "revision" : "b2dc99cfedead0bad4e6573d86c5228c89cff332",
-        "version" : "4.4.3"
+        "revision" : "ab54f758243f282d290b33027e8aac910d3d859a",
+        "version" : "5.0.5"
       }
     },
     {
@@ -221,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/microsoft/PLCrashReporter.git",
       "state" : {
-        "revision" : "81cdec2b3827feb03286cb297f4c501a8eb98df1",
-        "version" : "1.10.2"
+        "revision" : "6752f71de206f6a53fa6a758c3660fd9a7fe7527",
+        "version" : "1.11.2"
       }
     },
     {
