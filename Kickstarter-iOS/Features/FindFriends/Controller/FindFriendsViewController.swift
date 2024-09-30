@@ -35,7 +35,7 @@ internal final class FindFriendsViewController: UITableViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
