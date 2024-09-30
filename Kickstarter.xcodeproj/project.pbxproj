@@ -543,7 +543,7 @@
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		60E1BB272C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB262C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift */; };
-		60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryTotalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryTotalViewController.swift */; };
+		60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */; };
 		60E1BB2B2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */; };
 		60E1BB352C74F7E4007D723B /* EstimatedShippingCheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */; };
 		60E1BB552C7670F6007D723B /* NoShippingPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */; };
@@ -2190,7 +2190,7 @@
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
 		60E1BB262C6D230A007D723B /* NoShippingPledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
-		60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryTotalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryTotalViewController.swift; sourceTree = "<group>"; };
+		60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedShippingCheckoutView.swift; sourceTree = "<group>"; };
 		60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewControllerTests.swift; sourceTree = "<group>"; };
@@ -5640,7 +5640,7 @@
 				8A13D15E249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift */,
 				604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */,
 				6044532B2BA08FE100B8F485 /* PostCampaignPledgeRewardsSummaryTotalViewController.swift */,
-				60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryTotalViewController.swift */,
+				60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8623,7 +8623,7 @@
 				AAE7C9A82C75948B00800E03 /* PPOProjectCard.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */,
-				60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryTotalViewController.swift in Sources */,
+				60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift in Sources */,
 				4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,
 				06232D3A2795D37600A81755 /* ProjectPageViewControllerDataSource.swift in Sources */,
