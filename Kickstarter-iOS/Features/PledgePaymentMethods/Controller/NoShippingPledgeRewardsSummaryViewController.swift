@@ -2,7 +2,7 @@ import Library
 import Prelude
 import UIKit
 
-final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController {
+final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
   private let dataSource = NoShippingPledgeRewardsSummaryDataSource()
@@ -188,7 +188,7 @@ final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController 
 
 // MARK: - UITableViewDelegate
 
-extension NoShippingPledgeRewardsSummaryTotalViewController: UITableViewDelegate {
+extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
   }
