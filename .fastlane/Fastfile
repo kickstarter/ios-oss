@@ -233,7 +233,7 @@ platform :ios do
 
   private_lane :xcode_check do
     # Keep xcode version in sync with `.circleci/config.yml`
-    xcodes(version: "15.2", select_for_current_build_only: true)
+    xcodes(version: "16.0.0", select_for_current_build_only: true)
   end
 
   private_lane :build_the_app do |options|
