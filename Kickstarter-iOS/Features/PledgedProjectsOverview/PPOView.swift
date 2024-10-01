@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct PPOView: View {
-  @ObservedObject var viewModel: PPOViewModel
+  @ObservedObject var viewModel = PPOViewModel()
   var onCountChange: ((Int?) -> Void)?
+  var onNavigate: ((PPONavigationEvent) -> Void)?
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
@@ -37,6 +38,9 @@ struct PPOView: View {
       .onAppear(perform: { self.viewModel.viewDidAppear() })
       .onChange(of: self.viewModel.results.total, perform: { value in
         self.onCountChange?(value)
+      })
+      .onReceive(self.viewModel.navigationEvents, perform: { event in
+        self.onNavigate?(event)
       })
     }
   }

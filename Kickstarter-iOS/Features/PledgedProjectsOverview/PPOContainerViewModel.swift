@@ -6,11 +6,13 @@ import Library
 protocol PPOContainerViewModelInputs {
   func viewWillAppear()
   func projectAlertsCountChanged(_ count: Int?)
+  func handle(navigationEvent: PPONavigationEvent)
 }
 
 protocol PPOContainerViewModelOutputs {
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> { get }
   var activityBadge: AnyPublisher<TabBarBadge, Never> { get }
+  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -56,6 +58,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.projectAlertsCountSubject.send(count)
   }
 
+  func handle(navigationEvent: PPONavigationEvent) {
+    self.handleNavigationEventSubject.send(navigationEvent)
+  }
+
   // MARK: - Outputs
 
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> {
@@ -66,12 +72,17 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.activityBadgeSubject.eraseToAnyPublisher()
   }
 
+  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
+    self.handleNavigationEventSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - Private
 
   private var viewWillAppearSubject = PassthroughSubject<Void, Never>()
   private var projectAlertsCountSubject = CurrentValueSubject<Int?, Never>(nil)
   private var projectAlertsBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
   private var activityBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
+  private var handleNavigationEventSubject = CurrentValueSubject<PPONavigationEvent, Never>(.none)
 
   private var cancellables: Set<AnyCancellable> = []
 }

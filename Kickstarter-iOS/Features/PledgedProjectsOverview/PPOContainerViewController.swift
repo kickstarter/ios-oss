@@ -5,7 +5,6 @@ import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
   private let viewModel = PPOContainerViewModel()
-  private var ppoViewModel = PPOViewModel()
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -13,9 +12,14 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let ppoView = PPOView(viewModel: self.ppoViewModel, onCountChange: { [weak self] count in
-      self?.viewModel.projectAlertsCountChanged(count)
-    })
+    let ppoView = PPOView(
+      onCountChange: { [weak self] count in
+        self?.viewModel.projectAlertsCountChanged(count)
+      },
+      onNavigate: { [weak self] event in
+        self?.viewModel.handle(navigationEvent: event)
+      }
+    )
     let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
@@ -41,7 +45,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
     .store(in: &self.subscriptions)
 
-    ppoView.viewModel.navigationEvents.sink { nav in
+    self.viewModel.navigationEvents.sink { nav in
       switch nav {
       case .backingPage:
         tabBarController?.switchToProfile()
