@@ -27,7 +27,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
     self.ppoViewModel.$results.sink { [weak self] results in
-      let badge: TabBarBadge = results.values.count > 0 ? .count(results.values.count) : .none
+      let badge: TabBarBadge = results.total.flatMap { count in .count(count) } ?? .none
       self?.setPagedViewControllers([
         (.projectAlerts(badge), ppoViewController),
         (.activityFeed(.dot), activitiesViewController)

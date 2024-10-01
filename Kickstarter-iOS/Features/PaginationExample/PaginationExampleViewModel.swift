@@ -20,6 +20,7 @@ internal class PaginationExampleViewModel: ObservableObject {
       cursorFromEnvelope: {
         $0.urls.api.moreProjects
       },
+      totalFromEnvelope: { _ in nil },
       requestFromParams: {
         AppEnvironment.current.apiService.fetchDiscovery_combine(params: $0)
       },
@@ -49,7 +50,7 @@ internal class PaginationExampleViewModel: ObservableObject {
         return "Waiting to load"
       case .loading:
         return "Loading"
-      case let .someLoaded(values, _):
+      case let .someLoaded(values, _, _):
         return "Got \(values.count) results; more are available"
       case .allLoaded:
         return "Loaded all results"

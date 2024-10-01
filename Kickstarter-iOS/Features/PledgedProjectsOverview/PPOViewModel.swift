@@ -53,6 +53,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         }
         return data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor
       },
+      totalFromEnvelope: { data in
+        data.pledgeProjectsOverview?.pledges?.totalCount
+      },
       requestFromParams: { () in
         AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
       },

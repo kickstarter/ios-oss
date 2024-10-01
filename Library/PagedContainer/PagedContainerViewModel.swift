@@ -8,7 +8,7 @@ public enum TabBarBadge {
   case dot
   case count(Int)
 
-  var count: Int? {
+  public var count: Int? {
     switch self {
     case let .count(count):
       count
