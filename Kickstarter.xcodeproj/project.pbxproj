@@ -1137,11 +1137,12 @@
 		A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */; };
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
-		AA645EA32C7D68FC0034705A /* PPOProjectCardView+GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645EA12C7D681F0034705A /* PPOProjectCardView+GraphAPI.swift */; };
+		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
 		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
 		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
 		AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = AA645E9F2C772DC90034705A /* SnapshotTesting */; };
+		AA645EA32C7D68FC0034705A /* PPOProjectCardView+GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645EA12C7D681F0034705A /* PPOProjectCardView+GraphAPI.swift */; };
 		AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA592782C5C708000482087 /* PPOProjectDetails.swift */; };
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
@@ -2801,9 +2802,10 @@
 		A7F761741C85FA40005405ED /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
-		AA645EA12C7D681F0034705A /* PPOProjectCardView+GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardView+GraphAPI.swift"; sourceTree = "<group>"; };
+		AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewModel.swift; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AA645E9D2C772C650034705A /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
+		AA645EA12C7D681F0034705A /* PPOProjectCardView+GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardView+GraphAPI.swift"; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
@@ -7188,6 +7190,7 @@
 				AAD2BEE72C59B964003D8B95 /* CardView */,
 				392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */,
 				392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */,
+				AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */,
 				E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */,
 				E1BAA0342C1A1907004F8B06 /* PPOView.swift */,
 				E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */,
@@ -8640,6 +8643,7 @@
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,
+				AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */,
 				77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */,
 				1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */,
 				77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */,
