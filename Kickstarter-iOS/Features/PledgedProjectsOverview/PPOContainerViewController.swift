@@ -4,6 +4,7 @@ import Library
 import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
+  private let viewModel = PPOContainerViewModel()
   private var ppoViewModel = PPOViewModel()
 
   public override func viewDidLoad() {
@@ -26,13 +27,19 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
-    self.ppoViewModel.$results.sink { [weak self] results in
-      let badge: TabBarBadge = results.total.flatMap { count in .count(count) } ?? .none
-      self?.setPagedViewControllers([
-        (.projectAlerts(badge), ppoViewController),
-        (.activityFeed(.dot), activitiesViewController)
-      ])
-    }.store(in: &self.subscriptions)
+    let projectAlertsBadge = self.ppoViewModel.$results
+      .map { results -> TabBarBadge in
+        results.total.flatMap { count in .count(count) } ?? .none
+      }
+
+    Publishers.CombineLatest(projectAlertsBadge, self.viewModel.activityBadge)
+      .sink { [weak self] projectAlerts, activity in
+        self?.setPagedViewControllers([
+          (.projectAlerts(projectAlerts), ppoViewController),
+          (.activityFeed(activity), activitiesViewController)
+        ])
+      }
+      .store(in: &self.subscriptions)
 
     ppoView.viewModel.navigationEvents.sink { nav in
       switch nav {
@@ -43,6 +50,11 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         break
       }
     }.store(in: &self.subscriptions)
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.viewWillAppear()
   }
 
   public enum Page: TabBarPage {

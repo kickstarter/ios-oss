@@ -52,7 +52,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     return false
   }
 
-  public override func viewWillAppear(_ animated: Bool) {
+  open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.viewModel.viewWillAppear()
@@ -62,7 +62,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     }
   }
 
-  public override func viewDidAppear(_ animated: Bool) {
+  open override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     if let activeController = self.activeController {
