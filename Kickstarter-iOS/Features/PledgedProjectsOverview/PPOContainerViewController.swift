@@ -13,7 +13,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let ppoView = PPOView(viewModel: self.ppoViewModel)
+    let ppoView = PPOView(viewModel: self.ppoViewModel, onCountChange: { [weak self] count in
+      self?.viewModel.projectAlertsCountChanged(count)
+    })
     let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
@@ -21,25 +23,23 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     activitiesViewController.title = "Activity Feed"
 
     self.setPagedViewControllers([
-      (.projectAlerts(.count(5)), ppoViewController),
-      (.activityFeed(.dot), activitiesViewController)
+      (.projectAlerts(.none), ppoViewController),
+      (.activityFeed(.none), activitiesViewController)
     ])
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
-    let projectAlertsBadge = self.ppoViewModel.$results
-      .map { results -> TabBarBadge in
-        results.total.flatMap { count in .count(count) } ?? .none
-      }
-
-    Publishers.CombineLatest(projectAlertsBadge, self.viewModel.activityBadge)
-      .sink { [weak self] projectAlerts, activity in
-        self?.setPagedViewControllers([
-          (.projectAlerts(projectAlerts), ppoViewController),
-          (.activityFeed(activity), activitiesViewController)
-        ])
-      }
-      .store(in: &self.subscriptions)
+    Publishers.CombineLatest(
+      self.viewModel.projectAlertsBadge,
+      self.viewModel.activityBadge
+    )
+    .sink { [weak self] projectAlerts, activity in
+      self?.setPagedViewControllers([
+        (.projectAlerts(projectAlerts), ppoViewController),
+        (.activityFeed(activity), activitiesViewController)
+      ])
+    }
+    .store(in: &self.subscriptions)
 
     ppoView.viewModel.navigationEvents.sink { nav in
       switch nav {
