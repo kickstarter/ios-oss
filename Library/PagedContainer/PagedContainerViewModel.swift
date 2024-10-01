@@ -16,6 +16,19 @@ public enum TabBarBadge {
       nil
     }
   }
+
+  public init(count: Int?, convertZeroToNone: Bool = true) {
+    switch (count, convertZeroToNone) {
+    case (.none, _):
+      self = .none
+    case (.some(0), true):
+      self = .none
+    case (.some(0), false):
+      self = .count(0)
+    case let (.some(count), _):
+      self = .count(count)
+    }
+  }
 }
 
 public protocol TabBarPage: Identifiable {
