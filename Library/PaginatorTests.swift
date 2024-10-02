@@ -18,6 +18,7 @@ struct ConcreteError: Error {}
 final class PaginatorTests: XCTestCase {
   let valuesFromEnvelope: (TestEnvelope) -> [Int] = { $0.values }
   let cursorFromEnvelope: (TestEnvelope) -> Int? = { $0.cursor }
+  let totalFromEnvelope: (TestEnvelope) -> Int? = { _ in 42 }
 
   func waitTinyInterval() {
     _ = XCTWaiter.wait(for: [expectation(description: "Wait a tiny interval of time.")], timeout: 0.05)
@@ -27,6 +28,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int?, ConcreteError, Int>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [], cursor: nil).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [], cursor: nil).publisher }
     )
@@ -40,6 +42,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: nil).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [], cursor: nil).publisher }
     )
@@ -60,6 +63,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [], cursor: nil).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [], cursor: nil).publisher }
     )
@@ -80,6 +84,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { cursor in
         if cursor == 1 {
@@ -97,7 +102,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 42))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
@@ -107,7 +112,7 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 42))
 
     paginator.requestNextPage()
     XCTAssertTrue(paginator.results.isLoading)
@@ -123,6 +128,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { cursor in
         if cursor == 1 {
@@ -138,7 +144,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 42))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
@@ -162,6 +168,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { cursor in
         if cursor == 1 {
@@ -179,7 +186,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 42))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
 
     paginator.requestNextPage()
@@ -189,7 +196,7 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 42))
 
     paginator.requestNextPage()
     self.waitTinyInterval()
@@ -203,6 +210,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: nil).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [], cursor: nil).publisher }
     )
@@ -224,6 +232,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [4, 5, 6], cursor: nil).publisher }
     )
@@ -245,6 +254,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { _ in TestEnvelope(values: [4, 5, 6], cursor: nil).publisher }
     )
@@ -275,6 +285,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in
         Fail(outputType: TestEnvelope.self, failure: ConcreteError())
           .delay(for: 0.01, tolerance: 0.01, scheduler: RunLoop.main)
@@ -297,6 +308,7 @@ final class PaginatorTests: XCTestCase {
     let paginator = Paginator<TestEnvelope, Int, Int, ConcreteError, Void>(
       valuesFromEnvelope: valuesFromEnvelope,
       cursorFromEnvelope: cursorFromEnvelope,
+      totalFromEnvelope: totalFromEnvelope,
       requestFromParams: { _ in TestEnvelope(values: [1, 2, 3], cursor: 1).publisher },
       requestFromCursor: { _ in
         Fail(outputType: TestEnvelope.self, failure: ConcreteError())
