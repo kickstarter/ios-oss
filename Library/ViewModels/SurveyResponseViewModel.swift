@@ -167,7 +167,7 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 }
 
 private func isSurvey(request: URLRequest) -> Bool {
-  guard case (.project(_, .survey, _))? = Navigation.match(request) else { return false }
+  guard case (.project(_, .surveyWebview, _))? = Navigation.match(request) else { return false }
   return true
 }
 

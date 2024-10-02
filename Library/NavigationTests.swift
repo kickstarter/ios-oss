@@ -129,7 +129,7 @@ public final class NavigationTests: XCTestCase {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.assertProjectMatch(
         path: "/projects/creator/project/surveys/3",
-        navigation: .survey("https://www.kickstarter.com/projects/creator/project/surveys/3")
+        navigation: .surveyWebview("https://www.kickstarter.com/projects/creator/project/surveys/3")
       )
     }
 
