@@ -24,24 +24,30 @@ extension PPOProjectCardViewModel {
     // TODO: Implement [MBL-1695]
     let address: String? = nil
 
-    let alerts: [PPOProjectCardViewModel.Alert] = card.flags?
-      .compactMap { PPOProjectCardViewModel.Alert(flag: $0) } ?? []
+    let alerts: [PledgedProjectOverviewCard.Alert] = card.flags?
+      .compactMap { PledgedProjectOverviewCard.Alert(flag: $0) } ?? []
 
-    let primaryAction: PPOProjectCardViewModel.Action
-    let secondaryAction: PPOProjectCardViewModel.Action?
+    let primaryAction: PledgedProjectOverviewCard.Action
+    let secondaryAction: PledgedProjectOverviewCard.Action?
+    let tierType: PledgedProjectOverviewCard.TierType
+
     switch card.tierType {
     case Constants.paymentFailed:
       primaryAction = .fixPayment
       secondaryAction = nil
+      tierType = .fixPayment
     case Constants.confirmAddress:
       primaryAction = .confirmAddress
       secondaryAction = .editAddress
+      tierType = .confirmAddress
     case Constants.completeSurvey:
       primaryAction = .completeSurvey
       secondaryAction = nil
+      tierType = .openSurvey
     case Constants.authenticationRequired:
       primaryAction = .authenticateCard
       secondaryAction = nil
+      tierType = .authenticateCard
     case .some(_), .none:
       return nil
     }
@@ -56,6 +62,7 @@ extension PPOProjectCardViewModel {
         creatorName: creatorName,
         address: address,
         actions: (primaryAction, secondaryAction),
+        tierType: tierType,
         parentSize: .zero
       )
     } else {

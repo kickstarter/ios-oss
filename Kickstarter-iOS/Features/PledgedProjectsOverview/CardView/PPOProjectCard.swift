@@ -159,7 +159,8 @@ struct PPOProjectCard: View {
             Los Angeles, CA 90025-1234
             United States
           """,
-          actions: (.confirmAddress, .editAddress),
+          actions: (.confirmAddress, .editAddress), 
+          tierType: .confirmAddress,
           parentSize: geometry.size
         ))
 
@@ -175,6 +176,7 @@ struct PPOProjectCard: View {
           creatorName: "rokaplay truncate if longer than",
           address: nil,
           actions: (.completeSurvey, nil),
+          tierType: .openSurvey,
           parentSize: geometry.size
         ))
 
@@ -194,6 +196,7 @@ struct PPOProjectCard: View {
           creatorName: "rokaplay truncate if longer than",
           address: nil,
           actions: (.fixPayment, nil),
+          tierType: .fixPayment,
           parentSize: geometry.size
         ))
 
@@ -213,6 +216,7 @@ struct PPOProjectCard: View {
           creatorName: "rokaplay truncate if longer than",
           address: nil,
           actions: (.authenticateCard, nil),
+          tierType: .authenticateCard,
           parentSize: geometry.size
         ))
 
@@ -227,6 +231,7 @@ struct PPOProjectCard: View {
           creatorName: "rokaplay truncate if longer than",
           address: nil,
           actions: (.completeSurvey, nil),
+          tierType: .openSurvey,
           parentSize: geometry.size
         ))
       }

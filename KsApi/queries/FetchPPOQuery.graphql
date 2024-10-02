@@ -1,4 +1,4 @@
-query FetchPledgedProjects($first: Int = null, $after: String = null) {
+query FetchPledgedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
   pledgeProjectsOverview {
     pledges(first: $first, after: $after) {
       totalCount

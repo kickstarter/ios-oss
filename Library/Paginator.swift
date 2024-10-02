@@ -101,6 +101,15 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       }
     }
 
+    public var hasLoaded: Bool {
+      switch self {
+      case .someLoaded, .allLoaded, .empty:
+        return true
+      case .unloaded, .loading, .error:
+        return false
+      }
+    }
+
     public var total: Int? {
       switch self {
       case let .allLoaded(values):
