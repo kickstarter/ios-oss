@@ -142,7 +142,7 @@ private func items(
     with: data.projectCountry, amount: total, omitUSCurrencyCode: data.omitCurrencyCode
   ) else { return [] }
 
-  let headerItem = PledgeExpandableRewardsHeaderItem.header((
+  let headerItem = PledgeExpandableRewardsHeaderItem.header(.init(
     headerText: nil,
     showHeader: true,
     text: estimatedDeliveryString,
@@ -160,7 +160,7 @@ private func items(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    return PledgeExpandableRewardsHeaderItem.reward((
+    return PledgeExpandableRewardsHeaderItem.reward(.init(
       headerText: nil,
       showHeader: true,
       text: itemString,
