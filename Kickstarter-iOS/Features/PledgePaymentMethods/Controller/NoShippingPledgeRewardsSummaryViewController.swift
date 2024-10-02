@@ -2,10 +2,14 @@ import Library
 import Prelude
 import UIKit
 
+public enum PledgeRewardsSummaryStyles {
+  public enum Layout {
+    public static let sectionHeaderLabelHeight: CGFloat = 20
+  }
+}
+
 final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
-
-  private let dataSource = NoShippingPledgeRewardsSummaryDataSource()
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
 
@@ -25,10 +29,13 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       |> \.separatorInset .~ .zero
       |> \.contentInsetAdjustmentBehavior .~ .never
       |> \.isScrollEnabled .~ false
-      |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.sectionHeaderTopPadding .~ 0
   }()
+
+  private lazy var dataSource: NoShippingPledgeRewardsSummaryDiffableDataSource =
+    NoShippingPledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
@@ -132,9 +139,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       .observeValues { [weak self] data in
         guard let self else { return }
 
-        self.dataSource.load(data)
-        self.tableView.reloadData()
-        self.tableView.setNeedsLayout()
+        self.applySnapshotToDataSource(from: data)
 
         self.setEntireViewToIsHidden(false)
         self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
@@ -184,6 +189,69 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     self.pledgeTotalViewController.view.isHidden = isHidden
     self.separatorView.isHidden = isHidden
   }
+
+  private func applySnapshotToDataSource(from data: [PostCampaignRewardsSummaryItem]) {
+    var snapshot = NSDiffableDataSourceSnapshot<PledgeRewardsSummarySection, PledgeRewardsSummaryRow>()
+
+    let headerItemData = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+      guard case let .header(data) = item else { return nil }
+      return data
+    }
+
+    let rewardData = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+      guard case let .reward(data) = item else { return nil }
+      return data
+    }
+
+    let baseReward = rewardData[0]
+
+    // MARK: Header + Reward Sections
+
+    snapshot.appendSections([.header, .reward])
+    snapshot.appendItems([.header(headerItemData[0])], toSection: .header)
+    snapshot.appendItems([.reward(baseReward)], toSection: .reward)
+
+    // MARK: Add-Ons
+
+    let addOns = rewardData.filter { $0 != baseReward }.map { PledgeRewardsSummaryRow.addOns($0) }
+    /// We only want to add an add-ons section if any have been selected
+    if addOns.isEmpty == false {
+      snapshot.appendSections([.addOns])
+      snapshot.appendItems(addOns, toSection: .addOns)
+    }
+
+    self.dataSource.apply(snapshot, animatingDifferences: true)
+  }
+
+  private func headerView(for section: PledgeRewardsSummarySection) -> UIView {
+    let headerView: UIView = UIView(
+      frame: CGRectMake(0, 0, tableView.frame.size.width, self.tableView.frame.size.height)
+    )
+
+    let headerLabel: UILabel = UILabel(frame: .zero)
+    headerLabel.frame = CGRectMake(
+      CheckoutConstants.PledgeView.Inset.leftRight,
+      0,
+      self.tableView.frame.size.width,
+      PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
+    )
+    headerLabel.font = UIFont.ksr_subhead().bolded
+    headerLabel.textColor = UIColor.ksr_black
+    headerLabel.numberOfLines = 0
+
+    switch section {
+    case .header:
+      break
+    case .reward:
+      headerLabel.text = Strings.project_subpages_menu_buttons_rewards()
+    case .addOns:
+      headerLabel.text = Strings.Add_ons()
+    }
+
+    headerView.addSubview(headerLabel)
+    
+    return headerView
+  }
 }
 
 // MARK: - UITableViewDelegate
@@ -191,5 +259,11 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
+  }
+
+  func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let section = PledgeRewardsSummarySection.allCases[section]
+
+    return self.headerView(for: section)
   }
 }
