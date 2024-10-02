@@ -193,6 +193,9 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   private func applySnapshotToDataSource(from data: [PostCampaignRewardsSummaryItem]) {
     var snapshot = NSDiffableDataSourceSnapshot<PledgeRewardsSummarySection, PledgeRewardsSummaryRow>()
 
+    // MARK: Header + Reward Sections
+
+    /// Decipher header vs reward objects from the `[PostCampaignRewardsSummaryItem]` data object.
     let headerItemData = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
       guard case let .header(data) = item else { return nil }
       return data
@@ -205,21 +208,32 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
     let baseReward = rewardData[0]
 
-    // MARK: Header + Reward Sections
-
+    /// Define the sections of the table and what data to use in each section.
     snapshot.appendSections([.header, .reward])
     snapshot.appendItems([.header(headerItemData[0])], toSection: .header)
     snapshot.appendItems([.reward(baseReward)], toSection: .reward)
 
     // MARK: Add-Ons
 
-    let addOns = rewardData.filter { $0 != baseReward }.map { PledgeRewardsSummaryRow.addOns($0) }
+    let addOns = rewardData.filter { $0 != baseReward || $0.text != Strings.Bonus_support() }
+      .map { PledgeRewardsSummaryRow.addOns($0) }
     /// We only want to add an add-ons section if any have been selected
     if addOns.isEmpty == false {
       snapshot.appendSections([.addOns])
       snapshot.appendItems(addOns, toSection: .addOns)
     }
 
+    // MARK: Bonus Support
+
+    let bonusSupportReward = rewardData.filter { $0.text == Strings.Bonus_support() }
+      .map { PledgeRewardsSummaryRow.bonusSupport($0) }
+
+    if let bonusSupport = bonusSupportReward.first {
+      snapshot.appendSections([.bonusSupport])
+      snapshot.appendItems([bonusSupport], toSection: .bonusSupport)
+    }
+
+    /// Applys the changes above as a snapshot of all of the data needed to render the `UITableView `.
     self.dataSource.apply(snapshot, animatingDifferences: true)
   }
 
@@ -229,15 +243,15 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     )
 
     let headerLabel: UILabel = UILabel(frame: .zero)
+    headerLabel.font = UIFont.ksr_subhead().bolded
+    headerLabel.textColor = UIColor.ksr_black
+    headerLabel.numberOfLines = 0
     headerLabel.frame = CGRectMake(
       CheckoutConstants.PledgeView.Inset.leftRight,
       0,
       self.tableView.frame.size.width,
       PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
     )
-    headerLabel.font = UIFont.ksr_subhead().bolded
-    headerLabel.textColor = UIColor.ksr_black
-    headerLabel.numberOfLines = 0
 
     switch section {
     case .header:
@@ -246,10 +260,12 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       headerLabel.text = Strings.project_subpages_menu_buttons_rewards()
     case .addOns:
       headerLabel.text = Strings.Add_ons()
+    case .bonusSupport:
+      break
     }
 
     headerView.addSubview(headerLabel)
-    
+
     return headerView
   }
 }
