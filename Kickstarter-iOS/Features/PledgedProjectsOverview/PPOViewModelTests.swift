@@ -246,23 +246,35 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationConfirmAddress() {
-    self.verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+    self.verifyNavigationEvent(
+      { self.viewModel.confirmAddress(from: Project.template) },
+      event: .confirmAddress
+    )
   }
 
   func testNavigationContactCreator() {
-    self.verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+    self.verifyNavigationEvent(
+      { self.viewModel.contactCreator(from: Project.template) },
+      event: .contactCreator
+    )
   }
 
   func testNavigationFix3DSChallenge() {
-    self.verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+    self.verifyNavigationEvent(
+      { self.viewModel.fix3DSChallenge(from: Project.template) },
+      event: .fix3DSChallenge
+    )
   }
 
   func testNavigationFixPaymentMethod() {
-    self.verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+    self.verifyNavigationEvent(
+      { self.viewModel.fixPaymentMethod(from: Project.template) },
+      event: .fixPaymentMethod
+    )
   }
 
   func testNavigationOpenSurvey() {
-    self.verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+    self.verifyNavigationEvent({ self.viewModel.openSurvey(from: Project.template) }, event: .survey)
   }
 
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired

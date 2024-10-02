@@ -1,6 +1,6 @@
 import Combine
 @testable import Kickstarter_Framework
-import KsApi
+@testable import KsApi
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
@@ -11,10 +11,12 @@ final class PPOProjectCardViewModelTests: XCTestCase {
       alerts: [],
       imageURL: URL(string: "http://localhost/")!,
       title: "Test project",
+      project: Project.template,
       pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "Dave",
       address: nil,
-      actions: (.authenticateCard, nil),
+      actions: (.authenticateCard, nil), 
+      tierType: .authenticateCard,
       parentSize: CGSize(width: 375, height: 700)
     )
 
@@ -40,10 +42,12 @@ final class PPOProjectCardViewModelTests: XCTestCase {
       alerts: [],
       imageURL: URL(string: "http://localhost/")!,
       title: "Test project",
+      project: Project.template,
       pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
       creatorName: "Dave",
       address: nil,
       actions: (.authenticateCard, nil),
+      tierType: .authenticateCard,
       parentSize: CGSize(width: 375, height: 700)
     )
 
