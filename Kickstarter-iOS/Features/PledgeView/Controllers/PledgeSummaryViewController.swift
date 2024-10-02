@@ -99,8 +99,8 @@ final class PledgeSummaryViewController: UIViewController {
 
   // MARK: - Configuration
 
-  internal func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool? = nil) {
-    self.viewModel.inputs.configure(with: data, pledgeHasNoReward: pledgeHasNoReward)
+  internal func configure(with data: PledgeSummaryViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 }
 

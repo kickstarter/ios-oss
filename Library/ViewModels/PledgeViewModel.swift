@@ -378,10 +378,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configureSummaryViewControllerWithData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
-      pledgeTotal
+      pledgeTotal,
+      rewards
     )
-    .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+    .map { projectAndConfirmationLabelHidden, pledgeTotal, rewards in
+      let (project, confirmationLabelHidden) = projectAndConfirmationLabelHidden
+      let pledgeHasNoReward = rewards.count == 1 && rewards.first?.isNoReward == true
+
+      return (project, pledgeTotal, confirmationLabelHidden, pledgeHasNoReward)
+    }
     .map(pledgeSummaryViewData)
 
     self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
@@ -1315,9 +1320,10 @@ private func allValuesChangedAndValid(
 private func pledgeSummaryViewData(
   project: Project,
   total: Double,
-  confirmationLabelHidden: Bool
+  confirmationLabelHidden: Bool,
+  pledgeHasNoReward: Bool
 ) -> PledgeSummaryViewData {
-  return (project, total, confirmationLabelHidden)
+  return (project, total, confirmationLabelHidden, pledgeHasNoReward)
 }
 
 private func pledgeAmountSummaryViewData(

@@ -517,6 +517,18 @@ func calculatePledgeTotal(
 }
 
 /**
+ Indicates whether a pledge is being made with a "no reward" `Reward`.
+
+ - parameter reward: A `Rewards` array associated with the current pledge.
+
+ - returns: A `Bool` for if the selected reward is a "non reward" type
+ */
+
+public func pledgeHasNoRewards(rewards: [Reward]) -> Bool {
+  rewards.count == 1 && rewards.first?.isNoReward == true
+}
+
+/**
  An helper func that calculates  pledge total for all rewards
 
  - parameter addOnRewards: The `Project` associated with a group of Rewards.

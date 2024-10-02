@@ -6,11 +6,12 @@ import UIKit
 public typealias PledgeSummaryViewData = (
   project: Project,
   total: Double,
-  confirmationLabelHidden: Bool
+  confirmationLabelHidden: Bool,
+  pledgeHasNoReward: Bool?
 )
 
 public protocol PledgeSummaryViewModelInputs {
-  func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool?)
+  func configure(with data: PledgeSummaryViewData)
   func tapped(_ url: URL)
   func viewDidLoad()
 }
@@ -33,16 +34,16 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
   public init() {
     let initialData = Signal.combineLatest(
-      self.configureWithDataProperty.signal.skipNil().map { pledgeSummaryData, _ in pledgeSummaryData },
+      self.configureWithDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
-    let pledgeHasNoReward = self.configureWithDataProperty.signal.skipNil()
-      .map { _, pledgeHasNoReward in pledgeHasNoReward }
-
     let projectAndPledgeTotal = initialData
-      .map { project, total, _ in (project, total) }
+      .map { project, total, _, _ in (project, total) }
+
+    let pledgeHasNoReward = initialData
+      .map { _, _, _, pledgeHasNoReward in pledgeHasNoReward }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -104,9 +105,9 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       }
   }
 
-  private let configureWithDataProperty = MutableProperty<(PledgeSummaryViewData, Bool?)?>(nil)
-  public func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool?) {
-    self.configureWithDataProperty.value = (data, pledgeHasNoReward)
+  private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
+  public func configure(with data: PledgeSummaryViewData) {
+    self.configureWithDataProperty.value = data
   }
 
   private let (tappedUrlSignal, tappedUrlObserver) = Signal<URL, Never>.pipe()

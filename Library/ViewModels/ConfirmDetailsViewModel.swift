@@ -260,10 +260,15 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     let pledgeTotalSummaryData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
-      pledgeTotal
+      pledgeTotal,
+      rewards
     )
-    .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+    .map { projectAndConfirmationLabelHidden, pledgeTotal, rewards in
+      let (project, confirmationLabelHidden) = projectAndConfirmationLabelHidden
+      let pledgeHasNoReward = rewards.count == 1 && rewards.first?.isNoReward == true
+
+      return (project, pledgeTotal, confirmationLabelHidden, pledgeHasNoReward)
+    }
     .map(pledgeSummaryViewData)
 
     self.configurePledgeSummaryViewControllerWithData = pledgeTotalSummaryData
@@ -508,7 +513,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 private func pledgeSummaryViewData(
   project: Project,
   total: Double,
-  confirmationLabelHidden: Bool
+  confirmationLabelHidden: Bool,
+  pledgeHasNoReward: Bool
 ) -> PledgeSummaryViewData {
-  return (project, total, confirmationLabelHidden)
+  return (project, total, confirmationLabelHidden, pledgeHasNoReward)
 }

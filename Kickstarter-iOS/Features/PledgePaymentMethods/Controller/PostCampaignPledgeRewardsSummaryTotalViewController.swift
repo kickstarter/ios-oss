@@ -91,8 +91,8 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
   // MARK: - Configuration
 
-  internal func configure(with data: PledgeSummaryViewData, pledgeHasNoReward: Bool) {
-    self.viewModel.inputs.configure(with: data, pledgeHasNoReward: pledgeHasNoReward)
+  internal func configure(with data: PledgeSummaryViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 }
 

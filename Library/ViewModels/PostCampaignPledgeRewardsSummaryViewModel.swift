@@ -47,8 +47,7 @@ public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelOutputs {
-  /// Passes the pledge summary data and a bool that indicates whether the backer is pledging without a reward.
-  var configurePledgeTotalViewWithData: Signal<(PledgeSummaryViewData, Bool), Never> { get }
+  var configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never> { get }
   var loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never> { get }
 }
 
@@ -112,9 +111,8 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     .map(items)
 
     self.configurePledgeTotalViewWithData = data.map { data in
-      let (rewardData, _, pledgeSummaryData) = data
-      let pledgeHasNoReward = rewardData.rewards.count == 1 && rewardData.rewards.first?.isNoReward == true
-      return (pledgeSummaryData, pledgeHasNoReward)
+      let (_, _, pledgeSummaryData) = data
+      return pledgeSummaryData
     }
   }
 
@@ -133,7 +131,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let configurePledgeTotalViewWithData: Signal<(PledgeSummaryViewData, Bool), Never>
+  public let configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never>
   public let loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never>
 
   public var inputs: PostCampaignPledgeRewardsSummaryViewModelInputs { return self }
