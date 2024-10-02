@@ -4,7 +4,7 @@ import KsApi
 import Library
 
 typealias PPOViewModelPaginator = Paginator<
-  GraphAPI.FetchPledgedProjectsQuery.Data,
+  PledgedProjectOverviewCardsEnvelope,
   PPOProjectCardViewModel,
   String,
   ErrorEnvelope,
@@ -44,20 +44,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
-        let nodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
-        let viewModels = nodes.compactMap { PPOProjectCardViewModel(node: $0) }
-        return viewModels
+        data.cards.compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
       },
-      cursorFromEnvelope: { data in
-        let hasNextPage = data.pledgeProjectsOverview?.pledges?.pageInfo.hasNextPage ?? false
-        guard hasNextPage else {
-          return nil
-        }
-        return data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor
-      },
-      totalFromEnvelope: { data in
-        data.pledgeProjectsOverview?.pledges?.totalCount
-      },
+      cursorFromEnvelope: { data in data.cursor },
+      totalFromEnvelope: { data in data.totalCount },
       requestFromParams: { () in
         AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
       },
@@ -119,10 +109,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
-      .compactMap({ results in
+      .compactMap { results in
         results.hasLoaded ? results.values : nil
-      })
-      .map({ results in results.ppoAnalyticsProperties })
+      }
+      .map { results in results.ppoAnalyticsProperties }
 
     // Analytics: When view appears, the next time it loads, send a PPO dashboard open
     self.viewDidAppearSubject
@@ -265,7 +255,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
     let page: Int? = nil
 
     for viewModel in self {
-      switch viewModel.tierType {
+      switch viewModel.card.tierType {
       case .fixPayment:
         paymentFailedCount += 1
       case .authenticateCard:

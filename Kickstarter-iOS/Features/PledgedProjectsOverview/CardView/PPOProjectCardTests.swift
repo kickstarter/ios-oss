@@ -1,4 +1,5 @@
 @testable import Kickstarter_Framework
+@testable import KsApi
 import SnapshotTesting
 import SwiftUI
 import XCTest
@@ -15,6 +16,7 @@ final class PPOProjectCardTests: TestCase {
           ],
           imageURL: URL(string: "http://localhost/")!,
           title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+          project: Project.template,
           pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
           creatorName: "rokaplay truncate if longer than",
           address: """
@@ -24,6 +26,7 @@ final class PPOProjectCardTests: TestCase {
             United States
           """,
           actions: (.confirmAddress, .editAddress),
+          tierType: .confirmAddress,
           parentSize: self.size
         ))
         .frame(width: self.size.width)
@@ -43,10 +46,17 @@ final class PPOProjectCardTests: TestCase {
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+        project: Project.template,
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
-        address: nil,
-        actions: (.completeSurvey, nil),
+        address: """
+          Firsty Lasty
+          123 First Street, Apt #5678
+          Los Angeles, CA 90025-1234
+          United States
+        """,
+        actions: (.confirmAddress, .editAddress),
+        tierType: .confirmAddress,
         parentSize: self.size
       ))
       .frame(width: self.size.width)
@@ -70,10 +80,12 @@ final class PPOProjectCardTests: TestCase {
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+        project: Project.template,
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
         actions: (.fixPayment, nil),
+        tierType: .fixPayment,
         parentSize: self.size
       ))
       .frame(width: self.size.width)
@@ -97,10 +109,12 @@ final class PPOProjectCardTests: TestCase {
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+        project: Project.template,
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
         address: nil,
         actions: (.authenticateCard, nil),
+        tierType: .authenticateCard,
         parentSize: self.size
       ))
       .frame(width: self.size.width)
@@ -119,10 +133,17 @@ final class PPOProjectCardTests: TestCase {
         ],
         imageURL: URL(string: "http://localhost/")!,
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+        project: Project.template,
         pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
         creatorName: "rokaplay truncate if longer than",
-        address: nil,
-        actions: (.completeSurvey, nil),
+        address: """
+          Firsty Lasty
+          123 First Street, Apt #5678
+          Los Angeles, CA 90025-1234
+          United States
+        """,
+        actions: (.confirmAddress, .editAddress),
+        tierType: .confirmAddress,
         parentSize: self.size
       ))
       .frame(width: self.size.width)
