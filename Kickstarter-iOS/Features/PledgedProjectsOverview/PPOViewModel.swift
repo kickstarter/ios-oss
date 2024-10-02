@@ -17,12 +17,12 @@ protocol PPOViewModelInputs {
   func pullToRefresh()
 
   func openBackedProjects()
-  func fixPaymentMethod()
-  func fix3DSChallenge()
-  func openSurvey()
-  func editAddress()
-  func confirmAddress()
-  func contactCreator()
+  func fixPaymentMethod(from: Project)
+  func fix3DSChallenge(from: Project)
+  func openSurvey(from: Project)
+  func editAddress(from: Project)
+  func confirmAddress(from: Project)
+  func contactCreator(from: Project)
 }
 
 protocol PPOViewModelOutputs {
@@ -87,12 +87,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Route navigation events
     Publishers.Merge7(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.fixPaymentMethodSubject.map { PPONavigationEvent.fixPaymentMethod },
-      self.fix3DSChallengeSubject.map { PPONavigationEvent.fix3DSChallenge },
-      self.openSurveySubject.map { PPONavigationEvent.survey },
-      self.editAddressSubject.map { PPONavigationEvent.editAddress },
-      self.confirmAddressSubject.map { PPONavigationEvent.confirmAddress },
-      self.contactCreatorSubject.map { PPONavigationEvent.contactCreator }
+      self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
+      self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
+      self.openSurveySubject.map { _ in PPONavigationEvent.survey },
+      self.editAddressSubject.map { _ in PPONavigationEvent.editAddress },
+      self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
+      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
@@ -125,40 +125,56 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Tap messaging creator
     self.contactCreatorSubject
       .combineLatest(latestLoadedResults)
-      .sink { _, _ in
-        // TODO
+      .sink { project, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
+          from: project,
+          creatorUID: "\(project.creator.id)",
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
 
     // Analytics: Fixing payment failure
     self.fixPaymentMethodSubject
       .combineLatest(latestLoadedResults)
-      .sink { _, _ in
-        // TODO
+      .sink { project, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
+          project: project,
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
 
     // Analytics: Opening survey
     self.openSurveySubject
       .combineLatest(latestLoadedResults)
-      .sink { _, _ in
-        // TODO
+      .sink { project, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
+          project: project,
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
 
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
       .combineLatest(latestLoadedResults)
-      .sink { _, _ in
-        // TODO
+      .sink { project, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
+          project: project,
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
 
     // Analytics: Edit address
     self.editAddressSubject
       .combineLatest(latestLoadedResults)
-      .sink { _, _ in
-        // TODO
+      .sink { project, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
+          project: project,
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
   }
@@ -187,28 +203,28 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openBackedProjectsSubject.send(())
   }
 
-  func fixPaymentMethod() {
-    self.fixPaymentMethodSubject.send(())
+  func fixPaymentMethod(from: Project) {
+    self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge() {
-    self.fix3DSChallengeSubject.send(())
+  func fix3DSChallenge(from: Project) {
+    self.fix3DSChallengeSubject.send(from)
   }
 
-  func openSurvey() {
-    self.openSurveySubject.send(())
+  func openSurvey(from: Project) {
+    self.openSurveySubject.send(from)
   }
 
-  func editAddress() {
-    self.editAddressSubject.send(())
+  func editAddress(from: Project) {
+    self.editAddressSubject.send(from)
   }
 
-  func confirmAddress() {
-    self.confirmAddressSubject.send(())
+  func confirmAddress(from: Project) {
+    self.confirmAddressSubject.send(from)
   }
 
-  func contactCreator() {
-    self.contactCreatorSubject.send(())
+  func contactCreator(from: Project) {
+    self.contactCreatorSubject.send(from)
   }
 
   // MARK: - Outputs
@@ -227,14 +243,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let shouldSendSampleMessageSubject = PassthroughSubject<(), Never>()
+  private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
-  private let fixPaymentMethodSubject = PassthroughSubject<Void, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<Void, Never>()
-  private let openSurveySubject = PassthroughSubject<Void, Never>()
-  private let editAddressSubject = PassthroughSubject<Void, Never>()
-  private let confirmAddressSubject = PassthroughSubject<Void, Never>()
-  private let contactCreatorSubject = PassthroughSubject<Void, Never>()
+  private let fixPaymentMethodSubject = PassthroughSubject<Project, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<Project, Never>()
+  private let openSurveySubject = PassthroughSubject<Project, Never>()
+  private let editAddressSubject = PassthroughSubject<Project, Never>()
+  private let confirmAddressSubject = PassthroughSubject<Project, Never>()
+  private let contactCreatorSubject = PassthroughSubject<Project, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
