@@ -1,8 +1,9 @@
+import KsApi
 import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
-  let alert: PPOProjectCardAlert
+  let alert: PledgedProjectOverviewCard.Alert
 
   var body: some View {
     HStack {
