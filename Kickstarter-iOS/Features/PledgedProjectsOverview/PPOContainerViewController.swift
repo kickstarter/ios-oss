@@ -47,7 +47,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     self.viewModel.navigationEvents.sink { nav in
       switch nav {
-      case .backingPage:
+      case .backedProjects:
         tabBarController?.switchToProfile()
       case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
         // TODO: MBL-1451

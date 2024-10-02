@@ -82,7 +82,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private var projectAlertsCountSubject = CurrentValueSubject<Int?, Never>(nil)
   private var projectAlertsBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
   private var activityBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
-  private var handleNavigationEventSubject = CurrentValueSubject<PPONavigationEvent, Never>(.none)
+  private var handleNavigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }

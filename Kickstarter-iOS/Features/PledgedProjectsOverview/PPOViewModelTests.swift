@@ -242,7 +242,7 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationBackedProjects() {
-    self.verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backingPage)
+    self.verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backedProjects)
   }
 
   func testNavigationConfirmAddress() {
