@@ -519,6 +519,7 @@
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
 		6080DA402AB366680088EF3D /* Text+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080DA3F2AB366680088EF3D /* Text+HTML.swift */; };
+		608B5B212CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B5B202CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift */; };
 		608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */; };
 		608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */; };
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
@@ -2167,6 +2168,7 @@
 		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
+		608B5B202CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDiffableDataSource.swift; sourceTree = "<group>"; };
 		608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ValidateCheckout.graphql; sourceTree = "<group>"; };
 		608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCheckoutEnvelope.swift; sourceTree = "<group>"; };
 		6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift"; sourceTree = "<group>"; };
@@ -5628,6 +5630,7 @@
 				8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */,
 				604453252BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift */,
 				60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */,
+				608B5B202CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift */,
 			);
 			path = Datasource;
 			sourceTree = "<group>";
@@ -8655,6 +8658,7 @@
 				8A13D163249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift in Sources */,
 				8A13D1672495687E007E2C0B /* PledgeExpandableRewardsHeaderDataSource.swift in Sources */,
 				8A32FE0424D2336E00F79C72 /* EmpyStateView.swift in Sources */,
+				608B5B212CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift in Sources */,
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
 				601342EC2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift in Sources */,

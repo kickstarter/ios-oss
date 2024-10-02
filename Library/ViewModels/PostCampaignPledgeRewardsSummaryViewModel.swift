@@ -30,11 +30,11 @@ public enum PostCampaignRewardsSummaryItem {
 }
 
 public struct PostCampaignRewardsSummaryViewData {
-  public let rewards: [Reward]
-  public let selectedQuantities: SelectedRewardQuantities
-  public let projectCountry: Project.Country
-  public let omitCurrencyCode: Bool
-  public let shipping: PledgeShippingSummaryViewData?
+  let rewards: [Reward]
+  let selectedQuantities: SelectedRewardQuantities
+  let projectCountry: Project.Country
+  let omitCurrencyCode: Bool
+  let shipping: PledgeShippingSummaryViewData?
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
@@ -149,7 +149,7 @@ private func items(
 ) -> [PostCampaignRewardsSummaryItem] {
   // MARK: Header
 
-  let headerItem = PostCampaignRewardsSummaryItem.header((
+  let headerItem = PostCampaignRewardsSummaryItem.header(.init(
     headerText: nil,
     showHeader: true,
     text: estimatedDeliveryString ?? "",
@@ -182,10 +182,9 @@ private func items(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    return PostCampaignRewardsSummaryItem.reward((
+    return PostCampaignRewardsSummaryItem.reward(.init(
       headerText: headerAttributedText,
-      showHeader: data.rewards.firstIndex(of: reward)! < 2,
-      /// only show header text if the item is the base reward or the first add-on.
+      showHeader: false,
       text: itemString,
       amount: amountAttributedText
     ))
@@ -199,7 +198,7 @@ private func items(
       with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    let shippingItem = PostCampaignRewardsSummaryItem.reward((
+    let shippingItem = PostCampaignRewardsSummaryItem.reward(.init(
       headerText: nil,
       showHeader: true,
       text: Strings.Shipping_to_country(country: shipping.locationName),
@@ -216,7 +215,7 @@ private func items(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    let bonusItem = PostCampaignRewardsSummaryItem.reward((
+    let bonusItem = PostCampaignRewardsSummaryItem.reward(.init(
       headerText: nil,
       showHeader: true,
       text: Strings.Bonus_support(),

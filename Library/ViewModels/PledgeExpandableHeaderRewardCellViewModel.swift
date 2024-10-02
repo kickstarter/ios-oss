@@ -3,12 +3,12 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeExpandableHeaderRewardCellData = (
-  headerText: NSAttributedString?,
-  showHeader: Bool,
-  text: String,
-  amount: NSAttributedString
-)
+public struct PledgeExpandableHeaderRewardCellData: Hashable {
+  public let headerText: NSAttributedString?
+  public let showHeader: Bool
+  public let text: String
+  public let amount: NSAttributedString
+}
 
 public protocol PledgeExpandableHeaderRewardCellViewModelInputs {
   func configure(with data: PledgeExpandableHeaderRewardCellData)
