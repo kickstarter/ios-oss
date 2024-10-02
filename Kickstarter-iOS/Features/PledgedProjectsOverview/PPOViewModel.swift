@@ -30,7 +30,7 @@ protocol PPOViewModelOutputs {
 }
 
 enum PPONavigationEvent {
-  case backingPage
+  case backedProjects
   case fixPaymentMethod
   case fix3DSChallenge
   case survey
@@ -94,7 +94,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Route navigation events
     Publishers.Merge6(
-      self.openBackedProjectsSubject.map { PPONavigationEvent.backingPage },
+      self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject.map { PPONavigationEvent.fixPaymentMethod },
       self.fix3DSChallengeSubject.map { PPONavigationEvent.fix3DSChallenge },
       self.openSurveySubject.map { PPONavigationEvent.survey },
