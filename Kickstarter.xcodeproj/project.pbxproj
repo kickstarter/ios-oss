@@ -10972,7 +10972,7 @@
 			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				minimumVersion = 5.0.5;
 			};
 		};
 		7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
