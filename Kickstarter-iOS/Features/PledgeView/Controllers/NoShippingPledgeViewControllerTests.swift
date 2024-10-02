@@ -256,7 +256,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         }
       }
   }
-  
+
   func testView_PledgeWithNoReward() {
     let project = Project.template
     let shippingRule = ShippingRule.template
@@ -291,7 +291,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           assertSnapshot(
             matching: parent.view,
             as: .image(perceptualPrecision: 0.98),
-            named: "lang_\(language)_device_\(device)", record: true
+            named: "lang_\(language)_device_\(device)"
           )
         }
       }
