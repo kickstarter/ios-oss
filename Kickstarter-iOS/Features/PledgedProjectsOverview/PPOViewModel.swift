@@ -20,6 +20,7 @@ protocol PPOViewModelInputs {
   func fixPaymentMethod()
   func fix3DSChallenge()
   func openSurvey()
+  func editAddress()
   func confirmAddress()
   func contactCreator()
 }
@@ -34,6 +35,7 @@ enum PPONavigationEvent {
   case fixPaymentMethod
   case fix3DSChallenge
   case survey
+  case editAddress
   case confirmAddress
   case contactCreator
 }
@@ -93,11 +95,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge6(
+    Publishers.Merge7(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject.map { PPONavigationEvent.fixPaymentMethod },
       self.fix3DSChallengeSubject.map { PPONavigationEvent.fix3DSChallenge },
       self.openSurveySubject.map { PPONavigationEvent.survey },
+      self.editAddressSubject.map { PPONavigationEvent.editAddress },
       self.confirmAddressSubject.map { PPONavigationEvent.confirmAddress },
       self.contactCreatorSubject.map { PPONavigationEvent.contactCreator }
     )
@@ -112,6 +115,60 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 //          "Survey submitted! Need to change your address? Visit your backing details on our website."
 //        ))
         self?.bannerViewModel = MessageBannerViewViewModel((.success, "Your payment has been processed."))
+      }
+      .store(in: &self.cancellables)
+
+    let latestLoadedResults = self.paginator.$results
+      .compactMap({ results in
+        results.hasLoaded ? results.values : nil
+      })
+      .map({ results in results.ppoAnalyticsProperties })
+
+    // Analytics: When view appears, the next time it loads, send a PPO dashboard open
+    self.viewDidAppearSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, properties in
+        AppEnvironment.current.ksrAnalytics.trackPPODashboardOpens(properties: properties)
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Tap messaging creator
+    self.contactCreatorSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, _ in
+        // TODO
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Fixing payment failure
+    self.fixPaymentMethodSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, _ in
+        // TODO
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Opening survey
+    self.openSurveySubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, _ in
+        // TODO
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Initiate confirming address
+    self.confirmAddressSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, _ in
+        // TODO
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Edit address
+    self.editAddressSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, _ in
+        // TODO
       }
       .store(in: &self.cancellables)
   }
@@ -152,6 +209,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openSurveySubject.send(())
   }
 
+  func editAddress() {
+    self.editAddressSubject.send(())
+  }
+
   func confirmAddress() {
     self.confirmAddressSubject.send(())
   }
@@ -181,6 +242,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let fixPaymentMethodSubject = PassthroughSubject<Void, Never>()
   private let fix3DSChallengeSubject = PassthroughSubject<Void, Never>()
   private let openSurveySubject = PassthroughSubject<Void, Never>()
+  private let editAddressSubject = PassthroughSubject<Void, Never>()
   private let confirmAddressSubject = PassthroughSubject<Void, Never>()
   private let contactCreatorSubject = PassthroughSubject<Void, Never>()
 
@@ -190,5 +252,38 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   private enum Constants {
     static let pageSize = 20
+  }
+}
+
+extension Sequence where Element == PPOProjectCardViewModel {
+  var ppoAnalyticsProperties: KSRAnalytics.PledgedProjectOverviewProperties {
+    var paymentFailedCount: Int = 0
+    var cardAuthRequiredCount: Int = 0
+    var surveyAvailableCount: Int = 0
+    var addressLocksSoonCount: Int = 0
+    var total: Int = 0
+    let page: Int? = nil
+
+    for viewModel in self {
+      switch viewModel.tierType {
+      case .fixPayment:
+        paymentFailedCount += 1
+      case .authenticateCard:
+        cardAuthRequiredCount += 1
+      case .openSurvey:
+        surveyAvailableCount += 1
+      case .confirmAddress:
+        addressLocksSoonCount += 1
+      }
+    }
+
+    return KSRAnalytics.PledgedProjectOverviewProperties(
+      addressLocksSoonCount: addressLocksSoonCount,
+      surveyAvailableCount: surveyAvailableCount,
+      paymentFailedCount: paymentFailedCount,
+      cardAuthRequiredCount: cardAuthRequiredCount,
+      total: total,
+      page: page
+    )
   }
 }
