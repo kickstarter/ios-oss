@@ -225,7 +225,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .someLoaded(firstData, cursor) = values[2]
+      case let .someLoaded(firstData, cursor, _) = values[2]
     else {
       return XCTFail()
     }
