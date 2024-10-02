@@ -39,14 +39,11 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
-    _ = self.rootStackView
-      |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
+    self.rootStackViewStyle(self.rootStackView)
 
-    _ = self.labelsStackView
-      |> labelStackViewStyle
+    self.labelStackViewStyle(self.labelsStackView)
 
-    _ = self.titleLabel
-      |> labelStyle
+    self.labelStyle(self.titleLabel)
 
     self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -107,29 +104,29 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     super.layoutSubviews()
   }
-}
 
-// MARK: - Styles
+  // MARK: - Styles
 
-private func headerLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_subhead().bolded
-  label.textColor = UIColor.ksr_black
-  label.numberOfLines = 0
-}
+  private func headerLabelStyle(_ label: UILabel) {
+    label.font = UIFont.ksr_subhead().bolded
+    label.textColor = UIColor.ksr_black
+    label.numberOfLines = 0
+  }
 
-private func labelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_subhead().bolded
-  label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
-  label.numberOfLines = 0
-}
+  private func labelStyle(_ label: UILabel) {
+    label.font = UIFont.ksr_subhead().bolded
+    label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
+    label.numberOfLines = 0
+  }
 
-private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
-  let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
-  let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+  private func rootStackViewStyle(_ stackView: UIStackView) {
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory > .accessibilityLarge
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView
+      .Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
-  return { (stackView: UIStackView) in
     stackView.insetsLayoutMarginsFromSafeArea = false
     stackView.alignment = alignment
     stackView.axis = axis
@@ -137,18 +134,18 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
     stackView.spacing = spacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.layoutMargins = UIEdgeInsets(
-      topBottom: Styles.grid(3),
-      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
+      top: 0,
+      left: CheckoutConstants.PledgeView.Inset.leftRight,
+      bottom: Styles.grid(3),
+      right: CheckoutConstants.PledgeView.Inset.leftRight
     )
-
-    return stackView
   }
-}
 
-private func labelStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.distribution = .fill
-  stackView.alignment = .fill
-  stackView.spacing = Styles.grid(1)
-  stackView.isLayoutMarginsRelativeArrangement = true
+  private func labelStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    stackView.spacing = Styles.grid(1)
+    stackView.isLayoutMarginsRelativeArrangement = true
+  }
 }
