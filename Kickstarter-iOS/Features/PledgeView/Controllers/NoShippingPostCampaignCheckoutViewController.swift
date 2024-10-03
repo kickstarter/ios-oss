@@ -279,11 +279,11 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
     self.viewModel.outputs.showErrorBannerWithMessage
       .observeForControllerAction()
-      .observeValues { [weak self] errorMessage in
+      .observeValues { [weak self] errorMessage, shouldPersist in
         self?.messageBannerViewController?.showBanner(
           with: .error,
           message: errorMessage,
-          dismissType: .bannerAndViewController
+          dismissType: shouldPersist ? .persist : .bannerOnly
         )
       }
 
@@ -305,21 +305,6 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] thanksPageData in
         let thanksVC = ThanksViewController.configured(with: thanksPageData)
         self?.navigationController?.pushViewController(thanksVC, animated: true)
-      }
-
-    self.viewModel.outputs.checkoutError
-      .observeForUI()
-      .observeValues { [weak self] error in
-
-        #if DEBUG
-          let serverError = error.errorMessages.first ?? ""
-          let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
-        #else
-          let message = Strings.Something_went_wrong_please_try_again()
-        #endif
-
-        self?.messageBannerViewController?
-          .showBanner(with: .error, message: message, dismissType: .bannerAndViewController)
       }
   }
 
@@ -360,7 +345,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
               .showBanner(
                 with: .error,
                 message: Strings.Something_went_wrong_please_try_again(),
-                dismissType: .bannerAndViewController
+                dismissType: .bannerOnly
               )
           }
           self.viewModel.inputs.checkoutTerminated()
@@ -455,17 +440,11 @@ extension NoShippingPostCampaignCheckoutViewController: PledgePaymentMethodsView
 // MARK: - PledgeViewControllerMessageDisplaying
 
 extension NoShippingPostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_: UIViewController, didErrorWith message: String, error: Error?) {
-    // If the error is a stripe error from attempting to add a new card, dismiss the banner only
-    // instead of restarting the checkout flow.
-    let stripeError = error as? NSError
-    let dismissBannerOnly = stripeError?.domain == STPError.stripeDomain &&
-      stripeError?.code == STPErrorCode.cardError.rawValue
-
+  func pledgeViewController(_: UIViewController, didErrorWith message: String, error _: Error?) {
     self.messageBannerViewController?.showBanner(
       with: .error,
       message: message,
-      dismissType: dismissBannerOnly ? .bannerOnly : .bannerAndViewController
+      dismissType: .bannerOnly
     )
   }
 
@@ -509,7 +488,7 @@ extension NoShippingPostCampaignCheckoutViewController: STPApplePayContextDelega
         .showBanner(
           with: .error,
           message: Strings.Something_went_wrong_please_try_again(),
-          dismissType: .bannerAndViewController
+          dismissType: .bannerOnly
         )
     case .userCancellation:
       // User canceled the payment
