@@ -279,6 +279,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     case .header:
       break
     case .reward:
+      headerLabel.text = Strings.backer_modal_reward_title()
     case .addOns:
       headerLabel.text = Strings.Add_ons()
     case .bonusSupport:
