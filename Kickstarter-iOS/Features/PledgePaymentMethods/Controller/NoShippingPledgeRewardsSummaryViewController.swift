@@ -306,7 +306,9 @@ extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    let section = PledgeRewardsSummarySection.allCases[section]
+
     /// Hides the first section header because we're using our own UITableCell here.
-    return section == 0 ? 0 : UITableView.automaticDimension
+    return section == .header || section == .bonusSupport ? 0 : UITableView.automaticDimension
   }
 }
