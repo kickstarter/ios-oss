@@ -110,9 +110,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
-        results.hasLoaded ? results.values : nil
+        results.hasLoaded ? results.values
+          .ppoAnalyticsProperties(total: results.total, page: results.page) : nil
       }
-      .map { results in results.ppoAnalyticsProperties }
 
     // Analytics: When view appears, the next time it loads, send a PPO dashboard open
     self.viewDidAppearSubject
@@ -262,13 +262,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 }
 
 extension Sequence where Element == PPOProjectCardViewModel {
-  var ppoAnalyticsProperties: KSRAnalytics.PledgedProjectOverviewProperties {
+  func ppoAnalyticsProperties(total: Int?, page: Int?) -> KSRAnalytics.PledgedProjectOverviewProperties {
     var paymentFailedCount: Int = 0
     var cardAuthRequiredCount: Int = 0
     var surveyAvailableCount: Int = 0
     var addressLocksSoonCount: Int = 0
-    var total: Int = 0
-    let page: Int? = nil
 
     for viewModel in self {
       switch viewModel.card.tierType {
