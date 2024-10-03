@@ -309,92 +309,15 @@ class PPOViewModelTests: XCTestCase {
   private func pledgedProjectsData(
     cursors: ClosedRange<Int> = 1...3,
     hasNextPage: Bool = false
-  ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors.map { index in self.projectEdgeJSON(cursor: "\(index)") }
-    let edgesJson = "[\(edges.joined(separator: ", "))]"
-    return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
-    {
-    "pledgeProjectsOverview": {
-      "__typename": "PledgeProjectsOverview",
-      "pledges": {
-        "__typename": "PledgedProjectsOverviewPledgesConnection",
-        "totalCount": \(cursors.count),
-        "edges": \(edgesJson),
-        "pageInfo": {
-          "__typename": "PageInfo",
-          "hasNextPage": \(String(hasNextPage)),
-          "endCursor": "\(cursors.upperBound)",
-          "hasPreviousPage": false,
-          "startCursor": "1"
-        }
-      }
-    }
-    }
-    """)
+  ) throws -> PledgedProjectOverviewCardsEnvelope {
+    PledgedProjectOverviewCardsEnvelope(
+      cards: cursors.map { _ in self.projectCard() },
+      totalCount: cursors.count,
+      cursor: hasNextPage ? "\(cursors.upperBound)" : nil
+    )
   }
 
-  private func projectEdgeJSON(
-    cursor: String,
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-          {
-            "__typename": "PledgeProjectOverviewItemEdge",
-            "cursor": "\(cursor)",
-            "node": \(self.projectNodeJSON(projectName: projectName))
-          }
-    """
-  }
-
-  private func projectNodeJSON(
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-    {
-      "__typename": "PledgeProjectOverviewItem",
-      "backing": {
-        "__typename": "Backing",
-        "amount": {
-          "__typename": "Money",
-          "amount": "1.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "id": "\(UUID().uuidString)",
-        "project": {
-          "__typename": "Project",
-          "creator": {
-            "__typename": "User",
-            "email": null,
-            "id": "\(UUID().uuidString)",
-            "name": "\(UUID().uuidString)"
-          },
-          "image": {
-            "__typename": "Photo",
-            "id": "\(UUID().uuidString)",
-            "url": "https://i-dev.kickstarter.com/assets/x"
-          },
-          "name": "\(projectName)",
-          "pid": 999498397,
-          "slug": "2071399561/ppo-failed-payment-0"
-        }
-      },
-      "tierType": "Tier1PaymentFailed",
-      "flags": [
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "alert",
-          "message": "Payment failed",
-          "type": "alert"
-        },
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "time",
-          "message": "Pledge will be dropped in 0 days",
-          "type": "alert"
-        }
-      ]
-    }
-    """
+  private func projectCard() -> PledgedProjectOverviewCard {
+    PledgedProjectOverviewCard.previewTemplates[0]
   }
 }
