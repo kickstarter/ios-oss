@@ -134,10 +134,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     stackView.spacing = spacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.layoutMargins = UIEdgeInsets(
-      top: 0,
-      left: CheckoutConstants.PledgeView.Inset.leftRight,
-      bottom: Styles.grid(3),
-      right: CheckoutConstants.PledgeView.Inset.leftRight
+      topBottom: Styles.grid(1),
+      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
     )
   }
 
