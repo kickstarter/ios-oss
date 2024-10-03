@@ -223,7 +223,7 @@ final class PaginatorTests: XCTestCase {
     self.waitTinyInterval()
 
     XCTAssertFalse(paginator.results.isLoading)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6], page: 2))
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertEqual(paginator.results.total, 6)
   }

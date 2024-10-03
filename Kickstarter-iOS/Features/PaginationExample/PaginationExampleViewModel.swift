@@ -50,7 +50,7 @@ internal class PaginationExampleViewModel: ObservableObject {
         return "Waiting to load"
       case .loading:
         return "Loading"
-      case let .someLoaded(values, _, _):
+      case let .someLoaded(values, _, _, _):
         return "Got \(values.count) results; more are available"
       case .allLoaded:
         return "Loaded all results"
