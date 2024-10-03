@@ -108,7 +108,7 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
       |> \.spacing .~ spacing
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ .init(
-        topBottom: Styles.grid(3),
+        topBottom: Styles.grid(1),
         leftRight: CheckoutConstants.PledgeView.Inset.leftRight
       )
   }
