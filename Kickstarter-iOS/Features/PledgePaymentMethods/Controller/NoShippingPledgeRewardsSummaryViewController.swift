@@ -214,8 +214,6 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   private func applySnapshotToDataSource(from data: [PostCampaignRewardsSummaryItem]) {
     var snapshot = NSDiffableDataSourceSnapshot<PledgeRewardsSummarySection, PledgeRewardsSummaryRow>()
 
-    // MARK: Header + Reward Sections
-
     /// Decipher header vs reward objects from the `[PostCampaignRewardsSummaryItem]` data object.
     let headerItemData = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
       guard case let .header(data) = item else { return nil }
@@ -227,26 +225,36 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       return data
     }
 
-    let baseReward = rewardData[0]
+    // MARK: Header Section
 
     /// Define the sections of the table and what data to use in each section.
-    snapshot.appendSections([.header, .reward])
+    snapshot.appendSections([.header])
     snapshot.appendItems([.header(headerItemData[0])], toSection: .header)
-    snapshot.appendItems([.reward(baseReward)], toSection: .reward)
 
-    // MARK: Add-Ons
+    // MARK: Reward Section
 
-    let addOns = rewardData.filter { $0 != baseReward || $0.text != Strings.Bonus_support() }
-      .map { PledgeRewardsSummaryRow.addOns($0) }
-    /// We only want to add an add-ons section if any have been selected
-    if addOns.isEmpty == false {
-      snapshot.appendSections([.addOns])
-      snapshot.appendItems(addOns, toSection: .addOns)
+    if rewardData.isEmpty == false {
+      let baseReward = rewardData[0]
+      snapshot.appendSections([.reward])
+      snapshot.appendItems([.reward(baseReward)], toSection: .reward)
+
+      // MARK: Add-Ons
+
+      let addOns = rewardData
+        .filter { reward in reward != baseReward && reward.text != Strings.Bonus_support() }
+        .map { PledgeRewardsSummaryRow.addOns($0) }
+
+      /// We only want to add an add-ons section if any have been selected
+      if addOns.isEmpty == false {
+        snapshot.appendSections([.addOns])
+        snapshot.appendItems(addOns, toSection: .addOns)
+      }
     }
 
     // MARK: Bonus Support
 
-    let bonusSupportReward = rewardData.filter { $0.text == Strings.Bonus_support() }
+    let bonusSupportReward = rewardData
+      .filter { reward in reward.text == Strings.Bonus_support() }
       .map { PledgeRewardsSummaryRow.bonusSupport($0) }
 
     if let bonusSupport = bonusSupportReward.first {
@@ -271,7 +279,6 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     case .header:
       break
     case .reward:
-      headerLabel.text = Strings.project_subpages_menu_buttons_rewards()
     case .addOns:
       headerLabel.text = Strings.Add_ons()
     case .bonusSupport:
