@@ -14,9 +14,9 @@ public struct PaginatingLazyVStack<Data: Identifiable, Cell: View>: View {
   public init(
     data: Binding<[Data]>,
     canShowProgressView: Binding<Bool>,
+    configureCell: @escaping (Data) -> Cell,
     onRefresh: @escaping () async -> Void,
-    onDidShowProgressView: @escaping () -> Void,
-    configureCell: @escaping (Data) -> Cell
+    onDidShowProgressView: @escaping () -> Void
   ) {
     self._data = data
     self._canShowProgressView = canShowProgressView
@@ -76,19 +76,18 @@ struct PaginatingLazyVStackExampleView: View {
   var body: some View {
     PaginatingLazyVStack(
       data: $data,
-      canShowProgressView: $hasMore,
-      onRefresh: {
-        await refresh()
-      },
-      onDidShowProgressView: {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          addMore()
-        }
-      },
-      configureCell: { model in
-        PaginatingLazyVStackExampleCell(title: model.title)
+      canShowProgressView: $hasMore
+    ) { model in
+      PaginatingLazyVStackExampleCell(title: model.title)
+    }
+    onRefresh: {
+      await refresh()
+    }
+    onDidShowProgressView: {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        addMore()
       }
-    )
+    }
   }
 
   private func addMore() {
