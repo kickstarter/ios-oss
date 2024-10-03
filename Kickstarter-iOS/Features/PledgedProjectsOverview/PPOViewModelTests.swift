@@ -42,7 +42,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -76,7 +76,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -115,7 +115,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -123,7 +123,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -168,7 +168,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -176,7 +176,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -184,7 +184,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[5],
-      case let .allLoaded(thirdData) = values[6]
+      case let .allLoaded(thirdData, _) = values[6]
     else {
       return XCTFail()
     }
@@ -225,7 +225,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .someLoaded(firstData, cursor, _) = values[2]
+      case let .someLoaded(firstData, cursor, _, _) = values[2]
     else {
       return XCTFail()
     }
@@ -234,7 +234,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
