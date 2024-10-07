@@ -208,9 +208,8 @@ public class NoShippingConfirmDetailsViewModel: NoShippingConfirmDetailsViewMode
     )
     .map { projectAndConfirmationLabelHidden, pledgeTotal, rewards in
       let (project, confirmationLabelHidden) = projectAndConfirmationLabelHidden
-      let pledgeHasNoReward = rewards.count == 1 && rewards.first?.isNoReward == true
 
-      return (project, pledgeTotal, confirmationLabelHidden, pledgeHasNoReward)
+      return (project, pledgeTotal, confirmationLabelHidden, pledgeHasNoRewards(rewards: rewards))
     }
     .map(pledgeSummaryViewData)
 
