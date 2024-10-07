@@ -233,22 +233,20 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
     // MARK: Reward Section
 
-    if rewardData.count > 0 {
-      let baseReward = rewardData[0]
-      snapshot.appendSections([.reward])
-      snapshot.appendItems([.reward(baseReward)], toSection: .reward)
+    let baseReward = rewardData[0]
+    snapshot.appendSections([.reward])
+    snapshot.appendItems([.reward(baseReward)], toSection: .reward)
 
-      // MARK: Add-Ons
+    // MARK: Add-Ons
 
-      let addOns = rewardData
-        .filter { reward in reward != baseReward && reward.text != Strings.Bonus_support() }
-        .map { PledgeRewardsSummaryRow.addOns($0) }
+    let addOns = rewardData
+      .filter { reward in reward != baseReward && reward.text != Strings.Bonus_support() }
+      .map { PledgeRewardsSummaryRow.addOns($0) }
 
-      /// We only want to add an add-ons section if any have been selected
-      if addOns.count > 0 {
-        snapshot.appendSections([.addOns])
-        snapshot.appendItems(addOns, toSection: .addOns)
-      }
+    /// We only want to add an add-ons section if any have been selected
+    if addOns.count > 0 {
+      snapshot.appendSections([.addOns])
+      snapshot.appendItems(addOns, toSection: .addOns)
     }
 
     // MARK: Bonus Support
