@@ -62,8 +62,6 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.goToPledge(param: param)
       }
 
-    self.navigationItem.rac.title = self.viewModel.outputs.title
-
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeValues { [weak self] request in
