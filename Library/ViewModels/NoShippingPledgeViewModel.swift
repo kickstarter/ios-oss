@@ -256,9 +256,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       initialData,
       pledgeTotal,
       additionalPledgeAmount,
-      shippingSummaryViewData
+      shippingSummaryViewData,
+      rewards
     )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping in
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
@@ -269,7 +270,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
         total: pledgeTotal,
-        confirmationLabelHidden: true
+        confirmationLabelHidden: true,
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
       )
       return (rewardsData, additionalPledgeAmount, pledgeData)
     }
@@ -1181,14 +1183,6 @@ private func allValuesChangedAndValid(
 }
 
 // MARK: - Helper Functions
-
-private func pledgeSummaryViewData(
-  project: Project,
-  total: Double,
-  confirmationLabelHidden: Bool
-) -> PledgeSummaryViewData {
-  return (project, total, confirmationLabelHidden)
-}
 
 private func pledgeAmountSummaryViewData(
   with project: Project,

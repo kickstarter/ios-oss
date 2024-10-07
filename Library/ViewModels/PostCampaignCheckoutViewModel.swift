@@ -118,7 +118,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         let pledgeData = PledgeSummaryViewData(
           project: data.project,
           total: data.total,
-          confirmationLabelHidden: true
+          confirmationLabelHidden: true,
+          pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards)
         )
         return (rewardsData, data.bonusAmount, pledgeData)
       }

@@ -256,4 +256,44 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         }
       }
   }
+
+  func testView_PledgeWithNoReward() {
+    let project = Project.template
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
+    let nonReward = Reward.noReward
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [nonReward],
+      selectedShippingRule: shippingRule,
+      selectedQuantities: [nonReward.id: 1],
+      selectedLocationId: ShippingRule.template.id,
+      refTag: .projectPage,
+      context: .pledge
+    )
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
+        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+          let controller = NoShippingPledgeViewController.instantiate()
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          self.scheduler.advance(by: .seconds(1))
+
+          self.allowLayoutPass()
+
+          assertSnapshot(
+            matching: parent.view,
+            as: .image(perceptualPrecision: 0.98),
+            named: "lang_\(language)_device_\(device)"
+          )
+        }
+      }
+  }
 }
