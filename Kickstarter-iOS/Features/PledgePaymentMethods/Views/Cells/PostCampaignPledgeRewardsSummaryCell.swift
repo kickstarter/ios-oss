@@ -8,7 +8,6 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   private lazy var amountLabel: UILabel = UILabel(frame: .zero)
   private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var labelsStackView: UIStackView = UIStackView(frame: .zero)
-  private lazy var headerLabel: UILabel = UILabel(frame: .zero)
   private lazy var titleLabel: UILabel = UILabel(frame: .zero)
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
@@ -56,14 +55,6 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
 
-    self.viewModel.outputs.headerLabelText
-      .observeForUI()
-      .observeValues { [weak self] text in
-        guard let self, text != nil else { return }
-        self.headerLabel.attributedText = text
-        self.headerLabel.setNeedsLayout()
-      }
-
     self.viewModel.outputs.labelText
       .observeForUI()
       .observeValues { [weak self] titleText in
@@ -88,7 +79,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     _ = ([self.labelsStackView, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.headerLabel, self.titleLabel], self.labelsStackView)
+    _ = ([self.titleLabel], self.labelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -100,18 +91,11 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    self.headerLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     super.layoutSubviews()
   }
 
   // MARK: - Styles
-
-  private func headerLabelStyle(_ label: UILabel) {
-    label.font = UIFont.ksr_subhead().bolded
-    label.textColor = UIColor.ksr_black
-    label.numberOfLines = 0
-  }
 
   private func labelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
