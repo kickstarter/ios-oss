@@ -6,7 +6,8 @@ import UIKit
 public typealias PledgeSummaryViewData = (
   project: Project,
   total: Double,
-  confirmationLabelHidden: Bool
+  confirmationLabelHidden: Bool,
+  pledgeHasNoReward: Bool?
 )
 
 public protocol PledgeSummaryViewModelInputs {
@@ -21,6 +22,7 @@ public protocol PledgeSummaryViewModelOutputs {
   var confirmationLabelHidden: Signal<Bool, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var totalConversionLabelText: Signal<String, Never> { get }
+  var titleLabelText: Signal<String, Never> { get }
 }
 
 public protocol PledgeSummaryViewModelType {
@@ -38,7 +40,10 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     .map(first)
 
     let projectAndPledgeTotal = initialData
-      .map { project, total, _ in (project, total) }
+      .map { project, total, _, _ in (project, total) }
+
+    let pledgeHasNoReward = initialData
+      .map { _, _, _, pledgeHasNoReward in pledgeHasNoReward }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -72,6 +77,13 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       return helpType
     }
     .skipNil()
+
+    self.titleLabelText = pledgeHasNoReward
+      .map { hasNoRewards in
+        featureNoShippingAtCheckout() && hasNoRewards == true
+          ? Strings.Pledge_without_a_reward()
+          : Strings.Pledge_amount()
+      }
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
       .map { project, pledgeTotal in
@@ -113,6 +125,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   public let confirmationLabelHidden: Signal<Bool, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let totalConversionLabelText: Signal<String, Never>
+  public let titleLabelText: Signal<String, Never>
 
   public var inputs: PledgeSummaryViewModelInputs { return self }
   public var outputs: PledgeSummaryViewModelOutputs { return self }
