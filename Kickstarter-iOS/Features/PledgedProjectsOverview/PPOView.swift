@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PPOView: View {
-  @ObservedObject var viewModel = PPOViewModel()
+  @StateObject var viewModel = PPOViewModel()
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
@@ -11,7 +11,9 @@ struct PPOView: View {
     GeometryReader { reader in
       ScrollView {
         // TODO: Show empty state view if user is logged in and has no PPO updates.
-        //      PPOEmptyStateView(tabBarController: self.tabBarController)
+        // PPOEmptyStateView {
+        //  self.onNavigate?(.backedProjects)
+        // }
 
         // TODO: Remove this button once we're showing cards instead.
         Button("Show banner") {

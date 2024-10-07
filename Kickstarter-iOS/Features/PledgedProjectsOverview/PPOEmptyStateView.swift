@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PPOEmptyStateView: View {
-  let viewModel: PPOViewModel?
+  var onOpenBackedProjects: (() -> Void)? = nil
 
   private enum Constants {
     public static let largePadding = 24.0
@@ -28,7 +28,7 @@ struct PPOEmptyStateView: View {
           .multilineTextAlignment(.center)
 
         Button("See all backed projects") {
-          self.viewModel?.openBackedProjects()
+          self.onOpenBackedProjects?()
         }
         .buttonStyle(GreenButtonStyle())
       }
@@ -43,5 +43,5 @@ struct PPOEmptyStateView: View {
 }
 
 #Preview {
-  PPOEmptyStateView(viewModel: nil)
+  PPOEmptyStateView()
 }
