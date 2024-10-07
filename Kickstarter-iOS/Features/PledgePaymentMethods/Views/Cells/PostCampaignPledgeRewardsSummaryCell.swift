@@ -6,9 +6,11 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var amountLabel: UILabel = UILabel(frame: .zero)
+  private lazy var containerStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var labelsStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var titleLabel: UILabel = UILabel(frame: .zero)
+  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
     = PledgeExpandableHeaderRewardCellViewModel()
@@ -38,6 +40,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
+    self.containerStackViewStyle(self.containerStackView)
+
     self.rootStackViewStyle(self.rootStackView)
 
     self.labelStackViewStyle(self.labelsStackView)
@@ -46,6 +50,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.separatorViewStyle(self.separatorView)
   }
 
   // MARK: - View model
@@ -72,9 +78,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.containerStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.rootStackView, self.separatorView], self.containerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.labelsStackView, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -85,7 +94,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor)
+      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor),
+      self.separatorView.leftAnchor
+        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+      self.separatorView.rightAnchor
+        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
+      self.separatorView.heightAnchor.constraint(equalToConstant: 1)
     ])
   }
 
@@ -123,11 +137,21 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     )
   }
 
+  private func containerStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.spacing = Styles.grid(1)
+  }
+
   private func labelStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.distribution = .fill
     stackView.alignment = .fill
     stackView.spacing = Styles.grid(1)
     stackView.isLayoutMarginsRelativeArrangement = true
+  }
+
+  private func separatorViewStyle(_ view: UIView) {
+    view.backgroundColor = .ksr_support_200
+    view.translatesAutoresizingMaskIntoConstraints = false
   }
 }
