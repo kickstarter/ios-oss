@@ -233,7 +233,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
     // MARK: Reward Section
 
-    if rewardData.isEmpty == false {
+    if rewardData.count > 0 {
       let baseReward = rewardData[0]
       snapshot.appendSections([.reward])
       snapshot.appendItems([.reward(baseReward)], toSection: .reward)
@@ -245,7 +245,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
         .map { PledgeRewardsSummaryRow.addOns($0) }
 
       /// We only want to add an add-ons section if any have been selected
-      if addOns.isEmpty == false {
+      if addOns.count > 0 {
         snapshot.appendSections([.addOns])
         snapshot.appendItems(addOns, toSection: .addOns)
       }
@@ -276,14 +276,12 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     self.sectionHeaderLabelStyle(headerLabel)
 
     switch section {
-    case .header:
+    case .header, .bonusSupport:
       break
     case .reward:
       headerLabel.text = Strings.backer_modal_reward_title()
     case .addOns:
       headerLabel.text = Strings.Add_ons()
-    case .bonusSupport:
-      break
     }
 
     headerView.addSubview(headerLabel)
