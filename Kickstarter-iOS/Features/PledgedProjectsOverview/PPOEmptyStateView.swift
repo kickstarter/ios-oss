@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PPOEmptyStateView: View {
-  weak var tabBarController: RootTabBarViewController?
+  var onOpenBackedProjects: (() -> Void)? = nil
 
   private enum Constants {
     public static let largePadding = 24.0
@@ -28,7 +28,7 @@ struct PPOEmptyStateView: View {
           .multilineTextAlignment(.center)
 
         Button("See all backed projects") {
-          self.tabBarController?.switchToProfile()
+          self.onOpenBackedProjects?()
         }
         .buttonStyle(GreenButtonStyle())
       }

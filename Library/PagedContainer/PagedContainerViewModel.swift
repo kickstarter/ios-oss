@@ -8,12 +8,25 @@ public enum TabBarBadge {
   case dot
   case count(Int)
 
-  var count: Int? {
+  public var count: Int? {
     switch self {
     case let .count(count):
       count
     case .none, .dot:
       nil
+    }
+  }
+
+  public init(count: Int?, convertZeroToNone: Bool = true) {
+    switch (count, convertZeroToNone) {
+    case (.none, _):
+      self = .none
+    case (.some(0), true):
+      self = .none
+    case (.some(0), false):
+      self = .count(0)
+    case let (.some(count), _):
+      self = .count(count)
     }
   }
 }

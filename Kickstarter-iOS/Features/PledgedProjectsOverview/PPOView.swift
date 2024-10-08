@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct PPOView: View {
-  weak var tabBarController: RootTabBarViewController?
-  @StateObject private var viewModel = PPOViewModel()
+  @StateObject var viewModel = PPOViewModel()
+  var onCountChange: ((Int?) -> Void)?
+  var onNavigate: ((PPONavigationEvent) -> Void)?
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
@@ -10,7 +11,9 @@ struct PPOView: View {
     GeometryReader { reader in
       ScrollView {
         // TODO: Show empty state view if user is logged in and has no PPO updates.
-        //      PPOEmptyStateView(tabBarController: self.tabBarController)
+        // PPOEmptyStateView {
+        //  self.onNavigate?(.backedProjects)
+        // }
 
         // TODO: Remove this button once we're showing cards instead.
         Button("Show banner") {
@@ -35,10 +38,16 @@ struct PPOView: View {
         }
       })
       .onAppear(perform: { self.viewModel.viewDidAppear() })
+      .onChange(of: self.viewModel.results.total, perform: { value in
+        self.onCountChange?(value)
+      })
+      .onReceive(self.viewModel.navigationEvents, perform: { event in
+        self.onNavigate?(event)
+      })
     }
   }
 }
 
 #Preview {
-  PPOView()
+  PPOView(viewModel: PPOViewModel())
 }

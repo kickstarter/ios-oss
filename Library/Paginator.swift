@@ -35,8 +35,8 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       switch (lhs, rhs) {
       case (.unloaded, .unloaded):
         return true
-      case let (.someLoaded(lhsValues, lhsCursor), .someLoaded(rhsValues, rhsCursor)):
-        return lhsValues == rhsValues && lhsCursor == rhsCursor
+      case let (.someLoaded(lhsValues, lhsCursor, lhsTotal), .someLoaded(rhsValues, rhsCursor, rhsTotal)):
+        return lhsValues == rhsValues && lhsCursor == rhsCursor && lhsTotal == rhsTotal
       case let (.allLoaded(lhsValues), .allLoaded(rhsValues)):
         return lhsValues == rhsValues
       case (.empty, .empty):
@@ -56,7 +56,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
     }
 
     case unloaded
-    case someLoaded(values: [Value], cursor: Cursor)
+    case someLoaded(values: [Value], cursor: Cursor, total: Int?)
     case allLoaded(values: [Value])
     case empty
     case error(SomeError)
@@ -66,7 +66,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       switch self {
       case let .loading(previous):
         previous.values
-      case let .someLoaded(values, _):
+      case let .someLoaded(values, _, _):
         values
       case let .allLoaded(values):
         values
@@ -76,7 +76,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
     }
 
     public var cursor: Cursor? {
-      guard case let .someLoaded(_, cursor) = self else {
+      guard case let .someLoaded(_, cursor, _) = self else {
         return nil
       }
       return cursor
@@ -100,12 +100,28 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         false
       }
     }
+
+    public var total: Int? {
+      switch self {
+      case let .allLoaded(values):
+        values.count
+      case let .loading(previous):
+        previous.total
+      case let .someLoaded(_, _, total):
+        total
+      case .empty:
+        0
+      case .unloaded, .error:
+        nil
+      }
+    }
   }
 
   @Published public var results: Results
 
   private var valuesFromEnvelope: (Envelope) -> [Value]
   private var cursorFromEnvelope: (Envelope) -> Cursor?
+  private var totalFromEnvelope: (Envelope) -> Int?
   private var requestFromParams: (RequestParams) -> AnyPublisher<Envelope, SomeError>
   private var requestFromCursor: (Cursor) -> AnyPublisher<Envelope, SomeError>
   private var cancellables = Set<AnyCancellable>()
@@ -115,6 +131,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
   public init(
     valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
     cursorFromEnvelope: @escaping ((Envelope) -> Cursor?),
+    totalFromEnvelope: @escaping ((Envelope) -> Int?),
     requestFromParams: @escaping ((RequestParams) -> AnyPublisher<Envelope, SomeError>),
     requestFromCursor: @escaping ((Cursor) -> AnyPublisher<Envelope, SomeError>)
   ) {
@@ -122,6 +139,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
 
     self.valuesFromEnvelope = valuesFromEnvelope
     self.cursorFromEnvelope = cursorFromEnvelope
+    self.totalFromEnvelope = totalFromEnvelope
     self.requestFromParams = requestFromParams
     self.requestFromCursor = requestFromCursor
   }
@@ -143,7 +161,8 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         if allValues.count == 0 {
           results = .empty
         } else if let nextCursor, !newValues.isEmpty {
-          results = .someLoaded(values: allValues, cursor: nextCursor)
+          let total = self.totalFromEnvelope(envelope)
+          results = .someLoaded(values: allValues, cursor: nextCursor, total: total)
         } else {
           results = .allLoaded(values: allValues)
         }
