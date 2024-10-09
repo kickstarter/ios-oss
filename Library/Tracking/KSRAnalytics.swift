@@ -607,7 +607,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOMessagingCreator(
-    from project: Project,
+    from project: any ProjectAnalyticsProperties,
     creatorUID: String,
     properties: PledgedProjectOverviewProperties
   ) {
@@ -622,7 +622,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOFixingPaymentFailure(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(ctaContext: .fixPledgeInitiate, page: .projectAlerts)
@@ -636,7 +636,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOOpeningSurvey(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -653,7 +653,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOInitiateConfirmingAddress(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -671,7 +671,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOSubmitAddressConfirmation(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -689,7 +689,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOEditAddress(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
