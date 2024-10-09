@@ -9168,6 +9168,7 @@ public enum GraphAPI {
       document.append("\n" + PpoBackingFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + PpoProjectFragment.fragmentDefinition)
+      document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
@@ -15170,6 +15171,7 @@ public enum GraphAPI {
         name
         pid
         slug
+        ...ProjectAnalyticsFragment
       }
       """
 
@@ -15183,6 +15185,7 @@ public enum GraphAPI {
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
         GraphQLField("slug", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
       ]
     }
 
@@ -15190,10 +15193,6 @@ public enum GraphAPI {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
-    }
-
-    public init(creator: Creator? = nil, image: Image? = nil, name: String, pid: Int, slug: String) {
-      self.init(unsafeResultMap: ["__typename": "Project", "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "slug": slug])
     }
 
     public var __typename: String {
@@ -15252,6 +15251,32 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "slug")
+      }
+    }
+
+    public var fragments: Fragments {
+      get {
+        return Fragments(unsafeResultMap: resultMap)
+      }
+      set {
+        resultMap += newValue.resultMap
+      }
+    }
+
+    public struct Fragments {
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var projectAnalyticsFragment: ProjectAnalyticsFragment {
+        get {
+          return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
       }
     }
 
