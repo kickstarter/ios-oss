@@ -225,7 +225,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .someLoaded(firstData, cursor) = values[2]
+      case let .someLoaded(firstData, cursor, _) = values[2]
     else {
       return XCTFail()
     }
@@ -239,6 +239,59 @@ class PPOViewModelTests: XCTestCase {
       return XCTFail()
     }
     XCTAssertEqual(secondData.count, 7)
+  }
+
+  func testNavigationBackedProjects() {
+    self.verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backedProjects)
+  }
+
+  func testNavigationConfirmAddress() {
+    self.verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+  }
+
+  func testNavigationContactCreator() {
+    self.verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+  }
+
+  func testNavigationFix3DSChallenge() {
+    self.verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+  }
+
+  func testNavigationFixPaymentMethod() {
+    self.verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+  }
+
+  func testNavigationOpenSurvey() {
+    self.verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+  }
+
+  // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
+  private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
+    let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
+
+    let expectation = self.expectation(description: "VerifyNavigationEvent \(event)")
+
+    var values: [PPONavigationEvent] = []
+    self.viewModel.navigationEvents
+      .collect(.byTime(DispatchQueue.main, 0.1))
+      .sink(receiveValue: { v in
+        values = v
+        expectation.fulfill()
+      })
+      .store(in: &self.cancellables)
+
+    closure()
+
+    self.wait(for: [expectation], timeout: 1)
+
+    let afterResults: PPOViewModelPaginator.Results = self.viewModel.results
+
+    XCTAssertEqual(values.count, 1)
+    guard case event = values[0] else {
+      return XCTFail()
+    }
+
+    XCTAssertEqual(beforeResults, afterResults)
   }
 
   private func pledgedProjectsData(

@@ -30,9 +30,6 @@ public protocol SurveyResponseViewModelOutputs {
   /// Emits a project param that should be used to present the manage pledge view controller
   var goToPledge: Signal<Param, Never> { get }
 
-  /// Set the navigation item's title.
-  var title: Signal<String, Never> { get }
-
   /// Emits a request that should be loaded by the webview.
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
@@ -122,9 +119,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .map { $0 ? .allow : .cancel }
 
-    self.title = self.viewDidLoadProperty.signal
-      .mapConst(Strings.Survey())
-
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
       newSurveyRequest
@@ -154,7 +148,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let goToProject: Signal<(Param, RefTag?), Never>
   public let goToUpdate: Signal<(Project, Update), Never>
   public let goToPledge: Signal<Param, Never>
-  public let title: Signal<String, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: SurveyResponseViewModelInputs { return self }
@@ -167,7 +160,7 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 }
 
 private func isSurvey(request: URLRequest) -> Bool {
-  guard case (.project(_, .survey, _))? = Navigation.match(request) else { return false }
+  guard case (.project(_, .surveyWebview, _))? = Navigation.match(request) else { return false }
   return true
 }
 

@@ -79,6 +79,12 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.titleLabelText
+      .observeForControllerAction()
+      .observeValues { [weak self] text in
+        self?.titleLabel.text = text
+      }
+
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.totalConversionLabel.rac.text = self.viewModel.outputs.totalConversionLabelText
   }
@@ -125,7 +131,6 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   _ = label
     |> checkoutTitleLabelStyle
     |> \.font .~ .ksr_subhead().bolded
-    |> \.text %~ { _ in Strings.Pledge_amount() }
     |> \.backgroundColor .~ .ksr_white
 
   return label

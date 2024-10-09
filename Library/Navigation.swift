@@ -47,7 +47,7 @@ public enum Navigation: Equatable {
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
-    case survey(String)
+    case surveyWebview(String)
 
     public enum Checkout: Equatable {
       case thanks(racing: Bool?)
@@ -131,6 +131,8 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/search": search,
   "/signup": signup,
   "/projects/:creator_param/:project_param": project,
+  "/projects/:creator_param/:project_param/backing/pledge_redemption": projectSurvey,
+  "/projects/:creator_param/:project_param/backing/redeem": projectSurvey,
   "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
@@ -166,6 +168,8 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/messages/:message_thread_id",
     "/profile/verify_email",
     "/projects/:creator_param/:project_param",
+    "/projects/:creator_param/:project_param/backing/pledge_redemption",
+    "/projects/:creator_param/:project_param/backing/redeem",
     "/projects/:creator_param/:project_param/comments",
     "/projects/:creator_param/:project_param/description",
     "/projects/:creator_param/:project_param/faqs",
@@ -425,7 +429,7 @@ private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
      let path = params.path() {
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.survey(url)
+    let survey = Navigation.Project.surveyWebview(url)
     return Navigation.project(projectParam, survey, refInfo: refInfo)
   }
 

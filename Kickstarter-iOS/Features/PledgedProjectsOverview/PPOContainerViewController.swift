@@ -1,25 +1,64 @@
+import Combine
 import Foundation
 import Library
 import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
+  private let viewModel = PPOContainerViewModel()
+
   public override func viewDidLoad() {
     super.viewDidLoad()
 
     // TODO: Translate these strings (MBL-1558)
     self.title = "Activity"
 
-    let tabBarController = self.tabBarController as? RootTabBarViewController
-    let ppoViewController = UIHostingController(rootView: PPOView(tabBarController: tabBarController))
+    let ppoView = PPOView(
+      onCountChange: { [weak self] count in
+        self?.viewModel.projectAlertsCountChanged(count)
+      },
+      onNavigate: { [weak self] event in
+        self?.viewModel.handle(navigationEvent: event)
+      }
+    )
+    let ppoViewController = UIHostingController(rootView: ppoView)
     ppoViewController.title = "Project Alerts"
 
     let activitiesViewController = ActivitiesViewController.instantiate()
     activitiesViewController.title = "Activity Feed"
 
     self.setPagedViewControllers([
-      (.projectAlerts(.count(5)), ppoViewController),
-      (.activityFeed(.dot), activitiesViewController)
+      (.projectAlerts(.none), ppoViewController),
+      (.activityFeed(.none), activitiesViewController)
     ])
+
+    let tabBarController = self.tabBarController as? RootTabBarViewController
+
+    Publishers.CombineLatest(
+      self.viewModel.projectAlertsBadge,
+      self.viewModel.activityBadge
+    )
+    .sink { [weak self] projectAlerts, activity in
+      self?.setPagedViewControllers([
+        (.projectAlerts(projectAlerts), ppoViewController),
+        (.activityFeed(activity), activitiesViewController)
+      ])
+    }
+    .store(in: &self.subscriptions)
+
+    self.viewModel.navigationEvents.sink { nav in
+      switch nav {
+      case .backedProjects:
+        tabBarController?.switchToProfile()
+      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
+        // TODO: MBL-1451
+        break
+      }
+    }.store(in: &self.subscriptions)
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.viewWillAppear()
   }
 
   public enum Page: TabBarPage {
@@ -49,4 +88,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       self.name
     }
   }
+
+  private var subscriptions = Set<AnyCancellable>()
 }

@@ -12,7 +12,6 @@ final class SurveyResponseViewModelTests: TestCase {
   fileprivate let goToPledge = TestObserver<Param, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
   fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
-  fileprivate let title = TestObserver<String, Never>()
   fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
 
@@ -23,7 +22,6 @@ final class SurveyResponseViewModelTests: TestCase {
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
     self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
-    self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest
       .map { AppEnvironment.current.apiService.isPrepared(request: $0) }
       .observe(self.webViewLoadRequestIsPrepared.observer)
@@ -118,14 +116,6 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.vm.inputs.closeButtonTapped()
     self.dismissViewController.assertValueCount(1)
-  }
-
-  func testTitle() {
-    self.vm.inputs.configureWith(surveyUrl: SurveyResponse.template.urls.web.survey)
-    self.title.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-    self.title.assertValues([Strings.Survey()])
   }
 
   // MARK: - Test links

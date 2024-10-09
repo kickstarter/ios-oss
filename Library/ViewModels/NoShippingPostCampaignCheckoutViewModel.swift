@@ -237,7 +237,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
         total: pledgeTotal,
-        confirmationLabelHidden: true
+        confirmationLabelHidden: true,
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards)
       )
       return (rewardsData, bonus, pledgeData)
     }

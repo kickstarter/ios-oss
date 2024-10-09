@@ -51,7 +51,8 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
     let pledgeData = PledgeSummaryViewData(
       project: Project.template,
       total: total,
-      confirmationLabelHidden: true
+      confirmationLabelHidden: true,
+      pledgeHasNoReward: false
     )
 
     self.vm.inputs.configureWith(

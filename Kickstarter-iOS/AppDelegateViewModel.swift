@@ -595,7 +595,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let surveyUrlFromProjectLink = deepLink
       .map { link -> String? in
-        if case let .project(_, .survey(surveyUrl), _) = link {
+        if case let .project(_, .surveyWebview(surveyUrl), _) = link {
           return surveyUrl
         }
         return nil
@@ -1068,7 +1068,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let survey = envelope.survey {
     let path = survey.urls.web.survey
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(survey.projectId), .survey(url), refInfo: RefInfo(.push))
+    return .project(.id(survey.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
   }
 
   if let update = envelope.update {
