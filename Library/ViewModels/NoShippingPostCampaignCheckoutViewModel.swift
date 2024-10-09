@@ -287,8 +287,9 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
         return reward.shipping.enabled == false || estimatedShipping == nil
       }
 
-    self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.0, $0.1) }
+    self.goToLoginSignup = Signal.combineLatest(project, baseReward)
+      .takeWhen(self.goToLoginSignupSignal)
+      .map { project, reward in (LoginIntent.backProject, project, reward) }
 
     // MARK: - Validate Checkout Details On Submit
 
