@@ -1049,7 +1049,11 @@ public final class KSRAnalytics {
     )
   }
 
-  private func loginEventProperties(for intent: LoginIntent, project: (any ProjectAnalyticsProperties)?, reward: Reward?)
+  private func loginEventProperties(
+    for intent: LoginIntent,
+    project: (any ProjectAnalyticsProperties)?,
+    reward: Reward?
+  )
     -> [String: Any] {
     var props: [String: Any] = [:]
 
