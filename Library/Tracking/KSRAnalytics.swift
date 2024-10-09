@@ -607,7 +607,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOMessagingCreator(
-    from project: Project,
+    from project: any ProjectAnalyticsProperties,
     creatorUID: String,
     properties: PledgedProjectOverviewProperties
   ) {
@@ -622,7 +622,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOFixingPaymentFailure(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(ctaContext: .fixPledgeInitiate, page: .projectAlerts)
@@ -636,7 +636,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOOpeningSurvey(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -653,7 +653,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOInitiateConfirmingAddress(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -671,7 +671,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOSubmitAddressConfirmation(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -689,7 +689,7 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOEditAddress(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
@@ -768,7 +768,7 @@ public final class KSRAnalytics {
    */
 
   public func trackBlockedUser(
-    _ project: Project,
+    _ project: any ProjectAnalyticsProperties,
     page: KSRAnalytics.PageContext,
     sectionContext: KSRAnalytics.SectionContext? = nil,
     locationContext: KSRAnalytics.LocationContext? = nil,
@@ -907,7 +907,7 @@ public final class KSRAnalytics {
 
   public func trackProjectCardClicked(
     page: PageContext,
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     checkoutData: CheckoutPropertiesData? = nil,
     typeContext: TypeContext? = nil,
     location: LocationContext? = nil,
@@ -947,7 +947,7 @@ public final class KSRAnalytics {
    */
 
   public func trackProjectVideoPlaybackStarted(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     videoLength: Int,
     videoPosition: Int
   ) {
@@ -964,7 +964,7 @@ public final class KSRAnalytics {
   // MARK: - Pledge Events
 
   public func trackAddOnsContinueButtonClicked(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
@@ -980,7 +980,7 @@ public final class KSRAnalytics {
   }
 
   public func trackAddOnsPageViewed(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
@@ -998,7 +998,7 @@ public final class KSRAnalytics {
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
-    project: Project
+    project: any ProjectAnalyticsProperties
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(page: .project))
@@ -1020,7 +1020,7 @@ public final class KSRAnalytics {
   }
 
   public func trackManagePledgePageViewed(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     checkoutData: CheckoutPropertiesData
   ) {
@@ -1044,7 +1044,7 @@ public final class KSRAnalytics {
    */
 
   public func trackRewardClicked(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     checkoutPropertiesData: KSRAnalytics.CheckoutPropertiesData,
     refTag: RefTag?
@@ -1069,7 +1069,7 @@ public final class KSRAnalytics {
    */
 
   public func trackRewardsViewed(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     checkoutPropertiesData: KSRAnalytics.CheckoutPropertiesData,
     refTag: RefTag?
   ) {
@@ -1096,7 +1096,7 @@ public final class KSRAnalytics {
    */
 
   public func trackCheckoutPaymentPageViewed(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
@@ -1135,7 +1135,7 @@ public final class KSRAnalytics {
    */
 
   public func trackPledgeSubmitButtonClicked(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     typeContext: TypeContext,
     checkoutData: CheckoutPropertiesData,
@@ -1166,7 +1166,7 @@ public final class KSRAnalytics {
    */
 
   public func trackThanksPageViewed(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     reward: Reward,
     checkoutData: CheckoutPropertiesData?
   ) {
@@ -1203,7 +1203,7 @@ public final class KSRAnalytics {
     )
   }
 
-  private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
+  private func loginEventProperties(for intent: LoginIntent, project: (any ProjectAnalyticsProperties)?, reward: Reward?)
     -> [String: Any] {
     var props: [String: Any] = [:]
 
@@ -1244,7 +1244,7 @@ public final class KSRAnalytics {
    - parameter sectionContext: The context referring to the section of the screen being interacted with.
    */
   public func trackProjectViewed(
-    _ project: Project,
+    _ project: any ProjectAnalyticsProperties,
     refTag: RefTag? = nil,
     sectionContext: KSRAnalytics.SectionContext
   ) {
@@ -1267,7 +1267,7 @@ public final class KSRAnalytics {
    */
 
   public func trackWatchProjectButtonClicked(
-    project: Project,
+    project: any ProjectAnalyticsProperties,
     page: PageContext,
     params: DiscoveryParams? = nil,
     typeContext: TypeContext
@@ -1295,7 +1295,7 @@ public final class KSRAnalytics {
    - parameter project: The project the creator's name is clicked from.
    */
 
-  public func trackGotoCreatorDetailsClicked(project: Project) {
+  public func trackGotoCreatorDetailsClicked(project: any ProjectAnalyticsProperties) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .project))
 
@@ -1393,7 +1393,7 @@ public final class KSRAnalytics {
 // MARK: - Project Properties
 
 private func projectProperties(
-  from project: Project,
+  from project: any ProjectAnalyticsProperties,
   loggedInUser: User? = nil,
   dateType: DateProtocol.Type = AppEnvironment.current.dateType,
   isBacker: Bool = false,
@@ -1402,52 +1402,52 @@ private func projectProperties(
 ) -> [String: Any] {
   var props: [String: Any] = [:]
 
-  props["backers_count"] = project.stats.backersCount
-  props["subcategory"] = project.category.analyticsName
-  props["country"] = project.country.countryCode
-  props["comments_count"] = project.stats.commentsCount ?? 0
-  props["currency"] = project.stats.currency
-  props["creator_uid"] = String(project.creator.id)
-  props["deadline"] = project.dates.deadline?.toISO8601DateTimeString()
+  props["backers_count"] = project.statsBackerCount
+  props["subcategory"] = project.categoryAnalyticsName
+  props["country"] = project.countryCode
+  props["comments_count"] = project.statsCommentsCount ?? 0
+  props["currency"] = project.statsCurrency
+  props["creator_uid"] = project.creatorId
+  props["deadline"] = project.datesDeadline?.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
-  props["launched_at"] = project.dates.launchedAt?.toISO8601DateTimeString()
+  props["launched_at"] = project.datesLaunchedAt?.toISO8601DateTimeString()
   props["name"] = project.name
   props["pid"] = String(project.id)
-  props["category"] = project.category.parentAnalyticsName
-  props["category_id"] = project.category.parentId
-  props["percent_raised"] = project.stats.percentFunded
-  props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = rounded(project.stats.totalAmountPledgedUsdCurrency ?? 0, places: 2)
-  props["goal_usd"] = rounded(project.stats.goalUsdCurrency, places: 2)
-  props["has_video"] = project.video != nil
+  props["category"] = project.categoryParentAnalyticsName
+  props["category_id"] = project.categoryParentId
+  props["percent_raised"] = project.statsPercentFunded
+  props["current_pledge_amount"] = project.statsPledged
+  props["current_amount_pledged_usd"] = rounded(project.statsTotalAmountPledgedUsdCurrency ?? 0, places: 2)
+  props["goal_usd"] = rounded(project.statsGoalUsdCurrency ?? 0, places: 2)
+  props["has_video"] = project.hasVideo
   props["prelaunch_activated"] = project.prelaunchActivated
-  props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
+  props["rewards_count"] = project.rewardsCount
   props["tags"] = project.tags?.joined(separator: ", ")
-  props["updates_count"] = project.stats.updatesCount
-  props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
+  props["updates_count"] = project.statsUpdatesCount
+  props["is_repeat_creator"] = project.creatorIsRepeatCreator ?? false
 
   if featurePostCampaignPledgeEnabled() {
     props["late_pledge_enabled"] = project.postCampaignPledgingEnabled
     props["state"] = project.isInPostCampaignPledgingPhase
       ? "post_campaign"
-      : project.state.rawValue
+      : project.stateValue
   } else {
-    props["state"] = project.state.rawValue
+    props["state"] = project.stateValue
   }
 
   let now = dateType.init().date
-  props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
-  props["duration"] = project.dates.duration(using: calendar)
+  props["hours_remaining"] = project.datesHoursRemaining(from: now, using: calendar)
+  props["duration"] = project.datesDuration(using: calendar)
 
   var userProperties: [String: Any] = [:]
-  userProperties["has_watched"] = project.personalization.isStarred
+  userProperties["has_watched"] = project.personalizationIsStarred
 
   // is_backer should be false in all situations except on a new pledge on the thanks page and when a user is viewing an existing pledge
-  userProperties["is_backer"] = (project.personalization.isBacking ?? false) || isBacker
+  userProperties["is_backer"] = (project.personalizationIsBacking ?? false) || isBacker
 
   // Only send this property if the user is logged in
   if let loggedInUser = loggedInUser {
-    userProperties["is_project_creator"] = project.creator.id == loggedInUser.id
+    userProperties["is_project_creator"] = project.creatorId == String(loggedInUser.id)
   }
 
   let userProps = userProperties.prefixedKeys("user_")
