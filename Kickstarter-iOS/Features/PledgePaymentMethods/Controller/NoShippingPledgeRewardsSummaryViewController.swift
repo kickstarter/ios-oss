@@ -15,23 +15,14 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var tableViewContainer: UIView = {
     UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.clipsToBounds .~ true
   }()
 
   private lazy var tableView: UITableView = {
     ContentSizeTableView(frame: .zero, style: .plain)
-      |> \.separatorInset .~ .zero
-      |> \.contentInsetAdjustmentBehavior .~ .never
-      |> \.isScrollEnabled .~ false
-      |> \.delegate .~ self
-      |> \.rowHeight .~ UITableView.automaticDimension
-      |> \.sectionHeaderTopPadding .~ 0
   }()
 
   private lazy var dataSource: NoShippingPledgeRewardsSummaryDiffableDataSource =
@@ -112,20 +103,16 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> \.clipsToBounds .~ true
-      |> checkoutWhiteBackgroundStyle
+    self.view.backgroundColor = .ksr_white
+    self.view.clipsToBounds = true
 
-    _ = self.rootStackView
-      |> self.rootStackViewStyle
+    self.rootStackViewStyle(self.rootStackView)
 
-    _ = self.tableView
-      |> checkoutWhiteBackgroundStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    self.tableViewStyle(self.tableView)
 
-    _ = self.separatorView
-      |> self.separatorViewStyle
+    self.separatorViewStyle(self.separatorView)
 
+    self.tableViewContainerStyle(self.tableViewContainer)
     self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
   }
 
@@ -173,17 +160,29 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
   // MARK: Styles
 
-  private let rootStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.spacing .~ Styles.grid(1)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+  private func tableViewStyle(_ tableView: UITableView) {
+    tableView.separatorInset = .zero
+    tableView.contentInsetAdjustmentBehavior = .never
+    tableView.isScrollEnabled = false
+    tableView.delegate = self
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.separatorStyle = .none
+    tableView.backgroundColor = .ksr_white
+    tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private let separatorViewStyle: ViewStyle = { view in
-    view
-      |> \.backgroundColor .~ .ksr_support_200
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private func rootStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.spacing = Styles.grid(1)
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  private func separatorViewStyle(_ view: UIView) {
+    view.backgroundColor = .ksr_support_200
+    view.translatesAutoresizingMaskIntoConstraints = false
+  }
+
   private func sectionHeaderViewStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)
@@ -200,6 +199,10 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
     )
   }
+
+  private func tableViewContainerStyle(_ view: UIView) {
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.clipsToBounds = true
   }
 
   // MARK: - Helpers
