@@ -1,0 +1,65 @@
+fragment ProjectAnalyticsFragment on Project {
+  addOns {
+    totalCount
+  }
+
+  backersCount
+  backing {
+    id
+  }
+
+  category {
+    analyticsName
+    parentCategory {
+      analyticsName
+      id
+    }
+  }
+  commentsCount(withReplies: true)
+  country {
+    code
+  }
+
+  creator {
+    id
+    createdProjects {
+      totalCount
+    }
+  }
+  currency
+
+  deadlineAt
+  launchedAt
+
+  pid
+  name
+
+  isInPostCampaignPledgingPhase
+  isWatched
+  percentFunded
+  isPrelaunchActivated: prelaunchActivated
+  projectTags: tags(scope: DISCOVER) {
+    name
+  }
+  postCampaignPledgingEnabled
+  rewards {
+    totalCount
+  }
+  state
+  video {
+    id
+  }
+
+  pledged {
+    amount
+  }
+  fxRate
+  usdExchangeRate
+  posts {
+    totalCount
+  }
+  goal {
+    amount
+  }
+
+}

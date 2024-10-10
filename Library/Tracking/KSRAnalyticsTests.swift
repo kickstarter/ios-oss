@@ -642,7 +642,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
+      project: Project.template,
       reward: reward,
       pledgeViewContext: .pledge,
       checkoutData: .template,
@@ -670,7 +670,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
+      project: Project.template,
       reward: reward,
       pledgeViewContext: .update,
       checkoutData: .template,
@@ -700,7 +700,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
+      project: Project.template,
       reward: reward,
       pledgeViewContext: .updateReward,
       checkoutData: .template,
@@ -729,7 +729,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
+      project: Project.template,
       reward: reward,
       pledgeViewContext: .changePaymentMethod,
       checkoutData: .template,
@@ -800,7 +800,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .discovery,
-      project: .template,
+      project: Project.template,
       typeContext: .init(params: DiscoveryParams.recommendedDefaults),
       location: .discoverAdvanced,
       params: DiscoveryParams.recommendedDefaults
@@ -825,7 +825,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .activities,
-      project: .template
+      project: Project.template
     )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
@@ -844,7 +844,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
-      project: .template,
+      project: Project.template,
       location: .accountMenu,
       section: .backed
     )
@@ -867,7 +867,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
-      project: .template,
+      project: Project.template,
       location: .accountMenu,
       section: .watched
     )
@@ -893,7 +893,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .thanks,
-      project: .template,
+      project: Project.template,
       checkoutData: .template,
       typeContext: .recommended,
       location: .curated,
@@ -919,7 +919,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .search,
-      project: .template,
+      project: Project.template,
       typeContext: .results,
       location: .searchResults,
       params: DiscoveryParams.recommendedDefaults
@@ -943,7 +943,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackProjectVideoPlaybackStarted(
-      project: .template,
+      project: Project.template,
       videoLength: 100,
       videoPosition: 20
     )
@@ -964,7 +964,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackWatchProjectButtonClicked(
-      project: .template,
+      project: Project.template,
       page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .watch
@@ -987,7 +987,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackWatchProjectButtonClicked(
-      project: .template,
+      project: Project.template,
       page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .unwatch
@@ -1010,7 +1010,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackWatchProjectButtonClicked(
-      project: .template,
+      project: Project.template,
       page: .project,
       typeContext: .watch
     )
@@ -1031,7 +1031,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackWatchProjectButtonClicked(
-      project: .template,
+      project: Project.template,
       page: .project,
       typeContext: .unwatch
     )
@@ -1052,7 +1052,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackGotoCreatorDetailsClicked(
-      project: .template
+      project: Project.template
     )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
@@ -1147,7 +1147,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.shipping.preference .~ .restricted
 
     ksrAnalytics.trackPledgeSubmitButtonClicked(
-      project: .template,
+      project: Project.template,
       reward: reward,
       typeContext: .creditCard,
       checkoutData: .template,
@@ -1186,7 +1186,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Reward.lens.shipping.preference .~ .restricted
 
     ksrAnalytics.trackPledgeSubmitButtonClicked(
-      project: .template,
+      project: Project.template,
       reward: reward,
       typeContext: .applePay,
       checkoutData: .template,
@@ -1761,7 +1761,12 @@ final class KSRAnalyticsTests: TestCase {
       appTrackingTransparency: self.appTrackingTransparency
     )
 
-    ksrAnalytics.trackBlockedUser(.template, page: .project, typeContext: .initiate, targetUserId: "1111")
+    ksrAnalytics.trackBlockedUser(
+      Project.template,
+      page: .project,
+      typeContext: .initiate,
+      targetUserId: "1111"
+    )
 
     XCTAssertEqual("1111", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }
@@ -1782,7 +1787,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackLoginSubmitButtonClicked()
     XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
+    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: Project.template)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .discovery)
@@ -1809,45 +1814,45 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectSearchView(params: .defaults)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .overview)
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("overview", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .comments)
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .comments)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("comments", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .updates)
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .updates)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("updates", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.overview))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.overview))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("overview", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.campaign))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.campaign))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("campaign", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.faqs))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.faqs))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("faq", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.risks))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.risks))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("risks", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.environmentalCommitments))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.environmentalCommitments))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("environment", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.useOfAI))
+    ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .tabSelected(.useOfAI))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("use_of_ai", segmentClient.properties.last?["context_section"] as? String)
 
     ksrAnalytics
       .trackRewardClicked(
-        project: .template,
+        project: Project.template,
         reward: .template,
         checkoutPropertiesData: .template,
         refTag: nil
@@ -1856,7 +1861,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics
       .trackRewardsViewed(
-        project: .template,
+        project: Project.template,
         checkoutPropertiesData: .template,
         refTag: nil
       )
@@ -1868,12 +1873,17 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackLoginPageViewed()
     XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
+    ksrAnalytics.trackThanksPageViewed(project: Project.template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("new_pledge", segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics
-      .trackAddOnsPageViewed(project: .template, reward: .template, checkoutData: .template, refTag: nil)
+      .trackAddOnsPageViewed(
+        project: Project.template,
+        reward: .template,
+        checkoutData: .template,
+        refTag: nil
+      )
     XCTAssertEqual("add_ons", segmentClient.properties.last?["context_page"] as? String)
   }
 
