@@ -17,12 +17,12 @@ protocol PPOViewModelInputs {
   func pullToRefresh()
 
   func openBackedProjects()
-  func fixPaymentMethod(from: Project)
-  func fix3DSChallenge(from: Project)
-  func openSurvey(from: Project)
-  func editAddress(from: Project)
-  func confirmAddress(from: Project)
-  func contactCreator(from: Project)
+  func fixPaymentMethod(from: PledgedProjectOverviewCard)
+  func fix3DSChallenge(from: PledgedProjectOverviewCard)
+  func openSurvey(from: PledgedProjectOverviewCard)
+  func editAddress(from: PledgedProjectOverviewCard)
+  func confirmAddress(from: PledgedProjectOverviewCard)
+  func contactCreator(from: PledgedProjectOverviewCard)
 }
 
 protocol PPOViewModelOutputs {
@@ -125,10 +125,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Tap messaging creator
     self.contactCreatorSubject
       .combineLatest(latestLoadedResults)
-      .sink { project, overallProperties in
+      .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
-          from: project,
-          creatorUID: "\(project.creator.id)",
+          from: card.projectAnalytics,
           properties: overallProperties
         )
       }
@@ -137,9 +136,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Fixing payment failure
     self.fixPaymentMethodSubject
       .combineLatest(latestLoadedResults)
-      .sink { project, overallProperties in
+      .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
-          project: project,
+          project: card.projectAnalytics,
           properties: overallProperties
         )
       }
@@ -148,9 +147,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Opening survey
     self.openSurveySubject
       .combineLatest(latestLoadedResults)
-      .sink { project, overallProperties in
+      .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
-          project: project,
+          project: card.projectAnalytics,
           properties: overallProperties
         )
       }
@@ -159,9 +158,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
       .combineLatest(latestLoadedResults)
-      .sink { project, overallProperties in
+      .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
-          project: project,
+          project: card.projectAnalytics,
           properties: overallProperties
         )
       }
@@ -170,9 +169,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Edit address
     self.editAddressSubject
       .combineLatest(latestLoadedResults)
-      .sink { project, overallProperties in
+      .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
-          project: project,
+          project: card.projectAnalytics,
           properties: overallProperties
         )
       }
@@ -203,27 +202,27 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openBackedProjectsSubject.send(())
   }
 
-  func fixPaymentMethod(from: Project) {
+  func fixPaymentMethod(from: PledgedProjectOverviewCard) {
     self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge(from: Project) {
+  func fix3DSChallenge(from: PledgedProjectOverviewCard) {
     self.fix3DSChallengeSubject.send(from)
   }
 
-  func openSurvey(from: Project) {
+  func openSurvey(from: PledgedProjectOverviewCard) {
     self.openSurveySubject.send(from)
   }
 
-  func editAddress(from: Project) {
+  func editAddress(from: PledgedProjectOverviewCard) {
     self.editAddressSubject.send(from)
   }
 
-  func confirmAddress(from: Project) {
+  func confirmAddress(from: PledgedProjectOverviewCard) {
     self.confirmAddressSubject.send(from)
   }
 
-  func contactCreator(from: Project) {
+  func contactCreator(from: PledgedProjectOverviewCard) {
     self.contactCreatorSubject.send(from)
   }
 
@@ -245,12 +244,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
   private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
-  private let fixPaymentMethodSubject = PassthroughSubject<Project, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<Project, Never>()
-  private let openSurveySubject = PassthroughSubject<Project, Never>()
-  private let editAddressSubject = PassthroughSubject<Project, Never>()
-  private let confirmAddressSubject = PassthroughSubject<Project, Never>()
-  private let contactCreatorSubject = PassthroughSubject<Project, Never>()
+  private let fixPaymentMethodSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let openSurveySubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let editAddressSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let confirmAddressSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let contactCreatorSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
