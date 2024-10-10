@@ -9134,7 +9134,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchPledgedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+      query FetchPledgedProjects($first: Int = null, $after: String = null) {
         pledgeProjectsOverview {
           __typename
           pledges(first: $first, after: $after) {
@@ -9169,27 +9169,19 @@ public enum GraphAPI {
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + PpoProjectFragment.fragmentDefinition)
       document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
-      document.append("\n" + ProjectFragment.fragmentDefinition)
-      document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + CountryFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
 
     public var first: Int?
     public var after: String?
-    public var withStoredCards: Bool?
 
-    public init(first: Int? = nil, after: String? = nil, withStoredCards: Bool? = nil) {
+    public init(first: Int? = nil, after: String? = nil) {
       self.first = first
       self.after = after
-      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["first": first, "after": after, "withStoredCards": withStoredCards]
+      return ["first": first, "after": after]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14773,7 +14765,7 @@ public enum GraphAPI {
         project {
           __typename
           ...PPOProjectFragment
-          ...ProjectFragment
+          ...ProjectAnalyticsFragment
         }
       }
       """
@@ -14900,7 +14892,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLFragmentSpread(PpoProjectFragment.self),
-          GraphQLFragmentSpread(ProjectFragment.self),
+          GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
         ]
       }
 
@@ -14944,9 +14936,9 @@ public enum GraphAPI {
           }
         }
 
-        public var projectFragment: ProjectFragment {
+        public var projectAnalyticsFragment: ProjectAnalyticsFragment {
           get {
-            return ProjectFragment(unsafeResultMap: resultMap)
+            return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
