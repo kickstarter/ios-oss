@@ -6,10 +6,10 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var amountLabel: UILabel = UILabel(frame: .zero)
+  private lazy var containerStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
-  private lazy var labelsStackView: UIStackView = UIStackView(frame: .zero)
-  private lazy var headerLabel: UILabel = UILabel(frame: .zero)
   private lazy var titleLabel: UILabel = UILabel(frame: .zero)
+  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
     = PledgeExpandableHeaderRewardCellViewModel()
@@ -39,17 +39,16 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
-    _ = self.rootStackView
-      |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
+    self.containerStackViewStyle(self.containerStackView)
 
-    _ = self.labelsStackView
-      |> labelStackViewStyle
+    self.rootStackViewStyle(self.rootStackView)
 
-    _ = self.titleLabel
-      |> labelStyle
+    self.labelStyle(self.titleLabel)
 
     self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.separatorViewStyle(self.separatorView)
   }
 
   // MARK: - View model
@@ -58,14 +57,6 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
-
-    self.viewModel.outputs.headerLabelText
-      .observeForUI()
-      .observeValues { [weak self] text in
-        guard let self, text != nil else { return }
-        self.headerLabel.attributedText = text
-        self.headerLabel.setNeedsLayout()
-      }
 
     self.viewModel.outputs.labelText
       .observeForUI()
@@ -84,52 +75,50 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.containerStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.labelsStackView, self.amountLabel], self.rootStackView)
+    _ = ([self.rootStackView, self.separatorView], self.containerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.headerLabel, self.titleLabel], self.labelsStackView)
+    _ = ([self.titleLabel, self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor)
+      self.amountLabel.topAnchor.constraint(equalTo: self.titleLabel.topAnchor),
+      self.separatorView.leftAnchor
+        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+      self.separatorView.rightAnchor
+        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
+      self.separatorView.heightAnchor.constraint(equalToConstant: 1)
     ])
   }
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    self.headerLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width
     super.layoutSubviews()
   }
-}
 
-// MARK: - Styles
+  // MARK: - Styles
 
-private func headerLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_subhead().bolded
-  label.textColor = UIColor.ksr_black
-  label.numberOfLines = 0
-}
+  private func labelStyle(_ label: UILabel) {
+    label.font = UIFont.ksr_subhead().bolded
+    label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
+    label.numberOfLines = 0
+  }
 
-private func labelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_subhead().bolded
-  label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
-  label.numberOfLines = 0
-}
+  private func rootStackViewStyle(_ stackView: UIStackView) {
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory > .accessibilityLarge
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView
+      .Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
-private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
-  let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fillProportionally)
-  let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-  return { (stackView: UIStackView) in
     stackView.insetsLayoutMarginsFromSafeArea = false
     stackView.alignment = alignment
     stackView.axis = axis
@@ -137,18 +126,18 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
     stackView.spacing = spacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.layoutMargins = UIEdgeInsets(
-      topBottom: Styles.grid(3),
+      topBottom: Styles.grid(1),
       leftRight: CheckoutConstants.PledgeView.Inset.leftRight
     )
-
-    return stackView
   }
-}
 
-private func labelStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.distribution = .fill
-  stackView.alignment = .fill
-  stackView.spacing = Styles.grid(1)
-  stackView.isLayoutMarginsRelativeArrangement = true
+  private func containerStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.spacing = Styles.gridHalf(3)
+  }
+
+  private func separatorViewStyle(_ view: UIView) {
+    view.backgroundColor = .ksr_support_200
+    view.translatesAutoresizingMaskIntoConstraints = false
+  }
 }

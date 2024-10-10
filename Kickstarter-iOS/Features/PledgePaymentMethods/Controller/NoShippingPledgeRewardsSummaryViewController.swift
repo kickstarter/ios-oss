@@ -2,33 +2,31 @@ import Library
 import Prelude
 import UIKit
 
-final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController {
-  // MARK: - Properties
+public enum PledgeRewardsSummaryStyles {
+  public enum Layout {
+    public static let sectionHeaderLabelHeight: CGFloat = 20
+  }
+}
 
-  private let dataSource = NoShippingPledgeRewardsSummaryDataSource()
+final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
+  // MARK: - Properties
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var tableViewContainer: UIView = {
     UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.clipsToBounds .~ true
   }()
 
   private lazy var tableView: UITableView = {
     ContentSizeTableView(frame: .zero, style: .plain)
-      |> \.separatorInset .~ .zero
-      |> \.contentInsetAdjustmentBehavior .~ .never
-      |> \.isScrollEnabled .~ false
-      |> \.dataSource .~ self.dataSource
-      |> \.delegate .~ self
-      |> \.rowHeight .~ UITableView.automaticDimension
   }()
+
+  private lazy var dataSource: NoShippingPledgeRewardsSummaryDiffableDataSource =
+    NoShippingPledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
@@ -105,20 +103,16 @@ final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> \.clipsToBounds .~ true
-      |> checkoutWhiteBackgroundStyle
+    self.view.backgroundColor = .ksr_white
+    self.view.clipsToBounds = true
 
-    _ = self.rootStackView
-      |> self.rootStackViewStyle
+    self.rootStackViewStyle(self.rootStackView)
 
-    _ = self.tableView
-      |> checkoutWhiteBackgroundStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    self.tableViewStyle(self.tableView)
 
-    _ = self.separatorView
-      |> self.separatorViewStyle
+    self.separatorViewStyle(self.separatorView)
 
+    self.tableViewContainerStyle(self.tableViewContainer)
     self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
   }
 
@@ -129,12 +123,14 @@ final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController 
 
     self.viewModel.outputs.loadRewardsIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] data in
+      .observeValues { [weak self] headerData, rewards in
         guard let self else { return }
 
-        self.dataSource.load(data)
-        self.tableView.reloadData()
-        self.tableView.setNeedsLayout()
+        /// Applys a snapshot of all of the data needed to render the table view.
+        self.dataSource.apply(
+          diffableDataSourceSnapshot(using: headerData, rewards),
+          animatingDifferences: true
+        )
 
         self.setEntireViewToIsHidden(false)
         self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
@@ -164,17 +160,49 @@ final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController 
 
   // MARK: Styles
 
-  private let rootStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.spacing .~ Styles.grid(1)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+  private func tableViewStyle(_ tableView: UITableView) {
+    tableView.separatorInset = .zero
+    tableView.contentInsetAdjustmentBehavior = .never
+    tableView.isScrollEnabled = false
+    tableView.delegate = self
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.separatorStyle = .none
+    tableView.backgroundColor = .ksr_white
+    tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private let separatorViewStyle: ViewStyle = { view in
-    view
-      |> \.backgroundColor .~ .ksr_support_200
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private func rootStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.spacing = Styles.grid(1)
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  private func separatorViewStyle(_ view: UIView) {
+    view.backgroundColor = .ksr_support_200
+    view.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  private func sectionHeaderViewStyle(_ view: UIView) {
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)
+  }
+
+  private func sectionHeaderLabelStyle(_ label: UILabel) {
+    label.font = UIFont.ksr_subhead().bolded
+    label.textColor = UIColor.ksr_black
+    label.numberOfLines = 0
+    label.frame = CGRectMake(
+      CheckoutConstants.PledgeView.Inset.leftRight,
+      0,
+      self.tableView.frame.size.width,
+      PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
+    )
+  }
+
+  private func tableViewContainerStyle(_ view: UIView) {
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.clipsToBounds = true
   }
 
   // MARK: - Helpers
@@ -184,12 +212,49 @@ final class NoShippingPledgeRewardsSummaryTotalViewController: UIViewController 
     self.pledgeTotalViewController.view.isHidden = isHidden
     self.separatorView.isHidden = isHidden
   }
+
+  // MARK: Section Header View
+
+  private func sectionHeaderView(for section: PledgeRewardsSummarySection) -> UIView {
+    let headerView: UIView = UIView(frame: .zero)
+    self.sectionHeaderViewStyle(headerView)
+
+    let headerLabel: UILabel = UILabel(frame: .zero)
+    self.sectionHeaderLabelStyle(headerLabel)
+
+    switch section {
+    case .header, .bonusSupport:
+      break
+    case .reward:
+      headerLabel.text = Strings.backer_modal_reward_title()
+    case .addOns:
+      headerLabel.text = Strings.Add_ons()
+    }
+
+    headerView.addSubview(headerLabel)
+
+    return headerView
+  }
 }
 
 // MARK: - UITableViewDelegate
 
-extension NoShippingPledgeRewardsSummaryTotalViewController: UITableViewDelegate {
+extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
+  }
+
+  func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let section = PledgeRewardsSummarySection.allCases[section]
+
+    return self.sectionHeaderView(for: section)
+  }
+
+  func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    let section = PledgeRewardsSummarySection.allCases[section]
+    let shouldHideSectionHeader = section == .header || section == .bonusSupport
+
+    /// Hides the first section header because we're using our own UITableCell here.
+    return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
   }
 }
