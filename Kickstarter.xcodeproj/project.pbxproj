@@ -1142,6 +1142,7 @@
 		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
 		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
 		AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = AA645E9F2C772DC90034705A /* SnapshotTesting */; };
+		AA6682232CB86EEB00C8522E /* PPOProjectCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */; };
 		AA6E9E842C62B9DC001543FC /* PPOProjectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA592782C5C708000482087 /* PPOProjectDetails.swift */; };
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
@@ -2806,6 +2807,7 @@
 		AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectOverviewCardTemplates.swift; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AA645E9D2C772C650034705A /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
+		AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModel.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
@@ -6754,6 +6756,7 @@
 			children = (
 				AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */,
 				AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */,
+				AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */,
 				AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */,
 				AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */,
 				AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */,
@@ -8389,6 +8392,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */,
 				E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */,
+				AA6682232CB86EEB00C8522E /* PPOProjectCardModel.swift in Sources */,
 				94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */,
 				604453262BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */,
