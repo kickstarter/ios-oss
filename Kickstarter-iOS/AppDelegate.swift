@@ -263,8 +263,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     UNUserNotificationCenter.current().delegate = self
 
-    UIApplication.shared.registerForRemoteNotifications()
-
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
