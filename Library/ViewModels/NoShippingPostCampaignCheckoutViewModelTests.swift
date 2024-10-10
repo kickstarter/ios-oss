@@ -6,8 +6,12 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
-  private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
+  private var vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
+
+  private let checkoutResponse = CreateCheckoutEnvelope(
+    checkout: CreateCheckoutEnvelope.Checkout(id: "19", paymentUrl: "fake", backingId: "93")
+  )
 
   private let goToApplePayPaymentAuthorization = TestObserver<
     PostCampaignPaymentAuthorizationData,
@@ -16,6 +20,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   private let checkoutComplete = TestObserver<ThanksPageData, Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
+  private let checkoutError = TestObserver<ErrorEnvelope, Never>()
+  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward), Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
@@ -35,12 +41,14 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = PostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
+    self.vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
 
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
+    self.vm.checkoutError.observe(self.checkoutError.observer)
+    self.vm.goToLoginSignup.observe(self.goToLoginSignup.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
@@ -98,19 +106,15 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
 
-      let data = PostCampaignCheckoutData(
+      let data = PledgeViewData(
         project: project,
-        baseReward: reward,
         rewards: [reward],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
+        bonusSupport: 0,
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
         refTag: nil,
-        context: .pledge,
-        checkoutId: "0",
-        backingId: "backingId",
-        selectedShippingRule: ShippingRule.template
+        context: .latePledge
       )
 
       self.vm.inputs.configure(with: data)
@@ -130,19 +134,15 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
 
-      let data = PostCampaignCheckoutData(
+      let data = PledgeViewData(
         project: project,
-        baseReward: reward,
         rewards: [reward],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
+        bonusSupport: 0,
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
         refTag: nil,
-        context: .pledge,
-        checkoutId: "0",
-        backingId: "backingId",
-        selectedShippingRule: ShippingRule.template
+        context: .latePledge
       )
 
       self.vm.inputs.configure(with: data)
@@ -157,29 +157,31 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
 
   func testApplePayAuthorization_noReward_isCorrect() {
     let project = Project.cosmicSurgery
-    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+    let reward = Reward.noReward
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 5,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
       self.vm.inputs.applePayButtonTapped()
 
       self.scheduler.run()
@@ -205,27 +207,28 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
 
     XCTAssertEqual(reward.minimum, 6)
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: nil,
       selectedQuantities: [reward.id: 3],
-      bonusAmount: 0,
-      total: 18,
-      shipping: nil,
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -249,35 +252,33 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   func testApplePayAuthorization_rewardAndShipping_isCorrect() {
     let project = Project.cosmicSurgery
     let reward = project.rewards.first!
+      |> Reward.lens.shippingRules .~ [ShippingRule.template]
+      |> Reward.lens.shipping.enabled .~ true
 
     XCTAssertEqual(reward.minimum, 6)
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: ShippingRule.template,
       selectedQuantities: [reward.id: 3],
-      bonusAmount: 0,
-      total: 90,
-      shipping: PledgeShippingSummaryViewData(
-        locationName: "Somewhere",
-        omitUSCurrencyCode: false,
-        projectCountry: project.country,
-        total: 72
-      ),
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -290,8 +291,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.hasNoReward, false)
       XCTAssertEqual(output.subtotal, 18)
       XCTAssertEqual(output.bonus, 0)
-      XCTAssertEqual(output.shipping, 72)
-      XCTAssertEqual(output.total, 90)
+      XCTAssertEqual(output.shipping, 15)
+      XCTAssertEqual(output.total, 33)
 
       XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
       XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
@@ -299,39 +300,40 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   }
 
   func testApplePayAuthorization_rewardAndShippingAndBonus_isCorrect() {
-    let project = Project.cosmicSurgery
+    let shippingRule = ShippingRule.template
+    var project = Project.cosmicSurgery
     let reward1 = project.rewards[0]
+      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shipping.enabled .~ true
     let reward2 = project.rewards[1]
+      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shipping.enabled .~ true
 
     XCTAssertEqual(reward1.minimum, 6)
     XCTAssertEqual(reward2.minimum, 25)
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward1,
       rewards: [reward1, reward2],
+      bonusSupport: 5,
+      selectedShippingRule: shippingRule,
       selectedQuantities: [reward1.id: 1, reward2.id: 2],
-      bonusAmount: 5,
-      total: 133,
-      shipping: PledgeShippingSummaryViewData(
-        locationName: "Somewhere",
-        omitUSCurrencyCode: false,
-        projectCountry: project.country,
-        total: 72
-      ),
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -344,8 +346,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(output.hasNoReward, false)
       XCTAssertEqual(output.subtotal, 56)
       XCTAssertEqual(output.bonus, 5)
-      XCTAssertEqual(output.shipping, 72)
-      XCTAssertEqual(output.total, 133)
+      XCTAssertEqual(output.shipping, 15)
+      XCTAssertEqual(output.total, 76)
 
       XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
       XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
@@ -354,29 +356,29 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
 
   func testTapApplePayButton_createsPaymentIntent_beforePresentingAuthorizationController() {
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
-    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
 
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
       self.vm.inputs.applePayButtonTapped()
       self.scheduler.run()
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
@@ -414,6 +416,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       .Data(jsonString: completeSessionJsonString)
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .success(paymentIntent),
       validateCheckoutResult: .success(validateCheckout)
     )
@@ -421,24 +424,22 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
+
+      self.scheduler.run()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -467,30 +468,29 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   func testApplePay_paymentIntentFails() {
     // Mock data for API requests
     let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .failure(.couldNotParseErrorEnvelopeJSON)
     )
 
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .pledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
+
+      self.scheduler.run()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -505,6 +505,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       XCTAssertEqual(self.mockStripeIntentService.setupIntentRequests, 0)
     }
   }
+
+  // MARK: - Pledge
 
   func testPledge_completesCheckoutFlow() {
     // Mock data for API requests
@@ -536,6 +538,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
 
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .success(paymentIntent),
       fetchGraphUserResult: .success(userResponse),
       validateCheckoutResult: .success(validateCheckout)
@@ -544,24 +547,22 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .latePledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
+
+      scheduler.run()
 
       self.vm.inputs
         .creditCardSelected(
@@ -597,6 +598,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let userResponse = UserEnvelope<GraphUser>(me: graphUser)
 
     let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .success(paymentIntent),
       fetchGraphUserResult: .success(userResponse),
       validateCheckoutResult: .failure(.couldNotParseErrorEnvelopeJSON)
@@ -605,24 +607,21 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .latePledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
+      self.scheduler.run()
 
       self.vm.inputs
         .creditCardSelected(
@@ -650,6 +649,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
 
     let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .success(paymentIntent),
       validateCheckoutResult: .success(validateCheckout)
     )
@@ -657,24 +657,21 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-    let data = PostCampaignCheckoutData(
+    let data = PledgeViewData(
       project: project,
-      baseReward: reward,
       rewards: [reward],
-      selectedQuantities: [:],
-      bonusAmount: 0,
-      total: 5,
-      shipping: nil,
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
       refTag: nil,
-      context: .latePledge,
-      checkoutId: "0",
-      backingId: "backingId",
-      selectedShippingRule: ShippingRule.template
+      context: .latePledge
     )
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.configure(with: data)
       self.vm.viewDidLoad()
+      self.scheduler.run()
 
       self.vm.inputs
         .creditCardSelected(
@@ -700,10 +697,13 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
+  // MARK: - Login
+
   func testPledgeViewCTAEnabled_afterSelectingNewPaymentMethod_LoggedIn() {
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
     let mockService = MockService(
       serverConfig: ServerConfig.staging,
+      createCheckoutResult: .success(self.checkoutResponse),
       createPaymentIntentResult: .success(paymentIntent)
     )
 
@@ -711,23 +711,20 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       let project = Project.cosmicSurgery
       let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-      let data = PostCampaignCheckoutData(
+      let data = PledgeViewData(
         project: project,
-        baseReward: reward,
         rewards: [reward],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
+        bonusSupport: 0,
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
         refTag: nil,
-        context: .latePledge,
-        checkoutId: "0",
-        backingId: "backingId",
-        selectedShippingRule: ShippingRule.template
+        context: .latePledge
       )
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
 
       self.vm.inputs
         .creditCardSelected(
@@ -747,27 +744,76 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       let project = Project.cosmicSurgery
       let reward = Reward.noReward |> Reward.lens.minimum .~ 5
 
-      let data = PostCampaignCheckoutData(
+      let data = PledgeViewData(
         project: project,
-        baseReward: reward,
         rewards: [reward],
-        selectedQuantities: [:],
-        bonusAmount: 0,
-        total: 5,
-        shipping: nil,
+        bonusSupport: 0,
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
         refTag: nil,
-        context: .latePledge,
-        checkoutId: "0",
-        backingId: "backingId",
-        selectedShippingRule: ShippingRule.template
+        context: .latePledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
+    }
+  }
+
+  func testPledgeViewCTADisabled_onViewDidLoad_LoggedOut() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      let project = Project.cosmicSurgery
+      let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        bonusSupport: 0,
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: nil,
+        context: .latePledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
+    }
+  }
+
+  func testGoToLoginSignup_emitsWhenLoggedOut_CheckoutErrorDoesNotEmit() {
+    let mockService = MockService(createCheckoutResult: .failure(.couldNotParseJSON))
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      let data = PledgeViewData(
+        project: Project.template,
+        rewards: [Reward.template],
+        selectedShippingRule: nil,
+        selectedQuantities: [Reward.template.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .latePledge
       )
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
+      self.vm.inputs.goToLoginSignupTapped()
+
+      self.goToLoginSignup.assertDidEmitValue()
+      self.checkoutError.assertDidNotEmitValue()
     }
   }
 }

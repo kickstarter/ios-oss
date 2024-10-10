@@ -182,7 +182,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
         guard let self else { return }
 
         if data.context == .latePledge {
-          self.goToConfirmDetails(data: data)
+          self.goToLatePledge(data: data)
         } else {
           self.goToPledge(data: data)
         }
@@ -213,8 +213,8 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
   // MARK: Functions
 
-  private func goToConfirmDetails(data: PledgeViewData) {
-    let vc = NoShippingConfirmDetailsViewController.instantiate()
+  private func goToLatePledge(data: PledgeViewData) {
+    let vc = NoShippingPostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
 

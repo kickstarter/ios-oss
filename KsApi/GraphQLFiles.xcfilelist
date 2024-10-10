@@ -3,6 +3,7 @@ $(PROJECT_DIR)/KsApi/fragments/UserFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/BackingFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/RewardFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/ProjectAnalyticsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CommentFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOBackingFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserStoredCardsFragment.graphql

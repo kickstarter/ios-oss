@@ -78,12 +78,14 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var sessionStartedObserver: Any?
+
   private let viewModel: NoShippingPostCampaignCheckoutViewModelType =
     NoShippingPostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
   // MARK: - Lifecycle
 
-  func configure(with data: PostCampaignCheckoutData) {
+  func configure(with data: PledgeViewData) {
     self.viewModel.inputs.configure(with: data)
   }
 
@@ -112,6 +114,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
   deinit {
     self.hideProcessingView()
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
@@ -203,6 +206,8 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
     self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
       .observeForUI()
       .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
@@ -251,6 +256,17 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+      }
+
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
       }
 
     self.viewModel.outputs.validateCheckoutSuccess
@@ -308,6 +324,19 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.present(navigationController, animated: true)
+  }
 
   private func confirmPayment(with validation: PaymentSourceValidation) {
     guard validation.requiresConfirmation else {
@@ -393,6 +422,7 @@ extension NoShippingPostCampaignCheckoutViewController: PledgeDisclaimerViewDele
 extension NoShippingPostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
+    self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
