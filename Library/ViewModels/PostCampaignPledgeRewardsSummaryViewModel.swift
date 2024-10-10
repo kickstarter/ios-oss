@@ -170,6 +170,8 @@ private func items(
   // MARK: Header
 
   let headerItem = PostCampaignRewardsSummaryItem.header(.init(
+    headerText: nil,
+    showHeader: false,
     text: estimatedDeliveryString ?? "",
     amount: NSAttributedString(string: "")
   ))
@@ -182,13 +184,14 @@ private func items(
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
-        attributes: [
     let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
     let amountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PostCampaignRewardsSummaryItem.reward(.init(
+      headerText: nil,
+      showHeader: false,
       text: itemString,
       amount: amountAttributedText
     ))
@@ -203,6 +206,8 @@ private func items(
     )
 
     let shippingItem = PostCampaignRewardsSummaryItem.reward(.init(
+      headerText: nil,
+      showHeader: false,
       text: Strings.Shipping_to_country(country: shipping.locationName),
       amount: shippingAmountAttributedText
     ))
@@ -218,6 +223,8 @@ private func items(
     )
 
     let bonusItem = PostCampaignRewardsSummaryItem.reward(.init(
+      headerText: nil,
+      showHeader: false,
       text: Strings.Bonus_support(),
       amount: bonusAmountAttributedText
     ))
