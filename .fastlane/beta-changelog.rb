@@ -29,7 +29,7 @@ previous_changelog = current_builds.last['changelog']
 current_changelog_from_fastlane = File.read('.FASTLANE_RELEASE_NOTES.tmp')
 
 file_name = '.RELEASE_NOTES.tmp'
-File.delete(file_name) if File.exists?(file_name)
+File.delete(file_name) if File.exist?(file_name)
 File.open(file_name, 'w') do |f|
   f.write(current_changelog_from_fastlane)
   f.write(previous_changelog
