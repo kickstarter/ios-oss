@@ -276,12 +276,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     // Push notifications
 
-    let pushNotificationsPreviouslyAuthorized = self.applicationLaunchOptionsProperty.signal
-      .flatMap { _ in AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
+    let pushNotificationsPreviouslyAuthorizedAndRegistered = self.applicationLaunchOptionsProperty.signal
+      .flatMap { _ in
+        AppEnvironment.current.pushRegistrationType.registerForPushTokenOnAppLaunch()
+
+        return AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications()
+      }
 
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
-      pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
+      pushNotificationsPreviouslyAuthorizedAndRegistered.filter(isTrue).ignoreValues()
     )
     .flatMap {
       AppEnvironment.current.pushRegistrationType.register(for: [.alert, .sound, .badge])
