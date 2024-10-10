@@ -42,7 +42,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -76,7 +76,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -115,7 +115,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -123,7 +123,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -168,7 +168,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -176,7 +176,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -184,7 +184,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[5],
-      case let .allLoaded(thirdData) = values[6]
+      case let .allLoaded(thirdData, _) = values[6]
     else {
       return XCTFail()
     }
@@ -225,7 +225,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .someLoaded(firstData, cursor, _) = values[2]
+      case let .someLoaded(firstData, cursor, _, _) = values[2]
     else {
       return XCTFail()
     }
@@ -234,7 +234,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -246,23 +246,35 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationConfirmAddress() {
-    self.verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+    self.verifyNavigationEvent(
+      { self.viewModel.confirmAddress(from: Project.template) },
+      event: .confirmAddress
+    )
   }
 
   func testNavigationContactCreator() {
-    self.verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+    self.verifyNavigationEvent(
+      { self.viewModel.contactCreator(from: Project.template) },
+      event: .contactCreator
+    )
   }
 
   func testNavigationFix3DSChallenge() {
-    self.verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+    self.verifyNavigationEvent(
+      { self.viewModel.fix3DSChallenge(from: Project.template) },
+      event: .fix3DSChallenge
+    )
   }
 
   func testNavigationFixPaymentMethod() {
-    self.verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+    self.verifyNavigationEvent(
+      { self.viewModel.fixPaymentMethod(from: Project.template) },
+      event: .fixPaymentMethod
+    )
   }
 
   func testNavigationOpenSurvey() {
-    self.verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+    self.verifyNavigationEvent({ self.viewModel.openSurvey(from: Project.template) }, event: .survey)
   }
 
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
@@ -297,92 +309,15 @@ class PPOViewModelTests: XCTestCase {
   private func pledgedProjectsData(
     cursors: ClosedRange<Int> = 1...3,
     hasNextPage: Bool = false
-  ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors.map { index in self.projectEdgeJSON(cursor: "\(index)") }
-    let edgesJson = "[\(edges.joined(separator: ", "))]"
-    return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
-    {
-    "pledgeProjectsOverview": {
-      "__typename": "PledgeProjectsOverview",
-      "pledges": {
-        "__typename": "PledgedProjectsOverviewPledgesConnection",
-        "totalCount": \(cursors.count),
-        "edges": \(edgesJson),
-        "pageInfo": {
-          "__typename": "PageInfo",
-          "hasNextPage": \(String(hasNextPage)),
-          "endCursor": "\(cursors.upperBound)",
-          "hasPreviousPage": false,
-          "startCursor": "1"
-        }
-      }
-    }
-    }
-    """)
+  ) throws -> PledgedProjectOverviewCardsEnvelope {
+    PledgedProjectOverviewCardsEnvelope(
+      cards: cursors.map { _ in self.projectCard() },
+      totalCount: cursors.count,
+      cursor: hasNextPage ? "\(cursors.upperBound)" : nil
+    )
   }
 
-  private func projectEdgeJSON(
-    cursor: String,
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-          {
-            "__typename": "PledgeProjectOverviewItemEdge",
-            "cursor": "\(cursor)",
-            "node": \(self.projectNodeJSON(projectName: projectName))
-          }
-    """
-  }
-
-  private func projectNodeJSON(
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-    {
-      "__typename": "PledgeProjectOverviewItem",
-      "backing": {
-        "__typename": "Backing",
-        "amount": {
-          "__typename": "Money",
-          "amount": "1.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "id": "\(UUID().uuidString)",
-        "project": {
-          "__typename": "Project",
-          "creator": {
-            "__typename": "User",
-            "email": null,
-            "id": "\(UUID().uuidString)",
-            "name": "\(UUID().uuidString)"
-          },
-          "image": {
-            "__typename": "Photo",
-            "id": "\(UUID().uuidString)",
-            "url": "https://i-dev.kickstarter.com/assets/x"
-          },
-          "name": "\(projectName)",
-          "pid": 999498397,
-          "slug": "2071399561/ppo-failed-payment-0"
-        }
-      },
-      "tierType": "Tier1PaymentFailed",
-      "flags": [
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "alert",
-          "message": "Payment failed",
-          "type": "alert"
-        },
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "time",
-          "message": "Pledge will be dropped in 0 days",
-          "type": "alert"
-        }
-      ]
-    }
-    """
+  private func projectCard() -> PledgedProjectOverviewCard {
+    PledgedProjectOverviewCard.previewTemplates[0]
   }
 }

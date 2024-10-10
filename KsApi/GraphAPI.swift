@@ -9134,7 +9134,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchPledgedProjects($first: Int = null, $after: String = null) {
+      query FetchPledgedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
         pledgeProjectsOverview {
           __typename
           pledges(first: $first, after: $after) {
@@ -9168,19 +9168,28 @@ public enum GraphAPI {
       document.append("\n" + PpoBackingFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + PpoProjectFragment.fragmentDefinition)
+      document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
+      document.append("\n" + ProjectFragment.fragmentDefinition)
+      document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + CountryFragment.fragmentDefinition)
+      document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
 
     public var first: Int?
     public var after: String?
+    public var withStoredCards: Bool?
 
-    public init(first: Int? = nil, after: String? = nil) {
+    public init(first: Int? = nil, after: String? = nil, withStoredCards: Bool? = nil) {
       self.first = first
       self.after = after
+      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["first": first, "after": after]
+      return ["first": first, "after": after, "withStoredCards": withStoredCards]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14764,6 +14773,7 @@ public enum GraphAPI {
         project {
           __typename
           ...PPOProjectFragment
+          ...ProjectFragment
         }
       }
       """
@@ -14890,6 +14900,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLFragmentSpread(PpoProjectFragment.self),
+          GraphQLFragmentSpread(ProjectFragment.self),
         ]
       }
 
@@ -14927,6 +14938,15 @@ public enum GraphAPI {
         public var ppoProjectFragment: PpoProjectFragment {
           get {
             return PpoProjectFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public var projectFragment: ProjectFragment {
+          get {
+            return ProjectFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -15151,6 +15171,7 @@ public enum GraphAPI {
         name
         pid
         slug
+        ...ProjectAnalyticsFragment
       }
       """
 
@@ -15164,6 +15185,7 @@ public enum GraphAPI {
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
         GraphQLField("slug", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
       ]
     }
 
@@ -15171,10 +15193,6 @@ public enum GraphAPI {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
-    }
-
-    public init(creator: Creator? = nil, image: Image? = nil, name: String, pid: Int, slug: String) {
-      self.init(unsafeResultMap: ["__typename": "Project", "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "slug": slug])
     }
 
     public var __typename: String {
@@ -15233,6 +15251,32 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "slug")
+      }
+    }
+
+    public var fragments: Fragments {
+      get {
+        return Fragments(unsafeResultMap: resultMap)
+      }
+      set {
+        resultMap += newValue.resultMap
+      }
+    }
+
+    public struct Fragments {
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var projectAnalyticsFragment: ProjectAnalyticsFragment {
+        get {
+          return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
       }
     }
 
