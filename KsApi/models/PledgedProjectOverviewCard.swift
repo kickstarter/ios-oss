@@ -5,12 +5,12 @@ public struct PledgedProjectOverviewCard: Identifiable, Equatable {
   public let alerts: [Alert]
   public let imageURL: URL
   public let title: String
-  public let project: Project
   public let pledge: GraphAPI.MoneyFragment
   public let creatorName: String
   public let address: String?
   public let actions: (Action, Action?)
   public let tierType: TierType
+  public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   // MARK: - Identifiable
 
@@ -25,7 +25,6 @@ public struct PledgedProjectOverviewCard: Identifiable, Equatable {
       lhs.alerts == rhs.alerts &&
       lhs.imageURL == rhs.imageURL &&
       lhs.title == rhs.title &&
-      lhs.project == rhs.project &&
       lhs.pledge == rhs.pledge &&
       lhs.creatorName == rhs.creatorName &&
       lhs.address == rhs.address &&

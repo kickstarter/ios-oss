@@ -608,13 +608,12 @@ public final class KSRAnalytics {
 
   public func trackPPOMessagingCreator(
     from project: any ProjectAnalyticsProperties,
-    creatorUID: String,
     properties: PledgedProjectOverviewProperties
   ) {
     let properties = contextProperties(ctaContext: .messageCreatorInitiate, page: .projectAlerts)
       .withAllValuesFrom(projectProperties(from: project))
       .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
-      .withAllValuesFrom(["interaction_target_uid": creatorUID])
+      .withAllValuesFrom(["interaction_target_uid": (project.creatorId ?? "")])
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: properties

@@ -1136,7 +1136,6 @@
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
 		AA1023E62CACE540007800B5 /* PledgedProjectOverviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E52CACE540007800B5 /* PledgedProjectOverviewCard.swift */; };
-		AA1023E82CAE0549007800B5 /* Project+FetchPPOQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E72CAE0549007800B5 /* Project+FetchPPOQueryData.swift */; };
 		AA1023EA2CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */; };
 		AA1023EC2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */; };
 		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
@@ -2803,7 +2802,6 @@
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewModel.swift; sourceTree = "<group>"; };
 		AA1023E52CACE540007800B5 /* PledgedProjectOverviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectOverviewCard.swift; sourceTree = "<group>"; };
-		AA1023E72CAE0549007800B5 /* Project+FetchPPOQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchPPOQueryData.swift"; sourceTree = "<group>"; };
 		AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgedProjectOverviewCard+FetchPPOQueryData.swift"; sourceTree = "<group>"; };
 		AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectOverviewCardTemplates.swift; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
@@ -6042,7 +6040,6 @@
 				8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */,
 				8AC3E040269791C300168BF8 /* Project.Country+CountryFragment.swift */,
 				8AC3E05D2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift */,
-				AA1023E72CAE0549007800B5 /* Project+FetchPPOQueryData.swift */,
 				AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */,
 				8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */,
 				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
@@ -9075,7 +9072,6 @@
 				D015891D1EEB2ED7006E7684 /* ShippingRule.swift in Sources */,
 				D67B6CD6221F468100B63A6B /* Location+Encode.swift in Sources */,
 				6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */,
-				AA1023E82CAE0549007800B5 /* Project+FetchPPOQueryData.swift in Sources */,
 				8AC3E105269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift in Sources */,
 				E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */,
 				D01588331EEB2ED7006E7684 /* Decodable.swift in Sources */,

@@ -18,7 +18,6 @@ extension PledgedProjectOverviewCard {
     ],
     imageURL: URL(string: "http://localhost/")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-    project: Project.template,
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
     address: """
@@ -28,7 +27,8 @@ extension PledgedProjectOverviewCard {
       United States
     """,
     actions: (.confirmAddress, .editAddress),
-    tierType: .confirmAddress
+    tierType: .confirmAddress,
+    projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
   internal static let addressLockTemplate = PledgedProjectOverviewCard(
@@ -39,12 +39,12 @@ extension PledgedProjectOverviewCard {
     ],
     imageURL: URL(string: "http://localhost/")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-    project: Project.template,
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
-    tierType: .openSurvey
+    tierType: .openSurvey,
+    projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
   internal static let fixPaymentTemplate = PledgedProjectOverviewCard(
@@ -59,12 +59,12 @@ extension PledgedProjectOverviewCard {
     ],
     imageURL: URL(string: "http://localhost/")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-    project: Project.template,
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.fixPayment, nil),
-    tierType: .fixPayment
+    tierType: .fixPayment,
+    projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
   internal static let authenticateCardTemplate = PledgedProjectOverviewCard(
@@ -79,12 +79,12 @@ extension PledgedProjectOverviewCard {
     ],
     imageURL: URL(string: "http://localhost/")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-    project: Project.template,
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.authenticateCard, nil),
-    tierType: .authenticateCard
+    tierType: .authenticateCard,
+    projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
   internal static let completeSurveyTemplate = PledgedProjectOverviewCard(
@@ -94,11 +94,40 @@ extension PledgedProjectOverviewCard {
     ],
     imageURL: URL(string: "http://localhost/")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-    project: Project.template,
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
-    tierType: .openSurvey
+    tierType: .openSurvey,
+    projectAnalytics: Self.projectAnalyticsFragmentTemplate
+  )
+
+  internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
+    addOns: nil,
+    backersCount: 42,
+    backing: nil,
+    category: nil,
+    commentsCount: 42,
+    country: .init(code: .us),
+    creator: nil,
+    currency: .usd,
+    deadlineAt: nil,
+    launchedAt: nil,
+    pid: 42,
+    name: "Test",
+    isInPostCampaignPledgingPhase: true,
+    isWatched: true,
+    percentFunded: 100,
+    isPrelaunchActivated: false,
+    projectTags: [],
+    postCampaignPledgingEnabled: false,
+    rewards: nil,
+    state: .successful,
+    video: nil,
+    pledged: .init(amount: nil),
+    fxRate: 4,
+    usdExchangeRate: nil,
+    posts: nil,
+    goal: nil
   )
 }

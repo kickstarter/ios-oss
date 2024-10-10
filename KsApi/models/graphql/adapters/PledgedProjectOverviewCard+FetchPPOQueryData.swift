@@ -88,21 +88,20 @@ extension PledgedProjectOverviewCard {
         return nil
       }
 
-      let projectFragment = backing?.project?.fragments.projectFragment
-      let project = projectFragment.flatMap { Project.project(from: $0, currentUserChosenCurrency: nil) }
+      let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-      if let imageURL, let title, let pledge, let creatorName, let project {
+      if let imageURL, let title, let pledge, let creatorName, let projectAnalyticsFragment {
         return self.init(
           isUnread: true,
           alerts: alerts,
           imageURL: imageURL,
           title: title,
-          project: project,
           pledge: pledge,
           creatorName: creatorName,
           address: address,
           actions: (primaryAction, secondaryAction),
-          tierType: tierType
+          tierType: tierType,
+          projectAnalytics: projectAnalyticsFragment
         )
       } else {
         return nil
