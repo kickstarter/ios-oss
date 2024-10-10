@@ -1144,6 +1144,8 @@
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
 		AA6E9E8A2C63EE78001543FC /* PPOAddressSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */; };
+		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
+		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
 		AAE7C9A22C75142A00800E03 /* PPOCardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOCardStyles.swift */; };
 		AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */; };
 		AAE7C9A72C75948B00800E03 /* PPOProjectCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */; };
@@ -2804,6 +2806,8 @@
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
+		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
+		AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectAnalyticsFragment.graphql; sourceTree = "<group>"; };
 		AAE7C9A12C75142A00800E03 /* PPOCardStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOCardStyles.swift; sourceTree = "<group>"; };
 		AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBar.swift; sourceTree = "<group>"; };
 		AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModel.swift; sourceTree = "<group>"; };
@@ -5900,6 +5904,7 @@
 				8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */,
 				8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */,
 				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
+				AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */,
 				8A417DEF25AE37D200A2C406 /* Segment.swift */,
 				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
 				94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */,
@@ -5949,6 +5954,7 @@
 				393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */,
 				393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */,
 				393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */,
+				AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */,
 				8A1556EF269398CB00017845 /* ProjectFragment.graphql */,
 				8A1556DF269394B600017845 /* RewardFragment.graphql */,
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
@@ -7658,6 +7664,7 @@
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */,
 				39B5E1122B89120F00FFB720 /* CreateAttributionEvent.graphql in Resources */,
+				AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */,
 				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */,
@@ -7839,6 +7846,7 @@
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
 				4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */,
+				AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */,
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
