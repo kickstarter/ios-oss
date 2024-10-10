@@ -413,7 +413,7 @@ public protocol ServiceType {
 
   /// Fetch data for the pledged projects overview.
   func fetchPledgedProjects(cursor: String?, limit: Int?)
-    -> AnyPublisher<PledgedProjectOverviewCardsEnvelope, ErrorEnvelope>
+    -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>
 }
 
 extension ServiceType {

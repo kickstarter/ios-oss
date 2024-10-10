@@ -4,24 +4,24 @@ import KsApi
 
 protocol PPOProjectCardViewModelInputs {
   func sendCreatorMessage()
-  func performAction(action: PledgedProjectOverviewCard.Action)
+  func performAction(action: PPOProjectCardModel.Action)
 }
 
 protocol PPOProjectCardViewModelOutputs {
   var sendMessageTapped: AnyPublisher<Void, Never> { get }
-  var actionPerformed: AnyPublisher<PledgedProjectOverviewCard.Action, Never> { get }
+  var actionPerformed: AnyPublisher<PPOProjectCardModel.Action, Never> { get }
 
-  var card: PledgedProjectOverviewCard { get }
+  var card: PPOProjectCardModel { get }
   var parentSize: CGSize { get }
 }
 
 extension PPOProjectCardViewModelOutputs {
-  var primaryAction: PledgedProjectOverviewCard.Action {
+  var primaryAction: PPOProjectCardModel.Action {
     let (primary, _) = self.card.actions
     return primary
   }
 
-  var secondaryAction: PledgedProjectOverviewCard.Action? {
+  var secondaryAction: PPOProjectCardModel.Action? {
     let (_, secondary) = self.card.actions
     return secondary
   }
@@ -32,14 +32,11 @@ typealias PPOProjectCardViewModelType = Equatable & Identifiable & ObservableObj
   PPOProjectCardViewModelOutputs
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
-  @Published private(set) var card: PledgedProjectOverviewCard
+  @Published private(set) var card: PPOProjectCardModel
   @Published private(set) var parentSize: CGSize
 
-  private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
-  private let actionPerformedSubject = PassthroughSubject<PledgedProjectOverviewCard.Action, Never>()
-
   init(
-    card: PledgedProjectOverviewCard,
+    card: PPOProjectCardModel,
     parentSize: CGSize
   ) {
     self.card = card
@@ -61,10 +58,13 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
+  private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
+  private let actionPerformedSubject = PassthroughSubject<PPOProjectCardModel.Action, Never>()
+
   // MARK: - Helpers
 
-  typealias Action = PledgedProjectOverviewCard.Action
-  typealias Alert = PledgedProjectOverviewCard.Alert
+  typealias Action = PPOProjectCardModel.Action
+  typealias Alert = PPOProjectCardModel.Alert
 
   // MARK: - Equatable
 

@@ -145,7 +145,7 @@ struct PPOProjectCard: View {
     GeometryReader(content: { geometry in
       ScrollView(.vertical) {
         VStack(spacing: 16) {
-          ForEach(PledgedProjectOverviewCard.previewTemplates) { template in
+          ForEach(PPOProjectCardModel.previewTemplates) { template in
             PPOProjectCard(viewModel: PPOProjectCardViewModel(card: template, parentSize: geometry.size))
           }
         }

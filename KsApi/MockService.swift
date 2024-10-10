@@ -4,7 +4,7 @@
   import Prelude
   import ReactiveSwift
 
-  internal struct MockService: ServiceType {
+internal struct MockService: ServiceType {
     internal let apolloClient: ApolloClientType?
     internal let appId: String
     internal let serverConfig: ServerConfigType
@@ -111,7 +111,7 @@
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
     fileprivate let fetchPledgedProjectsResult:
-      Result<PledgedProjectOverviewCardsEnvelope, ErrorEnvelope>?
+      Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>?
 
     /**
      FIXME: Eventually combine `fetchProjectEnvelopeResult` and `fetchProjectPamphletEnvelopeResult` once all calls returning `Project` are using GQL. https://kickstarter.atlassian.net/browse/NTV-219
@@ -289,7 +289,7 @@
       fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
-      fetchPledgedProjectsResult: Result<PledgedProjectOverviewCardsEnvelope, ErrorEnvelope>? = nil,
+      fetchPledgedProjectsResult: Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>? = nil,
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
@@ -1816,10 +1816,10 @@
     func fetchPledgedProjects(
       cursor _: String?,
       limit _: Int?
-    ) -> AnyPublisher<PledgedProjectOverviewCardsEnvelope, ErrorEnvelope> {
+    ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
       guard let response = self.fetchPledgedProjectsResult else {
         return Fail(
-          outputType: PledgedProjectOverviewCardsEnvelope.self,
+          outputType: GraphAPI.FetchPledgedProjectsQuery.Data.self,
           failure: ErrorEnvelope.couldNotParseErrorEnvelopeJSON
         )
         .eraseToAnyPublisher()
@@ -1830,7 +1830,7 @@
         return Just(pledgedProjectsData).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
 
       case let .failure(envelope):
-        return Fail(outputType: PledgedProjectOverviewCardsEnvelope.self, failure: envelope)
+        return Fail(outputType: GraphAPI.FetchPledgedProjectsQuery.Data.self, failure: envelope)
           .eraseToAnyPublisher()
       }
     }

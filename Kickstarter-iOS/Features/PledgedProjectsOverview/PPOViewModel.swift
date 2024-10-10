@@ -4,7 +4,7 @@ import KsApi
 import Library
 
 typealias PPOViewModelPaginator = Paginator<
-  PledgedProjectOverviewCardsEnvelope,
+  GraphAPI.FetchPledgedProjectsQuery.Data,
   PPOProjectCardViewModel,
   String,
   ErrorEnvelope,
@@ -44,10 +44,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
-        data.cards.compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
+        data.pledgeProjectsOverview?.pledges?.edges?
+          .compactMap({ edge in edge?.node })
+          .compactMap({ node in PPOProjectCardModel(node: node) })
+          .compactMap({ PPOProjectCardViewModel(card: $0, parentSize: .zero) })
+         ?? []
       },
-      cursorFromEnvelope: { data in data.cursor },
-      totalFromEnvelope: { data in data.totalCount },
+      cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
+      totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
       requestFromParams: { () in
         AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
       },

@@ -901,10 +901,9 @@ public struct Service: ServiceType {
   public func fetchPledgedProjects(
     cursor: String? = nil,
     limit: Int? = nil
-  ) -> AnyPublisher<PledgedProjectOverviewCardsEnvelope, ErrorEnvelope> {
+  ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
     GraphQL.shared.client
       .fetch(query: GraphAPI.FetchPledgedProjectsQuery(first: limit, after: cursor))
-      .flatMap(PledgedProjectOverviewCard.pledgedProjectOverviewCardsProducer(from:))
       .eraseToAnyPublisher()
   }
 }
