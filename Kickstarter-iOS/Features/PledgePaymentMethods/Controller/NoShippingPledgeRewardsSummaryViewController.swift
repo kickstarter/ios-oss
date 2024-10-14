@@ -223,6 +223,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     self.sectionHeaderLabelStyle(headerLabel)
 
     switch section {
+    /// We're using a custom header for the main header cell and bonus support shouldn't have a section header.
     case .header, .bonusSupport:
       break
     case .reward:
@@ -245,16 +246,18 @@ extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let section = PledgeRewardsSummarySection.allCases[section]
+    guard let sectionIdentifier = self.dataSource.sectionIdentifier(for: section) else { return nil }
 
-    return self.sectionHeaderView(for: section)
+    return self.sectionHeaderView(for: sectionIdentifier)
   }
 
   func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    let section = PledgeRewardsSummarySection.allCases[section]
-    let shouldHideSectionHeader = section == .header || section == .bonusSupport
+    guard let sectionIdentifier = self.dataSource.sectionIdentifier(for: section) else {
+      return UITableView.automaticDimension
+    }
 
     /// Hides the first section header because we're using our own UITableCell here.
+    let shouldHideSectionHeader = sectionIdentifier == .header || sectionIdentifier == .bonusSupport
     return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
   }
 }
