@@ -2,6 +2,11 @@ import Library
 import Prelude
 import UIKit
 
+private enum PledgeRewardsSummaryCellLabelType {
+  case reward
+  case bonusSupport
+}
+
 final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
@@ -10,6 +15,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
   private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
   private lazy var titleLabel: UILabel = UILabel(frame: .zero)
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
+
+  private var labelType: PledgeRewardsSummaryCellLabelType = .reward
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
     = PledgeExpandableHeaderRewardCellViewModel()
@@ -62,6 +69,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] titleText in
         self?.titleLabel.text = titleText
+        self?.labelType = titleText == Strings.Bonus_support() ? .bonusSupport : .reward
         self?.titleLabel.setNeedsLayout()
       }
   }
@@ -107,7 +115,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
   private func labelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
-    label.textColor = label.text == Strings.Bonus_support() ? UIColor.ksr_black : UIColor.ksr_support_400
+    label.textColor = self.labelType == .bonusSupport ? UIColor.ksr_black : UIColor.ksr_support_400
     label.numberOfLines = 0
   }
 
@@ -126,14 +134,16 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     stackView.spacing = spacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.layoutMargins = UIEdgeInsets(
-      topBottom: Styles.grid(1),
-      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
+      top: self.labelType == .bonusSupport ? 0 : Styles.grid(3),
+      left: CheckoutConstants.PledgeView.Inset.leftRight,
+      bottom: Styles.grid(3),
+      right: CheckoutConstants.PledgeView.Inset.leftRight
     )
   }
 
   private func containerStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
-    stackView.spacing = Styles.gridHalf(3)
+    stackView.spacing = 0
   }
 
   private func separatorViewStyle(_ view: UIView) {
