@@ -34,12 +34,11 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var showErrorBannerWithMessage: Signal<String, Never> { get }
+  var showErrorBanner: Signal<(message: String, persist: Bool), Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
   var checkoutComplete: Signal<ThanksPageData, Never> { get }
-  var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
 public protocol NoShippingPostCampaignCheckoutViewModelType {
@@ -179,7 +178,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     let backingId = createCheckoutEvents.values().map(\.checkout.backingId)
 
-    let createCheckoutErrors = createCheckoutEvents.errors()
+    let createCheckoutError = createCheckoutEvents.errors()
 
     // MARK: Configure views
 
@@ -454,6 +453,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
       .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedCard)
+      .takeWhen(self.confirmPaymentSuccessfulProperty.signal.skipNil())
       .map { (
         clientSecret: String,
         checkoutId: String,
@@ -512,19 +512,29 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .takeWhen(checkoutCompleteSignal.signal.values())
       .map { $0 }
 
-    self.checkoutError = checkoutCompleteSignal.signal.errors()
+    let checkoutError = checkoutCompleteSignal.signal.errors()
 
     // MARK: - Error handling
 
-    self.showErrorBannerWithMessage = Signal.merge(createCheckoutErrors, validateCheckoutError)
-      .map { error in
-        switch error.ksrCode {
-        case .ValidateCheckoutError:
-          return error.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
-        default:
-          return Strings.Something_went_wrong_please_try_again()
-        }
+    self.showErrorBanner = Signal.merge(
+      createCheckoutError.map { ($0, true) },
+      validateCheckoutError.map { ($0, false) },
+      checkoutError.map { ($0, false) }
+    )
+    .map { error, shouldPersist in
+      if error.ksrCode == .ValidateCheckoutError, let message = error.errorMessages.first {
+        return (message: message, persist: shouldPersist)
       }
+
+      #if DEBUG
+        let serverError = error.errorMessages.first ?? ""
+        let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
+      #else
+        let message = Strings.Something_went_wrong_please_try_again()
+      #endif
+
+      return (message: message, persist: shouldPersist)
+    }
 
     // MARK: - UI related to checkout flow
 
@@ -567,7 +577,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     // Use checkoutId in tracking, or default to nil if creating it errors.
     let checkoutIdOrNil = Signal.merge(
       checkoutId.wrapInOptional(),
-      createCheckoutErrors.mapConst(nil).take(first: 1)
+      createCheckoutError.mapConst(nil).take(first: 1)
     )
 
     let checkoutData = Signal.combineLatest(
@@ -749,13 +759,12 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let showErrorBannerWithMessage: Signal<String, Never>
+  public let showErrorBanner: Signal<(message: String, persist: Bool), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
-  public let checkoutError: Signal<ErrorEnvelope, Never>
 
   public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
   public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
