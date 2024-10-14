@@ -82,24 +82,24 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
     XCTAssertEqual(headerItemData?.text, "Estimated delivery October 2016")
     XCTAssertEqual(headerItemData?.amount.string, "")
 
-    XCTAssertEqual(rewardItemData[1].text, "Reward 1")
-    XCTAssertEqual(rewardItemData[1].amount.string, "US$ 60")
+    XCTAssertEqual(rewardItemData[0].text, "Reward 1")
+    XCTAssertEqual(rewardItemData[0].amount.string, "US$ 60")
+    XCTAssertEqual(rewardItemData[0].showHeader, false)
+    XCTAssertNil(rewardItemData[0].headerText)
+
+    XCTAssertEqual(rewardItemData[1].text, "2 x Reward 2")
+    XCTAssertEqual(rewardItemData[1].amount.string, "US$ 40")
     XCTAssertEqual(rewardItemData[1].showHeader, false)
     XCTAssertNil(rewardItemData[1].headerText)
 
-    XCTAssertEqual(rewardItemData[2].text, "2 x Reward 2")
-    XCTAssertEqual(rewardItemData[2].amount.string, "US$ 40")
+    XCTAssertEqual(rewardItemData[2].text, "3 x Reward 3")
+    XCTAssertEqual(rewardItemData[2].amount.string, "US$ 120")
     XCTAssertEqual(rewardItemData[2].showHeader, false)
     XCTAssertNil(rewardItemData[2].headerText)
 
-    XCTAssertEqual(rewardItemData[3].text, "3 x Reward 3")
-    XCTAssertEqual(rewardItemData[3].amount.string, "US$ 120")
+    XCTAssertEqual(rewardItemData[3].text, "Bonus support")
+    XCTAssertEqual(rewardItemData[3].amount.string, "US$ 10")
     XCTAssertEqual(rewardItemData[3].showHeader, false)
     XCTAssertNil(rewardItemData[3].headerText)
-
-    XCTAssertEqual(rewardItemData[4].text, "Bonus support")
-    XCTAssertEqual(rewardItemData[4].amount.string, "US$ 10")
-    XCTAssertEqual(rewardItemData[4].showHeader, false)
-    XCTAssertNil(rewardItemData[4].headerText)
   }
 }
