@@ -20,7 +20,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   private let checkoutComplete = TestObserver<ThanksPageData, Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
-  private let showErrorBannerWithMessage = TestObserver<(String, Bool), Never>()
+  private let showErrorBanner = TestObserver<(message: String, persist: Bool), Never>()
   private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward), Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
@@ -47,7 +47,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
-    self.vm.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
+    self.vm.showErrorBanner.observe(self.showErrorBanner.observer)
     self.vm.goToLoginSignup.observe(self.goToLoginSignup.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
@@ -813,7 +813,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.goToLoginSignupTapped()
 
       self.goToLoginSignup.assertDidEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.showErrorBanner.assertDidNotEmitValue()
     }
   }
 }

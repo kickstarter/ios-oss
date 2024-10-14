@@ -34,7 +34,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var showErrorBannerWithMessage: Signal<(String, /* persist: */ Bool), Never> { get }
+  var showErrorBanner: Signal<(message: String, persist: Bool), Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
@@ -516,14 +516,14 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: - Error handling
 
-    self.showErrorBannerWithMessage = Signal.merge(
+    self.showErrorBanner = Signal.merge(
       createCheckoutError.map { ($0, true) },
       validateCheckoutError.map { ($0, false) },
       checkoutError.map { ($0, false) }
     )
     .map { error, shouldPersist in
       if error.ksrCode == .ValidateCheckoutError, let message = error.errorMessages.first {
-        return (message, shouldPersist)
+        return (message: message, persist: shouldPersist)
       }
 
       #if DEBUG
@@ -533,7 +533,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
         let message = Strings.Something_went_wrong_please_try_again()
       #endif
 
-      return (message, shouldPersist)
+      return (message: message, persist: shouldPersist)
     }
 
     // MARK: - UI related to checkout flow
@@ -759,7 +759,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let showErrorBannerWithMessage: Signal<(String, /* persist: */ Bool), Never>
+  public let showErrorBanner: Signal<(message: String, persist: Bool), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>

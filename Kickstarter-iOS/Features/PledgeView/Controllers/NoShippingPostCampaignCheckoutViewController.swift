@@ -277,7 +277,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
         self.confirmPayment(with: validation)
       }
 
-    self.viewModel.outputs.showErrorBannerWithMessage
+    self.viewModel.outputs.showErrorBanner
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage, shouldPersist in
         self?.messageBannerViewController?.showBanner(
