@@ -107,7 +107,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.policyDecisionProperty <~ newRequest
       .map { request in
-        if isStripeElement(request) {
+        if isStripeRequest(request) {
           return true
         }
 
@@ -164,6 +164,10 @@ private func isSurvey(request: URLRequest) -> Bool {
   return true
 }
 
-private func isStripeElement(_ request: URLRequest) -> Bool {
-  return request.url?.host == "js.stripe.com"
+// Returns true if the url host is of the form *.stripe.com or *.stripe.network.
+private func isStripeRequest(_ request: URLRequest) -> Bool {
+  guard let host = request.url?.host?.lowercased() else { return false }
+  let components = host.split(separator: ".")
+  return components.count == 3 && components[1] == "stripe" &&
+    (components[2] == "com" || components[2] == "network")
 }
