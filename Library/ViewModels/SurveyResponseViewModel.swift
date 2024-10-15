@@ -164,10 +164,11 @@ private func isSurvey(request: URLRequest) -> Bool {
   return true
 }
 
-// Returns true if the url host is of the form *.stripe.com or *.stripe.network.
+// Returns true if the url host is of the form *.stripe.com, *.stripe.network, or *.stripecdn.com.
 private func isStripeRequest(_ request: URLRequest) -> Bool {
+  let stripeDomains = ["stripe.com", "stripe.network", "stripecdn.com"]
+
   guard let host = request.url?.host?.lowercased() else { return false }
-  let components = host.split(separator: ".")
-  return components.count == 3 && components[1] == "stripe" &&
-    (components[2] == "com" || components[2] == "network")
+  let withoutSubdomain = host.split(separator: ".").suffix(2).joined(separator: ".")
+  return stripeDomains.contains(withoutSubdomain)
 }
