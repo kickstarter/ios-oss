@@ -107,7 +107,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.policyDecisionProperty <~ newRequest
       .map { request in
-        if isStripeElement(request) {
+        if isStripeRequest(request) {
           return true
         }
 
@@ -164,6 +164,11 @@ private func isSurvey(request: URLRequest) -> Bool {
   return true
 }
 
-private func isStripeElement(_ request: URLRequest) -> Bool {
-  return request.url?.host == "js.stripe.com"
+// Returns true if the url host is of the form *.stripe.com, *.stripe.network, or *.stripecdn.com.
+private func isStripeRequest(_ request: URLRequest) -> Bool {
+  let stripeDomains = ["stripe.com", "stripe.network", "stripecdn.com"]
+
+  guard let host = request.url?.host?.lowercased() else { return false }
+  let withoutSubdomain = host.split(separator: ".").suffix(2).joined(separator: ".")
+  return stripeDomains.contains(withoutSubdomain)
 }

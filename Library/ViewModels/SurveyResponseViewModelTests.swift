@@ -205,9 +205,61 @@ final class SurveyResponseViewModelTests: TestCase {
       XCTAssertEqual(update, updateResult, " Update is wrong.")
     }
   }
+
+  // MARK: - Decision policy tests
+
+  func testBadRequest() {
+    let navigationData = navigationData("https://www.fake.com/bad-url")
+    XCTAssertEqual(
+      self.vm.decidePolicyFor(navigationAction: navigationData),
+      WKNavigationActionPolicy.cancel
+    )
+  }
+
+  func testBadStripeRequest() {
+    let navigationData = navigationData("https://www.stripecdn.network")
+    XCTAssertEqual(
+      self.vm.decidePolicyFor(navigationAction: navigationData),
+      WKNavigationActionPolicy.cancel
+    )
+  }
+
+  func testStripeNetworkRequest() {
+    let navigationData = navigationData("https://m.stripe.network/inner.html#url=fake")
+    XCTAssertEqual(
+      self.vm.decidePolicyFor(navigationAction: navigationData),
+      WKNavigationActionPolicy.allow
+    )
+  }
+
+  func testStripeElementRequest() {
+    let navigationData = navigationData("https://js.stripe.com/v3/controller-fake.html")
+    XCTAssertEqual(
+      self.vm.decidePolicyFor(navigationAction: navigationData),
+      WKNavigationActionPolicy.allow
+    )
+  }
+
+  func testStripeCdnRequest() {
+    let navigationData = navigationData("https://b.stripecdn.com/assets/v21.19/Captcha.html")
+    XCTAssertEqual(
+      self.vm.decidePolicyFor(navigationAction: navigationData),
+      WKNavigationActionPolicy.allow
+    )
+  }
 }
 
 // MARK: - Helpers
+
+private func navigationData(_ url: String) -> WKNavigationActionData {
+  let request = URLRequest(url: URL.init(string: url)!)
+  return WKNavigationActionData(
+    navigationType: .other,
+    request: request,
+    sourceFrame: WKFrameInfoData(frameInfo: WKFrameInfo()),
+    targetFrame: nil
+  )
+}
 
 private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
