@@ -613,7 +613,7 @@ public final class KSRAnalytics {
     let properties = contextProperties(ctaContext: .messageCreatorInitiate, page: .projectAlerts)
       .withAllValuesFrom(projectProperties(from: project))
       .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
-      .withAllValuesFrom(["interaction_target_uid": (project.creatorId ?? "")])
+      .withAllValuesFrom(["interaction_target_uid": project.creatorId ?? ""])
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: properties

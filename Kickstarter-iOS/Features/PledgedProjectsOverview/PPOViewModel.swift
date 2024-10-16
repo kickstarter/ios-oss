@@ -17,12 +17,12 @@ protocol PPOViewModelInputs {
   func pullToRefresh()
 
   func openBackedProjects()
-  func fixPaymentMethod(from: PledgedProjectOverviewCard)
-  func fix3DSChallenge(from: PledgedProjectOverviewCard)
-  func openSurvey(from: PledgedProjectOverviewCard)
-  func editAddress(from: PledgedProjectOverviewCard)
-  func confirmAddress(from: PledgedProjectOverviewCard)
-  func contactCreator(from: PledgedProjectOverviewCard)
+  func fixPaymentMethod(from: PPOProjectCardModel)
+  func fix3DSChallenge(from: PPOProjectCardModel)
+  func openSurvey(from: PPOProjectCardModel)
+  func editAddress(from: PPOProjectCardModel)
+  func confirmAddress(from: PPOProjectCardModel)
+  func contactCreator(from: PPOProjectCardModel)
 }
 
 protocol PPOViewModelOutputs {
@@ -45,10 +45,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
         data.pledgeProjectsOverview?.pledges?.edges?
-          .compactMap({ edge in edge?.node })
-          .compactMap({ node in PPOProjectCardModel(node: node) })
-          .compactMap({ PPOProjectCardViewModel(card: $0, parentSize: .zero) })
-         ?? []
+          .compactMap { edge in edge?.node }
+          .compactMap { node in PPOProjectCardModel(node: node) }
+          .compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
+          ?? []
       },
       cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
@@ -206,27 +206,27 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openBackedProjectsSubject.send(())
   }
 
-  func fixPaymentMethod(from: PledgedProjectOverviewCard) {
+  func fixPaymentMethod(from: PPOProjectCardModel) {
     self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge(from: PledgedProjectOverviewCard) {
+  func fix3DSChallenge(from: PPOProjectCardModel) {
     self.fix3DSChallengeSubject.send(from)
   }
 
-  func openSurvey(from: PledgedProjectOverviewCard) {
+  func openSurvey(from: PPOProjectCardModel) {
     self.openSurveySubject.send(from)
   }
 
-  func editAddress(from: PledgedProjectOverviewCard) {
+  func editAddress(from: PPOProjectCardModel) {
     self.editAddressSubject.send(from)
   }
 
-  func confirmAddress(from: PledgedProjectOverviewCard) {
+  func confirmAddress(from: PPOProjectCardModel) {
     self.confirmAddressSubject.send(from)
   }
 
-  func contactCreator(from: PledgedProjectOverviewCard) {
+  func contactCreator(from: PPOProjectCardModel) {
     self.contactCreatorSubject.send(from)
   }
 
@@ -248,12 +248,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
   private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
-  private let fixPaymentMethodSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
-  private let openSurveySubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
-  private let editAddressSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
-  private let confirmAddressSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
-  private let contactCreatorSubject = PassthroughSubject<PledgedProjectOverviewCard, Never>()
+  private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
