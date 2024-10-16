@@ -3,12 +3,6 @@ import KsApi
 import Library
 
 public struct PPOProjectCardModel: Identifiable, Equatable {
-  public struct Envelope {
-    public let cards: [PPOProjectCardModel]
-    public let totalCount: Int
-    public let cursor: String?
-  }
-
   public let isUnread: Bool
   public let alerts: [Alert]
   public let imageURL: URL
@@ -386,33 +380,5 @@ extension PPOProjectCardModel {
     } else {
       return nil
     }
-  }
-}
-
-extension PPOProjectCardModel.Envelope {
-  static func pledgedProjectOverviewCards(
-    from data: GraphAPI.FetchPledgedProjectsQuery
-      .Data
-  ) -> PPOProjectCardModel.Envelope? {
-    guard
-      let pledges = data.pledgeProjectsOverview?.pledges,
-      let edges = pledges.edges
-    else {
-      return nil
-    }
-
-    let totalCount = pledges.totalCount
-    let cursor = pledges.pageInfo.hasNextPage ? pledges.pageInfo.endCursor : nil
-    let cards = edges.compactMap { edge -> PPOProjectCardModel? in
-      guard let node = edge?.node, let model = PPOProjectCardModel(node: node) else {
-        return nil
-      }
-      return model
-    }
-    return PPOProjectCardModel.Envelope(
-      cards: cards,
-      totalCount: totalCount,
-      cursor: cursor
-    )
   }
 }
