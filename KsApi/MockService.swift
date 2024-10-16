@@ -4,7 +4,7 @@
   import Prelude
   import ReactiveSwift
 
-internal struct MockService: ServiceType {
+  internal struct MockService: ServiceType {
     internal let apolloClient: ApolloClientType?
     internal let appId: String
     internal let serverConfig: ServerConfigType
