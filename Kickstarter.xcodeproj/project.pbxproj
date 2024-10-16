@@ -1135,9 +1135,6 @@
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
-		AA1023E62CACE540007800B5 /* PledgedProjectOverviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E52CACE540007800B5 /* PledgedProjectOverviewCard.swift */; };
-		AA1023EA2CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */; };
-		AA1023EC2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */; };
 		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
 		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
@@ -2802,9 +2799,6 @@
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewModel.swift; sourceTree = "<group>"; };
-		AA1023E52CACE540007800B5 /* PledgedProjectOverviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectOverviewCard.swift; sourceTree = "<group>"; };
-		AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgedProjectOverviewCard+FetchPPOQueryData.swift"; sourceTree = "<group>"; };
-		AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectOverviewCardTemplates.swift; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AA645E9D2C772C650034705A /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
 		AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModel.swift; sourceTree = "<group>"; };
@@ -6042,7 +6036,6 @@
 				8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */,
 				8AC3E040269791C300168BF8 /* Project.Country+CountryFragment.swift */,
 				8AC3E05D2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift */,
-				AA1023E92CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift */,
 				8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */,
 				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
 				06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */,
@@ -6920,7 +6913,6 @@
 				6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */,
 				D79CF38521AC9AD200ECB73A /* PaymentType.swift */,
 				20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */,
-				AA1023E52CACE540007800B5 /* PledgedProjectOverviewCard.swift */,
 				D01587D51EEB2ED7006E7684 /* Project.Country.swift */,
 				D67B6CD7221F46D700B63A6B /* Project.Country+Encode.swift */,
 				D01587D61EEB2ED7006E7684 /* Project.CountryTests.swift */,
@@ -7051,7 +7043,6 @@
 				D01587FE1EEB2ED7006E7684 /* MessageTemplates.swift */,
 				D01587FF1EEB2ED7006E7684 /* MessageThreadTemplates.swift */,
 				D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */,
-				AA1023EB2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift */,
 				8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */,
 				D01588001EEB2ED7006E7684 /* Project.PhotoTemplates.swift */,
 				D01588011EEB2ED7006E7684 /* Project.VideoTemplates.swift */,
@@ -8878,7 +8869,6 @@
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
 				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
-				AA1023E62CACE540007800B5 /* PledgedProjectOverviewCard.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
@@ -8985,7 +8975,6 @@
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
-				AA1023EC2CAE0FBD007800B5 /* PledgedProjectOverviewCardTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				478E31C326C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift in Sources */,
@@ -9039,7 +9028,6 @@
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
-				AA1023EA2CAE0888007800B5 /* PledgedProjectOverviewCard+FetchPPOQueryData.swift in Sources */,
 				0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,

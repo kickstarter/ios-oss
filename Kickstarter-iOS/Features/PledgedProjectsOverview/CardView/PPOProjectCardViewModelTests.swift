@@ -7,12 +7,12 @@ final class PPOProjectCardViewModelTests: XCTestCase {
   func testPerformAction() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
-      card: PledgedProjectOverviewCard.authenticateCardTemplate,
+      card: PPOProjectCardModel.authenticateCardTemplate,
       parentSize: CGSize(width: 375, height: 700)
     )
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var actions: [PledgedProjectOverviewCard.Action] = []
+    var actions: [PPOProjectCardModel.Action] = []
     viewModel.actionPerformed
       .sink { action in
         actions.append(action)
@@ -29,7 +29,7 @@ final class PPOProjectCardViewModelTests: XCTestCase {
   func testSendMessage() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
-      card: PledgedProjectOverviewCard.authenticateCardTemplate,
+      card: PPOProjectCardModel.authenticateCardTemplate,
       parentSize: CGSize(width: 375, height: 700)
     )
 
