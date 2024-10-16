@@ -13,6 +13,4 @@ fragment PPOProjectFragment on Project {
   name
   pid
   slug
-
-  ...ProjectAnalyticsFragment
 }
