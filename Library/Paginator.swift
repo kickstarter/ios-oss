@@ -219,6 +219,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         Just(.error(error)).eraseToAnyPublisher()
       }
       .prepend(.loading(previous: self.results))
+      .receive(on: DispatchQueue.main)
       .sink(receiveValue: { results in
         self.results = results
       })
@@ -239,6 +240,14 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
 
     let request = self.requestFromCursor(cursor)
     self.handleRequest(request, shouldClear: false)
+  }
+
+  public func nextResult() async -> Results {
+    let publisher = AsyncPublisher(self.$results).dropFirst()
+      .filter { !$0.isLoading }
+    var iterator = publisher.makeAsyncIterator()
+    let result = await iterator.next() ?? self.results
+    return result
   }
 
   public func cancel() {
