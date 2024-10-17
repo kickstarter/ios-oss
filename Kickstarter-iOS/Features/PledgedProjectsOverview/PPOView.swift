@@ -1,3 +1,4 @@
+import Library
 import SwiftUI
 
 struct PPOView: View {
@@ -5,11 +6,28 @@ struct PPOView: View {
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
+  @State private var data: [PPOProjectCardViewModel] = []
+
   @AccessibilityFocusState private var isBannerFocused: Bool
 
   var body: some View {
     GeometryReader { reader in
-      ScrollView {
+      VStack {
+        PaginatingLazyVStack(
+          data: self.viewModel.results.values,
+          canShowProgressView: self.viewModel.results.canLoadMore
+        ) { viewModel in
+          PPOProjectCard(viewModel: viewModel)
+        } onRefresh: { () async in
+          print("Loading \(Date().timeIntervalSince1970)")
+          self.viewModel.pullToRefresh()
+          _ = await self.viewModel.nextResult()
+          print("Donezo \(Date().timeIntervalSince1970)")
+        } onLoadMore: { () async in
+          self.viewModel.loadMore()
+          _ = await self.viewModel.nextResult()
+        }
+
         // TODO: Show empty state view if user is logged in and has no PPO updates.
         // PPOEmptyStateView {
         //  self.onNavigate?(.backedProjects)
@@ -31,7 +49,9 @@ struct PPOView: View {
           .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
           .accessibilityFocused(self.$isBannerFocused)
       }
-
+      .onReceive(self.viewModel.$results, perform: { results in
+        self.data = results.values
+      })
       .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
           self.isBannerFocused = self.viewModel.bannerViewModel != nil
