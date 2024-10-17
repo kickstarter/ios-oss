@@ -42,7 +42,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -76,7 +76,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data) = values[2]
+      case let .allLoaded(data, _) = values[2]
     else {
       return XCTFail()
     }
@@ -115,7 +115,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -123,7 +123,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -168,7 +168,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(firstData) = values[2]
+      case let .allLoaded(firstData, _) = values[2]
     else {
       return XCTFail()
     }
@@ -176,7 +176,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -184,7 +184,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[5],
-      case let .allLoaded(thirdData) = values[6]
+      case let .allLoaded(thirdData, _) = values[6]
     else {
       return XCTFail()
     }
@@ -225,7 +225,7 @@ class PPOViewModelTests: XCTestCase {
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .someLoaded(firstData, cursor, _) = values[2]
+      case let .someLoaded(firstData, cursor, _, _) = values[2]
     else {
       return XCTFail()
     }
@@ -234,7 +234,7 @@ class PPOViewModelTests: XCTestCase {
 
     guard
       case .loading = values[3],
-      case let .allLoaded(secondData) = values[4]
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -246,23 +246,38 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationConfirmAddress() {
-    self.verifyNavigationEvent({ self.viewModel.confirmAddress() }, event: .confirmAddress)
+    self.verifyNavigationEvent(
+      { self.viewModel.confirmAddress(from: PPOProjectCardModel.confirmAddressTemplate) },
+      event: .confirmAddress
+    )
   }
 
   func testNavigationContactCreator() {
-    self.verifyNavigationEvent({ self.viewModel.contactCreator() }, event: .contactCreator)
+    self.verifyNavigationEvent(
+      { self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate) },
+      event: .contactCreator
+    )
   }
 
   func testNavigationFix3DSChallenge() {
-    self.verifyNavigationEvent({ self.viewModel.fix3DSChallenge() }, event: .fix3DSChallenge)
+    self.verifyNavigationEvent(
+      { self.viewModel.fix3DSChallenge(from: PPOProjectCardModel.authenticateCardTemplate) },
+      event: .fix3DSChallenge
+    )
   }
 
   func testNavigationFixPaymentMethod() {
-    self.verifyNavigationEvent({ self.viewModel.fixPaymentMethod() }, event: .fixPaymentMethod)
+    self.verifyNavigationEvent(
+      { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
+      event: .fixPaymentMethod
+    )
   }
 
   func testNavigationOpenSurvey() {
-    self.verifyNavigationEvent({ self.viewModel.openSurvey() }, event: .survey)
+    self.verifyNavigationEvent(
+      { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
+      event: .survey
+    )
   }
 
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
@@ -302,21 +317,21 @@ class PPOViewModelTests: XCTestCase {
     let edgesJson = "[\(edges.joined(separator: ", "))]"
     return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
     {
-    "pledgeProjectsOverview": {
-      "__typename": "PledgeProjectsOverview",
-      "pledges": {
-        "__typename": "PledgedProjectsOverviewPledgesConnection",
-        "totalCount": \(cursors.count),
-        "edges": \(edgesJson),
-        "pageInfo": {
-          "__typename": "PageInfo",
-          "hasNextPage": \(String(hasNextPage)),
-          "endCursor": "\(cursors.upperBound)",
-          "hasPreviousPage": false,
-          "startCursor": "1"
+      "pledgeProjectsOverview": {
+        "__typename": "PledgeProjectsOverview",
+        "pledges": {
+          "__typename": "PledgedProjectsOverviewPledgesConnection",
+          "totalCount": \(cursors.count),
+          "edges": \(edgesJson),
+          "pageInfo": {
+            "__typename": "PageInfo",
+            "hasNextPage": \(String(hasNextPage)),
+            "endCursor": \(hasNextPage ? "\"\(cursors.upperBound)\"" : "null"),
+            "hasPreviousPage": false,
+            "startCursor": "1"
+          }
         }
       }
-    }
     }
     """)
   }
@@ -326,11 +341,11 @@ class PPOViewModelTests: XCTestCase {
     projectName: String = UUID().uuidString
   ) -> String {
     """
-          {
-            "__typename": "PledgeProjectOverviewItemEdge",
-            "cursor": "\(cursor)",
-            "node": \(self.projectNodeJSON(projectName: projectName))
-          }
+    {
+      "__typename": "PledgeProjectOverviewItemEdge",
+      "cursor": "\(cursor)",
+      "node": \(self.projectNodeJSON(projectName: projectName))
+    }
     """
   }
 
@@ -342,6 +357,7 @@ class PPOViewModelTests: XCTestCase {
       "__typename": "PledgeProjectOverviewItem",
       "backing": {
         "__typename": "Backing",
+        "id": "\(UUID().uuidString)",
         "amount": {
           "__typename": "Money",
           "amount": "1.0",
@@ -355,7 +371,11 @@ class PPOViewModelTests: XCTestCase {
             "__typename": "User",
             "email": null,
             "id": "\(UUID().uuidString)",
-            "name": "\(UUID().uuidString)"
+            "name": "\(UUID().uuidString)",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            }
           },
           "image": {
             "__typename": "Photo",
@@ -364,10 +384,65 @@ class PPOViewModelTests: XCTestCase {
           },
           "name": "\(projectName)",
           "pid": 999498397,
-          "slug": "2071399561/ppo-failed-payment-0"
+          "slug": "2071399561/ppo-failed-payment-0",
+
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 0
+          },
+          "backersCount": 0,
+          "backing": {
+            "__typename": "Backing",
+            "id": "\(UUID().uuidString)"
+          },
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "\(UUID().uuidString)",
+            "parentCategory": null
+          },
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "us"
+          },
+
+          "currency": "USD",
+
+          "deadlineAt": "2024-11-16T03:44:39+0000",
+
+          "fxRate": 1.0,
+          "goal": {
+            "__typename": "Money",
+            "amount": 42
+          },
+
+          "isInPostCampaignPledgingPhase": false,
+          "isWatched": false,
+          "isPrelaunchActivated": false,
+
+          "launchedAt": "2024-10-16T03:44:39+0000",
+
+          "percentFunded": 1,
+
+          "pledged": {
+            "__typename": "Money",
+            "amount": 0
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 0
+          },
+          "postCampaignPledgingEnabled": false,
+          "projectTags": [],
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 0
+          },
+          "state": "finished",
+          "usdExchangeRate": 1.0,
+          "video": null
         }
       },
-      "tierType": "Tier1PaymentFailed",
       "flags": [
         {
           "__typename": "PledgedProjectsOverviewPledgeFlags",
@@ -381,7 +456,9 @@ class PPOViewModelTests: XCTestCase {
           "message": "Pledge will be dropped in 0 days",
           "type": "alert"
         }
-      ]
+      ],
+
+      "tierType": "Tier1PaymentFailed"
     }
     """
   }

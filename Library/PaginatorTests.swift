@@ -65,7 +65,7 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3], page: 1))
     XCTAssertEqual(paginator.results.total, 3)
   }
 
@@ -114,7 +114,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 9))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 9, page: 1))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
     XCTAssertEqual(paginator.results.total, 9)
 
@@ -125,7 +125,7 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 9))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 9, page: 2))
     XCTAssertEqual(paginator.results.total, 9)
 
     paginator.requestNextPage()
@@ -135,7 +135,7 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6, 7, 8, 9])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6, 7, 8, 9], page: 3))
     XCTAssertEqual(paginator.results.total, 9)
   }
 
@@ -159,7 +159,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 6))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 6, page: 1))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
     XCTAssertEqual(paginator.results.total, 6)
 
@@ -170,12 +170,12 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6], page: 2))
     XCTAssertEqual(paginator.results.total, 6)
 
     paginator.requestNextPage()
     XCTAssertFalse(paginator.results.isLoading)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6], page: 2))
     XCTAssertEqual(paginator.results.total, 6)
 
     self.waitTinyInterval()
@@ -205,7 +205,7 @@ final class PaginatorTests: XCTestCase {
 
     self.waitTinyInterval()
 
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 6))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3], cursor: 1, total: 6, page: 1))
     XCTAssertEqual(paginator.results.values, [1, 2, 3])
     XCTAssertEqual(paginator.results.total, 6)
 
@@ -216,14 +216,14 @@ final class PaginatorTests: XCTestCase {
     XCTAssertFalse(paginator.results.isLoading)
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertNil(paginator.results.error)
-    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 6))
+    XCTAssertEqual(paginator.results, .someLoaded(values: [1, 2, 3, 4, 5, 6], cursor: 2, total: 6, page: 2))
     XCTAssertEqual(paginator.results.total, 6)
 
     paginator.requestNextPage()
     self.waitTinyInterval()
 
     XCTAssertFalse(paginator.results.isLoading)
-    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6]))
+    XCTAssertEqual(paginator.results, .allLoaded(values: [1, 2, 3, 4, 5, 6], page: 2))
     XCTAssertEqual(paginator.results.values, [1, 2, 3, 4, 5, 6])
     XCTAssertEqual(paginator.results.total, 6)
   }

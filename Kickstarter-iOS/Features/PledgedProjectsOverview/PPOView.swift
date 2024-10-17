@@ -49,5 +49,5 @@ struct PPOView: View {
 }
 
 #Preview {
-  PPOView(viewModel: PPOViewModel())
+  PPOView()
 }

@@ -29,7 +29,7 @@ struct PPOProjectCard: View {
     // upper right corner badge
     .overlay(
       alignment: Constants.badgeAlignment,
-      content: { self.badge.opacity(self.viewModel.isUnread ? 1 : 0) }
+      content: { self.badge.opacity(self.viewModel.card.isUnread ? 1 : 0) }
     )
 
     // insets
@@ -51,10 +51,10 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var flagList: some View {
-    if self.viewModel.alerts.isEmpty == false {
+    if self.viewModel.card.alerts.isEmpty == false {
       HStack {
         VStack(alignment: .leading) {
-          ForEach(self.viewModel.alerts) { alert in
+          ForEach(self.viewModel.card.alerts) { alert in
             PPOAlertFlag(alert: alert)
           }
         }
@@ -67,9 +67,9 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     PPOProjectDetails(
-      imageUrl: self.viewModel.imageURL,
-      title: self.viewModel.title,
-      pledge: self.viewModel.pledge,
+      imageUrl: self.viewModel.card.imageURL,
+      title: self.viewModel.card.title,
+      pledge: self.viewModel.card.pledge,
       leadingColumnWidth: leadingColumnWidth
     )
     .padding([.horizontal])
@@ -77,13 +77,13 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(creatorName: self.viewModel.creatorName)
+    PPOProjectCreator(creatorName: self.viewModel.card.creatorName)
       .padding([.horizontal])
   }
 
   @ViewBuilder
   private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
-    if let address = self.viewModel.address {
+    if let address = self.viewModel.card.address {
       PPOAddressSummary(address: address, leadingColumnWidth: leadingColumnWidth)
         .padding([.horizontal])
     }
@@ -140,96 +140,16 @@ struct PPOProjectCard: View {
   }
 }
 
-#Preview("Card variants") {
-  GeometryReader(content: { geometry in
-    ScrollView(.vertical) {
-      VStack(spacing: 16) {
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          isUnread: true,
-          alerts: [
-            PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 8 hours")
-          ],
-          imageURL: URL(string: "http://localhost/")!,
-          title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-          pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
-          creatorName: "rokaplay truncate if longer than",
-          address: """
-            Firsty Lasty
-            123 First Street, Apt #5678
-            Los Angeles, CA 90025-1234
-            United States
-          """,
-          actions: (.confirmAddress, .editAddress),
-          parentSize: geometry.size
-        ))
-
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          isUnread: true,
-          alerts: [
-            PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available"),
-            PPOProjectCardViewModel.Alert(type: .time, icon: .warning, message: "Address locks in 48 hours")
-          ],
-          imageURL: URL(string: "http://localhost/")!,
-          title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-          pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
-          creatorName: "rokaplay truncate if longer than",
-          address: nil,
-          actions: (.completeSurvey, nil),
-          parentSize: geometry.size
-        ))
-
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          isUnread: true,
-          alerts: [
-            PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Payment failed"),
-            PPOProjectCardViewModel.Alert(
-              type: .time,
-              icon: .alert,
-              message: "Pledge will be dropped in 6 days"
-            )
-          ],
-          imageURL: URL(string: "http://localhost/")!,
-          title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-          pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
-          creatorName: "rokaplay truncate if longer than",
-          address: nil,
-          actions: (.fixPayment, nil),
-          parentSize: geometry.size
-        ))
-
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          isUnread: true,
-          alerts: [
-            PPOProjectCardViewModel.Alert(type: .alert, icon: .alert, message: "Card needs authentication"),
-            PPOProjectCardViewModel.Alert(
-              type: .time,
-              icon: .alert,
-              message: "Pledge will be dropped in 6 days"
-            )
-          ],
-          imageURL: URL(string: "http://localhost/")!,
-          title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-          pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
-          creatorName: "rokaplay truncate if longer than",
-          address: nil,
-          actions: (.authenticateCard, nil),
-          parentSize: geometry.size
-        ))
-
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          isUnread: true,
-          alerts: [
-            PPOProjectCardViewModel.Alert(type: .alert, icon: .warning, message: "Survey available")
-          ],
-          imageURL: URL(string: "http://localhost/")!,
-          title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-          pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
-          creatorName: "rokaplay truncate if longer than",
-          address: nil,
-          actions: (.completeSurvey, nil),
-          parentSize: geometry.size
-        ))
+#if targetEnvironment(simulator)
+  #Preview("Card variants") {
+    GeometryReader(content: { geometry in
+      ScrollView(.vertical) {
+        VStack(spacing: 16) {
+          ForEach(PPOProjectCardModel.previewTemplates) { template in
+            PPOProjectCard(viewModel: PPOProjectCardViewModel(card: template, parentSize: geometry.size))
+          }
+        }
       }
-    }
-  })
-}
+    })
+  }
+#endif
