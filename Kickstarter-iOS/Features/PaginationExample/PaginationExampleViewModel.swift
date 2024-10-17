@@ -34,7 +34,7 @@ internal class PaginationExampleViewModel: ObservableObject {
       }
     )
 
-    self.paginator.$results.map(\.values).map { projects in
+    self.paginator.$results.receive(on: RunLoop.main).map(\.values).map { projects in
       projects.map { ProjectData(id: $0.id, title: $0.name) }
     }.assign(to: &self.$projects)
 

@@ -219,7 +219,6 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         Just(.error(error)).eraseToAnyPublisher()
       }
       .prepend(.loading(previous: self.results))
-      .receive(on: DispatchQueue.main)
       .sink(receiveValue: { results in
         self.results = results
       })
