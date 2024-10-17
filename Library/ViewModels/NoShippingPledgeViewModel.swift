@@ -242,7 +242,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context.map { $0.confirmationLabelHidden }
     )
 
-    let shippingSummaryViewData = Signal.combineLatest(
+    let shippingSummaryViewDataNonnil = Signal.combineLatest(
       selectedShippingRule.skipNil().map(\.location.localizedName),
       project.map(\.stats.omitUSCurrencyCode),
       project.map { project in
@@ -251,6 +251,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       allRewardsShippingTotal
     )
     .map(PledgeShippingSummaryViewData.init)
+
+    let shippingSummaryViewData = Signal.merge(
+      shippingSummaryViewDataNonnil.wrapInOptional(),
+      selectedShippingRule.filter(isNil).mapConst(nil)
+    )
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
       initialData,

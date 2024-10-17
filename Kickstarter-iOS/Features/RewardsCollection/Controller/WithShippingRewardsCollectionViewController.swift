@@ -193,11 +193,10 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
 
     self.viewModel.outputs.rewardsCollectionViewIsHidden
       .observeForUI()
-      .observeValues { [weak self] shimmerLoadingViewIsHidden in
+      .observeValues { [weak self] rewardsCollectionViewIsHidden in
         guard let self else { return }
 
-        self.collectionView.isHidden = !shimmerLoadingViewIsHidden
-        self.collectionView.layoutIfNeeded()
+        self.collectionView.isHidden = rewardsCollectionViewIsHidden
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
