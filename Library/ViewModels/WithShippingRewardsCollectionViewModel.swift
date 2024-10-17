@@ -102,15 +102,14 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
 
     // MARK: Shipping Location
 
-    self.shippingLocationViewHidden = project
-      .map { project in
-        projectHasShippableRewards(project) == false
-      }
+    let hasShippableRewards = project.map(projectHasShippableRewards)
+
+    self.shippingLocationViewHidden = hasShippableRewards.map(negate)
 
     // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = Signal.combineLatest(
       project,
-      self.shippingLocationViewHidden.filter(isFalse)
+      hasShippableRewards.filter(isTrue)
     )
     .map { project, _ in
       // TODO: Reward will be removed from  ShippingLocationViewData once we remove the selector from Add-Ons
@@ -210,8 +209,15 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
     )
 
     /// Temporary loading state solution. Proper designs will be explored in this ticket [mbl-1678](https://kickstarter.atlassian.net/browse/MBL-1678)
-    self.rewardsCollectionViewIsHidden = self.pledgeShippingLocationViewControllerDidUpdateProperty.signal
+    let locationShimmerHidden = self.pledgeShippingLocationViewControllerDidUpdateProperty.signal
       .map { $0 }
+
+    // Rewards collection view should only be hidden while the location shimmer is showing.
+    // If the project doesn't have shippable rewards, show immediately.
+    self.rewardsCollectionViewIsHidden = Signal.merge(
+      locationShimmerHidden.negate(),
+      hasShippableRewards.filter(isFalse).mapConst(false)
+    )
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
