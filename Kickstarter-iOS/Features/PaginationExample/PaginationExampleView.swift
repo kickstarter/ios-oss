@@ -28,7 +28,7 @@ private struct PaginationExampleProjectList: View {
     .background(.purple)
     PaginatingList(
       data: self.projects,
-      canShowProgressView: true,
+      canLoadMore: true,
       selectedItem: self.$selectedItem
     ) { data in
       PaginationExampleProjectCell(title: data.title)
@@ -37,8 +37,6 @@ private struct PaginationExampleProjectList: View {
       await self.onRefresh()
     } onLoadMore: {
       await self.onLoadMore()
-    } onSelect: { _ in
-      print("Whee")
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: self.selectedItem, perform: { value in
