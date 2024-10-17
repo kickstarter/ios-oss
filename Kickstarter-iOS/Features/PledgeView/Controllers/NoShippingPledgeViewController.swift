@@ -78,7 +78,7 @@ final class NoShippingPledgeViewController: UIViewController,
   }()
 
   private lazy var pledgeRewardsSummaryViewController = {
-    NoShippingPledgeRewardsSummaryTotalViewController.instantiate()
+    NoShippingPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var estimatedShippingViewContainer =
@@ -207,19 +207,19 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.view.backgroundColor = UIColor.ksr_support_100
 
-    titleLabelStyle(self.titleLabel)
+    applyTitleLabelStyle(self.titleLabel)
 
-    rootScrollViewStyle(self.rootScrollView)
+    applyRootScrollViewStyle(self.rootScrollView)
 
-    rootStackViewStyle(self.rootStackView)
+    applyRootStackViewStyle(self.rootStackView)
 
-    rootInsetStackViewStyle(self.rootInsetStackView)
+    applyRootInsetStackViewStyle(self.rootInsetStackView)
 
-    rootInsetStackViewStyle(self.estimatedShippingStackView)
+    applyRootInsetStackViewStyle(self.estimatedShippingStackView)
 
     roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
 
-    roundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
+    applyRoundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
@@ -595,18 +595,18 @@ extension NoShippingPledgeViewController: PledgeDisclaimerViewDelegate {
 
 // MARK: - Styles
 
-private func roundedViewStyle(_ view: UIView, cornerRadius: CGFloat) {
+private func applyRoundedViewStyle(_ view: UIView, cornerRadius: CGFloat) {
   view.clipsToBounds = true
   view.layer.masksToBounds = true
   view.layer.cornerRadius = cornerRadius
 }
 
-private func rootScrollViewStyle(_ scrollView: UIScrollView) {
+private func applyRootScrollViewStyle(_ scrollView: UIScrollView) {
   scrollView.showsVerticalScrollIndicator = false
   scrollView.alwaysBounceVertical = true
 }
 
-private func rootStackViewStyle(_ stackView: UIStackView) {
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = NSLayoutConstraint.Axis.vertical
   stackView.spacing = Styles.grid(2)
   stackView.isLayoutMarginsRelativeArrangement = true
@@ -616,7 +616,7 @@ private func rootStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-private func rootInsetStackViewStyle(_ stackView: UIStackView) {
+private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = NSLayoutConstraint.Axis.vertical
   stackView.spacing = Styles.grid(4)
   stackView.isLayoutMarginsRelativeArrangement = true
@@ -626,7 +626,7 @@ private func rootInsetStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-public func titleLabelStyle(_ label: UILabel) {
+public func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
