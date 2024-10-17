@@ -28,8 +28,6 @@ protocol PPOViewModelInputs {
 protocol PPOViewModelOutputs {
   var results: PPOViewModelPaginator.Results { get }
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
-
-  func nextResult() async -> PPOViewModelPaginator.Results
 }
 
 enum PPONavigationEvent {
@@ -239,10 +237,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
     self.navigationEventSubject.eraseToAnyPublisher()
-  }
-
-  func nextResult() async -> PPOViewModelPaginator.Results {
-    await self.paginator.nextResult()
   }
 
   // MARK: - Private
