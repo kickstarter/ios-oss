@@ -1,4 +1,3 @@
-import Library
 import SwiftUI
 
 struct PPOView: View {
@@ -6,13 +5,11 @@ struct PPOView: View {
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
-  @State private var data: [PPOProjectCardViewModel] = []
-
   @AccessibilityFocusState private var isBannerFocused: Bool
 
   var body: some View {
     GeometryReader { reader in
-      VStack {
+      ScrollView {
         // TODO: Show empty state view if user is logged in and has no PPO updates.
         // PPOEmptyStateView {
         //  self.onNavigate?(.backedProjects)
@@ -34,9 +31,7 @@ struct PPOView: View {
           .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
           .accessibilityFocused(self.$isBannerFocused)
       }
-      .onReceive(self.viewModel.$results, perform: { results in
-        self.data = results.values
-      })
+
       .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
           self.isBannerFocused = self.viewModel.bannerViewModel != nil

@@ -27,8 +27,6 @@ protocol PPOViewModelInputs {
 protocol PPOViewModelOutputs {
   var results: PPOViewModelPaginator.Results { get }
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
-
-  func nextResult() async -> PPOViewModelPaginator.Results
 }
 
 enum PPONavigationEvent {
@@ -44,8 +42,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
-        let allNodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
-        let viewModels = allNodes.compactMap { PPOProjectCardViewModel(node: $0) }
+        let nodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
+        let viewModels = nodes.compactMap { PPOProjectCardViewModel(node: $0) }
         return viewModels
       },
       cursorFromEnvelope: { data in
@@ -169,10 +167,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
     self.navigationEventSubject.eraseToAnyPublisher()
-  }
-
-  func nextResult() async -> PPOViewModelPaginator.Results {
-    await self.paginator.nextResult()
   }
 
   // MARK: - Private
