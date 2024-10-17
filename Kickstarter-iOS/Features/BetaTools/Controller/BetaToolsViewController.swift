@@ -3,6 +3,7 @@ import Library
 import MessageUI
 import Prelude
 import SafariServices
+import SwiftUI
 import UIKit
 
 internal final class BetaToolsViewController: UITableViewController {
@@ -74,6 +75,12 @@ internal final class BetaToolsViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToRemoteConfigFeatureFlagTools()
+      }
+
+    self.viewModel.outputs.goToPaginatedScrollView
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToPaginatedScrollView()
       }
 
     self.viewModel.outputs.goToDesignSystem
@@ -173,6 +180,12 @@ internal final class BetaToolsViewController: UITableViewController {
 
   private func goToRemoteConfigFeatureFlagTools() {
     let viewController = RemoteConfigFeatureFlagToolsViewController.instantiate()
+
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  private func goToPaginatedScrollView() {
+    let viewController = UIHostingController(rootView: PaginationExampleView())
 
     self.navigationController?.pushViewController(viewController, animated: true)
   }
@@ -397,7 +410,7 @@ extension BetaToolsViewController: MFMailComposeViewControllerDelegate {
   }
 }
 
-private let detailLabelStyle: LabelStyle = { label in
+private let detailLabelStyle: Library.LabelStyle = { label in
   label
     |> \.font .~ .ksr_headline(size: 15)
     |> \.textColor .~ .ksr_support_400
@@ -405,7 +418,7 @@ private let detailLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .right
 }
 
-private let titleLabelStyle: LabelStyle = { label in
+private let titleLabelStyle: Library.LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_700
     |> \.font .~ .ksr_body()

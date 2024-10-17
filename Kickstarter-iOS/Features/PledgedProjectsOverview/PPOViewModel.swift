@@ -44,10 +44,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
-        let nodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
-        let allNodes = (0...10).flatMap { _ in
-          nodes
-        }
+        let allNodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
         let viewModels = allNodes.compactMap { PPOProjectCardViewModel(node: $0) }
         return viewModels
       },

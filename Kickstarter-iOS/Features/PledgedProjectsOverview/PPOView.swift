@@ -13,21 +13,6 @@ struct PPOView: View {
   var body: some View {
     GeometryReader { reader in
       VStack {
-        PaginatingLazyVStack(
-          data: self.viewModel.results.values,
-          canShowProgressView: self.viewModel.results.canLoadMore
-        ) { viewModel in
-          PPOProjectCard(viewModel: viewModel)
-        } onRefresh: { () async in
-          print("Loading \(Date().timeIntervalSince1970)")
-          self.viewModel.pullToRefresh()
-          _ = await self.viewModel.nextResult()
-          print("Donezo \(Date().timeIntervalSince1970)")
-        } onLoadMore: { () async in
-          self.viewModel.loadMore()
-          _ = await self.viewModel.nextResult()
-        }
-
         // TODO: Show empty state view if user is logged in and has no PPO updates.
         // PPOEmptyStateView {
         //  self.onNavigate?(.backedProjects)
