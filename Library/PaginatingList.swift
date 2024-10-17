@@ -41,17 +41,22 @@ public struct PaginatingList<Data, Cell>: View where Data: Identifiable, Data: H
         self.content(item)
           .tag(item)
       }
+
       if self.canLoadMore {
-        HStack {
+        HStack(alignment: .center) {
           Spacer()
           ProgressView()
-            .progressViewStyle(.circular)
-            .onAppear {
-              Task { () async in
-                await self.onLoadMore()
-              }
-            }
+            .controlSize(.large)
+            .id(self.loaderID)
           Spacer()
+        }
+        .listRowSeparator(.hidden, edges: .bottom)
+        .onAppear {
+          if !self.data.isEmpty {
+            Task { () async in
+              await self.onLoadMore()
+            }
+          }
         }
       }
     }
@@ -59,5 +64,19 @@ public struct PaginatingList<Data, Cell>: View where Data: Identifiable, Data: H
     .refreshable {
       await self.onRefresh()
     }
+    .onChange(of: self.data) { _ in
+      self.reloadLoaderID()
+    }
   }
+
+  // For some reason, a ProgressView in a List won't re-render without
+  // this hacky ID reloading to make it think it's a different instance.
+  // https://stackoverflow.com/questions/75570322/swiftui-progressview-in-list-can-only-be-displayed-once/75570351
+  private func reloadLoaderID() {
+    DispatchQueue.main.async {
+      self.loaderID = UUID()
+    }
+  }
+
+  @State private var loaderID = UUID()
 }

@@ -34,9 +34,13 @@ internal class PaginationExampleViewModel: ObservableObject {
       }
     )
 
-    self.paginator.$results.receive(on: RunLoop.main).map(\.values).map { projects in
-      projects.map { ProjectData(id: $0.id, title: $0.name) }
-    }.assign(to: &self.$projects)
+    self.paginator.$results
+      .map(\.values)
+      .map { projects in
+        projects.map { ProjectData(id: $0.id, title: $0.name) }
+      }
+      .receive(on: RunLoop.main)
+      .assign(to: &self.$projects)
 
     Publishers.CombineLatest(
       self.paginator.$results.map(\.isLoading),
@@ -63,7 +67,29 @@ internal class PaginationExampleViewModel: ObservableObject {
         return "No results"
       }
     }
-    .assign(to: &self.$statusText)
+    .receive(on: RunLoop.main)
+    .assign(to: &self.$showProgressView)
+
+    self.paginator.$results
+      .map { state in
+        switch state {
+        case let .error(error):
+          let errorText = error.errorMessages.first ?? "Unknown error"
+          return "Error: \(errorText)"
+        case .unloaded:
+          return "Waiting to load"
+        case .loading:
+          return "Loading"
+        case let .someLoaded(values, _, _):
+          return "Got \(values.count) results; more are available"
+        case .allLoaded:
+          return "Loaded all results"
+        case .empty:
+          return "No results"
+        }
+      }
+      .receive(on: RunLoop.main)
+      .assign(to: &self.$statusText)
   }
 
   var searchParams: DiscoveryParams {
