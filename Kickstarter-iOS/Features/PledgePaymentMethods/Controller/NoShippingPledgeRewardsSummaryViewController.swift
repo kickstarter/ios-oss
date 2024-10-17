@@ -5,6 +5,10 @@ import UIKit
 public enum PledgeRewardsSummaryStyles {
   public enum Layout {
     public static let sectionHeaderLabelHeight: CGFloat = 20
+    public static let rootStackViewSpacing: CGFloat = Styles.grid(1)
+    public static let separatorViewLeftAnchorConstant: CGFloat = Styles.grid(4)
+    public static let separatorViewRightAnchorConstant: CGFloat = -Styles.grid(4)
+    public static let separatorViewHeight: CGFloat = 1
   }
 }
 
@@ -90,10 +94,17 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       self.tableViewContainer.rightAnchor.constraint(equalTo: self.rootStackView.rightAnchor),
       self.tableViewContainer.topAnchor.constraint(equalTo: self.rootStackView.topAnchor),
       self.separatorView.leftAnchor
-        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+        .constraint(
+          equalTo: self.rootStackView.leftAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewLeftAnchorConstant
+        ),
       self.separatorView.rightAnchor
-        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
+        .constraint(
+          equalTo: self.rootStackView.rightAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewRightAnchorConstant
+        ),
+      self.separatorView.heightAnchor
+        .constraint(equalToConstant: PledgeRewardsSummaryStyles.Layout.separatorViewHeight),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
   }
@@ -173,7 +184,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
   private func rootStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
-    stackView.spacing = Styles.grid(1)
+    stackView.spacing = PledgeRewardsSummaryStyles.Layout.rootStackViewSpacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.translatesAutoresizingMaskIntoConstraints = false
   }

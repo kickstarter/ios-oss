@@ -89,10 +89,17 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.separatorView.leftAnchor
-        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+        .constraint(
+          equalTo: self.rootStackView.leftAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewLeftAnchorConstant
+        ),
       self.separatorView.rightAnchor
-        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1)
+        .constraint(
+          equalTo: self.rootStackView.rightAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewRightAnchorConstant
+        ),
+      self.separatorView.heightAnchor
+        .constraint(equalToConstant: PledgeRewardsSummaryStyles.Layout.separatorViewHeight)
     ])
   }
 
