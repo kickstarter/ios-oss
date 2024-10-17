@@ -101,13 +101,13 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     self.view.backgroundColor = .ksr_white
     self.view.clipsToBounds = true
 
-    self.rootStackViewStyle(self.rootStackView)
+    self.applyRootStackViewStyle(self.rootStackView)
 
-    self.tableViewStyle(self.tableView)
+    self.applyTableViewStyle(self.tableView)
 
-    self.separatorViewStyle(self.separatorView)
+    self.applySeparatorViewStyle(self.separatorView)
 
-    self.tableViewContainerStyle(self.tableViewContainer)
+    self.applyTableViewContainerStyle(self.tableViewContainer)
     self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
   }
 
@@ -155,14 +155,14 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
   // MARK: Styles
 
-  private func rootStackViewStyle(_ stackView: UIStackView) {
+  private func applyRootStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.spacing = Styles.grid(1)
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func tableViewStyle(_ tableView: UITableView) {
+  private func applyTableViewStyle(_ tableView: UITableView) {
     tableView.separatorInset = .zero
     tableView.contentInsetAdjustmentBehavior = .never
     tableView.isScrollEnabled = false
@@ -173,22 +173,22 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func separatorViewStyle(_ view: UIView) {
+  private func applySeparatorViewStyle(_ view: UIView) {
     view.backgroundColor = .ksr_support_200
     view.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func tableViewContainerStyle(_ view: UIView) {
+  private func applyTableViewContainerStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.clipsToBounds = true
   }
 
-  private func sectionHeaderViewStyle(_ view: UIView) {
+  private func applySectionHeaderViewStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)
   }
 
-  private func sectionHeaderLabelStyle(_ label: UILabel) {
+  private func applySectionHeaderLabelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
     label.textColor = UIColor.ksr_black
     label.numberOfLines = 0
@@ -212,10 +212,10 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
   private func sectionHeaderView(for section: PledgeRewardsSummarySection) -> UIView {
     let headerView = UIView()
-    self.sectionHeaderViewStyle(headerView)
+    self.applySectionHeaderViewStyle(headerView)
 
     let headerLabel: UILabel = UILabel(frame: .zero)
-    self.sectionHeaderLabelStyle(headerLabel)
+    self.applySectionHeaderLabelStyle(headerLabel)
 
     switch section {
     case .header, .bonusSupport:

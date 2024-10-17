@@ -38,20 +38,21 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
       |> \.selectionStyle .~ .none
       |> \.separatorInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 
-    self.containerStackViewStyle(self.containerStackView)
+    self.applyContainerStackViewStyle(self.containerStackView)
 
     _ = self.rootStackView
-      |> self.rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
+      |> self
+      .applyRcootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
       |> verticalStackViewStyle
       |> \.spacing .~ Styles.grid(1)
 
     _ = self.titleLabel
-      |> self.titleLabelStyle
+      |> self.applyTitleLabelStyle
 
     _ = self.subtitleLabel
-      |> self.subtitleLabelStyle
+      |> self.applySubtitleLabelStyle
 
-    self.separatorViewStyle(self.separatorView)
+    self.applySeparatorViewStyle(self.separatorView)
   }
 
   // MARK: - View model
@@ -97,14 +98,14 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
 
   // MARK: - Styles
 
-  private let subtitleLabelStyle: LabelStyle = { label in
+  private let applySubtitleLabelStyle: LabelStyle = { label in
     label
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textColor .~ UIColor.ksr_support_400
       |> \.numberOfLines .~ 0
   }
 
-  private let titleLabelStyle: LabelStyle = { label in
+  private let applyTitleLabelStyle: LabelStyle = { label in
     label
       |> \.font .~ UIFont.ksr_headline().bolded
       |> \.textColor .~ .ksr_support_700
@@ -112,12 +113,12 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
       |> \.text .~ Strings.Your_pledge()
   }
 
-  private func containerStackViewStyle(_ stackView: UIStackView) {
+  private func applyContainerStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.spacing = Styles.grid(2)
   }
 
-  private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  private func applyRcootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .top)
     let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
     let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
@@ -138,7 +139,7 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
     }
   }
 
-  private func separatorViewStyle(_ view: UIView) {
+  private func applySeparatorViewStyle(_ view: UIView) {
     view.backgroundColor = .ksr_support_200
     view.translatesAutoresizingMaskIntoConstraints = false
   }

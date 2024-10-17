@@ -46,16 +46,16 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
-    self.containerStackViewStyle(self.containerStackView)
+    self.applyContainerStackViewStyle(self.containerStackView)
 
-    self.rootStackViewStyle(self.rootStackView)
+    self.applyRootStackViewStyle(self.rootStackView)
 
-    self.labelStyle(self.titleLabel)
+    self.applyLabelStyle(self.titleLabel)
 
     self.amountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-    self.separatorViewStyle(self.separatorView)
+    self.applySeparatorViewStyle(self.separatorView)
   }
 
   // MARK: - View model
@@ -113,13 +113,13 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  private func labelStyle(_ label: UILabel) {
+  private func applyLabelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
     label.textColor = self.labelType == .bonusSupport ? UIColor.ksr_black : UIColor.ksr_support_400
     label.numberOfLines = 0
   }
 
-  private func rootStackViewStyle(_ stackView: UIStackView) {
+  private func applyRootStackViewStyle(_ stackView: UIStackView) {
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory > .accessibilityLarge
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .center : .bottom)
     let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
@@ -141,12 +141,12 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     )
   }
 
-  private func containerStackViewStyle(_ stackView: UIStackView) {
+  private func applyContainerStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.spacing = 0
   }
 
-  private func separatorViewStyle(_ view: UIView) {
+  private func applySeparatorViewStyle(_ view: UIView) {
     view.backgroundColor = .ksr_support_200
     view.translatesAutoresizingMaskIntoConstraints = false
   }
