@@ -17,11 +17,12 @@ protocol PPOViewModelInputs {
   func pullToRefresh()
 
   func openBackedProjects()
-  func fixPaymentMethod()
-  func fix3DSChallenge()
-  func openSurvey()
-  func confirmAddress()
-  func contactCreator()
+  func fixPaymentMethod(from: PPOProjectCardModel)
+  func fix3DSChallenge(from: PPOProjectCardModel)
+  func openSurvey(from: PPOProjectCardModel)
+  func editAddress(from: PPOProjectCardModel)
+  func confirmAddress(from: PPOProjectCardModel)
+  func contactCreator(from: PPOProjectCardModel)
 }
 
 protocol PPOViewModelOutputs {
@@ -34,6 +35,7 @@ enum PPONavigationEvent {
   case fixPaymentMethod
   case fix3DSChallenge
   case survey
+  case editAddress
   case confirmAddress
   case contactCreator
 }
@@ -42,20 +44,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data in
-        let nodes = data.pledgeProjectsOverview?.pledges?.edges?.compactMap { $0?.node } ?? []
-        let viewModels = nodes.compactMap { PPOProjectCardViewModel(node: $0) }
-        return viewModels
+        data.pledgeProjectsOverview?.pledges?.edges?
+          .compactMap { edge in edge?.node }
+          .compactMap { node in PPOProjectCardModel(node: node) }
+          .compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
+          ?? []
       },
-      cursorFromEnvelope: { data in
-        let hasNextPage = data.pledgeProjectsOverview?.pledges?.pageInfo.hasNextPage ?? false
-        guard hasNextPage else {
-          return nil
-        }
-        return data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor
-      },
-      totalFromEnvelope: { data in
-        data.pledgeProjectsOverview?.pledges?.totalCount
-      },
+      cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
+      totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
       requestFromParams: { () in
         AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
       },
@@ -93,13 +89,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge6(
+    Publishers.Merge7(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.fixPaymentMethodSubject.map { PPONavigationEvent.fixPaymentMethod },
-      self.fix3DSChallengeSubject.map { PPONavigationEvent.fix3DSChallenge },
-      self.openSurveySubject.map { PPONavigationEvent.survey },
-      self.confirmAddressSubject.map { PPONavigationEvent.confirmAddress },
-      self.contactCreatorSubject.map { PPONavigationEvent.contactCreator }
+      self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
+      self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
+      self.openSurveySubject.map { _ in PPONavigationEvent.survey },
+      self.editAddressSubject.map { _ in PPONavigationEvent.editAddress },
+      self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
+      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
@@ -112,6 +109,75 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 //          "Survey submitted! Need to change your address? Visit your backing details on our website."
 //        ))
         self?.bannerViewModel = MessageBannerViewViewModel((.success, "Your payment has been processed."))
+      }
+      .store(in: &self.cancellables)
+
+    let latestLoadedResults = self.paginator.$results
+      .compactMap { results in
+        results.hasLoaded ? results.values
+          .ppoAnalyticsProperties(total: results.total, page: results.page) : nil
+      }
+
+    // Analytics: When view appears, the next time it loads, send a PPO dashboard open
+    self.viewDidAppearSubject
+      .combineLatest(latestLoadedResults)
+      .sink { _, properties in
+        AppEnvironment.current.ksrAnalytics.trackPPODashboardOpens(properties: properties)
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Tap messaging creator
+    self.contactCreatorSubject
+      .combineLatest(latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
+          from: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Fixing payment failure
+    self.fixPaymentMethodSubject
+      .combineLatest(latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Opening survey
+    self.openSurveySubject
+      .combineLatest(latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Initiate confirming address
+    self.confirmAddressSubject
+      .combineLatest(latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Edit address
+    self.editAddressSubject
+      .combineLatest(latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
       }
       .store(in: &self.cancellables)
   }
@@ -140,24 +206,28 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openBackedProjectsSubject.send(())
   }
 
-  func fixPaymentMethod() {
-    self.fixPaymentMethodSubject.send(())
+  func fixPaymentMethod(from: PPOProjectCardModel) {
+    self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge() {
-    self.fix3DSChallengeSubject.send(())
+  func fix3DSChallenge(from: PPOProjectCardModel) {
+    self.fix3DSChallengeSubject.send(from)
   }
 
-  func openSurvey() {
-    self.openSurveySubject.send(())
+  func openSurvey(from: PPOProjectCardModel) {
+    self.openSurveySubject.send(from)
   }
 
-  func confirmAddress() {
-    self.confirmAddressSubject.send(())
+  func editAddress(from: PPOProjectCardModel) {
+    self.editAddressSubject.send(from)
   }
 
-  func contactCreator() {
-    self.contactCreatorSubject.send(())
+  func confirmAddress(from: PPOProjectCardModel) {
+    self.confirmAddressSubject.send(from)
+  }
+
+  func contactCreator(from: PPOProjectCardModel) {
+    self.contactCreatorSubject.send(from)
   }
 
   // MARK: - Outputs
@@ -176,13 +246,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let shouldSendSampleMessageSubject = PassthroughSubject<(), Never>()
+  private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
-  private let fixPaymentMethodSubject = PassthroughSubject<Void, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<Void, Never>()
-  private let openSurveySubject = PassthroughSubject<Void, Never>()
-  private let confirmAddressSubject = PassthroughSubject<Void, Never>()
-  private let contactCreatorSubject = PassthroughSubject<Void, Never>()
+  private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
@@ -190,5 +261,36 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   private enum Constants {
     static let pageSize = 20
+  }
+}
+
+extension Sequence where Element == PPOProjectCardViewModel {
+  func ppoAnalyticsProperties(total: Int?, page: Int?) -> KSRAnalytics.PledgedProjectOverviewProperties {
+    var paymentFailedCount: Int = 0
+    var cardAuthRequiredCount: Int = 0
+    var surveyAvailableCount: Int = 0
+    var addressLocksSoonCount: Int = 0
+
+    for viewModel in self {
+      switch viewModel.card.tierType {
+      case .fixPayment:
+        paymentFailedCount += 1
+      case .authenticateCard:
+        cardAuthRequiredCount += 1
+      case .openSurvey:
+        surveyAvailableCount += 1
+      case .confirmAddress:
+        addressLocksSoonCount += 1
+      }
+    }
+
+    return KSRAnalytics.PledgedProjectOverviewProperties(
+      addressLocksSoonCount: addressLocksSoonCount,
+      surveyAvailableCount: surveyAvailableCount,
+      paymentFailedCount: paymentFailedCount,
+      cardAuthRequiredCount: cardAuthRequiredCount,
+      total: total,
+      page: page
+    )
   }
 }

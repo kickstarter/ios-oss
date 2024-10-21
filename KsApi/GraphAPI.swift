@@ -9168,6 +9168,7 @@ public enum GraphAPI {
       document.append("\n" + PpoBackingFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + PpoProjectFragment.fragmentDefinition)
+      document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
       return document
     }
 
@@ -14764,6 +14765,7 @@ public enum GraphAPI {
         project {
           __typename
           ...PPOProjectFragment
+          ...ProjectAnalyticsFragment
         }
       }
       """
@@ -14890,6 +14892,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLFragmentSpread(PpoProjectFragment.self),
+          GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
         ]
       }
 
@@ -14927,6 +14930,15 @@ public enum GraphAPI {
         public var ppoProjectFragment: PpoProjectFragment {
           get {
             return PpoProjectFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public var projectAnalyticsFragment: ProjectAnalyticsFragment {
+          get {
+            return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap

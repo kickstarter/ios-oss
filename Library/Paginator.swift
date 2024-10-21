@@ -35,10 +35,13 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       switch (lhs, rhs) {
       case (.unloaded, .unloaded):
         return true
-      case let (.someLoaded(lhsValues, lhsCursor, lhsTotal), .someLoaded(rhsValues, rhsCursor, rhsTotal)):
-        return lhsValues == rhsValues && lhsCursor == rhsCursor && lhsTotal == rhsTotal
-      case let (.allLoaded(lhsValues), .allLoaded(rhsValues)):
-        return lhsValues == rhsValues
+      case let (
+        .someLoaded(lhsValues, lhsCursor, lhsTotal, lhsPage),
+        .someLoaded(rhsValues, rhsCursor, rhsTotal, rhsPage)
+      ):
+        return lhsValues == rhsValues && lhsCursor == rhsCursor && lhsTotal == rhsTotal && lhsPage == rhsPage
+      case let (.allLoaded(lhsValues, lhsPage), .allLoaded(rhsValues, rhsPage)):
+        return lhsValues == rhsValues && lhsPage == rhsPage
       case (.empty, .empty):
         return true
       case let (.error(lhsError), .error(rhsError)):
@@ -56,8 +59,8 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
     }
 
     case unloaded
-    case someLoaded(values: [Value], cursor: Cursor, total: Int?)
-    case allLoaded(values: [Value])
+    case someLoaded(values: [Value], cursor: Cursor, total: Int?, page: Int?)
+    case allLoaded(values: [Value], page: Int?)
     case empty
     case error(SomeError)
     indirect case loading(previous: Results)
@@ -66,9 +69,9 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       switch self {
       case let .loading(previous):
         previous.values
-      case let .someLoaded(values, _, _):
+      case let .someLoaded(values, _, _, _):
         values
-      case let .allLoaded(values):
+      case let .allLoaded(values, _):
         values
       case .unloaded, .empty, .error:
         []
@@ -76,7 +79,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
     }
 
     public var cursor: Cursor? {
-      guard case let .someLoaded(_, cursor, _) = self else {
+      guard case let .someLoaded(_, cursor, _, _) = self else {
         return nil
       }
       return cursor
@@ -101,17 +104,39 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
       }
     }
 
+    public var hasLoaded: Bool {
+      switch self {
+      case .someLoaded, .allLoaded, .empty:
+        true
+      case .unloaded, .loading, .error:
+        false
+      }
+    }
+
     public var total: Int? {
       switch self {
-      case let .allLoaded(values):
+      case let .allLoaded(values, _):
         values.count
       case let .loading(previous):
         previous.total
-      case let .someLoaded(_, _, total):
+      case let .someLoaded(_, _, total, _):
         total
       case .empty:
         0
       case .unloaded, .error:
+        nil
+      }
+    }
+
+    public var page: Int? {
+      switch self {
+      case let .allLoaded(_, page):
+        page
+      case let .loading(previous):
+        previous.page
+      case let .someLoaded(_, _, _, page):
+        page
+      case .empty, .unloaded, .error:
         nil
       }
     }
@@ -157,14 +182,36 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         var allValues = shouldClear ? [] : previousResults.values
         allValues.append(contentsOf: newValues)
 
+        let newPage: Int? = switch (previousResults.page, shouldClear, newValues.isEmpty) {
+        // resetting to first page, with results should go to page 1
+        case (_, true, false):
+          1
+
+        // resetting to first page, with no results, should appear empty
+        case (_, true, true):
+          nil
+
+        // loading the subsequent page, with results, should increment the page
+        case let (.some(page), false, false):
+          page + 1
+
+        // loading a next page when there's somehow no existing page should set the page to 1
+        case (.none, false, false):
+          1
+
+        // loading a next page with no results should keep the page the same
+        case let (page, false, true):
+          page
+        }
+
         let results: Results
         if allValues.count == 0 {
           results = .empty
         } else if let nextCursor, !newValues.isEmpty {
           let total = self.totalFromEnvelope(envelope)
-          results = .someLoaded(values: allValues, cursor: nextCursor, total: total)
+          results = .someLoaded(values: allValues, cursor: nextCursor, total: total, page: newPage)
         } else {
-          results = .allLoaded(values: allValues)
+          results = .allLoaded(values: allValues, page: newPage)
         }
         return results
       }

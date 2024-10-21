@@ -1,25 +1,18 @@
 import Combine
 @testable import Kickstarter_Framework
-import KsApi
+@testable import KsApi
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
   func testPerformAction() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
-      isUnread: true,
-      alerts: [],
-      imageURL: URL(string: "http://localhost/")!,
-      title: "Test project",
-      pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
-      creatorName: "Dave",
-      address: nil,
-      actions: (.authenticateCard, nil),
+      card: PPOProjectCardModel.authenticateCardTemplate,
       parentSize: CGSize(width: 375, height: 700)
     )
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var actions: [PPOProjectCardViewModel.Action] = []
+    var actions: [PPOProjectCardModel.Action] = []
     viewModel.actionPerformed
       .sink { action in
         actions.append(action)
@@ -36,14 +29,7 @@ final class PPOProjectCardViewModelTests: XCTestCase {
   func testSendMessage() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
-      isUnread: true,
-      alerts: [],
-      imageURL: URL(string: "http://localhost/")!,
-      title: "Test project",
-      pledge: GraphAPI.MoneyFragment.init(amount: "50.00", currency: .usd, symbol: "$"),
-      creatorName: "Dave",
-      address: nil,
-      actions: (.authenticateCard, nil),
+      card: PPOProjectCardModel.authenticateCardTemplate,
       parentSize: CGSize(width: 375, height: 700)
     )
 
