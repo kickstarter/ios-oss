@@ -68,7 +68,7 @@ internal class PaginationExampleViewModel: ObservableObject {
       }
     }
     .receive(on: RunLoop.main)
-    .assign(to: &self.$showProgressView)
+    .assign(to: &self.$statusText)
 
     self.paginator.$results
       .map { state in
@@ -80,7 +80,7 @@ internal class PaginationExampleViewModel: ObservableObject {
           return "Waiting to load"
         case .loading:
           return "Loading"
-        case let .someLoaded(values, _, _):
+        case let .someLoaded(values, _, _, _):
           return "Got \(values.count) results; more are available"
         case .allLoaded:
           return "Loaded all results"
