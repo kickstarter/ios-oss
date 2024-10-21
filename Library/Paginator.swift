@@ -241,6 +241,14 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
     self.handleRequest(request, shouldClear: false)
   }
 
+  public func nextResult() async -> Results {
+    let publisher = AsyncPublisher(self.$results).dropFirst()
+      .filter { !$0.isLoading }
+    var iterator = publisher.makeAsyncIterator()
+    let result = await iterator.next() ?? self.results
+    return result
+  }
+
   public func cancel() {
     if case let .loading(previous) = self.results {
       self.results = previous
