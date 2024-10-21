@@ -121,7 +121,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
       .observeValues { [weak self] headerData, rewards in
         guard let self else { return }
 
-        /// Applys a snapshot of all of the data needed to render the table view.
+        /// Applies a snapshot of all of the data needed to render the table view.
         self.dataSource.apply(
           diffableDataSourceSnapshot(using: headerData, rewards),
           animatingDifferences: true
@@ -240,16 +240,15 @@ extension PostCampaignPledgeRewardsSummaryViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let section = PledgeRewardsSummarySection.allCases[section]
+    guard let sectionIdentifier = self.dataSource.sectionIdentifier(for: section) else { return nil }
 
-    return self.sectionHeaderView(for: section)
+    return self.sectionHeaderView(for: sectionIdentifier)
   }
 
   func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    let section = PledgeRewardsSummarySection.allCases[section]
-    let shouldHideSectionHeader = section == .header || section == .bonusSupport
-
-    /// Hides the first section header because we're using our own UITableCell here.
-    return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
+    return heightForHeaderInPledgeSummarySection(
+      sectionIdentifier: self.dataSource
+        .sectionIdentifier(for: section)
+    )
   }
 }

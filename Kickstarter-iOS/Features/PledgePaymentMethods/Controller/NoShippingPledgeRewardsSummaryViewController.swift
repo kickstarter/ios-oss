@@ -263,12 +263,9 @@ extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard let sectionIdentifier = self.dataSource.sectionIdentifier(for: section) else {
-      return UITableView.automaticDimension
-    }
-
-    /// Hides the first section header because we're using our own UITableCell here.
-    let shouldHideSectionHeader = sectionIdentifier == .header || sectionIdentifier == .bonusSupport
-    return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
+    return heightForHeaderInPledgeSummarySection(
+      sectionIdentifier: self.dataSource
+        .sectionIdentifier(for: section)
+    )
   }
 }

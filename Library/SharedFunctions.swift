@@ -1,3 +1,4 @@
+import Kickstarter_Framework
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -799,4 +800,23 @@ private func estimatedMinMax(
   }
 
   return (min, max)
+}
+
+/**
+ Determines the section header height for the pledge summary table view in our checkout screens..
+
+ - parameter sectionIdentifier: A `PledgeRewardsSummarySection?` object
+
+ - returns: A `CGFloat` for setting the height of the given section.
+ */
+
+public func heightForHeaderInPledgeSummarySection(sectionIdentifier: PledgeRewardsSummarySection?)
+  -> CGFloat {
+  guard let section = sectionIdentifier else {
+    return UITableView.automaticDimension
+  }
+
+  /// Hides the first section header because we're using our own custom UITableCell.
+  let shouldHideSectionHeader = section == .header || section == .bonusSupport
+  return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
 }
