@@ -57,7 +57,7 @@ class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataS
 /**
  Creates `NSDiffableDataSourceSnapshot` to apply to the pledge summary table view data source on our crowdfunding and late pledge checkout screens.
 
- - parameter headerData: The `PledgeExpandableHeaderRewardCellData`that represents the tables custom header `UITableViewCell`.
+ - parameter headerData: The `PledgeExpandableHeaderRewardCellData`that represents the table's custom header `UITableViewCell`.
  - parameter rewards: The `[PledgeExpandableHeaderRewardCellData]`that represents the tables reward data (baseReward, addOns, and bonusSupport).
 
  - returns: A `NSDiffableDataSourceSnapshot` that will be applied to the UITableView's Diffable Data Source `NoShippingPledgeRewardsSummaryDiffableDataSource`.

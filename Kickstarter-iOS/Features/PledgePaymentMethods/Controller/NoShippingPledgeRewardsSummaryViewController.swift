@@ -117,13 +117,13 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     self.view.backgroundColor = .ksr_white
     self.view.clipsToBounds = true
 
-    self.rootStackViewStyle(self.rootStackView)
+    self.applyRootStackViewStyle(self.rootStackView)
 
-    self.tableViewStyle(self.tableView)
+    self.applyTableViewStyle(self.tableView)
 
-    self.separatorViewStyle(self.separatorView)
+    self.applySeparatorViewStyle(self.separatorView)
 
-    self.tableViewContainerStyle(self.tableViewContainer)
+    self.applyTableViewContainerStyle(self.tableViewContainer)
     self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
   }
 
@@ -137,7 +137,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       .observeValues { [weak self] headerData, rewards in
         guard let self else { return }
 
-        /// Applys a snapshot of all of the data needed to render the table view.
+        /// Applies a snapshot of all of the data needed to render the table view.
         self.dataSource.apply(
           diffableDataSourceSnapshot(using: headerData, rewards),
           animatingDifferences: true
@@ -171,7 +171,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
   // MARK: Styles
 
-  private func tableViewStyle(_ tableView: UITableView) {
+  private func applyTableViewStyle(_ tableView: UITableView) {
     tableView.separatorInset = .zero
     tableView.contentInsetAdjustmentBehavior = .never
     tableView.isScrollEnabled = false
@@ -182,24 +182,24 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func rootStackViewStyle(_ stackView: UIStackView) {
+  private func applyRootStackViewStyle(_ stackView: UIStackView) {
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.spacing = PledgeRewardsSummaryStyles.Layout.rootStackViewSpacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func separatorViewStyle(_ view: UIView) {
+  private func applySeparatorViewStyle(_ view: UIView) {
     view.backgroundColor = .ksr_support_200
     view.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  private func sectionHeaderViewStyle(_ view: UIView) {
+  private func applySectionHeaderViewStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)
   }
 
-  private func sectionHeaderLabelStyle(_ label: UILabel) {
+  private func applySectionHeaderLabelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
     label.textColor = UIColor.ksr_black
     label.numberOfLines = 0
@@ -211,7 +211,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     )
   }
 
-  private func tableViewContainerStyle(_ view: UIView) {
+  private func applyTableViewContainerStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.clipsToBounds = true
   }
@@ -228,10 +228,10 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
   private func sectionHeaderView(for section: PledgeRewardsSummarySection) -> UIView {
     let headerView: UIView = UIView(frame: .zero)
-    self.sectionHeaderViewStyle(headerView)
+    self.applySectionHeaderViewStyle(headerView)
 
     let headerLabel: UILabel = UILabel(frame: .zero)
-    self.sectionHeaderLabelStyle(headerLabel)
+    self.applySectionHeaderLabelStyle(headerLabel)
 
     switch section {
     /// We're using a custom header for the main header cell and bonus support shouldn't have a section header.
