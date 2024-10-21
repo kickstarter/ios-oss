@@ -4,6 +4,7 @@ import Prelude
 import ReactiveSwift
 
 public struct PledgeSummaryRewardCellData: Hashable {
+  public let id = UUID()
   public let headerText: NSAttributedString?
   public let showHeader: Bool
   public let text: String
