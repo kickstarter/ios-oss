@@ -42,7 +42,6 @@ public final class KSRAnalytics {
     case messages // MessagesViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card"
-    case pledgeManager = "pledge_manager" // PPOView
     case pledgeScreen = "pledge" // PledgeViewController
     case project // ProjectPageViewController
     case projectAlerts = "project_alerts" // PPOView
