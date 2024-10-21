@@ -4,10 +4,10 @@ import ReactiveSwift
 import UIKit
 
 public enum PostCampaignRewardsSummaryItem {
-  case header(PledgeExpandableHeaderRewardCellData)
-  case reward(PledgeExpandableHeaderRewardCellData)
+  case header(PledgeSummaryRewardCellData)
+  case reward(PledgeSummaryRewardCellData)
 
-  public var data: PledgeExpandableHeaderRewardCellData {
+  public var data: PledgeSummaryRewardCellData {
     switch self {
     case let .header(data): return data
     case let .reward(data): return data
@@ -49,7 +49,7 @@ public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
 public protocol PostCampaignPledgeRewardsSummaryViewModelOutputs {
   var configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never> { get }
   var loadRewardsIntoDataSource: Signal<
-    (headerData: PledgeExpandableHeaderRewardCellData?, rewards: [PledgeExpandableHeaderRewardCellData]),
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
     Never
   > { get }
 }
@@ -114,12 +114,12 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     .map(items)
     .map { data in
       /// Decipher header vs reward objects from the `[PostCampaignRewardsSummaryItem]` data object.
-      let header = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+      let header = data.compactMap { item -> PledgeSummaryRewardCellData? in
         guard case let .header(data) = item else { return nil }
         return data
       }
 
-      let allRewards = data.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+      let allRewards = data.compactMap { item -> PledgeSummaryRewardCellData? in
         guard case let .reward(data) = item else { return nil }
         return data
       }
@@ -150,7 +150,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
 
   public let configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never>
   public let loadRewardsIntoDataSource: Signal<
-    (headerData: PledgeExpandableHeaderRewardCellData?, rewards: [PledgeExpandableHeaderRewardCellData]),
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
     Never
   >
 

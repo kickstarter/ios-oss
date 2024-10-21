@@ -9,10 +9,10 @@ public enum PledgeRewardsSummarySection: CaseIterable {
 }
 
 enum PledgeRewardsSummaryRow: Hashable {
-  case header(PledgeExpandableHeaderRewardCellData)
-  case reward(PledgeExpandableHeaderRewardCellData)
-  case addOns(PledgeExpandableHeaderRewardCellData)
-  case bonusSupport(PledgeExpandableHeaderRewardCellData)
+  case header(PledgeSummaryRewardCellData)
+  case reward(PledgeSummaryRewardCellData)
+  case addOns(PledgeSummaryRewardCellData)
+  case bonusSupport(PledgeSummaryRewardCellData)
 }
 
 /**
@@ -64,8 +64,8 @@ class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataS
  */
 
 func diffableDataSourceSnapshot(
-  using headerData: PledgeExpandableHeaderRewardCellData?,
-  _ rewards: [PledgeExpandableHeaderRewardCellData]
+  using headerData: PledgeSummaryRewardCellData?,
+  _ rewards: [PledgeSummaryRewardCellData]
 )
   -> NSDiffableDataSourceSnapshot<PledgeRewardsSummarySection, PledgeRewardsSummaryRow> {
   var snapshot = NSDiffableDataSourceSnapshot<PledgeRewardsSummarySection, PledgeRewardsSummaryRow>()

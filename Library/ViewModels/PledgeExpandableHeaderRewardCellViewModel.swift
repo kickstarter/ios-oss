@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct PledgeExpandableHeaderRewardCellData: Hashable {
+public struct PledgeSummaryRewardCellData: Hashable {
   public let headerText: NSAttributedString?
   public let showHeader: Bool
   public let text: String
@@ -11,7 +11,7 @@ public struct PledgeExpandableHeaderRewardCellData: Hashable {
 }
 
 public protocol PledgeExpandableHeaderRewardCellViewModelInputs {
-  func configure(with data: PledgeExpandableHeaderRewardCellData)
+  func configure(with data: PledgeSummaryRewardCellData)
 }
 
 public protocol PledgeExpandableHeaderRewardCellViewModelOutputs {
@@ -39,8 +39,8 @@ public final class PledgeExpandableHeaderRewardCellViewModel: PledgeExpandableHe
     self.labelText = data.map(\.text)
   }
 
-  private let configureWithDataProperty = MutableProperty<PledgeExpandableHeaderRewardCellData?>(nil)
-  public func configure(with data: PledgeExpandableHeaderRewardCellData) {
+  private let configureWithDataProperty = MutableProperty<PledgeSummaryRewardCellData?>(nil)
+  public func configure(with data: PledgeSummaryRewardCellData) {
     self.configureWithDataProperty.value = data
   }
 

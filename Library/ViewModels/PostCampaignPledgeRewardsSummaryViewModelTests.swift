@@ -9,7 +9,7 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
     PostCampaignPledgeRewardsSummaryViewModel()
 
   private let loadRewardsIntoDataSource = TestObserver<
-    (headerData: PledgeExpandableHeaderRewardCellData?, rewards: [PledgeExpandableHeaderRewardCellData]),
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
     Never
   >()
 

@@ -12,12 +12,12 @@ internal final class PostCampaignPledgeRewardsSummaryDataSource: ValueCellDataSo
   internal func load(_ items: [PostCampaignRewardsSummaryItem]) {
     self.clearValues()
 
-    let headerItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+    let headerItemData = items.compactMap { item -> PledgeSummaryRewardCellData? in
       guard case let .header(data) = item else { return nil }
       return data
     }
 
-    let rewardItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+    let rewardItemData = items.compactMap { item -> PledgeSummaryRewardCellData? in
       guard case let .reward(data) = item else { return nil }
       return data
     }
@@ -39,10 +39,10 @@ internal final class PostCampaignPledgeRewardsSummaryDataSource: ValueCellDataSo
     switch (cell, value) {
     case let (
       cell as PostCampaignPledgeRewardsSummaryHeaderCell,
-      value as PledgeExpandableHeaderRewardCellData
+      value as PledgeSummaryRewardCellData
     ):
       cell.configureWith(value: value)
-    case let (cell as PostCampaignPledgeRewardsSummaryCell, value as PledgeExpandableHeaderRewardCellData):
+    case let (cell as PostCampaignPledgeRewardsSummaryCell, value as PledgeSummaryRewardCellData):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

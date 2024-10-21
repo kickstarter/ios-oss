@@ -4,10 +4,10 @@ import ReactiveSwift
 import UIKit
 
 public enum PledgeExpandableRewardsHeaderItem {
-  case header(PledgeExpandableHeaderRewardCellData)
-  case reward(PledgeExpandableHeaderRewardCellData)
+  case header(PledgeSummaryRewardCellData)
+  case reward(PledgeSummaryRewardCellData)
 
-  public var data: PledgeExpandableHeaderRewardCellData {
+  public var data: PledgeSummaryRewardCellData {
     switch self {
     case let .header(data): return data
     case let .reward(data): return data
