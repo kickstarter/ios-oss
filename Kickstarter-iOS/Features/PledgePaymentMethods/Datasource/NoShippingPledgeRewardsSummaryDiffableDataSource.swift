@@ -81,7 +81,11 @@ func diffableDataSourceSnapshot(
   // MARK: Add-Ons
 
   let addOnsData = rewards
-    .filter { reward in reward.id != rewards.first?.id && reward.text != Strings.Bonus_support() }
+    .filter { reward in
+      reward.id != rewards.first?.id
+        && reward.text != Strings.Bonus_support()
+        && !reward.text.contains(Strings.Shipping())
+    }
     .map { PledgeRewardsSummaryRow.addOns($0) }
 
   /// We only want to add an add-ons section if any have been selected
