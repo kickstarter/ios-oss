@@ -1,13 +1,6 @@
 import Library
 import UIKit
 
-public enum PledgeRewardsSummarySection: CaseIterable {
-  case header
-  case reward
-  case addOns
-  case bonusSupport
-}
-
 enum PledgeRewardsSummaryRow: Hashable {
   case header(PledgeSummaryRewardCellData)
   case reward(PledgeSummaryRewardCellData)

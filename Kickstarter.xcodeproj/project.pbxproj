@@ -529,6 +529,7 @@
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F542BE003A60052A829 /* StripeIntentService.swift */; };
 		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
+		60ABF0282CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
 		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
 		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
@@ -2180,6 +2181,7 @@
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		60A80F542BE003A60052A829 /* StripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentService.swift; sourceTree = "<group>"; };
 		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
+		60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummarySection.swift; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
 		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
 		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
@@ -6334,6 +6336,7 @@
 		A7C725851C85D36D005A016B /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */,
 				A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */,
 				A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */,
 				A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */,
@@ -7867,6 +7870,7 @@
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
+				60ABF0282CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift in Sources */,
 				D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
