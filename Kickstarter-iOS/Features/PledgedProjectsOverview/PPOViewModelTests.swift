@@ -364,6 +364,7 @@ class PPOViewModelTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         },
+        "backingDetailsPageRoute": "fake-backings-route",
         "id": "\(UUID().uuidString)",
         "project": {
           "__typename": "Project",
