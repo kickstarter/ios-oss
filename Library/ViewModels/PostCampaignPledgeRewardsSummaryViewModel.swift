@@ -170,6 +170,7 @@ private func items(
   // MARK: Header
 
   let headerItem = PostCampaignRewardsSummaryItem.header(.init(
+    type: .header,
     headerText: nil,
     showHeader: false,
     text: estimatedDeliveryString ?? "",
@@ -190,6 +191,7 @@ private func items(
     )
 
     return PostCampaignRewardsSummaryItem.reward(.init(
+      type: .reward,
       headerText: nil,
       showHeader: false,
       text: itemString,
@@ -206,6 +208,7 @@ private func items(
     )
 
     let shippingItem = PostCampaignRewardsSummaryItem.reward(.init(
+      type: .shipping,
       headerText: nil,
       showHeader: false,
       text: Strings.Shipping_to_country(country: shipping.locationName),
@@ -223,6 +226,7 @@ private func items(
     )
 
     let bonusItem = PostCampaignRewardsSummaryItem.reward(.init(
+      type: .bonusSupport,
       headerText: nil,
       showHeader: false,
       text: Strings.Bonus_support(),

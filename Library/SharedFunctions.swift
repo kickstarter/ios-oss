@@ -816,6 +816,6 @@ public func heightForHeaderInPledgeSummarySection(sectionIdentifier: PledgeRewar
   }
 
   /// Hides the first section header because we're using our own custom UITableCell.
-  let shouldHideSectionHeader = section == .header || section == .bonusSupport
+  let shouldHideSectionHeader = section == .header || section == .shipping || section == .bonusSupport
   return shouldHideSectionHeader ? 0 : UITableView.automaticDimension
 }

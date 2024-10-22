@@ -5,6 +5,7 @@ enum PledgeRewardsSummaryRow: Hashable {
   case header(PledgeSummaryRewardCellData)
   case reward(PledgeSummaryRewardCellData)
   case addOns(PledgeSummaryRewardCellData)
+  case shipping(PledgeSummaryRewardCellData)
   case bonusSupport(PledgeSummaryRewardCellData)
 }
 
@@ -33,7 +34,7 @@ class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataS
         cell.configureWith(value: model)
 
         return cell
-      case let .reward(model), let .addOns(model), let .bonusSupport(model):
+      case let .reward(model), let .addOns(model), let .shipping(model), let .bonusSupport(model):
         let cell = tableView.dequeueReusableCell(
           withClass: PostCampaignPledgeRewardsSummaryCell.self,
           for: indexPath
@@ -81,11 +82,7 @@ func diffableDataSourceSnapshot(
   // MARK: Add-Ons
 
   let addOnsData = rewards
-    .filter { reward in
-      reward.id != rewards.first?.id
-        && reward.text != Strings.Bonus_support()
-        && !reward.text.contains(Strings.Shipping())
-    }
+    .filter { reward in reward.id != rewards.first?.id && reward.type == .reward }
     .map { PledgeRewardsSummaryRow.addOns($0) }
 
   /// We only want to add an add-ons section if any have been selected
@@ -94,10 +91,21 @@ func diffableDataSourceSnapshot(
     snapshot.appendItems(addOnsData, toSection: .addOns)
   }
 
+  // MARK: Shipping
+
+  let shippingInfo = rewards
+    .filter { reward in reward.type == .shipping }
+    .map { PledgeRewardsSummaryRow.shipping($0) }
+
+  if let shipping = shippingInfo.first {
+    snapshot.appendSections([.shipping])
+    snapshot.appendItems([shipping], toSection: .shipping)
+  }
+
   // MARK: Bonus Support
 
   let bonusSupport = rewards
-    .filter { reward in reward.text == Strings.Bonus_support() }
+    .filter { reward in reward.type == .bonusSupport }
     .map { PledgeRewardsSummaryRow.bonusSupport($0) }
 
   if let bonusSupportData = bonusSupport.first {

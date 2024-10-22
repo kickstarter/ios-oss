@@ -235,7 +235,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
     switch section {
     /// We're using a custom header for the main header cell and bonus support shouldn't have a section header.
-    case .header, .bonusSupport:
+    case .header, .shipping, .bonusSupport:
       break
     case .reward:
       headerLabel.text = Strings.backer_modal_reward_title()

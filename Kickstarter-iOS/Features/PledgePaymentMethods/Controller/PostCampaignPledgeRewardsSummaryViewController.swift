@@ -218,7 +218,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     self.applySectionHeaderLabelStyle(headerLabel)
 
     switch section {
-    case .header, .bonusSupport:
+    case .header, .shipping, .bonusSupport:
       break
     case .reward:
       headerLabel.text = Strings.backer_modal_reward_title()
