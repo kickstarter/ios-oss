@@ -49,7 +49,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
+      case .editAddress, .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
         // TODO: MBL-1451
         break
       }
