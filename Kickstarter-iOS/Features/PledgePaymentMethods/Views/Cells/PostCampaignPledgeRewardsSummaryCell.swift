@@ -4,7 +4,17 @@ import UIKit
 
 private enum PledgeRewardsSummaryCellLabelType {
   case reward
+  case shipping
   case bonusSupport
+
+  var hasNoHeaderLabel: Bool {
+    switch self {
+    case .shipping, .bonusSupport:
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
@@ -69,8 +79,23 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] titleText in
         self?.titleLabel.text = titleText
-        self?.labelType = titleText == Strings.Bonus_support() ? .bonusSupport : .reward
         self?.titleLabel.setNeedsLayout()
+      }
+
+    self.viewModel.outputs.type
+      .observeForUI()
+      .observeValues { [weak self] type in
+
+        switch type {
+        case .header:
+          break
+        case .bonusSupport:
+          self?.labelType = .bonusSupport
+        case .shipping:
+          self?.labelType = .shipping
+        case .reward:
+          self?.labelType = .reward
+        }
       }
   }
 
@@ -134,7 +159,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     stackView.spacing = spacing
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.layoutMargins = UIEdgeInsets(
-      top: self.labelType == .bonusSupport ? 0 : Styles.grid(3),
+      top: self.labelType.hasNoHeaderLabel ? 0 : Styles.grid(3),
       left: CheckoutConstants.PledgeView.Inset.leftRight,
       bottom: Styles.grid(3),
       right: CheckoutConstants.PledgeView.Inset.leftRight
