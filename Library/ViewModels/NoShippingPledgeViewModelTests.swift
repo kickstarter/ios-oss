@@ -32,6 +32,10 @@ final class NoShippingPledgeViewModelTests: TestCase {
     Never
   >()
   private let configurePledgeRewardsSummaryViewOmitCurrencyCode = TestObserver<Bool, Never>()
+  private let configurePledgeRewardsSummaryViewShipping = TestObserver<
+    PledgeShippingSummaryViewData?,
+    Never
+  >()
 
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
@@ -91,6 +95,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       .observe(self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.observer)
     self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.omitCurrencyCode)
       .observe(self.configurePledgeRewardsSummaryViewOmitCurrencyCode.observer)
+    self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.shipping)
+      .observe(self.configurePledgeRewardsSummaryViewShipping.observer)
 
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
@@ -510,6 +516,64 @@ final class NoShippingPledgeViewModelTests: TestCase {
       let pledgeAmountData: PledgeAmountData = (amount: 12.0, min: 1.0, max: 10_000, isValid: true)
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+    }
+  }
+
+  func testChangePaymentMethodContext_RewardWithShipping() {
+    let backing = Backing.template
+    let reward = Reward.template
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Change payment method"])
+
+      self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
+      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+      self.configurePaymentMethodsViewControllerWithContext.assertValues([.changePaymentMethod])
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+
+      self.configurePledgeRewardsSummaryViewRewards.assertLastValue([reward])
+
+      let expectedShipping = PledgeShippingSummaryViewData(
+        locationName: backing.locationName!,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        projectCountry: project.country,
+        total: backing.shippingAmount!
+      )
+      self.configurePledgeRewardsSummaryViewShipping.assertLastValue(expectedShipping)
     }
   }
 
