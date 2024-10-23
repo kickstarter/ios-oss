@@ -124,6 +124,13 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map(calculateAllRewardsTotal)
 
+    let initialShippingTotal = project.map { project in
+      guard let backing = project.personalization.backing else {
+        return 0.0
+      }
+      return backing.shippingAmount ?? 0.0
+    }
+
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
       rewards,
@@ -132,7 +139,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .map(calculateShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(
-      selectedShippingRule.filter(isNil).mapConst(0.0),
+      initialShippingTotal,
       calculatedShippingTotal
     )
 
@@ -242,8 +249,21 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context.map { $0.confirmationLabelHidden }
     )
 
+    // The selected shipping rule, if present, is always the most up-to-date shipping information.
+    // If not present, get shipping location from the backing instead.
+    let shippingLocation: Signal<String?, Never> = Signal.combineLatest(project, selectedShippingRule)
+      .map { project, shippingRule in
+        if let shippingRule {
+          return shippingRule.location.localizedName
+        }
+        if let backing = project.personalization.backing {
+          return backing.locationName
+        }
+        return nil
+      }
+
     let shippingSummaryViewDataNonnil = Signal.combineLatest(
-      selectedShippingRule.skipNil().map(\.location.localizedName),
+      shippingLocation.skipNil(),
       project.map(\.stats.omitUSCurrencyCode),
       project.map { project in
         projectCountry(forCurrency: project.stats.currency) ?? project.country
@@ -254,7 +274,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let shippingSummaryViewData = Signal.merge(
       shippingSummaryViewDataNonnil.wrapInOptional(),
-      selectedShippingRule.filter(isNil).mapConst(nil)
+      shippingLocation.filter(isNil).mapConst(nil)
     )
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
