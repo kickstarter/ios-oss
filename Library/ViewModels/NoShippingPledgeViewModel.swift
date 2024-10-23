@@ -13,14 +13,6 @@ public typealias NoShippingPledgeViewCTAContainerViewData = (
   willRetryPaymentMethod: Bool
 )
 
-public typealias PaymentAuthorizationDataNoShipping = (
-  project: Project,
-  reward: Reward,
-  allRewardsTotal: Double,
-  additionalPledgeAmount: Double,
-  merchantIdentifier: String
-)
-
 public protocol NoShippingPledgeViewModelInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
@@ -55,7 +47,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
@@ -410,20 +402,22 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .takeWhen(self.applePayButtonTappedSignal)
       .filter(isFalse)
 
-    let paymentAuthorizationData: Signal<PaymentAuthorizationDataNoShipping, Never> = Signal.combineLatest(
+    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
       project,
       baseReward,
       allRewardsTotal,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { project, reward, allRewardsTotal, additionalPledgeAmount -> PaymentAuthorizationDataNoShipping in
+    .map { project, reward, allRewardsTotal, additionalPledgeAmount, shippingTotal -> PaymentAuthorizationData in
       let r = (
         project,
         reward,
         allRewardsTotal,
         additionalPledgeAmount,
+        shippingTotal,
         Secrets.ApplePay.merchantIdentifier
-      ) as PaymentAuthorizationDataNoShipping
+      ) as PaymentAuthorizationData
 
       return r
     }
@@ -1095,7 +1089,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
-  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
