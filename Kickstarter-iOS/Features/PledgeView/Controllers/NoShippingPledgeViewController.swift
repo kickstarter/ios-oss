@@ -392,14 +392,14 @@ final class NoShippingPledgeViewController: UIViewController,
       }
   }
 
-  private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationDataNoShipping) {
+  private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
     let request = PKPaymentRequest
       .paymentRequest(
         for: paymentAuthorizationData.project,
         reward: paymentAuthorizationData.reward,
         allRewardsTotal: paymentAuthorizationData.allRewardsTotal,
         additionalPledgeAmount: paymentAuthorizationData.additionalPledgeAmount,
-        allRewardsShippingTotal: 0,
+        allRewardsShippingTotal: paymentAuthorizationData.allRewardsShippingTotal,
         merchantIdentifier: paymentAuthorizationData.merchantIdentifier
       )
 
