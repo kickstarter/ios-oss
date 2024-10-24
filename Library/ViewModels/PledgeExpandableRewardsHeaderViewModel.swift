@@ -4,10 +4,10 @@ import ReactiveSwift
 import UIKit
 
 public enum PledgeExpandableRewardsHeaderItem {
-  case header(PledgeExpandableHeaderRewardCellData)
-  case reward(PledgeExpandableHeaderRewardCellData)
+  case header(PledgeSummaryRewardCellData)
+  case reward(PledgeSummaryRewardCellData)
 
-  public var data: PledgeExpandableHeaderRewardCellData {
+  public var data: PledgeSummaryRewardCellData {
     switch self {
     case let .header(data): return data
     case let .reward(data): return data
@@ -142,7 +142,8 @@ private func items(
     with: data.projectCountry, amount: total, omitUSCurrencyCode: data.omitCurrencyCode
   ) else { return [] }
 
-  let headerItem = PledgeExpandableRewardsHeaderItem.header((
+  let headerItem = PledgeExpandableRewardsHeaderItem.header(.init(
+    type: .header,
     headerText: nil,
     showHeader: true,
     text: estimatedDeliveryString,
@@ -160,7 +161,8 @@ private func items(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    return PledgeExpandableRewardsHeaderItem.reward((
+    return PledgeExpandableRewardsHeaderItem.reward(.init(
+      type: .reward,
       headerText: nil,
       showHeader: true,
       text: itemString,

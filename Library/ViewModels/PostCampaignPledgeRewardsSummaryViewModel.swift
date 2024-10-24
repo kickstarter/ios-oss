@@ -4,10 +4,10 @@ import ReactiveSwift
 import UIKit
 
 public enum PostCampaignRewardsSummaryItem {
-  case header(PledgeExpandableHeaderRewardCellData)
-  case reward(PledgeExpandableHeaderRewardCellData)
+  case header(PledgeSummaryRewardCellData)
+  case reward(PledgeSummaryRewardCellData)
 
-  public var data: PledgeExpandableHeaderRewardCellData {
+  public var data: PledgeSummaryRewardCellData {
     switch self {
     case let .header(data): return data
     case let .reward(data): return data
@@ -30,11 +30,11 @@ public enum PostCampaignRewardsSummaryItem {
 }
 
 public struct PostCampaignRewardsSummaryViewData {
-  public let rewards: [Reward]
-  public let selectedQuantities: SelectedRewardQuantities
-  public let projectCountry: Project.Country
-  public let omitCurrencyCode: Bool
-  public let shipping: PledgeShippingSummaryViewData?
+  let rewards: [Reward]
+  let selectedQuantities: SelectedRewardQuantities
+  let projectCountry: Project.Country
+  let omitCurrencyCode: Bool
+  let shipping: PledgeShippingSummaryViewData?
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
@@ -48,7 +48,10 @@ public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelOutputs {
   var configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never> { get }
-  var loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never> { get }
+  var loadRewardsIntoDataSource: Signal<
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
+    Never
+  > { get }
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelType {
@@ -109,6 +112,20 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
       total
     )
     .map(items)
+    .map { data in
+      /// Decipher header vs reward objects from the `[PostCampaignRewardsSummaryItem]` data object.
+      let header = data.compactMap { item -> PledgeSummaryRewardCellData? in
+        guard case let .header(data) = item else { return nil }
+        return data
+      }
+
+      let allRewards = data.compactMap { item -> PledgeSummaryRewardCellData? in
+        guard case let .reward(data) = item else { return nil }
+        return data
+      }
+
+      return (header.first, allRewards)
+    }
 
     self.configurePledgeTotalViewWithData = data.map { data in
       let (_, _, pledgeSummaryData) = data
@@ -132,7 +149,10 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
   }
 
   public let configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never>
-  public let loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never>
+  public let loadRewardsIntoDataSource: Signal<
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
+    Never
+  >
 
   public var inputs: PostCampaignPledgeRewardsSummaryViewModelInputs { return self }
   public var outputs: PostCampaignPledgeRewardsSummaryViewModelOutputs { return self }
@@ -149,9 +169,10 @@ private func items(
 ) -> [PostCampaignRewardsSummaryItem] {
   // MARK: Header
 
-  let headerItem = PostCampaignRewardsSummaryItem.header((
+  let headerItem = PostCampaignRewardsSummaryItem.header(.init(
+    type: .header,
     headerText: nil,
-    showHeader: true,
+    showHeader: false,
     text: estimatedDeliveryString ?? "",
     amount: NSAttributedString(string: "")
   ))
@@ -164,28 +185,15 @@ private func items(
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
-    var headerAttributedText: NSAttributedString?
-
-    if featureNoShippingAtCheckout() == true {
-      let headerText = reward == data.rewards.first ? Strings.backer_modal_reward_title() : Strings.Add_ons()
-      headerAttributedText = NSAttributedString(
-        string: headerText,
-        attributes: [
-          .foregroundColor: UIColor.ksr_black,
-          .font: UIFont.ksr_subhead().bolded
-        ]
-      )
-    }
-
     let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
     let amountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    return PostCampaignRewardsSummaryItem.reward((
-      headerText: headerAttributedText,
-      showHeader: data.rewards.firstIndex(of: reward)! < 2,
-      /// only show header text if the item is the base reward or the first add-on.
+    return PostCampaignRewardsSummaryItem.reward(.init(
+      type: .reward,
+      headerText: nil,
+      showHeader: false,
       text: itemString,
       amount: amountAttributedText
     ))
@@ -199,9 +207,10 @@ private func items(
       with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    let shippingItem = PostCampaignRewardsSummaryItem.reward((
+    let shippingItem = PostCampaignRewardsSummaryItem.reward(.init(
+      type: .shipping,
       headerText: nil,
-      showHeader: true,
+      showHeader: false,
       text: Strings.Shipping_to_country(country: shipping.locationName),
       amount: shippingAmountAttributedText
     ))
@@ -216,9 +225,10 @@ private func items(
       with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
-    let bonusItem = PostCampaignRewardsSummaryItem.reward((
+    let bonusItem = PostCampaignRewardsSummaryItem.reward(.init(
+      type: .bonusSupport,
       headerText: nil,
-      showHeader: true,
+      showHeader: false,
       text: Strings.Bonus_support(),
       amount: bonusAmountAttributedText
     ))

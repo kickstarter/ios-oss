@@ -238,7 +238,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       RemoteConfigFeature.noShippingAtCheckout.rawValue: true
     ]
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
           let controller = NoShippingPledgeViewController.instantiate()

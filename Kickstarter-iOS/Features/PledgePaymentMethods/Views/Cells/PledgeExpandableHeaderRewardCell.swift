@@ -63,7 +63,7 @@ final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: PledgeExpandableHeaderRewardCellData) {
+  func configureWith(value: PledgeSummaryRewardCellData) {
     self.viewModel.inputs.configure(with: value)
 
     self.contentView.layoutIfNeeded()
