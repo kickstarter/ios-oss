@@ -12,12 +12,12 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
   internal func load(_ items: [PledgeExpandableRewardsHeaderItem]) {
     self.clearValues()
 
-    let headerItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+    let headerItemData = items.compactMap { item -> PledgeSummaryRewardCellData? in
       guard case let .header(data) = item else { return nil }
       return data
     }
 
-    let rewardItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
+    let rewardItemData = items.compactMap { item -> PledgeSummaryRewardCellData? in
       guard case let .reward(data) = item else { return nil }
       return data
     }
@@ -37,9 +37,9 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgeExpandableHeaderRewardHeaderCell, value as PledgeExpandableHeaderRewardCellData):
+    case let (cell as PledgeExpandableHeaderRewardHeaderCell, value as PledgeSummaryRewardCellData):
       cell.configureWith(value: value)
-    case let (cell as PledgeExpandableHeaderRewardCell, value as PledgeExpandableHeaderRewardCellData):
+    case let (cell as PledgeExpandableHeaderRewardCell, value as PledgeSummaryRewardCellData):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
