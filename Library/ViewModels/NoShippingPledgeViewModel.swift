@@ -70,8 +70,8 @@ public protocol NoShippingPledgeViewModelType {
   var outputs: NoShippingPledgeViewModelOutputs { get }
 }
 
-public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippingPledgeViewModelInputs,
-  NoShippingPledgeViewModelOutputs {
+public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippingPledgeViewModelInputs, NoShippingPledgeViewModelOutputs {
+  
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
