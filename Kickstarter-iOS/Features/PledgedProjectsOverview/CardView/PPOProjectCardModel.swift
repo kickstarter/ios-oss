@@ -124,7 +124,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       "\(self.type)-\(self.icon)-\(self.message)"
     }
 
-    public enum AlertType: Identifiable, Equatable {
+    public enum AlertIcon: Identifiable, Equatable {
       case time
       case alert
 
@@ -138,7 +138,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       }
     }
 
-    public enum AlertIcon: Identifiable, Equatable {
+    public enum AlertType: Identifiable, Equatable {
       case warning
       case alert
 
@@ -156,7 +156,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 
 extension PPOProjectCardModel.Alert {
   init?(flag: GraphAPI.PpoCardFragment.Flag) {
-    let alertType: PPOProjectCardModel.Alert.AlertType? = switch flag.type {
+    let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
     case "alert":
       .alert
     case "time":
@@ -165,7 +165,7 @@ extension PPOProjectCardModel.Alert {
       nil
     }
 
-    let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
+    let alertType: PPOProjectCardModel.Alert.AlertType? = switch flag.type {
     case "alert":
       .alert
     case "warning":
@@ -205,7 +205,7 @@ extension PPOProjectCardModel {
   internal static let confirmAddressTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .time, icon: .warning, message: "Address locks in 8 hours")
+      .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
     imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -225,8 +225,8 @@ extension PPOProjectCardModel {
   internal static let addressLockTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .alert, icon: .warning, message: "Survey available"),
-      .init(type: .time, icon: .warning, message: "Address locks in 48 hours")
+      .init(type: .warning, icon: .alert, message: "Survey available"),
+      .init(type: .warning, icon: .time, message: "Address locks in 48 hours")
     ],
     imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
@@ -243,8 +243,8 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .alert, icon: .alert, message: "Payment failed"),
       .init(
-        type: .time,
-        icon: .alert,
+        type: .alert,
+        icon: .time,
         message: "Pledge will be dropped in 6 days"
       )
     ],
@@ -263,8 +263,8 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .alert, icon: .alert, message: "Card needs authentication"),
       .init(
-        type: .time,
-        icon: .alert,
+        type: .alert,
+        icon: .time,
         message: "Pledge will be dropped in 6 days"
       )
     ],
@@ -281,7 +281,7 @@ extension PPOProjectCardModel {
   internal static let completeSurveyTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .alert, icon: .warning, message: "Survey available")
+      .init(type: .warning, icon: .alert, message: "Survey available")
     ],
     imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",

@@ -27,7 +27,7 @@ struct PPOAlertFlag: View {
   }
 
   var image: Image {
-    switch self.alert.type {
+    switch self.alert.icon {
     case .time:
       Image(PPOCardStyles.timeImage)
     case .alert:
@@ -36,7 +36,7 @@ struct PPOAlertFlag: View {
   }
 
   var foregroundColor: Color {
-    switch self.alert.icon {
+    switch self.alert.type {
     case .warning:
       Color(uiColor: PPOCardStyles.warningColor.foreground)
     case .alert:
@@ -45,7 +45,7 @@ struct PPOAlertFlag: View {
   }
 
   var backgroundColor: Color {
-    switch self.alert.icon {
+    switch self.alert.type {
     case .warning:
       Color(uiColor: PPOCardStyles.warningColor.background)
     case .alert:
@@ -64,10 +64,10 @@ struct PPOAlertFlag: View {
 
 #Preview("Stack of flags") {
   VStack(alignment: .leading, spacing: 8) {
-    PPOAlertFlag(alert: .init(type: .time, icon: .warning, message: "Address locks in 8 hours"))
-    PPOAlertFlag(alert: .init(type: .alert, icon: .warning, message: "Survey available"))
+    PPOAlertFlag(alert: .init(type: .warning, icon: .time, message: "Address locks in 8 hours"))
+    PPOAlertFlag(alert: .init(type: .warning, icon: .alert, message: "Survey available"))
     PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Payment failed"))
-    PPOAlertFlag(alert: .init(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"))
+    PPOAlertFlag(alert: .init(type: .alert, icon: .time, message: "Pledge will be dropped in 6 days"))
     PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Card needs authentication"))
   }
 }
