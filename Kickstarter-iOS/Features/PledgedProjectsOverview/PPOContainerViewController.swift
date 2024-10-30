@@ -21,10 +21,10 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       }
     )
     let ppoViewController = UIHostingController(rootView: ppoView)
-    ppoViewController.title = "Project Alerts"
+    ppoViewController.title = Page.projectAlerts(.none).name
 
     let activitiesViewController = ActivitiesViewController.instantiate()
-    activitiesViewController.title = "Activity Feed"
+    activitiesViewController.title = Page.activityFeed(.none).name
 
     self.setPagedViewControllers([
       (.projectAlerts(.none), ppoViewController),
@@ -33,14 +33,25 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
+    // Update badges in the paging tab bar at the top of the view
     Publishers.CombineLatest(
       self.viewModel.projectAlertsBadge,
       self.viewModel.activityBadge
     )
-    .sink { [weak self] projectAlerts, activity in
-      self?.setPagedViewControllers([
-        (.projectAlerts(projectAlerts), ppoViewController),
-        (.activityFeed(activity), activitiesViewController)
+    .map({ projectAlerts, activity in
+      let projectAlerts = Page.projectAlerts(projectAlerts)
+      let activityFeed = Page.activityFeed(activity)
+      return (projectAlerts, activityFeed)
+    })
+    .sink { [weak self, weak ppoViewController, weak activitiesViewController] projectAlerts, activityFeed in
+      guard let self, let ppoViewController, let activitiesViewController else {
+        return
+      }
+      ppoViewController.title = projectAlerts.name
+      activitiesViewController.title = activityFeed.name
+      self.setPagedViewControllers([
+        (projectAlerts, ppoViewController),
+        (activityFeed, activitiesViewController)
       ])
     }
     .store(in: &self.subscriptions)
@@ -69,7 +80,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     public var name: String {
       switch self {
       case .projectAlerts:
-        "Project alerts"
+        Strings.Project_alerts()
       case .activityFeed:
         "Activity feed"
       }
