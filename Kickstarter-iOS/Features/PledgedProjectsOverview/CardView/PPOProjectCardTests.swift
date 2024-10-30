@@ -12,9 +12,9 @@ final class PPOProjectCardTests: TestCase {
         PPOProjectCard(viewModel: PPOProjectCardViewModel(
           card: .confirmAddressTemplate
         ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
+          .frame(width: self.size.width)
+          .frame(maxHeight: .infinity)
+          .padding()
       }.frame(height: 500)
     assertSnapshot(matching: card, as: .image, named: "addressLocks")
   }
@@ -24,9 +24,9 @@ final class PPOProjectCardTests: TestCase {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .addressLockTemplate
       ), parentSize: self.size)
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailableAddressLocks")
   }
@@ -36,9 +36,9 @@ final class PPOProjectCardTests: TestCase {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .fixPaymentTemplate
       ), parentSize: self.size)
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
     assertSnapshot(matching: card, as: .image, named: "paymentFailedPledgeDropped")
   }
@@ -48,9 +48,9 @@ final class PPOProjectCardTests: TestCase {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .authenticateCardTemplate
       ), parentSize: self.size)
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
     assertSnapshot(matching: card, as: .image, named: "cardAuthPledgeDropped")
   }
@@ -60,9 +60,9 @@ final class PPOProjectCardTests: TestCase {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .completeSurveyTemplate
       ), parentSize: self.size)
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
   }

@@ -91,12 +91,12 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var projectCreator: some View {
     PPOProjectCreator(
-      creatorName: self.viewModel.card.creatorName, 
+      creatorName: self.viewModel.card.creatorName,
       onSendMessage: { [weak viewModel] () in
         viewModel?.sendCreatorMessage()
       }
     )
-      .padding([.horizontal])
+    .padding([.horizontal])
   }
 
   @ViewBuilder

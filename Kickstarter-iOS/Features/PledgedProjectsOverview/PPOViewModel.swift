@@ -49,7 +49,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         data.pledgeProjectsOverview?.pledges?.edges?
           .compactMap { edge in edge?.node }
           .compactMap { node in PPOProjectCardModel(node: node) }
-          .compactMap({ model in PPOProjectCardViewModel(card: model) }) ?? []
+          .compactMap { model in PPOProjectCardViewModel(card: model) } ?? []
       },
       cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },

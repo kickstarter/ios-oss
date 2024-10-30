@@ -15,15 +15,15 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(isUnread)
-    hasher.combine(alerts)
-    hasher.combine(imageURL)
-    hasher.combine(title)
-    hasher.combine(creatorName)
-    hasher.combine(address)
-    hasher.combine(actions.0)
-    hasher.combine(actions.1)
-    hasher.combine(tierType)
+    hasher.combine(self.isUnread)
+    hasher.combine(self.alerts)
+    hasher.combine(self.imageURL)
+    hasher.combine(self.title)
+    hasher.combine(self.creatorName)
+    hasher.combine(self.address)
+    hasher.combine(self.actions.0)
+    hasher.combine(self.actions.1)
+    hasher.combine(self.tierType)
   }
 
   // MARK: - Identifiable

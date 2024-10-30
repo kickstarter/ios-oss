@@ -38,11 +38,11 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       self.viewModel.projectAlertsBadge,
       self.viewModel.activityBadge
     )
-    .map({ projectAlerts, activity in
+    .map { projectAlerts, activity in
       let projectAlerts = Page.projectAlerts(projectAlerts)
       let activityFeed = Page.activityFeed(activity)
       return (projectAlerts, activityFeed)
-    })
+    }
     .sink { [weak self, weak ppoViewController, weak activitiesViewController] projectAlerts, activityFeed in
       guard let self, let ppoViewController, let activitiesViewController else {
         return
@@ -60,7 +60,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case .editAddress, .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey, .showProject:
+      case .editAddress, .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey,
+           .showProject:
         // TODO: MBL-1451
         break
       }

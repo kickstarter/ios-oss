@@ -28,7 +28,7 @@ extension PPOProjectCardViewModelOutputs {
   }
 }
 
-typealias PPOProjectCardViewModelType = Equatable & Identifiable & Hashable & ObservableObject &
+typealias PPOProjectCardViewModelType = Equatable & Hashable & Identifiable & ObservableObject &
   PPOProjectCardViewModelInputs &
   PPOProjectCardViewModelOutputs
 
@@ -36,7 +36,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published private(set) var card: PPOProjectCardModel
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(card)
+    hasher.combine(self.card)
   }
 
   init(

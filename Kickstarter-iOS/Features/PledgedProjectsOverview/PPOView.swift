@@ -11,9 +11,9 @@ struct PPOView: View {
   @ViewBuilder func contentView(parentSize: CGSize) -> some View {
     switch self.viewModel.results {
     case .unloaded, .loading(.unloaded),
-        .loading(.empty),
-        .loading(.error),
-        .loading(previous: .loading(_)):
+         .loading(.empty),
+         .loading(.error),
+         .loading(previous: .loading(_)):
       self.loadingView
     case .empty:
       self.emptyView
@@ -43,39 +43,38 @@ struct PPOView: View {
       selectedItem: nil,
       header: { self.listViewHeader(numberOfValues: values.count) }
     ) { card in
-        PPOProjectCard(
-          viewModel: card,
-          parentSize: parentSize,
-          onShowProject: { card in
-            self.viewModel.showProject(from: card)
-          },
-          onSendMessage: { card in
-            self.viewModel.contactCreator(from: card)
-          },
-          onPerformAction: { card, action in
-            switch action {
-            case .authenticateCard:
-              self.viewModel.fix3DSChallenge(from: card)
-            case .completeSurvey:
-              self.viewModel.openSurvey(from: card)
-            case .confirmAddress:
-              self.viewModel.confirmAddress(from: card)
-            case .editAddress:
-              self.viewModel.editAddress(from: card)
-            case .fixPayment:
-              self.viewModel.fixPaymentMethod(from: card)
-            }
+      PPOProjectCard(
+        viewModel: card,
+        parentSize: parentSize,
+        onShowProject: { card in
+          self.viewModel.showProject(from: card)
+        },
+        onSendMessage: { card in
+          self.viewModel.contactCreator(from: card)
+        },
+        onPerformAction: { card, action in
+          switch action {
+          case .authenticateCard:
+            self.viewModel.fix3DSChallenge(from: card)
+          case .completeSurvey:
+            self.viewModel.openSurvey(from: card)
+          case .confirmAddress:
+            self.viewModel.confirmAddress(from: card)
+          case .editAddress:
+            self.viewModel.editAddress(from: card)
+          case .fixPayment:
+            self.viewModel.fixPaymentMethod(from: card)
           }
-        )
-          .listRowBackground(EmptyView())
-          .listRowSeparator(.hidden)
-          .listRowInsets(.none)
-      } onRefresh: {
-        await self.viewModel.refresh()
-      } onLoadMore: {
-        await self.viewModel.loadMore()
-      }
-
+        }
+      )
+      .listRowBackground(EmptyView())
+      .listRowSeparator(.hidden)
+      .listRowInsets(.none)
+    } onRefresh: {
+      await self.viewModel.refresh()
+    } onLoadMore: {
+      await self.viewModel.loadMore()
+    }
   }
 
   @ViewBuilder var loadingView: some View {
@@ -121,28 +120,28 @@ struct PPOView: View {
     GeometryReader { reader in
       self.contentView(parentSize: reader.size)
         .frame(maxWidth: .infinity, alignment: .center)
-      .overlay(alignment: .bottom) {
-        MessageBannerView(viewModel: self.$viewModel.bannerViewModel)
-          .frame(
-            minWidth: reader.size.width,
-            idealWidth: reader.size.width,
-            alignment: .bottom
-          )
-          .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
-          .accessibilityFocused(self.$isBannerFocused)
-      }
-      .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-          self.isBannerFocused = self.viewModel.bannerViewModel != nil
+        .overlay(alignment: .bottom) {
+          MessageBannerView(viewModel: self.$viewModel.bannerViewModel)
+            .frame(
+              minWidth: reader.size.width,
+              idealWidth: reader.size.width,
+              alignment: .bottom
+            )
+            .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
+            .accessibilityFocused(self.$isBannerFocused)
         }
-      })
-      .onAppear(perform: { self.viewModel.viewDidAppear() })
-      .onChange(of: self.viewModel.results.total, perform: { value in
-        self.onCountChange?(value)
-      })
-      .onReceive(self.viewModel.navigationEvents, perform: { event in
-        self.onNavigate?(event)
-      })
+        .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.isBannerFocused = self.viewModel.bannerViewModel != nil
+          }
+        })
+        .onAppear(perform: { self.viewModel.viewDidAppear() })
+        .onChange(of: self.viewModel.results.total, perform: { value in
+          self.onCountChange?(value)
+        })
+        .onReceive(self.viewModel.navigationEvents, perform: { event in
+          self.onNavigate?(event)
+        })
     }
   }
 }
