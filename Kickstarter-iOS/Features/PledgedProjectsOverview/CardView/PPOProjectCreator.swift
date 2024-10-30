@@ -4,6 +4,7 @@ import SwiftUI
 
 struct PPOProjectCreator: View {
   let creatorName: String
+  var onSendMessage: (() -> Void)? = nil
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -19,7 +20,7 @@ struct PPOProjectCreator: View {
         .lineLimit(Constants.textLineLimit)
 
       Button(action: {
-        // TODO: Action
+        self.onSendMessage?()
       }, label: {
         // TODO: Localize
         Text("Send a message")

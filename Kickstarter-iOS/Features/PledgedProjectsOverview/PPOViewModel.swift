@@ -23,6 +23,7 @@ protocol PPOViewModelInputs {
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel)
   func contactCreator(from: PPOProjectCardModel)
+  func showProject(from: PPOProjectCardModel)
 }
 
 protocol PPOViewModelOutputs {
@@ -38,6 +39,7 @@ enum PPONavigationEvent {
   case editAddress
   case confirmAddress
   case contactCreator
+  case showProject
 }
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
@@ -88,14 +90,15 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge7(
+    Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
       self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
       self.openSurveySubject.map { _ in PPONavigationEvent.survey },
       self.editAddressSubject.map { _ in PPONavigationEvent.editAddress },
       self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
-      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
+      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator },
+      self.showProjectSubject.map { _ in PPONavigationEvent.showProject }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
@@ -231,6 +234,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.contactCreatorSubject.send(from)
   }
 
+  func showProject(from: PPOProjectCardModel) {
+    self.showProjectSubject.send(from)
+  }
+
   // MARK: - Outputs
 
   @Published var bannerViewModel: MessageBannerViewViewModel? = nil
@@ -255,6 +262,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let showProjectSubject = PassthroughSubject<PPOProjectCardModel, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 

@@ -45,7 +45,27 @@ struct PPOView: View {
     ) { card in
         PPOProjectCard(
           viewModel: card,
-          parentSize: parentSize
+          parentSize: parentSize,
+          onShowProject: { card in
+            self.viewModel.showProject(from: card)
+          },
+          onSendMessage: { card in
+            self.viewModel.contactCreator(from: card)
+          },
+          onPerformAction: { card, action in
+            switch action {
+            case .authenticateCard:
+              self.viewModel.fix3DSChallenge(from: card)
+            case .completeSurvey:
+              self.viewModel.openSurvey(from: card)
+            case .confirmAddress:
+              self.viewModel.confirmAddress(from: card)
+            case .editAddress:
+              self.viewModel.editAddress(from: card)
+            case .fixPayment:
+              self.viewModel.fixPaymentMethod(from: card)
+            }
+          }
         )
           .listRowBackground(EmptyView())
           .listRowSeparator(.hidden)

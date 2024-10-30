@@ -7,6 +7,10 @@ struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
+  var onShowProject: ((PPOProjectCardModel) -> Void)? = nil
+  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
+  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
+
   var body: some View {
     VStack(spacing: Constants.spacing) {
       self.flagList
@@ -32,6 +36,17 @@ struct PPOProjectCard: View {
       alignment: Constants.badgeAlignment,
       content: { self.badge.opacity(self.viewModel.card.isUnread ? 1 : 0) }
     )
+
+    // Handle actions
+    .onReceive(self.viewModel.showProjectTapped) {
+      self.onShowProject?(self.viewModel.card)
+    }
+    .onReceive(self.viewModel.sendMessageTapped) {
+      self.onSendMessage?(self.viewModel.card)
+    }
+    .onReceive(self.viewModel.actionPerformed) { action in
+      self.onPerformAction?(self.viewModel.card, action)
+    }
   }
 
   @ViewBuilder
@@ -75,11 +90,13 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(creatorName: self.viewModel.card.creatorName)
-      .padding([.horizontal])
-      .onTapGesture { [weak viewModel] () in
-        viewModel?.showProject()
+    PPOProjectCreator(
+      creatorName: self.viewModel.card.creatorName, 
+      onSendMessage: { [weak viewModel] () in
+        viewModel?.sendCreatorMessage()
       }
+    )
+      .padding([.horizontal])
   }
 
   @ViewBuilder
