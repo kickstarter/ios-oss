@@ -326,7 +326,8 @@ extension Project: Decodable {
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
     self.watchesCount = nil
-    self.isPledgeOverTimeAllowed = try values.decodeIfPresent(Bool.self, forKey: .isPledgeOverTimeAllowed) ?? false
+    self.isPledgeOverTimeAllowed =
+      try values.decodeIfPresent(Bool.self, forKey: .isPledgeOverTimeAllowed) ?? false
   }
 }
 

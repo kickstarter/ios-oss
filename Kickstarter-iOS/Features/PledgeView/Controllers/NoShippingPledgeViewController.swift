@@ -259,13 +259,13 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeRewardsSummaryViewController
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
-    
+
     self.viewModel.outputs.showPledgeOverTimeUI
-          .observeForUI()
-          .observeValues { value in
-            // TODO: Use this flag to hide or show the Pledge Over Time UI [MBL-1814] https://kickstarter.atlassian.net/browse/MBL-1814
-            debugPrint("showPledgeOverTimeUI: \(value)")
-          }
+      .observeForUI()
+      .observeValues { value in
+        // TODO: Use this flag to hide or show the Pledge Over Time UI [MBL-1814] https://kickstarter.atlassian.net/browse/MBL-1814
+        debugPrint("showPledgeOverTimeUI: \(value)")
+      }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()

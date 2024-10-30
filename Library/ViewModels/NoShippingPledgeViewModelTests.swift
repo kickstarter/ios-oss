@@ -147,7 +147,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
-    
+
     self.vm.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
   }
 
@@ -5229,11 +5229,11 @@ final class NoShippingPledgeViewModelTests: TestCase {
       )
     }
   }
-  
+
   func testShowPledgeOverTimeUI_True() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
-      |> Project.lens.isPledgeOverTimeAllowed .~ true
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
 
       let data = PledgeViewData(
@@ -5248,15 +5248,15 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      
+  
       self.showPledgeOverTimeUI.assertValues([true])
     }
   }
-  
+
   func testShowPledgeOverTimeUI_False() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
-      |> Project.lens.isPledgeOverTimeAllowed .~ false
+        |> Project.lens.isPledgeOverTimeAllowed .~ false
       let reward = Reward.template
 
       let data = PledgeViewData(
@@ -5271,7 +5271,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      
+  
       self.showPledgeOverTimeUI.assertValues([false])
     }
   }
