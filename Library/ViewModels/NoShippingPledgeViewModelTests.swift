@@ -32,6 +32,10 @@ final class NoShippingPledgeViewModelTests: TestCase {
     Never
   >()
   private let configurePledgeRewardsSummaryViewOmitCurrencyCode = TestObserver<Bool, Never>()
+  private let configurePledgeRewardsSummaryViewShipping = TestObserver<
+    PledgeShippingSummaryViewData?,
+    Never
+  >()
 
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
@@ -45,6 +49,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
   private let goToApplePayPaymentAuthorizationAllRewardsTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationAdditionalPledgeAmount = TestObserver<Double, Never>()
+  private let goToApplePayPaymentAuthorizationAllRewardsShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
   private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
@@ -91,6 +96,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       .observe(self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.observer)
     self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.omitCurrencyCode)
       .observe(self.configurePledgeRewardsSummaryViewOmitCurrencyCode.observer)
+    self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.shipping)
+      .observe(self.configurePledgeRewardsSummaryViewShipping.observer)
 
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
@@ -114,6 +121,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       .observe(self.goToApplePayPaymentAuthorizationAllRewardsTotal.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.additionalPledgeAmount }
       .observe(self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.allRewardsShippingTotal }
+      .observe(self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
 
@@ -513,6 +522,64 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
+  func testChangePaymentMethodContext_RewardWithShipping() {
+    let backing = Backing.template
+    let reward = Reward.template
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: nil,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Change payment method"])
+
+      self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
+      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+      self.configurePaymentMethodsViewControllerWithContext.assertValues([.changePaymentMethod])
+
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+
+      self.configurePledgeRewardsSummaryViewRewards.assertLastValue([reward])
+
+      let expectedShipping = PledgeShippingSummaryViewData(
+        locationName: backing.locationName!,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        projectCountry: project.country,
+        total: backing.shippingAmount!
+      )
+      self.configurePledgeRewardsSummaryViewShipping.assertLastValue(expectedShipping)
+    }
+  }
+
   func testPledgeView_Logged_Out_Shipping_Disabled() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
@@ -856,6 +923,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.applePayButtonTapped()
@@ -865,6 +933,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertValues([0])
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([5])
+    self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.assertValues([0])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
@@ -894,6 +963,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
@@ -905,6 +975,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertValues([20])
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.assertValues([5])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 

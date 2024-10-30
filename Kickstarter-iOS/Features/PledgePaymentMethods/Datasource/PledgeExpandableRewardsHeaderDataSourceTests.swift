@@ -10,9 +10,27 @@ final class PledgeExpandableRewardsHeaderDataSourceTests: XCTestCase {
 
   func testLoadValues() {
     let items: [PledgeExpandableRewardsHeaderItem] = [
-      .header((nil, true, "Header title", NSAttributedString(string: "$800"))),
-      .reward((nil, true, "Reward title", NSAttributedString(string: "$400"))),
-      .reward((nil, true, "Reward title", NSAttributedString(string: "$400")))
+      .header(.init(
+        type: .header,
+        headerText: nil,
+        showHeader: false,
+        text: "Header title",
+        amount: NSAttributedString(string: "$800")
+      )),
+      .reward(.init(
+        type: .reward,
+        headerText: nil,
+        showHeader: false,
+        text: "Reward title",
+        amount: NSAttributedString(string: "$400")
+      )),
+      .reward(.init(
+        type: .reward,
+        headerText: nil,
+        showHeader: false,
+        text: "Reward title",
+        amount: NSAttributedString(string: "$400")
+      ))
     ]
 
     self.dataSource.load(items)

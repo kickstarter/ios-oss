@@ -2,14 +2,23 @@ import Library
 import Prelude
 import UIKit
 
-final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
+public enum PledgeRewardsSummaryStyles {
+  public enum Layout {
+    public static let sectionHeaderLabelHeight: CGFloat = 20
+    public static let rootStackViewSpacing: CGFloat = Styles.grid(1)
+    public static let separatorViewLeftAnchorConstant: CGFloat = Styles.grid(4)
+    public static let separatorViewRightAnchorConstant: CGFloat = -Styles.grid(4)
+    public static let separatorViewHeight: CGFloat = 1
+  }
+}
+
+final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var tableViewContainer: UIView = {
@@ -85,10 +94,17 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
       self.tableViewContainer.rightAnchor.constraint(equalTo: self.rootStackView.rightAnchor),
       self.tableViewContainer.topAnchor.constraint(equalTo: self.rootStackView.topAnchor),
       self.separatorView.leftAnchor
-        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+        .constraint(
+          equalTo: self.rootStackView.leftAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewLeftAnchorConstant
+        ),
       self.separatorView.rightAnchor
-        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
+        .constraint(
+          equalTo: self.rootStackView.rightAnchor,
+          constant: PledgeRewardsSummaryStyles.Layout.separatorViewRightAnchorConstant
+        ),
+      self.separatorView.heightAnchor
+        .constraint(equalToConstant: PledgeRewardsSummaryStyles.Layout.separatorViewHeight),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
   }
@@ -155,13 +171,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
   // MARK: Styles
 
-  private func applyRootStackViewStyle(_ stackView: UIStackView) {
-    stackView.axis = NSLayoutConstraint.Axis.vertical
-    stackView.spacing = Styles.grid(1)
-    stackView.isLayoutMarginsRelativeArrangement = true
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-  }
-
   private func applyTableViewStyle(_ tableView: UITableView) {
     tableView.separatorInset = .zero
     tableView.contentInsetAdjustmentBehavior = .never
@@ -173,14 +182,16 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
+  private func applyRootStackViewStyle(_ stackView: UIStackView) {
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.spacing = PledgeRewardsSummaryStyles.Layout.rootStackViewSpacing
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+
   private func applySeparatorViewStyle(_ view: UIView) {
     view.backgroundColor = .ksr_support_200
     view.translatesAutoresizingMaskIntoConstraints = false
-  }
-
-  private func applyTableViewContainerStyle(_ view: UIView) {
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.clipsToBounds = true
   }
 
   private func applySectionHeaderViewStyle(_ view: UIView) {
@@ -200,6 +211,11 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     )
   }
 
+  private func applyTableViewContainerStyle(_ view: UIView) {
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.clipsToBounds = true
+  }
+
   // MARK: - Helpers
 
   private func setEntireViewToIsHidden(_ isHidden: Bool) {
@@ -211,13 +227,14 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
   // MARK: Section Header View
 
   private func sectionHeaderView(for section: PledgeRewardsSummarySection) -> UIView {
-    let headerView = UIView()
+    let headerView: UIView = UIView(frame: .zero)
     self.applySectionHeaderViewStyle(headerView)
 
     let headerLabel: UILabel = UILabel(frame: .zero)
     self.applySectionHeaderLabelStyle(headerLabel)
 
     switch section {
+    /// We're using a custom header for the main header cell and bonus support shouldn't have a section header.
     case .header, .shipping, .bonusSupport:
       break
     case .reward:
@@ -234,7 +251,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension PostCampaignPledgeRewardsSummaryViewController: UITableViewDelegate {
+extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
   }

@@ -13,14 +13,6 @@ public typealias NoShippingPledgeViewCTAContainerViewData = (
   willRetryPaymentMethod: Bool
 )
 
-public typealias PaymentAuthorizationDataNoShipping = (
-  project: Project,
-  reward: Reward,
-  allRewardsTotal: Double,
-  additionalPledgeAmount: Double,
-  merchantIdentifier: String
-)
-
 public protocol NoShippingPledgeViewModelInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
@@ -55,7 +47,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
@@ -124,6 +116,13 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map(calculateAllRewardsTotal)
 
+    let initialShippingTotal = project.map { project in
+      guard let backing = project.personalization.backing else {
+        return 0.0
+      }
+      return backing.shippingAmount ?? 0.0
+    }
+
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
       rewards,
@@ -132,7 +131,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .map(calculateShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(
-      selectedShippingRule.filter(isNil).mapConst(0.0),
+      initialShippingTotal,
       calculatedShippingTotal
     )
 
@@ -242,8 +241,21 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context.map { $0.confirmationLabelHidden }
     )
 
+    // The selected shipping rule, if present, is always the most up-to-date shipping information.
+    // If not present, get shipping location from the backing instead.
+    let shippingLocation: Signal<String?, Never> = Signal.combineLatest(project, selectedShippingRule)
+      .map { project, shippingRule in
+        if let shippingRule {
+          return shippingRule.location.localizedName
+        }
+        if let backing = project.personalization.backing {
+          return backing.locationName
+        }
+        return nil
+      }
+
     let shippingSummaryViewDataNonnil = Signal.combineLatest(
-      selectedShippingRule.skipNil().map(\.location.localizedName),
+      shippingLocation.skipNil(),
       project.map(\.stats.omitUSCurrencyCode),
       project.map { project in
         projectCountry(forCurrency: project.stats.currency) ?? project.country
@@ -254,7 +266,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let shippingSummaryViewData = Signal.merge(
       shippingSummaryViewDataNonnil.wrapInOptional(),
-      selectedShippingRule.filter(isNil).mapConst(nil)
+      shippingLocation.filter(isNil).mapConst(nil)
     )
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
@@ -390,20 +402,22 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .takeWhen(self.applePayButtonTappedSignal)
       .filter(isFalse)
 
-    let paymentAuthorizationData: Signal<PaymentAuthorizationDataNoShipping, Never> = Signal.combineLatest(
+    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
       project,
       baseReward,
       allRewardsTotal,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { project, reward, allRewardsTotal, additionalPledgeAmount -> PaymentAuthorizationDataNoShipping in
+    .map { project, reward, allRewardsTotal, additionalPledgeAmount, shippingTotal -> PaymentAuthorizationData in
       let r = (
         project,
         reward,
         allRewardsTotal,
         additionalPledgeAmount,
+        shippingTotal,
         Secrets.ApplePay.merchantIdentifier
-      ) as PaymentAuthorizationDataNoShipping
+      ) as PaymentAuthorizationData
 
       return r
     }
@@ -1075,7 +1089,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
-  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationDataNoShipping, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>

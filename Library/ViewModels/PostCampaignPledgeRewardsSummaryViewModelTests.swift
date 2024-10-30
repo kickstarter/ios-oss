@@ -8,7 +8,10 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
   internal let vm: PostCampaignPledgeRewardsSummaryViewModelType =
     PostCampaignPledgeRewardsSummaryViewModel()
 
-  private let loadRewardsIntoDataSource = TestObserver<[PostCampaignRewardsSummaryItem], Never>()
+  private let loadRewardsIntoDataSource = TestObserver<
+    (headerData: PledgeSummaryRewardCellData?, rewards: [PledgeSummaryRewardCellData]),
+    Never
+  >()
 
   override func setUp() {
     super.setUp()
@@ -70,31 +73,33 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
       return
     }
 
-    XCTAssertEqual(itemData.count, 5)
+    let headerItemData = itemData.headerData
+    let rewardItemData = itemData.rewards
 
-    XCTAssertEqual(itemData[0].data.text, "Estimated delivery October 2016")
-    XCTAssertEqual(itemData[0].data.amount.string, "")
-    XCTAssertEqual(itemData[0].isHeader, true)
-    XCTAssertEqual(itemData[0].isReward, false)
+    XCTAssertNotNil(headerItemData)
+    XCTAssertEqual(rewardItemData.count, 4)
 
-    XCTAssertEqual(itemData[1].data.text, "Reward 1")
-    XCTAssertEqual(itemData[1].data.amount.string, "US$ 60")
-    XCTAssertEqual(itemData[1].isHeader, false)
-    XCTAssertEqual(itemData[1].isReward, true)
+    XCTAssertEqual(headerItemData?.text, "Estimated delivery October 2016")
+    XCTAssertEqual(headerItemData?.amount.string, "")
 
-    XCTAssertEqual(itemData[2].data.text, "2 x Reward 2")
-    XCTAssertEqual(itemData[2].data.amount.string, "US$ 40")
-    XCTAssertEqual(itemData[2].isHeader, false)
-    XCTAssertEqual(itemData[2].isReward, true)
+    XCTAssertEqual(rewardItemData[0].text, "Reward 1")
+    XCTAssertEqual(rewardItemData[0].amount.string, "US$ 60")
+    XCTAssertEqual(rewardItemData[0].showHeader, false)
+    XCTAssertNil(rewardItemData[0].headerText)
 
-    XCTAssertEqual(itemData[3].data.text, "3 x Reward 3")
-    XCTAssertEqual(itemData[3].data.amount.string, "US$ 120")
-    XCTAssertEqual(itemData[3].isHeader, false)
-    XCTAssertEqual(itemData[3].isReward, true)
+    XCTAssertEqual(rewardItemData[1].text, "2 x Reward 2")
+    XCTAssertEqual(rewardItemData[1].amount.string, "US$ 40")
+    XCTAssertEqual(rewardItemData[1].showHeader, false)
+    XCTAssertNil(rewardItemData[1].headerText)
 
-    XCTAssertEqual(itemData[4].data.text, "Bonus support")
-    XCTAssertEqual(itemData[4].data.amount.string, "US$ 10")
-    XCTAssertEqual(itemData[4].isHeader, false)
-    XCTAssertEqual(itemData[4].isReward, true)
+    XCTAssertEqual(rewardItemData[2].text, "3 x Reward 3")
+    XCTAssertEqual(rewardItemData[2].amount.string, "US$ 120")
+    XCTAssertEqual(rewardItemData[2].showHeader, false)
+    XCTAssertNil(rewardItemData[2].headerText)
+
+    XCTAssertEqual(rewardItemData[3].text, "Bonus support")
+    XCTAssertEqual(rewardItemData[3].amount.string, "US$ 10")
+    XCTAssertEqual(rewardItemData[3].showHeader, false)
+    XCTAssertNil(rewardItemData[3].headerText)
   }
 }
