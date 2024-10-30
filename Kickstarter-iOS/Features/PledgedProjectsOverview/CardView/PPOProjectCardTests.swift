@@ -6,7 +6,9 @@ import XCTest
 
 final class PPOProjectCardTests: TestCase {
   let size = CGSize(width: 375, height: 700)
-  func testAddressLocks() {
+
+  @MainActor
+  func testAddressLocks() async {
     let card =
       VStack {
         PPOProjectCard(viewModel: PPOProjectCardViewModel(
@@ -16,10 +18,12 @@ final class PPOProjectCardTests: TestCase {
           .frame(maxHeight: .infinity)
           .padding()
       }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "addressLocks")
   }
 
-  func testSurveyAvailableAddressLocks() {
+  @MainActor
+  func testSurveyAvailableAddressLocks() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .addressLockTemplate
@@ -28,10 +32,12 @@ final class PPOProjectCardTests: TestCase {
         .frame(maxHeight: .infinity)
         .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailableAddressLocks")
   }
 
-  func testPaymentFailedPledgeDropped() {
+  @MainActor
+  func testPaymentFailedPledgeDropped() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .fixPaymentTemplate
@@ -40,10 +46,12 @@ final class PPOProjectCardTests: TestCase {
         .frame(maxHeight: .infinity)
         .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "paymentFailedPledgeDropped")
   }
 
-  func testCardAuthPledgeDropped() {
+  @MainActor
+  func testCardAuthPledgeDropped() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .authenticateCardTemplate
@@ -52,10 +60,12 @@ final class PPOProjectCardTests: TestCase {
         .frame(maxHeight: .infinity)
         .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "cardAuthPledgeDropped")
   }
 
-  func testSurveyAvailable() {
+  @MainActor
+  func testSurveyAvailable() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
         card: .completeSurveyTemplate
@@ -64,6 +74,7 @@ final class PPOProjectCardTests: TestCase {
         .frame(maxHeight: .infinity)
         .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
   }
 }

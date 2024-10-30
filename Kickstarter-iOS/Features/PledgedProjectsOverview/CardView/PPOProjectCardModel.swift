@@ -207,7 +207,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
-    imageURL: URL(string: "https://placecats.com/400/200")!,
+    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -228,7 +228,7 @@ extension PPOProjectCardModel {
       .init(type: .warning, icon: .alert, message: "Survey available"),
       .init(type: .warning, icon: .time, message: "Address locks in 48 hours")
     ],
-    imageURL: URL(string: "https://placecats.com/400/200")!,
+    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -248,7 +248,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "https://placecats.com/400/200")!,
+    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -268,7 +268,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "https://placecats.com/400/200")!,
+    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -283,7 +283,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .alert, message: "Survey available")
     ],
-    imageURL: URL(string: "https://placecats.com/400/200")!,
+    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
