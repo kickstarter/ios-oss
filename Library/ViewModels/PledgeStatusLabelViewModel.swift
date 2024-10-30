@@ -164,11 +164,12 @@ private func attributedConfirmationString(with data: PledgeStatusLabelViewData) 
       )
   }
 
-  return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
-    total: pledgeTotal,
-    project_deadline: date
-  )
-  .attributed(
-    with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
-  )
+  return Strings
+    .If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge(
+      total: pledgeTotal,
+      project_deadline: date
+    )
+    .attributed(
+      with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
+    )
 }
