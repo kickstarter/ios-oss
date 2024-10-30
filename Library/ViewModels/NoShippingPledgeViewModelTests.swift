@@ -5231,7 +5231,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_True() {
-    withEnvironment() {
+    withEnvironment {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -5254,7 +5254,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_False() {
-    withEnvironment() {
+    withEnvironment {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ false
       let reward = Reward.template
