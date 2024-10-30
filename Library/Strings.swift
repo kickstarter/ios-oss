@@ -943,6 +943,23 @@ public enum Strings {
     )
   }
   /**
+   "Authenticate Card"
+
+   - **en**: "Authenticate Card"
+   - **de**: "Karte authentifizieren"
+   - **es**: "Autenticar tarjeta"
+   - **fr**: "Authentifier la carte"
+   - **ja**: "カードの認証手続き"
+  */
+  public static func Authenticate_card() -> String {
+    return localizedString(
+      key: "Authenticate_card",
+      defaultValue: "Authenticate Card",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Authentication failed. Please try again."
 
    - **en**: "Authentication failed. Please try again."
@@ -1141,7 +1158,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -2206,6 +2224,23 @@ contributeurs"
     return localizedString(
       key: "Confirm_password",
       defaultValue: "Confirm new password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Confirm your address"
+
+   - **en**: "Confirm your address"
+   - **de**: "Adresse bestätigen"
+   - **es**: "Confirmar dirección"
+   - **fr**: "Confirmer votre adresse"
+   - **ja**: "住所確認"
+  */
+  public static func Confirm_your_address() -> String {
+    return localizedString(
+      key: "Confirm_your_address",
+      defaultValue: "Confirm your address",
       count: nil,
       substitutions: [:]
     )
@@ -3464,6 +3499,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Edit"
+
+   - **en**: "Edit"
+   - **de**: "Bearbeiten"
+   - **es**: "Editar"
+   - **fr**: "Modifier"
+   - **ja**: "編集"
+  */
+  public static func Edit() -> String {
+    return localizedString(
+      key: "Edit",
+      defaultValue: "Edit",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Edit profile"
 
    - **en**: "Edit profile"
@@ -4343,6 +4395,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Fix",
       defaultValue: "Fix",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Fix Payment"
+
+   - **en**: "Fix Payment"
+   - **de**: "Zahlung korrigieren"
+   - **es**: "Arreglar pago"
+   - **fr**: "Corriger mon paiement"
+   - **ja**: "お支払い方法の修正"
+  */
+  public static func Fix_payment() -> String {
+    return localizedString(
+      key: "Fix_payment",
+      defaultValue: "Fix Payment",
       count: nil,
       substitutions: [:]
     )
@@ -5300,18 +5369,18 @@ Cliquez pour réessayer."
     )
   }
   /**
-   "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
+   "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
 
-   - **en**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
-   - **de**: "Wenn dieses Projekt das Finanzierungsziel erreicht, wird deine Karte am %{project_deadline} mit %{total} belastet."
-   - **es**: "Si el proyecto alcanza su meta de financiamiento, se te cobrará el monto de %{total} el %{project_deadline}."
-   - **fr**: "Si l'objectif de financement est atteint, vous serez débité de %{total} le %{project_deadline}."
-   - **ja**: "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。"
+   - **en**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
+   - **de**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
+   - **es**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
+   - **fr**: "Si l'objectif de financement du projet est atteint, vous serez débité de %{total} le %{project_deadline}. Vous recevrez une preuve d'engagement qui sera échangeable si le projet est intégralement financé et si le créateur mène son projet à bien."
+   - **ja**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
   */
-  public static func If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(total: String, project_deadline: String) -> String {
+  public static func If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge(total: String, project_deadline: String) -> String {
     return localizedString(
-      key: "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline",
-      defaultValue: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.",
+      key: "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge",
+      defaultValue: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.",
       count: nil,
       substitutions: ["total": total, "project_deadline": project_deadline]
     )
@@ -7924,6 +7993,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "%{pledge_amount} pledged"
+
+   - **en**: "%{pledge_amount} pledged"
+   - **de**: "%{pledge_amount} beigetragen"
+   - **es**: "%{pledge_amount} contribuido"
+   - **fr**: "%{pledge_amount} engagés"
+   - **ja**: "%{pledge_amount} のプレッジ"
+  */
+  public static func Pledge_amount_pledged(pledge_amount: String) -> String {
+    return localizedString(
+      key: "Pledge_amount_pledged",
+      defaultValue: "%{pledge_amount} pledged",
+      count: nil,
+      substitutions: ["pledge_amount": pledge_amount]
+    )
+  }
+  /**
    "Pledge any amount to help bring this project to life."
 
    - **en**: "Pledge any amount to help bring this project to life."
@@ -9967,6 +10053,23 @@ daring ideas."
     )
   }
   /**
+   "Send a message"
+
+   - **en**: "Send a message"
+   - **de**: "Nachricht senden"
+   - **es**: "Enviar un mensaje"
+   - **fr**: "Envoyer un message"
+   - **ja**: "メッセージを送る"
+  */
+  public static func Send_a_message() -> String {
+    return localizedString(
+      key: "Send_a_message",
+      defaultValue: "Send a message",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Send verification email"
 
    - **en**: "Send verification email"
@@ -10149,6 +10252,23 @@ daring ideas."
     return localizedString(
       key: "Shipping",
       defaultValue: "Shipping",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Shipping address"
+
+   - **en**: "Shipping address"
+   - **de**: "Versandanschrift"
+   - **es**: "Dirección de envío"
+   - **fr**: "Adresse de livraison"
+   - **ja**: "配送先住所"
+  */
+  public static func Shipping_address() -> String {
+    return localizedString(
+      key: "Shipping_address",
+      defaultValue: "Shipping address",
       count: nil,
       substitutions: [:]
     )
@@ -10409,18 +10529,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} other"
+   "%{friend_name} and %{remaining_count} others"
 
-   - **en**: "%{friend_name} and %{remaining_count} other"
-   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
-   - **es**: "%{friend_name} y %{remaining_count} persona más"
-   - **fr**: "%{friend_name} et %{remaining_count} autre"
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -10882,6 +11002,23 @@ catch your eye?"
     return localizedString(
       key: "Sustainable_materials",
       defaultValue: "Sustainable materials",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Take Survey"
+
+   - **en**: "Take Survey"
+   - **de**: "Befragung ausfüllen"
+   - **es**: "Completar cuestionario"
+   - **fr**: "Répondre au questionnaire"
+   - **ja**: "サーベイに回答する"
+  */
+  public static func Take_survey() -> String {
+    return localizedString(
+      key: "Take_survey",
+      defaultValue: "Take Survey",
       count: nil,
       substitutions: [:]
     )
@@ -12463,6 +12600,23 @@ catch your eye?"
     return localizedString(
       key: "Watch_live",
       defaultValue: "Watch live",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We are unable to authenticate your payment method. Please pull to refresh and choose a different payment method."
+
+   - **en**: "We are unable to authenticate your payment method. Please pull to refresh and choose a different payment method."
+   - **de**: "Wir können deine Zahlungsmethode nicht authentifizieren. Ziehe nach unten, um die Seite zu aktualisieren und eine andere Zahlungsmethode auszuwählen."
+   - **es**: "No podemos autenticar tu método de pago. Desliza para actualizar la página y elegir otro."
+   - **fr**: "Impossible d'authentifier votre moyen de paiement. Veuillez faire glisser la page vers le bas pour l'actualiser et sélectionner un autre choix."
+   - **ja**: "お支払い方法を認証できませんでした。プルダウンしてページを更新し、別のお支払い方法をお選びください。"
+  */
+  public static func We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method() -> String {
+    return localizedString(
+      key: "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method",
+      defaultValue: "We are unable to authenticate your payment method. Please pull to refresh and choose a different payment method.",
       count: nil,
       substitutions: [:]
     )

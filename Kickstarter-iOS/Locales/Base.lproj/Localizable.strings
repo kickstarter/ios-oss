@@ -53,6 +53,7 @@
 "Ask_a_question" = "Ask a question";
 "Ask_me_anything" = "Ask me anything";
 "Ask_the_project_creator_directly" = "Ask the project creator directly.";
+"Authenticate_card" = "Authenticate Card";
 "Authentication_failed_please_try_again" = "Authentication failed. Please try again.";
 "Authentication_success_please_pull_to_refresh" = "Authentication success. Please pull to refresh.";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
@@ -131,6 +132,7 @@
 "Complete_payment" = "Complete payment";
 "Confirm" = "Confirm";
 "Confirm_password" = "Confirm new password";
+"Confirm_your_address" = "Confirm your address";
 "Confirm_your_pledge_details" = "Confirm your pledge details";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_backer" = "Contact backer";
@@ -208,6 +210,7 @@
 "Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "Download your personal data";
 "Earth" = "Earth";
+"Edit" = "Edit";
 "Edit_profile" = "Edit profile";
 "Edit_reward" = "Edit reward";
 "Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
@@ -264,6 +267,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
 "Fix" = "Fix";
+"Fix_payment" = "Fix Payment";
 "Fix_payment_method" = "Fix payment method";
 "Fix_within_time_remaining" = "Fix within %{time_remaining}";
 "Fix_your_payment_method" = "Fix your payment method";
@@ -320,7 +324,7 @@
 "I_understand" = "I understand";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "If the project reaches its funding goal, you will be charged on %{project_deadline}.";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
 "If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers.";
 "If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
 "If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
@@ -478,6 +482,7 @@
 "Pledge" = "Pledge";
 "Pledge_activity" = "Pledge activity";
 "Pledge_amount" = "Pledge amount";
+"Pledge_amount_pledged" = "%{pledge_amount} pledged";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
 "Pledge_details" = "Pledge details";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Pledge to projects and view all your saved and backed projects in one place.";
@@ -610,6 +615,7 @@
 "Selected_card" = "Selected card";
 "Selected_reward" = "Selected reward";
 "Send" = "Send";
+"Send_a_message" = "Send a message";
 "Send_verfication_email" = "Send verification email";
 "Set_new_password" = "Set new password";
 "Set_your_password" = "Set your password";
@@ -621,6 +627,7 @@
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
 "Share_update" = "Share update";
 "Shipping" = "Shipping";
+"Shipping_address" = "Shipping address";
 "Shipping_addresses" = "Shipping addresses";
 "Shipping_destination" = "Shipping destination";
 "Shipping_to_country" = "Shipping: %{country}";
@@ -668,6 +675,7 @@
 "Suspicious_creator_behavior" = "Suspicious creator behavior or pledging activity";
 "Sustainable_distribution" = "Sustainable distribution";
 "Sustainable_materials" = "Sustainable materials";
+"Take_survey" = "Take Survey";
 "Tap_the_heart_on_a_project_to_get_notified" = "Tap the heart icon on a project to get notified 48 hours before it ends.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.";
 "Tap_the_star_on_a_project_to_get_notified" = "Tap the star icon on a project to get notified 48 hours before it ends.";
@@ -761,6 +769,7 @@
 "Visit_our_Environmental_Resources_Center" = "Visit our Environmental Resources Center";
 "Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Visit our Environmental Resources Center</a>";
 "Watch_live" = "Watch live";
+"We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "We are unable to authenticate your payment method. Please pull to refresh and choose a different payment method.";
 "We_can_no_longer_log_you_in_through_Facebook" = "We can no longer log you in through Facebook. Please log in with your Kickstarter password, or set a new password with your Facebook email.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "We can’t process this pledge because of a problem with the backer’s payment method.";
 "We_cant_process_your_pledge" = "We can't process your pledge.";
