@@ -5,15 +5,16 @@ import SwiftUI
 
 struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
+  var parentSize: CGSize
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
       self.flagList
-      self.projectDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.projectDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.divider
       self.projectCreator
       self.divider
-      self.addressDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.actionButtons
     }
     .padding(.vertical)
@@ -31,9 +32,6 @@ struct PPOProjectCard: View {
       alignment: Constants.badgeAlignment,
       content: { self.badge.opacity(self.viewModel.card.isUnread ? 1 : 0) }
     )
-
-    // insets
-    .padding(.horizontal, Constants.outerPadding)
   }
 
   @ViewBuilder
@@ -79,6 +77,9 @@ struct PPOProjectCard: View {
   private var projectCreator: some View {
     PPOProjectCreator(creatorName: self.viewModel.card.creatorName)
       .padding([.horizontal])
+      .onTapGesture { [weak viewModel] () in
+        viewModel?.showProject()
+      }
   }
 
   @ViewBuilder
@@ -146,7 +147,10 @@ struct PPOProjectCard: View {
       ScrollView(.vertical) {
         VStack(spacing: 16) {
           ForEach(PPOProjectCardModel.previewTemplates) { template in
-            PPOProjectCard(viewModel: PPOProjectCardViewModel(card: template, parentSize: geometry.size))
+            PPOProjectCard(
+              viewModel: PPOProjectCardViewModel(card: template),
+              parentSize: geometry.size
+            )
           }
         }
       }

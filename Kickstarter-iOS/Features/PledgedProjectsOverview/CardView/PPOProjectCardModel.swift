@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import Library
 
-public struct PPOProjectCardModel: Identifiable, Equatable {
+public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let isUnread: Bool
   public let alerts: [Alert]
   public let imageURL: URL
@@ -13,6 +13,18 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
   public let actions: (Action, Action?)
   public let tierType: TierType
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(isUnread)
+    hasher.combine(alerts)
+    hasher.combine(imageURL)
+    hasher.combine(title)
+    hasher.combine(creatorName)
+    hasher.combine(address)
+    hasher.combine(actions.0)
+    hasher.combine(actions.1)
+    hasher.combine(tierType)
+  }
 
   // MARK: - Identifiable
 
@@ -40,7 +52,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
     case confirmAddress
   }
 
-  public enum Action: Identifiable, Equatable {
+  public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress
     case editAddress
     case completeSurvey
@@ -97,7 +109,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
     }
   }
 
-  public struct Alert: Identifiable, Equatable {
+  public struct Alert: Identifiable, Equatable, Hashable {
     public let type: AlertType
     public let icon: AlertIcon
     public let message: String
@@ -195,7 +207,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .time, icon: .warning, message: "Address locks in 8 hours")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -216,7 +228,7 @@ extension PPOProjectCardModel {
       .init(type: .alert, icon: .warning, message: "Survey available"),
       .init(type: .time, icon: .warning, message: "Address locks in 48 hours")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -236,7 +248,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -256,7 +268,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -271,7 +283,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .alert, icon: .warning, message: "Survey available")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    imageURL: URL(string: "https://placecats.com/400/200")!,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",

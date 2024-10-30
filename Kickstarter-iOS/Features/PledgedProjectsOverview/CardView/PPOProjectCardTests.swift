@@ -10,9 +10,8 @@ final class PPOProjectCardTests: TestCase {
     let card =
       VStack {
         PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          card: .confirmAddressTemplate,
-          parentSize: self.size
-        ))
+          card: .confirmAddressTemplate
+        ), parentSize: self.size)
         .frame(width: self.size.width)
         .frame(maxHeight: .infinity)
         .padding()
@@ -23,9 +22,8 @@ final class PPOProjectCardTests: TestCase {
   func testSurveyAvailableAddressLocks() {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .addressLockTemplate,
-        parentSize: self.size
-      ))
+        card: .addressLockTemplate
+      ), parentSize: self.size)
       .frame(width: self.size.width)
       .frame(maxHeight: .infinity)
       .padding()
@@ -36,9 +34,8 @@ final class PPOProjectCardTests: TestCase {
   func testPaymentFailedPledgeDropped() {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .fixPaymentTemplate,
-        parentSize: self.size
-      ))
+        card: .fixPaymentTemplate
+      ), parentSize: self.size)
       .frame(width: self.size.width)
       .frame(maxHeight: .infinity)
       .padding()
@@ -49,9 +46,8 @@ final class PPOProjectCardTests: TestCase {
   func testCardAuthPledgeDropped() {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .authenticateCardTemplate,
-        parentSize: self.size
-      ))
+        card: .authenticateCardTemplate
+      ), parentSize: self.size)
       .frame(width: self.size.width)
       .frame(maxHeight: .infinity)
       .padding()
@@ -62,9 +58,8 @@ final class PPOProjectCardTests: TestCase {
   func testSurveyAvailable() {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .completeSurveyTemplate,
-        parentSize: self.size
-      ))
+        card: .completeSurveyTemplate
+      ), parentSize: self.size)
       .frame(width: self.size.width)
       .frame(maxHeight: .infinity)
       .padding()

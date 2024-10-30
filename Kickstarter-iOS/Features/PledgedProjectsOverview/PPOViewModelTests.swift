@@ -83,7 +83,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(data.count, 3)
   }
 
-  func testPullToRefresh_Once() throws {
+  func testPullToRefresh_Once() async throws {
     let expectation = XCTestExpectation(description: "Pull to refresh")
     expectation.expectedFulfillmentCount = 5
 
@@ -102,13 +102,13 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear() // Initial load
     }
 
-    withEnvironment(apiService: MockService(
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh
+    )) { () async in
+      await self.viewModel.refresh() // Refresh
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [expectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
@@ -130,7 +130,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 2)
   }
 
-  func testPullToRefresh_Twice() throws {
+  func testPullToRefresh_Twice() async throws {
     let expectation = XCTestExpectation(description: "Pull to refresh twice")
     expectation.expectedFulfillmentCount = 7
 
@@ -149,19 +149,19 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear() // Initial load
     }
 
-    withEnvironment(apiService: MockService(
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh
+    )) { () async in
+      await self.viewModel.refresh() // Refresh
     }
 
-    withEnvironment(apiService: MockService(
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...16))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh a second time
+    )) { () async in
+      await self.viewModel.refresh() // Refresh a second time
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [expectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 7)
 
@@ -191,7 +191,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(thirdData.count, 16)
   }
 
-  func testLoadMore() throws {
+  func testLoadMore() async throws {
     let expectation = XCTestExpectation(description: "Load more")
     expectation.expectedFulfillmentCount = 5
 
@@ -212,13 +212,13 @@ class PPOViewModelTests: XCTestCase {
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
-    withEnvironment(apiService: MockService(
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 5...7))
-    )) {
-      self.viewModel.loadMore() // Load next page
+    )) { () async in
+      await self.viewModel.loadMore() // Load next page
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [expectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
