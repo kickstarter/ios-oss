@@ -1,11 +1,12 @@
 import Foundation
+import Kingfisher
 import KsApi
 import Library
 
 public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let isUnread: Bool
   public let alerts: [Alert]
-  public let imageURL: URL
+  public let image: Kingfisher.Source
   public let title: String
   public let pledge: GraphAPI.MoneyFragment
   public let creatorName: String
@@ -17,7 +18,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.isUnread)
     hasher.combine(self.alerts)
-    hasher.combine(self.imageURL)
+    hasher.combine(self.image)
     hasher.combine(self.title)
     hasher.combine(self.creatorName)
     hasher.combine(self.address)
@@ -37,7 +38,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public static func == (lhs: PPOProjectCardModel, rhs: PPOProjectCardModel) -> Bool {
     lhs.isUnread == rhs.isUnread &&
       lhs.alerts == rhs.alerts &&
-      lhs.imageURL == rhs.imageURL &&
+      lhs.image == rhs.image &&
       lhs.title == rhs.title &&
       lhs.pledge == rhs.pledge &&
       lhs.creatorName == rhs.creatorName &&
@@ -191,6 +192,9 @@ extension GraphAPI.MoneyFragment: Equatable {
   }
 }
 
+private let templateTestImageURL = Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!
+private let templateTestImage = Kingfisher.Source.provider(LocalFileImageDataProvider(fileURL: templateTestImageURL))
+
 extension PPOProjectCardModel {
   #if targetEnvironment(simulator)
     public static let previewTemplates: [PPOProjectCardModel] = [
@@ -207,7 +211,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
-    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
+    image: templateTestImage,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -228,7 +232,7 @@ extension PPOProjectCardModel {
       .init(type: .warning, icon: .alert, message: "Survey available"),
       .init(type: .warning, icon: .time, message: "Address locks in 48 hours")
     ],
-    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
+    image: templateTestImage,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -248,7 +252,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
+    image: templateTestImage,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -268,7 +272,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
+    image: templateTestImage,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -283,7 +287,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .alert, message: "Survey available")
     ],
-    imageURL: Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!,
+    image: templateTestImage,
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -336,8 +340,9 @@ extension PPOProjectCardModel {
     let backing = card.backing?.fragments.ppoBackingFragment
     let ppoProject = backing?.project?.fragments.ppoProjectFragment
 
-    let imageURL = ppoProject?.image?.url
+    let image = ppoProject?.image?.url
       .flatMap { URL(string: $0) }
+      .map({ Kingfisher.Source.network($0) })
 
     let title = ppoProject?.name
     let pledge = backing?.amount.fragments.moneyFragment
@@ -376,11 +381,11 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let imageURL, let title, let pledge, let creatorName, let projectAnalyticsFragment {
+    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment {
       self.init(
         isUnread: true,
         alerts: alerts,
-        imageURL: imageURL,
+        image: image,
         title: title,
         pledge: pledge,
         creatorName: creatorName,

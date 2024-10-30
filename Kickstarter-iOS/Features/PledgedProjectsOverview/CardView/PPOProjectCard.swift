@@ -80,7 +80,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     PPOProjectDetails(
-      imageUrl: self.viewModel.card.imageURL,
+      image: self.viewModel.card.image,
       title: self.viewModel.card.title,
       pledge: self.viewModel.card.pledge,
       leadingColumnWidth: leadingColumnWidth

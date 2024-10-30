@@ -5,14 +5,14 @@ import Library
 import SwiftUI
 
 struct PPOProjectDetails: View {
-  let imageUrl: URL?
+  let image: Source?
   let title: String?
   let pledge: GraphAPI.MoneyFragment
   let leadingColumnWidth: CGFloat
 
   var body: some View {
     HStack {
-      KFImage(self.imageUrl)
+      KFImage(source: self.image)
         .resizable()
         .clipShape(Constants.imageShape)
         .aspectRatio(
@@ -71,7 +71,7 @@ struct PPOProjectDetails: View {
   VStack {
     GeometryReader(content: { geometry in
       PPOProjectDetails(
-        imageUrl: URL(string: "http:///")!,
+        image: .network(URL(string: "http:///")!),
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
         pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
         leadingColumnWidth: geometry.size.width / 4
@@ -79,7 +79,7 @@ struct PPOProjectDetails: View {
     })
     GeometryReader(content: { geometry in
       PPOProjectDetails(
-        imageUrl: URL(string: "http:///")!,
+        image: .network(URL(string: "http:///")!),
         title: "One line",
         pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
         leadingColumnWidth: geometry.size.width / 4

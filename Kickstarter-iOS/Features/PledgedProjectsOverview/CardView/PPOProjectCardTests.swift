@@ -1,3 +1,4 @@
+import Kingfisher
 @testable import Kickstarter_Framework
 @testable import KsApi
 import SnapshotTesting
