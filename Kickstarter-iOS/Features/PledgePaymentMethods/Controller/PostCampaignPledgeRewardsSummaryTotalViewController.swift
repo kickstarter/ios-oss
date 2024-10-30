@@ -15,6 +15,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalConversionLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewModel: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
@@ -57,6 +58,8 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
     _ = self.totalConversionLabel
       |> totalConversionLabelStyle
+
+    applyConfirmationLabelStyle(self.confirmationLabel)
   }
 
   private func configureSubviews() {
@@ -64,7 +67,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleAndTotalStackView], self.rootStackView)
+    _ = ([self.titleAndTotalStackView, self.confirmationLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.titleLabel, self.totalStackView], self.titleAndTotalStackView)
@@ -87,6 +90,9 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.totalConversionLabel.rac.text = self.viewModel.outputs.totalConversionLabelText
+
+    self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
+    self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
   }
 
   // MARK: - Configuration
@@ -154,4 +160,9 @@ private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewSt
       |> \.alignment .~
       (isAccessibilityCategory ? UIStackView.Alignment.leading : UIStackView.Alignment.trailing)
   }
+}
+
+private func applyConfirmationLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 0
+  label.backgroundColor = UIColor.ksr_white
 }
