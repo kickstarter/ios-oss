@@ -31,6 +31,7 @@ public struct Project {
   public var urls: UrlsEnvelope
   public var video: Video?
   public var watchesCount: Int?
+  public var isPledgeOverTimeAllowed: Bool
 
   public struct Category {
     public var analyticsName: String?
@@ -290,6 +291,7 @@ extension Project: Decodable {
     case tags
     case urls
     case video
+    case isPledgeOverTimeAllowed
   }
 
   public init(from decoder: Decoder) throws {
@@ -324,6 +326,7 @@ extension Project: Decodable {
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
     self.watchesCount = nil
+    self.isPledgeOverTimeAllowed = try values.decodeIfPresent(Bool.self, forKey: .isPledgeOverTimeAllowed) ?? false
   }
 }
 

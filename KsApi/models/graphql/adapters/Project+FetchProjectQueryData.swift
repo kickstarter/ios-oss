@@ -69,6 +69,7 @@ extension Project {
         rewards: [noRewardReward(from: fragment)],
         addOns: nil,
         backing: nil,
+        isPledgeOverTimeAllowed: data.project?.isPledgeOverTimeAllowed ?? false,
         currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
       )
     else { return (nil, nil) }

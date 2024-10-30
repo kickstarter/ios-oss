@@ -14,6 +14,7 @@ extension Project {
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
     backing: Backing? = nil,
+    isPledgeOverTimeAllowed: Bool = false,
     currentUserChosenCurrency: String?
   ) -> Project? {
     guard
@@ -100,7 +101,8 @@ extension Project {
         tags: discoverTags,
         urls: urls,
         video: projectVideo(from: projectFragment),
-        watchesCount: projectFragment.watchesCount
+        watchesCount: projectFragment.watchesCount,
+        isPledgeOverTimeAllowed: isPledgeOverTimeAllowed
       )
   }
 }

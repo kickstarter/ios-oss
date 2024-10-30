@@ -294,9 +294,10 @@ public enum GraphAPI {
     ///   - paymentSourceId
     ///   - setupIntentClientSecret
     ///   - applePay
+    ///   - incremental
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, amount: Swift.Optional<String?> = nil, locationId: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, paymentType: Swift.Optional<String?> = nil, refParam: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, setupIntentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "amount": amount, "locationId": locationId, "rewardId": rewardId, "rewardIds": rewardIds, "paymentType": paymentType, "refParam": refParam, "paymentSourceId": paymentSourceId, "setupIntentClientSecret": setupIntentClientSecret, "applePay": applePay, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, amount: Swift.Optional<String?> = nil, locationId: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, paymentType: Swift.Optional<String?> = nil, refParam: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, setupIntentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, incremental: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "amount": amount, "locationId": locationId, "rewardId": rewardId, "rewardIds": rewardIds, "paymentType": paymentType, "refParam": refParam, "paymentSourceId": paymentSourceId, "setupIntentClientSecret": setupIntentClientSecret, "applePay": applePay, "incremental": incremental, "clientMutationId": clientMutationId]
     }
 
     public var projectId: GraphQLID {
@@ -389,6 +390,15 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "applePay")
+      }
+    }
+
+    public var incremental: Swift.Optional<Bool?> {
+      get {
+        return graphQLMap["incremental"] as? Swift.Optional<Bool?> ?? Swift.Optional<Bool?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "incremental")
       }
     }
 
@@ -1155,9 +1165,10 @@ public enum GraphAPI {
     /// - Parameters:
     ///   - setupIntentContext: Context in which this stripe intent is created
     ///   - projectId
+    ///   - sepaEligible: If sepa should be added to the payment method types
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(setupIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, projectId: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["setupIntentContext": setupIntentContext, "projectId": projectId, "clientMutationId": clientMutationId]
+    public init(setupIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, projectId: Swift.Optional<GraphQLID?> = nil, sepaEligible: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["setupIntentContext": setupIntentContext, "projectId": projectId, "sepaEligible": sepaEligible, "clientMutationId": clientMutationId]
     }
 
     /// Context in which this stripe intent is created
@@ -1176,6 +1187,16 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "projectId")
+      }
+    }
+
+    /// If sepa should be added to the payment method types
+    public var sepaEligible: Swift.Optional<Bool?> {
+      get {
+        return graphQLMap["sepaEligible"] as? Swift.Optional<Bool?> ?? Swift.Optional<Bool?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "sepaEligible")
       }
     }
 
@@ -7962,7 +7983,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8097,12 +8118,12 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "ShippingRule"])
         }
 
-        public static func makeCheckout() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Checkout"])
-        }
-
         public static func makeOrder() -> Node {
           return Node(unsafeResultMap: ["__typename": "Order"])
+        }
+
+        public static func makeCheckout() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Checkout"])
         }
 
         public static func makeSurvey() -> Node {
@@ -8411,7 +8432,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8542,12 +8563,12 @@ public enum GraphAPI {
           return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
         }
 
-        public static func makeCheckout() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Checkout"])
-        }
-
         public static func makeOrder() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "Order"])
+        }
+
+        public static func makeCheckout() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Checkout"])
         }
 
         public static func makeSurvey() -> Comment {
@@ -9513,6 +9534,7 @@ public enum GraphAPI {
             id
             kind
           }
+          isPledgeOverTimeAllowed
         }
       }
       """
@@ -9632,6 +9654,7 @@ public enum GraphAPI {
             GraphQLFragmentSpread(ProjectFragment.self),
             GraphQLField("backing", type: .object(Backing.selections)),
             GraphQLField("flagging", type: .object(Flagging.selections)),
+            GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
           ]
         }
 
@@ -9667,6 +9690,16 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue?.resultMap, forKey: "flagging")
+          }
+        }
+
+        /// Whether a project is enrolled in plot
+        public var isPledgeOverTimeAllowed: Bool {
+          get {
+            return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
           }
         }
 
@@ -9809,6 +9842,7 @@ public enum GraphAPI {
             id
             kind
           }
+          isPledgeOverTimeAllowed
         }
       }
       """
@@ -9928,6 +9962,7 @@ public enum GraphAPI {
             GraphQLFragmentSpread(ProjectFragment.self),
             GraphQLField("backing", type: .object(Backing.selections)),
             GraphQLField("flagging", type: .object(Flagging.selections)),
+            GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
           ]
         }
 
@@ -9963,6 +9998,16 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue?.resultMap, forKey: "flagging")
+          }
+        }
+
+        /// Whether a project is enrolled in plot
+        public var isPledgeOverTimeAllowed: Bool {
+          get {
+            return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
           }
         }
 
@@ -18011,7 +18056,8 @@ public enum GraphAPI {
       }
     }
 
-    /// Amount for claiming this reward, in the current user's chosen currency
+    /// Amount for claiming this reward, in the current user's chosen
+    /// currency
     public var convertedAmount: ConvertedAmount {
       get {
         return ConvertedAmount(unsafeResultMap: resultMap["convertedAmount"]! as! ResultMap)
@@ -18043,7 +18089,8 @@ public enum GraphAPI {
       }
     }
 
-    /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
+    /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't
+    /// have a title.
     public var displayName: String {
       get {
         return resultMap["displayName"]! as! String
@@ -18132,7 +18179,8 @@ public enum GraphAPI {
       }
     }
 
-    /// Where the reward can be locally received if local receipt is selected as the shipping preference
+    /// Where the reward can be locally received if local receipt
+    /// is selected as the shipping preference
     public var localReceiptLocation: LocalReceiptLocation? {
       get {
         return (resultMap["localReceiptLocation"] as? ResultMap).flatMap { LocalReceiptLocation(unsafeResultMap: $0) }
@@ -18222,7 +18270,8 @@ public enum GraphAPI {
       }
     }
 
-    /// Shipping rules defined by the creator for this reward
+    /// Shipping rules defined by the creator for
+    /// this reward
     public var shippingRules: [ShippingRule?]? {
       get {
         return (resultMap["shippingRules"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [ShippingRule?] in value.map { (value: ResultMap?) -> ShippingRule? in value.flatMap { (value: ResultMap) -> ShippingRule in ShippingRule(unsafeResultMap: value) } } }

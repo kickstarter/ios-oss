@@ -62,6 +62,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var title: Signal<String, Never> { get }
+  var showPledgeOverTimeUI: Signal<Bool, Never> { get }
 }
 
 public protocol NoShippingPledgeViewModelType {
@@ -91,6 +92,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
+    
+    self.showPledgeOverTimeUI = project.signal.map { $0.isPledgeOverTimeAllowed }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
@@ -1104,6 +1107,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
+  public let showPledgeOverTimeUI: Signal<Bool, Never>
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
