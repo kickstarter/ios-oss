@@ -2,7 +2,11 @@ import Foundation
 import SwiftUI
 
 /// A List wrapper that handles pagination and refreshing
-public struct PaginatingList<Data, Cell, Header>: View where Data: Identifiable, Data: Hashable, Cell: View, Header: View {
+public struct PaginatingList<Data, Cell, Header>: View where
+  Data: Identifiable,
+  Data: Hashable,
+  Cell: View,
+  Header: View {
   var data: [Data] = []
   var canLoadMore: Bool
   var selectedItem: Binding<Data?>?

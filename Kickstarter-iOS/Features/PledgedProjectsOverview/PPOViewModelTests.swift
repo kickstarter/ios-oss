@@ -84,15 +84,18 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testPullToRefresh_Once() async throws {
-    let expectation = XCTestExpectation(description: "Pull to refresh")
-    expectation.expectedFulfillmentCount = 5
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh")
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -102,13 +105,15 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear() // Initial load
     }
 
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
     await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
     )) { () async in
       await self.viewModel.refresh() // Refresh
     }
 
-    await fulfillment(of: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
@@ -131,15 +136,18 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testPullToRefresh_Twice() async throws {
-    let expectation = XCTestExpectation(description: "Pull to refresh twice")
-    expectation.expectedFulfillmentCount = 7
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh twice")
+    fullyLoadedExpectation.expectedFulfillmentCount = 7
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -148,6 +156,8 @@ class PPOViewModelTests: XCTestCase {
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
+
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
     await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
@@ -161,7 +171,7 @@ class PPOViewModelTests: XCTestCase {
       await self.viewModel.refresh() // Refresh a second time
     }
 
-    await fulfillment(of: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 7)
 
@@ -192,15 +202,18 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testLoadMore() async throws {
-    let expectation = XCTestExpectation(description: "Load more")
-    expectation.expectedFulfillmentCount = 5
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Load more")
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -212,13 +225,16 @@ class PPOViewModelTests: XCTestCase {
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
+
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
     await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 5...7))
     )) { () async in
       await self.viewModel.loadMore() // Load next page
     }
 
-    await fulfillment(of: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
