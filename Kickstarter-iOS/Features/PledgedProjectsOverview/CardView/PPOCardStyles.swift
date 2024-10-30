@@ -28,6 +28,8 @@ enum PPOCardStyles {
     color: UIColor.ksr_black
   )
 
+  static let background = UIColor.ksr_white
+
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice
 

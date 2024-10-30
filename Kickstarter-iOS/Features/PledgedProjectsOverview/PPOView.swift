@@ -28,17 +28,20 @@ struct PPOView: View {
     }
   }
 
+  @ViewBuilder func listViewHeader(numberOfValues: Int) -> some View {
+    Text(Strings.Alerts_count(count: numberOfValues.formatted()))
+      .font(Font(UIFont.ksr_title2()))
+      .background(Color(UIColor.ksr_white))
+      .foregroundStyle(Color(UIColor.ksr_black))
+      .padding(.top)
+  }
+
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
     PaginatingList(
       data: values,
       canLoadMore: false,
       selectedItem: nil,
-      header: {
-        Text(Strings.Alerts_count(count: values.count.formatted()))
-          .font(Font(UIFont.ksr_title2()))
-          .foregroundStyle(Color(UIColor.ksr_black))
-          .padding(.top)
-      }
+      header: { self.listViewHeader(numberOfValues: values.count) }
     ) { card in
         PPOProjectCard(
           viewModel: card,

@@ -26,6 +26,7 @@ struct PPOProjectDetails: View {
         if let title {
           Text(title)
             .font(Font(PPOCardStyles.title.font))
+            .background(Color(PPOCardStyles.background))
             .foregroundStyle(Color(PPOCardStyles.title.color))
             .frame(
               maxWidth: Constants.textMaxWidth,
@@ -37,6 +38,7 @@ struct PPOProjectDetails: View {
           // TODO: Localize
           Text("\(symbol)\(amount) pledged")
             .font(Font(PPOCardStyles.subtitle.font))
+            .background(Color(PPOCardStyles.background))
             .foregroundStyle(Color(PPOCardStyles.subtitle.color))
             .frame(
               maxWidth: Constants.textMaxWidth,

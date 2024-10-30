@@ -10,6 +10,7 @@ struct PPOProjectCreator: View {
       // TODO: Localize
       Text("Created by **\(self.creatorName)**")
         .font(Font(PPOCardStyles.subtitle.font))
+        .background(Color(PPOCardStyles.background))
         .foregroundStyle(Color(PPOCardStyles.subtitle.color))
         .frame(
           maxWidth: Constants.labelMaxWidth,
@@ -24,6 +25,7 @@ struct PPOProjectCreator: View {
         Text("Send a message")
       })
       .font(Font(PPOCardStyles.subtitle.font))
+      .background(Color(PPOCardStyles.background))
       .foregroundStyle(Color(Constants.sendMessageColor))
       .frame(alignment: Constants.buttonAlignment)
       .lineLimit(Constants.textLineLimit)
@@ -36,6 +38,7 @@ struct PPOProjectCreator: View {
         .scaledToFit()
         .frame(width: Constants.chevronSize, height: Constants.chevronSize)
         .offset(Constants.chevronOffset)
+        .background(Color(PPOCardStyles.background))
         .foregroundStyle(Color(Constants.sendMessageColor))
     }
     .frame(maxWidth: .infinity)
