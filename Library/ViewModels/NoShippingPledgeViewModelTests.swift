@@ -5231,7 +5231,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_True() {
-    withEnvironment(currentUser: nil) {
+    withEnvironment() {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -5248,13 +5248,13 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-  
+
       self.showPledgeOverTimeUI.assertValues([true])
     }
   }
 
   func testShowPledgeOverTimeUI_False() {
-    withEnvironment(currentUser: nil) {
+    withEnvironment() {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ false
       let reward = Reward.template
@@ -5271,7 +5271,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-  
+
       self.showPledgeOverTimeUI.assertValues([false])
     }
   }

@@ -91,7 +91,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
-    let backing = project.map { $0.personalization.backing }.skipNil()    
+    let backing = project.map { $0.personalization.backing }.skipNil()
     self.showPledgeOverTimeUI = project.signal.map { $0.isPledgeOverTimeAllowed }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
