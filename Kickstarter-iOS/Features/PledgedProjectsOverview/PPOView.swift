@@ -11,72 +11,90 @@ struct PPOView: View {
   @ViewBuilder func contentView(parentSize: CGSize) -> some View {
     switch self.viewModel.results {
     case .unloaded, .loading(.unloaded),
+        .loading(.empty),
         .loading(.error),
         .loading(previous: .loading(_)):
-      VStack {
-        Spacer()
-        ProgressView()
-          .controlSize(.large)
-          .padding()
-        Spacer()
-      }
-    case .empty, .loading(.empty):
-      PPOEmptyStateView {
-        self.onNavigate?(.backedProjects)
-      }
+      self.loadingView
+    case .empty:
+      self.emptyView
     case .error:
-      VStack {
-        Spacer()
-        if let image = image(named: "icon--refresh-small") {
-          Image(uiImage: image)
-            // TODO: Localize
-            .accessibilityLabel("Refresh")
-            .accessibilityHint("Refreshes your project alerts.")
-            .accessibilityAddTraits(.isButton)
-            .accessibilityRemoveTraits(.isImage)
-            .onTapGesture { [weak viewModel] () in
-              Task {
-                await viewModel?.refresh()
-              }
-            }
-        }
-        Text(Strings.general_error_something_wrong())
-          .font(Font(UIFont.ksr_callout()))
-          .foregroundStyle(Color(UIColor.ksr_black))
-        Spacer()
-      }
+      self.errorView
     case
       let .someLoaded(values, _, _, _),
       let .loading(previous: .someLoaded(values, _, _, _)),
       let .allLoaded(values, _),
       let .loading(previous: .allLoaded(values, _)):
-      PaginatingList(
-        data: values,
-        canLoadMore: false,
-        selectedItem: nil,
-        header: {
-          Text(Strings.Alerts_count(count: values.count.formatted()))
-            .font(Font(UIFont.ksr_title2()))
-            .foregroundStyle(Color(UIColor.ksr_black))
-            .padding(.top)
-        }
-      ) { card in
-          PPOProjectCard(
-            viewModel: card,
-            parentSize: parentSize
-          )
-            .listRowBackground(EmptyView())
-            .listRowSeparator(.hidden)
-            .listRowInsets(.none)
-        } onRefresh: {
-          await self.viewModel.refresh()
-        } onLoadMore: {
-          await self.viewModel.loadMore()
-        }
+      self.listView(values: values, parentSize: parentSize)
     }
   }
 
-  var body: some View {
+  @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
+    PaginatingList(
+      data: values,
+      canLoadMore: false,
+      selectedItem: nil,
+      header: {
+        Text(Strings.Alerts_count(count: values.count.formatted()))
+          .font(Font(UIFont.ksr_title2()))
+          .foregroundStyle(Color(UIColor.ksr_black))
+          .padding(.top)
+      }
+    ) { card in
+        PPOProjectCard(
+          viewModel: card,
+          parentSize: parentSize
+        )
+          .listRowBackground(EmptyView())
+          .listRowSeparator(.hidden)
+          .listRowInsets(.none)
+      } onRefresh: {
+        await self.viewModel.refresh()
+      } onLoadMore: {
+        await self.viewModel.loadMore()
+      }
+
+  }
+
+  @ViewBuilder var loadingView: some View {
+    VStack {
+      Spacer()
+      ProgressView()
+        .controlSize(.large)
+        .padding()
+      Spacer()
+    }
+  }
+
+  @ViewBuilder var emptyView: some View {
+    PPOEmptyStateView {
+      self.onNavigate?(.backedProjects)
+    }
+  }
+
+  @ViewBuilder var errorView: some View {
+    VStack {
+      Spacer()
+      if let image = image(named: "icon--refresh-small") {
+        Image(uiImage: image)
+          // TODO: Localize
+          .accessibilityLabel("Refresh")
+          .accessibilityHint("Refreshes your project alerts.")
+          .accessibilityAddTraits(.isButton)
+          .accessibilityRemoveTraits(.isImage)
+          .onTapGesture { [weak viewModel] () in
+            Task {
+              await viewModel?.refresh()
+            }
+          }
+      }
+      Text(Strings.general_error_something_wrong())
+        .font(Font(UIFont.ksr_callout()))
+        .foregroundStyle(Color(UIColor.ksr_black))
+      Spacer()
+    }
+  }
+
+  @ViewBuilder var body: some View {
     GeometryReader { reader in
       self.contentView(parentSize: reader.size)
         .frame(maxWidth: .infinity, alignment: .center)
