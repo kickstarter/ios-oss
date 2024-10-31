@@ -9,4 +9,5 @@ fragment PPOBackingFragment on Backing {
     ...PPOProjectFragment
     ...ProjectAnalyticsFragment
   }
+  backingDetailsPageRoute(type: url, tab: survey_responses)
 }

@@ -276,7 +276,15 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationOpenSurvey() {
     self.verifyNavigationEvent(
       { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
-      event: .survey
+      event: .survey(url: PPOProjectCardModel.completeSurveyTemplate.backingDetailsUrl)
+    )
+  }
+
+  func testNavigationViewBackingDetails() {
+    self.verifyNavigationEvent(
+      // This could be tested with any template. All cards allow the user to view backing details.
+      { self.viewModel.openSurvey(from: PPOProjectCardModel.fixPaymentTemplate) },
+      event: .survey(url: PPOProjectCardModel.fixPaymentTemplate.backingDetailsUrl)
     )
   }
 
@@ -364,6 +372,7 @@ class PPOViewModelTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         },
+        "backingDetailsPageRoute": "fake-backings-route",
         "id": "\(UUID().uuidString)",
         "project": {
           "__typename": "Project",
