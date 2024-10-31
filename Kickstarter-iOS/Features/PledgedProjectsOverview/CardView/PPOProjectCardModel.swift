@@ -339,7 +339,7 @@ extension PPOProjectCardModel {
 
     let image = ppoProject?.image?.url
       .flatMap { URL(string: $0) }
-      .map({ Kingfisher.Source.network($0) })
+      .map { Kingfisher.Source.network($0) }
 
     let title = ppoProject?.name
     let pledge = backing?.amount.fragments.moneyFragment
