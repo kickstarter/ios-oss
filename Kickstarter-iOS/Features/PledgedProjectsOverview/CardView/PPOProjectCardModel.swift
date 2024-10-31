@@ -21,6 +21,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     hasher.combine(self.alerts)
     hasher.combine(self.image)
     hasher.combine(self.title)
+    hasher.combine(self.pledge)
     hasher.combine(self.creatorName)
     hasher.combine(self.address)
     hasher.combine(self.actions.0)
@@ -190,6 +191,14 @@ extension GraphAPI.MoneyFragment: Equatable {
     return lhs.amount == rhs.amount &&
       lhs.currency == rhs.currency &&
       lhs.symbol == rhs.symbol
+  }
+}
+
+extension GraphAPI.MoneyFragment: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.amount)
+    hasher.combine(self.currency)
+    hasher.combine(self.symbol)
   }
 }
 
