@@ -15,7 +15,7 @@ struct PPOAlertFlag: View {
       Spacer()
         .frame(width: Constants.spacerWidth)
       Text(self.alert.message)
-        .font(Font(PPOCardStyles.title.font))
+        .font(Font(PPOStyles.title.font))
         .foregroundStyle(self.foregroundColor)
     }
     .padding(Constants.padding)
@@ -29,27 +29,27 @@ struct PPOAlertFlag: View {
   var image: Image {
     switch self.alert.icon {
     case .time:
-      Image(PPOCardStyles.timeImage)
+      Image(PPOStyles.timeImage)
     case .alert:
-      Image(PPOCardStyles.alertImage)
+      Image(PPOStyles.alertImage)
     }
   }
 
   var foregroundColor: Color {
     switch self.alert.type {
     case .warning:
-      Color(uiColor: PPOCardStyles.warningColor.foreground)
+      Color(uiColor: PPOStyles.warningColor.foreground)
     case .alert:
-      Color(uiColor: PPOCardStyles.alertColor.foreground)
+      Color(uiColor: PPOStyles.alertColor.foreground)
     }
   }
 
   var backgroundColor: Color {
     switch self.alert.type {
     case .warning:
-      Color(uiColor: PPOCardStyles.warningColor.background)
+      Color(uiColor: PPOStyles.warningColor.background)
     case .alert:
-      Color(uiColor: PPOCardStyles.alertColor.background)
+      Color(uiColor: PPOStyles.alertColor.background)
     }
   }
 

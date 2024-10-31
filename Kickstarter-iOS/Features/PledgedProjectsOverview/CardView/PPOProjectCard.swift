@@ -57,7 +57,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var badge: some View {
     Circle()
-      .fill(Color(uiColor: PPOCardStyles.badgeColor))
+      .fill(Color(uiColor: PPOStyles.badgeColor))
       .frame(width: Constants.badgeSize, height: Constants.badgeSize)
       .offset(x: Constants.badgeSize / 2, y: -(Constants.badgeSize / 2))
   }

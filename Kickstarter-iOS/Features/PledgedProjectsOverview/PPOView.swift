@@ -30,10 +30,10 @@ struct PPOView: View {
 
   @ViewBuilder func listViewHeader(numberOfValues: Int) -> some View {
     Text(Strings.Alerts_count(count: numberOfValues.formatted()))
-      .font(Font(UIFont.ksr_title2()))
-      .background(Color(UIColor.ksr_white))
-      .foregroundStyle(Color(UIColor.ksr_black))
-      .padding(.top)
+      .font(Font(PPOStyles.header.font))
+      .background(Color(PPOStyles.header.background))
+      .foregroundStyle(Color(PPOStyles.header.foreground))
+      .padding(PPOStyles.header.padding)
   }
 
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
@@ -68,8 +68,8 @@ struct PPOView: View {
         }
       )
       .listRowBackground(EmptyView())
-      .listRowSeparator(.hidden)
-      .listRowInsets(.none)
+      .listRowSeparator(PPOStyles.list.separator)
+      .listRowInsets(PPOStyles.list.rowInsets)
     } onRefresh: {
       await self.viewModel.refresh()
     } onLoadMore: {
@@ -81,7 +81,7 @@ struct PPOView: View {
     VStack {
       Spacer()
       ProgressView()
-        .controlSize(.large)
+        .controlSize(PPOStyles.loaderControlSize)
         .padding()
       Spacer()
     }
@@ -110,8 +110,9 @@ struct PPOView: View {
           }
       }
       Text(Strings.general_error_something_wrong())
-        .font(Font(UIFont.ksr_callout()))
-        .foregroundStyle(Color(UIColor.ksr_black))
+        .font(Font(PPOStyles.error.font))
+        .foregroundStyle(Color(PPOStyles.error.foreground))
+        .background(Color(PPOStyles.error.background))
       Spacer()
     }
   }

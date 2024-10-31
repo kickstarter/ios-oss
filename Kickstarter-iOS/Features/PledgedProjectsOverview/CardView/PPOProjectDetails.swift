@@ -28,9 +28,9 @@ struct PPOProjectDetails: View {
       VStack {
         if let title {
           Text(title)
-            .font(Font(PPOCardStyles.title.font))
-            .background(Color(PPOCardStyles.background))
-            .foregroundStyle(Color(PPOCardStyles.title.color))
+            .font(Font(PPOStyles.title.font))
+            .background(Color(PPOStyles.background))
+            .foregroundStyle(Color(PPOStyles.title.color))
             .frame(
               maxWidth: Constants.textMaxWidth,
               alignment: Constants.textAlignment
@@ -40,9 +40,9 @@ struct PPOProjectDetails: View {
         if let symbol = pledge.symbol, let amount = pledge.amount {
           // TODO: Localize
           Text("\(symbol)\(amount) pledged")
-            .font(Font(PPOCardStyles.subtitle.font))
-            .background(Color(PPOCardStyles.background))
-            .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+            .font(Font(PPOStyles.subtitle.font))
+            .background(Color(PPOStyles.background))
+            .foregroundStyle(Color(PPOStyles.subtitle.color))
             .frame(
               maxWidth: Constants.textMaxWidth,
               alignment: Constants.textAlignment

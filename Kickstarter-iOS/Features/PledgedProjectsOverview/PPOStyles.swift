@@ -2,7 +2,27 @@ import Foundation
 import Library
 import SwiftUI
 
-enum PPOCardStyles {
+enum PPOStyles {
+  static let header = (
+    font: UIFont.ksr_title2(),
+    foreground: UIColor.ksr_black,
+    background: UIColor.ksr_white,
+    padding: Edge.Set.top
+  )
+
+  static let loaderControlSize = ControlSize.large
+
+  static let list = (
+    separator: Visibility.hidden,
+    rowInsets: Optional<EdgeInsets>.none
+  )
+
+  static let error = (
+    font: UIFont.ksr_callout(),
+    foreground: UIColor.ksr_black,
+    background: UIColor.ksr_white
+  )
+
   static let warningColor = (
     foreground: UIColor.ksr_support_400,
     background: UIColor.ksr_celebrate_100

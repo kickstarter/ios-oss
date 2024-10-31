@@ -10,9 +10,9 @@ struct PPOProjectCreator: View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Created by **\(self.creatorName)**")
-        .font(Font(PPOCardStyles.subtitle.font))
-        .background(Color(PPOCardStyles.background))
-        .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+        .font(Font(PPOStyles.subtitle.font))
+        .background(Color(PPOStyles.background))
+        .foregroundStyle(Color(PPOStyles.subtitle.color))
         .frame(
           maxWidth: Constants.labelMaxWidth,
           alignment: Constants.labelAlignment
@@ -25,8 +25,8 @@ struct PPOProjectCreator: View {
         // TODO: Localize
         Text("Send a message")
       })
-      .font(Font(PPOCardStyles.subtitle.font))
-      .background(Color(PPOCardStyles.background))
+      .font(Font(PPOStyles.subtitle.font))
+      .background(Color(PPOStyles.background))
       .foregroundStyle(Color(Constants.sendMessageColor))
       .frame(alignment: Constants.buttonAlignment)
       .lineLimit(Constants.textLineLimit)
@@ -39,7 +39,7 @@ struct PPOProjectCreator: View {
         .scaledToFit()
         .frame(width: Constants.chevronSize, height: Constants.chevronSize)
         .offset(Constants.chevronOffset)
-        .background(Color(PPOCardStyles.background))
+        .background(Color(PPOStyles.background))
         .foregroundStyle(Color(Constants.sendMessageColor))
     }
     .frame(maxWidth: .infinity)
