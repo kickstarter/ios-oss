@@ -13,6 +13,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let address: String?
   public let actions: (Action, Action?)
   public let tierType: TierType
+  public let backingDetailsUrl: String
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   public func hash(into hasher: inout Hasher) {
@@ -220,6 +221,7 @@ extension PPOProjectCardModel {
     """,
     actions: (.confirmAddress, .editAddress),
     tierType: .confirmAddress,
+    backingDetailsUrl: "fakeBackingDetailsUrl",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -236,6 +238,7 @@ extension PPOProjectCardModel {
     address: nil,
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
+    backingDetailsUrl: "fakeBackingDetailsUrl",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -256,6 +259,7 @@ extension PPOProjectCardModel {
     address: nil,
     actions: (.fixPayment, nil),
     tierType: .fixPayment,
+    backingDetailsUrl: "fakeBackingDetailsUrl",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -276,6 +280,7 @@ extension PPOProjectCardModel {
     address: nil,
     actions: (.authenticateCard, nil),
     tierType: .authenticateCard,
+    backingDetailsUrl: "fakeBackingDetailsUrl",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -291,6 +296,7 @@ extension PPOProjectCardModel {
     address: nil,
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
+    backingDetailsUrl: "fakeBackingDetailsUrl",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -354,6 +360,9 @@ extension PPOProjectCardModel {
     let primaryAction: PPOProjectCardModel.Action
     let secondaryAction: PPOProjectCardModel.Action?
     let tierType: PPOProjectCardModel.TierType
+    // For v1 of PPO we're just using the same url for surveys and the backing details page.
+    // This specifically links to the survey tab.
+    let backingDetailsUrl = backing?.backingDetailsPageRoute
 
     switch card.tierType {
     case PPOProjectCardModelConstants.paymentFailed:
@@ -378,7 +387,7 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment {
+    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment, let backingDetailsUrl {
       self.init(
         isUnread: true,
         alerts: alerts,
@@ -389,6 +398,7 @@ extension PPOProjectCardModel {
         address: address,
         actions: (primaryAction, secondaryAction),
         tierType: tierType,
+        backingDetailsUrl: backingDetailsUrl,
         projectAnalytics: projectAnalyticsFragment
       )
     } else {

@@ -56,12 +56,13 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
     .store(in: &self.subscriptions)
 
-    self.viewModel.navigationEvents.sink { nav in
+    self.viewModel.navigationEvents.sink { [weak self] nav in
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case .editAddress, .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey,
-           .showProject:
+      case let .editAddress(url), let .survey(url), let .backingDetails(url):
+        self?.openSurvey(url)
+      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod:
         // TODO: MBL-1451
         break
       }
@@ -102,4 +103,14 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   }
 
   private var subscriptions = Set<AnyCancellable>()
+
+  // MARK: - Navigation Helpers
+
+  private func openSurvey(_ url: String) {
+    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
 }
