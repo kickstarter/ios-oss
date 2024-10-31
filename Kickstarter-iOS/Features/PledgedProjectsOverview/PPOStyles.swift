@@ -14,7 +14,7 @@ enum PPOStyles {
 
   static let list = (
     separator: Visibility.hidden,
-    rowInsets: Optional<EdgeInsets>.none
+    rowInsets: EdgeInsets?.none
   )
 
   static let error = (
