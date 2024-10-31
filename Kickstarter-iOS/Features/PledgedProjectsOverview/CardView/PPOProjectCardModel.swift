@@ -192,9 +192,6 @@ extension GraphAPI.MoneyFragment: Equatable {
   }
 }
 
-private let templateTestImageURL = Bundle.framework.url(forResource: "snapshot-test-image", withExtension: "png")!
-private let templateTestImage = Kingfisher.Source.provider(LocalFileImageDataProvider(fileURL: templateTestImageURL))
-
 extension PPOProjectCardModel {
   #if targetEnvironment(simulator)
     public static let previewTemplates: [PPOProjectCardModel] = [
@@ -211,7 +208,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
-    image: templateTestImage,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -232,7 +229,7 @@ extension PPOProjectCardModel {
       .init(type: .warning, icon: .alert, message: "Survey available"),
       .init(type: .warning, icon: .time, message: "Address locks in 48 hours")
     ],
-    image: templateTestImage,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -252,7 +249,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    image: templateTestImage,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -272,7 +269,7 @@ extension PPOProjectCardModel {
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    image: templateTestImage,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -287,7 +284,7 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .warning, icon: .alert, message: "Survey available")
     ],
-    image: templateTestImage,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",

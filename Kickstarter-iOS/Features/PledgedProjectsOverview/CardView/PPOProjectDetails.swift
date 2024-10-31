@@ -13,6 +13,9 @@ struct PPOProjectDetails: View {
   var body: some View {
     HStack {
       KFImage(source: self.image)
+        .placeholder({
+          Color(.ksr_support_200)
+        })
         .resizable()
         .clipShape(Constants.imageShape)
         .aspectRatio(
