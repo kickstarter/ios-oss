@@ -1,4 +1,5 @@
 @testable import Kickstarter_Framework
+import Kingfisher
 @testable import KsApi
 import SnapshotTesting
 import SwiftUI
@@ -6,69 +7,75 @@ import XCTest
 
 final class PPOProjectCardTests: TestCase {
   let size = CGSize(width: 375, height: 700)
-  func testAddressLocks() {
+
+  @MainActor
+  func testAddressLocks() async {
     let card =
       VStack {
         PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          card: .confirmAddressTemplate,
-          parentSize: self.size
-        ))
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
+          card: .confirmAddressTemplate
+        ), parentSize: self.size)
+          .frame(width: self.size.width)
+          .frame(maxHeight: .infinity)
+          .padding()
       }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "addressLocks")
   }
 
-  func testSurveyAvailableAddressLocks() {
+  @MainActor
+  func testSurveyAvailableAddressLocks() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .addressLockTemplate,
-        parentSize: self.size
-      ))
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        card: .addressLockTemplate
+      ), parentSize: self.size)
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailableAddressLocks")
   }
 
-  func testPaymentFailedPledgeDropped() {
+  @MainActor
+  func testPaymentFailedPledgeDropped() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .fixPaymentTemplate,
-        parentSize: self.size
-      ))
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        card: .fixPaymentTemplate
+      ), parentSize: self.size)
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "paymentFailedPledgeDropped")
   }
 
-  func testCardAuthPledgeDropped() {
+  @MainActor
+  func testCardAuthPledgeDropped() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .authenticateCardTemplate,
-        parentSize: self.size
-      ))
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        card: .authenticateCardTemplate
+      ), parentSize: self.size)
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "cardAuthPledgeDropped")
   }
 
-  func testSurveyAvailable() {
+  @MainActor
+  func testSurveyAvailable() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .completeSurveyTemplate,
-        parentSize: self.size
-      ))
-      .frame(width: self.size.width)
-      .frame(maxHeight: .infinity)
-      .padding()
+        card: .completeSurveyTemplate
+      ), parentSize: self.size)
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
     }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
   }
 }
