@@ -4,12 +4,35 @@ import Library
 import SwiftUI
 
 struct PPOProjectCard: View {
+  enum Action {
+    case confirmAddress
+    case editAddress
+    case completeSurvey
+    case fixPayment
+    case authenticateCard
+    case viewBackingDetails
+    case sendMessage
+
+    init(_ action: PPOProjectCardModel.Action) {
+      switch action {
+      case .confirmAddress:
+        self = .confirmAddress
+      case .editAddress:
+        self = .editAddress
+      case .completeSurvey:
+        self = .completeSurvey
+      case .fixPayment:
+        self = .fixPayment
+      case .authenticateCard:
+        self = .authenticateCard
+      }
+    }
+  }
+
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
-  var onViewBackingDetails: ((PPOProjectCardModel) -> Void)? = nil
-  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
-  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
+  var onAction: ((PPOProjectCardModel, Action) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -39,13 +62,13 @@ struct PPOProjectCard: View {
 
     // Handle actions
     .onReceive(self.viewModel.viewBackingDetailsTapped) {
-      self.onViewBackingDetails?(self.viewModel.card)
+      self.onAction?(self.viewModel.card, .viewBackingDetails)
     }
     .onReceive(self.viewModel.sendMessageTapped) {
-      self.onSendMessage?(self.viewModel.card)
+      self.onAction?(self.viewModel.card, .sendMessage)
     }
     .onReceive(self.viewModel.actionPerformed) { action in
-      self.onPerformAction?(self.viewModel.card, action)
+      self.onAction?(self.viewModel.card, .init(action))
     }
   }
 
