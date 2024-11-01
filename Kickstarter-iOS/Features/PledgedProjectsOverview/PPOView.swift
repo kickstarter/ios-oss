@@ -46,8 +46,8 @@ struct PPOView: View {
       PPOProjectCard(
         viewModel: card,
         parentSize: parentSize,
-        onShowProject: { card in
-          self.viewModel.showProject(from: card)
+        onViewBackingDetails: { card in
+          self.viewModel.viewBackingDetails(from: card)
         },
         onSendMessage: { card in
           self.viewModel.contactCreator(from: card)

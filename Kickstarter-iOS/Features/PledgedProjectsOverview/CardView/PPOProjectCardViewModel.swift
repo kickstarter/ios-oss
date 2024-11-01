@@ -3,13 +3,13 @@ import Foundation
 import KsApi
 
 protocol PPOProjectCardViewModelInputs {
-  func showProject()
+  func viewBackingDetails()
   func sendCreatorMessage()
   func performAction(action: PPOProjectCardModel.Action)
 }
 
 protocol PPOProjectCardViewModelOutputs {
-  var showProjectTapped: AnyPublisher<Void, Never> { get }
+  var viewBackingDetailsTapped: AnyPublisher<Void, Never> { get }
   var sendMessageTapped: AnyPublisher<Void, Never> { get }
   var actionPerformed: AnyPublisher<PPOProjectCardModel.Action, Never> { get }
 
@@ -55,17 +55,17 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.actionPerformedSubject.send(action)
   }
 
-  func showProject() {
-    self.showProjectSubject.send()
+  func viewBackingDetails() {
+    self.viewBackingDetailsSubject.send()
   }
 
   // MARK: - Outputs
 
-  var showProjectTapped: AnyPublisher<(), Never> { self.showProjectSubject.eraseToAnyPublisher() }
+  var viewBackingDetailsTapped: AnyPublisher<(), Never> { self.viewBackingDetailsSubject.eraseToAnyPublisher() }
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
-  private let showProjectSubject = PassthroughSubject<Void, Never>()
+  private let viewBackingDetailsSubject = PassthroughSubject<Void, Never>()
   private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
   private let actionPerformedSubject = PassthroughSubject<PPOProjectCardModel.Action, Never>()
 

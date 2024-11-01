@@ -24,7 +24,6 @@ protocol PPOViewModelInputs {
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel)
   func contactCreator(from: PPOProjectCardModel)
-  func showProject(from: PPOProjectCardModel)
 }
 
 protocol PPOViewModelOutputs {
@@ -241,10 +240,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.contactCreatorSubject.send(from)
   }
 
-  func showProject(from: PPOProjectCardModel) {
-    self.showProjectSubject.send(from)
-  }
-
   // MARK: - Outputs
 
   @Published var bannerViewModel: MessageBannerViewViewModel? = nil
@@ -270,7 +265,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let showProjectSubject = PassthroughSubject<PPOProjectCardModel, Never>()
 
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
