@@ -14788,6 +14788,7 @@ public enum GraphAPI {
           ...PPOProjectFragment
           ...ProjectAnalyticsFragment
         }
+        backingDetailsPageRoute(type: url, tab: survey_responses)
       }
       """
 
@@ -14799,6 +14800,7 @@ public enum GraphAPI {
         GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("project", type: .object(Project.selections)),
+        GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "survey_responses"], type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -14808,8 +14810,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, id: GraphQLID, project: Project? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+    public init(amount: Amount, id: GraphQLID, project: Project? = nil, backingDetailsPageRoute: String) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "backingDetailsPageRoute": backingDetailsPageRoute])
     }
 
     public var __typename: String {
@@ -14847,6 +14849,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "project")
+      }
+    }
+
+    /// URL/path for the backing details page
+    public var backingDetailsPageRoute: String {
+      get {
+        return resultMap["backingDetailsPageRoute"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "backingDetailsPageRoute")
       }
     }
 
