@@ -41,7 +41,6 @@ enum PPONavigationEvent: Equatable {
   case editAddress(url: String)
   case confirmAddress
   case contactCreator
-  case showProject
 }
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
@@ -102,8 +101,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.editAddressSubject
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
       self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
-      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator },
-      self.showProjectSubject.map { _ in PPONavigationEvent.showProject }
+      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
