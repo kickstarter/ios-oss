@@ -94,4 +94,5 @@ fragment ProjectFragment on Project {
     }
   }
   watchesCount
+  isPledgeOverTimeAllowed
 }

@@ -11,6 +11,5 @@ query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
       id
       kind
     }
-    isPledgeOverTimeAllowed
   }
 }

@@ -11,6 +11,5 @@ query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
       id
       kind
     }
-    isPledgeOverTimeAllowed
   }
 }

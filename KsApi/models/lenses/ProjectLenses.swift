@@ -528,7 +528,7 @@ extension Project {
       ) }
     )
 
-    public static let isPledgeOverTimeAllowed = Lens<Project, Bool>(
+    public static let isPledgeOverTimeAllowed = Lens<Project, Bool?>(
       view: { $0.isPledgeOverTimeAllowed },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
