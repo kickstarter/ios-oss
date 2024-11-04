@@ -324,7 +324,7 @@
 "I_understand" = "Verstanden";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am %{project_deadline} belastet.";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Wenn das Projekt sein Finanzierungsziel erreicht, wird am %{project_deadline} deine Zahlung in Höhe von %{total} eingezogen. Du erhältst einen Nachweis über den Finanzierungsbeitrag, der einlösbar ist, wenn das Projekt finanziert ist und der Projektgründer seine kreative Idee erfolgreich umgesetzt hat.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
 "If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.";
 "If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";

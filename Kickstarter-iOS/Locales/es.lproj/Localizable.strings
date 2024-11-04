@@ -324,7 +324,7 @@
 "I_understand" = "Entiendo";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si el proyecto alcanza la meta de financiamiento, te cobraremos %{total} el %{project_deadline}. Recibirás un comprobante por la contribución que podrás canjear si el proyecto se financia con éxito y el creador logra completar su iniciativa.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";
 "If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n";
 "If_your_profile_is_public" = "Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";

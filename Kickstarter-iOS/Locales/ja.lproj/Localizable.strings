@@ -324,7 +324,7 @@
 "I_understand" = "理解しました";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline}に%{total}が請求されます。プロジェクトの資金が集まりクリエイターがその取り組み全体に成功した場合に引き換え可能となるプレッジ証明が届きます。";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
 "If_your_profile_is_private" = "プロフィールがプライベート (非公開) 設定の場合、あなたの名前と写真が表示されます。";
 "If_your_profile_is_public" = "プロフィールがプライベート (非公開) 設定でない場合は、過去にあなたがバックしたプロジェクトや、あなたの地域情報、あなたの自己紹介欄とウェブサイトも表示されます。";
