@@ -94,7 +94,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let backing = project.map { $0.personalization.backing }.skipNil()
     self.showPledgeOverTimeUI = project.signal
       .map { $0.isPledgeOverTimeAllowed ?? false
-      } // TODO: Additionally add `featurePledgeOverTimeEnabled` when implementing the UI (MBL-1814)[https://kickstarter.atlassian.net/browse/MBL-1814]
+      } // TODO: Additionally add `featurePledgeOverTimeEnabled` when implementing the UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
