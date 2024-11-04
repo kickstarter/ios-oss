@@ -5231,7 +5231,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_True() {
-    withEnvironment {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -5254,7 +5259,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_False() {
-    withEnvironment {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: false
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ false
       let reward = Reward.template
