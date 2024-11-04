@@ -16395,6 +16395,7 @@ public enum GraphAPI {
           id
           url(width: 1024)
         }
+        isPledgeOverTimeAllowed
         isProjectWeLove
         isProjectOfTheDay
         isWatched
@@ -16447,7 +16448,6 @@ public enum GraphAPI {
           }
         }
         watchesCount
-        isPledgeOverTimeAllowed
       }
       """
 
@@ -16473,6 +16473,7 @@ public enum GraphAPI {
         GraphQLField("fxRate", type: .nonNull(.scalar(Double.self))),
         GraphQLField("goal", type: .object(Goal.selections)),
         GraphQLField("image", type: .object(Image.selections)),
+        GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("isProjectWeLove", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("isProjectOfTheDay", type: .scalar(Bool.self)),
         GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
@@ -16499,7 +16500,6 @@ public enum GraphAPI {
         GraphQLField("usdExchangeRate", type: .scalar(Double.self)),
         GraphQLField("video", type: .object(Video.selections)),
         GraphQLField("watchesCount", type: .scalar(Int.self)),
-        GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
       ]
     }
 
@@ -16509,8 +16509,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil, isPledgeOverTimeAllowed: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -16688,6 +16688,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "image")
+      }
+    }
+
+    /// Whether a project is enrolled in plot
+    public var isPledgeOverTimeAllowed: Bool {
+      get {
+        return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
       }
     }
 
@@ -16948,16 +16958,6 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "watchesCount")
-      }
-    }
-
-    /// Whether a project is enrolled in plot
-    public var isPledgeOverTimeAllowed: Bool {
-      get {
-        return resultMap["isPledgeOverTimeAllowed"]! as! Bool
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
       }
     }
 
