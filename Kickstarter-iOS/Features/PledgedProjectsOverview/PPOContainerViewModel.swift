@@ -37,11 +37,13 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     )
     .map { _ in AppEnvironment.current.currentUser }
 
+    // Update the activity tab bar badge from the user object when it changes
     currentUser
       .map { user in TabBarBadge(count: user?.unseenActivityCount) }
       .subscribe(self.activityBadgeSubject)
       .store(in: &self.cancellables)
 
+    // Update the project alerts tab bar badge from the supplied count when it changes
     self.projectAlertsCountSubject
       .map { count in TabBarBadge(count: count) }
       .subscribe(self.projectAlertsBadgeSubject)

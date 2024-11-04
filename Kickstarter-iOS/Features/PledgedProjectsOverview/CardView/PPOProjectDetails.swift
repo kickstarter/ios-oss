@@ -5,14 +5,17 @@ import Library
 import SwiftUI
 
 struct PPOProjectDetails: View {
-  let imageUrl: URL?
+  let image: Source?
   let title: String?
   let pledge: GraphAPI.MoneyFragment
   let leadingColumnWidth: CGFloat
 
   var body: some View {
     HStack {
-      KFImage(self.imageUrl)
+      KFImage(source: self.image)
+        .placeholder {
+          Color(.ksr_support_200)
+        }
         .resizable()
         .clipShape(Constants.imageShape)
         .aspectRatio(
@@ -25,8 +28,9 @@ struct PPOProjectDetails: View {
       VStack {
         if let title {
           Text(title)
-            .font(Font(PPOCardStyles.title.font))
-            .foregroundStyle(Color(PPOCardStyles.title.color))
+            .font(Font(PPOStyles.title.font))
+            .background(Color(PPOStyles.background))
+            .foregroundStyle(Color(PPOStyles.title.color))
             .frame(
               maxWidth: Constants.textMaxWidth,
               alignment: Constants.textAlignment
@@ -36,8 +40,9 @@ struct PPOProjectDetails: View {
         if let symbol = pledge.symbol, let amount = pledge.amount {
           // TODO: Localize
           Text("\(symbol)\(amount) pledged")
-            .font(Font(PPOCardStyles.subtitle.font))
-            .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+            .font(Font(PPOStyles.subtitle.font))
+            .background(Color(PPOStyles.background))
+            .foregroundStyle(Color(PPOStyles.subtitle.color))
             .frame(
               maxWidth: Constants.textMaxWidth,
               alignment: Constants.textAlignment
@@ -69,7 +74,7 @@ struct PPOProjectDetails: View {
   VStack {
     GeometryReader(content: { geometry in
       PPOProjectDetails(
-        imageUrl: URL(string: "http:///")!,
+        image: .network(URL(string: "http:///")!),
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
         pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
         leadingColumnWidth: geometry.size.width / 4
@@ -77,7 +82,7 @@ struct PPOProjectDetails: View {
     })
     GeometryReader(content: { geometry in
       PPOProjectDetails(
-        imageUrl: URL(string: "http:///")!,
+        image: .network(URL(string: "http:///")!),
         title: "One line",
         pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
         leadingColumnWidth: geometry.size.width / 4

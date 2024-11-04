@@ -13,13 +13,14 @@ typealias PPOViewModelPaginator = Paginator<
 
 protocol PPOViewModelInputs {
   func viewDidAppear()
-  func loadMore()
-  func pullToRefresh()
+  func refresh() async
+  func loadMore() async
 
   func openBackedProjects()
   func fixPaymentMethod(from: PPOProjectCardModel)
   func fix3DSChallenge(from: PPOProjectCardModel)
   func openSurvey(from: PPOProjectCardModel)
+  func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel)
   func contactCreator(from: PPOProjectCardModel)
@@ -30,12 +31,13 @@ protocol PPOViewModelOutputs {
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
 }
 
-enum PPONavigationEvent {
+enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod
   case fix3DSChallenge
-  case survey
-  case editAddress
+  case survey(url: String)
+  case backingDetails(url: String)
+  case editAddress(url: String)
   case confirmAddress
   case contactCreator
 }
@@ -43,12 +45,11 @@ enum PPONavigationEvent {
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
-      valuesFromEnvelope: { data in
+      valuesFromEnvelope: { data -> [PPOProjectCardViewModel] in
         data.pledgeProjectsOverview?.pledges?.edges?
           .compactMap { edge in edge?.node }
           .compactMap { node in PPOProjectCardModel(node: node) }
-          .compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
-          ?? []
+          .compactMap { model in PPOProjectCardViewModel(card: model) } ?? []
       },
       cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
@@ -89,12 +90,15 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge7(
+    Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
       self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
-      self.openSurveySubject.map { _ in PPONavigationEvent.survey },
-      self.editAddressSubject.map { _ in PPONavigationEvent.editAddress },
+      self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+      self.viewBackingDetailsSubject
+        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+      self.editAddressSubject
+        .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
       self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
       self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
     )
@@ -192,12 +196,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.viewDidAppearSubject.send(())
   }
 
-  func loadMore() {
+  func loadMore() async {
     self.loadMoreSubject.send(())
+    _ = await self.paginator.nextResult()
   }
 
-  func pullToRefresh() {
+  func refresh() async {
     self.pullToRefreshSubject.send(())
+    _ = await self.paginator.nextResult()
   }
 
   // TODO: Add any additional properties for routing (MBL-1451)
@@ -216,6 +222,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   func openSurvey(from: PPOProjectCardModel) {
     self.openSurveySubject.send(from)
+  }
+
+  func viewBackingDetails(from: PPOProjectCardModel) {
+    self.viewBackingDetailsSubject.send(from)
   }
 
   func editAddress(from: PPOProjectCardModel) {
@@ -251,6 +261,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let fix3DSChallengeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()

@@ -83,16 +83,19 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(data.count, 3)
   }
 
-  func testPullToRefresh_Once() throws {
-    let expectation = XCTestExpectation(description: "Pull to refresh")
-    expectation.expectedFulfillmentCount = 5
+  func testPullToRefresh_Once() async throws {
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh")
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -102,13 +105,15 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear() // Initial load
     }
 
-    withEnvironment(apiService: MockService(
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh
+    )) { () async in
+      await self.viewModel.refresh() // Refresh
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
@@ -130,16 +135,19 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 2)
   }
 
-  func testPullToRefresh_Twice() throws {
-    let expectation = XCTestExpectation(description: "Pull to refresh twice")
-    expectation.expectedFulfillmentCount = 7
+  func testPullToRefresh_Twice() async throws {
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh twice")
+    fullyLoadedExpectation.expectedFulfillmentCount = 7
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -149,19 +157,21 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear() // Initial load
     }
 
-    withEnvironment(apiService: MockService(
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh
+    )) { () async in
+      await self.viewModel.refresh() // Refresh
     }
 
-    withEnvironment(apiService: MockService(
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...16))
-    )) {
-      self.viewModel.pullToRefresh() // Refresh a second time
+    )) { () async in
+      await self.viewModel.refresh() // Refresh a second time
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 7)
 
@@ -191,16 +201,19 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(thirdData.count, 16)
   }
 
-  func testLoadMore() throws {
-    let expectation = XCTestExpectation(description: "Load more")
-    expectation.expectedFulfillmentCount = 5
+  func testLoadMore() async throws {
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let fullyLoadedExpectation = XCTestExpectation(description: "Load more")
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
     self.viewModel.$results
       .sink { value in
         values.append(value)
-        expectation.fulfill()
+        initialLoadExpectation.fulfill()
+        fullyLoadedExpectation.fulfill()
       }
       .store(in: &self.cancellables)
 
@@ -212,13 +225,16 @@ class PPOViewModelTests: XCTestCase {
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
-    withEnvironment(apiService: MockService(
+
+    await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
+    await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 5...7))
-    )) {
-      self.viewModel.loadMore() // Load next page
+    )) { () async in
+      await self.viewModel.loadMore() // Load next page
     }
 
-    wait(for: [expectation], timeout: 0.1)
+    await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
     XCTAssertEqual(values.count, 5)
 
@@ -276,7 +292,15 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationOpenSurvey() {
     self.verifyNavigationEvent(
       { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
-      event: .survey
+      event: .survey(url: PPOProjectCardModel.completeSurveyTemplate.backingDetailsUrl)
+    )
+  }
+
+  func testNavigationViewBackingDetails() {
+    self.verifyNavigationEvent(
+      // This could be tested with any template. All cards allow the user to view backing details.
+      { self.viewModel.openSurvey(from: PPOProjectCardModel.fixPaymentTemplate) },
+      event: .survey(url: PPOProjectCardModel.fixPaymentTemplate.backingDetailsUrl)
     )
   }
 
@@ -364,6 +388,7 @@ class PPOViewModelTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         },
+        "backingDetailsPageRoute": "fake-backings-route",
         "id": "\(UUID().uuidString)",
         "project": {
           "__typename": "Project",

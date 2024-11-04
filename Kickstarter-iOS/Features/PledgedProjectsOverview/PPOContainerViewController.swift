@@ -21,10 +21,10 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       }
     )
     let ppoViewController = UIHostingController(rootView: ppoView)
-    ppoViewController.title = "Project Alerts"
+    ppoViewController.title = Page.projectAlerts(.none).name
 
     let activitiesViewController = ActivitiesViewController.instantiate()
-    activitiesViewController.title = "Activity Feed"
+    activitiesViewController.title = Page.activityFeed(.none).name
 
     self.setPagedViewControllers([
       (.projectAlerts(.none), ppoViewController),
@@ -33,23 +33,36 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
+    // Update badges in the paging tab bar at the top of the view
     Publishers.CombineLatest(
       self.viewModel.projectAlertsBadge,
       self.viewModel.activityBadge
     )
-    .sink { [weak self] projectAlerts, activity in
-      self?.setPagedViewControllers([
-        (.projectAlerts(projectAlerts), ppoViewController),
-        (.activityFeed(activity), activitiesViewController)
+    .map { projectAlerts, activity in
+      let projectAlerts = Page.projectAlerts(projectAlerts)
+      let activityFeed = Page.activityFeed(activity)
+      return (projectAlerts, activityFeed)
+    }
+    .sink { [weak self, weak ppoViewController, weak activitiesViewController] projectAlerts, activityFeed in
+      guard let self, let ppoViewController, let activitiesViewController else {
+        return
+      }
+      ppoViewController.title = projectAlerts.name
+      activitiesViewController.title = activityFeed.name
+      self.setPagedViewControllers([
+        (projectAlerts, ppoViewController),
+        (activityFeed, activitiesViewController)
       ])
     }
     .store(in: &self.subscriptions)
 
-    self.viewModel.navigationEvents.sink { nav in
+    self.viewModel.navigationEvents.sink { [weak self] nav in
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case .editAddress, .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod, .survey:
+      case let .editAddress(url), let .survey(url), let .backingDetails(url):
+        self?.openSurvey(url)
+      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod:
         // TODO: MBL-1451
         break
       }
@@ -69,7 +82,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     public var name: String {
       switch self {
       case .projectAlerts:
-        "Project alerts"
+        Strings.Project_alerts()
       case .activityFeed:
         "Activity feed"
       }
@@ -90,4 +103,14 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   }
 
   private var subscriptions = Set<AnyCancellable>()
+
+  // MARK: - Navigation Helpers
+
+  private func openSurvey(_ url: String) {
+    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
 }

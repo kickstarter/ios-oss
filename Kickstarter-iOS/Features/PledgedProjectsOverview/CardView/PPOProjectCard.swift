@@ -5,15 +5,20 @@ import SwiftUI
 
 struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
+  var parentSize: CGSize
+
+  var onViewBackingDetails: ((PPOProjectCardModel) -> Void)? = nil
+  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
+  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
       self.flagList
-      self.projectDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.projectDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.divider
       self.projectCreator
       self.divider
-      self.addressDetails(leadingColumnWidth: self.viewModel.parentSize.width * Constants.firstColumnWidth)
+      self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.actionButtons
     }
     .padding(.vertical)
@@ -32,8 +37,16 @@ struct PPOProjectCard: View {
       content: { self.badge.opacity(self.viewModel.card.isUnread ? 1 : 0) }
     )
 
-    // insets
-    .padding(.horizontal, Constants.outerPadding)
+    // Handle actions
+    .onReceive(self.viewModel.viewBackingDetailsTapped) {
+      self.onViewBackingDetails?(self.viewModel.card)
+    }
+    .onReceive(self.viewModel.sendMessageTapped) {
+      self.onSendMessage?(self.viewModel.card)
+    }
+    .onReceive(self.viewModel.actionPerformed) { action in
+      self.onPerformAction?(self.viewModel.card, action)
+    }
   }
 
   @ViewBuilder
@@ -44,7 +57,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var badge: some View {
     Circle()
-      .fill(Color(uiColor: PPOCardStyles.badgeColor))
+      .fill(Color(uiColor: PPOStyles.badgeColor))
       .frame(width: Constants.badgeSize, height: Constants.badgeSize)
       .offset(x: Constants.badgeSize / 2, y: -(Constants.badgeSize / 2))
   }
@@ -67,7 +80,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     PPOProjectDetails(
-      imageUrl: self.viewModel.card.imageURL,
+      image: self.viewModel.card.image,
       title: self.viewModel.card.title,
       pledge: self.viewModel.card.pledge,
       leadingColumnWidth: leadingColumnWidth
@@ -77,8 +90,13 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(creatorName: self.viewModel.card.creatorName)
-      .padding([.horizontal])
+    PPOProjectCreator(
+      creatorName: self.viewModel.card.creatorName,
+      onSendMessage: { [weak viewModel] () in
+        viewModel?.sendCreatorMessage()
+      }
+    )
+    .padding([.horizontal])
   }
 
   @ViewBuilder
@@ -146,7 +164,10 @@ struct PPOProjectCard: View {
       ScrollView(.vertical) {
         VStack(spacing: 16) {
           ForEach(PPOProjectCardModel.previewTemplates) { template in
-            PPOProjectCard(viewModel: PPOProjectCardViewModel(card: template, parentSize: geometry.size))
+            PPOProjectCard(
+              viewModel: PPOProjectCardViewModel(card: template),
+              parentSize: geometry.size
+            )
           }
         }
       }

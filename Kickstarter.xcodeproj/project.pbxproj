@@ -1148,7 +1148,7 @@
 		AA6E9E8A2C63EE78001543FC /* PPOAddressSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
-		AAE7C9A22C75142A00800E03 /* PPOCardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOCardStyles.swift */; };
+		AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOStyles.swift */; };
 		AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */; };
 		AAE7C9A72C75948B00800E03 /* PPOProjectCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */; };
 		AAE7C9A82C75948B00800E03 /* PPOProjectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */; };
@@ -2813,7 +2813,7 @@
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
 		AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectAnalyticsFragment.graphql; sourceTree = "<group>"; };
-		AAE7C9A12C75142A00800E03 /* PPOCardStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOCardStyles.swift; sourceTree = "<group>"; };
+		AAE7C9A12C75142A00800E03 /* PPOStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOStyles.swift; sourceTree = "<group>"; };
 		AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBar.swift; sourceTree = "<group>"; };
 		AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModel.swift; sourceTree = "<group>"; };
 		AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCard.swift; sourceTree = "<group>"; };
@@ -6762,7 +6762,6 @@
 				AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */,
 				AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */,
 				AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */,
-				AAE7C9A12C75142A00800E03 /* PPOCardStyles.swift */,
 				AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */,
 				AAA592782C5C708000482087 /* PPOProjectDetails.swift */,
 				AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */,
@@ -7198,6 +7197,7 @@
 				392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */,
 				AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */,
 				E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */,
+				AAE7C9A12C75142A00800E03 /* PPOStyles.swift */,
 				E1BAA0342C1A1907004F8B06 /* PPOView.swift */,
 				E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */,
 				E1BAA03D2C1A1CE4004F8B06 /* PPOViewModelTests.swift */,
@@ -8481,7 +8481,7 @@
 				D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */,
 				8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */,
 				94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */,
-				AAE7C9A22C75142A00800E03 /* PPOCardStyles.swift in Sources */,
+				AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */,
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
@@ -9408,7 +9408,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.0;
+				MARKETING_VERSION = 5.20.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
@@ -9922,7 +9922,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.0;
+				MARKETING_VERSION = 5.20.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -9989,7 +9989,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.0;
+				MARKETING_VERSION = 5.20.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -10255,7 +10255,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.0;
+				MARKETING_VERSION = 5.20.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
