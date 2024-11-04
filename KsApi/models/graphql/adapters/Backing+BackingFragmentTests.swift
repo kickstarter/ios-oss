@@ -856,6 +856,7 @@ private func backingDictionary() -> [String: Any] {
         "url": "https://i.kickstarter.com/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=xkqkeOndzXnC81WHVjnuANuj0XnUuUhui33sxJ76v24%3D"
       },
       "isProjectWeLove": true,
+      "isPledgeOverTimeAllowed": false,
       "isProjectOfTheDay": false,
       "isWatched": false,
       "launchedAt": 1617886771,

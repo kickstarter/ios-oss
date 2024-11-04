@@ -156,7 +156,8 @@
           "url": "https://staging.kickstarter.com/projects/cainlevy/zans-late-pledge-campaign",
           "usdExchangeRate": 1,
           "video": null,
-          "watchesCount": 6
+          "watchesCount": 6,
+          "isPledgeOverTimeAllowed": false
         },
         {
           "__typename": "Project",
@@ -347,7 +348,8 @@
               }
             }
           },
-          "watchesCount": 81
+          "watchesCount": 81,
+          "isPledgeOverTimeAllowed": false
         },
         {
           "__typename": "Project",
@@ -559,7 +561,8 @@
               }
             }
           },
-          "watchesCount": 21
+          "watchesCount": 21,
+          "isPledgeOverTimeAllowed": false
         }
       ],
       "pageInfo": {

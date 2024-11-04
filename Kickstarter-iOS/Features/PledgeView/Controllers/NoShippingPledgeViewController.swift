@@ -263,7 +263,7 @@ final class NoShippingPledgeViewController: UIViewController,
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()
       .observeValues { value in
-        // TODO: Use this flag to hide or show the Pledge Over Time UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
+        // TODO: Hide or show the Pledge Over Time UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
         debugPrint("showPledgeOverTimeUI: \(value)")
       }
 
