@@ -67,6 +67,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showWebHelp = TestObserver<HelpType, Never>()
   private let title = TestObserver<String, Never>()
+  private let showPledgeOverTimeUI = TestObserver<Bool, Never>()
 
   let shippingRule = ShippingRule.template
     |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
@@ -146,6 +147,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
+
+    self.vm.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
   }
 
   func testShowWebHelp() {
@@ -5224,6 +5227,62 @@ final class NoShippingPledgeViewModelTests: TestCase {
         ["CTA Clicked"],
         self.segmentTrackingClient.events
       )
+    }
+  }
+
+  func testShowPledgeOverTimeUI_True() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+    }
+  }
+
+  func testShowPledgeOverTimeUI_False() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: false
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ false
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([false])
     }
   }
 }

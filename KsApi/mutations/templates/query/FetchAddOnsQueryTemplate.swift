@@ -577,6 +577,7 @@ public enum FetchAddsOnsQueryTemplate {
             "id": "UGhvdG8tMzMzOTU0MTI=",
             "url": "https://i.kickstarter.com/assets/033/395/412/618ee8bdcfcfd731cc0404270a79d98c_original.jpg?anim=false&fit=crop&gravity=auto&height=576&origin=ugc-qa&q=92&width=1024&sig=xOlHzUBHN42jNCMLDBloActwSriibZ3BAQ4w5h3sjWo%3D"
           },
+          "isPledgeOverTimeAllowed": false,
           "isProjectWeLove": true,
           "isProjectOfTheDay": false,
           "isLaunched": true,

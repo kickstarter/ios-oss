@@ -100,7 +100,8 @@ extension Project {
         tags: discoverTags,
         urls: urls,
         video: projectVideo(from: projectFragment),
-        watchesCount: projectFragment.watchesCount
+        watchesCount: projectFragment.watchesCount,
+        isPledgeOverTimeAllowed: projectFragment.isPledgeOverTimeAllowed
       )
   }
 }

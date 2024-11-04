@@ -346,7 +346,8 @@
           "url": "https://staging.kickstarter.com/projects/cainlevy/zans-late-pledge-campaign",
           "usdExchangeRate": 1,
           "video": null,
-          "watchesCount": 6
+          "watchesCount": 6,
+          "isPledgeOverTimeAllowed": false
         },
         {
           "__typename": "Project",
@@ -645,7 +646,8 @@
               }
             }
           },
-          "watchesCount": 3850
+          "watchesCount": 3850,
+          "isPledgeOverTimeAllowed": false
         },
         {
           "__typename": "Project",
@@ -1079,7 +1081,8 @@
               }
             }
           },
-          "watchesCount": 8153
+          "watchesCount": 8153,
+          "isPledgeOverTimeAllowed": false
         },
         {
           "__typename": "Project",
@@ -1323,7 +1326,8 @@
           "url": "https://staging.kickstarter.com/projects/614480152/moonrise-cafe-home-of-heart-cakes",
           "usdExchangeRate": 1,
           "video": null,
-          "watchesCount": 12
+          "watchesCount": 12,
+          "isPledgeOverTimeAllowed": false
         }
       ],
       "pageInfo": {

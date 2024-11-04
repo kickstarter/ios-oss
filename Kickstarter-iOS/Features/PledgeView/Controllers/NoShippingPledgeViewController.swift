@@ -260,6 +260,13 @@ final class NoShippingPledgeViewController: UIViewController,
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
+    self.viewModel.outputs.showPledgeOverTimeUI
+      .observeForUI()
+      .observeValues { value in
+        // TODO: Hide or show the Pledge Over Time UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
+        debugPrint("showPledgeOverTimeUI: \(value)")
+      }
+
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in

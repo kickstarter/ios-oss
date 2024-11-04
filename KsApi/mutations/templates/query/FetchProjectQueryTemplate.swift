@@ -263,6 +263,7 @@ public enum FetchProjectQueryTemplate {
             }
           },
           "watchesCount": 180,
+          "isPledgeOverTimeAllowed": true,
           "environmentalCommitments": [
             {
               "__typename": "EnvironmentalCommitment",
