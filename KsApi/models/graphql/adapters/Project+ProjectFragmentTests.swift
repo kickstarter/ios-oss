@@ -66,6 +66,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(project.rewardData.addOns)
       XCTAssertEqual(project.sendMetaCapiEvents, false)
       XCTAssertEqual(project.watchesCount, 18)
+      XCTAssertFalse(project.isPledgeOverTimeAllowed!)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
             extendedProjectProperties.story.htmlViewElements.count > 3,
@@ -475,7 +476,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
              }
           }
        },
-      "watchesCount": 18
+      "watchesCount": 18,
+      "isPledgeOverTimeAllowed": false
     }
     """
 

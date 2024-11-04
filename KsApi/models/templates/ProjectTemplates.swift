@@ -59,7 +59,8 @@ extension Project {
         updates: "https://www.kickstarter.com/projects/creator/a-fun-project/posts"
       )
     ),
-    video: .template
+    video: .template,
+    isPledgeOverTimeAllowed: false
   )
 
   internal static let todayByScottThrift = Project.template
