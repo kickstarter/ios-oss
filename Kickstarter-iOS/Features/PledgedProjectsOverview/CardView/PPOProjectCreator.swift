@@ -4,13 +4,15 @@ import SwiftUI
 
 struct PPOProjectCreator: View {
   let creatorName: String
+  var onSendMessage: (() -> Void)? = nil
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Created by **\(self.creatorName)**")
-        .font(Font(PPOCardStyles.subtitle.font))
-        .foregroundStyle(Color(PPOCardStyles.subtitle.color))
+        .font(Font(PPOStyles.subtitle.font))
+        .background(Color(PPOStyles.background))
+        .foregroundStyle(Color(PPOStyles.subtitle.color))
         .frame(
           maxWidth: Constants.labelMaxWidth,
           alignment: Constants.labelAlignment
@@ -18,12 +20,13 @@ struct PPOProjectCreator: View {
         .lineLimit(Constants.textLineLimit)
 
       Button(action: {
-        // TODO: Action
+        self.onSendMessage?()
       }, label: {
         // TODO: Localize
         Text("Send a message")
       })
-      .font(Font(PPOCardStyles.subtitle.font))
+      .font(Font(PPOStyles.subtitle.font))
+      .background(Color(PPOStyles.background))
       .foregroundStyle(Color(Constants.sendMessageColor))
       .frame(alignment: Constants.buttonAlignment)
       .lineLimit(Constants.textLineLimit)
@@ -36,6 +39,7 @@ struct PPOProjectCreator: View {
         .scaledToFit()
         .frame(width: Constants.chevronSize, height: Constants.chevronSize)
         .offset(Constants.chevronOffset)
+        .background(Color(PPOStyles.background))
         .foregroundStyle(Color(Constants.sendMessageColor))
     }
     .frame(maxWidth: .infinity)

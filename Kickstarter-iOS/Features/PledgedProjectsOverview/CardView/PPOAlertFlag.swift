@@ -15,7 +15,7 @@ struct PPOAlertFlag: View {
       Spacer()
         .frame(width: Constants.spacerWidth)
       Text(self.alert.message)
-        .font(Font(PPOCardStyles.title.font))
+        .font(Font(PPOStyles.title.font))
         .foregroundStyle(self.foregroundColor)
     }
     .padding(Constants.padding)
@@ -27,29 +27,29 @@ struct PPOAlertFlag: View {
   }
 
   var image: Image {
-    switch self.alert.type {
+    switch self.alert.icon {
     case .time:
-      Image(PPOCardStyles.timeImage)
+      Image(PPOStyles.timeImage)
     case .alert:
-      Image(PPOCardStyles.alertImage)
+      Image(PPOStyles.alertImage)
     }
   }
 
   var foregroundColor: Color {
-    switch self.alert.icon {
+    switch self.alert.type {
     case .warning:
-      Color(uiColor: PPOCardStyles.warningColor.foreground)
+      Color(uiColor: PPOStyles.warningColor.foreground)
     case .alert:
-      Color(uiColor: PPOCardStyles.alertColor.foreground)
+      Color(uiColor: PPOStyles.alertColor.foreground)
     }
   }
 
   var backgroundColor: Color {
-    switch self.alert.icon {
+    switch self.alert.type {
     case .warning:
-      Color(uiColor: PPOCardStyles.warningColor.background)
+      Color(uiColor: PPOStyles.warningColor.background)
     case .alert:
-      Color(uiColor: PPOCardStyles.alertColor.background)
+      Color(uiColor: PPOStyles.alertColor.background)
     }
   }
 
@@ -64,10 +64,10 @@ struct PPOAlertFlag: View {
 
 #Preview("Stack of flags") {
   VStack(alignment: .leading, spacing: 8) {
-    PPOAlertFlag(alert: .init(type: .time, icon: .warning, message: "Address locks in 8 hours"))
-    PPOAlertFlag(alert: .init(type: .alert, icon: .warning, message: "Survey available"))
+    PPOAlertFlag(alert: .init(type: .warning, icon: .time, message: "Address locks in 8 hours"))
+    PPOAlertFlag(alert: .init(type: .warning, icon: .alert, message: "Survey available"))
     PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Payment failed"))
-    PPOAlertFlag(alert: .init(type: .time, icon: .alert, message: "Pledge will be dropped in 6 days"))
+    PPOAlertFlag(alert: .init(type: .alert, icon: .time, message: "Pledge will be dropped in 6 days"))
     PPOAlertFlag(alert: .init(type: .alert, icon: .alert, message: "Card needs authentication"))
   }
 }

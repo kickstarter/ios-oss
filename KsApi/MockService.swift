@@ -1827,7 +1827,10 @@
 
       switch response {
       case let .success(pledgedProjectsData):
-        return Just(pledgedProjectsData).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
+        return Just(pledgedProjectsData).setFailureType(to: ErrorEnvelope.self).delay(
+          for: 0.01,
+          scheduler: DispatchQueue.main
+        ).eraseToAnyPublisher()
 
       case let .failure(envelope):
         return Fail(outputType: GraphAPI.FetchPledgedProjectsQuery.Data.self, failure: envelope)

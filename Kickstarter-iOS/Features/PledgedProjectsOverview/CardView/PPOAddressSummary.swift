@@ -9,13 +9,13 @@ struct PPOAddressSummary: View {
     HStack(alignment: .firstTextBaseline) {
       // TODO: Localize
       Text("Shipping address")
-        .font(Font(PPOCardStyles.title.font))
-        .foregroundStyle(Color(PPOCardStyles.title.color))
+        .font(Font(PPOStyles.title.font))
+        .foregroundStyle(Color(PPOStyles.title.color))
         .frame(width: self.leadingColumnWidth, alignment: Constants.textAlignment)
 
       Text(self.address)
-        .font(Font(PPOCardStyles.body.font))
-        .foregroundStyle(Color(PPOCardStyles.body.color))
+        .font(Font(PPOStyles.body.font))
+        .foregroundStyle(Color(PPOStyles.body.color))
         .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
     }
     .frame(maxWidth: Constants.maxWidth)
