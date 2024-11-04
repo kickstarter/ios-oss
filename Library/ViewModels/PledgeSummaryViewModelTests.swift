@@ -147,7 +147,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       self.confirmationLabelHidden.assertValues([false])
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged on November 1, 2019."
+        "If the project reaches its funding goal, you will be charged $10 on November 1, 2019. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
       ])
     }
   }
@@ -176,7 +176,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       self.confirmationLabelHidden.assertValues([true])
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged on November 1, 2019."
+        "If the project reaches its funding goal, you will be charged $10 on November 1, 2019. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
       ])
     }
   }
@@ -206,7 +206,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       self.confirmationLabelHidden.assertValues([false])
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
+        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
       ])
     }
   }

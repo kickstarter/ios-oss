@@ -68,7 +68,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)", record: true
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }
@@ -123,7 +123,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       assertSnapshot(
         matching: parent.view,
         as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)", record: true
+        named: "lang_\(language)_device_\(device)"
       )
     }
   }
@@ -183,7 +183,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       assertSnapshot(
         matching: parent.view,
         as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)", record: true
+        named: "lang_\(language)_device_\(device)"
       )
     }
   }
@@ -243,7 +243,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       assertSnapshot(
         matching: parent.view,
         as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)", record: true
+        named: "lang_\(language)_device_\(device)"
       )
     }
   }
@@ -296,7 +296,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)", record: true
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }
@@ -358,7 +358,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)", record: true
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }

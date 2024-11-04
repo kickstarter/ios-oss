@@ -176,7 +176,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
 
       self.labelTextString.assertValues([
-        "If the project reaches its funding goal, you will be charged HK$ 10 on October 16, 2016."
+        "If the project reaches its funding goal, you will be charged HK$ 10 on October 16, 2016. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
       ])
     }
   }
