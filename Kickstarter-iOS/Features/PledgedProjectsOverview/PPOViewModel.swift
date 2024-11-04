@@ -13,8 +13,8 @@ typealias PPOViewModelPaginator = Paginator<
 
 protocol PPOViewModelInputs {
   func viewDidAppear()
-  func loadMore()
-  func pullToRefresh()
+  func refresh() async
+  func loadMore() async
 
   func openBackedProjects()
   func fixPaymentMethod(from: PPOProjectCardModel)
@@ -45,12 +45,11 @@ enum PPONavigationEvent: Equatable {
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
     let paginator: PPOViewModelPaginator = Paginator(
-      valuesFromEnvelope: { data in
+      valuesFromEnvelope: { data -> [PPOProjectCardViewModel] in
         data.pledgeProjectsOverview?.pledges?.edges?
           .compactMap { edge in edge?.node }
           .compactMap { node in PPOProjectCardModel(node: node) }
-          .compactMap { PPOProjectCardViewModel(card: $0, parentSize: .zero) }
-          ?? []
+          .compactMap { model in PPOProjectCardViewModel(card: model) } ?? []
       },
       cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
@@ -197,12 +196,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.viewDidAppearSubject.send(())
   }
 
-  func loadMore() {
+  func loadMore() async {
     self.loadMoreSubject.send(())
+    _ = await self.paginator.nextResult()
   }
 
-  func pullToRefresh() {
+  func refresh() async {
     self.pullToRefreshSubject.send(())
+    _ = await self.paginator.nextResult()
   }
 
   // TODO: Add any additional properties for routing (MBL-1451)

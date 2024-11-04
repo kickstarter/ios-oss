@@ -1,11 +1,12 @@
 import Foundation
+import Kingfisher
 import KsApi
 import Library
 
-public struct PPOProjectCardModel: Identifiable, Equatable {
+public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let isUnread: Bool
   public let alerts: [Alert]
-  public let imageURL: URL
+  public let image: Kingfisher.Source
   public let title: String
   public let pledge: GraphAPI.MoneyFragment
   public let creatorName: String
@@ -14,6 +15,19 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
   public let tierType: TierType
   public let backingDetailsUrl: String
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.isUnread)
+    hasher.combine(self.alerts)
+    hasher.combine(self.image)
+    hasher.combine(self.title)
+    hasher.combine(self.pledge)
+    hasher.combine(self.creatorName)
+    hasher.combine(self.address)
+    hasher.combine(self.actions.0)
+    hasher.combine(self.actions.1)
+    hasher.combine(self.tierType)
+  }
 
   // MARK: - Identifiable
 
@@ -26,7 +40,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
   public static func == (lhs: PPOProjectCardModel, rhs: PPOProjectCardModel) -> Bool {
     lhs.isUnread == rhs.isUnread &&
       lhs.alerts == rhs.alerts &&
-      lhs.imageURL == rhs.imageURL &&
+      lhs.image == rhs.image &&
       lhs.title == rhs.title &&
       lhs.pledge == rhs.pledge &&
       lhs.creatorName == rhs.creatorName &&
@@ -41,7 +55,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
     case confirmAddress
   }
 
-  public enum Action: Identifiable, Equatable {
+  public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress
     case editAddress
     case completeSurvey
@@ -98,7 +112,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
     }
   }
 
-  public struct Alert: Identifiable, Equatable {
+  public struct Alert: Identifiable, Equatable, Hashable {
     public let type: AlertType
     public let icon: AlertIcon
     public let message: String
@@ -113,7 +127,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
       "\(self.type)-\(self.icon)-\(self.message)"
     }
 
-    public enum AlertType: Identifiable, Equatable {
+    public enum AlertIcon: Identifiable, Equatable {
       case time
       case alert
 
@@ -127,7 +141,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
       }
     }
 
-    public enum AlertIcon: Identifiable, Equatable {
+    public enum AlertType: Identifiable, Equatable {
       case warning
       case alert
 
@@ -145,7 +159,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable {
 
 extension PPOProjectCardModel.Alert {
   init?(flag: GraphAPI.PpoCardFragment.Flag) {
-    let alertType: PPOProjectCardModel.Alert.AlertType? = switch flag.type {
+    let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
     case "alert":
       .alert
     case "time":
@@ -154,7 +168,7 @@ extension PPOProjectCardModel.Alert {
       nil
     }
 
-    let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
+    let alertType: PPOProjectCardModel.Alert.AlertType? = switch flag.type {
     case "alert":
       .alert
     case "warning":
@@ -180,6 +194,14 @@ extension GraphAPI.MoneyFragment: Equatable {
   }
 }
 
+extension GraphAPI.MoneyFragment: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.amount)
+    hasher.combine(self.currency)
+    hasher.combine(self.symbol)
+  }
+}
+
 extension PPOProjectCardModel {
   #if targetEnvironment(simulator)
     public static let previewTemplates: [PPOProjectCardModel] = [
@@ -194,9 +216,9 @@ extension PPOProjectCardModel {
   internal static let confirmAddressTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .time, icon: .warning, message: "Address locks in 8 hours")
+      .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -215,10 +237,10 @@ extension PPOProjectCardModel {
   internal static let addressLockTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .alert, icon: .warning, message: "Survey available"),
-      .init(type: .time, icon: .warning, message: "Address locks in 48 hours")
+      .init(type: .warning, icon: .alert, message: "Survey available"),
+      .init(type: .warning, icon: .time, message: "Address locks in 48 hours")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -234,12 +256,12 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .alert, icon: .alert, message: "Payment failed"),
       .init(
-        type: .time,
-        icon: .alert,
+        type: .alert,
+        icon: .time,
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -255,12 +277,12 @@ extension PPOProjectCardModel {
     alerts: [
       .init(type: .alert, icon: .alert, message: "Card needs authentication"),
       .init(
-        type: .time,
-        icon: .alert,
+        type: .alert,
+        icon: .time,
         message: "Pledge will be dropped in 6 days"
       )
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -274,9 +296,9 @@ extension PPOProjectCardModel {
   internal static let completeSurveyTemplate = PPOProjectCardModel(
     isUnread: true,
     alerts: [
-      .init(type: .alert, icon: .warning, message: "Survey available")
+      .init(type: .warning, icon: .alert, message: "Survey available")
     ],
-    imageURL: URL(string: "http://localhost/")!,
+    image: .network(URL(string: "https:///")!),
     title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
     creatorName: "rokaplay truncate if longer than",
@@ -330,8 +352,9 @@ extension PPOProjectCardModel {
     let backing = card.backing?.fragments.ppoBackingFragment
     let ppoProject = backing?.project?.fragments.ppoProjectFragment
 
-    let imageURL = ppoProject?.image?.url
+    let image = ppoProject?.image?.url
       .flatMap { URL(string: $0) }
+      .map { Kingfisher.Source.network($0) }
 
     let title = ppoProject?.name
     let pledge = backing?.amount.fragments.moneyFragment
@@ -373,12 +396,11 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let imageURL, let title, let pledge, let creatorName, let projectAnalyticsFragment,
-       let backingDetailsUrl {
+    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment, let backingDetailsUrl {
       self.init(
         isUnread: true,
         alerts: alerts,
-        imageURL: imageURL,
+        image: image,
         title: title,
         pledge: pledge,
         creatorName: creatorName,
