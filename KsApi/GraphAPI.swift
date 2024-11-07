@@ -10875,6 +10875,14 @@ public enum GraphAPI {
             nodes {
               __typename
               ...RewardFragment
+              simpleShippingRulesExpanded @include(if: $includeShippingRules) {
+                __typename
+                cost
+                currency
+                locationId
+                locationName
+                country
+              }
             }
           }
         }
@@ -11020,6 +11028,9 @@ public enum GraphAPI {
               return [
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                 GraphQLFragmentSpread(RewardFragment.self),
+                GraphQLBooleanCondition(variableName: "includeShippingRules", inverted: false, selections: [
+                  GraphQLField("simpleShippingRulesExpanded", type: .nonNull(.list(.object(SimpleShippingRulesExpanded.selections)))),
+                ]),
               ]
             }
 
@@ -11035,6 +11046,19 @@ public enum GraphAPI {
               }
               set {
                 resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// Simple shipping rules
+            /// expanded as a faster alternative to
+            /// shippingRulesExpanded since connection
+            /// type is slow
+            public var simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]? {
+              get {
+                return (resultMap["simpleShippingRulesExpanded"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [SimpleShippingRulesExpanded?] in value.map { (value: ResultMap?) -> SimpleShippingRulesExpanded? in value.flatMap { (value: ResultMap) -> SimpleShippingRulesExpanded in SimpleShippingRulesExpanded(unsafeResultMap: value) } } }
+              }
+              set {
+                resultMap.updateValue(newValue.flatMap { (value: [SimpleShippingRulesExpanded?]) -> [ResultMap?] in value.map { (value: SimpleShippingRulesExpanded?) -> ResultMap? in value.flatMap { (value: SimpleShippingRulesExpanded) -> ResultMap in value.resultMap } } }, forKey: "simpleShippingRulesExpanded")
               }
             }
 
@@ -11060,6 +11084,85 @@ public enum GraphAPI {
                 }
                 set {
                   resultMap += newValue.resultMap
+                }
+              }
+            }
+
+            public struct SimpleShippingRulesExpanded: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["SimpleShippingRule"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("cost", type: .scalar(String.self)),
+                  GraphQLField("currency", type: .scalar(String.self)),
+                  GraphQLField("locationId", type: .scalar(GraphQLID.self)),
+                  GraphQLField("locationName", type: .scalar(String.self)),
+                  GraphQLField("country", type: .nonNull(.scalar(String.self))),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(cost: String? = nil, currency: String? = nil, locationId: GraphQLID? = nil, locationName: String? = nil, country: String) {
+                self.init(unsafeResultMap: ["__typename": "SimpleShippingRule", "cost": cost, "currency": currency, "locationId": locationId, "locationName": locationName, "country": country])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var cost: String? {
+                get {
+                  return resultMap["cost"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "cost")
+                }
+              }
+
+              public var currency: String? {
+                get {
+                  return resultMap["currency"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "currency")
+                }
+              }
+
+              public var locationId: GraphQLID? {
+                get {
+                  return resultMap["locationId"] as? GraphQLID
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "locationId")
+                }
+              }
+
+              public var locationName: String? {
+                get {
+                  return resultMap["locationName"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "locationName")
+                }
+              }
+
+              public var country: String {
+                get {
+                  return resultMap["country"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "country")
                 }
               }
             }
