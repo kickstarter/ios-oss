@@ -53,6 +53,7 @@
 "Ask_a_question" = "質問する";
 "Ask_me_anything" = "お問い合わせ";
 "Ask_the_project_creator_directly" = "プロジェクトのクリエイターに直接お問い合わせください。";
+"Authenticate_card" = "カードの認証手続き";
 "Authentication_failed_please_try_again" = "認証に失敗しました。もう一度お試しください。";
 "Authentication_success_please_pull_to_refresh" = "認証が成功しました。画面をプルダウンして、更新してください。";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
@@ -131,6 +132,7 @@
 "Complete_payment" = "支払いを完了";
 "Confirm" = "確定する";
 "Confirm_password" = "新しいパスワードの確認";
+"Confirm_your_address" = "住所確認";
 "Confirm_your_pledge_details" = "プレッジの詳細を確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_backer" = "バッカーに連絡する";
@@ -208,6 +210,7 @@
 "Double_tap_to_toggle_setting" = "ダブルタップして設定を切り替える";
 "Download_your_personal_data" = "自分の個人データをダウンロード";
 "Earth" = "全世界";
+"Edit" = "編集";
 "Edit_profile" = "プロフィールを編集";
 "Edit_reward" = "リワードを編集する";
 "Either_the_pledge_or_the_project_was_canceled" = "プレッジもプロジェクトも期限前にキャンセル済";
@@ -264,6 +267,7 @@
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
 "Fix" = "修正する";
+"Fix_payment" = "お支払い方法の修正";
 "Fix_payment_method" = "お支払い方法を修正";
 "Fix_within_time_remaining" = "%{time_remaining} 以内に修正してください";
 "Fix_your_payment_method" = "お支払い方法を修正";
@@ -320,7 +324,7 @@
 "I_understand" = "理解しました";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline}に%{total}が請求されます。プロジェクトの資金が集まりクリエイターがその取り組み全体に成功した場合に引き換え可能となるプレッジ証明が届きます。";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
 "If_your_profile_is_private" = "プロフィールがプライベート (非公開) 設定の場合、あなたの名前と写真が表示されます。";
 "If_your_profile_is_public" = "プロフィールがプライベート (非公開) 設定でない場合は、過去にあなたがバックしたプロジェクトや、あなたの地域情報、あなたの自己紹介欄とウェブサイトも表示されます。";
@@ -478,6 +482,7 @@
 "Pledge" = "プレッジする";
 "Pledge_activity" = "プレッジ";
 "Pledge_amount" = "プレッジする金額";
+"Pledge_amount_pledged" = "%{pledge_amount} のプレッジ";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "プレッジでプロジェクトに生命を。";
 "Pledge_details" = "プレッジ詳細";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "プロジェクトを探す、プロジェクトにプレッジする、プロジェクトを保存する、全て一つの場所で。";
@@ -610,6 +615,7 @@
 "Selected_card" = "選択済みのカード";
 "Selected_reward" = "選択したリワード";
 "Send" = "送信";
+"Send_a_message" = "メッセージを送る";
 "Send_verfication_email" = "認証メールを送信する";
 "Set_new_password" = "新しいパスワードを設定";
 "Set_your_password" = "パスワードを設定";
@@ -621,6 +627,7 @@
 "Share_this_project_on_Twitter" = "プロジェクトをツイッターでシェアしましょう。";
 "Share_update" = "アップデートをシェアしましょう";
 "Shipping" = "配送";
+"Shipping_address" = "配送先住所";
 "Shipping_addresses" = "配送先住所";
 "Shipping_destination" = "配送地域";
 "Shipping_to_country" = "送料：%{country}";
@@ -668,6 +675,7 @@
 "Suspicious_creator_behavior" = "不審なクリエイターの言動、または不審なプレッジ行為";
 "Sustainable_distribution" = "持続可能な流通";
 "Sustainable_materials" = "持続可能な材料";
+"Take_survey" = "サーベイに回答する";
 "Tap_the_heart_on_a_project_to_get_notified" = "終了48時間前に知らせるにはハートのアイコンをタップ！";
 "Tap_the_heart_on_each_project_page_to_save_it" = "ハートのアイコンを押して保存しましょう。終了48時間前に通知が届きます。";
 "Tap_the_star_on_a_project_to_get_notified" = "星のマークを押すと、終了48時間前に通知が届きます。";
@@ -761,6 +769,7 @@
 "Visit_our_Environmental_Resources_Center" = "Kickstarter の環境リソースセンターにアクセス";
 "Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Kickstarter の環境リソースセンターにアクセス</a>";
 "Watch_live" = "ライブをみる";
+"We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "お支払い方法を認証できませんでした。プルダウンしてページを更新し、別のお支払い方法をお選びください。";
 "We_can_no_longer_log_you_in_through_Facebook" = "Facebook を介したログインはできなくなりました。Kickstarter のパスワードを使ってログインするか、Facebook のメールアドレスを使って新しいパスワードを設定してください。";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "バッカーのお支払い方法で問題があったためこのプレッジを処理することができません。";
 "We_cant_process_your_pledge" = "プレッジを処理することができません。";
