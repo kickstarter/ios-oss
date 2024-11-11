@@ -372,9 +372,12 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
      6) Validate checkout using the checkoutId, payment source id, and payment intent
      */
 
+    // Ensure all required data exists before assuming apple pay flow starts.
+    let startApplePayFlow = Signal.combineLatest(project, pledgeTotal, checkoutId, backingId)
+      .takeWhen(self.applePayButtonTappedSignal)
+
     let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
-      Signal.combineLatest(project, pledgeTotal, checkoutId, backingId)
-        .takeWhen(self.applePayButtonTappedSignal)
+      startApplePayFlow
         .switchMap { project, pledgeTotal, checkoutId, backingId in
           let projectId = project.graphID
 
@@ -564,7 +567,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.processingViewIsHidden = Signal.merge(
       // Processing view starts hidden, so show at the start of a pledge flow.
       self.submitButtonTappedProperty.signal.mapConst(false),
-      self.applePayButtonTappedSignal.mapConst(false),
+      startApplePayFlow.mapConst(false),
       // Hide view again whenever pledge flow is completed/cancelled/errors.
       newPaymentIntentForApplePayError.mapConst(true),
       validateCheckoutError.mapConst(true),

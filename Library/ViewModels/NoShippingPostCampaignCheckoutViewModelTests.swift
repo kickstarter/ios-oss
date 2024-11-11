@@ -391,6 +391,65 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
+  func testTapApplePayButton_processingViewShows_createCheckoutSuccess() {
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .latePledge
+    )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
+      self.vm.inputs.applePayButtonTapped()
+      self.scheduler.run()
+      self.processingViewIsHidden.assertLastValue(false)
+    }
+  }
+
+  func testTapApplePayButton_processingViewStaysHidden_createCheckoutFail() {
+    let mockService = MockService(
+      createCheckoutResult: .failure(.couldNotParseErrorEnvelopeJSON)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .latePledge
+    )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.run()
+      self.vm.inputs.applePayButtonTapped()
+      self.scheduler.run()
+      // Processing view starts hidden and should stay hidden.
+      self.processingViewIsHidden.assertDidNotEmitValue()
+    }
+  }
+
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
