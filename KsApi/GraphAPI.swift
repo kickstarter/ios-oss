@@ -10878,6 +10878,8 @@ public enum GraphAPI {
               simpleShippingRulesExpanded @include(if: $includeShippingRules) {
                 __typename
                 cost
+                estimatedMin
+                estimatedMax
                 currency
                 locationId
                 locationName
@@ -11095,6 +11097,8 @@ public enum GraphAPI {
                 return [
                   GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                   GraphQLField("cost", type: .scalar(String.self)),
+                  GraphQLField("estimatedMin", type: .scalar(String.self)),
+                  GraphQLField("estimatedMax", type: .scalar(String.self)),
                   GraphQLField("currency", type: .scalar(String.self)),
                   GraphQLField("locationId", type: .scalar(GraphQLID.self)),
                   GraphQLField("locationName", type: .scalar(String.self)),
@@ -11108,8 +11112,8 @@ public enum GraphAPI {
                 self.resultMap = unsafeResultMap
               }
 
-              public init(cost: String? = nil, currency: String? = nil, locationId: GraphQLID? = nil, locationName: String? = nil, country: String) {
-                self.init(unsafeResultMap: ["__typename": "SimpleShippingRule", "cost": cost, "currency": currency, "locationId": locationId, "locationName": locationName, "country": country])
+              public init(cost: String? = nil, estimatedMin: String? = nil, estimatedMax: String? = nil, currency: String? = nil, locationId: GraphQLID? = nil, locationName: String? = nil, country: String) {
+                self.init(unsafeResultMap: ["__typename": "SimpleShippingRule", "cost": cost, "estimatedMin": estimatedMin, "estimatedMax": estimatedMax, "currency": currency, "locationId": locationId, "locationName": locationName, "country": country])
               }
 
               public var __typename: String {
@@ -11127,6 +11131,24 @@ public enum GraphAPI {
                 }
                 set {
                   resultMap.updateValue(newValue, forKey: "cost")
+                }
+              }
+
+              public var estimatedMin: String? {
+                get {
+                  return resultMap["estimatedMin"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "estimatedMin")
+                }
+              }
+
+              public var estimatedMax: String? {
+                get {
+                  return resultMap["estimatedMax"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "estimatedMax")
                 }
               }
 

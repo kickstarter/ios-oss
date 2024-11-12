@@ -17,7 +17,7 @@ extension Project {
         guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
 
         // These shipping rules are constructed from simplified versions of the shipping rules.
-        // They should NOT be used for final pledge calculations.
+        // They contain all the data we need, just in a different initial format.
         let expandedShippingRules = node?.simpleShippingRulesExpanded?
           .compactMap { node -> ShippingRule? in
             guard let node,
@@ -25,7 +25,7 @@ extension Project {
             else {
               return nil
             }
-            let cost = Double(node.cost ?? "") ?? 0.0
+
             let name = node.locationName ?? ""
             let location = Location.init(
               country: node.country,
@@ -34,15 +34,25 @@ extension Project {
               localizedName: name,
               name: name
             )
+
+            let cost = node.cost.flatMap(Double.init) ?? 0.0
+            let estimatedMin = Money(
+              amount: node.estimatedMin.flatMap(Double.init) ?? 0.0,
+              currency: Money.CurrencyCode(rawValue: node.currency ?? "")
+            )
+            let estimatedMax = Money.init(
+              amount: node.estimatedMax.flatMap(Double.init) ?? 0.0,
+              currency: Money.CurrencyCode(rawValue: node.currency ?? "")
+            )
+
             return ShippingRule(
               cost: cost,
               id: nil,
               location: location,
-              estimatedMin: nil,
-              estimatedMax: nil
+              estimatedMin: estimatedMin,
+              estimatedMax: estimatedMax
             )
           }
-          .compactMap { $0 }
 
         return (rewardFragment, expandedShippingRules)
       }

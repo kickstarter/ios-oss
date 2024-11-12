@@ -5,6 +5,8 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
         ...RewardFragment
         simpleShippingRulesExpanded @include(if: $includeShippingRules) {
             cost,
+            estimatedMin,
+            estimatedMax,
             currency,
             locationId,
             locationName,
