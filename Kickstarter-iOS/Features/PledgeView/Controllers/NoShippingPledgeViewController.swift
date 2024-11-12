@@ -72,6 +72,15 @@ final class NoShippingPledgeViewController: UIViewController,
       |> \.messageDisplayingDelegate .~ self
       |> \.delegate .~ self
   }()
+  
+  private lazy var paymentPlansView: UIView = {
+    self.paymentPlansViewController.view
+  }()
+  
+  private lazy var paymentPlansViewController = {
+    PledgePaymentPlansViewController.instantiate()
+      |> \.delegate .~ self
+  }()
 
   private lazy var localPickupLocationView = {
     PledgeLocalPickupView(frame: .zero)
@@ -157,11 +166,15 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let childViewControllers = [
       self.pledgeRewardsSummaryViewController,
-      self.paymentMethodsViewController
+      self.paymentMethodsViewController,
+      self.paymentPlansViewController
     ]
+    
+    self.paymentPlansView.isHidden = true
 
     let arrangedInsetSubviews = [
       [self.titleLabel],
+      [self.paymentPlansView],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -218,6 +231,8 @@ final class NoShippingPledgeViewController: UIViewController,
     applyRootInsetStackViewStyle(self.estimatedShippingStackView)
 
     roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
+    
+    roundedStyle(self.paymentPlansView, cornerRadius: Layout.Style.cornerRadius)
 
     applyRoundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
@@ -262,9 +277,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()
-      .observeValues { value in
-        // TODO: Hide or show the Pledge Over Time UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
-        debugPrint("showPledgeOverTimeUI: \(value)")
+      .observeValues { [weak self] value in
+        self?.paymentPlansView.isHidden = !value
       }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData
@@ -637,4 +651,13 @@ public func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
+}
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension NoShippingPledgeViewController: PledgePaymentPlansViewControllerDelegate {
+  func pledgePaymentPlansViewController(_ viewController: PledgePaymentPlansViewController, didSelectPaymentPlan paymentPlan: Library.PledgePaymentPlansType) {
+    // TODO: Implement the necessary functionality once the ticket [MBL-1853] is resolved
+    debugPrint("pledgePaymentPlansViewController:didSelectPaymentPlan: \(paymentPlan)")
+  }
 }
