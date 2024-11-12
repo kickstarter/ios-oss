@@ -6,18 +6,18 @@ internal final class PledgePaymentPlansDataSource: ValueCellDataSource {
   internal func load(_ data: PledgePaymentPlansAndSelectionData) {
     self.clearValues()
     
-    let isPledgeInFullSelected = data.selectedPlan == PledgePaymentPlansType.PledgeinFull
+    let isPledgeInFullSelected = data.selectedPlan == PledgePaymentPlansType.pledgeinFull
     
     self.set(
       values: [isPledgeInFullSelected],
       cellClass: PledgePaymentPlanInFullCell.self,
-      inSection: PledgePaymentPlansType.PledgeinFull.rawValue
+      inSection: PledgePaymentPlansType.pledgeinFull.rawValue
     )
     
     self.set(
       values: [!isPledgeInFullSelected],
       cellClass: PledgePaymentPlanPlotCell.self,
-      inSection: PledgePaymentPlansType.PledgeOverTime.rawValue
+      inSection: PledgePaymentPlansType.pledgeOverTime.rawValue
     )
   }
   
