@@ -687,19 +687,15 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let currentCountry = project.stats.currentCountry ?? Project.Country.us
-
   let formattedMin = Format.currency(
     estimatedMin,
-    country: currentCountry,
-    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    country: project.country,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     estimatedMax,
-    country: currentCountry,
-    omitCurrencyCode: project.stats.omitUSCurrencyCode,
+    country: project.country,
     roundingMode: .halfUp
   )
 
