@@ -132,7 +132,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { reward, project, shippingRule in
         guard let locationId = shippingRule?.location.id else { return nil }
 
-        return estimatedShippingText(for: [reward], project: project, locationId: locationId)
+        return estimatedShippingConversionText(for: [reward], project: project, locationId: locationId)
       }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
