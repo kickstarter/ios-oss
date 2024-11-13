@@ -352,6 +352,33 @@ extension User {
         newsletters: $1.newsletters,
         notifications: $1.notifications,
         optedOutOfRecommendations: $0,
+        ppoHasAction: $1.ppoHasAction,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social,
+        stats: $1.stats,
+        unseenActivityCount: $1.unseenActivityCount
+      ) }
+    )
+
+    public static let ppoHasAction = Lens<User, Bool?>(
+      view: { $0.ppoHasAction },
+      set: { User(
+        avatar: $1.avatar,
+        erroredBackingsCount: $1.erroredBackingsCount,
+        facebookConnected: $1.facebookConnected,
+        id: $1.id,
+        isAdmin: $1.isAdmin,
+        isEmailVerified: $1.isEmailVerified,
+        isFriend: $1.isFriend,
+        isBlocked: $1.isBlocked,
+        location: $1.location,
+        name: $1.name,
+        needsFreshFacebookToken: $1.needsFreshFacebookToken,
+        needsPassword: $1.needsPassword,
+        newsletters: $1.newsletters,
+        notifications: $1.notifications,
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        ppoHasAction: $0,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
         stats: $1.stats,

@@ -611,6 +611,50 @@ final class RootViewModelTests: TestCase {
     self.viewControllerNames.assertValueCount(3)
     self.filterDiscovery.assertValues([params])
   }
+
+  func testPPOTabBarBadging_FeatureFlagEnabled() {
+    let user = User.template
+    |> \.unseenActivityCount .~ 50
+    |> \.erroredBackingsCount .~ 4
+    |> \.ppoHasAction .~ true
+
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+    ]
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(currentUser: user, remoteConfigClient: remoteConfig) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([""])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testPPOTabBarBadging_FeatureFlagDisabled() {
+    let user = User.template
+      |> \.unseenActivityCount .~ 50
+      |> \.erroredBackingsCount .~ 4
+      |> \.ppoHasAction .~ true
+
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
+    ]
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(currentUser: user, remoteConfigClient: remoteConfig) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
 }
 
 private func extractRootNames(_ vcs: [RootViewControllerData]) -> [String] {
