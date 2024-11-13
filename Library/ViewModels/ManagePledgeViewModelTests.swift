@@ -572,7 +572,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.menuButtonTapped()
       self.vm.inputs.menuOptionSelected(with: .contactCreator)
 
-      self.goToContactCreatorSubject.assertValues([.project(project)])
+      self.goToContactCreatorSubject.assertValues([.project(id: project.id, name: project.name)])
       self.goToContactCreatorContext.assertValues([.backerModal])
     }
   }
