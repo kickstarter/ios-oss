@@ -81,7 +81,7 @@ struct PPOProjectCard: View {
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     PPOProjectDetails(
       image: self.viewModel.card.image,
-      title: self.viewModel.card.title,
+      title: self.viewModel.card.projectName,
       pledge: self.viewModel.card.pledge,
       leadingColumnWidth: leadingColumnWidth
     )
