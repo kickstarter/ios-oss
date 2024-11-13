@@ -614,9 +614,9 @@ final class RootViewModelTests: TestCase {
 
   func testPPOTabBarBadging_FeatureFlagEnabled() {
     let user = User.template
-    |> \.unseenActivityCount .~ 50
-    |> \.erroredBackingsCount .~ 4
-    |> \.ppoHasAction .~ true
+      |> \.unseenActivityCount .~ 50
+      |> \.erroredBackingsCount .~ 4
+      |> \.ppoHasAction .~ true
 
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
