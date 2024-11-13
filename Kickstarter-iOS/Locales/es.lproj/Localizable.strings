@@ -53,6 +53,7 @@
 "Ask_a_question" = "Haz una pregunta";
 "Ask_me_anything" = "¡Pregúntame!";
 "Ask_the_project_creator_directly" = "Pregúntale al creador del proyecto directamente.";
+"Authenticate_card" = "Autenticar tarjeta";
 "Authentication_failed_please_try_again" = "Autenticación fallida. Intenta de nuevo.";
 "Authentication_success_please_pull_to_refresh" = "Autenticación exitosa. Desliza para actualizar.";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
@@ -131,6 +132,7 @@
 "Complete_payment" = "Completar pago";
 "Confirm" = "Confirmar";
 "Confirm_password" = "Confirmar nueva contraseña";
+"Confirm_your_address" = "Confirmar dirección";
 "Confirm_your_pledge_details" = "Confirma los datos de tu contribución";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto.";
 "Contact_backer" = "Contacta al patrocinador";
@@ -208,6 +210,7 @@
 "Double_tap_to_toggle_setting" = "Toca dos veces para cambiar la configuración";
 "Download_your_personal_data" = "Descarga tus datos personales";
 "Earth" = "Tierra";
+"Edit" = "Editar";
 "Edit_profile" = "Editar perfil";
 "Edit_reward" = "Editar recompensa";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
@@ -264,6 +267,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí.";
 "First_created" = "Primer proyecto creado";
 "Fix" = "Corregir";
+"Fix_payment" = "Arreglar pago";
 "Fix_payment_method" = "Corregir el método de pago";
 "Fix_within_time_remaining" = "Corregir en %{time_remaining}";
 "Fix_your_payment_method" = "Corrige tu método de pago";
@@ -320,7 +324,7 @@
 "I_understand" = "Entiendo";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el monto de %{total} el %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si el proyecto alcanza la meta de financiamiento, te cobraremos %{total} el %{project_deadline}. Recibirás un comprobante por la contribución que podrás canjear si el proyecto se financia con éxito y el creador logra completar su iniciativa.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";
 "If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n";
 "If_your_profile_is_public" = "Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";
@@ -478,6 +482,7 @@
 "Pledge" = "Contribución:";
 "Pledge_activity" = "Actividad de contribución";
 "Pledge_amount" = "Monto de contribución";
+"Pledge_amount_pledged" = "%{pledge_amount} contribuido";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
 "Pledge_details" = "Detalles de la contribución";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
@@ -610,6 +615,7 @@
 "Selected_card" = "Tarjeta seleccionada";
 "Selected_reward" = "Recompensa seleccionada";
 "Send" = "Enviar";
+"Send_a_message" = "Enviar un mensaje";
 "Send_verfication_email" = "Enviar correo de verificación";
 "Set_new_password" = "Configurar nueva contraseña";
 "Set_your_password" = "Configura tu contraseña";
@@ -621,6 +627,7 @@
 "Share_this_project_on_Twitter" = "Compartir este proyecto en Twitter.";
 "Share_update" = "Compartir";
 "Shipping" = "Envío";
+"Shipping_address" = "Dirección de envío";
 "Shipping_addresses" = "Direcciones de envío";
 "Shipping_destination" = "Destino de envío";
 "Shipping_to_country" = "Envío: %{country}";
@@ -668,6 +675,7 @@
 "Suspicious_creator_behavior" = "Comportamiento del creador o actividad de contribución sospechosos";
 "Sustainable_distribution" = "Distribución sustentable";
 "Sustainable_materials" = "Materiales sustentables";
+"Take_survey" = "Completar cuestionario";
 "Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Tap_the_star_on_a_project_to_get_notified" = "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice.";
@@ -761,6 +769,7 @@
 "Visit_our_Environmental_Resources_Center" = "Visita nuestro Centro de recursos medioambientales";
 "Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Visita nuestro Centro de recursos medioambientales</a>";
 "Watch_live" = "Ver en vivo";
+"We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "No podemos autenticar tu método de pago. Desliza para actualizar la página y elegir otro.";
 "We_can_no_longer_log_you_in_through_Facebook" = "Ya no admitimos el inicio de sesión a través de Facebook. Inicia sesión con tu contraseña de Kickstarter o configura una nueva contraseña con tu correo electrónico de Facebook.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
 "We_cant_process_your_pledge" = "No podemos procesar tu contribución.";

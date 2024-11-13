@@ -291,7 +291,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
         total: pledgeTotal,
-        confirmationLabelHidden: true,
+        confirmationLabelHidden: false,
         pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
       )
       return (rewardsData, additionalPledgeAmount, pledgeData)
