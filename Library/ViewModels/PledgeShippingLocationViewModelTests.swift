@@ -435,4 +435,67 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
+
+  func testShippingRulesFromProject_usesUnrestrictedShippingReward() {
+    let reward1 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRules[0]]
+
+    let reward2 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRules[1]]
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward1, reward2]
+
+    let remoteConfigClient = MockRemoteConfigClient()
+    remoteConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: remoteConfigClient) {
+      self.vm.inputs.configureWith(data: (project: project, reward: reward1, false, nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.shippingLocationButtonTapped()
+
+      self.presentShippingRulesAllRules.assertLastValue([shippingRules[1]])
+    }
+  }
+
+  func testShippingRulesFromProject_combinesRestrictedShippingRewards() {
+    let reward1 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRules[0], shippingRules[1]]
+
+    let reward2 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRules[1], shippingRules[2]]
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward1, reward2]
+
+    let remoteConfigClient = MockRemoteConfigClient()
+    remoteConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: remoteConfigClient) {
+      self.vm.inputs.configureWith(data: (project: project, reward: reward1, false, nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.shippingLocationButtonTapped()
+
+      // Presented shipping rules should be sorted in aphabetical order by display name.
+      self.presentShippingRulesAllRules.assertLastValue([
+        shippingRules[2],
+        shippingRules[0],
+        shippingRules[1]
+      ])
+    }
+  }
 }
