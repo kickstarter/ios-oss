@@ -470,6 +470,7 @@ extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
   guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
+    // an empty string will show a dot as badge
     return ""
   }
 
