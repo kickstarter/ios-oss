@@ -5,11 +5,9 @@ import UIKit
 final class PledgePaymentPlanInFullCell: UITableViewCell, ValueCell {
   // MARK: properties
 
-  private lazy var rootStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rigthColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var checkmarkImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_support_100 }()
@@ -37,7 +35,13 @@ final class PledgePaymentPlanInFullCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.checkmarkImageView, self.titleLabel], self.rootStackView)
+    _ = ([self.checkmarkImageView, UIView()], self.leftColumnStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.titleLabel, UIView()], self.rigthColumnStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.leftColumnStackView, self.rigthColumnStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -61,6 +65,13 @@ final class PledgePaymentPlanInFullCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> self.rootStackViewStyle
+
+    _ = self.leftColumnStackView
+      |> self.columnStackViewStyle
+      |> \.spacing .~ 0
+
+    _ = self.rigthColumnStackView
+      |> self.columnStackViewStyle
 
     _ = self.titleLabel
       |> self.titleLabelStyle
@@ -97,15 +108,22 @@ final class PledgePaymentPlanInFullCell: UITableViewCell, ValueCell {
       |> \.spacing .~ Styles.grid(2)
   }
 
+  private let columnStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(1)
+  }
+
   private let titleLabelStyle: LabelStyle = { label in
     label
       |> checkoutTitleLabelStyle
       |> \.font .~ UIFont.ksr_subhead().bolded
-      |> \.text .~ "Pledge in full" // TODO: add to localizable strings. Ticket TBA
+      |> \.text .~
+      "Pledge in full" // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   }
 
   private let checkmarkImageViewStyle: ImageViewStyle = { imageView in
     imageView
-      |> \.contentMode .~ .center
+      |> \.contentMode .~ .top
   }
 }

@@ -5,12 +5,10 @@ import UIKit
 final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
   // MARK: properties
 
-  private lazy var rootStackView: UIStackView = {
-    UIStackView(frame: .zero)
-  }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  private lazy var leftStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var rigthStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rigthColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var checkmarkImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -39,13 +37,13 @@ final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.checkmarkImageView, UIView()], self.leftStackView)
+    _ = ([self.checkmarkImageView, UIView()], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleLabel, self.subtitleLabel, UIView()], self.rigthStackView)
+    _ = ([self.titleLabel, self.subtitleLabel, UIView()], self.rigthColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.leftStackView, self.rigthStackView], self.rootStackView)
+    _ = ([self.leftColumnStackView, self.rigthColumnStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -76,11 +74,11 @@ final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> self.rootStackViewStyle
 
-    _ = self.leftStackView
+    _ = self.leftColumnStackView
       |> self.columnStackViewStyle
       |> \.spacing .~ 0
 
-    _ = self.rigthStackView
+    _ = self.rigthColumnStackView
       |> self.columnStackViewStyle
 
     _ = self.titleLabel
@@ -131,7 +129,8 @@ final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
     label
       |> checkoutTitleLabelStyle
       |> \.font .~ UIFont.ksr_subhead().bolded
-      |> \.text .~ "Pledge Over Time" // TODO: add to localizable strings. Ticket TBA
+      |> \.text .~
+      "Pledge Over Time" // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   }
 
   private let subtitleLabelStyle: LabelStyle = { label in
@@ -140,11 +139,11 @@ final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textColor .~ .ksr_support_400
       |> \.text .~
-      "You will be charged for your pledge over four payments, at no extra cost." // TODO: add to localizable strings. Ticket TBA
+      "You will be charged for your pledge over four payments, at no extra cost." // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   }
 
   private let checkmarkImageViewStyle: ImageViewStyle = { imageView in
     imageView
-      |> \.contentMode .~ .center
+      |> \.contentMode .~ .top
   }
 }

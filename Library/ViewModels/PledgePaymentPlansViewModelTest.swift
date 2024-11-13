@@ -44,13 +44,13 @@ final class PledgePaymentPlansViewModelTests: TestCase {
       self.notifyDelegatePaymentPlanSelected.assertDidNotEmitValue()
     }
   }
-  
+
   func testPaymenPlans_WithConfigureData() {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
-      
+
       let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
-      
+
       self.vm.inputs.configure(with: data)
       self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull])
       self.notifyDelegatePaymentPlanSelected.assertDidNotEmitValue()
