@@ -17,7 +17,8 @@ extension Project {
         guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
 
         // These shipping rules are constructed from simplified versions of the shipping rules.
-        // They contain all the data we need, just in a different initial format.
+        // Names are not localized and should not be shown to users, but they contain the data we
+        // need to calculate shipping, just in a different initial format.
         let expandedShippingRules = node?.simpleShippingRulesExpanded?
           .compactMap { node -> ShippingRule? in
             guard let node,
