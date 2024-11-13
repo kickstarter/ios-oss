@@ -18,10 +18,31 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
     super.tearDown()
   }
 
-  func testView_DefaultState() {
+  func testView_PledgeInFullSelected() {
     combos(Language.allLanguages, [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
+
+        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
+        controller.configure(with: data)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 400
+
+        self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_PledgeOverTimeSelected() {
+    combos(Language.allLanguages, [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let controller = PledgePaymentPlansViewController.instantiate()
+
+        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeOverTime)
+        controller.configure(with: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 400
