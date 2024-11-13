@@ -1,4 +1,5 @@
 import Foundation
+import Prelude
 import ReactiveSwift
 
 public enum PledgePaymentPlansType: Int {
@@ -24,12 +25,13 @@ public struct PledgePaymentPlansAndSelectionData: Equatable {
 
 public protocol PledgePaymentPlansViewModelInputs {
   func viewDidLoad()
+  func configure(with value: PledgePaymentPlansAndSelectionData)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
 }
 
 public protocol PledgePaymentPlansViewModelOutputs {
   var notifyDelegatePaymentPlanSelected: Signal<PledgePaymentPlansType, Never> { get }
-  var reloadPaymentPlans: SignalProducer<PledgePaymentPlansAndSelectionData, Never> { get }
+  var reloadPaymentPlans: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
 }
 
 public protocol PledgePaymentPlansViewModelType {
@@ -40,7 +42,7 @@ public protocol PledgePaymentPlansViewModelType {
 public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
   PledgePaymentPlansViewModelInputs,
   PledgePaymentPlansViewModelOutputs {
-  public var reloadPaymentPlans: SignalProducer<PledgePaymentPlansAndSelectionData, Never>
+  public var reloadPaymentPlans: Signal<PledgePaymentPlansAndSelectionData, Never>
   public var notifyDelegatePaymentPlanSelected: Signal<PledgePaymentPlansType, Never>
 
   public var inputs: PledgePaymentPlansViewModelInputs { return self }
@@ -52,19 +54,30 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
   }
 
   public init() {
-    let initialIndexPath = MutableProperty<PledgePaymentPlansType>(.pledgeinFull)
+    let configureWithValue = Signal.combineLatest(
+      self.viewDidLoadProperty.signal,
+      self.configureWithValueProperty.signal.skipNil()
+    )
+    .map(second)
+
+    let planType = configureWithValue.map { $0.selectedPlan }
 
     let selectedPlanType = self.didSelectRowAtIndexPathProperty.signal
       .skipNil()
       .map { PledgePaymentPlansType(rawValue: $0.section) }
       .skipNil()
 
-    self.reloadPaymentPlans = SignalProducer.merge(
-      initialIndexPath.producer,
-      selectedPlanType.producer
+    self.reloadPaymentPlans = Signal.merge(
+      planType,
+      selectedPlanType
     ).map { PledgePaymentPlansAndSelectionData(selectedPlan: $0) }
 
     self.notifyDelegatePaymentPlanSelected = selectedPlanType.signal.skipRepeats()
+  }
+
+  private let configureWithValueProperty = MutableProperty<PledgePaymentPlansAndSelectionData?>(nil)
+  public func configure(with value: PledgePaymentPlansAndSelectionData) {
+    self.configureWithValueProperty.value = value
   }
 
   private let didSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)

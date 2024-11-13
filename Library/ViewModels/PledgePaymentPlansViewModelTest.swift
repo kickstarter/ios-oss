@@ -31,7 +31,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
 
     self.vm.outputs.reloadPaymentPlans
       .map { $0.selectedPlan }
-      .start(self.reloadPaymentPlansPlanType.observer)
+      .observe(self.reloadPaymentPlansPlanType.observer)
   }
 
   // MARK: Test cases
@@ -40,6 +40,18 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
+      self.reloadPaymentPlansPlanType.assertDidNotEmitValue()
+      self.notifyDelegatePaymentPlanSelected.assertDidNotEmitValue()
+    }
+  }
+  
+  func testPaymenPlans_WithConfigureData() {
+    withEnvironment {
+      self.vm.inputs.viewDidLoad()
+      
+      let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
+      
+      self.vm.inputs.configure(with: data)
       self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull])
       self.notifyDelegatePaymentPlanSelected.assertDidNotEmitValue()
     }
@@ -50,7 +62,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.didSelectRowAtIndexPath(self.pledgeInFullIndexPath)
-      self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull, .pledgeinFull])
+      self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeinFull])
     }
   }
@@ -60,7 +72,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.didSelectRowAtIndexPath(self.pledgeOverTimeIndexPath)
-      self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull, .pledgeOverTime])
+      self.reloadPaymentPlansPlanType.assertValues([.pledgeOverTime])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeOverTime])
     }
   }

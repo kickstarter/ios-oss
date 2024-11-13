@@ -5686,8 +5686,8 @@
 		33785F6E2CD9ADB8004B148E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */,
 				33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */,
+				339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

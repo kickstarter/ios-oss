@@ -281,6 +281,12 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.paymentPlansView.isHidden = !value
       }
 
+    self.viewModel.outputs.pledgeOverTimeConfigData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.paymentPlansViewController.configure(with: data)
+      }
+
     self.viewModel.outputs.configurePledgeAmountViewWithData
       .observeForUI()
       .observeValues { [weak self] data in

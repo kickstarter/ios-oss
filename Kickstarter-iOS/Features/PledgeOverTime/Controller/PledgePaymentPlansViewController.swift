@@ -68,7 +68,7 @@ final class PledgePaymentPlansViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadPaymentPlans.observeForUI().startWithValues { [weak self] data in
+    self.viewModel.outputs.reloadPaymentPlans.observeForUI().observeValues { [weak self] data in
 
       guard let self = self else { return }
 
@@ -83,6 +83,12 @@ final class PledgePaymentPlansViewController: UIViewController {
 
         self.delegate?.pledgePaymentPlansViewController(self, didSelectPaymentPlan: paymentPlan)
       }
+  }
+
+  // MARK: - Configuration
+
+  func configure(with value: PledgePaymentPlansAndSelectionData) {
+    self.viewModel.inputs.configure(with: value)
   }
 }
 
