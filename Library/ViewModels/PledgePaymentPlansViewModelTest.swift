@@ -12,7 +12,10 @@ final class PledgePaymentPlansViewModelTests: TestCase {
   private var reloadPaymentPlansPlanType = TestObserver<PledgePaymentPlansType, Never>()
   private var notifyDelegatePaymentPlanSelected = TestObserver<PledgePaymentPlansType, Never>()
 
-  private let pledgeInFullIndexPath = IndexPath(row: 0, section: PledgePaymentPlansType.pledgeinFull.rawValue)
+  private let pledgeInFullIndexPath = IndexPath(
+    row: 0,
+    section: PledgePaymentPlansType.pledgeinFull.rawValue
+  )
   private let pledgeOverTimeIndexPath = IndexPath(
     row: 0,
     section: PledgePaymentPlansType.pledgeOverTime.rawValue

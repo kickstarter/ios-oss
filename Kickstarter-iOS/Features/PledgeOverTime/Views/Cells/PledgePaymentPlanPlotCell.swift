@@ -16,7 +16,7 @@ final class PledgePaymentPlanPlotCell: UITableViewCell, ValueCell {
   private lazy var checkmarkImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_support_100 }()
 
-  private let viewModel: PledgePaymentPlansInFullCellViewModelType = PledgePaymentPlansInFullCellViewModel()
+  private let viewModel: PledgePaymentPlansCellViewModelType = PledgePaymentPlansCellViewModel()
 
   // MARK: Lifecycle
 
