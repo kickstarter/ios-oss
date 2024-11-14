@@ -3,6 +3,15 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
     rewards {
       nodes {
         ...RewardFragment
+        simpleShippingRulesExpanded @include(if: $includeShippingRules) {
+            cost,
+            estimatedMin,
+            estimatedMax,
+            currency,
+            locationId,
+            locationName,
+            country
+        }
       }
     }
   }
