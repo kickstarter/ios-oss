@@ -22,13 +22,14 @@ extension Project {
         let expandedShippingRules = node?.simpleShippingRulesExpanded?
           .compactMap { node -> ShippingRule? in
             guard let node,
-                  let idString = node.locationId, let locationId = decompose(id: idString)
+                  let idString = node.locationId, let locationId = decompose(id: idString),
+                  let name = node.locationName,
+                  let cost = node.cost.flatMap(Double.init)
             else {
               return nil
             }
 
-            let name = node.locationName ?? ""
-            let location = Location.init(
+            let location = Location(
               country: node.country,
               displayableName: name,
               id: locationId,
@@ -36,15 +37,11 @@ extension Project {
               name: name
             )
 
-            let cost = node.cost.flatMap(Double.init) ?? 0.0
-            let estimatedMin = Money(
-              amount: node.estimatedMin.flatMap(Double.init) ?? 0.0,
-              currency: Money.CurrencyCode(rawValue: node.currency ?? "")
-            )
-            let estimatedMax = Money.init(
-              amount: node.estimatedMax.flatMap(Double.init) ?? 0.0,
-              currency: Money.CurrencyCode(rawValue: node.currency ?? "")
-            )
+            let currency = node.currency.flatMap { Money.CurrencyCode(rawValue: $0) }
+            let estimatedMin = node.estimatedMin.flatMap(Double.init)
+              .flatMap { Money(amount: $0, currency: currency) }
+            let estimatedMax = node.estimatedMax.flatMap(Double.init)
+              .flatMap { Money(amount: $0, currency: currency) }
 
             return ShippingRule(
               cost: cost,
