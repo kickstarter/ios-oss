@@ -583,7 +583,7 @@ internal final class SharedFunctionsTests: TestCase {
       selectedQuantities: selectedRewardQuantities(in: backing) /// 2
     )
 
-    XCTAssertEqual(estimatedShippingText, "$10-$20")
+    XCTAssertEqual(estimatedShippingText, "US$ 10-US$ 20")
   }
 
   func testEstimatedShippingConversionText() {

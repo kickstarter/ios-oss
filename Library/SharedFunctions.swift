@@ -696,12 +696,14 @@ public func estimatedShippingText(
   let formattedMin = Format.currency(
     estimatedMin,
     country: projectCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     estimatedMax,
     country: projectCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
 
