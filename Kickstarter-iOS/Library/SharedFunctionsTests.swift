@@ -565,6 +565,7 @@ internal final class SharedFunctionsTests: TestCase {
   func testEstimatedShippingText() {
     let mexicanCurrencyProjectTemplate = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
 
@@ -583,5 +584,28 @@ internal final class SharedFunctionsTests: TestCase {
     )
 
     XCTAssertEqual(estimatedShippingText, "$10-$20")
+  }
+
+  func testEstimatedShippingConversionText() {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let backing = Backing.template
+
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.estimatedMin .~ Money(amount: 5.0)
+      |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [shippingRule]
+
+    let estimatedShippingText = estimatedShippingText(
+      for: [reward],
+      project: mexicanCurrencyProjectTemplate,
+      locationId: shippingRule.location.id,
+      selectedQuantities: selectedRewardQuantities(in: backing) /// 2
+    )
+
+    XCTAssertEqual(estimatedShippingText, "About $8-$15")
   }
 }
