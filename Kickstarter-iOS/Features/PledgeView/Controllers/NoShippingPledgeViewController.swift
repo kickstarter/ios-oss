@@ -37,7 +37,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private var plansSectionLabel: UILabel = { UILabel(frame: .zero) }()
+  private var collectionPlanSectionLabel: UILabel = { UILabel(frame: .zero) }()
 
   private var paymentSectionLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -142,7 +142,9 @@ final class NoShippingPledgeViewController: UIViewController,
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.titleLabel.text = Strings.Checkout()
-    self.plansSectionLabel.text = "Collection plan"
+
+    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+    self.collectionPlanSectionLabel.text = "Collection plan"
     self.paymentSectionLabel.text = "Payment"
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
@@ -225,7 +227,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
     applyTitleLabelStyle(self.titleLabel)
 
-    applySectionTitleLabelStyle(self.plansSectionLabel)
+    applySectionTitleLabelStyle(self.collectionPlanSectionLabel)
     applySectionTitleLabelStyle(self.paymentSectionLabel)
 
     applyRootScrollViewStyle(self.rootScrollView)
@@ -283,8 +285,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()
-      .observeValues { [weak self] value in
-        self?.configurePledgeOverTimeUI(value)
+      .observeValues { [weak self] isVisible in
+        self?.configurePledgeOverTimeUI(isVisible)
       }
 
     self.viewModel.outputs.pledgeOverTimeConfigData
@@ -507,15 +509,14 @@ final class NoShippingPledgeViewController: UIViewController,
       }
   }
 
-  private func configurePledgeOverTimeUI(_ isPledgeOverTimeAllowed: Bool) {
-    guard isPledgeOverTimeAllowed else { return }
+  private func configurePledgeOverTimeUI(_ isVisible: Bool) {
+    guard isVisible else { return }
 
     let collectionPlanStackView = UIStackView(frame: .zero)
-    collectionPlanStackView.axis = .vertical
-    collectionPlanStackView.spacing = Styles.grid(2)
+    applySectionStackViewStyle(collectionPlanStackView)
 
     let arrangedCollectionPlanSubviews = [
-      self.plansSectionLabel,
+      self.collectionPlanSectionLabel,
       self.paymentPlansView
     ]
 
@@ -523,11 +524,8 @@ final class NoShippingPledgeViewController: UIViewController,
       collectionPlanStackView.addArrangedSubview($0)
     }
 
-    let collectionPlanSectionViews: [UIView] = [collectionPlanStackView]
-
     let paymentStackView = UIStackView(frame: .zero)
-    paymentStackView.axis = .vertical
-    paymentStackView.spacing = Styles.grid(2)
+    applySectionStackViewStyle(paymentStackView)
 
     let arrangedPaymentViewSubviews = [
       self.paymentSectionLabel,
@@ -542,7 +540,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let arrangedInsetSubviews: [UIView] = [
       [self.titleLabel],
-      collectionPlanSectionViews,
+      [collectionPlanStackView],
       paymentSectionViews,
       self.confirmationSectionViews
     ]
@@ -705,16 +703,21 @@ private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-public func applyTitleLabelStyle(_ label: UILabel) {
+private func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
 }
 
-public func applySectionTitleLabelStyle(_ label: UILabel) {
+private func applySectionTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_headline().bolded
+}
+
+private func applySectionStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(2)
 }
 
 // MARK: - PledgePaymentMethodsViewControllerDelegate
