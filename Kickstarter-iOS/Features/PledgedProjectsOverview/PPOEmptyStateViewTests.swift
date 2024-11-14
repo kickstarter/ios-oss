@@ -13,7 +13,11 @@ final class PPOEmptyStateViewTests: TestCase {
       ) {
         let size = device.deviceSize(in: orientation)
         let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
-        assertSnapshot(matching: view, as: .image, named: "lang_\(language.rawValue)_\(device)_\(orientation)")
+        assertSnapshot(
+          matching: view,
+          as: .image,
+          named: "lang_\(language.rawValue)_\(device)_\(orientation)"
+        )
       }
     }
   }
