@@ -679,6 +679,10 @@ public func estimatedShippingText(
   locationId: Int,
   selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
+  guard project.stats.needsConversion == false else {
+    return estimatedShippingConversionText(for: rewards, project: project, locationId: locationId)
+  }
+
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
     locationId: locationId,
@@ -687,15 +691,17 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
+  let projectCountry = project.country
+
   let formattedMin = Format.currency(
     estimatedMin,
-    country: project.country,
+    country: projectCountry,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     estimatedMax,
-    country: project.country,
+    country: projectCountry,
     roundingMode: .halfUp
   )
 
