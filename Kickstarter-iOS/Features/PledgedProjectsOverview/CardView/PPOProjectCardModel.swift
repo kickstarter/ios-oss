@@ -396,7 +396,8 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment, let backingDetailsUrl {
+    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment,
+       let backingDetailsUrl {
       self.init(
         isUnread: true,
         alerts: alerts,
