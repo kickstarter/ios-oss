@@ -626,11 +626,14 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(currentUser: user, remoteConfigClient: remoteConfig) {
+    withEnvironment(remoteConfigClient: remoteConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.setBadgeValueAtIndexValue.assertValues([""])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.currentUserUpdated()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
     }
   }
 
@@ -648,11 +651,14 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(currentUser: user, remoteConfigClient: remoteConfig) {
+    withEnvironment(remoteConfigClient: remoteConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.currentUserUpdated()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
     }
   }
 }
