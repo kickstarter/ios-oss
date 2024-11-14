@@ -296,4 +296,52 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         }
       }
   }
+
+  func testView_ShowCollectionPlans() {
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let project = Project.template
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
+      |> Project.lens.isPledgeOverTimeAllowed .~ true
+    let reward = Reward.template
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true,
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
+        withEnvironment(
+          apiService: mockService,
+          currentUser: User.template,
+          language: language,
+          remoteConfigClient: mockConfigClient
+        ) {
+          let controller = NoShippingPledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: project,
+            rewards: [reward],
+            selectedShippingRule: .template,
+            selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          self.allowLayoutPass()
+
+          assertSnapshot(
+            matching: parent.view,
+            as: .image(perceptualPrecision: 0.98),
+            named: "lang_\(language)_device_\(device)"
+          )
+        }
+      }
+  }
 }
