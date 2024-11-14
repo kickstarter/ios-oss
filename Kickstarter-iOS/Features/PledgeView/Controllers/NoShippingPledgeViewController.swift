@@ -37,6 +37,10 @@ final class NoShippingPledgeViewController: UIViewController,
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private var plansSectionLabel: UILabel = { UILabel(frame: .zero) }()
+
+  private var paymentSectionLabel: UILabel = { UILabel(frame: .zero) }()
+
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
@@ -138,6 +142,8 @@ final class NoShippingPledgeViewController: UIViewController,
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.titleLabel.text = Strings.Checkout()
+    self.plansSectionLabel.text = "Collection plan"
+    self.paymentSectionLabel.text = "Payment"
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
@@ -170,11 +176,8 @@ final class NoShippingPledgeViewController: UIViewController,
       self.paymentPlansViewController
     ]
 
-    self.paymentPlansView.isHidden = true
-
     let arrangedInsetSubviews = [
       [self.titleLabel],
-      [self.paymentPlansView],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -221,6 +224,9 @@ final class NoShippingPledgeViewController: UIViewController,
     self.view.backgroundColor = UIColor.ksr_support_100
 
     applyTitleLabelStyle(self.titleLabel)
+
+    applySectionTitleLabelStyle(self.plansSectionLabel)
+    applySectionTitleLabelStyle(self.paymentSectionLabel)
 
     applyRootScrollViewStyle(self.rootScrollView)
 
@@ -278,7 +284,7 @@ final class NoShippingPledgeViewController: UIViewController,
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()
       .observeValues { [weak self] value in
-        self?.paymentPlansView.isHidden = !value
+        self?.configurePledgeOverTimeUI(value)
       }
 
     self.viewModel.outputs.pledgeOverTimeConfigData
@@ -500,6 +506,52 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
       }
   }
+
+  private func configurePledgeOverTimeUI(_ isPledgeOverTimeAllowed: Bool) {
+    guard isPledgeOverTimeAllowed else { return }
+
+    let collectionPlanStackView = UIStackView(frame: .zero)
+    collectionPlanStackView.axis = .vertical
+    collectionPlanStackView.spacing = Styles.grid(2)
+
+    let arrangedCollectionPlanSubviews = [
+      self.plansSectionLabel,
+      self.paymentPlansView
+    ]
+
+    arrangedCollectionPlanSubviews.forEach {
+      collectionPlanStackView.addArrangedSubview($0)
+    }
+
+    let collectionPlanSectionViews: [UIView] = [collectionPlanStackView]
+
+    let paymentStackView = UIStackView(frame: .zero)
+    paymentStackView.axis = .vertical
+    paymentStackView.spacing = Styles.grid(2)
+
+    let arrangedPaymentViewSubviews = [
+      self.paymentSectionLabel,
+      self.paymentMethodsViewController.view!
+    ]
+
+    arrangedPaymentViewSubviews.forEach {
+      paymentStackView.addArrangedSubview($0)
+    }
+
+    let paymentSectionViews: [UIView] = [paymentStackView]
+
+    let arrangedInsetSubviews: [UIView] = [
+      [self.titleLabel],
+      collectionPlanSectionViews,
+      paymentSectionViews,
+      self.confirmationSectionViews
+    ]
+    .flatMap { $0 }
+
+    arrangedInsetSubviews.forEach { view in
+      self.rootInsetStackView.addArrangedSubview(view)
+    }
+  }
 }
 
 // MARK: - PledgeAmountViewControllerDelegate
@@ -645,7 +697,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 
 private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.spacing = Styles.grid(4)
+  stackView.spacing = Styles.grid(3)
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.layoutMargins = UIEdgeInsets(
     topBottom: ConfirmDetailsLayout.Margin.topBottom,
@@ -657,6 +709,12 @@ public func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
+}
+
+public func applySectionTitleLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 1
+  label.textColor = UIColor.ksr_support_700
+  label.font = UIFont.ksr_headline().bolded
 }
 
 // MARK: - PledgePaymentMethodsViewControllerDelegate
