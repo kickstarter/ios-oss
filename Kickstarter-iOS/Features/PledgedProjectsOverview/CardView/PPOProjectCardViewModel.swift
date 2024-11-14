@@ -61,7 +61,10 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // MARK: - Outputs
 
-  var viewBackingDetailsTapped: AnyPublisher<(), Never> { self.viewBackingDetailsSubject.eraseToAnyPublisher() }
+  var viewBackingDetailsTapped: AnyPublisher<(), Never> {
+    self.viewBackingDetailsSubject.eraseToAnyPublisher()
+  }
+
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
