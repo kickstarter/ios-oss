@@ -26,7 +26,7 @@ public struct PledgePaymentPlansAndSelectionData: Equatable {
 public protocol PledgePaymentPlansViewModelInputs {
   func viewDidLoad()
   func configure(with value: PledgePaymentPlansAndSelectionData)
-  func didSelectRowAtIndexPath(_ indexPath: IndexPath)
+  func didSelectRowAtIndexPath(_ indexPath: IndexPath, with data: PledgePaymentPlanCellData)
 }
 
 public protocol PledgePaymentPlansViewModelOutputs {
@@ -62,10 +62,10 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
 
     let planType = configureWithValue.map { $0.selectedPlan }
 
-    let selectedPlanType = self.didSelectRowAtIndexPathProperty.signal
+    let selectedPlanType = self.didSelectRowAtIndexPathDataProperty.signal
+      .map { $0.1 }
       .skipNil()
-      .map { PledgePaymentPlansType(rawValue: $0.section) }
-      .skipNil()
+      .map { $0.type }
 
     self.reloadPaymentPlans = Signal.merge(
       planType,
@@ -80,8 +80,8 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
     self.configureWithValueProperty.value = value
   }
 
-  private let didSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
-  public func didSelectRowAtIndexPath(_ indexPath: IndexPath) {
-    self.didSelectRowAtIndexPathProperty.value = indexPath
+  private let didSelectRowAtIndexPathDataProperty = MutableProperty<(IndexPath?, PledgePaymentPlanCellData?)>((nil, nil))
+  public func didSelectRowAtIndexPath(_ indexPath: IndexPath, with data: PledgePaymentPlanCellData) {
+    self.didSelectRowAtIndexPathDataProperty.value = (indexPath, data)
   }
 }

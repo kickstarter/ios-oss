@@ -653,7 +653,7 @@ private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-public func applyTitleLabelStyle(_ label: UILabel) {
+private func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded

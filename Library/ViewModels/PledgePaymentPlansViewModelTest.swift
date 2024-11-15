@@ -14,11 +14,11 @@ final class PledgePaymentPlansViewModelTests: TestCase {
 
   private let pledgeInFullIndexPath = IndexPath(
     row: 0,
-    section: PledgePaymentPlansType.pledgeinFull.rawValue
+    section: 0
   )
   private let pledgeOverTimeIndexPath = IndexPath(
     row: 0,
-    section: PledgePaymentPlansType.pledgeOverTime.rawValue
+    section: 1
   )
 
   // MARK: Lifecycle
@@ -61,7 +61,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.didSelectRowAtIndexPath(self.pledgeInFullIndexPath)
+      self.vm.inputs.didSelectRowAtIndexPath(self.pledgeInFullIndexPath, with: PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeinFull, isSelected: true))
       self.reloadPaymentPlansPlanType.assertValues([.pledgeinFull])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeinFull])
     }
@@ -71,7 +71,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.didSelectRowAtIndexPath(self.pledgeOverTimeIndexPath)
+      self.vm.inputs.didSelectRowAtIndexPath(self.pledgeOverTimeIndexPath, with: PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeOverTime, isSelected: true))
       self.reloadPaymentPlansPlanType.assertValues([.pledgeOverTime])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeOverTime])
     }

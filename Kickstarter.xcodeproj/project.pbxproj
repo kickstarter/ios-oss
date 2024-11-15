@@ -263,11 +263,10 @@
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
 		336D378B2CDAF81200FA99F5 /* PledgePaymentPlansViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */; };
-		336D378D2CDB0A2100FA99F5 /* PledgePaymentPlanInFullCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336D378C2CDB0A0100FA99F5 /* PledgePaymentPlanInFullCell.swift */; };
 		33785F752CD9B0C2004B148E /* PledgePaymentPlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */; };
 		33785F792CDAEBCB004B148E /* PledgePaymentPlansDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33785F772CDAEBAE004B148E /* PledgePaymentPlansDataSource.swift */; };
 		3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546D2CE29AD500AB16A9 /* PledgePaymentPlansCellViewModel.swift */; };
-		338654702CE2BD2300AB16A9 /* PledgePaymentPlanPlotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanPlotCell.swift */; };
+		338654702CE2BD2300AB16A9 /* PledgePaymentPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanCell.swift */; };
 		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5632CE4153E004B301D /* PledgePaymentPlansDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5612CE41515004B301D /* PledgePaymentPlansDataSourceTest.swift */; };
@@ -1917,11 +1916,10 @@
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
 		336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModel.swift; sourceTree = "<group>"; };
-		336D378C2CDB0A0100FA99F5 /* PledgePaymentPlanInFullCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanInFullCell.swift; sourceTree = "<group>"; };
 		33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewController.swift; sourceTree = "<group>"; };
 		33785F772CDAEBAE004B148E /* PledgePaymentPlansDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansDataSource.swift; sourceTree = "<group>"; };
 		3386546D2CE29AD500AB16A9 /* PledgePaymentPlansCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansCellViewModel.swift; sourceTree = "<group>"; };
-		3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanPlotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanPlotCell.swift; sourceTree = "<group>"; };
+		3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanCell.swift; sourceTree = "<group>"; };
 		338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5612CE41515004B301D /* PledgePaymentPlansDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansDataSourceTest.swift; sourceTree = "<group>"; };
@@ -5722,8 +5720,7 @@
 		33785F732CD9ADE6004B148E /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanPlotCell.swift */,
-				336D378C2CDB0A0100FA99F5 /* PledgePaymentPlanInFullCell.swift */,
+				3386546F2CE2BD0100AB16A9 /* PledgePaymentPlanCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -8572,7 +8569,7 @@
 				604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */,
 				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
 				606067112BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift in Sources */,
-				338654702CE2BD2300AB16A9 /* PledgePaymentPlanPlotCell.swift in Sources */,
+				338654702CE2BD2300AB16A9 /* PledgePaymentPlanCell.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,
 				01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */,
@@ -8668,7 +8665,6 @@
 				D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */,
 				19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */,
 				D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */,
-				336D378D2CDB0A2100FA99F5 /* PledgePaymentPlanInFullCell.swift in Sources */,
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
 				77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */,

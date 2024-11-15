@@ -1,5 +1,4 @@
 import Library
-import Prelude
 import UIKit
 
 protocol PledgePaymentPlansViewControllerDelegate: AnyObject {
@@ -14,15 +13,7 @@ final class PledgePaymentPlansViewController: UIViewController {
 
   private let dataSource = PledgePaymentPlansDataSource()
 
-  private lazy var tableView: UITableView = {
-    ContentSizeTableView(frame: .zero, style: .plain)
-      |> \.separatorInset .~ .zero
-      |> \.contentInsetAdjustmentBehavior .~ .never
-      |> \.isScrollEnabled .~ false
-      |> \.dataSource .~ self.dataSource
-      |> \.delegate .~ self
-      |> \.rowHeight .~ UITableView.automaticDimension
-  }()
+  private lazy var tableView: UITableView = { ContentSizeTableView(frame: .zero, style: .plain) }()
 
   internal weak var delegate: PledgePaymentPlansViewControllerDelegate?
 
@@ -40,27 +31,35 @@ final class PledgePaymentPlansViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.tableView, self.view)
-      |> ksr_addSubviewToParent()
+    
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    
+    self.view.addSubview(self.tableView)
 
-    self.tableView.registerCellClass(PledgePaymentPlanInFullCell.self)
-    self.tableView.registerCellClass(PledgePaymentPlanPlotCell.self)
+    self.tableView.registerCellClass(PledgePaymentPlanCell.self)
   }
 
   private func setupConstraints() {
-    _ = (self.tableView, self.view)
-      |> ksr_constrainViewToEdgesInParent()
+    
+    self.tableView.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+      self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ])
   }
 
   // MARK: - Bind Styles
 
   override func bindStyles() {
     super.bindStyles()
-    _ = self.view
-      |> checkoutBackgroundStyle
 
-    _ = self.tableView
-      |> checkoutWhiteBackgroundStyle
+    applyWhiteBackgroundStyle(self.view)
+    
+    applyTableViewStyle(self.tableView)
   }
 
   // MARK: - View model
@@ -97,6 +96,24 @@ final class PledgePaymentPlansViewController: UIViewController {
 extension PledgePaymentPlansViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
+    
+    let selectedCellData = self.dataSource[indexPath] as! PledgePaymentPlanCellData
+    
+    self.viewModel.inputs.didSelectRowAtIndexPath(indexPath, with: selectedCellData)
   }
+}
+
+// MARK: Styles
+
+private func applyTableViewStyle(_ tableView: UITableView) {
+  tableView.separatorInset = .zero
+  tableView.contentInsetAdjustmentBehavior = .never
+  tableView.isScrollEnabled = false
+  tableView.rowHeight = UITableView.automaticDimension
+  
+  applyWhiteBackgroundStyle(tableView)
+}
+
+private func applyWhiteBackgroundStyle(_ view: UIView) {
+  view.backgroundColor = UIColor.ksr_white
 }

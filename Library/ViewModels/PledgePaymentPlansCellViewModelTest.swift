@@ -22,13 +22,15 @@ final class PledgePaymentPlansCellViewModelTest: TestCase {
   // MARK: Test cases
 
   func testPaymentPlanCell_CheckedImageName() {
-    self.vm.inputs.configureWith(value: true)
+    let data = PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeOverTime, isSelected: true)
+    self.vm.inputs.configureWith(data: data)
 
     self.checkmarkImageName.assertValue("icon-payment-method-selected")
   }
 
   func testPaymentPlanCell_UnCheckedImageName() {
-    self.vm.inputs.configureWith(value: false)
+    let data = PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeOverTime, isSelected: false)
+    self.vm.inputs.configureWith(data: data)
 
     self.checkmarkImageName.assertValue("icon-payment-method-unselected")
   }
