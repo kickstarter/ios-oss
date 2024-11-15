@@ -8,8 +8,7 @@ struct PPOProjectCreator: View {
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
-      // TODO: Localize
-      Text("Created by **\(self.creatorName)**")
+      Text("\(Strings.project_menu_created_by()) **\(self.creatorName)**")
         .font(Font(PPOStyles.subtitle.font))
         .background(Color(PPOStyles.background))
         .foregroundStyle(Color(PPOStyles.subtitle.color))
@@ -22,8 +21,7 @@ struct PPOProjectCreator: View {
       Button(action: {
         self.onSendMessage?()
       }, label: {
-        // TODO: Localize
-        Text("Send a message")
+        Text(Strings.Send_a_message())
       })
       .font(Font(PPOStyles.subtitle.font))
       .background(Color(PPOStyles.background))
