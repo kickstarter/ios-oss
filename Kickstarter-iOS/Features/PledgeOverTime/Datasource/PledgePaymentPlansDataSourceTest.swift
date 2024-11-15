@@ -13,23 +13,18 @@ final class PledgePaymentPlansDataSourceTest: XCTestCase {
 
     self.dataSource.load(defaultData)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
 
-    XCTAssertEqual(1, self.dataSource.numberOfItems(in: PledgePaymentPlansType.pledgeinFull.rawValue))
-
-    XCTAssertEqual(1, self.dataSource.numberOfItems(in: PledgePaymentPlansType.pledgeOverTime.rawValue))
+    XCTAssertEqual(2, self.dataSource.numberOfItems(in: PledgePaymentPlansType.pledgeinFull.rawValue))
 
     XCTAssertEqual(
-      "PledgePaymentPlanInFullCell",
-      self.dataSource.reusableId(item: 0, section: PledgePaymentPlansType.pledgeinFull.rawValue)
+      "PledgePaymentPlanCell",
+      self.dataSource.reusableId(item: 0, section: 0)
     )
 
     XCTAssertEqual(
-      "PledgePaymentPlanPlotCell",
-      self.dataSource.reusableId(
-        item: 0,
-        section: PledgePaymentPlansType.pledgeOverTime.rawValue
-      )
+      "PledgePaymentPlanCell",
+      self.dataSource.reusableId(item: 1, section: 0)
     )
   }
 }
