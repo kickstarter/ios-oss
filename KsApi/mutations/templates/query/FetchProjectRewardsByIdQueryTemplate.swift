@@ -1294,6 +1294,369 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "startsAt":null
                 },
                 {
+                  "available" : true,
+                  "project" : {
+                    "__typename" : "Project",
+                    "id" : "UHJvamVjdC0xMTg3NjM3ODg3"
+                  },
+                  "latePledgeAmount" : {
+                    "__typename" : "Money",
+                    "currency" : "USD",
+                    "symbol" : "$",
+                    "amount" : "5.0"
+                  },
+                  "pledgeAmount" : {
+                    "amount" : "1.0",
+                    "currency" : "USD",
+                    "symbol" : "$",
+                    "__typename" : "Money"
+                  },
+                  "endsAt" : null,
+                  "items" : {
+                    "edges" : [
+                      {
+                        "node" : {
+                          "__typename" : "RewardItem",
+                          "id" : "UmV3YXJkSXRlbS0yNTcyODA4",
+                          "name" : "T-Shirt 2"
+                        },
+                        "quantity" : 1,
+                        "__typename" : "RewardItemEdge"
+                      }
+                    ],
+                    "__typename" : "RewardItemsConnection"
+                  },
+                  "convertedAmount" : {
+                    "symbol" : "$",
+                    "amount" : "5.0",
+                    "currency" : "USD",
+                    "__typename" : "Money"
+                  },
+                  "localReceiptLocation" : null,
+                  "shippingRules" : [
+                    {
+                      "estimatedMax" : null,
+                      "location" : {
+                        "name" : "European Union",
+                        "id" : "TG9jYXRpb24tNTU5NDkwNjg=",
+                        "country" : "ZZ",
+                        "__typename" : "Location",
+                        "countryName" : null,
+                        "displayableName" : "European Union"
+                      },
+                      "estimatedMin" : null,
+                      "__typename" : "ShippingRule",
+                      "id" : "U2hpcHBpbmdSdWxlLTE1NjMwMjA2",
+                      "cost" : {
+                        "amount" : "5.0",
+                        "symbol" : "$",
+                        "currency" : "USD",
+                        "__typename" : "Money"
+                      }
+                    }
+                  ],
+                  "limitPerBacker" : 1,
+                  "description" : "Charging shipping to EU $5",
+                  "id" : "UmV3YXJkLTEwMDU0MTI1",
+                  "remainingQuantity" : null,
+                  "amount" : {
+                    "amount" : "5.0",
+                    "symbol" : "$",
+                    "__typename" : "Money",
+                    "currency" : "USD"
+                  },
+                  "shippingSummary" : "Only European Union",
+                  "displayName" : "Testing charge shipping just EU ($1)",
+                  "simpleShippingRulesExpanded" : [
+                    {
+                      "country" : "AT",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ3NTA=",
+                      "estimatedMin" : "2",
+                      "cost" : "5.0",
+                      "estimatedMax" : "10",
+                      "locationName" : "Austria",
+                      "__typename" : "SimpleShippingRule",
+                      "currency" : "USD"
+                    },
+                    {
+                      "locationName" : "Belgium",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMax" : null,
+                      "cost" : "5.0",
+                      "estimatedMin" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ3NTc=",
+                      "currency" : "USD",
+                      "country" : "BE"
+                    },
+                    {
+                      "__typename" : "SimpleShippingRule",
+                      "locationName" : "Bulgaria",
+                      "estimatedMax" : null,
+                      "estimatedMin" : null,
+                      "country" : "BG",
+                      "currency" : "USD",
+                      "cost" : "5.0",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ3NzE="
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "country" : "HR",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4NDM=",
+                      "__typename" : "SimpleShippingRule",
+                      "cost" : "5.0",
+                      "currency" : "USD",
+                      "estimatedMin" : null,
+                      "locationName" : "Croatia"
+                    },
+                    {
+                      "locationName" : "Cyprus",
+                      "estimatedMax" : null,
+                      "__typename" : "SimpleShippingRule",
+                      "country" : "CY",
+                      "cost" : "5.0",
+                      "currency" : "USD",
+                      "locationId" : "TG9jYXRpb24tMjY4MTIzNDY=",
+                      "estimatedMin" : null
+                    },
+                    {
+                      "locationName" : "Czech Republic",
+                      "currency" : "USD",
+                      "estimatedMin" : null,
+                      "estimatedMax" : null,
+                      "__typename" : "SimpleShippingRule",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MTA=",
+                      "cost" : "5.0",
+                      "country" : "CZ"
+                    },
+                    {
+                      "cost" : "5.0",
+                      "estimatedMin" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ3OTY=",
+                      "__typename" : "SimpleShippingRule",
+                      "country" : "DK",
+                      "currency" : "USD",
+                      "estimatedMax" : null,
+                      "locationName" : "Denmark"
+                    },
+                    {
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MDU=",
+                      "cost" : "5.0",
+                      "estimatedMax" : null,
+                      "currency" : "USD",
+                      "estimatedMin" : null,
+                      "locationName" : "Estonia",
+                      "country" : "EE",
+                      "__typename" : "SimpleShippingRule"
+                    },
+                    {
+                      "locationName" : "Finland",
+                      "estimatedMin" : null,
+                      "estimatedMax" : null,
+                      "currency" : "USD",
+                      "cost" : "5.0",
+                      "country" : "FI",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MTI=",
+                      "__typename" : "SimpleShippingRule"
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "__typename" : "SimpleShippingRule",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MTk=",
+                      "locationName" : "France",
+                      "cost" : "5.0",
+                      "estimatedMin" : null,
+                      "currency" : "USD",
+                      "country" : "FR"
+                    },
+                    {
+                      "estimatedMin" : null,
+                      "locationName" : "Germany",
+                      "cost" : "5.0",
+                      "estimatedMax" : null,
+                      "currency" : "USD",
+                      "country" : "DE",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4Mjk=",
+                      "__typename" : "SimpleShippingRule"
+                    },
+                    {
+                      "locationName" : "Greece",
+                      "currency" : "USD",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MzM=",
+                      "estimatedMax" : null,
+                      "cost" : "5.0",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMin" : null,
+                      "country" : "GR"
+                    },
+                    {
+                      "currency" : "USD",
+                      "estimatedMax" : null,
+                      "country" : "HU",
+                      "__typename" : "SimpleShippingRule",
+                      "locationName" : "Hungary",
+                      "estimatedMin" : null,
+                      "cost" : "5.0",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4NDQ="
+                    },
+                    {
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4MDM=",
+                      "cost" : "5.0",
+                      "country" : "IE",
+                      "locationName" : "Ireland",
+                      "estimatedMax" : null,
+                      "currency" : "USD",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMin" : null
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "__typename" : "SimpleShippingRule",
+                      "country" : "IT",
+                      "estimatedMin" : null,
+                      "locationName" : "Italy",
+                      "cost" : "5.0",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4NTM=",
+                      "currency" : "USD"
+                    },
+                    {
+                      "locationName" : "Latvia",
+                      "__typename" : "SimpleShippingRule",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4NzQ=",
+                      "cost" : "5.0",
+                      "country" : "LV",
+                      "estimatedMin" : null,
+                      "estimatedMax" : null,
+                      "currency" : "USD"
+                    },
+                    {
+                      "currency" : "USD",
+                      "estimatedMax" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4NzU=",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMin" : null,
+                      "locationName" : "Lithuania",
+                      "country" : "LT",
+                      "cost" : "5.0"
+                    },
+                    {
+                      "locationName" : "Luxembourg",
+                      "country" : "LU",
+                      "estimatedMin" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4ODE=",
+                      "__typename" : "SimpleShippingRule",
+                      "cost" : "5.0",
+                      "estimatedMax" : null,
+                      "currency" : "USD"
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "locationName" : "Malta",
+                      "cost" : "5.0",
+                      "estimatedMin" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4OTc=",
+                      "country" : "MT",
+                      "currency" : "USD",
+                      "__typename" : "SimpleShippingRule"
+                    },
+                    {
+                      "estimatedMin" : null,
+                      "country" : "NL",
+                      "currency" : "USD",
+                      "cost" : "5.0",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5MDk=",
+                      "locationName" : "Netherlands",
+                      "estimatedMax" : null,
+                      "__typename" : "SimpleShippingRule"
+                    },
+                    {
+                      "estimatedMin" : null,
+                      "currency" : "USD",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5MjM=",
+                      "estimatedMax" : null,
+                      "cost" : "5.0",
+                      "country" : "PL",
+                      "__typename" : "SimpleShippingRule",
+                      "locationName" : "Poland"
+                    },
+                    {
+                      "locationName" : "Portugal",
+                      "cost" : "5.0",
+                      "estimatedMin" : null,
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMax" : null,
+                      "country" : "PT",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5MjU=",
+                      "currency" : "USD"
+                    },
+                    {
+                      "locationName" : "Romania",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMin" : null,
+                      "cost" : "5.0",
+                      "estimatedMax" : null,
+                      "country" : "RO",
+                      "currency" : "USD",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5MzM="
+                    },
+                    {
+                      "currency" : "USD",
+                      "__typename" : "SimpleShippingRule",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ4Nzc=",
+                      "estimatedMax" : null,
+                      "country" : "SK",
+                      "estimatedMin" : null,
+                      "locationName" : "Slovakia",
+                      "cost" : "5.0"
+                    },
+                    {
+                      "country" : "SI",
+                      "__typename" : "SimpleShippingRule",
+                      "estimatedMin" : null,
+                      "locationName" : "Slovenia",
+                      "estimatedMax" : null,
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5NDU=",
+                      "cost" : "5.0",
+                      "currency" : "USD"
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "locationName" : "Spain",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5NTA=",
+                      "cost" : "5.0",
+                      "__typename" : "SimpleShippingRule",
+                      "country" : "ES",
+                      "currency" : "USD",
+                      "estimatedMin" : null
+                    },
+                    {
+                      "estimatedMax" : null,
+                      "locationName" : "Sweden",
+                      "currency" : "USD",
+                      "country" : "SE",
+                      "__typename" : "SimpleShippingRule",
+                      "cost" : "5.0",
+                      "locationId" : "TG9jYXRpb24tMjM0MjQ5NTQ=",
+                      "estimatedMin" : null
+                    }
+                  ],
+                  "__typename" : "Reward",
+                  "backersCount" : 0,
+                  "name" : "Testing charge shipping just EU",
+                  "postCampaignPledgingEnabled" : true,
+                  "allowedAddons" : {
+                    "__typename" : "RewardConnection",
+                    "pageInfo" : {
+                      "__typename" : "PageInfo",
+                      "startCursor" : "MQ=="
+                    }
+                  },
+                  "estimatedDeliveryOn" : "2028-12-01",
+                  "limit" : null,
+                  "isMaxPledge" : false,
+                  "shippingPreference" : "restricted",
+                  "startsAt" : null
+                },
+                {
                    "amount":{
                       "amount":"250.0",
                       "currency":"EUR",
@@ -1550,7 +1913,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       }
                    ],
                    "startsAt":null
-                }
+                },
              ]
           },
           "__typename":"Project"
