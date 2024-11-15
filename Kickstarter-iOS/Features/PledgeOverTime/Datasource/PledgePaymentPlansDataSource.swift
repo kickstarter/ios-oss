@@ -2,15 +2,20 @@ import Library
 import UIKit
 
 internal final class PledgePaymentPlansDataSource: ValueCellDataSource {
-  
   internal func load(_ data: PledgePaymentPlansAndSelectionData) {
     self.clearValues()
 
     let isPledgeInFullSelected = data.selectedPlan == PledgePaymentPlansType.pledgeinFull
-    
-    let pledgeInFullOption = PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeinFull, isSelected: isPledgeInFullSelected)
-    let pledgeOverTimeOption = PledgePaymentPlanCellData(type: PledgePaymentPlansType.pledgeOverTime, isSelected: !isPledgeInFullSelected)
-    
+
+    let pledgeInFullOption = PledgePaymentPlanCellData(
+      type: PledgePaymentPlansType.pledgeinFull,
+      isSelected: isPledgeInFullSelected
+    )
+    let pledgeOverTimeOption = PledgePaymentPlanCellData(
+      type: PledgePaymentPlansType.pledgeOverTime,
+      isSelected: !isPledgeInFullSelected
+    )
+
     self.set(
       values: [pledgeInFullOption, pledgeOverTimeOption],
       cellClass: PledgePaymentPlanCell.self,

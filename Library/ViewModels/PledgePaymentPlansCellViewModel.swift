@@ -22,17 +22,15 @@ public protocol PledgePaymentPlansCellViewModelType {
 
 public final class PledgePaymentPlansCellViewModel: PledgePaymentPlansCellViewModelType,
   PledgePaymentPlansCellViewModelInputs,
-                                                    PledgePaymentPlansCellViewModelOutputs {
-  
+  PledgePaymentPlansCellViewModelOutputs {
   public init() {
     let checkImageName = self.configData.signal
       .map { $0?.isSelected ?? false ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
 
     self.checkmarkImageName = checkImageName
-    
+
     self.titleText = self.configData.signal.skipNil().map { getTitleText(by: $0.type) }
     self.subtitleText = self.configData.signal.skipNil().map { getSubtitleText(by: $0.type) }
-    
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanCellData?>(nil)

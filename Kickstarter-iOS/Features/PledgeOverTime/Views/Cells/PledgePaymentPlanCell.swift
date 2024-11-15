@@ -33,30 +33,25 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    
     self.contentView.addSubview(self.rootStackView)
-    
+
     addArrangedSubviews([self.checkmarkImageView, UIView()], to: self.leftColumnStackView)
-    
+
     addArrangedSubviews([self.titleLabel, UIView()], to: self.rigthColumnStackView)
-    
+
     addArrangedSubviews([self.leftColumnStackView, self.rigthColumnStackView], to: self.rootStackView)
-    
-    self.titleLabel.text = "Pledge Over Time" // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    
-    self.subtitleLabel.text = "You will be charged for your pledge over four payments, at no extra cost." // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   }
 
   private func setupConstraints() {
     self.rootStackView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     NSLayoutConstraint.activate([
       self.rootStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
       self.rootStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
       self.rootStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
       self.rootStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
     ])
-    
+
     self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
 
@@ -78,20 +73,20 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
 
   override func bindStyles() {
     super.bindStyles()
-    
+
     self.selectionView.backgroundColor = .ksr_support_100
 
     self.selectedBackgroundView = self.selectionView
 
     applyRootStackViewStyle(self.rootStackView)
-    
+
     applyColumnStackViewStyle(self.leftColumnStackView)
     self.leftColumnStackView.spacing = 0
-    
+
     applyColumnStackViewStyle(self.rigthColumnStackView)
 
     applyTitleLabelStyle(self.titleLabel)
-    
+
     applySubtitleLabelStyle(self.subtitleLabel)
 
     applyCheckmarkImageViewStyle(self.checkmarkImageView)
@@ -107,11 +102,11 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] imageName in
         self?.checkmarkImageView.image = Library.image(named: imageName)
       }
-    
+
     self.viewModel.outputs.titleText.observeForUI().observeValues { [weak self] titleText in
       self?.titleLabel.text = titleText ?? ""
     }
-    
+
     self.viewModel.outputs.subtitleText.observeForUI().observeValues { [weak self] subtitleText in
       self?.configureSubtitleLabel(text: subtitleText)
     }
@@ -120,14 +115,14 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
   func configureWith(value: PledgePaymentPlanCellData) {
     self.viewModel.inputs.configureWith(data: value)
   }
-  
+
   func configureSubtitleLabel(text: String?) {
     guard let text = text, !text.isEmpty else {
       self.rigthColumnStackView.removeArrangedSubview(self.subtitleLabel)
       self.subtitleLabel.removeFromSuperview()
       return
     }
-    
+
     self.subtitleLabel.text = text
     if !self.rigthColumnStackView.arrangedSubviews.contains(self.subtitleLabel) {
       self.rigthColumnStackView.insertArrangedSubview(self.subtitleLabel, at: 1)
@@ -151,16 +146,16 @@ private func applyColumnStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
-  label.accessibilityTraits  = UIAccessibilityTraits.header
-  label.adjustsFontForContentSizeCategory  = true
-  label.numberOfLines  = 0
+  label.accessibilityTraits = UIAccessibilityTraits.header
+  label.adjustsFontForContentSizeCategory = true
+  label.numberOfLines = 0
   label.font = UIFont.ksr_subhead().bolded
 }
 
 private func applySubtitleLabelStyle(_ label: UILabel) {
-  label.accessibilityTraits  = UIAccessibilityTraits.header
-  label.adjustsFontForContentSizeCategory  = true
-  label.numberOfLines  = 0
+  label.accessibilityTraits = UIAccessibilityTraits.header
+  label.adjustsFontForContentSizeCategory = true
+  label.numberOfLines = 0
   label.font = UIFont.ksr_caption1()
   label.textColor = .ksr_support_400
 }

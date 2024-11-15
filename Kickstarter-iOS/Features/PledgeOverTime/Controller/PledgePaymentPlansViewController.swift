@@ -31,19 +31,17 @@ final class PledgePaymentPlansViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
-    
+
     self.view.addSubview(self.tableView)
 
     self.tableView.registerCellClass(PledgePaymentPlanCell.self)
   }
 
   private func setupConstraints() {
-    
     self.tableView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     NSLayoutConstraint.activate([
       self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
       self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
@@ -58,7 +56,7 @@ final class PledgePaymentPlansViewController: UIViewController {
     super.bindStyles()
 
     applyWhiteBackgroundStyle(self.view)
-    
+
     applyTableViewStyle(self.tableView)
   }
 
@@ -96,9 +94,9 @@ final class PledgePaymentPlansViewController: UIViewController {
 extension PledgePaymentPlansViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    
+
     let selectedCellData = self.dataSource[indexPath] as! PledgePaymentPlanCellData
-    
+
     self.viewModel.inputs.didSelectRowAtIndexPath(indexPath, with: selectedCellData)
   }
 }
@@ -110,7 +108,7 @@ private func applyTableViewStyle(_ tableView: UITableView) {
   tableView.contentInsetAdjustmentBehavior = .never
   tableView.isScrollEnabled = false
   tableView.rowHeight = UITableView.automaticDimension
-  
+
   applyWhiteBackgroundStyle(tableView)
 }
 

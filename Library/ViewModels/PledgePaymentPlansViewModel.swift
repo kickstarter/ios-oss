@@ -80,7 +80,10 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
     self.configureWithValueProperty.value = value
   }
 
-  private let didSelectRowAtIndexPathDataProperty = MutableProperty<(IndexPath?, PledgePaymentPlanCellData?)>((nil, nil))
+  private let didSelectRowAtIndexPathDataProperty = MutableProperty<(
+    IndexPath?,
+    PledgePaymentPlanCellData?
+  )>((nil, nil))
   public func didSelectRowAtIndexPath(_ indexPath: IndexPath, with data: PledgePaymentPlanCellData) {
     self.didSelectRowAtIndexPathDataProperty.value = (indexPath, data)
   }
