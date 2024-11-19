@@ -778,22 +778,8 @@ private func estimatedMinMax(
   var max: Double = 0
 
   rewards.forEach { reward in
-    guard reward.shipping.enabled, let shippingRules = reward.shippingRules else {
-      return
-    }
-
-    var shippingRule: ShippingRule?
-
-    /// First check to see if the reward has a shipping rule that matches the selected location id.
-    /// If it doesn't AND the reward has an unrestricted shipping preference, grab the "Anywhere in the world' shipping rule by id. (id is always 1) .
-    /// Otherwise, we know that the reward doesn't have any shipping rule information associated with it.
-    if let matchingShippingRule = shippingRules.first(where: { $0.location.id == locationId }) {
-      shippingRule = matchingShippingRule
-    } else if reward.shipping.preference == .unrestricted {
-      shippingRule = shippingRules.first(where: { $0.location.id == 1 })
-    }
-
-    guard let shipping = shippingRule else { return }
+    guard reward.shipping.enabled, let shippingRules = reward.shippingRulesExpanded,
+          let shipping = shippingRules.first(where: { $0.location.id == locationId }) else { return }
 
     /// Verify there are estimated amounts greater than 0
     guard let estimatedMin = shipping.estimatedMin?.amount,

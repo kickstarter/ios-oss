@@ -708,12 +708,12 @@ final class SharedFunctionsTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-      |> Reward.lens.shippingRules .~ [rewardShippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [rewardShippingRule]
       |> Reward.lens.id .~ 99
     let addOn = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
       |> Reward.lens.id .~ 5
-      |> Reward.lens.shippingRules .~ [addOnShippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [addOnShippingRule]
 
     let project = Project.template
 
@@ -736,12 +736,12 @@ final class SharedFunctionsTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-      |> Reward.lens.shippingRules .~ [rewardShippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [rewardShippingRule]
       |> Reward.lens.id .~ 99
     let addOn = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
       |> Reward.lens.id .~ 5
-      |> Reward.lens.shippingRules .~ [addOnShippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [addOnShippingRule]
 
     let project = Project.template
 
