@@ -179,6 +179,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     #endif
 
+    self.viewModel.outputs.trackingAuthorizationStatus
+      .observeForUI()
+      .observeValues(self.updateFirebaseConsent(status:))
+
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
       .observeValues {
@@ -386,6 +390,21 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  private func updateFirebaseConsent(status: AppTrackingAuthorization) {
+    // https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios&consentmode=advanced#set_up_consent_mode
+    let consentStatus: ConsentStatus = if case .authorized = status {
+      .granted
+    } else {
+      .denied
+    }
+    Analytics.setConsent([
+      .analyticsStorage: consentStatus,
+      .adStorage: consentStatus,
+      .adUserData: consentStatus,
+      .adPersonalization: consentStatus,
+    ])
   }
 
   private func configureRemoteConfig() {

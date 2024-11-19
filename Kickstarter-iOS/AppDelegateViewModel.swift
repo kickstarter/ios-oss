@@ -160,6 +160,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when  application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
+  /// Emits immediately and when the user's authorization status changes
+  var trackingAuthorizationStatus: Signal<AppTrackingAuthorization, Never> { get }
+
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
 
@@ -300,6 +303,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         }
         return false
       }
+
+    self.trackingAuthorizationStatus = AppEnvironment.current.appTrackingTransparency.authorizationStatus
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -936,6 +941,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>
+  public let trackingAuthorizationStatus: Signal<AppTrackingAuthorization, Never>
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
