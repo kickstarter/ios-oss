@@ -574,7 +574,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let estimatedShippingText = estimatedShippingText(
       for: [reward],
@@ -597,7 +597,7 @@ internal final class SharedFunctionsTests: TestCase {
       |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let estimatedShippingText = estimatedShippingText(
       for: [reward],
