@@ -696,7 +696,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func presentMessageDialog(project: Project) {
     let dialog = MessageDialogViewController
-      .configuredWith(messageSubject: .project(project), context: .projectPage)
+      .configuredWith(messageSubject: .project(id: project.id, name: project.name), context: .projectPage)
     dialog.modalPresentationStyle = .formSheet
     dialog.delegate = self
     self.present(

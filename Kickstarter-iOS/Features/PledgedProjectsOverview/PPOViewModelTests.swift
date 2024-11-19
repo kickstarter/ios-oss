@@ -271,7 +271,10 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationContactCreator() {
     self.verifyNavigationEvent(
       { self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate) },
-      event: .contactCreator
+      event: .contactCreator(messageSubject: MessageSubject.project(
+        id: PPOProjectCardModel.addressLockTemplate.projectId,
+        name: PPOProjectCardModel.addressLockTemplate.projectName
+      ))
     )
   }
 

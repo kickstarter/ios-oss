@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import KsApi
 import Library
 import SwiftUI
 
@@ -61,7 +62,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         tabBarController?.switchToProfile()
       case let .editAddress(url), let .survey(url), let .backingDetails(url):
         self?.openSurvey(url)
-      case .confirmAddress, .contactCreator, .fix3DSChallenge, .fixPaymentMethod:
+      case let .contactCreator(messageSubject):
+        self?.messageCreator(messageSubject)
+      case .confirmAddress, .fix3DSChallenge, .fixPaymentMethod:
         // TODO: MBL-1451
         break
       }
@@ -111,4 +114,20 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
     self.present(nav, animated: true, completion: nil)
   }
+
+  private func messageCreator(_ messageSubject: MessageSubject) {
+    let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: .backerModal)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+    vc.delegate = self
+    self.present(nav, animated: true, completion: nil)
+  }
+}
+
+extension PPOContainerViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
+  }
+
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }

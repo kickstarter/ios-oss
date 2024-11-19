@@ -1,14 +1,6 @@
-public enum MessageSubject {
-  case backing(Backing)
+public enum MessageSubject: Equatable {
   case messageThread(MessageThread)
-  case project(Project)
-
-  public var backing: Backing? {
-    if case let .backing(backing) = self {
-      return backing
-    }
-    return nil
-  }
+  case project(id: Int, name: String)
 
   public var messageThread: MessageThread? {
     if case let .messageThread(messageThread) = self {
@@ -17,24 +9,10 @@ public enum MessageSubject {
     return nil
   }
 
-  public var project: Project? {
-    if case let .project(project) = self {
-      return project
+  public var project: (id: Int, name: String)? {
+    if case let .project(id, name) = self {
+      return (id, name)
     }
     return nil
-  }
-}
-
-extension MessageSubject: Equatable {}
-public func == (lhs: MessageSubject, rhs: MessageSubject) -> Bool {
-  switch (lhs, rhs) {
-  case let (.backing(lhs), .backing(rhs)):
-    return lhs == rhs
-  case let (.messageThread(lhs), .messageThread(rhs)):
-    return lhs == rhs
-  case let (.project(lhs), .project(rhs)):
-    return lhs == rhs
-  default:
-    return false
   }
 }
