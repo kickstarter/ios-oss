@@ -38,8 +38,7 @@ struct PPOProjectDetails: View {
             .lineLimit(Constants.titleLineLimit)
         }
         if let symbol = pledge.symbol, let amount = pledge.amount {
-          // TODO: Localize
-          Text("\(symbol)\(amount) pledged")
+          Text(Strings.Pledge_amount_pledged(pledge_amount: "\(symbol)\(amount)"))
             .font(Font(PPOStyles.subtitle.font))
             .background(Color(PPOStyles.background))
             .foregroundStyle(Color(PPOStyles.subtitle.color))

@@ -10,8 +10,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    // TODO: Translate these strings (MBL-1558)
-    self.title = "Activity"
+    self.title = Strings.tabbar_activity()
 
     let ppoView = PPOView(
       onCountChange: { [weak self] count in
@@ -81,13 +80,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     case projectAlerts(TabBarBadge)
     case activityFeed(TabBarBadge)
 
-    // TODO: Localize
     public var name: String {
       switch self {
       case .projectAlerts:
         Strings.Project_alerts()
       case .activityFeed:
-        "Activity feed"
+        Strings.discovery_accessibility_toolbar_buttons_activity_label()
       }
     }
 
