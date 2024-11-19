@@ -1,4 +1,5 @@
 import Foundation
+import Library
 import SwiftUI
 
 struct PPOAddressSummary: View {
@@ -7,8 +8,7 @@ struct PPOAddressSummary: View {
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
-      // TODO: Localize
-      Text("Shipping address")
+      Text(Strings.Shipping_address())
         .font(Font(PPOStyles.title.font))
         .foregroundStyle(Color(PPOStyles.title.color))
         .frame(width: self.leadingColumnWidth, alignment: Constants.textAlignment)

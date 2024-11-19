@@ -504,7 +504,7 @@ private func rewardShipsTo(
 
   var shippingLocationIds: [Int] = []
 
-  reward.shippingRules?.forEach { rule in
+  reward.shippingRulesExpanded?.forEach { rule in
     shippingLocationIds.append(rule.location.id)
   }
 

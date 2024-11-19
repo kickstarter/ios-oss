@@ -1,3 +1,4 @@
+import Library
 import SwiftUI
 
 struct PPOEmptyStateView: View {
@@ -8,10 +9,9 @@ struct PPOEmptyStateView: View {
     public static let horizontalPadding = 16.0
   }
 
-  // TODO: Translate these strings (MBL-1558)
   var body: some View {
     VStack(alignment: .center) {
-      Text("You're all caught up!")
+      Text(Strings.Youre_all_caught_up())
         .font(Font(UIFont.ksr_title2().bolded))
         .padding(EdgeInsets(
           top: 0,
@@ -23,11 +23,11 @@ struct PPOEmptyStateView: View {
         .accessibilityAddTraits(.isHeader)
 
       VStack(spacing: Constants.largePadding) {
-        Text("When projects you've backed need your attention, you'll see them here.")
+        Text(Strings.When_projects_youve_backed_need_your_attention_youll_see_them_here())
           .font(Font(UIFont.ksr_body()))
           .multilineTextAlignment(.center)
 
-        Button("See all backed projects") {
+        Button(Strings.See_all_backed__projects()) {
           self.onOpenBackedProjects?()
         }
         .buttonStyle(GreenButtonStyle())

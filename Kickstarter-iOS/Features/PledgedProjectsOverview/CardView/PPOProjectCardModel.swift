@@ -62,19 +62,18 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     case fixPayment
     case authenticateCard
 
-    // TODO: Localize
     public var label: String {
       switch self {
       case .confirmAddress:
-        "Confirm"
+        Strings.Confirm()
       case .editAddress:
-        "Edit"
+        Strings.Edit()
       case .completeSurvey:
-        "Complete survey"
+        Strings.Take_survey()
       case .fixPayment:
-        "Fix payment"
+        Strings.Fix_payment()
       case .authenticateCard:
-        "Authenticate card"
+        Strings.Authenticate_card()
       }
     }
 
@@ -396,7 +395,8 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment, let backingDetailsUrl {
+    if let image, let title, let pledge, let creatorName, let projectAnalyticsFragment,
+       let backingDetailsUrl {
       self.init(
         isUnread: true,
         alerts: alerts,
