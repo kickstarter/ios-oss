@@ -16,6 +16,7 @@ public struct User {
   public var newsletters: NewsletterSubscriptions
   public var notifications: Notifications
   public var optedOutOfRecommendations: Bool?
+  public var ppoHasAction: Bool?
   public var showPublicProfile: Bool?
   public var social: Bool?
   public var stats: Stats
@@ -128,6 +129,7 @@ extension User: Decodable {
     self.newsletters = try User.NewsletterSubscriptions(from: decoder)
     self.notifications = try User.Notifications(from: decoder)
     self.optedOutOfRecommendations = try values.decodeIfPresent(Bool.self, forKey: .optedOutOfRecommendations)
+    self.ppoHasAction = try values.decodeIfPresent(Bool.self, forKey: .ppoHasAction)
     self.showPublicProfile = try values.decodeIfPresent(Bool.self, forKey: .showPublicProfile)
     self.social = try values.decodeIfPresent(Bool.self, forKey: .social)
     self.stats = try User.Stats(from: decoder)
@@ -148,6 +150,7 @@ extension User: Decodable {
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
     case needsPassword = "needs_password"
     case optedOutOfRecommendations = "opted_out_of_recommendations"
+    case ppoHasAction = "ppo_has_action"
     case showPublicProfile = "show_public_profile"
     case social
     case unseenActivityCount = "unseen_activity_count"
@@ -168,6 +171,7 @@ extension User: EncodableType {
     result["name"] = self.name
     result["needs_password"] = self.needsPassword ?? false
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
+    result["ppo_has_action"] = self.ppoHasAction ?? false
     result["social"] = self.social ?? false
     result["show_public_profile"] = self.showPublicProfile ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
