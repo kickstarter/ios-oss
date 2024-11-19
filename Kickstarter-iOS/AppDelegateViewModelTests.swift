@@ -1186,6 +1186,21 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: badPushData)
   }
 
+  func testOpenNotification_PledgeRedemption() {
+    self.vm.inputs.didReceive(remoteNotification: pledgeRedemptionPushData)
+
+    self.presentViewController.assertValueCount(1)
+  }
+
+  func testOpenNotification_PledgeRedemption_BadData() {
+    var badPushData = pledgeRedemptionPushData
+    badPushData["pledgeRedemption"]?["id"] = nil
+
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
+
+    self.presentViewController.assertValueCount(0)
+  }
+
   func testOpenNotification_ProjectUpdate() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
       self.vm.inputs.didReceive(remoteNotification: updatePushData)
@@ -2495,6 +2510,18 @@ private let projectCommentPushData = [
     "category": "comment-project",
     "id": 1,
     "project_id": 1
+  ]
+]
+
+private let pledgeRedemptionPushData = [
+  "aps": [
+    "alert": "Response needed! Get your reward for backing some project."
+  ],
+  "pledgeRedemption": [
+    "id": 1,
+    "project_id": 1,
+    "backing_id": 1,
+    "pledge_manager_path": "/projects/fakeCreatorId/1/backing/redeem"
   ]
 ]
 

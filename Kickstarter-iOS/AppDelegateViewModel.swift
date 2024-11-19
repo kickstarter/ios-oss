@@ -1057,6 +1057,12 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     }
   }
 
+  if let pledgeRedemption = envelope.pledgeRedemption {
+    let path = pledgeRedemption.pledgeManagerPath
+    let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
+    return .project(.id(pledgeRedemption.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
+  }
+
   if let project = envelope.project {
     return .project(.id(project.id), .root, refInfo: RefInfo(.push))
   }
