@@ -118,7 +118,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     XCTAssertEqual(.cancel, policy)
 
     self.goToMessageDialogContext.assertValues([.projectPage])
-    self.goToMessageDialogSubject.assertValues([.project(project)])
+    self.goToMessageDialogSubject.assertValues([.project(id: project.id, name: project.name)])
   }
 
   func testGoBackToProjectDoesNotEmit_whenRequestURL_IsEqualToProjectURL() {
