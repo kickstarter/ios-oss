@@ -110,7 +110,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
       |> ShippingRule.lens.cost .~ 0.0
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
       |> Reward.lens.id .~ 99
 
     let mockConfigClient = MockRemoteConfigClient()
