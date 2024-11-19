@@ -39,7 +39,7 @@ enum PPONavigationEvent: Equatable {
   case backingDetails(url: String)
   case editAddress(url: String)
   case confirmAddress
-  case contactCreator
+  case contactCreator(messageSubject: MessageSubject)
 }
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
@@ -100,7 +100,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.editAddressSubject
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
       self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
-      self.contactCreatorSubject.map { _ in PPONavigationEvent.contactCreator }
+      self.contactCreatorSubject.map { viewModel in
+        let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
+        return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
+      }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)

@@ -186,19 +186,11 @@ internal enum Route {
 
       case let .sendMessage(body, messageSubject):
         switch messageSubject {
-        case let .backing(backing):
-          return (
-            .POST,
-            "v1/projects/\(backing.projectId)/backers/\(backing.backerId)/messages",
-            ["body": body],
-            nil
-          )
-
         case let .messageThread(messageThread):
           return (.POST, "/v1/message_threads/\(messageThread.id)/messages", ["body": body], nil)
 
-        case let .project(project):
-          return (.POST, "v1/projects/\(project.id)/messages", ["body": body], nil)
+        case let .project(projectId, _):
+          return (.POST, "v1/projects/\(projectId)/messages", ["body": body], nil)
         }
 
       case let .shippingRules(projectId, rewardId):

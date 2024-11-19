@@ -70,7 +70,6 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
     )
     .takeWhen(self.postButtonPressedProperty.signal)
     .switchMap { body, messageSubject in
-
       AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
@@ -96,13 +95,10 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
       .take(first: 1)
       .flatMap { messageSubject -> SignalProducer<String, Never> in
         switch messageSubject {
-        case let .backing(backing):
-          guard let name = backing.backer?.name else { return fetchBackerName(backing: backing) }
-          return .init(value: name)
         case let .messageThread(messageThread):
           return .init(value: messageThread.participant.name)
-        case let .project(project):
-          return .init(value: project.name)
+        case let .project(_, name):
+          return .init(value: name)
         }
       }
 
@@ -151,11 +147,4 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
 
   public var inputs: MessageDialogViewModelInputs { return self }
   public var outputs: MessageDialogViewModelOutputs { return self }
-}
-
-func fetchBackerName(backing: Backing) -> SignalProducer<String, Never> {
-  return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .demoteErrors()
-    .map { $0.name }
 }
