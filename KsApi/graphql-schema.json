@@ -691,9 +691,13 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "Order",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Order",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -14232,7 +14236,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pledge_redemption_unified_creator_ui",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "react_backed_projects",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "copy_addons",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -30535,12 +30551,12 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingAmount",
-            "description": "The cost of shipping",
+            "name": "shippingAmountFormatted",
+            "description": "The cost of shipping, formatted",
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -30575,12 +30591,24 @@
             "deprecationReason": null
           },
           {
-            "name": "totalTax",
-            "description": "The total tax amount for the order",
+            "name": "totalFormatted",
+            "description": "The total cost for the order including taxes and shipping, formatted",
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalTaxFormatted",
+            "description": "The total tax amount for the order, formatted",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -30633,38 +30661,6 @@
         "description": "An add-on reward included in an Order during Pledge Redemption as a Cross Sell.",
         "fields": [
           {
-            "name": "contentsType",
-            "description": "The content type of the reward",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "description",
-            "description": "Description of the add-on",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "id",
             "description": null,
             "args": [],
@@ -30681,18 +30677,6 @@
             "deprecationReason": null
           },
           {
-            "name": "name",
-            "description": "The add-on name.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "orderable",
             "description": "The orderable of the cross sell",
             "args": [],
@@ -30702,38 +30686,6 @@
               "ofType": {
                 "kind": "UNION",
                 "name": "Orderable",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "orderableConfig",
-            "description": "Configuration for the add-on",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "OrderableConfig",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "orderableId",
-            "description": "The ID of the orderable",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
                 "ofType": null
               }
             },
@@ -30757,8 +30709,8 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingPreference",
-            "description": "The shipping preference of the reward",
+            "name": "totalPriceFormatted",
+            "description": "The total price of the cross-sell",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -30773,31 +30725,7 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingRatesExpanded",
-            "description": "Shipping rates for all shippable countries,\n        including those that are children of superregions",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ShippingRate",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unitPrice",
+            "name": "unitPriceFormatted",
             "description": "The price of one unit of the cross-sell",
             "args": [],
             "type": {
@@ -30805,7 +30733,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -47920,22 +47848,6 @@
         "description": "Autogenerated return type of CreateWave",
         "fields": [
           {
-            "name": "checkoutWave",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CheckoutWave",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "args": [],
@@ -47943,6 +47855,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
