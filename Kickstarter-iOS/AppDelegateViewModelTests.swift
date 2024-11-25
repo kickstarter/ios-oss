@@ -2520,7 +2520,6 @@ private let pledgeRedemptionPushData = [
   "pledgeRedemption": [
     "id": 1,
     "project_id": 1,
-    "backing_id": 1,
     "pledge_manager_path": "/projects/fakeCreatorId/1/backing/redeem"
   ]
 ]

@@ -37,7 +37,6 @@ public struct PushEnvelope {
 
   public struct PledgeRedemption {
     public let id: Int
-    public let backingId: Int
     public let projectId: Int
     public let pledgeManagerPath: String
   }
@@ -137,7 +136,6 @@ extension PushEnvelope.PledgeRedemption: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case projectId = "project_id"
-    case backingId = "backing_id"
     case pledgeManagerPath = "pledge_manager_path"
   }
 }

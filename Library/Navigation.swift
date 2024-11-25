@@ -132,7 +132,6 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/signup": signup,
   "/projects/:creator_param/:project_param": project,
   "/projects/:creator_param/:project_param/backing/:backing_tab": projectSurvey,
-  "/projects/:creator_param/:project_param/backing/redeem": projectRedeem,
   "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
@@ -396,18 +395,6 @@ private func pledgeNew(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refInfo = refInfoFromParams(params)
     return Navigation.project(projectParam, .pledge(.new), refInfo: refInfo)
-  }
-
-  return nil
-}
-
-private func projectRedeem(_ params: RouteParamsDecoded) -> Navigation? {
-  if let projectParam = params.projectParam(),
-     let path = params.path() {
-    let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.surveyWebview(url)
-    return Navigation.project(projectParam, survey, refInfo: refInfo)
   }
 
   return nil
