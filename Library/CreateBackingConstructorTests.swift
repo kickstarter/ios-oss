@@ -25,7 +25,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      refTag: RefTag.projectPage
+      refTag: RefTag.projectPage,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: false)
@@ -37,6 +38,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTA="])
     XCTAssertEqual(input.paymentSourceId, "6")
     XCTAssertEqual(input.refParam, "project_page")
+    XCTAssertEqual(input.incremental, false)
   }
 
   func testCreateBackingInput_WithShipping_RefTagNil_IsApplePay() {
@@ -62,7 +64,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: "123",
       setupIntentClientSecret: "xyz",
       applePayParams: applePayParams,
-      refTag: nil
+      refTag: nil,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: true)
@@ -74,6 +77,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
     XCTAssertNil(input.paymentSourceId)
     XCTAssertNil(input.refParam)
+    XCTAssertEqual(input.incremental, false)
   }
 
   func testCreateBackingInput_WithShipping_RefTag_HasAddOns() {
@@ -104,7 +108,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: "123",
       setupIntentClientSecret: "xyz",
       applePayParams: applePayParams,
-      refTag: .discovery
+      refTag: .discovery,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: true)
@@ -119,6 +124,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     )
     XCTAssertNil(input.paymentSourceId)
     XCTAssertEqual(input.refParam, "discovery")
+    XCTAssertEqual(input.incremental, false)
   }
 
   func testCreateBackingInput_WithApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyApplePayIsValid_Success(
@@ -139,7 +145,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: "xyz",
       applePayParams: applePayParams,
-      refTag: RefTag.projectPage
+      refTag: RefTag.projectPage,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: true)
@@ -147,6 +154,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNotNil(input.applePay)
     XCTAssertNil(input.paymentSourceId)
     XCTAssertNil(input.setupIntentClientSecret)
+    XCTAssertEqual(input.incremental, false)
   }
 
   func testCreateBackingInput_WithNoApplePay_AndPaymentSource_AndSetupIntentClientSecret_OnlyPaymentSourceIsValid_Success(
@@ -160,7 +168,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: nil,
-      refTag: RefTag.projectPage
+      refTag: RefTag.projectPage,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: false)
@@ -168,6 +177,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.applePay)
     XCTAssertEqual(input.paymentSourceId, UserCreditCards.amex.id)
     XCTAssertNil(input.setupIntentClientSecret)
+    XCTAssertEqual(input.incremental, false)
   }
 
   func testCreateBackingInput_WithNoApplePay_NoPaymentSource_AndSetupIntentClientSecret_OnlySetupIntentClientSecretIsValid_Success(
@@ -181,7 +191,8 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       paymentSourceId: nil,
       setupIntentClientSecret: "xyz",
       applePayParams: nil,
-      refTag: RefTag.projectPage
+      refTag: RefTag.projectPage,
+      incremental: false
     )
 
     let input = CreateBackingInput.input(from: data, isApplePay: false)
@@ -189,5 +200,6 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.applePay)
     XCTAssertNil(input.paymentSourceId)
     XCTAssertEqual(input.setupIntentClientSecret, "xyz")
+    XCTAssertEqual(input.incremental, false)
   }
 }

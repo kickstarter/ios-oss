@@ -21,6 +21,7 @@ extension CreateBackingInput {
     return CreateBackingInput(
       amount: pledgeParams.pledgeTotal,
       applePay: isApplePay ? createBackingData.applePayParams : nil,
+      incremental: createBackingData.incremental,
       locationId: pledgeParams.locationId,
       paymentSourceId: paymentSourceId,
       projectId: createBackingData.project.graphID,
