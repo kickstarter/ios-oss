@@ -1,2 +1,4 @@
 *.pbxproj merge=union
 Frameworks/* linguist-vendored
+KsApi/GraphAPI.swift linguist-generated
+KsApi/graphql-schema.json linguist-vendored
