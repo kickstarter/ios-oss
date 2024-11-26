@@ -230,6 +230,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           currentUserEmail: email,
           currentUserFeatures: features
         )
+        NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }
 
     self.forceLogout = currentUserEvent
