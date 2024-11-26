@@ -304,8 +304,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return false
       }
 
-    self.trackingAuthorizationStatus = AppEnvironment.current.appTrackingTransparency.authorizationStatus
-
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
     self.pushTokenSuccessfullyRegistered = self.deviceTokenDataProperty.signal
@@ -766,15 +764,26 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       .filter(isTrue)
-      .map { _ in
-        guard let _ = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier else {
-          if AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() {
-            AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus()
-          }
-
-          return
+      .map { _ in AppEnvironment.current.appTrackingTransparency }
+      .map { appTrackingTransparency in
+        if
+          appTrackingTransparency.advertisingIdentifier == nil &&
+          appTrackingTransparency.shouldRequestAuthorizationStatus()
+        {
+            appTrackingTransparency.requestAndSetAuthorizationStatus()
         }
+        return ()
       }
+
+    self.trackingAuthorizationStatus = Signal
+      .merge(
+        self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
+        self.applicationActiveProperty.signal.ignoreValues()
+      )
+      .flatMap { () in
+        AppEnvironment.current.appTrackingTransparency.authorizationStatus
+      }
+      .skipRepeats()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }

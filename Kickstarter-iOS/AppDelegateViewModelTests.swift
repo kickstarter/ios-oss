@@ -35,6 +35,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
   private let segmentIsEnabled = TestObserver<Bool, Never>()
   private let showAlert = TestObserver<Notification, Never>()
+  private let trackingAuthorizationStatus = TestObserver<AppTrackingAuthorization, Never>()
   private let unregisterForRemoteNotifications = TestObserver<(), Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
   private let updateConfigInEnvironment = TestObserver<Config, Never>()
@@ -81,6 +82,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
+    self.vm.outputs.trackingAuthorizationStatus.observe(self.trackingAuthorizationStatus.observer)
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
@@ -2362,6 +2364,42 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
       self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
+  }
+
+  func testRequestAppTrackingSignalAuthorize() {
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency
+    ) {
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      appTrackingTransparency.authorizationStatusValue = .notDetermined
+      XCTAssertEqual(self.trackingAuthorizationStatus.values, [.notDetermined])
+      XCTAssertTrue(appTrackingTransparency.shouldRequestAuthStatus)
+
+      appTrackingTransparency.requestAndSetAuthorizationStatus()
+      XCTAssertEqual(self.trackingAuthorizationStatus.values, [.notDetermined, .authorized])
+      XCTAssertFalse(appTrackingTransparency.shouldRequestAuthStatus)
+    }
+  }
+
+  func testRequestAppTrackingSignalDeny() {
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency
+    ) {
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      appTrackingTransparency.authorizationStatusValue = .notDetermined
+      XCTAssertEqual(self.trackingAuthorizationStatus.values, [.notDetermined])
+      XCTAssertTrue(appTrackingTransparency.shouldRequestAuthStatus)
+
+      appTrackingTransparency.authorizationStatusValue = .denied
+      XCTAssertEqual(self.trackingAuthorizationStatus.values, [.notDetermined, .denied])
+      XCTAssertFalse(appTrackingTransparency.shouldRequestAuthStatus)
     }
   }
 

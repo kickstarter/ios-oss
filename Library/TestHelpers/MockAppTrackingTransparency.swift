@@ -14,6 +14,15 @@ class MockAppTrackingTransparency: AppTrackingTransparencyType {
     }
   }
 
+  public var authorizationStatusValue: AppTrackingAuthorization {
+    get {
+      self.authorizationStatusProperty.value
+    }
+    set {
+      self.authorizationStatusProperty.value = newValue
+    }
+  }
+
   func updateAdvertisingIdentifier() {
     self.advertisingIdentifier = self.shouldRequestAuthStatus ? "advertisingIdentifer" : nil
   }
