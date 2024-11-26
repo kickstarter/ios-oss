@@ -12,7 +12,7 @@ extension ServerFeature {
 }
 
 extension Set: EncodableType where Element == ServerFeature {
-  public func encode() -> [String : Any] {
-    ["features": Array(self).map({ $0.rawValue })]
+  public func encode() -> [String: Any] {
+    ["features": Array(self).map { $0.rawValue }]
   }
 }

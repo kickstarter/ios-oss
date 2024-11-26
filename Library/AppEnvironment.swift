@@ -443,7 +443,7 @@ public struct AppEnvironment: AppEnvironmentType {
     if service.oauthToken != nil {
       currentUser = data["currentUser"].flatMap(tryDecode)
       currentUserFeatures = (data["currentUserFeatures"] as? [String])?
-        .compactMap({ ServerFeature(rawValue: $0) })
+        .compactMap { ServerFeature(rawValue: $0) }
     }
 
     return Environment(
@@ -485,7 +485,7 @@ public struct AppEnvironment: AppEnvironmentType {
     data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
-    data["currentUserFeatures"] = env.currentUserFeatures?.map({ $0.rawValue })
+    data["currentUserFeatures"] = env.currentUserFeatures?.map { $0.rawValue }
     // swiftformat:enable wrap
 
     userDefaults.set(data, forKey: self.environmentStorageKey)
