@@ -12,8 +12,8 @@ final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var rigthColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var selectorIndicatorStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var optionDescriptorStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var selectionIndicatorImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -41,11 +41,11 @@ final class PledgePaymentPlanOptionView: UIView {
   private func configureSubviews() {
     self.addSubview(self.rootStackView)
 
-    self.leftColumnStackView.addArrangedSubviews([self.selectionIndicatorImageView, UIView()])
+    self.selectorIndicatorStackView.addArrangedSubviews([self.selectionIndicatorImageView])
 
-    self.rigthColumnStackView.addArrangedSubviews([self.titleLabel, self.subtitleLabel, UIView()])
+    self.optionDescriptorStackView.addArrangedSubviews([self.titleLabel, self.subtitleLabel])
 
-    self.rootStackView.addArrangedSubviews([self.leftColumnStackView, self.rigthColumnStackView])
+    self.rootStackView.addArrangedSubviews([self.selectorIndicatorStackView, self.optionDescriptorStackView])
   }
 
   private func setupConstraints() {
@@ -66,8 +66,10 @@ final class PledgePaymentPlanOptionView: UIView {
 
     NSLayoutConstraint.activate([
       self.selectionIndicatorImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
-      self.selectionIndicatorImageView.heightAnchor
-        .constraint(equalTo: self.selectionIndicatorImageView.widthAnchor)
+      self.selectionIndicatorImageView.heightAnchor.constraint(
+        equalTo: self.titleLabel.heightAnchor,
+        multiplier: 1.0
+      )
     ])
   }
 
@@ -84,9 +86,8 @@ final class PledgePaymentPlanOptionView: UIView {
     super.bindStyles()
 
     applyRootStackViewStyle(self.rootStackView)
-    applyColumnStackViewStyle(self.leftColumnStackView)
-    self.leftColumnStackView.spacing = 0
-    applyColumnStackViewStyle(self.rigthColumnStackView)
+    applySelectorIndicatorStackViewStyle(self.selectorIndicatorStackView)
+    applyOptionDescriptorStackViewStyle(self.selectorIndicatorStackView)
     applyTitleLabelStyle(self.titleLabel)
     applySubtitleLabelStyle(self.subtitleLabel)
     applySelectionIndicatorImageViewStyle(self.selectionIndicatorImageView)
@@ -140,11 +141,17 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.insetsLayoutMarginsFromSafeArea = false
   stackView.spacing = Styles.grid(2)
+  stackView.alignment = .leading
 }
 
-private func applyColumnStackViewStyle(_ stackView: UIStackView) {
+private func applySelectorIndicatorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(1)
+}
+
+private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = 0
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
@@ -163,5 +170,5 @@ private func applySubtitleLabelStyle(_ label: UILabel) {
 }
 
 private func applySelectionIndicatorImageViewStyle(_ imageView: UIImageView) {
-  imageView.contentMode = .top
+  imageView.contentMode = .center
 }

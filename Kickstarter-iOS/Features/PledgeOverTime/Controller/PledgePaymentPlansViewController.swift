@@ -13,9 +13,10 @@ final class PledgePaymentPlansViewController: UIViewController {
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  private var planOptionViews: [PledgePaymentPlanOptionView] = []
-
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
+
+  private lazy var pledgeInFullOption = PledgePaymentPlanOptionView(frame: .zero)
+  private lazy var pledgeOverTimeOption = PledgePaymentPlanOptionView(frame: .zero)
 
   internal weak var delegate: PledgePaymentPlansViewControllerDelegate?
 
@@ -35,26 +36,14 @@ final class PledgePaymentPlansViewController: UIViewController {
   private func configureSubviews() {
     self.view.addSubview(self.rootStackView)
 
-    let pledgeInfullOption = PledgePaymentPlanOptionView(frame: .zero)
-    pledgeInfullOption.delegate = self
+    self.pledgeInFullOption.delegate = self
+    self.pledgeOverTimeOption.delegate = self
 
-    let pledgeInfullOptionData = PledgePaymentPlanOptionData(type: .pledgeInFull, selectedType: .pledgeInFull)
-    pledgeInfullOption.configureWith(value: pledgeInfullOptionData)
-
-    let pledgeOverTimeOption = PledgePaymentPlanOptionView(frame: .zero)
-    pledgeOverTimeOption.delegate = self
-
-    let pledgeOverTimeOptionData = PledgePaymentPlanOptionData(
-      type: .pledgeOverTime,
-      selectedType: .pledgeInFull
-    )
-    pledgeOverTimeOption.configureWith(value: pledgeOverTimeOptionData)
-
-    self.planOptionViews = [pledgeInfullOption, pledgeOverTimeOption]
-
-    let arrangedSubviews = [pledgeInfullOption, self.separatorView, pledgeOverTimeOption]
-
-    self.rootStackView.addArrangedSubviews(arrangedSubviews)
+    self.rootStackView.addArrangedSubviews([
+      self.pledgeInFullOption,
+      self.separatorView,
+      self.pledgeOverTimeOption
+    ])
   }
 
   private func setupConstraints() {
@@ -86,13 +75,20 @@ final class PledgePaymentPlansViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadPaymentPlans.observeForUI().observeValues { [weak self] data in
-      guard let self = self else { return }
+    self.viewModel.outputs.reloadPaymentPlans
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let self = self else { return }
 
-      self.planOptionViews.forEach {
-        $0.refreshSelectedOption(data.selectedPlan)
+        self.pledgeInFullOption.configureWith(value: PledgePaymentPlanOptionData(
+          type: .pledgeInFull,
+          selectedType: data.selectedPlan
+        ))
+        self.pledgeOverTimeOption.configureWith(value: PledgePaymentPlanOptionData(
+          type: .pledgeOverTime,
+          selectedType: data.selectedPlan
+        ))
       }
-    }
 
     self.viewModel.outputs.notifyDelegatePaymentPlanSelected
       .observeForUI()

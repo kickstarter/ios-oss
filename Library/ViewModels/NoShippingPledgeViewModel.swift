@@ -1117,7 +1117,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
   public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: ReactiveSwift.Signal<PledgePaymentPlansAndSelectionData, Never>
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }

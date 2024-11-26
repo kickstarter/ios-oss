@@ -39,8 +39,7 @@ public protocol PledgePaymentPlansViewModelType {
   var outputs: PledgePaymentPlansViewModelOutputs { get }
 }
 
-public final class PledgePaymentPlansViewModel:
-  PledgePaymentPlansViewModelType,
+public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
   PledgePaymentPlansViewModelInputs,
   PledgePaymentPlansViewModelOutputs {
   public var reloadPaymentPlans: Signal<PledgePaymentPlansAndSelectionData, Never>
