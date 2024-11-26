@@ -65,7 +65,7 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
     self.goToMessageDialog = project
       .takeWhen(messageCreatorRequest)
       .filter { _ in AppEnvironment.current.currentUser != nil }
-      .map { (MessageSubject.project($0), .projectPage) }
+      .map { (MessageSubject.project(id: $0.id, name: $0.name), .projectPage) }
 
     self.goBackToProject = Signal.combineLatest(project, navigationAction)
       .filter { $1.navigationType == .linkActivated }

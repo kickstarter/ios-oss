@@ -34,6 +34,15 @@ public enum RootViewControllerData: Equatable {
       return false
     }
   }
+
+  var isActivity: Bool {
+    switch self {
+    case .activities, .pledgedProjectsAndActivities:
+      return true
+    case .discovery, .profile, .search:
+      return false
+    }
+  }
 }
 
 public struct TabBarItemsData {
@@ -199,7 +208,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
     let activityViewControllerIndex = self.setViewControllers
-      .map { $0.firstIndex(where: { $0 == .activities }) }
+      .map { $0.firstIndex(where: \.isActivity) }
       .skipNil()
       .map { $0 as RootViewControllerIndex }
 
@@ -260,7 +269,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       integerBadgeValueAndIndex,
       integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
     )
-    .map { value, index in (activitiesBadgeValue(with: value), index) }
+    .withLatest(from: currentUser.map { user in user?.ppoHasAction ?? false })
+    .map(unpack)
+    .map { value, index, hasPPOAction in
+      (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
+    }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
 
@@ -457,7 +470,12 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
 extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
-private func activitiesBadgeValue(with value: Int?) -> String? {
+private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
+  guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
+    // an empty string will show a dot as badge
+    return ""
+  }
+
   let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
   let badgeValue = value ?? 0
   let maxBadgeValue = !isVoiceOverRunning ? 99 : badgeValue

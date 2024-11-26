@@ -38,24 +38,6 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.recipientName.assertValues([thread.participant.name])
   }
 
-  func testRecipientNameWhenBackingHasNoBacker() {
-    let backing = .template
-      |> Backing.lens.backer .~ nil
-    let name = "Blobber"
-    let backer = User.template
-      |> \.name .~ name
-
-    withEnvironment(apiService: MockService(fetchUserResult: .success(backer))) {
-      self.vm.inputs.configureWith(messageSubject: .backing(backing), context: .messages)
-      self.vm.inputs.viewDidLoad()
-
-      self.recipientName.assertValueCount(0, "Backer not present on backing, needs to be fetched from API")
-
-      self.scheduler.advance()
-      self.recipientName.assertValues([name], "Should emit backer name after fetching from API")
-    }
-  }
-
   func testButtonEnabled() {
     self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
@@ -121,7 +103,11 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToCreator() {
-    self.vm.inputs.configureWith(messageSubject: .project(.template), context: .messages)
+    let project = Project.template
+    self.vm.inputs.configureWith(
+      messageSubject: .project(id: project.id, name: project.name),
+      context: .messages
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.bodyTextChanged("HELLO")
 
@@ -129,36 +115,6 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
     self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
     self.recipientName.assertValues(["The Project"])
-
-    self.vm.inputs.postButtonPressed()
-
-    self.loadingViewIsHidden.assertValues([true, false])
-    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
-    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
-
-    self.scheduler.advance()
-
-    self.loadingViewIsHidden.assertValues([true, false, true])
-    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
-    self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
-  }
-
-  func testPostingMessageToBacker() {
-    let name = "Blobster"
-    let backer = User.template
-      |> \.name .~ name
-    let backing = .template
-      |> Backing.lens.backer .~ backer
-    self.vm.inputs.configureWith(messageSubject: .backing(backing), context: .messages)
-    self.vm.inputs.viewDidLoad()
-
-    self.recipientName.assertValues([name], "Should emit backer's name")
-
-    self.vm.inputs.bodyTextChanged("HELLO")
-
-    self.loadingViewIsHidden.assertValues([true])
-    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
-    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
 
     self.vm.inputs.postButtonPressed()
 
