@@ -181,7 +181,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     #endif
 
-    disposables.append(
+    self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus
         .observeForUI()
         .startWithValues(self.updateFirebaseConsent(status:))
@@ -407,7 +407,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .analyticsStorage: consentStatus,
       .adStorage: consentStatus,
       .adUserData: consentStatus,
-      .adPersonalization: consentStatus,
+      .adPersonalization: consentStatus
     ])
   }
 

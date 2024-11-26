@@ -83,7 +83,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
-    disposables.append(self.vm.outputs.trackingAuthorizationStatus.start(self.trackingAuthorizationStatus.observer))
+    self.disposables
+      .append(self.vm.outputs.trackingAuthorizationStatus.start(self.trackingAuthorizationStatus.observer))
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
