@@ -56,6 +56,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateCurrentUserFeatures(_ features: [ServerFeature]) {
+    self.replaceCurrentEnvironment(
+      currentUserFeatures: features
+    )
+  }
+
   public static func updateAppTrackingTransparency(_ appTrackingTransparency: AppTrackingTransparencyType) {
     self.replaceCurrentEnvironment(
       appTrackingTransparency: appTrackingTransparency
@@ -244,6 +250,7 @@ public struct AppEnvironment: AppEnvironmentType {
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     currentUserEmail: String? = AppEnvironment.current.currentUserEmail,
+    currentUserFeatures: [ServerFeature]? = AppEnvironment.current.currentUserFeatures,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,

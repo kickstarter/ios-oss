@@ -207,23 +207,29 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           : SignalProducer(value: .value(nil))
       }
 
-    let fetchUserEmailEvent = Signal
+    let fetchUserSetupEvent = Signal
       .merge(
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues(),
         self.userSessionStartedProperty.signal
       )
-      .switchMap { _ -> SignalProducer<Signal<UserEnvelope<GraphUserEmail>?, ErrorEnvelope>.Event, Never> in
-        AppEnvironment.current.apiService.fetchGraphUserEmail().wrapInOptional().materialize()
+      .switchMap { _ -> SignalProducer<Signal<UserEnvelope<GraphUserSetup>?, ErrorEnvelope>.Event, Never> in
+        AppEnvironment.current.apiService.fetchGraphUserSetup().wrapInOptional().materialize()
       }
 
-    self.fetchUserEmail = fetchUserEmailEvent.values()
+    self.fetchUserEmail = fetchUserSetupEvent.values()
       .map { user in
-        guard let email = user?.me.email else {
+        guard 
+          let email = user?.me.email,
+          let features = user?.me.enabledFeatures
+        else {
           return
         }
 
-        AppEnvironment.updateCurrentUserEmail(email)
+        AppEnvironment.replaceCurrentEnvironment(
+          currentUserEmail: email,
+          currentUserFeatures: features
+        )
       }
 
     self.forceLogout = currentUserEvent
