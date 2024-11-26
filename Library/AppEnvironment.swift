@@ -56,7 +56,7 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  public static func updateCurrentUserFeatures(_ features: [ServerFeature]) {
+  public static func updateCurrentUserFeatures(_ features: Set<ServerFeature>) {
     self.replaceCurrentEnvironment(
       currentUserFeatures: features
     )
@@ -250,7 +250,7 @@ public struct AppEnvironment: AppEnvironmentType {
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     currentUserEmail: String? = AppEnvironment.current.currentUserEmail,
-    currentUserFeatures _: [ServerFeature]? = AppEnvironment.current.currentUserFeatures,
+    currentUserFeatures: Set<ServerFeature>? = AppEnvironment.current.currentUserFeatures,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,
@@ -285,6 +285,7 @@ public struct AppEnvironment: AppEnvironmentType {
         countryCode: countryCode,
         currentUser: currentUser,
         currentUserEmail: currentUserEmail,
+        currentUserFeatures: currentUserFeatures,
         dateType: dateType,
         debounceInterval: debounceInterval,
         debugData: debugData,
@@ -361,6 +362,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     var service = self.current.apiService
     var currentUser: User? // Will only be set if an OAuth token is also set
+    var currentUserFeatures: [ServerFeature]? // Will only be set if an OAuth token is also set
     let configDict: [String: Any]? = data["config"] as? [String: Any]
     let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 
@@ -440,12 +442,15 @@ public struct AppEnvironment: AppEnvironmentType {
     // Try restore the current user
     if service.oauthToken != nil {
       currentUser = data["currentUser"].flatMap(tryDecode)
+      currentUserFeatures = (data["currentUserFeatures"] as? [String])?
+        .compactMap({ ServerFeature(rawValue: $0) })
     }
 
     return Environment(
       apiService: service,
       config: config,
       currentUser: currentUser,
+      currentUserFeatures: currentUserFeatures.flatMap(Set.init),
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser |> KSRAnalytics
         .lens.appTrackingTransparency .~ self.current.appTrackingTransparency
     )
@@ -480,6 +485,7 @@ public struct AppEnvironment: AppEnvironmentType {
     data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
+    data["currentUserFeatures"] = env.currentUserFeatures?.map({ $0.rawValue })
     // swiftformat:enable wrap
 
     userDefaults.set(data, forKey: self.environmentStorageKey)

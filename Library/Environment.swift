@@ -52,7 +52,7 @@ public struct Environment {
   public let currentUserEmail: String?
 
   /// The currently logged in user's Features.
-  public let currentUserFeatures: [ServerFeature]?
+  public let currentUserFeatures: Set<ServerFeature>?
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
   public let dateType: DateProtocol.Type
@@ -130,7 +130,7 @@ public struct Environment {
     countryCode: String = "US",
     currentUser: User? = nil,
     currentUserEmail: String? = nil,
-    currentUserFeatures: [ServerFeature]? = nil,
+    currentUserFeatures: Set<ServerFeature>? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     debugData: DebugData? = nil,
