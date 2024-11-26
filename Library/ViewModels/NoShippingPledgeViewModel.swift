@@ -101,7 +101,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .map { value -> PledgePaymentPlansAndSelectionData? in
         guard value else { return nil }
 
-        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
+        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
       }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }

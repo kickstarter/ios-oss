@@ -1,28 +1,34 @@
 import Library
 import UIKit
 
-final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
-  // MARK: properties
+protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
+  func pledgePaymentPlanOptionView(
+    _ optionView: PledgePaymentPlanOptionView,
+    didSelectPlanType paymentPlanType: PledgePaymentPlansType
+  )
+}
+
+final class PledgePaymentPlanOptionView: UIView {
+  // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-
   private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rigthColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var checkmarkImageView: UIImageView = { UIImageView(frame: .zero) }()
-  private lazy var selectionView: UIView = { UIView(frame: .zero) }()
 
-  private let viewModel: PledgePaymentPlansCellViewModelType = PledgePaymentPlansCellViewModel()
+  private let viewModel: PledgePaymentPlansOptionViewModelType = PledgePaymentPlansOptionViewModel()
 
-  // MARK: Lifecycle
+  public weak var delegate: PledgePaymentPlanOptionViewDelegate?
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
+    self.bindViewModel()
     self.configureSubviews()
     self.setupConstraints()
-    self.bindViewModel()
+    self.configureTapGesture()
   }
 
   @available(*, unavailable)
@@ -33,7 +39,7 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    self.contentView.addSubview(self.rootStackView)
+    self.addSubview(self.rootStackView)
 
     addArrangedSubviews([self.checkmarkImageView, UIView()], to: self.leftColumnStackView)
 
@@ -46,10 +52,10 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
     self.rootStackView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      self.rootStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      self.rootStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-      self.rootStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+      self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
     ])
 
     self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -62,21 +68,19 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
       self.checkmarkImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
       self.checkmarkImageView.heightAnchor.constraint(equalTo: self.checkmarkImageView.widthAnchor)
     ])
+  }
 
-    NSLayoutConstraint.activate([
-      self.checkmarkImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
-      self.checkmarkImageView.heightAnchor.constraint(equalTo: self.checkmarkImageView.widthAnchor)
-    ])
+  private func configureTapGesture() {
+    self.addGestureRecognizer(UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.onOptionTapped)
+    ))
   }
 
   // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
-
-    self.selectionView.backgroundColor = .ksr_support_100
-
-    self.selectedBackgroundView = self.selectionView
 
     applyRootStackViewStyle(self.rootStackView)
 
@@ -110,10 +114,22 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.subtitleText.observeForUI().observeValues { [weak self] subtitleText in
       self?.configureSubtitleLabel(text: subtitleText)
     }
+
+    self.viewModel.outputs.notifyDelegatePaymentPlanOptionSelected
+      .observeForUI()
+      .observeValues { [weak self] paymentPlan in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentPlanOptionView(self, didSelectPlanType: paymentPlan)
+      }
   }
 
-  func configureWith(value: PledgePaymentPlanCellData) {
+  func configureWith(value: PledgePaymentPlanOptionData) {
     self.viewModel.inputs.configureWith(data: value)
+  }
+
+  func refreshSelectedOption(_ selectedType: PledgePaymentPlansType) {
+    self.viewModel.inputs.refreshSelectedType(selectedType)
   }
 
   func configureSubtitleLabel(text: String?) {
@@ -127,6 +143,12 @@ final class PledgePaymentPlanCell: UITableViewCell, ValueCell {
     if !self.rigthColumnStackView.arrangedSubviews.contains(self.subtitleLabel) {
       self.rigthColumnStackView.insertArrangedSubview(self.subtitleLabel, at: 1)
     }
+  }
+
+  // MARK: - Actions
+
+  @objc private func onOptionTapped() {
+    self.viewModel.inputs.optionTapped()
   }
 }
 

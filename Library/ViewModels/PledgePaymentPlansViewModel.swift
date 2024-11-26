@@ -2,8 +2,8 @@ import Foundation
 import Prelude
 import ReactiveSwift
 
-public enum PledgePaymentPlansType: Int {
-  case pledgeinFull
+public enum PledgePaymentPlansType: Equatable {
+  case pledgeInFull
   case pledgeOverTime
 }
 
@@ -15,7 +15,7 @@ public struct PledgePaymentPlansAndSelectionData: Equatable {
    */
 
   public init() {
-    self.selectedPlan = .pledgeinFull
+    self.selectedPlan = .pledgeInFull
   }
 
   public init(selectedPlan: PledgePaymentPlansType) {
@@ -26,7 +26,7 @@ public struct PledgePaymentPlansAndSelectionData: Equatable {
 public protocol PledgePaymentPlansViewModelInputs {
   func viewDidLoad()
   func configure(with value: PledgePaymentPlansAndSelectionData)
-  func didSelectRowAtIndexPath(_ indexPath: IndexPath, with data: PledgePaymentPlanCellData)
+  func didSelectPlanType(_ planType: PledgePaymentPlansType)
 }
 
 public protocol PledgePaymentPlansViewModelOutputs {
@@ -62,10 +62,8 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
 
     let planType = configureWithValue.map { $0.selectedPlan }
 
-    let selectedPlanType = self.didSelectRowAtIndexPathDataProperty.signal
-      .map { $0.1 }
+    let selectedPlanType = self.didSelectPlanTypeProperty.signal
       .skipNil()
-      .map { $0.type }
 
     self.reloadPaymentPlans = Signal.merge(
       planType,
@@ -80,11 +78,8 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
     self.configureWithValueProperty.value = value
   }
 
-  private let didSelectRowAtIndexPathDataProperty = MutableProperty<(
-    IndexPath?,
-    PledgePaymentPlanCellData?
-  )>((nil, nil))
-  public func didSelectRowAtIndexPath(_ indexPath: IndexPath, with data: PledgePaymentPlanCellData) {
-    self.didSelectRowAtIndexPathDataProperty.value = (indexPath, data)
+  private let didSelectPlanTypeProperty = MutableProperty<PledgePaymentPlansType?>(nil)
+  public func didSelectPlanType(_ planType: PledgePaymentPlansType) {
+    self.didSelectPlanTypeProperty.value = planType
   }
 }

@@ -11,9 +11,11 @@ protocol PledgePaymentPlansViewControllerDelegate: AnyObject {
 final class PledgePaymentPlansViewController: UIViewController {
   // MARK: Properties
 
-  private let dataSource = PledgePaymentPlansDataSource()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  private lazy var tableView: UITableView = { ContentSizeTableView(frame: .zero, style: .plain) }()
+  private var planOptionViews: [PledgePaymentPlanOptionView] = []
+
+  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
   internal weak var delegate: PledgePaymentPlansViewControllerDelegate?
 
@@ -31,22 +33,39 @@ final class PledgePaymentPlansViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    self.tableView.dataSource = self.dataSource
-    self.tableView.delegate = self
+    self.view.addSubview(self.rootStackView)
 
-    self.view.addSubview(self.tableView)
+    let pledgeInfullOption = PledgePaymentPlanOptionView(frame: .zero)
+    pledgeInfullOption.delegate = self
 
-    self.tableView.registerCellClass(PledgePaymentPlanCell.self)
+    let pledgeInfullOptionData = PledgePaymentPlanOptionData(type: .pledgeInFull, selectedType: .pledgeInFull)
+    pledgeInfullOption.configureWith(value: pledgeInfullOptionData)
+
+    let pledgeOverTimeOption = PledgePaymentPlanOptionView(frame: .zero)
+    pledgeOverTimeOption.delegate = self
+
+    let pledgeOverTimeOptionData = PledgePaymentPlanOptionData(
+      type: .pledgeOverTime,
+      selectedType: .pledgeInFull
+    )
+    pledgeOverTimeOption.configureWith(value: pledgeOverTimeOptionData)
+
+    self.planOptionViews = [pledgeInfullOption, pledgeOverTimeOption]
+
+    let arrangedSubviews = [pledgeInfullOption, self.separatorView, pledgeOverTimeOption]
+
+    addArrangedSubviews(arrangedSubviews, to: self.rootStackView)
   }
 
   private func setupConstraints() {
-    self.tableView.translatesAutoresizingMaskIntoConstraints = false
+    self.rootStackView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-      self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-      self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      self.rootStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      self.rootStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+      self.rootStackView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.separatorView.heightAnchor.constraint(equalToConstant: 0.5)
     ])
   }
 
@@ -55,9 +74,11 @@ final class PledgePaymentPlansViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    applyRootStackViewStyle(self.rootStackView)
+
     applyWhiteBackgroundStyle(self.view)
 
-    applyTableViewStyle(self.tableView)
+    applySeparatorStyle(self.separatorView)
   }
 
   // MARK: - View model
@@ -66,11 +87,11 @@ final class PledgePaymentPlansViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.reloadPaymentPlans.observeForUI().observeValues { [weak self] data in
-
       guard let self = self else { return }
 
-      self.dataSource.load(data)
-      self.tableView.reloadData()
+      self.planOptionViews.forEach {
+        $0.refreshSelectedOption(data.selectedPlan)
+      }
     }
 
     self.viewModel.outputs.notifyDelegatePaymentPlanSelected
@@ -91,27 +112,31 @@ final class PledgePaymentPlansViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension PledgePaymentPlansViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
-
-    let selectedCellData = self.dataSource[indexPath] as! PledgePaymentPlanCellData
-
-    self.viewModel.inputs.didSelectRowAtIndexPath(indexPath, with: selectedCellData)
+extension PledgePaymentPlansViewController: PledgePaymentPlanOptionViewDelegate {
+  func pledgePaymentPlanOptionView(
+    _: PledgePaymentPlanOptionView,
+    didSelectPlanType paymentPlanType: PledgePaymentPlansType
+  ) {
+    self.viewModel.inputs.didSelectPlanType(paymentPlanType)
   }
 }
 
 // MARK: Styles
 
-private func applyTableViewStyle(_ tableView: UITableView) {
-  tableView.separatorInset = .zero
-  tableView.contentInsetAdjustmentBehavior = .never
-  tableView.isScrollEnabled = false
-  tableView.rowHeight = UITableView.automaticDimension
-
-  applyWhiteBackgroundStyle(tableView)
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(1)
 }
 
 private func applyWhiteBackgroundStyle(_ view: UIView) {
   view.backgroundColor = UIColor.ksr_white
+}
+
+private func applySeparatorStyle(_ view: UIView) {
+  view.backgroundColor = UIColor.ksr_support_300
+  view.accessibilityElementsHidden = true
+}
+
+private func addArrangedSubviews(_ subviews: [UIView], to stackView: UIStackView) {
+  subviews.forEach(stackView.addArrangedSubview)
 }
