@@ -41,7 +41,7 @@ extension UserEnvelope {
   }
 
   /**
-   Returns a `UserEnvelope<GraphUser>` from a `FetchUserEmailQuery.Data` object.
+   Returns a `UserEnvelope<GraphUserEmail>` from a `FetchUserEmailQuery.Data` object.
    */
   static func userEnvelope(from data: GraphAPI.FetchUserEmailQuery.Data) -> UserEnvelope<GraphUserEmail>? {
     guard let userFragment = data.me?.fragments.userEmailFragment else { return nil }
@@ -51,5 +51,22 @@ extension UserEnvelope {
     )
 
     return UserEnvelope<GraphUserEmail>(me: graphUser)
+  }
+
+  /**
+   Returns a `UserEnvelope<GraphUserSetup>` from a `FetchUserSetupQuery.Data` object.
+   */
+  static func userEnvelope(from data: GraphAPI.FetchUserSetupQuery.Data) -> UserEnvelope<GraphUserSetup>? {
+    guard 
+      let userFragment = data.me?.fragments.userEmailFragment,
+      let featuresFragment = data.me?.fragments.userFeaturesFragment
+    else { return nil }
+
+    let graphUser = GraphUserSetup(
+      email: userFragment.email,
+      enabledFeatures: featuresFragment.enabledFeatures
+    )
+
+    return UserEnvelope<GraphUserSetup>(me: graphUser)
   }
 }
