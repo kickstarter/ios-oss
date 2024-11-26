@@ -41,11 +41,11 @@ final class PledgePaymentPlanOptionView: UIView {
   private func configureSubviews() {
     self.addSubview(self.rootStackView)
 
-    addArrangedSubviews([self.selectionIndicatorImageView, UIView()], to: self.leftColumnStackView)
+    self.leftColumnStackView.addArrangedSubviews([self.selectionIndicatorImageView, UIView()])
 
-    addArrangedSubviews([self.titleLabel, self.subtitleLabel, UIView()], to: self.rigthColumnStackView)
+    self.rigthColumnStackView.addArrangedSubviews([self.titleLabel, self.subtitleLabel, UIView()])
 
-    addArrangedSubviews([self.leftColumnStackView, self.rigthColumnStackView], to: self.rootStackView)
+    self.rootStackView.addArrangedSubviews([self.leftColumnStackView, self.rigthColumnStackView])
   }
 
   private func setupConstraints() {
@@ -86,7 +86,6 @@ final class PledgePaymentPlanOptionView: UIView {
     applyRootStackViewStyle(self.rootStackView)
     applyColumnStackViewStyle(self.leftColumnStackView)
     self.leftColumnStackView.spacing = 0
-
     applyColumnStackViewStyle(self.rigthColumnStackView)
     applyTitleLabelStyle(self.titleLabel)
     applySubtitleLabelStyle(self.subtitleLabel)
@@ -165,10 +164,4 @@ private func applySubtitleLabelStyle(_ label: UILabel) {
 
 private func applySelectionIndicatorImageViewStyle(_ imageView: UIImageView) {
   imageView.contentMode = .top
-}
-
-// MARK: - Helper functions
-
-private func addArrangedSubviews(_ subviews: [UIView], to stackView: UIStackView) {
-  subviews.forEach(stackView.addArrangedSubview)
 }

@@ -54,7 +54,7 @@ final class PledgePaymentPlansViewController: UIViewController {
 
     let arrangedSubviews = [pledgeInfullOption, self.separatorView, pledgeOverTimeOption]
 
-    addArrangedSubviews(arrangedSubviews, to: self.rootStackView)
+    self.rootStackView.addArrangedSubviews(arrangedSubviews)
   }
 
   private func setupConstraints() {
@@ -135,8 +135,4 @@ private func applyWhiteBackgroundStyle(_ view: UIView) {
 private func applySeparatorStyle(_ view: UIView) {
   view.backgroundColor = UIColor.ksr_support_300
   view.accessibilityElementsHidden = true
-}
-
-private func addArrangedSubviews(_ subviews: [UIView], to stackView: UIStackView) {
-  subviews.forEach(stackView.addArrangedSubview)
 }

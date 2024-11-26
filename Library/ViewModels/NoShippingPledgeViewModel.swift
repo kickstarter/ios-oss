@@ -98,8 +98,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
 
     self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .map { value -> PledgePaymentPlansAndSelectionData? in
-        guard value else { return nil }
+      .map { showPledgeOverTimeUI -> PledgePaymentPlansAndSelectionData? in
+        guard showPledgeOverTimeUI else { return nil }
 
         return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
       }.skipNil()
