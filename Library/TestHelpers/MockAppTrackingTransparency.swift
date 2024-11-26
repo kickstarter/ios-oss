@@ -37,7 +37,9 @@ class MockAppTrackingTransparency: AppTrackingTransparencyType {
   }
 
   private var authorizationStatusProperty = MutableProperty<AppTrackingAuthorization>(.notDetermined)
-  var authorizationStatus: Signal<AppTrackingAuthorization, Never> {
-    self.authorizationStatusProperty.signal
+  var authorizationStatus: SignalProducer<AppTrackingAuthorization, Never> {
+    self.authorizationStatusProperty.producer
+      .replayLazily(upTo: 1)
+      .skipRepeats()
   }
 }

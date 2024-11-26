@@ -160,9 +160,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when  application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
-  /// Emits immediately and when the user's authorization status changes
-  var trackingAuthorizationStatus: Signal<AppTrackingAuthorization, Never> { get }
-
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
 
@@ -174,6 +171,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits to synchronize iCloud on app launch.
   var synchronizeUbiquitousStore: Signal<(), Never> { get }
+
+  /// Emits immediately and when the user's authorization status changes
+  var trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never> { get }
 
   /// Emits when we should unregister the user from notifications.
   var unregisterForRemoteNotifications: Signal<(), Never> { get }
@@ -775,7 +775,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return ()
       }
 
-    self.trackingAuthorizationStatus = Signal
+    self.trackingAuthorizationStatus = SignalProducer
       .merge(
         self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
         self.applicationActiveProperty.signal.ignoreValues()
@@ -783,7 +783,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .flatMap { () in
         AppEnvironment.current.appTrackingTransparency.authorizationStatus
       }
-      .skipRepeats()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -950,7 +949,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>
-  public let trackingAuthorizationStatus: Signal<AppTrackingAuthorization, Never>
+  public let trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never>
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>

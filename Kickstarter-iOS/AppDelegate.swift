@@ -24,6 +24,8 @@ import UserNotifications
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate var disposables: [any Disposable] = []
+
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
@@ -179,9 +181,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     #endif
 
-    self.viewModel.outputs.trackingAuthorizationStatus
-      .observeForUI()
-      .observeValues(self.updateFirebaseConsent(status:))
+    disposables.append(
+      self.viewModel.outputs.trackingAuthorizationStatus
+        .observeForUI()
+        .startWithValues(self.updateFirebaseConsent(status:))
+    )
 
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
@@ -393,7 +397,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func updateFirebaseConsent(status: AppTrackingAuthorization) {
-    // https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios&consentmode=advanced#set_up_consent_mode
+    // https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios&consentmode=advanced
     let consentStatus: ConsentStatus = if case .authorized = status {
       .granted
     } else {

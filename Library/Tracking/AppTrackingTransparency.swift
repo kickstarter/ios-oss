@@ -7,7 +7,7 @@ public typealias AppTrackingAuthorization = ATTrackingManager.AuthorizationStatu
 
 public protocol AppTrackingTransparencyType {
   var advertisingIdentifier: String? { get }
-  var authorizationStatus: Signal<AppTrackingAuthorization, Never> { get }
+  var authorizationStatus: SignalProducer<AppTrackingAuthorization, Never> { get }
   func updateAdvertisingIdentifier()
   func requestAndSetAuthorizationStatus()
   func shouldRequestAuthorizationStatus() -> Bool
@@ -49,12 +49,13 @@ public class AppTrackingTransparency: AppTrackingTransparencyType {
     }
   }
 
-  public var authorizationStatus: Signal<AppTrackingAuthorization, Never> {
-    self.authorizationStatusProperty.signal
-      .debounce(0.1, on: QueueScheduler.main)
+  public var authorizationStatus: SignalProducer<AppTrackingAuthorization, Never> {
+    self.authorizationStatusProperty.producer
+      .replayLazily(upTo: 1)
+      .skipRepeats()
   }
 
   // MARK: Subjects
 
-  private let authorizationStatusProperty = MutableProperty<AppTrackingAuthorization>(ATTrackingManager.trackingAuthorizationStatus)
+  private let authorizationStatusProperty = MutableProperty<AppTrackingAuthorization>(.notDetermined)
 }

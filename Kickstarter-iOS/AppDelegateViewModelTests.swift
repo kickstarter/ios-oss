@@ -39,6 +39,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let unregisterForRemoteNotifications = TestObserver<(), Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
   private let updateConfigInEnvironment = TestObserver<Config, Never>()
+  private var disposables: [any Disposable] = []
 
   private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
     RootCategoriesEnvelope.template
@@ -82,7 +83,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
-    self.vm.outputs.trackingAuthorizationStatus.observe(self.trackingAuthorizationStatus.observer)
+    disposables.append(self.vm.outputs.trackingAuthorizationStatus.start(self.trackingAuthorizationStatus.observer))
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
