@@ -33,7 +33,6 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
 
 public func featurePledgedProjectsOverviewEnabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewEnabled)
-    && serverFeaturePledgedProjectsOverviewIsEnabled()
 }
 
 public func featurePledgeOverTimeEnabled() -> Bool {
