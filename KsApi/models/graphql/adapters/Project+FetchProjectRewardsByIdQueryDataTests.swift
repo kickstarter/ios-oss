@@ -15,6 +15,7 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     }
 
     self.testProjectRewardsProperties_Success(rewards: rewards)
+    self.testExpandedShippingProperties(rewards)
   }
 
   private func testProjectRewardsProperties_Success(rewards: [Reward]) {
@@ -24,7 +25,7 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(rewards.count, 14)
+    XCTAssertEqual(rewards.count, 15)
 
     guard let lastReward = rewards.last else {
       XCTFail("project should contain at least 1 reward.")
@@ -83,5 +84,22 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(localPickup.country, "US")
     XCTAssertEqual(localPickup.displayableName, "San Jose, CA")
     XCTAssertNil(rewards.first?.localPickup)
+  }
+
+  private func testExpandedShippingProperties(_ rewards: [Reward]) {
+    // Test on reward that has restricted shipping; only to the EU.
+    let reward = rewards[12]
+
+    XCTAssertEqual(reward.shippingRules?.count, 1)
+    XCTAssertEqual(reward.shippingRules?[0].location.name, "European Union")
+    XCTAssertEqual(reward.shippingRulesExpanded?.count, 27)
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].cost, 5.0)
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].estimatedMin, Money(amount: 2.0, currency: .usd))
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].estimatedMax, Money(amount: 10.0, currency: .usd))
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].location.country, "AT")
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].location.displayableName, "Austria")
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].location.localizedName, "Austria")
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].location.name, "Austria")
+    XCTAssertEqual(reward.shippingRulesExpanded?[0].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ3NTA="))
   }
 }
