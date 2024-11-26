@@ -12,9 +12,10 @@ public protocol PledgePaymentPlansOptionViewModelInputs {
 }
 
 public protocol PledgePaymentPlansOptionViewModelOutputs {
-  var titleText: Signal<String?, Never> { get }
-  var subtitleText: Signal<String?, Never> { get }
-  var checkmarkImageName: Signal<String, Never> { get }
+  var titleText: Signal<String, Never> { get }
+  var subtitleText: Signal<String, Never> { get }
+  var subtitleLabelHidden: Signal<Bool, Never> { get }
+  var selectionIndicatorImageName: Signal<String, Never> { get }
   var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never> { get }
 }
 
@@ -30,13 +31,15 @@ public final class PledgePaymentPlansOptionViewModel:
   public init() {
     let configData = self.configData.signal.skipNil()
 
-    let checkImageName = configData
-      .map { $0.selectedType == $0.type ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
-
-    self.checkmarkImageName = checkImageName
+    self.selectionIndicatorImageName = configData
+      .map {
+        $0.selectedType == $0.type ?
+          "icon-payment-method-selected" : "icon-payment-method-unselected"
+      }
 
     self.titleText = configData.map { getTitleText(by: $0.type) }
     self.subtitleText = configData.map { getSubtitleText(by: $0.type) }
+    self.subtitleLabelHidden = self.subtitleText.map { $0.isEmpty }
 
     self.notifyDelegatePaymentPlanOptionSelected = self.optionTappedProperty
       .signal
@@ -58,9 +61,10 @@ public final class PledgePaymentPlansOptionViewModel:
     self.optionTappedProperty.value = ()
   }
 
-  public let checkmarkImageName: Signal<String, Never>
-  public var titleText: ReactiveSwift.Signal<String?, Never>
-  public var subtitleText: ReactiveSwift.Signal<String?, Never>
+  public let selectionIndicatorImageName: Signal<String, Never>
+  public var titleText: ReactiveSwift.Signal<String, Never>
+  public var subtitleText: ReactiveSwift.Signal<String, Never>
+  public var subtitleLabelHidden: Signal<Bool, Never>
   public var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never>
 
   public var inputs: PledgePaymentPlansOptionViewModelInputs { return self }
@@ -76,9 +80,9 @@ private func getTitleText(by type: PledgePaymentPlansType) -> String {
 }
 
 // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-private func getSubtitleText(by type: PledgePaymentPlansType) -> String? {
+private func getSubtitleText(by type: PledgePaymentPlansType) -> String {
   switch type {
-  case .pledgeInFull: nil
+  case .pledgeInFull: ""
   case .pledgeOverTime: "You will be charged for your pledge over four payments, at no extra cost."
   }
 }

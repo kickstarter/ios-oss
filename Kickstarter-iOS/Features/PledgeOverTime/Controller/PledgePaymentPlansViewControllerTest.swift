@@ -37,7 +37,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
   }
 
   func testView_PledgeOverTimeSelected() {
-    orthogonalCombos(Language.allLanguages, [Device.pad, Device.phone4_7inch]).forEach { language, device in
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 

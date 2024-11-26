@@ -275,11 +275,7 @@ final class NoShippingPledgeViewController: UIViewController,
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
-    self.viewModel.outputs.showPledgeOverTimeUI
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.paymentPlansView.isHidden = !value
-      }
+    self.paymentPlansView.rac.hidden = self.viewModel.outputs.showPledgeOverTimeUI.negate()
 
     self.viewModel.outputs.pledgeOverTimeConfigData
       .observeForUI()

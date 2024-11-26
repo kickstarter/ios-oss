@@ -9,9 +9,10 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
   private var vm: PledgePaymentPlansOptionViewModelType = PledgePaymentPlansOptionViewModel()
 
-  private var checkmarkImageName = TestObserver<String, Never>()
-  private var titleText = TestObserver<String?, Never>()
-  private var subtitleText = TestObserver<String?, Never>()
+  private var selectionIndicatorImageName = TestObserver<String, Never>()
+  private var titleText = TestObserver<String, Never>()
+  private var subtitleText = TestObserver<String, Never>()
+  private var subtitleLabelHidden = TestObserver<Bool, Never>()
   private var notifyDelegatePaymentPlanOptionSelected = TestObserver<PledgePaymentPlansType, Never>()
 
   // MARK: Const
@@ -28,9 +29,10 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.checkmarkImageName.observe(self.checkmarkImageName.observer)
+    self.vm.outputs.selectionIndicatorImageName.observe(self.selectionIndicatorImageName.observer)
     self.vm.outputs.titleText.observe(self.titleText.observer)
     self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
+    self.vm.outputs.subtitleLabelHidden.observe(self.subtitleLabelHidden.observer)
     self.vm.outputs.notifyDelegatePaymentPlanOptionSelected
       .observe(self.notifyDelegatePaymentPlanOptionSelected.observer)
   }
@@ -42,8 +44,9 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.vm.inputs.configureWith(data: data)
 
     self.titleText.assertValue(self.pledgeInFullTitle)
-    self.subtitleText.assertValue(nil)
-    self.checkmarkImageName.assertValue(self.selectedImageName)
+    self.subtitleText.assertValue("")
+    self.subtitleLabelHidden.assertValue(true)
+    self.selectionIndicatorImageName.assertValue(self.selectedImageName)
   }
 
   func testPaymentPlanOption_PledgeinFull_Unselected() {
@@ -51,8 +54,9 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.vm.inputs.configureWith(data: data)
 
     self.titleText.assertValue(self.pledgeInFullTitle)
-    self.subtitleText.assertValue(nil)
-    self.checkmarkImageName.assertValue(self.unselectedImageName)
+    self.subtitleText.assertValue("")
+    self.subtitleLabelHidden.assertValue(true)
+    self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
   }
 
   func testPaymentPlanOption_PledgeOverTime_Selected() {
@@ -61,8 +65,9 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
     self.titleText.assertValue(self.pledgeOverTimeTitle)
     self.subtitleText.assertValue(self.pledgeOverTimeSubtitle)
+    self.subtitleLabelHidden.assertValue(false)
 
-    self.checkmarkImageName.assertValue(self.selectedImageName)
+    self.selectionIndicatorImageName.assertValue(self.selectedImageName)
   }
 
   func testPaymentPlanOption_PledgeOverTime_Unselected() {
@@ -71,8 +76,9 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
     self.titleText.assertValue(self.pledgeOverTimeTitle)
     self.subtitleText.assertValue(self.pledgeOverTimeSubtitle)
+    self.subtitleLabelHidden.assertValue(false)
 
-    self.checkmarkImageName.assertValue(self.unselectedImageName)
+    self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
   }
 
   func testPaymentPlanOption_OptionTapped() {

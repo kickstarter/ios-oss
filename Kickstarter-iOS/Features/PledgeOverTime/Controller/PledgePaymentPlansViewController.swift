@@ -125,7 +125,7 @@ extension PledgePaymentPlansViewController: PledgePaymentPlanOptionViewDelegate 
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = Styles.grid(1)
+  stackView.spacing = 0
 }
 
 private func applyWhiteBackgroundStyle(_ view: UIView) {

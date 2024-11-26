@@ -16,7 +16,7 @@ final class PledgePaymentPlanOptionView: UIView {
   private lazy var rigthColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
-  private lazy var checkmarkImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var selectionIndicatorImageView: UIImageView = { UIImageView(frame: .zero) }()
 
   private let viewModel: PledgePaymentPlansOptionViewModelType = PledgePaymentPlansOptionViewModel()
 
@@ -41,9 +41,9 @@ final class PledgePaymentPlanOptionView: UIView {
   private func configureSubviews() {
     self.addSubview(self.rootStackView)
 
-    addArrangedSubviews([self.checkmarkImageView, UIView()], to: self.leftColumnStackView)
+    addArrangedSubviews([self.selectionIndicatorImageView, UIView()], to: self.leftColumnStackView)
 
-    addArrangedSubviews([self.titleLabel, UIView()], to: self.rigthColumnStackView)
+    addArrangedSubviews([self.titleLabel, self.subtitleLabel, UIView()], to: self.rigthColumnStackView)
 
     addArrangedSubviews([self.leftColumnStackView, self.rigthColumnStackView], to: self.rootStackView)
   }
@@ -65,8 +65,9 @@ final class PledgePaymentPlanOptionView: UIView {
     self.subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
 
     NSLayoutConstraint.activate([
-      self.checkmarkImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
-      self.checkmarkImageView.heightAnchor.constraint(equalTo: self.checkmarkImageView.widthAnchor)
+      self.selectionIndicatorImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
+      self.selectionIndicatorImageView.heightAnchor
+        .constraint(equalTo: self.selectionIndicatorImageView.widthAnchor)
     ])
   }
 
@@ -83,17 +84,13 @@ final class PledgePaymentPlanOptionView: UIView {
     super.bindStyles()
 
     applyRootStackViewStyle(self.rootStackView)
-
     applyColumnStackViewStyle(self.leftColumnStackView)
     self.leftColumnStackView.spacing = 0
 
     applyColumnStackViewStyle(self.rigthColumnStackView)
-
     applyTitleLabelStyle(self.titleLabel)
-
     applySubtitleLabelStyle(self.subtitleLabel)
-
-    applyCheckmarkImageViewStyle(self.checkmarkImageView)
+    applySelectionIndicatorImageViewStyle(self.selectionIndicatorImageView)
   }
 
   // MARK: - View model
@@ -101,19 +98,16 @@ final class PledgePaymentPlanOptionView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.checkmarkImageName
+    self.viewModel.outputs.selectionIndicatorImageName
       .observeForUI()
       .observeValues { [weak self] imageName in
-        self?.checkmarkImageView.image = Library.image(named: imageName)
+        self?.selectionIndicatorImageView.image = Library.image(named: imageName)
       }
 
-    self.viewModel.outputs.titleText.observeForUI().observeValues { [weak self] titleText in
-      self?.titleLabel.text = titleText ?? ""
-    }
+    self.titleLabel.rac.text = self.viewModel.outputs.titleText
 
-    self.viewModel.outputs.subtitleText.observeForUI().observeValues { [weak self] subtitleText in
-      self?.configureSubtitleLabel(text: subtitleText)
-    }
+    self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
+    self.subtitleLabel.rac.hidden = self.viewModel.outputs.subtitleLabelHidden
 
     self.viewModel.outputs.notifyDelegatePaymentPlanOptionSelected
       .observeForUI()
@@ -130,19 +124,6 @@ final class PledgePaymentPlanOptionView: UIView {
 
   func refreshSelectedOption(_ selectedType: PledgePaymentPlansType) {
     self.viewModel.inputs.refreshSelectedType(selectedType)
-  }
-
-  func configureSubtitleLabel(text: String?) {
-    guard let text = text, !text.isEmpty else {
-      self.rigthColumnStackView.removeArrangedSubview(self.subtitleLabel)
-      self.subtitleLabel.removeFromSuperview()
-      return
-    }
-
-    self.subtitleLabel.text = text
-    if !self.rigthColumnStackView.arrangedSubviews.contains(self.subtitleLabel) {
-      self.rigthColumnStackView.insertArrangedSubview(self.subtitleLabel, at: 1)
-    }
   }
 
   // MARK: - Actions
@@ -182,7 +163,7 @@ private func applySubtitleLabelStyle(_ label: UILabel) {
   label.textColor = .ksr_support_400
 }
 
-private func applyCheckmarkImageViewStyle(_ imageView: UIImageView) {
+private func applySelectionIndicatorImageViewStyle(_ imageView: UIImageView) {
   imageView.contentMode = .top
 }
 
