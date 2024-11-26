@@ -1,3 +1,5 @@
+import KsApi
+
 /// Return remote config values either a value from the cloud, if it found one, or a default value based on the provided key
 private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = false) -> Bool {
   if let valueFromDefaults = AppEnvironment.current.userDefaults
@@ -31,6 +33,7 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
 
 public func featurePledgedProjectsOverviewEnabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewEnabled)
+  && serverFeaturePledgedProjectsOverviewIsEnabled()
 }
 
 public func featurePledgeOverTimeEnabled() -> Bool {
