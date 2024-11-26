@@ -57,7 +57,7 @@ extension UserEnvelope {
    Returns a `UserEnvelope<GraphUserSetup>` from a `FetchUserSetupQuery.Data` object.
    */
   static func userEnvelope(from data: GraphAPI.FetchUserSetupQuery.Data) -> UserEnvelope<GraphUserSetup>? {
-    guard 
+    guard
       let userFragment = data.me?.fragments.userEmailFragment,
       let featuresFragment = data.me?.fragments.userFeaturesFragment
     else { return nil }

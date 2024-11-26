@@ -219,7 +219,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.fetchUserEmail = fetchUserSetupEvent.values()
       .map { user in
-        guard 
+        guard
           let email = user?.me.email,
           let features = user?.me.enabledFeatures
         else {

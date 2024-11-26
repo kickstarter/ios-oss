@@ -250,7 +250,7 @@ public struct AppEnvironment: AppEnvironmentType {
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     currentUserEmail: String? = AppEnvironment.current.currentUserEmail,
-    currentUserFeatures: [ServerFeature]? = AppEnvironment.current.currentUserFeatures,
+    currentUserFeatures _: [ServerFeature]? = AppEnvironment.current.currentUserFeatures,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,
