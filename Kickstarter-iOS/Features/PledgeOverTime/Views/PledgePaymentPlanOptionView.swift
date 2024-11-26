@@ -87,7 +87,7 @@ final class PledgePaymentPlanOptionView: UIView {
 
     applyRootStackViewStyle(self.rootStackView)
     applySelectorIndicatorStackViewStyle(self.selectorIndicatorStackView)
-    applyOptionDescriptorStackViewStyle(self.selectorIndicatorStackView)
+    applyOptionDescriptorStackViewStyle(self.optionDescriptorStackView)
     applyTitleLabelStyle(self.titleLabel)
     applySubtitleLabelStyle(self.subtitleLabel)
     applySelectionIndicatorImageViewStyle(self.selectionIndicatorImageView)
@@ -146,12 +146,12 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 
 private func applySelectorIndicatorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = Styles.grid(1)
+  stackView.spacing = 0
 }
 
 private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = 0
+  stackView.spacing = Styles.grid(1)
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
