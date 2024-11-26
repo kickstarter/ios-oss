@@ -16,7 +16,7 @@ public struct CreateBackingInput: GraphMutationInput, Encodable {
 
    - parameter amount: The amount.
    - parameter applePay: The optional ApplePayParams.
-   - parameter incremental: The optional Bool indicating whether pledge over time has been selected..
+   - parameter incremental: The optional Bool indicating whether pledge over time has been selected.
    - parameter locationId: The optional ID of the ShippingRule's Location.
    - parameter paymentSourceId: The optional ID of the PaymentSource.
    - parameter projectId: The GraphID of the Project.
