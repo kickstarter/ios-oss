@@ -24,7 +24,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+    // forcing changes POC
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
