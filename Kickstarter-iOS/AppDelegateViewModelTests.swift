@@ -2472,7 +2472,8 @@ final class AppDelegateViewModelTests: TestCase {
       .Data(
         unsafeResultMap: [
           "me": [
-            "email": "user@example.com"
+            "email": "user@example.com",
+            "enabledFeatures": []
           ]
         ]
       )
