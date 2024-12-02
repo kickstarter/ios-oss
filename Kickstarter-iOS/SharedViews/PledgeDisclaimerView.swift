@@ -150,7 +150,6 @@ private let leftColumnStackViewStyle: StackViewStyle = { stackView in
 private let rightColumnStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.alignment .~ .center
-    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

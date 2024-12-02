@@ -38,12 +38,24 @@ final class PledgePaymentPlansViewController: UIViewController {
 
     self.pledgeInFullOption.delegate = self
     self.pledgeOverTimeOption.delegate = self
+    
+//    self.pledgeInFullOption.translatesAutoresizingMaskIntoConstraints = false
+//    self.pledgeOverTimeOption.translatesAutoresizingMaskIntoConstraints = false
 
     self.rootStackView.addArrangedSubviews([
       self.pledgeInFullOption,
       self.separatorView,
       self.pledgeOverTimeOption
     ])
+    
+    self.pledgeInFullOption.configureWith(value: PledgePaymentPlanOptionData(
+      type: .pledgeInFull,
+      selectedType: .pledgeInFull
+    ))
+    self.pledgeOverTimeOption.configureWith(value: PledgePaymentPlanOptionData(
+      type: .pledgeOverTime,
+      selectedType: .pledgeInFull
+    ))
   }
 
   private func setupConstraints() {
@@ -122,6 +134,7 @@ extension PledgePaymentPlansViewController: PledgePaymentPlanOptionViewDelegate 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = 0
+  stackView.preservesSuperviewLayoutMargins = false
 }
 
 private func applyWhiteBackgroundStyle(_ view: UIView) {

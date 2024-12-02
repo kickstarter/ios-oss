@@ -170,11 +170,10 @@ final class NoShippingPledgeViewController: UIViewController,
       self.paymentPlansViewController
     ]
 
-    self.paymentPlansView.isHidden = true
+//    self.paymentPlansView.isHidden = true
 
     let arrangedInsetSubviews = [
       [self.titleLabel],
-      [self.paymentPlansView],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -275,12 +274,19 @@ final class NoShippingPledgeViewController: UIViewController,
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
-    self.paymentPlansView.rac.hidden = self.viewModel.outputs.showPledgeOverTimeUI.negate()
+//    self.paymentPlansView.rac.hidden = self.viewModel.outputs.showPledgeOverTimeUI.negate()
 
     self.viewModel.outputs.pledgeOverTimeConfigData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.paymentPlansViewController.configure(with: data)
+//        UIView.performWithoutAnimation {
+//          self?.paymentPlansViewController.configure(with: data)
+//          self?.rootScrollView.subviews.forEach { $0.invalidateIntrinsicContentSize() }
+//          self?.view.setNeedsLayout()
+//          self?.view.layoutIfNeeded()
+//          self?.rootScrollView.setNeedsLayout()
+//          self?.rootScrollView.layoutIfNeeded()
+//        }
       }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData
