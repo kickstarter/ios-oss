@@ -78,6 +78,9 @@ final class PledgeDisclaimerView: UIView {
 
     _ = self.rightColumnStackView
       |> rightColumnStackViewStyle
+    
+    self.iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.iconImageView.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   // MARK: - View model

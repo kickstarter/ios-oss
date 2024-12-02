@@ -10,9 +10,7 @@ protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
 
 final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Properties
-
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var selectorIndicatorStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var contentView: UIView = UIView(frame: .zero)
   private lazy var optionDescriptorStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
@@ -39,24 +37,19 @@ final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    self.addSubview(self.rootStackView)
-
-    self.selectorIndicatorStackView.addArrangedSubviews([self.selectionIndicatorImageView])
+    
+    self.addSubview(self.contentView)
+    
+    self.contentView.addSubview(self.selectionIndicatorImageView)
+    self.contentView.addSubview(self.optionDescriptorStackView)
 
     self.optionDescriptorStackView.addArrangedSubviews([self.titleLabel, self.subtitleLabel])
-
-    self.rootStackView.addArrangedSubviews([self.selectorIndicatorStackView, self.optionDescriptorStackView])
   }
 
   private func setupConstraints() {
-    self.rootStackView.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-    ])
+    self.contentView.translatesAutoresizingMaskIntoConstraints = false
+    self.selectionIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
+    self.optionDescriptorStackView.translatesAutoresizingMaskIntoConstraints = false
 
     self.titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.titleLabel.setContentHuggingPriority(.required, for: .vertical)
@@ -65,6 +58,22 @@ final class PledgePaymentPlanOptionView: UIView {
     self.subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
 
     NSLayoutConstraint.activate([
+      self.contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(2)),
+      self.contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Styles.grid(2)),
+      self.contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: Styles.grid(2)),
+      self.contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Styles.grid(2))
+    ])
+
+    NSLayoutConstraint.activate([
+      self.optionDescriptorStackView.leadingAnchor.constraint(equalTo: self.selectionIndicatorImageView.trailingAnchor, constant: Styles.grid(2)),
+      self.optionDescriptorStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+      self.optionDescriptorStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+      self.optionDescriptorStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+    ])
+
+    NSLayoutConstraint.activate([
+      self.selectionIndicatorImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+      self.selectionIndicatorImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
       self.selectionIndicatorImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
       self.selectionIndicatorImageView.heightAnchor.constraint(
         equalTo: self.titleLabel.heightAnchor,
@@ -85,8 +94,6 @@ final class PledgePaymentPlanOptionView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    applyRootStackViewStyle(self.rootStackView)
-    applySelectorIndicatorStackViewStyle(self.selectorIndicatorStackView)
     applyOptionDescriptorStackViewStyle(self.optionDescriptorStackView)
     applyTitleLabelStyle(self.titleLabel)
     applySubtitleLabelStyle(self.subtitleLabel)
@@ -135,23 +142,11 @@ final class PledgePaymentPlanOptionView: UIView {
 
 // MARK: - Styles helper
 
-private func applyRootStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = .horizontal
-  stackView.layoutMargins = .init(all: Styles.grid(2))
-  stackView.isLayoutMarginsRelativeArrangement = true
-  stackView.insetsLayoutMarginsFromSafeArea = false
-  stackView.spacing = Styles.grid(2)
-  stackView.alignment = .leading
-}
-
-private func applySelectorIndicatorStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = .vertical
-  stackView.spacing = 0
-}
-
 private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(1)
+  stackView.preservesSuperviewLayoutMargins = false
+  stackView.isLayoutMarginsRelativeArrangement = false
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
