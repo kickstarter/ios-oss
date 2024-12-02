@@ -26,6 +26,7 @@ final class PledgeDisclaimerView: UIView {
     self.configureSubviews()
     self.bindStyles()
     self.bindViewModel()
+    self.setupConstraints()
   }
 
   @available(*, unavailable)
@@ -55,6 +56,11 @@ final class PledgeDisclaimerView: UIView {
     _ = ([self.iconImageView], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
+  
+  private func setupConstraints() {
+    self.iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.iconImageView.setContentHuggingPriority(.required, for: .horizontal)
+  }
 
   // MARK: - Styles
 
@@ -78,9 +84,6 @@ final class PledgeDisclaimerView: UIView {
 
     _ = self.rightColumnStackView
       |> rightColumnStackViewStyle
-    
-    self.iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-    self.iconImageView.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   // MARK: - View model

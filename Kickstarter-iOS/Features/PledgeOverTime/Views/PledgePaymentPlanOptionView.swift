@@ -145,8 +145,6 @@ final class PledgePaymentPlanOptionView: UIView {
 private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(1)
-  stackView.preservesSuperviewLayoutMargins = false
-  stackView.isLayoutMarginsRelativeArrangement = false
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
