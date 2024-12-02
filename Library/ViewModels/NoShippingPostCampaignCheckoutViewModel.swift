@@ -134,7 +134,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       let (
         project,
         rewards,
-        bonusAmount,
+        _,
         selectedQuantities,
         selectedShippingRule,
         pledgeTotal,
@@ -290,21 +290,14 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .takeWhen(self.goToLoginSignupSignal)
       .map { project, reward in (LoginIntent.backProject, project, reward) }
 
-    // MARK: - Validate Checkout Details On Submit
+    // MARK: Create Payment Intent
 
-    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
-
-    let processingViewIsHidden = MutableProperty<Bool>(true)
-
-    // MARK: Validate Existing Cards
-
-    let newPaymentIntentForExistingCards = Signal.combineLatest(
+    let paymentIntentEvent = Signal.combineLatest(
       project,
       pledgeTotal,
       checkoutId,
       backingId
     )
-    .takeWhen(selectedCard)
     .switchMap { project, pledgeTotal, checkoutId, backingId in
       let projectId = project.graphID
 
@@ -317,8 +310,18 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .materialize()
     }
 
-    let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
+    let paymentIntentClientSecret = paymentIntentEvent.values()
       .map { $0.clientSecret }
+    let paymentIntentErrors = paymentIntentEvent.errors()
+
+    // MARK: - Validate Checkout Details On Submit
+
+    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+
+    // MARK: Validate Existing Cards
+
+    let paymentIntentClientSecretForExistingCards = paymentIntentClientSecret
+      .takeWhen(selectedCard)
 
     let validateCheckoutExistingCardInput = Signal
       .combineLatest(
@@ -365,7 +368,6 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
      Order of operations:
      1) Apple pay button tapped
-     2) Generate a new payment intent
      3) Present the payment authorization form
      4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
      5) Payment authorization form calls paymentAuthorizationDidFinish
@@ -376,26 +378,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let startApplePayFlow = Signal.combineLatest(project, pledgeTotal, checkoutId, backingId)
       .takeWhen(self.applePayButtonTappedSignal)
 
-    let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
-      startApplePayFlow
-        .switchMap { project, pledgeTotal, checkoutId, backingId in
-          let projectId = project.graphID
-
-          return stripeIntentService.createPaymentIntent(
-            for: projectId,
-            backingId: backingId,
-            checkoutId: checkoutId,
-            pledgeTotal: pledgeTotal
-          )
-          .materialize()
-        }
-
-    let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay
-      .errors()
-
-    let newPaymentIntentForApplePay: Signal<String, Never> = createPaymentIntentForApplePay
-      .values()
-      .map { $0.clientSecret }
+    let paymentIntentClientSecretForApplePay: Signal<String, Never> = paymentIntentClientSecret
+      .takeWhen(startApplePayFlow)
 
     self.goToApplePayPaymentAuthorization = Signal.combineLatest(
       project,
@@ -404,7 +388,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       bonusAmount,
       allRewardsShippingTotal,
       pledgeTotal,
-      newPaymentIntentForApplePay
+      paymentIntentClientSecretForApplePay
     )
     .map { (
       project,
@@ -430,7 +414,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     .skipNil()
 
     let validateCheckoutWithApplePay = Signal.combineLatest(
-      newPaymentIntentForApplePay,
+      paymentIntentClientSecretForApplePay,
       checkoutId,
       self.applePayPaymentMethodIdSignal.signal
     )
@@ -474,7 +458,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId)
+      .combineLatest(paymentIntentClientSecretForApplePay, checkoutId)
       .takeWhen(validateCheckoutWithApplePay.values())
       .map {
         (
@@ -519,6 +503,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: - Error handling
 
+<<<<<<< Updated upstream
     self.showErrorBanner = Signal.merge(
       createCheckoutError.map { ($0, true) },
       validateCheckoutError.map { ($0, false) },
@@ -527,7 +512,21 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     .map { error, shouldPersist in
       if error.ksrCode == .ValidateCheckoutError, let message = error.errorMessages.first {
         return (message: message, persist: shouldPersist)
+=======
+    self.showErrorBannerWithMessage = Signal.merge(
+      paymentIntentErrors,
+      createCheckoutErrors,
+      validateCheckoutError
+    )
+    .map { error in
+      switch error.ksrCode {
+      case .ValidateCheckoutError:
+        return error.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
+      default:
+        return Strings.Something_went_wrong_please_try_again()
+>>>>>>> Stashed changes
       }
+    }
 
       #if DEBUG
         let serverError = error.errorMessages.first ?? ""
@@ -569,7 +568,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       self.submitButtonTappedProperty.signal.mapConst(false),
       startApplePayFlow.mapConst(false),
       // Hide view again whenever pledge flow is completed/cancelled/errors.
-      newPaymentIntentForApplePayError.mapConst(true),
+      paymentIntentErrors.mapConst(true),
       validateCheckoutError.mapConst(true),
       self.checkoutTerminatedProperty.signal.mapConst(true),
       checkoutCompleteSignal.signal.mapConst(true)
