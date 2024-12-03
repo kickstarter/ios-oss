@@ -10,6 +10,7 @@ protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
 
 final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Properties
+
   private lazy var contentView: UIView = UIView(frame: .zero)
   private lazy var optionDescriptorStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
@@ -37,9 +38,8 @@ final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    
     self.addSubview(self.contentView)
-    
+
     self.contentView.addSubview(self.selectionIndicatorImageView)
     self.contentView.addSubview(self.optionDescriptorStackView)
 
@@ -65,7 +65,10 @@ final class PledgePaymentPlanOptionView: UIView {
     ])
 
     NSLayoutConstraint.activate([
-      self.optionDescriptorStackView.leadingAnchor.constraint(equalTo: self.selectionIndicatorImageView.trailingAnchor, constant: Styles.grid(2)),
+      self.optionDescriptorStackView.leadingAnchor.constraint(
+        equalTo: self.selectionIndicatorImageView.trailingAnchor,
+        constant: Styles.grid(2)
+      ),
       self.optionDescriptorStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
       self.optionDescriptorStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
       self.optionDescriptorStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
