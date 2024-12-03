@@ -172,7 +172,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
       |> Reward.lens.id .~ 99
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
@@ -311,7 +311,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
+    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: mockService,

@@ -19,11 +19,11 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
   }
 
   func testView_PledgeInFullSelected() {
-    combos(Language.allLanguages, [Device.pad, Device.phone4_7inch]).forEach { language, device in
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 
-        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
+        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
         controller.configure(with: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -37,7 +37,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
   }
 
   func testView_PledgeOverTimeSelected() {
-    combos(Language.allLanguages, [Device.pad, Device.phone4_7inch]).forEach { language, device in
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 

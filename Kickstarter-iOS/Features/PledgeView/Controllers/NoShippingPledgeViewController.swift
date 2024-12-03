@@ -178,8 +178,11 @@ final class NoShippingPledgeViewController: UIViewController,
       self.paymentPlansViewController
     ]
 
+    self.paymentPlansView.isHidden = true
+
     let arrangedInsetSubviews = [
       [self.titleLabel],
+      [self.paymentPlansView],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -282,6 +285,8 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeRewardsSummaryViewController
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
+
+    self.paymentPlansView.rac.hidden = self.viewModel.outputs.showPledgeOverTimeUI.negate()
 
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()

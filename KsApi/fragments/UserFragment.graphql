@@ -47,6 +47,7 @@ fragment UserFragment on User {
     topic
   }
   optedOutOfRecommendations
+  ppoHasAction
   showPublicProfile
   savedProjects {
     totalCount

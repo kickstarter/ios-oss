@@ -679,6 +679,10 @@ public func estimatedShippingText(
   locationId: Int,
   selectedQuantities: SelectedRewardQuantities? = nil
 ) -> String? {
+  guard project.stats.needsConversion == false else {
+    return estimatedShippingConversionText(for: rewards, project: project, locationId: locationId)
+  }
+
   let (estimatedMin, estimatedMax) = estimatedMinMax(
     from: rewards,
     locationId: locationId,
@@ -687,18 +691,18 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let currentCountry = project.stats.currentCountry ?? Project.Country.us
+  let projectCountry = project.country
 
   let formattedMin = Format.currency(
     estimatedMin,
-    country: currentCountry,
+    country: projectCountry,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     estimatedMax,
-    country: currentCountry,
+    country: projectCountry,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
@@ -774,22 +778,18 @@ private func estimatedMinMax(
   var max: Double = 0
 
   rewards.forEach { reward in
-    guard reward.shipping.enabled, let shippingRules = reward.shippingRules else { return }
+    guard reward.shipping.enabled,
+          let shippingRules = reward.shippingRulesExpanded ?? reward.shippingRules else { return }
 
-    var shippingRule: ShippingRule?
+    var shipping: ShippingRule? = shippingRules.first(where: { $0.location.id == locationId })
 
-    /// If the reward's shipping prefernce is Anywhere in the world, use its first and only shipping rule.
-    /// Else use the rule that  matches the selected shipping rule (from the locations dropdown).
-    shippingRule = reward.shipping.preference == .unrestricted
-      ? shippingRules.first
-      : shippingRules
-      .first(where: { $0.location.id == locationId })
-
-    guard let shipping = shippingRule else { return }
+    if shipping == nil && reward.shipping.preference == .unrestricted {
+      shipping = shippingRules.first
+    }
 
     /// Verify there are estimated amounts greater than 0
-    guard let estimatedMin = shipping.estimatedMin?.amount,
-          let estimatedMax = shipping.estimatedMax?.amount,
+    guard let estimatedMin = shipping?.estimatedMin?.amount,
+          let estimatedMax = shipping?.estimatedMax?.amount,
           estimatedMin > 0 || estimatedMax > 0 else {
       return
     }

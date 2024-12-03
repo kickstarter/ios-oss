@@ -98,10 +98,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
 
     self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .map { value -> PledgePaymentPlansAndSelectionData? in
-        guard value else { return nil }
+      .map { showPledgeOverTimeUI -> PledgePaymentPlansAndSelectionData? in
+        guard showPledgeOverTimeUI else { return nil }
 
-        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeinFull)
+        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
       }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
@@ -1117,7 +1117,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
   public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: ReactiveSwift.Signal<PledgePaymentPlansAndSelectionData, Never>
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
