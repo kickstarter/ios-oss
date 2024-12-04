@@ -56,7 +56,7 @@ final class PledgeDisclaimerView: UIView {
     _ = ([self.iconImageView], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
-  
+
   private func setupConstraints() {
     self.iconImageView.setContentHuggingPriority(.required, for: .horizontal)
     self.iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
