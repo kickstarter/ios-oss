@@ -4169,6 +4169,592 @@ public enum GraphAPI {
     }
   }
 
+  /// The list of available public features
+  public enum Feature: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case deviceComponents
+    case showPostsFeed
+    case iosCrashlytics
+    case iosMixpanel
+    case iosNewRelic
+    case iosHockeyApp
+    case iosKoala
+    case iosI18n
+    case iosTappableCategoryLocation
+    case iosFavoriteCategories
+    case iosWhTout
+    case iosQualtrics
+    case iosNativeCheckout
+    case iosNativeCheckoutPledgeView
+    case iosLiveStreams
+    case iosLiveStreamDiscovery
+    case iosLiveStreamChat
+    case iosScrollOutputObserveForUi
+    case iosBackerDashboard
+    case iosEmailVerificationFlow
+    case iosEmailVerificationSkip
+    case iosSegment
+    case iosBraze
+    case androidSegment
+    case androidBraze
+    case nativeCreatorBreakdownChart
+    case identityVerificationProjectOverview
+    case messageArchiving
+    case messageSpam
+    case emojiLocale
+    case defaultToCampaignOnMobile
+    case pinnedPostsOnFeed
+    case imageUploaderAltText
+    case richTextEmbedifier
+    case adminCheckoutDebugger
+    case accountsUpgrade
+    case ksr10BuildOverview
+    case meGenerativeArt
+    case projectBuildRewardsExplorer
+    case projectBuildZendesk
+    case projectBuildMilestones
+    case userMenuDraftProject
+    case make_100_2020
+    case fundingSheet
+    case qualtrics
+    case trackDefineNamespace
+    case howItWorks
+    case disableManualCreateStripeElementsPostalCode
+    case projectUpdateRequests
+    case projectHeaderMediaCarouselHero
+    case pl
+    case gr
+    case si
+    case featuredProjectMobileOptimizations
+    case ibanFlexibility
+    case insideVoicesFooter
+    case stackedRecsOnMobile
+    case projectPrelaunchSummaries
+    case chCurrencySelector
+    case dkCurrencySelector
+    case noCurrencySelector
+    case seCurrencySelector
+    case projectsOnProjectPage
+    case datalakeFeEvents
+    case creatorDemographicsSurvey
+    case saveProjectExperiment
+    case segmentTrackingEvents
+    case segmentHideProjectDeadlineProperty
+    case webErrorOnRetryOfFailed_3dsBacking
+    case hideFacebookLoginButton_2022
+    case creatorOnboardingFlow_2021
+    case updatedRisksFlow
+    case paymentElementProjectBuild_2022
+    case hkBankAccountHolderName
+    case creatorOsatSurvey_2022
+    case ukCreatedProjectsAcceptUsdCurrency
+    case enableSpotlightBgImage
+    case ecovadisComponent_2023
+    case webBraze
+    case ccpSearchProjects
+    case globalNav_2023
+    case latePledgesLearnMoreCta
+    case postCampaignBackings_2024
+    case ckeditorProjectUpdates
+    case backerDiscoveryFeatures_2023
+    case paymentsStripeLinkOnCheckout
+    case addressCollection_2024
+    case backerReportUpdate_2024
+    case delayBackerTrustModule_2024
+    case resetBackerSurvey_2024
+    case disableShippingAtPledge
+    case pledgeProjectsOverview_2024
+    case pledgeProjectsOverviewIos_2024
+    case copyRewards
+    case pledgeRedemptionV1
+    case surveyRewardQuestions_2024
+    case addressCollectionForDigitalRewards_2024
+    case prelaunchStoryEditor
+    case prelaunchStoryException
+    case creatorNavRefresh
+    case skuEditing_2024
+    case superbackerProgress
+    case backersCanChoosePlotV1
+    case backerSurveyIntro_2024
+    case sepaDebitPaymentElement
+    case trustAndSafetyProjectBanner
+    case partialRefunds_2024
+    case notificationBannerUpdate_2024
+    case multipleShipfromLocations_2024
+    case separatePaymentSection
+    case reactBackedProjects
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "device_components": self = .deviceComponents
+        case "show_posts_feed": self = .showPostsFeed
+        case "ios_crashlytics": self = .iosCrashlytics
+        case "ios_mixpanel": self = .iosMixpanel
+        case "ios_new_relic": self = .iosNewRelic
+        case "ios_hockey_app": self = .iosHockeyApp
+        case "ios_koala": self = .iosKoala
+        case "ios_i18n": self = .iosI18n
+        case "ios_tappable_category_location": self = .iosTappableCategoryLocation
+        case "ios_favorite_categories": self = .iosFavoriteCategories
+        case "ios_wh_tout": self = .iosWhTout
+        case "ios_qualtrics": self = .iosQualtrics
+        case "ios_native_checkout": self = .iosNativeCheckout
+        case "ios_native_checkout_pledge_view": self = .iosNativeCheckoutPledgeView
+        case "ios_live_streams": self = .iosLiveStreams
+        case "ios_live_stream_discovery": self = .iosLiveStreamDiscovery
+        case "ios_live_stream_chat": self = .iosLiveStreamChat
+        case "ios_scroll_output_observe_for_ui": self = .iosScrollOutputObserveForUi
+        case "ios_backer_dashboard": self = .iosBackerDashboard
+        case "ios_email_verification_flow": self = .iosEmailVerificationFlow
+        case "ios_email_verification_skip": self = .iosEmailVerificationSkip
+        case "ios_segment": self = .iosSegment
+        case "ios_braze": self = .iosBraze
+        case "android_segment": self = .androidSegment
+        case "android_braze": self = .androidBraze
+        case "native_creator_breakdown_chart": self = .nativeCreatorBreakdownChart
+        case "identity_verification_project_overview": self = .identityVerificationProjectOverview
+        case "message_archiving": self = .messageArchiving
+        case "message_spam": self = .messageSpam
+        case "emoji_locale": self = .emojiLocale
+        case "default_to_campaign_on_mobile": self = .defaultToCampaignOnMobile
+        case "pinned_posts_on_feed": self = .pinnedPostsOnFeed
+        case "image_uploader_alt_text": self = .imageUploaderAltText
+        case "rich_text_embedifier": self = .richTextEmbedifier
+        case "admin_checkout_debugger": self = .adminCheckoutDebugger
+        case "accounts_upgrade": self = .accountsUpgrade
+        case "ksr10_build_overview": self = .ksr10BuildOverview
+        case "me_generative_art": self = .meGenerativeArt
+        case "project_build_rewards_explorer": self = .projectBuildRewardsExplorer
+        case "project_build_zendesk": self = .projectBuildZendesk
+        case "project_build_milestones": self = .projectBuildMilestones
+        case "user_menu_draft_project": self = .userMenuDraftProject
+        case "make_100_2020": self = .make_100_2020
+        case "funding_sheet": self = .fundingSheet
+        case "qualtrics": self = .qualtrics
+        case "track_define_namespace": self = .trackDefineNamespace
+        case "how_it_works": self = .howItWorks
+        case "disable_manual_create_stripe_elements_postal_code": self = .disableManualCreateStripeElementsPostalCode
+        case "project_update_requests": self = .projectUpdateRequests
+        case "project_header_media_carousel_hero": self = .projectHeaderMediaCarouselHero
+        case "PL": self = .pl
+        case "GR": self = .gr
+        case "SI": self = .si
+        case "featured_project_mobile_optimizations": self = .featuredProjectMobileOptimizations
+        case "IBAN_flexibility": self = .ibanFlexibility
+        case "inside_voices_footer": self = .insideVoicesFooter
+        case "stacked_recs_on_mobile": self = .stackedRecsOnMobile
+        case "project_prelaunch_summaries": self = .projectPrelaunchSummaries
+        case "ch_currency_selector": self = .chCurrencySelector
+        case "dk_currency_selector": self = .dkCurrencySelector
+        case "no_currency_selector": self = .noCurrencySelector
+        case "se_currency_selector": self = .seCurrencySelector
+        case "projects_on_project_page": self = .projectsOnProjectPage
+        case "datalake_fe_events": self = .datalakeFeEvents
+        case "creator_demographics_survey": self = .creatorDemographicsSurvey
+        case "save_project_experiment": self = .saveProjectExperiment
+        case "segment_tracking_events": self = .segmentTrackingEvents
+        case "segment_hide_project_deadline_property": self = .segmentHideProjectDeadlineProperty
+        case "web_error_on_retry_of_failed_3ds_backing": self = .webErrorOnRetryOfFailed_3dsBacking
+        case "hide_facebook_login_button_2022": self = .hideFacebookLoginButton_2022
+        case "creator_onboarding_flow_2021": self = .creatorOnboardingFlow_2021
+        case "updated_risks_flow": self = .updatedRisksFlow
+        case "payment_element_project_build_2022": self = .paymentElementProjectBuild_2022
+        case "hk_bank_account_holder_name": self = .hkBankAccountHolderName
+        case "creator_osat_survey_2022": self = .creatorOsatSurvey_2022
+        case "uk_created_projects_accept_usd_currency": self = .ukCreatedProjectsAcceptUsdCurrency
+        case "enable_spotlight_bg_image": self = .enableSpotlightBgImage
+        case "ecovadis_component_2023": self = .ecovadisComponent_2023
+        case "web_braze": self = .webBraze
+        case "ccp_search_projects": self = .ccpSearchProjects
+        case "global_nav_2023": self = .globalNav_2023
+        case "late_pledges_learn_more_cta": self = .latePledgesLearnMoreCta
+        case "post_campaign_backings_2024": self = .postCampaignBackings_2024
+        case "ckeditor_project_updates": self = .ckeditorProjectUpdates
+        case "backer_discovery_features_2023": self = .backerDiscoveryFeatures_2023
+        case "payments_stripe_link_on_checkout": self = .paymentsStripeLinkOnCheckout
+        case "address_collection_2024": self = .addressCollection_2024
+        case "backer_report_update_2024": self = .backerReportUpdate_2024
+        case "delay_backer_trust_module_2024": self = .delayBackerTrustModule_2024
+        case "reset_backer_survey_2024": self = .resetBackerSurvey_2024
+        case "disable_shipping_at_pledge": self = .disableShippingAtPledge
+        case "pledge_projects_overview_2024": self = .pledgeProjectsOverview_2024
+        case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
+        case "copy_rewards": self = .copyRewards
+        case "pledge_redemption_v1": self = .pledgeRedemptionV1
+        case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
+        case "address_collection_for_digital_rewards_2024": self = .addressCollectionForDigitalRewards_2024
+        case "prelaunch_story_editor": self = .prelaunchStoryEditor
+        case "prelaunch_story_exception": self = .prelaunchStoryException
+        case "creator_nav_refresh": self = .creatorNavRefresh
+        case "sku_editing_2024": self = .skuEditing_2024
+        case "superbacker_progress": self = .superbackerProgress
+        case "backers_can_choose_plot_v1": self = .backersCanChoosePlotV1
+        case "backer_survey_intro_2024": self = .backerSurveyIntro_2024
+        case "sepa_debit_payment_element": self = .sepaDebitPaymentElement
+        case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
+        case "partial_refunds_2024": self = .partialRefunds_2024
+        case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
+        case "multiple_shipfrom_locations_2024": self = .multipleShipfromLocations_2024
+        case "separate_payment_section": self = .separatePaymentSection
+        case "react_backed_projects": self = .reactBackedProjects
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .deviceComponents: return "device_components"
+        case .showPostsFeed: return "show_posts_feed"
+        case .iosCrashlytics: return "ios_crashlytics"
+        case .iosMixpanel: return "ios_mixpanel"
+        case .iosNewRelic: return "ios_new_relic"
+        case .iosHockeyApp: return "ios_hockey_app"
+        case .iosKoala: return "ios_koala"
+        case .iosI18n: return "ios_i18n"
+        case .iosTappableCategoryLocation: return "ios_tappable_category_location"
+        case .iosFavoriteCategories: return "ios_favorite_categories"
+        case .iosWhTout: return "ios_wh_tout"
+        case .iosQualtrics: return "ios_qualtrics"
+        case .iosNativeCheckout: return "ios_native_checkout"
+        case .iosNativeCheckoutPledgeView: return "ios_native_checkout_pledge_view"
+        case .iosLiveStreams: return "ios_live_streams"
+        case .iosLiveStreamDiscovery: return "ios_live_stream_discovery"
+        case .iosLiveStreamChat: return "ios_live_stream_chat"
+        case .iosScrollOutputObserveForUi: return "ios_scroll_output_observe_for_ui"
+        case .iosBackerDashboard: return "ios_backer_dashboard"
+        case .iosEmailVerificationFlow: return "ios_email_verification_flow"
+        case .iosEmailVerificationSkip: return "ios_email_verification_skip"
+        case .iosSegment: return "ios_segment"
+        case .iosBraze: return "ios_braze"
+        case .androidSegment: return "android_segment"
+        case .androidBraze: return "android_braze"
+        case .nativeCreatorBreakdownChart: return "native_creator_breakdown_chart"
+        case .identityVerificationProjectOverview: return "identity_verification_project_overview"
+        case .messageArchiving: return "message_archiving"
+        case .messageSpam: return "message_spam"
+        case .emojiLocale: return "emoji_locale"
+        case .defaultToCampaignOnMobile: return "default_to_campaign_on_mobile"
+        case .pinnedPostsOnFeed: return "pinned_posts_on_feed"
+        case .imageUploaderAltText: return "image_uploader_alt_text"
+        case .richTextEmbedifier: return "rich_text_embedifier"
+        case .adminCheckoutDebugger: return "admin_checkout_debugger"
+        case .accountsUpgrade: return "accounts_upgrade"
+        case .ksr10BuildOverview: return "ksr10_build_overview"
+        case .meGenerativeArt: return "me_generative_art"
+        case .projectBuildRewardsExplorer: return "project_build_rewards_explorer"
+        case .projectBuildZendesk: return "project_build_zendesk"
+        case .projectBuildMilestones: return "project_build_milestones"
+        case .userMenuDraftProject: return "user_menu_draft_project"
+        case .make_100_2020: return "make_100_2020"
+        case .fundingSheet: return "funding_sheet"
+        case .qualtrics: return "qualtrics"
+        case .trackDefineNamespace: return "track_define_namespace"
+        case .howItWorks: return "how_it_works"
+        case .disableManualCreateStripeElementsPostalCode: return "disable_manual_create_stripe_elements_postal_code"
+        case .projectUpdateRequests: return "project_update_requests"
+        case .projectHeaderMediaCarouselHero: return "project_header_media_carousel_hero"
+        case .pl: return "PL"
+        case .gr: return "GR"
+        case .si: return "SI"
+        case .featuredProjectMobileOptimizations: return "featured_project_mobile_optimizations"
+        case .ibanFlexibility: return "IBAN_flexibility"
+        case .insideVoicesFooter: return "inside_voices_footer"
+        case .stackedRecsOnMobile: return "stacked_recs_on_mobile"
+        case .projectPrelaunchSummaries: return "project_prelaunch_summaries"
+        case .chCurrencySelector: return "ch_currency_selector"
+        case .dkCurrencySelector: return "dk_currency_selector"
+        case .noCurrencySelector: return "no_currency_selector"
+        case .seCurrencySelector: return "se_currency_selector"
+        case .projectsOnProjectPage: return "projects_on_project_page"
+        case .datalakeFeEvents: return "datalake_fe_events"
+        case .creatorDemographicsSurvey: return "creator_demographics_survey"
+        case .saveProjectExperiment: return "save_project_experiment"
+        case .segmentTrackingEvents: return "segment_tracking_events"
+        case .segmentHideProjectDeadlineProperty: return "segment_hide_project_deadline_property"
+        case .webErrorOnRetryOfFailed_3dsBacking: return "web_error_on_retry_of_failed_3ds_backing"
+        case .hideFacebookLoginButton_2022: return "hide_facebook_login_button_2022"
+        case .creatorOnboardingFlow_2021: return "creator_onboarding_flow_2021"
+        case .updatedRisksFlow: return "updated_risks_flow"
+        case .paymentElementProjectBuild_2022: return "payment_element_project_build_2022"
+        case .hkBankAccountHolderName: return "hk_bank_account_holder_name"
+        case .creatorOsatSurvey_2022: return "creator_osat_survey_2022"
+        case .ukCreatedProjectsAcceptUsdCurrency: return "uk_created_projects_accept_usd_currency"
+        case .enableSpotlightBgImage: return "enable_spotlight_bg_image"
+        case .ecovadisComponent_2023: return "ecovadis_component_2023"
+        case .webBraze: return "web_braze"
+        case .ccpSearchProjects: return "ccp_search_projects"
+        case .globalNav_2023: return "global_nav_2023"
+        case .latePledgesLearnMoreCta: return "late_pledges_learn_more_cta"
+        case .postCampaignBackings_2024: return "post_campaign_backings_2024"
+        case .ckeditorProjectUpdates: return "ckeditor_project_updates"
+        case .backerDiscoveryFeatures_2023: return "backer_discovery_features_2023"
+        case .paymentsStripeLinkOnCheckout: return "payments_stripe_link_on_checkout"
+        case .addressCollection_2024: return "address_collection_2024"
+        case .backerReportUpdate_2024: return "backer_report_update_2024"
+        case .delayBackerTrustModule_2024: return "delay_backer_trust_module_2024"
+        case .resetBackerSurvey_2024: return "reset_backer_survey_2024"
+        case .disableShippingAtPledge: return "disable_shipping_at_pledge"
+        case .pledgeProjectsOverview_2024: return "pledge_projects_overview_2024"
+        case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
+        case .copyRewards: return "copy_rewards"
+        case .pledgeRedemptionV1: return "pledge_redemption_v1"
+        case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
+        case .addressCollectionForDigitalRewards_2024: return "address_collection_for_digital_rewards_2024"
+        case .prelaunchStoryEditor: return "prelaunch_story_editor"
+        case .prelaunchStoryException: return "prelaunch_story_exception"
+        case .creatorNavRefresh: return "creator_nav_refresh"
+        case .skuEditing_2024: return "sku_editing_2024"
+        case .superbackerProgress: return "superbacker_progress"
+        case .backersCanChoosePlotV1: return "backers_can_choose_plot_v1"
+        case .backerSurveyIntro_2024: return "backer_survey_intro_2024"
+        case .sepaDebitPaymentElement: return "sepa_debit_payment_element"
+        case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
+        case .partialRefunds_2024: return "partial_refunds_2024"
+        case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
+        case .multipleShipfromLocations_2024: return "multiple_shipfrom_locations_2024"
+        case .separatePaymentSection: return "separate_payment_section"
+        case .reactBackedProjects: return "react_backed_projects"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: Feature, rhs: Feature) -> Bool {
+      switch (lhs, rhs) {
+        case (.deviceComponents, .deviceComponents): return true
+        case (.showPostsFeed, .showPostsFeed): return true
+        case (.iosCrashlytics, .iosCrashlytics): return true
+        case (.iosMixpanel, .iosMixpanel): return true
+        case (.iosNewRelic, .iosNewRelic): return true
+        case (.iosHockeyApp, .iosHockeyApp): return true
+        case (.iosKoala, .iosKoala): return true
+        case (.iosI18n, .iosI18n): return true
+        case (.iosTappableCategoryLocation, .iosTappableCategoryLocation): return true
+        case (.iosFavoriteCategories, .iosFavoriteCategories): return true
+        case (.iosWhTout, .iosWhTout): return true
+        case (.iosQualtrics, .iosQualtrics): return true
+        case (.iosNativeCheckout, .iosNativeCheckout): return true
+        case (.iosNativeCheckoutPledgeView, .iosNativeCheckoutPledgeView): return true
+        case (.iosLiveStreams, .iosLiveStreams): return true
+        case (.iosLiveStreamDiscovery, .iosLiveStreamDiscovery): return true
+        case (.iosLiveStreamChat, .iosLiveStreamChat): return true
+        case (.iosScrollOutputObserveForUi, .iosScrollOutputObserveForUi): return true
+        case (.iosBackerDashboard, .iosBackerDashboard): return true
+        case (.iosEmailVerificationFlow, .iosEmailVerificationFlow): return true
+        case (.iosEmailVerificationSkip, .iosEmailVerificationSkip): return true
+        case (.iosSegment, .iosSegment): return true
+        case (.iosBraze, .iosBraze): return true
+        case (.androidSegment, .androidSegment): return true
+        case (.androidBraze, .androidBraze): return true
+        case (.nativeCreatorBreakdownChart, .nativeCreatorBreakdownChart): return true
+        case (.identityVerificationProjectOverview, .identityVerificationProjectOverview): return true
+        case (.messageArchiving, .messageArchiving): return true
+        case (.messageSpam, .messageSpam): return true
+        case (.emojiLocale, .emojiLocale): return true
+        case (.defaultToCampaignOnMobile, .defaultToCampaignOnMobile): return true
+        case (.pinnedPostsOnFeed, .pinnedPostsOnFeed): return true
+        case (.imageUploaderAltText, .imageUploaderAltText): return true
+        case (.richTextEmbedifier, .richTextEmbedifier): return true
+        case (.adminCheckoutDebugger, .adminCheckoutDebugger): return true
+        case (.accountsUpgrade, .accountsUpgrade): return true
+        case (.ksr10BuildOverview, .ksr10BuildOverview): return true
+        case (.meGenerativeArt, .meGenerativeArt): return true
+        case (.projectBuildRewardsExplorer, .projectBuildRewardsExplorer): return true
+        case (.projectBuildZendesk, .projectBuildZendesk): return true
+        case (.projectBuildMilestones, .projectBuildMilestones): return true
+        case (.userMenuDraftProject, .userMenuDraftProject): return true
+        case (.make_100_2020, .make_100_2020): return true
+        case (.fundingSheet, .fundingSheet): return true
+        case (.qualtrics, .qualtrics): return true
+        case (.trackDefineNamespace, .trackDefineNamespace): return true
+        case (.howItWorks, .howItWorks): return true
+        case (.disableManualCreateStripeElementsPostalCode, .disableManualCreateStripeElementsPostalCode): return true
+        case (.projectUpdateRequests, .projectUpdateRequests): return true
+        case (.projectHeaderMediaCarouselHero, .projectHeaderMediaCarouselHero): return true
+        case (.pl, .pl): return true
+        case (.gr, .gr): return true
+        case (.si, .si): return true
+        case (.featuredProjectMobileOptimizations, .featuredProjectMobileOptimizations): return true
+        case (.ibanFlexibility, .ibanFlexibility): return true
+        case (.insideVoicesFooter, .insideVoicesFooter): return true
+        case (.stackedRecsOnMobile, .stackedRecsOnMobile): return true
+        case (.projectPrelaunchSummaries, .projectPrelaunchSummaries): return true
+        case (.chCurrencySelector, .chCurrencySelector): return true
+        case (.dkCurrencySelector, .dkCurrencySelector): return true
+        case (.noCurrencySelector, .noCurrencySelector): return true
+        case (.seCurrencySelector, .seCurrencySelector): return true
+        case (.projectsOnProjectPage, .projectsOnProjectPage): return true
+        case (.datalakeFeEvents, .datalakeFeEvents): return true
+        case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
+        case (.saveProjectExperiment, .saveProjectExperiment): return true
+        case (.segmentTrackingEvents, .segmentTrackingEvents): return true
+        case (.segmentHideProjectDeadlineProperty, .segmentHideProjectDeadlineProperty): return true
+        case (.webErrorOnRetryOfFailed_3dsBacking, .webErrorOnRetryOfFailed_3dsBacking): return true
+        case (.hideFacebookLoginButton_2022, .hideFacebookLoginButton_2022): return true
+        case (.creatorOnboardingFlow_2021, .creatorOnboardingFlow_2021): return true
+        case (.updatedRisksFlow, .updatedRisksFlow): return true
+        case (.paymentElementProjectBuild_2022, .paymentElementProjectBuild_2022): return true
+        case (.hkBankAccountHolderName, .hkBankAccountHolderName): return true
+        case (.creatorOsatSurvey_2022, .creatorOsatSurvey_2022): return true
+        case (.ukCreatedProjectsAcceptUsdCurrency, .ukCreatedProjectsAcceptUsdCurrency): return true
+        case (.enableSpotlightBgImage, .enableSpotlightBgImage): return true
+        case (.ecovadisComponent_2023, .ecovadisComponent_2023): return true
+        case (.webBraze, .webBraze): return true
+        case (.ccpSearchProjects, .ccpSearchProjects): return true
+        case (.globalNav_2023, .globalNav_2023): return true
+        case (.latePledgesLearnMoreCta, .latePledgesLearnMoreCta): return true
+        case (.postCampaignBackings_2024, .postCampaignBackings_2024): return true
+        case (.ckeditorProjectUpdates, .ckeditorProjectUpdates): return true
+        case (.backerDiscoveryFeatures_2023, .backerDiscoveryFeatures_2023): return true
+        case (.paymentsStripeLinkOnCheckout, .paymentsStripeLinkOnCheckout): return true
+        case (.addressCollection_2024, .addressCollection_2024): return true
+        case (.backerReportUpdate_2024, .backerReportUpdate_2024): return true
+        case (.delayBackerTrustModule_2024, .delayBackerTrustModule_2024): return true
+        case (.resetBackerSurvey_2024, .resetBackerSurvey_2024): return true
+        case (.disableShippingAtPledge, .disableShippingAtPledge): return true
+        case (.pledgeProjectsOverview_2024, .pledgeProjectsOverview_2024): return true
+        case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
+        case (.copyRewards, .copyRewards): return true
+        case (.pledgeRedemptionV1, .pledgeRedemptionV1): return true
+        case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
+        case (.addressCollectionForDigitalRewards_2024, .addressCollectionForDigitalRewards_2024): return true
+        case (.prelaunchStoryEditor, .prelaunchStoryEditor): return true
+        case (.prelaunchStoryException, .prelaunchStoryException): return true
+        case (.creatorNavRefresh, .creatorNavRefresh): return true
+        case (.skuEditing_2024, .skuEditing_2024): return true
+        case (.superbackerProgress, .superbackerProgress): return true
+        case (.backersCanChoosePlotV1, .backersCanChoosePlotV1): return true
+        case (.backerSurveyIntro_2024, .backerSurveyIntro_2024): return true
+        case (.sepaDebitPaymentElement, .sepaDebitPaymentElement): return true
+        case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
+        case (.partialRefunds_2024, .partialRefunds_2024): return true
+        case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
+        case (.multipleShipfromLocations_2024, .multipleShipfromLocations_2024): return true
+        case (.separatePaymentSection, .separatePaymentSection): return true
+        case (.reactBackedProjects, .reactBackedProjects): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [Feature] {
+      return [
+        .deviceComponents,
+        .showPostsFeed,
+        .iosCrashlytics,
+        .iosMixpanel,
+        .iosNewRelic,
+        .iosHockeyApp,
+        .iosKoala,
+        .iosI18n,
+        .iosTappableCategoryLocation,
+        .iosFavoriteCategories,
+        .iosWhTout,
+        .iosQualtrics,
+        .iosNativeCheckout,
+        .iosNativeCheckoutPledgeView,
+        .iosLiveStreams,
+        .iosLiveStreamDiscovery,
+        .iosLiveStreamChat,
+        .iosScrollOutputObserveForUi,
+        .iosBackerDashboard,
+        .iosEmailVerificationFlow,
+        .iosEmailVerificationSkip,
+        .iosSegment,
+        .iosBraze,
+        .androidSegment,
+        .androidBraze,
+        .nativeCreatorBreakdownChart,
+        .identityVerificationProjectOverview,
+        .messageArchiving,
+        .messageSpam,
+        .emojiLocale,
+        .defaultToCampaignOnMobile,
+        .pinnedPostsOnFeed,
+        .imageUploaderAltText,
+        .richTextEmbedifier,
+        .adminCheckoutDebugger,
+        .accountsUpgrade,
+        .ksr10BuildOverview,
+        .meGenerativeArt,
+        .projectBuildRewardsExplorer,
+        .projectBuildZendesk,
+        .projectBuildMilestones,
+        .userMenuDraftProject,
+        .make_100_2020,
+        .fundingSheet,
+        .qualtrics,
+        .trackDefineNamespace,
+        .howItWorks,
+        .disableManualCreateStripeElementsPostalCode,
+        .projectUpdateRequests,
+        .projectHeaderMediaCarouselHero,
+        .pl,
+        .gr,
+        .si,
+        .featuredProjectMobileOptimizations,
+        .ibanFlexibility,
+        .insideVoicesFooter,
+        .stackedRecsOnMobile,
+        .projectPrelaunchSummaries,
+        .chCurrencySelector,
+        .dkCurrencySelector,
+        .noCurrencySelector,
+        .seCurrencySelector,
+        .projectsOnProjectPage,
+        .datalakeFeEvents,
+        .creatorDemographicsSurvey,
+        .saveProjectExperiment,
+        .segmentTrackingEvents,
+        .segmentHideProjectDeadlineProperty,
+        .webErrorOnRetryOfFailed_3dsBacking,
+        .hideFacebookLoginButton_2022,
+        .creatorOnboardingFlow_2021,
+        .updatedRisksFlow,
+        .paymentElementProjectBuild_2022,
+        .hkBankAccountHolderName,
+        .creatorOsatSurvey_2022,
+        .ukCreatedProjectsAcceptUsdCurrency,
+        .enableSpotlightBgImage,
+        .ecovadisComponent_2023,
+        .webBraze,
+        .ccpSearchProjects,
+        .globalNav_2023,
+        .latePledgesLearnMoreCta,
+        .postCampaignBackings_2024,
+        .ckeditorProjectUpdates,
+        .backerDiscoveryFeatures_2023,
+        .paymentsStripeLinkOnCheckout,
+        .addressCollection_2024,
+        .backerReportUpdate_2024,
+        .delayBackerTrustModule_2024,
+        .resetBackerSurvey_2024,
+        .disableShippingAtPledge,
+        .pledgeProjectsOverview_2024,
+        .pledgeProjectsOverviewIos_2024,
+        .copyRewards,
+        .pledgeRedemptionV1,
+        .surveyRewardQuestions_2024,
+        .addressCollectionForDigitalRewards_2024,
+        .prelaunchStoryEditor,
+        .prelaunchStoryException,
+        .creatorNavRefresh,
+        .skuEditing_2024,
+        .superbackerProgress,
+        .backersCanChoosePlotV1,
+        .backerSurveyIntro_2024,
+        .sepaDebitPaymentElement,
+        .trustAndSafetyProjectBanner,
+        .partialRefunds_2024,
+        .notificationBannerUpdate_2024,
+        .multipleShipfromLocations_2024,
+        .separatePaymentSection,
+        .reactBackedProjects,
+      ]
+    }
+  }
+
   /// User notification topics
   public enum UserNotificationTopic: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -7983,7 +8569,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8116,6 +8702,10 @@ public enum GraphAPI {
 
         public static func makeShippingRule() -> Node {
           return Node(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeAdjustmentSummary() -> Node {
+          return Node(unsafeResultMap: ["__typename": "AdjustmentSummary"])
         }
 
         public static func makeOrder() -> Node {
@@ -8432,7 +9022,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8561,6 +9151,10 @@ public enum GraphAPI {
 
         public static func makeShippingRule() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeAdjustmentSummary() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "AdjustmentSummary"])
         }
 
         public static func makeOrder() -> Comment {
@@ -12468,6 +13062,128 @@ public enum GraphAPI {
           public var userEmailFragment: UserEmailFragment {
             get {
               return UserEmailFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class FetchUserSetupQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchUserSetup {
+        me {
+          __typename
+          ...UserEmailFragment
+          ...UserFeaturesFragment
+        }
+      }
+      """
+
+    public let operationName: String = "FetchUserSetup"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + UserEmailFragment.fragmentDefinition)
+      document.append("\n" + UserFeaturesFragment.fragmentDefinition)
+      return document
+    }
+
+    public init() {
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("me", type: .object(Me.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(me: Me? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "me": me.flatMap { (value: Me) -> ResultMap in value.resultMap }])
+      }
+
+      /// You.
+      public var me: Me? {
+        get {
+          return (resultMap["me"] as? ResultMap).flatMap { Me(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "me")
+        }
+      }
+
+      public struct Me: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(UserEmailFragment.self),
+            GraphQLFragmentSpread(UserFeaturesFragment.self),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(email: String? = nil, enabledFeatures: [Feature]) {
+          self.init(unsafeResultMap: ["__typename": "User", "email": email, "enabledFeatures": enabledFeatures])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var userEmailFragment: UserEmailFragment {
+            get {
+              return UserEmailFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public var userFeaturesFragment: UserFeaturesFragment {
+            get {
+              return UserFeaturesFragment(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -19378,6 +20094,54 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "email")
+      }
+    }
+  }
+
+  public struct UserFeaturesFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment UserFeaturesFragment on User {
+        __typename
+        enabledFeatures
+      }
+      """
+
+    public static let possibleTypes: [String] = ["User"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("enabledFeatures", type: .nonNull(.list(.nonNull(.scalar(Feature.self))))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(enabledFeatures: [Feature]) {
+      self.init(unsafeResultMap: ["__typename": "User", "enabledFeatures": enabledFeatures])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var enabledFeatures: [Feature] {
+      get {
+        return resultMap["enabledFeatures"]! as! [Feature]
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "enabledFeatures")
       }
     }
   }
