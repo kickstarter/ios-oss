@@ -371,18 +371,18 @@ extension PPOProjectCardModel {
     let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
       let cityRegionFields: [String?] = [
         deliveryAddress.city,
-        deliveryAddress.region.flatMap({ ", \($0)" }),
-        deliveryAddress.postalCode.flatMap({ " \($0)" })
+        deliveryAddress.region.flatMap { ", \($0)" },
+        deliveryAddress.postalCode.flatMap { " \($0)" }
       ]
       let fields: [String?] = [
         deliveryAddress.recipientName,
         deliveryAddress.addressLine1,
         deliveryAddress.addressLine2,
-        cityRegionFields.compactMap({ $0 }).joined(),
+        cityRegionFields.compactMap { $0 }.joined(),
         deliveryAddress.countryCode.rawValue,
         deliveryAddress.phoneNumber
       ]
-      return fields.compactMap({ $0 }).joined(separator: "\n")
+      return fields.compactMap { $0 }.joined(separator: "\n")
     }
 
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
