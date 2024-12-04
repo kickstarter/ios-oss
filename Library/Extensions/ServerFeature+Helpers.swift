@@ -7,7 +7,7 @@ public func serverFeaturePledgedProjectsOverviewIsEnabled() -> Bool {
 
 extension ServerFeature {
   fileprivate func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
-    environment.currentUserFeatures?.contains(self) ?? false
+    environment.currentUserServerFeatures?.contains(self) ?? false
   }
 }
 

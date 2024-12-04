@@ -228,7 +228,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
         AppEnvironment.replaceCurrentEnvironment(
           currentUserEmail: email,
-          currentUserFeatures: features
+          currentUserServerFeatures: features
         )
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }

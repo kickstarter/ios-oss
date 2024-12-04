@@ -627,7 +627,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
-      currentUserFeatures: Set([.pledgeProjectsOverviewIos_2024]),
+      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -675,12 +675,12 @@ final class RootViewModelTests: TestCase {
     remoteConfig.features = [
       RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
     ]
-    let currentUserFeatures: Set<ServerFeature> = Set()
+    let currentUserServerFeatures: Set<ServerFeature> = Set()
 
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(currentUserFeatures: currentUserFeatures, remoteConfigClient: remoteConfig) {
+    withEnvironment(currentUserServerFeatures: currentUserServerFeatures, remoteConfigClient: remoteConfig) {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
