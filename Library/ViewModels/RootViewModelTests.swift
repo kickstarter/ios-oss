@@ -627,7 +627,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
-      currentUserFeatures: Set([.pledgeProjectsOverview_2024]),
+      currentUserFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()

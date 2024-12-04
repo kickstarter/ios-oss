@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 
 public func serverFeaturePledgedProjectsOverviewIsEnabled() -> Bool {
-  return ServerFeature.pledgeProjectsOverview_2024.isEnabled()
+  return ServerFeature.pledgeProjectsOverviewIos_2024.isEnabled()
 }
 
 extension ServerFeature {
