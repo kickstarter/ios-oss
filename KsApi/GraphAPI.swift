@@ -4264,6 +4264,7 @@ public enum GraphAPI {
     case resetBackerSurvey_2024
     case disableShippingAtPledge
     case pledgeProjectsOverview_2024
+    case pledgeProjectsOverviewIos_2024
     case copyRewards
     case pledgeRedemptionV1
     case surveyRewardQuestions_2024
@@ -4272,12 +4273,16 @@ public enum GraphAPI {
     case prelaunchStoryException
     case creatorNavRefresh
     case skuEditing_2024
-    case pledgeRedemptionCrossSells
     case superbackerProgress
     case backersCanChoosePlotV1
     case backerSurveyIntro_2024
     case sepaDebitPaymentElement
     case trustAndSafetyProjectBanner
+    case partialRefunds_2024
+    case notificationBannerUpdate_2024
+    case multipleShipfromLocations_2024
+    case separatePaymentSection
+    case reactBackedProjects
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4375,6 +4380,7 @@ public enum GraphAPI {
         case "reset_backer_survey_2024": self = .resetBackerSurvey_2024
         case "disable_shipping_at_pledge": self = .disableShippingAtPledge
         case "pledge_projects_overview_2024": self = .pledgeProjectsOverview_2024
+        case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
         case "copy_rewards": self = .copyRewards
         case "pledge_redemption_v1": self = .pledgeRedemptionV1
         case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
@@ -4383,12 +4389,16 @@ public enum GraphAPI {
         case "prelaunch_story_exception": self = .prelaunchStoryException
         case "creator_nav_refresh": self = .creatorNavRefresh
         case "sku_editing_2024": self = .skuEditing_2024
-        case "pledge_redemption_cross_sells": self = .pledgeRedemptionCrossSells
         case "superbacker_progress": self = .superbackerProgress
         case "backers_can_choose_plot_v1": self = .backersCanChoosePlotV1
         case "backer_survey_intro_2024": self = .backerSurveyIntro_2024
         case "sepa_debit_payment_element": self = .sepaDebitPaymentElement
         case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
+        case "partial_refunds_2024": self = .partialRefunds_2024
+        case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
+        case "multiple_shipfrom_locations_2024": self = .multipleShipfromLocations_2024
+        case "separate_payment_section": self = .separatePaymentSection
+        case "react_backed_projects": self = .reactBackedProjects
         default: self = .__unknown(rawValue)
       }
     }
@@ -4487,6 +4497,7 @@ public enum GraphAPI {
         case .resetBackerSurvey_2024: return "reset_backer_survey_2024"
         case .disableShippingAtPledge: return "disable_shipping_at_pledge"
         case .pledgeProjectsOverview_2024: return "pledge_projects_overview_2024"
+        case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
         case .copyRewards: return "copy_rewards"
         case .pledgeRedemptionV1: return "pledge_redemption_v1"
         case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
@@ -4495,12 +4506,16 @@ public enum GraphAPI {
         case .prelaunchStoryException: return "prelaunch_story_exception"
         case .creatorNavRefresh: return "creator_nav_refresh"
         case .skuEditing_2024: return "sku_editing_2024"
-        case .pledgeRedemptionCrossSells: return "pledge_redemption_cross_sells"
         case .superbackerProgress: return "superbacker_progress"
         case .backersCanChoosePlotV1: return "backers_can_choose_plot_v1"
         case .backerSurveyIntro_2024: return "backer_survey_intro_2024"
         case .sepaDebitPaymentElement: return "sepa_debit_payment_element"
         case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
+        case .partialRefunds_2024: return "partial_refunds_2024"
+        case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
+        case .multipleShipfromLocations_2024: return "multiple_shipfrom_locations_2024"
+        case .separatePaymentSection: return "separate_payment_section"
+        case .reactBackedProjects: return "react_backed_projects"
         case .__unknown(let value): return value
       }
     }
@@ -4599,6 +4614,7 @@ public enum GraphAPI {
         case (.resetBackerSurvey_2024, .resetBackerSurvey_2024): return true
         case (.disableShippingAtPledge, .disableShippingAtPledge): return true
         case (.pledgeProjectsOverview_2024, .pledgeProjectsOverview_2024): return true
+        case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
         case (.copyRewards, .copyRewards): return true
         case (.pledgeRedemptionV1, .pledgeRedemptionV1): return true
         case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
@@ -4607,12 +4623,16 @@ public enum GraphAPI {
         case (.prelaunchStoryException, .prelaunchStoryException): return true
         case (.creatorNavRefresh, .creatorNavRefresh): return true
         case (.skuEditing_2024, .skuEditing_2024): return true
-        case (.pledgeRedemptionCrossSells, .pledgeRedemptionCrossSells): return true
         case (.superbackerProgress, .superbackerProgress): return true
         case (.backersCanChoosePlotV1, .backersCanChoosePlotV1): return true
         case (.backerSurveyIntro_2024, .backerSurveyIntro_2024): return true
         case (.sepaDebitPaymentElement, .sepaDebitPaymentElement): return true
         case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
+        case (.partialRefunds_2024, .partialRefunds_2024): return true
+        case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
+        case (.multipleShipfromLocations_2024, .multipleShipfromLocations_2024): return true
+        case (.separatePaymentSection, .separatePaymentSection): return true
+        case (.reactBackedProjects, .reactBackedProjects): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4712,6 +4732,7 @@ public enum GraphAPI {
         .resetBackerSurvey_2024,
         .disableShippingAtPledge,
         .pledgeProjectsOverview_2024,
+        .pledgeProjectsOverviewIos_2024,
         .copyRewards,
         .pledgeRedemptionV1,
         .surveyRewardQuestions_2024,
@@ -4720,12 +4741,16 @@ public enum GraphAPI {
         .prelaunchStoryException,
         .creatorNavRefresh,
         .skuEditing_2024,
-        .pledgeRedemptionCrossSells,
         .superbackerProgress,
         .backersCanChoosePlotV1,
         .backerSurveyIntro_2024,
         .sepaDebitPaymentElement,
         .trustAndSafetyProjectBanner,
+        .partialRefunds_2024,
+        .notificationBannerUpdate_2024,
+        .multipleShipfromLocations_2024,
+        .separatePaymentSection,
+        .reactBackedProjects,
       ]
     }
   }
@@ -8544,7 +8569,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8677,6 +8702,10 @@ public enum GraphAPI {
 
         public static func makeShippingRule() -> Node {
           return Node(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeAdjustmentSummary() -> Node {
+          return Node(unsafeResultMap: ["__typename": "AdjustmentSummary"])
         }
 
         public static func makeOrder() -> Node {
@@ -8993,7 +9022,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9122,6 +9151,10 @@ public enum GraphAPI {
 
         public static func makeShippingRule() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeAdjustmentSummary() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "AdjustmentSummary"])
         }
 
         public static func makeOrder() -> Comment {
