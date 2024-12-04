@@ -46,14 +46,12 @@ struct PPOView: View {
       PPOProjectCard(
         viewModel: card,
         parentSize: parentSize,
-        onViewBackingDetails: { card in
-          self.viewModel.viewBackingDetails(from: card)
-        },
-        onSendMessage: { card in
-          self.viewModel.contactCreator(from: card)
-        },
-        onPerformAction: { card, action in
+        onAction: { card, action in
           switch action {
+          case .viewBackingDetails:
+            self.viewModel.viewBackingDetails(from: card)
+          case .sendMessage:
+            self.viewModel.contactCreator(from: card)
           case .authenticateCard:
             self.viewModel.fix3DSChallenge(from: card)
           case .completeSurvey:
