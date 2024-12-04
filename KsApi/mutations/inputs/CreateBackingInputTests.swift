@@ -12,6 +12,7 @@ final class CreateBackingInputTests: XCTestCase {
         transactionIdentifier: "tx-identifier",
         token: "token"
       ),
+      incremental: false,
       locationId: "NY",
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
@@ -28,6 +29,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(applePayDictionary?["paymentNetwork"] as? String, "payment-network")
     XCTAssertEqual(applePayDictionary?["transactionIdentifier"] as? String, "tx-identifier")
     XCTAssertEqual(applePayDictionary?["token"] as? String, "token")
+    XCTAssertEqual(input["incremental"] as? Bool, false)
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
@@ -43,6 +45,7 @@ final class CreateBackingInputTests: XCTestCase {
     let createBackingInput = CreateBackingInput(
       amount: "200.00",
       applePay: nil,
+      incremental: false,
       locationId: "NY",
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
@@ -56,6 +59,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertFalse(input.keys.contains("applePay"))
 
     XCTAssertEqual(input["amount"] as? String, "200.00")
+    XCTAssertEqual(input["incremental"] as? Bool, false)
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
@@ -73,6 +77,7 @@ final class CreateBackingInputTests: XCTestCase {
         transactionIdentifier: "tx-identifier",
         token: "token"
       ),
+      incremental: false,
       locationId: nil,
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
@@ -84,6 +89,7 @@ final class CreateBackingInputTests: XCTestCase {
     let input = createBackingInput.toInputDictionary()
 
     XCTAssertEqual(input["amount"] as? String, "200.00")
+    XCTAssertEqual(input["incremental"] as? Bool, false)
     XCTAssertNil(input["locationId"])
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")

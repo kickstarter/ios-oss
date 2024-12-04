@@ -10,7 +10,8 @@ extension GraphAPI.CreateBackingInput {
       refParam: input.refParam,
       paymentSourceId: input.paymentSourceId,
       setupIntentClientSecret: input.setupIntentClientSecret,
-      applePay: GraphAPI.ApplePayInput.from(input.applePay)
+      applePay: GraphAPI.ApplePayInput.from(input.applePay),
+      incremental: input.incremental
     )
   }
 }
