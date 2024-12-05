@@ -2468,22 +2468,23 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testUserSessionStarted_fetchesUserEmail_andClearsOnLogout() {
-    let fetchUserEmailQueryData = GraphAPI.FetchUserEmailQuery
+    let fetchUserSetupQueryData = GraphAPI.FetchUserSetupQuery
       .Data(
         unsafeResultMap: [
           "me": [
-            "email": "user@example.com"
+            "email": "user@example.com",
+            "enabledFeatures": []
           ]
         ]
       )
 
-    guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
+    guard let envelope = UserEnvelope<GraphUserSetup>.userEnvelope(from: fetchUserSetupQueryData) else {
       XCTFail()
       return
     }
 
     let mockService = MockService(
-      fetchGraphUserEmailResult: .success(envelope)
+      fetchGraphUserSetupResult: .success(envelope)
     )
 
     withEnvironment(apiService: mockService) {

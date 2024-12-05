@@ -1640,6 +1640,18 @@
             "deprecationReason": null
           },
           {
+            "name": "adjustmentSummary",
+            "description": "A summary of refunds and removal issued by the creator",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdjustmentSummary",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "allowedCountries",
             "description": "Countries that the backing's reward can be shipped to. If null, the backing's reward can be shipped to any country.",
             "args": [],
@@ -1730,6 +1742,18 @@
           {
             "name": "backerNote",
             "description": "Backer's note regarding their backing",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "backerSentiment",
+            "description": "The sentiment feedback the backer has submitted for the backing, if any",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1970,7 +1994,7 @@
           },
           {
             "name": "incremental",
-            "description": "If the backing was incremented, ie pledged over time",
+            "description": "If the backing was incremental, ie pledged over time",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -2048,6 +2072,26 @@
               "kind": "OBJECT",
               "name": "Order",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentIncrements",
+            "description": "Scheduled incremental payments",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PaymentIncrement",
+                  "ofType": null
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2502,6 +2546,11 @@
           {
             "kind": "OBJECT",
             "name": "ShippingRule",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AdjustmentSummary",
             "ofType": null
           },
           {
@@ -5725,6 +5774,22 @@
             "deprecationReason": null
           },
           {
+            "name": "destroyProjectPledgePath",
+            "description": "The path to destroy the current user's pledge for this project.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "duration",
             "description": "Funding duration in days",
             "args": [],
@@ -6597,6 +6662,33 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentPlan",
+            "description": "Build a payment plan given a project id and amount",
+            "args": [
+              {
+                "name": "amount",
+                "description": "Amount in project funding currency, dollars-and-cents equivalent format",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PaymentPlan",
               "ofType": null
             },
             "isDeprecated": false,
@@ -7574,6 +7666,30 @@
               "kind": "OBJECT",
               "name": "ProjectTimelineConnection",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unassignedBackingLocations",
+            "description": "Backer countries that have not been assigned a ship-from location",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Location",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -9916,6 +10032,16 @@
               {
                 "name": "upcoming",
                 "description": "Get saved projects that are upcoming",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "launched",
+                "description": "Get saved projects that have launched",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Boolean",
@@ -12775,6 +12901,50 @@
             "deprecationReason": null
           },
           {
+            "name": "isUnread",
+            "description": "Are there unread messages for the current user",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastReceivedAt",
+            "description": "Timestamp of the most recent message in the thread",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "messageCount",
+            "description": "The number of messages between the backer and creator",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messages",
             "description": "Messages that are part of this conversation",
             "args": [
@@ -13960,6 +14130,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pledge_projects_overview_ios_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "copy_rewards",
             "description": null,
             "isDeprecated": false,
@@ -14008,12 +14184,6 @@
             "deprecationReason": null
           },
           {
-            "name": "pledge_redemption_cross_sells",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "superbacker_progress",
             "description": null,
             "isDeprecated": false,
@@ -14039,6 +14209,36 @@
           },
           {
             "name": "trust_and_safety_project_banner",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "partial_refunds_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "notification_banner_update_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "multiple_shipfrom_locations_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "separate_payment_section",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "react_backed_projects",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -21654,6 +21854,188 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "PaymentPlan",
+        "description": "A payment plan for a pledge over time project",
+        "fields": [
+          {
+            "name": "amountIsPledgeOverTimeEligible",
+            "description": "Amount is enough to qualify for pledge over time, if project allows",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentIncrements",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PaymentIncrement",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectIsPledgeOverTimeAllowed",
+            "description": "Whether the project permits pledge over time pledges",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PaymentIncrement",
+        "description": null,
+        "fields": [
+          {
+            "name": "amount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Money",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentIncrementableId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentIncrementableType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "scheduledCollection",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "state",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stateReason",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
         "name": "PostState",
         "description": "Possible states for project posts.",
@@ -24449,6 +24831,89 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Project",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stockLocationMappings",
+            "description": "Places this stock location ships to",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "StockLocationMapping",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "StockLocationMapping",
+        "description": "A place that a project stock location ships to",
+        "fields": [
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "location",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Location",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stockLocation",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "StockLocation",
                 "ofType": null
               }
             },
@@ -28044,6 +28509,777 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "AdjustmentSummary",
+        "description": "An adjustment summary.",
+        "fields": [
+          {
+            "name": "adjustable",
+            "description": "The associated backing/order",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Backing",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "adjustedSummary",
+            "description": "current state of backing",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdjustedSummary",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "adjustments",
+            "description": "An array of adjustments associated with the AdjustmentSummary",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Adjustment",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AdjustedSummary",
+        "description": "Current state of a backing after all adjustments are applied.",
+        "fields": [
+          {
+            "name": "allRewards",
+            "description": "list of rewards, original total costs, and totals after adjustments",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AdjustmentReward",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amount",
+            "description": "current total amount for backing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "bonusAmount",
+            "description": "current bonus amount for backing",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "itemCounts",
+            "description": "items in backing and their quantities",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AdjustmentItem",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingAmount",
+            "description": "current shipping amount for backing",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "current backing status",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "BackingState",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AdjustmentReward",
+        "description": "A reward that is modified by an adjustment.",
+        "fields": [
+          {
+            "name": "originalTotal",
+            "description": "original total for reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedTotal",
+            "description": "amount that has been refunded after all adjustments are applied",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingTotal",
+            "description": "amount remaining after all adjustments are applied",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rewardId",
+            "description": "id of reward to be refunded",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AdjustmentItem",
+        "description": "An item in a backing that might be modified (removal, change in quantity) by an adjustment.",
+        "fields": [
+          {
+            "name": "itemId",
+            "description": "id of item in backing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "itemQuantity",
+            "description": "quantity of item in backing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Adjustment",
+        "description": "Adjustment to an order, created to issue a refund.",
+        "fields": [
+          {
+            "name": "backingId",
+            "description": "ID of backing that adjustment is associated with",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Timestamp at which adjustment was created",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "Adjustment ID",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "message",
+            "description": "optional message from creator issuing adjustment",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "metadata",
+            "description": "Metadata for the adjustment, including refunds and removals",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AdjustmentMetadata",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "Status of adjustment",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "AdjustmentStatusType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactionId",
+            "description": "Rosie Stripe transaction ID",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Timestamp at which adjustment was last updated",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AdjustmentMetadata",
+        "description": "Metadata for adjustment to order",
+        "fields": [
+          {
+            "name": "reason",
+            "description": "Reason for adjustment",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundReasonType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundCheckoutId",
+            "description": "ID of associated RefundCheckout",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refunds",
+            "description": "Refunds to be issued in adjustment",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Refund",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removals",
+            "description": "Objects to be removed from order in adjustment",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Removal",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RefundReasonType",
+        "description": "Reasons for refunds",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "CHANGE_REMOVAL",
+            "description": "Change of reward or removal of reward item",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FULFILLMENT_ISSUES_DELAYS",
+            "description": "Issues with or delays in fulfillment",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREDIT",
+            "description": "Creator issued credit",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "OVERPAYMENT",
+            "description": "Backer overpaid for reward",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BACKER_REQUEST",
+            "description": "Backer requested refund",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "OTHER",
+            "description": "Other reason for refund",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Refund",
+        "description": "A refund issued as part of an adjustment.",
+        "fields": [
+          {
+            "name": "amount",
+            "description": "amount to be refunded",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "id of object to be refunded",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "type of refund",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundAdjustmentType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RefundAdjustmentType",
+        "description": "All types of refund adjustments that can be issued",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "REWARD",
+            "description": "refund for full reward tier",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "REWARD_ITEM",
+            "description": "refund for individual item in a reward tier",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ORDER_ITEM",
+            "description": "refund for an add-on or cross-sell in the order",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BONUS_SUPPORT",
+            "description": "refund for bonus support",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SHIPPING_CREDIT",
+            "description": "refund for shipping fees",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "GENERAL_REFUND",
+            "description": "general refund",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Removal",
+        "description": "An object removed as part of an adjustment.",
+        "fields": [
+          {
+            "name": "id",
+            "description": "id of object to be removed",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "type of object to be removed (reward, reward item, or order item)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundAdjustmentType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "AdjustmentStatusType",
+        "description": "Status of an adjustment",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "PENDING",
+            "description": "Adjustment is pending (default status on creation)",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMPLETED",
+            "description": "Adjustment has successfully been processed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FAILED",
+            "description": "Failure in processing adjustment",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CANCELLED",
+            "description": "Adjustment was cancelled before it could be processed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
         "name": "Route",
         "description": null,
@@ -28107,6 +29343,46 @@
         "description": "A cart associated with a backing",
         "fields": [
           {
+            "name": "addOnQuestions",
+            "description": "The add-on questions",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CartQuestion",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "autoFinalized",
+            "description": "Whether the cart required backer action or was finalized on creation",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "backingRewardAnswers",
             "description": "Answers associated with a cart's backing rewards",
             "args": [],
@@ -28155,6 +29431,30 @@
             "deprecationReason": null
           },
           {
+            "name": "baseRewardQuestions",
+            "description": "The base reward questions",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CartQuestion",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "finalizedAt",
             "description": "When the cart was finalized (i.e., when the backer submitted responses)",
             "args": [],
@@ -28162,6 +29462,22 @@
               "kind": "SCALAR",
               "name": "DateTime",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hasNonOptionalQuestions",
+            "description": "Whether the cart has non-optional questions",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -28176,6 +29492,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "inProgress",
+            "description": "Whether the backer has begun answering their survey",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -28231,6 +29563,46 @@
             "deprecationReason": null
           },
           {
+            "name": "projectQuestions",
+            "description": "The project-level questions",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CartQuestion",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "readyToBeFinalized",
+            "description": "Whether the cart could be finalized or is missing required info",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "shouldCollectAddress",
             "description": "Whether or not this cart needs an address to be finalized",
             "args": [],
@@ -28254,8 +29626,51 @@
       },
       {
         "kind": "OBJECT",
+        "name": "CartQuestion",
+        "description": "A question associated with a cart, composed with an answer if one is present",
+        "fields": [
+          {
+            "name": "answer",
+            "description": "The answer to the question. Will return an \"empty answer\" if not yet answered.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Answer",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "question",
+            "description": "The cart question",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Question",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "Answer",
-        "description": "An answer associated with one of the following: LineItem, Cart, BackingAddon",
+        "description": "An answer associated with one of the following: LineItem, Cart, BackingAddon, CartReward",
         "fields": [
           {
             "name": "answerable",
@@ -28358,6 +29773,11 @@
             "kind": "OBJECT",
             "name": "BackingAddon",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "CartReward",
+            "ofType": null
           }
         ]
       },
@@ -28425,6 +29845,125 @@
             "type": {
               "kind": "OBJECT",
               "name": "ItemVariant",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "optionValues",
+            "description": "The option values that comprise the selected item variant, if present.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "OptionValue",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "questions",
+            "description": "The questions associated with the line item",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CartQuestion",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiresSelection",
+            "description": "True if the backer needs to select a variant or answer an item question",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CartReward",
+        "description": "A reward in the cart (currently scoped to cross-sell rewards only)",
+        "fields": [
+          {
+            "name": "backerReward",
+            "description": "The addon reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Reward",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The add-on name.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28769,6 +30308,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cart",
+            "description": "Contains the backer's item preferences and responses to survey questions",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Cart",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "crossSells",
             "description": "Add-ons selected for this order during Pledge Redemption",
             "args": [],
@@ -28834,6 +30385,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mustAcknowledgeCrossSells",
+            "description": "Whether the backer must acknowledge cross-sells to complete checkout",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -28916,6 +30483,22 @@
               "kind": "SCALAR",
               "name": "Int",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "voucherAutoExemptable",
+            "description": "Whether or not the order would be auto-exemptable if the order had no cross-sells.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -35150,6 +36733,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createAdjustment",
+            "description": "Add an adjustment to a backing",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateAdjustmentInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateAdjustmentPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createApplePayBacking",
             "description": "[DEPRECATED in favor of CreateBackingType] Create a checkout with Apple Pay.",
             "args": [
@@ -36494,6 +38104,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "DeleteRewardItemPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteStockLocation",
+            "description": "Deletes a stock location and associated address",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DeleteStockLocationInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteStockLocationPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -38855,7 +40492,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "stock_location",
+            "name": "stock_location_create",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stock_location_edit",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -38887,6 +40530,18 @@
         "description": "Autogenerated return type of AcceptOrRejectAddressSuggestion",
         "fields": [
           {
+            "name": "associatedObject",
+            "description": "Object associated with the address",
+            "args": [],
+            "type": {
+              "kind": "UNION",
+              "name": "AddressAssociatedObject",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "args": [],
@@ -38897,40 +40552,43 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "order",
-            "description": "Order associated with the address if present",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Order",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "success",
-            "description": "True if address was successfully updated",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "AddressAssociatedObject",
+        "description": "Objects that can be associated with an address",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Order",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Project",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "StockLocation",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Backing",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -39140,6 +40798,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "intentClientSecret",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null
@@ -40641,24 +42309,24 @@
             "deprecationReason": null
           },
           {
-            "name": "clientMutationId",
-            "description": "A unique identifier for the client performing the mutation.",
+            "name": "associatedObject",
+            "description": "Object associated with the address",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "UNION",
+              "name": "AddressAssociatedObject",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "order",
-            "description": "Order associated with the address if present",
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
             "args": [],
             "type": {
-              "kind": "OBJECT",
-              "name": "Order",
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -40731,6 +42399,285 @@
             "deprecationReason": null
           }
         ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateAdjustmentInput",
+        "description": "Autogenerated input type of CreateAdjustment",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "adjustableId",
+            "description": "ID of associated adjustable",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "adjustmentParams",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AdjustmentInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "amount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "message",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "intentClientSecret",
+            "description": "Stripe SetupIntent client secret",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AdjustmentInput",
+        "description": "Parameters to create adjustment to a backing's order, created when issuing a refund.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "reason",
+            "description": "Reason for adjustment",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundReasonType",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "removals",
+            "description": "Objects to be removed from order",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RemovalInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "refunds",
+            "description": "Refunds to be issued",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RefundInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RemovalInput",
+        "description": "An object removed as part of an adjustment",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "id of object to be removed",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "type",
+            "description": "type of object to be removed (reward, reward item, or order item)",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundAdjustmentType",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RefundInput",
+        "description": "An amount to be refunded as part of an adjustment.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "id of object to be refunded",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "type",
+            "description": "type of refund",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RefundAdjustmentType",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "amount",
+            "description": "amount to be refunded",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateAdjustmentPayload",
+        "description": "Autogenerated return type of CreateAdjustment",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundCheckout",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RefundCheckout",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
         "possibleTypes": null
       },
       {
@@ -44456,6 +46403,20 @@
             "defaultValue": null
           },
           {
+            "name": "shippingRates",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "ShippingRateInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
             "name": "shippingRules",
             "description": null,
             "type": {
@@ -44678,6 +46639,51 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ShippingRateInput",
+        "description": "Shipping rule for a reward",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "cost",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "locationId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -46850,6 +48856,80 @@
               "kind": "OBJECT",
               "name": "Project",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "DeleteStockLocationInput",
+        "description": "Autogenerated input type of DeleteStockLocation",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "stockLocationId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeleteStockLocationPayload",
+        "description": "Autogenerated return type of DeleteStockLocation",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": "Project associated with the stock location",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -50134,6 +52214,16 @@
                   }
                 }
               }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "finalizeOnSubmit",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -54789,51 +56879,6 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "ShippingRateInput",
-        "description": "Shipping rule for a reward",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "cost",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "locationId",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
             },
             "defaultValue": null
           }

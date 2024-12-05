@@ -442,6 +442,22 @@ public struct Service: ServiceType {
       }
   }
 
+  public func fetchGraphUserSetup()
+    -> SignalProducer<UserEnvelope<GraphUserSetup>, ErrorEnvelope> {
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserSetupQuery())
+      .flatMap(UserEnvelope<GraphUserSetup>.envelopeProducer(from:))
+  }
+
+  public func fetchGraphUserSetupCombine()
+    -> AnyPublisher<UserEnvelope<GraphUserSetup>, ErrorEnvelope> {
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserSetupQuery())
+      .mapFetchResults { (data: GraphAPI.FetchUserSetupQuery.Data) -> UserEnvelope<GraphUserSetup>? in
+        UserEnvelope<GraphUserSetup>.userEnvelope(from: data)
+      }
+  }
+
   public func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope> {
     return GraphQL.shared.client
