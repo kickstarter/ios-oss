@@ -18,11 +18,11 @@ public typealias PledgePaymentIncrementAmount = (
   currency: String
 )
 
-public typealias PledgePaymentIncrementFormatted = (
-  title: String,
-  amount: String,
-  scheduledCollection: String
-)
+public struct PledgePaymentIncrementFormatted: Equatable {
+  public var title: String
+  public var amount: String
+  public var scheduledCollection: String
+}
 
 public protocol PledgePaymentPlansOptionViewModelInputs {
   func configureWith(data: PledgePaymentPlanOptionData)
@@ -147,16 +147,7 @@ private func getPledgePaymentIncrementFormatted()
   -> ((Int, PledgePaymentIncrement) -> PledgePaymentIncrementFormatted) {
   return { (index: Int, increment: PledgePaymentIncrement) in
 
-    let country = Project
-      .Country(currencyCode: increment.amount.currency) ??
-      .us // TODO: Evaluate if we should use `project.country` instead of the `us` as default.
-
-    return PledgePaymentIncrementFormatted(
-      // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-      title: "Charge \(index + 1)",
-      amount: Format.currency(increment.amount.amount, country: country, omitCurrencyCode: true),
-      scheduledCollection: getDateFormatted(increment.scheduledCollection)
-    )
+    PledgePaymentIncrementFormatted(from: increment, index: index)
   }
 }
 
@@ -166,4 +157,17 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
     dateStyle: .medium,
     timeStyle: .none
   )
+}
+
+extension PledgePaymentIncrementFormatted {
+  init(from increment: PledgePaymentIncrement, index: Int) {
+    let country = Project
+      .Country(currencyCode: increment.amount.currency) ??
+      .us // TODO: Evaluate if we should use `project.country` instead of the `us` as default.
+
+    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+    self.title = "Charge \(index + 1)"
+    self.amount = Format.currency(increment.amount.amount, country: country, omitCurrencyCode: true)
+    self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
+  }
 }
