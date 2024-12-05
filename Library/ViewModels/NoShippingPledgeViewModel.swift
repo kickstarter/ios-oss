@@ -101,7 +101,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .map { showPledgeOverTimeUI -> PledgePaymentPlansAndSelectionData? in
         guard showPledgeOverTimeUI else { return nil }
 
-        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
+        return PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          increments: mockPledgePaymentIncrement()
+        )
       }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
@@ -1243,4 +1246,18 @@ private func pledgeAmountSummaryViewData(
     shippingAmountHidden: !shippingViewsHidden,
     rewardIsLocalPickup: rewardIsLocalPickup
   )
+}
+
+private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+  var increments: [PledgePaymentIncrement] = []
+  var timeStamp = Date().timeIntervalSince1970
+  for _ in 1...4 {
+    timeStamp += 30 * 24 * 60 * 60
+    increments.append(PledgePaymentIncrement(
+      amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+      scheduledCollection: timeStamp
+    ))
+  }
+
+  return increments
 }

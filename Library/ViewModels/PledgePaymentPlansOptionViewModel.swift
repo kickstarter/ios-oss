@@ -1,13 +1,33 @@
+import Foundation
+import KsApi
 import ReactiveSwift
 
 public typealias PledgePaymentPlanOptionData = (
   type: PledgePaymentPlansType,
-  selectedType: PledgePaymentPlansType
+  selectedType: PledgePaymentPlansType,
+  paymentIncrements: [PledgePaymentIncrement] // TODO: replece with API model
+)
+
+public typealias PledgePaymentIncrement = (
+  amount: PledgePaymentIncrementAmount,
+  scheduledCollection: TimeInterval
+)
+
+public typealias PledgePaymentIncrementAmount = (
+  amount: Double,
+  currency: String
+)
+
+public typealias PledgePaymentIncrementFormatted = (
+  title: String,
+  amount: String,
+  scheduledCollection: String
 )
 
 public protocol PledgePaymentPlansOptionViewModelInputs {
   func configureWith(data: PledgePaymentPlanOptionData)
   func optionTapped()
+  func termsOfUseTapped()
   func refreshSelectedType(_ selectedType: PledgePaymentPlansType)
 }
 
@@ -17,6 +37,10 @@ public protocol PledgePaymentPlansOptionViewModelOutputs {
   var subtitleLabelHidden: Signal<Bool, Never> { get }
   var selectionIndicatorImageName: Signal<String, Never> { get }
   var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never> { get }
+  var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
+  var termsOfUseButtonHidden: Signal<Bool, Never> { get }
+  var paymentIncrementsHidden: Signal<Bool, Never> { get }
+  var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never> { get }
 }
 
 public protocol PledgePaymentPlansOptionViewModelType {
@@ -38,13 +62,31 @@ public final class PledgePaymentPlansOptionViewModel:
       }
 
     self.titleText = configData.map { getTitleText(by: $0.type) }
-    self.subtitleText = configData.map { getSubtitleText(by: $0.type) }
+    self.subtitleText = configData
+      .map { getSubtitleText(by: $0.type, isSelected: $0.selectedType == $0.type) }
     self.subtitleLabelHidden = self.subtitleText.map { $0.isEmpty }
 
     self.notifyDelegatePaymentPlanOptionSelected = self.optionTappedProperty
       .signal
       .withLatest(from: configData)
       .map { $1.type }
+
+    let isPledgeOverTimeAndSelected = configData.map {
+      $0.type != .pledgeOverTime || $0.type != $0.selectedType
+    }
+    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected
+
+    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected
+
+    self.paymentIncrements = configData
+      .filter { $0.type == .pledgeOverTime && $0.selectedType == $0.type }
+      .map {
+        $0.paymentIncrements.enumerated().map(getPledgePaymentIncrementFormatted())
+      }
+      .filter { !$0.isEmpty }
+      .take(first: 1)
+
+    self.notifyDelegateTermsOfUseTapped = self.termsOfUseTappedProperty.signal.skipNil()
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanOptionData?>(nil)
@@ -61,11 +103,20 @@ public final class PledgePaymentPlansOptionViewModel:
     self.optionTappedProperty.value = ()
   }
 
+  private let termsOfUseTappedProperty = MutableProperty<HelpType?>(nil)
+  public func termsOfUseTapped() {
+    self.termsOfUseTappedProperty.value = .terms
+  }
+
   public let selectionIndicatorImageName: Signal<String, Never>
   public var titleText: ReactiveSwift.Signal<String, Never>
   public var subtitleText: ReactiveSwift.Signal<String, Never>
   public var subtitleLabelHidden: Signal<Bool, Never>
   public var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never>
+  public var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never>
+  public var termsOfUseButtonHidden: Signal<Bool, Never>
+  public var paymentIncrementsHidden: Signal<Bool, Never>
+  public var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never>
 
   public var inputs: PledgePaymentPlansOptionViewModelInputs { return self }
   public var outputs: PledgePaymentPlansOptionViewModelOutputs { return self }
@@ -80,9 +131,39 @@ private func getTitleText(by type: PledgePaymentPlansType) -> String {
 }
 
 // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-private func getSubtitleText(by type: PledgePaymentPlansType) -> String {
+private func getSubtitleText(by type: PledgePaymentPlansType, isSelected: Bool) -> String {
   switch type {
   case .pledgeInFull: ""
-  case .pledgeOverTime: "You will be charged for your pledge over four payments, at no extra cost."
+  case .pledgeOverTime: {
+      let subtitle = "You will be charged for your pledge over four payments, at no extra cost."
+      guard isSelected else { return subtitle }
+
+      return "\(subtitle)\n\nThe first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+    }()
   }
+}
+
+private func getPledgePaymentIncrementFormatted()
+  -> ((Int, PledgePaymentIncrement) -> PledgePaymentIncrementFormatted) {
+  return { (index: Int, increment: PledgePaymentIncrement) in
+
+    let country = Project
+      .Country(currencyCode: increment.amount.currency) ??
+      .us // TODO: Evaluate if we should use `project.country` instead of the `us` as default.
+
+    return PledgePaymentIncrementFormatted(
+      // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+      title: "Charge \(index + 1)",
+      amount: Format.currency(increment.amount.amount, country: country, omitCurrencyCode: true),
+      scheduledCollection: getDateFormatted(increment.scheduledCollection)
+    )
+  }
+}
+
+private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
+  Format.date(
+    secondsInUTC: timeStamp,
+    dateStyle: .medium,
+    timeStyle: .none
+  )
 }
