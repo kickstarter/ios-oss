@@ -55,7 +55,9 @@
 "Ask_the_project_creator_directly" = "プロジェクトのクリエイターに直接お問い合わせください。";
 "Authenticate_card" = "カードの認証手続き";
 "Authentication_failed_please_try_again" = "認証に失敗しました。もう一度お試しください。";
+"Authentication_required" = "認証手続きが必要です";
 "Authentication_success_please_pull_to_refresh" = "認証が成功しました。画面をプルダウンして、更新してください。";
+"Available_for_pledges_over" = "${amount} 以上のプレッジで利用可能";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
 "Back_it_because_you_believe_in_it" = "このプロジェクトの可能性を信じてバックしよう。";
@@ -75,6 +77,7 @@
 "Backing_details" = "バック (支援) 詳細";
 "Backing_means_supporting" = "「バックすること」とは、クリエイティブなプロジェクトを、その結果に関係なく支援することを意味します。";
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
+"Beta" = "ベータ";
 "Big_Kickstarter_news_and_events_near_you" = "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Kickstarter のニュースに加え、あなたにピッタリのおすすめプロジェクトやイベントを随時お送りします.";
 "Biography" = "自己紹介";
@@ -110,6 +113,7 @@
 "Change_password" = "パスワードを変更";
 "Change_payment_method" = "支払方法の変更";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "配送先を変更するか、アドオン (追加リワード) をスキップして続行してください。";
+"Charge_number" = "請求 %{number}";
 "Chat" = "チャット";
 "Check_back_later_for_an_update_on_your_export" = "しばらくしてからエクスポートの進捗状況を確認してください。";
 "Check_out_these_handpicked_projects" = "あなたにピッタリの Kickstarter イチオシのプロジェクトをご覧ください。";
@@ -126,6 +130,7 @@
 "Closes_project" = "プロジェクトを閉じる";
 "Collaborator" = "コラボレーター（協力者）";
 "Collapses_subcategories" = "サブカテゴリーを閉じる";
+"Collection_plan" = "集金プラン";
 "Collections" = "コレクション";
 "Coming_soon" = "近日公開";
 "Comment_reply_digest" = "コメント返信のダイジェスト";
@@ -468,6 +473,7 @@
 "Password_visibility" = "パスワードの表示/非表示";
 "Passwords_matching_message" = "新しいパスワードが一致しません。";
 "Past_live_stream" = "過去のプロジェクト";
+"Payment" = "支払い";
 "Payment_failure" = "お支払い手続きに失敗しました";
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
@@ -480,11 +486,14 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "ライブ配信でチャットに参加するためにはログインかサインアップしてください。";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "ログインまたはサインアップして、ライブ配信を見よう！";
 "Pledge" = "プレッジする";
+"Pledge_Over_Time" = "経時プレッジ";
 "Pledge_activity" = "プレッジ";
 "Pledge_amount" = "プレッジする金額";
 "Pledge_amount_pledged" = "%{pledge_amount} のプレッジ";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "プレッジでプロジェクトに生命を。";
 "Pledge_details" = "プレッジ詳細";
+"Pledge_in_full" = "一括払いのプレッジ";
+"Pledge_management" = "プレッジ管理";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "プロジェクトを探す、プロジェクトにプレッジする、プロジェクトを保存する、全て一つの場所で。";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "ここにバックした全プロジェクトが表示されます。";
 "Pledge_was_dropped" = "プレッジは取り消されました";
@@ -595,10 +604,12 @@
 "Saved_projects" = "保存済みのプロジェクト";
 "Saves_project" = "プロジェクトを保存";
 "Say_something_kind" = "言葉に注意";
+"Scheduled" = "スケジュール設定済み";
 "Security_code" = "セキュリティーコード";
 "See_all_backed__projects" = "バック済みのプロジェクトすべてを見る";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
 "See_our_suggestions" = "おすすめを見る ▸";
+"See_our_terms_of_use" = "利用規約を見る";
 "See_rewards" = "リワードを見る";
 "See_the_rewards" = "リワードを保存";
 "Select" = "選択";
@@ -820,6 +831,7 @@
 "You_canceled_this_project_so_the_backers_payment_method_was_never_charged" = "このプロジェクトはあなたによってキャンセルされたため、お支払い方法への請求は行われませんでした。";
 "You_canceled_your_pledge_for_this_project" = "このプロジェクトのプレッジはキャンセルされました。";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
+"You_have_selected_pledge_over_time" = "経時プレッジを選択しました。プロジェクトがファンディングゴールに達すると、%{date} に最初のお支払い額 %{amount} が請求されます。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p><b>%{project_name}</b>にプレッジしました。これに伴い、<b>%{pledge_total}</b>のプレッジが収集されました。</p>\n<p>リワード配送の準備が整い次第、%{user_email} 宛てに確認メールが届き、配送料と税金の最終確認とお支払いを行うことができます。</p>\n<p>あなたのプレッジのおかげで、このプロジェクトが実現へと一歩近づきました。ありがとうございます。ぜひこのプロジェクトを沢山の人に知ってもらいましょう！</p>";
 "You_have_successfully_pledged_to_project_post_campaign_html_short" = "あなたの <b>%{pledge_total}</b> のプレッジがこのプロジェクトの実現をサポートします。詳しくはメールをご確認ください。";
@@ -828,6 +840,8 @@
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_pledged_without_a_reward" = "リワードなしでプレッジしました";
 "You_saved_this_project" = "保存済みです";
+"You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description" = "プレッジの請求が4回に分けて行われます。追加の手数料はかかりません。";
+"You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "最初の請求はプロジェクトが成功に終わってから24時間後に行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。";
 "You_will_lose_the_comment_if_you_leave_this_page" = "このページから移動するとコメントは破棄されます。";
 "You_wont_be_charged_for_backing_a_project" = "プロジェクトをバックした場合、プロジェクトがファンディングゴールに到達しない限り、課金されることはありません。";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "ダウンロードの準備が整い次第、%{email} にメールが届きます。";
@@ -1598,7 +1612,7 @@
 "profile.settings.newsletter.arts_news_newsletter" = "Kickstarter の「アート」チーム選りすぐりの新進アーティストや著名アーティストによる新プロジェクトやアイデアをご紹介。";
 "profile.settings.newsletter.film" = "Kickstarter Films";
 "profile.settings.newsletter.films_newsletter" = "Kickstarter のフィルムチームおすすめの新しいプロジェクトやクリエイターストーリー、イベントなどをお知らせする月刊ニュースレターにぜひサインアップしましょう。";
-"profile.settings.newsletter.games" = "Kickstarterが選ぶゲーム";
+"profile.settings.newsletter.games" = "ゲーム大好き♡Kickstarter";
 "profile.settings.newsletter.happening" = "出来事";
 "profile.settings.newsletter.happening_now" = "Happening Now";
 "profile.settings.newsletter.invent" = "インベント";

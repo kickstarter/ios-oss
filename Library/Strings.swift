@@ -977,6 +977,23 @@ public enum Strings {
     )
   }
   /**
+   "Authentication required"
+
+   - **en**: "Authentication required"
+   - **de**: "Authentifizierung erforderlich"
+   - **es**: "Autenticación necesaria"
+   - **fr**: "Authentification nécessaire"
+   - **ja**: "認証手続きが必要です"
+  */
+  public static func Authentication_required() -> String {
+    return localizedString(
+      key: "Authentication_required",
+      defaultValue: "Authentication required",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Authentication success. Please pull to refresh."
 
    - **en**: "Authentication success. Please pull to refresh."
@@ -991,6 +1008,23 @@ public enum Strings {
       defaultValue: "Authentication success. Please pull to refresh.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Available for pledges over ${amount}"
+
+   - **en**: "Available for pledges over ${amount}"
+   - **de**: "Für Beiträge über ${amount}"
+   - **es**: "Disponible para contribuciones superiores a ${amount}"
+   - **fr**: "Engagements supérieurs à ${amount}"
+   - **ja**: "${amount} 以上のプレッジで利用可能"
+  */
+  public static func Available_for_pledges_over(: String) -> String {
+    return localizedString(
+      key: "Available_for_pledges_over",
+      defaultValue: "Available for pledges over ${amount}",
+      count: nil,
+      substitutions: ["": ]
     )
   }
   /**
@@ -1255,6 +1289,23 @@ contributeurs"
     return localizedString(
       key: "Become_a_backer_to_leave_a_comment",
       defaultValue: "Become a backer to leave a comment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Beta"
+
+   - **en**: "Beta"
+   - **de**: "Beta"
+   - **es**: "Beta"
+   - **fr**: "Bêta"
+   - **ja**: "ベータ"
+  */
+  public static func Beta() -> String {
+    return localizedString(
+      key: "Beta",
+      defaultValue: "Beta",
       count: nil,
       substitutions: [:]
     )
@@ -1855,6 +1906,23 @@ contributeurs"
     )
   }
   /**
+   "Charge %{number}"
+
+   - **en**: "Charge %{number}"
+   - **de**: "Transaktion %{number}"
+   - **es**: "Cargo %{number}"
+   - **fr**: "Transaction %{number}"
+   - **ja**: "請求 %{number}"
+  */
+  public static func Charge_number(number: String) -> String {
+    return localizedString(
+      key: "Charge_number",
+      defaultValue: "Charge %{number}",
+      count: nil,
+      substitutions: ["number": number]
+    )
+  }
+  /**
    "Chat"
 
    - **en**: "Chat"
@@ -2122,6 +2190,23 @@ contributeurs"
     return localizedString(
       key: "Collapses_subcategories",
       defaultValue: "Collapses subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Collection Plan"
+
+   - **en**: "Collection Plan"
+   - **de**: "Zahlungsplan"
+   - **es**: "Plan de pagos"
+   - **fr**: "Calendrier des prélèvements"
+   - **ja**: "集金プラン"
+  */
+  public static func Collection_plan() -> String {
+    return localizedString(
+      key: "Collection_plan",
+      defaultValue: "Collection Plan",
       count: nil,
       substitutions: [:]
     )
@@ -5869,8 +5954,8 @@ with friends."
 
    - **en**: "Kickstarter Games"
    - **de**: "Kickstarter Games"
-   - **es**: "Kickstarter Games"
-   - **fr**: "Kickstarter Games"
+   - **es**: "Juegos de Kickstarter"
+   - **fr**: "Jeux Kickstarter"
    - **ja**: "Kickstarter Games"
   */
   public static func Kickstarter_Games() -> String {
@@ -5886,8 +5971,8 @@ with friends."
 
    - **en**: "Kickstarter Invent"
    - **de**: "Kickstarter Invent"
-   - **es**: "Kickstarter Invent"
-   - **fr**: "Kickstarter Invent"
+   - **es**: "Invenciones de Kickstarter"
+   - **fr**: "Kickstarter invente"
    - **ja**: "Kickstarter Invent"
   */
   public static func Kickstarter_Invent() -> String {
@@ -7755,6 +7840,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Payment"
+
+   - **en**: "Payment"
+   - **de**: "Zahlung"
+   - **es**: "Pago"
+   - **fr**: "Paiement"
+   - **ja**: "支払い"
+  */
+  public static func Payment() -> String {
+    return localizedString(
+      key: "Payment",
+      defaultValue: "Payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Payment failure"
 
    - **en**: "Payment failure"
@@ -7959,6 +8061,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Pledge Over Time"
+
+   - **en**: "Pledge Over Time"
+   - **de**: "Ratenzahlung"
+   - **es**: "Contribución en cuotas"
+   - **fr**: "Engagement étalé dans le temps"
+   - **ja**: "経時プレッジ"
+  */
+  public static func Pledge_Over_Time() -> String {
+    return localizedString(
+      key: "Pledge_Over_Time",
+      defaultValue: "Pledge Over Time",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Pledge activity"
 
    - **en**: "Pledge activity"
@@ -8039,6 +8158,40 @@ n'ont rien soutenu."
     return localizedString(
       key: "Pledge_details",
       defaultValue: "Pledge details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge in full"
+
+   - **en**: "Pledge in full"
+   - **de**: "Sofortzahlung"
+   - **es**: "Contribución total"
+   - **fr**: "Engagement intégral"
+   - **ja**: "一括払いのプレッジ"
+  */
+  public static func Pledge_in_full() -> String {
+    return localizedString(
+      key: "Pledge_in_full",
+      defaultValue: "Pledge in full",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge management"
+
+   - **en**: "Pledge management"
+   - **de**: "Beitragsverwaltung"
+   - **es**: "Gestión de contribución"
+   - **fr**: "Gestion des engagements"
+   - **ja**: "プレッジ管理"
+  */
+  public static func Pledge_management() -> String {
+    return localizedString(
+      key: "Pledge_management",
+      defaultValue: "Pledge management",
       count: nil,
       substitutions: [:]
     )
@@ -9713,6 +9866,23 @@ daring ideas."
     )
   }
   /**
+   "Scheduled"
+
+   - **en**: "Scheduled"
+   - **de**: "Geplant"
+   - **es**: "Programado"
+   - **fr**: "Prévu"
+   - **ja**: "スケジュール設定済み"
+  */
+  public static func Scheduled() -> String {
+    return localizedString(
+      key: "Scheduled",
+      defaultValue: "Scheduled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Security code"
 
    - **en**: "Security code"
@@ -9776,6 +9946,23 @@ daring ideas."
     return localizedString(
       key: "See_our_suggestions",
       defaultValue: "See our suggestions ▸",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "See our Terms of Use"
+
+   - **en**: "See our Terms of Use"
+   - **de**: "Weitere Informationen findest du in unseren Nutzungsbedingungen"
+   - **es**: "Ver nuestros Términos de uso"
+   - **fr**: "Consulter nos Conditions d'utilisation"
+   - **ja**: "利用規約を見る"
+  */
+  public static func See_our_terms_of_use() -> String {
+    return localizedString(
+      key: "See_our_terms_of_use",
+      defaultValue: "See our Terms of Use",
       count: nil,
       substitutions: [:]
     )
@@ -13478,6 +13665,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}."
+
+   - **en**: "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}."
+   - **de**: "Du hast dich für die Ratenzahlung entschieden. Wenn das Projekt sein Finanzierungsziel erreicht, wird die erste Rate in Höhe von %{amount} am %{date} eingezogen."
+   - **es**: "Seleccionaste Contribución en cuotas. Si el proyecto alcanza la meta, el primer cargo de %{amount} se cobrará el %{date}."
+   - **fr**: "Vous avez choisi d'étaler votre engagement dans le temps. Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} interviendra le %{date}."
+   - **ja**: "経時プレッジを選択しました。プロジェクトがファンディングゴールに達すると、%{date} に最初のお支払い額 %{amount} が請求されます。"
+  */
+  public static func You_have_selected_pledge_over_time(amount: String, date: String) -> String {
+    return localizedString(
+      key: "You_have_selected_pledge_over_time",
+      defaultValue: "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}.",
+      count: nil,
+      substitutions: ["amount": amount, "date": date]
+    )
+  }
+  /**
    "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
 
    - **en**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
@@ -13621,6 +13825,40 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "You_saved_this_project",
       defaultValue: "You saved this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You will be charged for your pledge over four payments, at no extra cost."
+
+   - **en**: "You will be charged for your pledge over four payments, at no extra cost."
+   - **de**: "Dein Finanzierungsbeitrag wird dir in vier Raten belastet. Dir entstehen dadurch keine zusätzlichen Kosten."
+   - **es**: "Se te cobrará tu contribución en cuatro pagos sin costo adicional."
+   - **fr**: "Votre engagement sera étalé en quatre prélèvements, sans frais supplémentaires."
+   - **ja**: "プレッジの請求が4回に分けて行われます。追加の手数料はかかりません。"
+  */
+  public static func You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description() -> String {
+    return localizedString(
+      key: "You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description",
+      defaultValue: "You will be charged for your pledge over four payments, at no extra cost.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+
+   - **en**: "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+   - **de**: "Die erste Rate wird 24 Stunden nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen."
+   - **es**: "El primer pago será 24 horas después de que el proyecto finalice con éxito y luego cada 2 semanas hasta el monto total de la contribución. Cuando se selecciona esta opción, no se pueden realizar más modificaciones en tu contribución."
+   - **fr**: "Le premier prélèvement interviendra 24 heures après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable."
+   - **ja**: "最初の請求はプロジェクトが成功に終わってから24時間後に行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
+  */
+  public static func You_will_be_charged_for_your_pledge_over_four_payments_expanded_description() -> String {
+    return localizedString(
+      key: "You_will_be_charged_for_your_pledge_over_four_payments_expanded_description",
+      defaultValue: "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
       count: nil,
       substitutions: [:]
     )
@@ -24037,7 +24275,7 @@ Let's change that!"
    - **de**: "Wir lieben Spiele"
    - **es**: "Nos encantan los juegos"
    - **fr**: "Kickstarter aime les jeux"
-   - **ja**: "Kickstarterが選ぶゲーム"
+   - **ja**: "ゲーム大好き♡Kickstarter"
   */
   public static func profile_settings_newsletter_games() -> String {
     return localizedString(
@@ -24205,8 +24443,8 @@ Let's change that!"
 
    - **en**: "Kickstarter Reads"
    - **de**: "Kickstarter Reads"
-   - **es**: "Kickstarter Reads"
-   - **fr**: "Kickstarter Reads"
+   - **es**: "Lecturas de Kickstarter"
+   - **fr**: "Lectures Kickstarter"
    - **ja**: "Kickstarter Reads"
   */
   public static func profile_settings_newsletter_publishing() -> String {

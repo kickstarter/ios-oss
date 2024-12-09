@@ -55,7 +55,9 @@
 "Ask_the_project_creator_directly" = "Ask the project creator directly.";
 "Authenticate_card" = "Authenticate Card";
 "Authentication_failed_please_try_again" = "Authentication failed. Please try again.";
+"Authentication_required" = "Authentication required";
 "Authentication_success_please_pull_to_refresh" = "Authentication success. Please pull to refresh.";
+"Available_for_pledges_over" = "Available for pledges over ${amount}";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
 "Back_it_because_you_believe_in_it" = "Back it because you believe in it.";
@@ -75,6 +77,7 @@
 "Backing_details" = "Backing details";
 "Backing_means_supporting" = "Backing means supporting a creative project, regardless of the outcome.";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
+"Beta" = "Beta";
 "Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Big Kickstarter news, plus occasional projects and events chosen just for you.";
 "Biography" = "Biography";
@@ -110,6 +113,7 @@
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Change your shipping location or skip add-ons to continue.";
+"Charge_number" = "Charge %{number}";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Check back later for an update on your export progress.";
 "Check_out_these_handpicked_projects" = "Check out these handpicked projects just for you.";
@@ -126,6 +130,7 @@
 "Closes_project" = "Closes project.";
 "Collaborator" = "Collaborator";
 "Collapses_subcategories" = "Collapses subcategories.";
+"Collection_plan" = "Collection Plan";
 "Collections" = "Collections";
 "Coming_soon" = "Coming soon";
 "Comment_reply_digest" = "Comment reply digest";
@@ -468,6 +473,7 @@
 "Password_visibility" = "Password visibility";
 "Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Past live stream";
+"Payment" = "Payment";
 "Payment_failure" = "Payment failure";
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
@@ -480,11 +486,14 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Please log in or sign up to participate in this live stream chat.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Please log in or sign up to subscribe to this live stream.";
 "Pledge" = "Pledge";
+"Pledge_Over_Time" = "Pledge Over Time";
 "Pledge_activity" = "Pledge activity";
 "Pledge_amount" = "Pledge amount";
 "Pledge_amount_pledged" = "%{pledge_amount} pledged";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
 "Pledge_details" = "Pledge details";
+"Pledge_in_full" = "Pledge in full";
+"Pledge_management" = "Pledge management";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Pledge to projects and view all your saved and backed projects in one place.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Pledge to your favorites, then view all the projects you’ve backed here.";
 "Pledge_was_dropped" = "Pledge was dropped.";
@@ -595,10 +604,12 @@
 "Saved_projects" = "Saved projects";
 "Saves_project" = "Saves project.";
 "Say_something_kind" = "Say something kind...";
+"Scheduled" = "Scheduled";
 "Security_code" = "Security code";
 "See_all_backed__projects" = "See all backed projects";
 "See_all_category_name_projects" = "See all %{category_name} projects";
 "See_our_suggestions" = "See our suggestions ▸";
+"See_our_terms_of_use" = "See our Terms of Use";
 "See_rewards" = "See rewards";
 "See_the_rewards" = "See the rewards";
 "Select" = "Select";
@@ -820,6 +831,7 @@
 "You_canceled_this_project_so_the_backers_payment_method_was_never_charged" = "You canceled this project, so the backer’s payment method was never charged.";
 "You_canceled_your_pledge_for_this_project" = "You canceled your pledge for this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
+"You_have_selected_pledge_over_time" = "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
 "You_have_successfully_pledged_to_project_post_campaign_html_short" = "Your <b>%{pledge_total}</b> pledge will help in bringing this project to life. Check your email for more details.";
@@ -828,6 +840,8 @@
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_pledged_without_a_reward" = "You pledged without a reward";
 "You_saved_this_project" = "You saved this project.";
+"You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description" = "You will be charged for your pledge over four payments, at no extra cost.";
+"You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.";
 "You_will_lose_the_comment_if_you_leave_this_page" = "You’ll lose the comment if you leave this page.";
 "You_wont_be_charged_for_backing_a_project" = "You won't be charged for backing a project unless it reaches its funding goal.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
