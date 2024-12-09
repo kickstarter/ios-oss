@@ -38,3 +38,6 @@ public enum GraphError: Error {
   case decodeError(GraphResponseError)
   case jsonDecodingError(responseString: String?, error: Error?)
 }
+
+public typealias ServerFeature = GraphAPI.Feature
+extension ServerFeature: Decodable {}

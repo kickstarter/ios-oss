@@ -24,6 +24,14 @@ extension UserEnvelope {
     return SignalProducer(value: envelope)
   }
 
+  static func envelopeProducer(from data: GraphAPI.FetchUserSetupQuery.Data)
+    -> SignalProducer<UserEnvelope<GraphUserSetup>, ErrorEnvelope> {
+    guard let envelope = UserEnvelope.userEnvelope(from: data) else {
+      return .empty
+    }
+    return SignalProducer(value: envelope)
+  }
+
   static func envelopeProducer(from data: GraphAPI.FetchUserQuery.Data)
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope> {
     guard let envelope = UserEnvelope.user(from: data) else {
