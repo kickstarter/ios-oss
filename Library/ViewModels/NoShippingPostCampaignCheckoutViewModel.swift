@@ -292,12 +292,14 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: Create Payment Intent
 
+    /// Called once on viewDidLoad. All signals, except checkoutId and backingId, are linked ot initialData.
     let paymentIntentEvent = Signal.combineLatest(
       project,
       pledgeTotal,
       checkoutId,
       backingId
     )
+    .take(first: 2)
     .switchMap { project, pledgeTotal, checkoutId, backingId in
       let projectId = project.graphID
 
