@@ -457,6 +457,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
       .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedCard)
+      .takeWhen(self.confirmPaymentSuccessfulProperty.signal.skipNil())
       .map { (
         clientSecret: String,
         checkoutId: String,

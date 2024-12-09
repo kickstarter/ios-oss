@@ -312,7 +312,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] error in
 
         #if DEBUG
-          let serverError = error.errorMessages.first ?? ""
+          let serverError = error.errorMessages.first ?? "Unknown server error"
           let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
         #else
           let message = Strings.Something_went_wrong_please_try_again()
