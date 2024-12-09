@@ -1,6 +1,6 @@
-import AppboyKit
 import AppCenter
 import AppCenterDistribute
+import BrazeKitCompat
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -9,7 +9,6 @@ import Foundation
 #else
   import KsApi
 #endif
-import AppboySegment
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -17,6 +16,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SegmentBraze
 import UIKit
 import UserNotifications
 

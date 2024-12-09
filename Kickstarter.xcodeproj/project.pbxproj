@@ -230,8 +230,6 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
-		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */; };
 		1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
 		1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
@@ -1574,6 +1572,9 @@
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
 		E16ECA722C245A51002A1D25 /* PagedContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA712C245A51002A1D25 /* PagedContainerViewModel.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
+		E171A1F82D07625800316079 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = E171A1F72D07625800316079 /* SegmentBraze */; };
+		E171A1FA2D07625800316079 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = E171A1F92D07625800316079 /* SegmentBrazeUI */; };
+		E171A1FD2D07639900316079 /* BrazeKitCompat in Frameworks */ = {isa = PBXBuildFile; productRef = E171A1FC2D07639900316079 /* BrazeKitCompat */; };
 		E17611E02B7287CF00DF2F50 /* PaginationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */; };
 		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
 		E17611E42B751E8100DF2F50 /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E32B751E8100DF2F50 /* Paginator.swift */; };
@@ -3296,17 +3297,19 @@
 			files = (
 				19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
+				E171A1FD2D07639900316079 /* BrazeKitCompat in Frameworks */,
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
+				E171A1FA2D07625800316079 /* SegmentBrazeUI in Frameworks */,
 				E113BD912B7D615000D3A809 /* Prelude in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
-				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
+				E171A1F82D07625800316079 /* SegmentBraze in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 				E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */,
 			);
@@ -3338,7 +3341,6 @@
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7313,7 +7315,6 @@
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
-				19821C86299D3E8300EF312F /* AppboySegment */,
 				6078106A2A0419130050D4F7 /* FirebaseCrashlytics */,
 				6078106C2A0419170050D4F7 /* FirebasePerformance */,
 				6078106E2A04191C0050D4F7 /* FirebaseAnalytics */,
@@ -7322,6 +7323,9 @@
 				1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */,
 				E113BD902B7D615000D3A809 /* Prelude */,
 				E1B214702BFD184500109961 /* KingfisherWebP */,
+				E171A1F72D07625800316079 /* SegmentBraze */,
+				E171A1F92D07625800316079 /* SegmentBrazeUI */,
+				E171A1FC2D07639900316079 /* BrazeKitCompat */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7394,7 +7398,6 @@
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
-				19821C84299D392400EF312F /* AppboySegment */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7594,8 +7597,9 @@
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
+				E171A1F62D07625800316079 /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
+				E171A1FB2D07639900316079 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -11001,14 +11005,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -11065,6 +11061,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E171A1F62D07625800316079 /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		E171A1FB2D07639900316079 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-swift-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
 		E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/yeatse/KingfisherWebP.git";
@@ -11115,16 +11127,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
-		};
-		19821C84299D392400EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
-		19821C86299D3E8300EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
 		};
 		1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -11205,6 +11207,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
+		};
+		E171A1F72D07625800316079 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E171A1F62D07625800316079 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		E171A1F92D07625800316079 /* SegmentBrazeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E171A1F62D07625800316079 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBrazeUI;
+		};
+		E171A1FC2D07639900316079 /* BrazeKitCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E171A1FB2D07639900316079 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKitCompat;
 		};
 		E1B214702BFD184500109961 /* KingfisherWebP */ = {
 			isa = XCSwiftPackageProductDependency;

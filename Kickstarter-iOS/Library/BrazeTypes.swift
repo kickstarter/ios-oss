@@ -1,6 +1,6 @@
-import AppboyKit
-import AppboySegment
+import BrazeKitCompat
 import Foundation
+import SegmentBraze
 
 // MARK: - BrazeInAppMessageType
 
@@ -12,4 +12,4 @@ extension ABKInAppMessage: BrazeInAppMessageType {}
 
 public protocol AppboyType {}
 
-extension SEGAppboyHelper: AppboyType {}
+// extension SEGAppboyHelper: AppboyType {}

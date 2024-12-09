@@ -1,4 +1,4 @@
-import AppboyKit
+import BrazeKitCompat
 import KsApi
 import Library
 import Prelude
