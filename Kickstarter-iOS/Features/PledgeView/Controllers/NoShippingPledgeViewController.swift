@@ -37,6 +37,10 @@ final class NoShippingPledgeViewController: UIViewController,
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private var collectionPlanSectionLabel: UILabel = { UILabel(frame: .zero) }()
+
+  private var paymentSectionLabel: UILabel = { UILabel(frame: .zero) }()
+
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
@@ -70,6 +74,15 @@ final class NoShippingPledgeViewController: UIViewController,
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
       |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
+  }()
+
+  private lazy var paymentPlansView: UIView = {
+    self.paymentPlansViewController.view
+  }()
+
+  private lazy var paymentPlansViewController = {
+    PledgePaymentPlansViewController.instantiate()
       |> \.delegate .~ self
   }()
 
@@ -130,6 +143,10 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.titleLabel.text = Strings.Checkout()
 
+    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+    self.collectionPlanSectionLabel.text = "Collection plan"
+    self.paymentSectionLabel.text = "Payment"
+
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
@@ -157,11 +174,15 @@ final class NoShippingPledgeViewController: UIViewController,
 
     let childViewControllers = [
       self.pledgeRewardsSummaryViewController,
-      self.paymentMethodsViewController
+      self.paymentMethodsViewController,
+      self.paymentPlansViewController
     ]
+
+    self.paymentPlansView.isHidden = true
 
     let arrangedInsetSubviews = [
       [self.titleLabel],
+      [self.paymentPlansView],
       self.paymentMethodsSectionViews,
       self.confirmationSectionViews
     ]
@@ -209,6 +230,9 @@ final class NoShippingPledgeViewController: UIViewController,
 
     applyTitleLabelStyle(self.titleLabel)
 
+    applySectionTitleLabelStyle(self.collectionPlanSectionLabel)
+    applySectionTitleLabelStyle(self.paymentSectionLabel)
+
     applyRootScrollViewStyle(self.rootScrollView)
 
     applyRootStackViewStyle(self.rootStackView)
@@ -218,6 +242,8 @@ final class NoShippingPledgeViewController: UIViewController,
     applyRootInsetStackViewStyle(self.estimatedShippingStackView)
 
     roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
+
+    roundedStyle(self.paymentPlansView, cornerRadius: Layout.Style.cornerRadius)
 
     applyRoundedViewStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
@@ -260,11 +286,18 @@ final class NoShippingPledgeViewController: UIViewController,
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
+    self.paymentPlansView.rac.hidden = self.viewModel.outputs.showPledgeOverTimeUI.negate()
+
     self.viewModel.outputs.showPledgeOverTimeUI
       .observeForUI()
-      .observeValues { value in
-        // TODO: Hide or show the Pledge Over Time UI [MBL-1814](https://kickstarter.atlassian.net/browse/MBL-1814)
-        debugPrint("showPledgeOverTimeUI: \(value)")
+      .observeValues { [weak self] isVisible in
+        self?.configurePledgeOverTimeUI(isVisible)
+      }
+
+    self.viewModel.outputs.pledgeOverTimeConfigData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.paymentPlansViewController.configure(with: data)
       }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData
@@ -480,6 +513,48 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
       }
   }
+
+  private func configurePledgeOverTimeUI(_ isVisible: Bool) {
+    guard isVisible else { return }
+
+    let collectionPlanStackView = UIStackView(frame: .zero)
+    applySectionStackViewStyle(collectionPlanStackView)
+
+    let arrangedCollectionPlanSubviews = [
+      self.collectionPlanSectionLabel,
+      self.paymentPlansView
+    ]
+
+    arrangedCollectionPlanSubviews.forEach {
+      collectionPlanStackView.addArrangedSubview($0)
+    }
+
+    let paymentStackView = UIStackView(frame: .zero)
+    applySectionStackViewStyle(paymentStackView)
+
+    let arrangedPaymentViewSubviews = [
+      self.paymentSectionLabel,
+      self.paymentMethodsViewController.view!
+    ]
+
+    arrangedPaymentViewSubviews.forEach {
+      paymentStackView.addArrangedSubview($0)
+    }
+
+    let paymentSectionViews: [UIView] = [paymentStackView]
+
+    let arrangedInsetSubviews: [UIView] = [
+      [self.titleLabel],
+      [collectionPlanStackView],
+      paymentSectionViews,
+      self.confirmationSectionViews
+    ]
+    .flatMap { $0 }
+
+    arrangedInsetSubviews.forEach { view in
+      self.rootInsetStackView.addArrangedSubview(view)
+    }
+  }
 }
 
 // MARK: - PledgeAmountViewControllerDelegate
@@ -625,7 +700,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 
 private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = NSLayoutConstraint.Axis.vertical
-  stackView.spacing = Styles.grid(4)
+  stackView.spacing = Styles.grid(3)
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.layoutMargins = UIEdgeInsets(
     topBottom: ConfirmDetailsLayout.Margin.topBottom,
@@ -633,8 +708,31 @@ private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-public func applyTitleLabelStyle(_ label: UILabel) {
+private func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
   label.textColor = UIColor.ksr_support_700
   label.font = UIFont.ksr_title2().bolded
+}
+
+private func applySectionTitleLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 1
+  label.textColor = UIColor.ksr_support_700
+  label.font = UIFont.ksr_headline().bolded
+}
+
+private func applySectionStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(2)
+}
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension NoShippingPledgeViewController: PledgePaymentPlansViewControllerDelegate {
+  func pledgePaymentPlansViewController(
+    _: PledgePaymentPlansViewController,
+    didSelectPaymentPlan paymentPlan: Library.PledgePaymentPlansType
+  ) {
+    // TODO: Implement the necessary functionality once the ticket [MBL-1853] is resolved
+    debugPrint("pledgePaymentPlansViewController:didSelectPaymentPlan: \(paymentPlan)")
+  }
 }

@@ -1,0 +1,3 @@
+fragment UserFeaturesFragment on User {
+  enabledFeatures
+}
