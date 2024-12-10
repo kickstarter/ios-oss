@@ -10,4 +10,16 @@ fragment PPOBackingFragment on Backing {
     ...ProjectAnalyticsFragment
   }
   backingDetailsPageRoute(type: url, tab: survey_responses)
+
+  deliveryAddress {
+    id
+    addressLine1
+    addressLine2
+    city
+    region
+    postalCode
+    phoneNumber
+    recipientName
+    countryCode
+  }
 }
