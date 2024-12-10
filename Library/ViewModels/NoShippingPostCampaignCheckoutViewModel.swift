@@ -300,7 +300,6 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       checkoutId,
       backingId
     )
-    .take(first: 2)
     .switchMap { project, pledgeTotal, checkoutId, backingId in
       let projectId = project.graphID
 
