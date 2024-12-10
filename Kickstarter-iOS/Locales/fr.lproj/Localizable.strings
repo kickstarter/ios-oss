@@ -55,7 +55,9 @@
 "Ask_the_project_creator_directly" = "Veuillez adresser votre question au créateur.";
 "Authenticate_card" = "Authentifier la carte";
 "Authentication_failed_please_try_again" = "Authentification échouée. Veuillez réessayer.";
+"Authentication_required" = "Authentification nécessaire";
 "Authentication_success_please_pull_to_refresh" = "Authentification réussie. Veuillez tirer la page vers le bas pour l'actualiser.";
+"Available_for_pledges_over" = "Available for pledges over %{amount}";
 "Available_to_watch_for_time_more_units" = "Plus que %{time}%{units} pour regarder cette diffusion";
 "Back" = "Retour";
 "Back_it_because_you_believe_in_it" = "Ce projet ne décollera pas sans vous.";
@@ -75,6 +77,7 @@
 "Backing_details" = "Détails de la contribution";
 "Backing_means_supporting" = "S'engager, c'est soutenir le créateur d'un projet créatif, quel que soit le résultat.";
 "Become_a_backer_to_leave_a_comment" = "Soutenez ce projet pour laisser un commentaire.";
+"Beta" = "Bêta";
 "Big_Kickstarter_news_and_events_near_you" = "Les grandes nouvelles et les événements près de chez vous, quelques fois par an.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Les grandes actualités Kickstarter et quelques projets et événements de temps et temps, rien que pour vous.";
 "Biography" = "Biographie";
@@ -110,6 +113,7 @@
 "Change_password" = "Changer de mot de passe";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Changez de lieu de livraison ou ignorez les compléments pour continuer.";
+"Charge_number" = "Transaction %{number}";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Repassez plus tard pour suivre la préparation de votre exportation.";
 "Check_out_these_handpicked_projects" = "Voici quelques projets sélectionnés rien que pour vous.";
@@ -126,6 +130,7 @@
 "Closes_project" = "Ferme le projet.";
 "Collaborator" = "Collaborateur";
 "Collapses_subcategories" = "Masque les sous-catégories.";
+"Collection_plan" = "Calendrier des prélèvements";
 "Collections" = "Collections";
 "Coming_soon" = "Bientôt disponible";
 "Comment_reply_digest" = "Résumé des réponses aux commentaires";
@@ -353,8 +358,8 @@
 "Keep_reading" = "Plus";
 "Keep_up_with_future_live_streams" = "Soyez informé des prochaines diffusions en direct";
 "Kickstarter_Arts" = "L'art chez Kickstarter";
-"Kickstarter_Games" = "Kickstarter Games";
-"Kickstarter_Invent" = "Kickstarter Invent";
+"Kickstarter_Games" = "Jeux Kickstarter";
+"Kickstarter_Invent" = "Kickstarter invente";
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (si le projet est financé)";
 "Kickstarter_is_not_a_store" = "Kickstarter n'est pas un magasin.";
@@ -468,6 +473,7 @@
 "Password_visibility" = "Visibilité du mot de passe";
 "Passwords_matching_message" = "Le nouveau mot de passe doit être identique.";
 "Past_live_stream" = "Diffusion en direct passée";
+"Payment" = "Paiement";
 "Payment_failure" = "Échec du paiement";
 "Payment_method" = "Moyen de paiement ";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
@@ -480,11 +486,14 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Veuillez vous connecter ou vous inscrire pour participer au chat de cette diffusion en direct.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct.";
 "Pledge" = "Je m'engage";
+"Pledge_Over_Time" = "Engagement étalé dans le temps";
 "Pledge_activity" = "Mes engagements";
 "Pledge_amount" = "Montant engagé";
 "Pledge_amount_pledged" = "%{pledge_amount} engagés";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
 "Pledge_details" = "Détails de mon engagement";
+"Pledge_in_full" = "Engagement intégral";
+"Pledge_management" = "Gestion des engagements";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici.";
 "Pledge_was_dropped" = "Engagement abandonné.";
@@ -595,10 +604,12 @@
 "Saved_projects" = "Projets enregistrés";
 "Saves_project" = "Enregistre le projet.";
 "Say_something_kind" = "Un petit mot sympa...";
+"Scheduled" = "Prévu";
 "Security_code" = "Code de sécurité";
 "See_all_backed__projects" = "Afficher tous les engagements";
 "See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
 "See_our_suggestions" = "Voir nos suggestions ▸";
+"See_our_terms_of_use" = "Consulter nos Conditions d'utilisation";
 "See_rewards" = "Afficher les récompenses";
 "See_the_rewards" = "Afficher les récompenses";
 "Select" = "Sélectionner";
@@ -820,6 +831,7 @@
 "You_canceled_this_project_so_the_backers_payment_method_was_never_charged" = "Vous avez annulé ce projet, donc le moyen de paiement du contributeur n'a pas été débité.";
 "You_canceled_your_pledge_for_this_project" = "Vous avez annulé votre engagement.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Impossible d'accepter cette carte pour soutenir un projet depuis le pays suivant : %{project_country}.";
+"You_have_selected_pledge_over_time" = "Vous avez choisi d'étaler votre engagement dans le temps. Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} interviendra le %{date}.";
 "You_have_successfully_backed_project_html" = "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !";
 "You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Vous venez de vous engager à soutenir le projet <b>%{project_name}</b>. Votre contribution de <b>%{pledge_total}</b> a bien été prélevée.</p>\n<p>Vous recevrez une confirmation à l'adresse %{user_email} dès que votre récompense sera prête à être expédiée. Il vous sera alors demandé de régler les taxes et frais de port.</p>\n<p>Grâce à vous, ce projet se concrétise. Parlez-en autour de vous !</p>";
 "You_have_successfully_pledged_to_project_post_campaign_html_short" = "Votre engagement de <b>%{pledge_total}</b> contribue à faire vivre ce projet. Consultez votre messagerie pour plus de détails.";
@@ -828,6 +840,8 @@
 "You_pledged_on_date" = "<b>Votre engagement</b> du %{pledge_date}";
 "You_pledged_without_a_reward" = "Engagement sans récompense";
 "You_saved_this_project" = "Vous avez enregistré ce projet.";
+"You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description" = "Votre engagement sera étalé en quatre prélèvements, sans frais supplémentaires.";
+"You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "Le premier prélèvement interviendra 24 heures après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable.";
 "You_will_lose_the_comment_if_you_leave_this_page" = "Si vous quittez cette page, votre commentaire sera perdu.";
 "You_wont_be_charged_for_backing_a_project" = "Vous ne serez débité que si le créateur atteint son objectif de financement.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "Dès que votre téléchargement sera prêt, vous recevrez un e-mail à l'adresse %{email}.";
@@ -1608,7 +1622,7 @@
 "profile.settings.newsletter.opt_in.message" = "Nous vous avons envoyé un e-mail de confirmation à l'adresse associée à votre compte ! Veuillez ouvrir votre boîte de réception et confirmer votre abonnement à %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "Dernière étape !";
 "profile.settings.newsletter.promo" = "Nouvelles et évènements Kickstarter";
-"profile.settings.newsletter.publishing" = "Kickstarter Reads";
+"profile.settings.newsletter.publishing" = "Lectures Kickstarter";
 "profile.settings.newsletter.publishing_newsletter" = "Tous les mois, l'équipe Éditions de Kickstarter met à l'honneur dans une lettre d'information des projets intéressants, des témoignages de créateurs et les actualités littéraires à ne pas manquer.";
 "profile.settings.newsletter.subscribe_all" = "S'abonner à tout";
 "profile.settings.newsletter.title" = "Lettres d'information";
