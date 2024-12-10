@@ -20,6 +20,8 @@
 
     fileprivate let blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
+    fileprivate let buildPaymentPlanResult: Result<BuildPaymentPlanEnvelope, ErrorEnvelope>?
+
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -233,6 +235,7 @@
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       apolloClient: ApolloClientType? = nil,
+      buildPaymentPlanResult: Result<BuildPaymentPlanEnvelope, ErrorEnvelope>? = nil,
       blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -356,6 +359,8 @@
       self.apolloClient = apolloClient ?? MockGraphQLClient.shared.client
 
       self.blockUserResult = blockUserResult
+
+      self.buildPaymentPlanResult = buildPaymentPlanResult
 
       self.cancelBackingResult = cancelBackingResult
 
@@ -589,6 +594,19 @@
         .BlockUserMutation(input: GraphAPI.BlockUserInput(blockUserId: input.blockUserId))
 
       return client.performWithResult(mutation: mutation, result: self.blockUserResult)
+    }
+
+    func buildPaymentPlan(
+      projectSlug: String,
+      pledgeAmount: String
+    ) -> SignalProducer<BuildPaymentPlanEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let query = GraphAPI.BuildPaymentPlanQuery(slug: projectSlug, amount: pledgeAmount)
+
+      return client.fetchWithResult(query: query, result: self.buildPaymentPlanResult)
     }
 
     public func cancelBacking(input: CancelBackingInput)

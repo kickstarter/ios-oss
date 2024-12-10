@@ -50,6 +50,10 @@ public protocol ServiceType {
   func triggerThirdPartyEventInput(input: TriggerThirdPartyEventInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Returns Pledge Over Time payment plan data.
+  func buildPaymentPlan(projectSlug: String, pledgeAmount: String)
+    -> SignalProducer<BuildPaymentPlanEnvelope, ErrorEnvelope>
+
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
