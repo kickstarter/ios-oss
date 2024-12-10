@@ -4281,7 +4281,6 @@ public enum GraphAPI {
     case partialRefunds_2024
     case notificationBannerUpdate_2024
     case multipleShipfromLocations_2024
-    case separatePaymentSection
     case reactBackedProjects
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
@@ -4397,7 +4396,6 @@ public enum GraphAPI {
         case "partial_refunds_2024": self = .partialRefunds_2024
         case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
         case "multiple_shipfrom_locations_2024": self = .multipleShipfromLocations_2024
-        case "separate_payment_section": self = .separatePaymentSection
         case "react_backed_projects": self = .reactBackedProjects
         default: self = .__unknown(rawValue)
       }
@@ -4514,7 +4512,6 @@ public enum GraphAPI {
         case .partialRefunds_2024: return "partial_refunds_2024"
         case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
         case .multipleShipfromLocations_2024: return "multiple_shipfrom_locations_2024"
-        case .separatePaymentSection: return "separate_payment_section"
         case .reactBackedProjects: return "react_backed_projects"
         case .__unknown(let value): return value
       }
@@ -4631,7 +4628,6 @@ public enum GraphAPI {
         case (.partialRefunds_2024, .partialRefunds_2024): return true
         case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
         case (.multipleShipfromLocations_2024, .multipleShipfromLocations_2024): return true
-        case (.separatePaymentSection, .separatePaymentSection): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
@@ -4749,7 +4745,6 @@ public enum GraphAPI {
         .partialRefunds_2024,
         .notificationBannerUpdate_2024,
         .multipleShipfromLocations_2024,
-        .separatePaymentSection,
         .reactBackedProjects,
       ]
     }
@@ -7895,6 +7890,277 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "watchesCount")
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class BuildPaymentPlanQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query BuildPaymentPlan($slug: String!, $amount: String!) {
+        project(slug: $slug) {
+          __typename
+          paymentPlan(amount: $amount) {
+            __typename
+            projectIsPledgeOverTimeAllowed
+            amountIsPledgeOverTimeEligible
+            paymentIncrements {
+              __typename
+              amount {
+                __typename
+                amount
+                currency
+              }
+              scheduledCollection
+            }
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "BuildPaymentPlan"
+
+    public var slug: String
+    public var amount: String
+
+    public init(slug: String, amount: String) {
+      self.slug = slug
+      self.amount = amount
+    }
+
+    public var variables: GraphQLMap? {
+      return ["slug": slug, "amount": amount]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("project", arguments: ["slug": GraphQLVariable("slug")], type: .object(Project.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(project: Project? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches a project given its slug or pid.
+      public var project: Project? {
+        get {
+          return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "project")
+        }
+      }
+
+      public struct Project: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Project"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("paymentPlan", arguments: ["amount": GraphQLVariable("amount")], type: .object(PaymentPlan.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(paymentPlan: PaymentPlan? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Project", "paymentPlan": paymentPlan.flatMap { (value: PaymentPlan) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Build a payment plan given a project id and amount
+        public var paymentPlan: PaymentPlan? {
+          get {
+            return (resultMap["paymentPlan"] as? ResultMap).flatMap { PaymentPlan(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "paymentPlan")
+          }
+        }
+
+        public struct PaymentPlan: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["PaymentPlan"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("projectIsPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("amountIsPledgeOverTimeEligible", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(projectIsPledgeOverTimeAllowed: Bool, amountIsPledgeOverTimeEligible: Bool, paymentIncrements: [PaymentIncrement]? = nil) {
+            self.init(unsafeResultMap: ["__typename": "PaymentPlan", "projectIsPledgeOverTimeAllowed": projectIsPledgeOverTimeAllowed, "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// Whether the project permits pledge over time pledges
+          public var projectIsPledgeOverTimeAllowed: Bool {
+            get {
+              return resultMap["projectIsPledgeOverTimeAllowed"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "projectIsPledgeOverTimeAllowed")
+            }
+          }
+
+          /// Amount is enough to qualify for pledge over time, if project allows
+          public var amountIsPledgeOverTimeEligible: Bool {
+            get {
+              return resultMap["amountIsPledgeOverTimeEligible"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "amountIsPledgeOverTimeEligible")
+            }
+          }
+
+          public var paymentIncrements: [PaymentIncrement]? {
+            get {
+              return (resultMap["paymentIncrements"] as? [ResultMap]).flatMap { (value: [ResultMap]) -> [PaymentIncrement] in value.map { (value: ResultMap) -> PaymentIncrement in PaymentIncrement(unsafeResultMap: value) } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, forKey: "paymentIncrements")
+            }
+          }
+
+          public struct PaymentIncrement: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PaymentIncrement"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
+                GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(amount: Amount, scheduledCollection: String) {
+              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var amount: Amount {
+              get {
+                return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+              }
+              set {
+                resultMap.updateValue(newValue.resultMap, forKey: "amount")
+              }
+            }
+
+            public var scheduledCollection: String {
+              get {
+                return resultMap["scheduledCollection"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "scheduledCollection")
+              }
+            }
+
+            public struct Amount: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["Money"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("amount", type: .scalar(String.self)),
+                  GraphQLField("currency", type: .scalar(CurrencyCode.self)),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(amount: String? = nil, currency: CurrencyCode? = nil) {
+                self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// Floating-point numeric value of monetary amount represented as a string
+              public var amount: String? {
+                get {
+                  return resultMap["amount"] as? String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "amount")
+                }
+              }
+
+              /// Currency of the monetary amount
+              public var currency: CurrencyCode? {
+                get {
+                  return resultMap["currency"] as? CurrencyCode
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "currency")
+                }
+              }
             }
           }
         }

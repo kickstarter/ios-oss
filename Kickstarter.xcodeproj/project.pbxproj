@@ -494,6 +494,9 @@
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
 		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
+		604334D52D08CD1B00819385 /* BuildPaymentPlanEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604334D42D08CD1B00819385 /* BuildPaymentPlanEnvelope.swift */; };
+		604334DE2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */; };
+		604334DF2D08D8FD00819385 /* BuildPaymentPlanEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604334D62D08CD4D00819385 /* BuildPaymentPlanEnvelopeTests.swift */; };
 		604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */; };
 		604453262BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453252BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift */; };
 		604453282BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453272BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift */; };
@@ -2161,6 +2164,9 @@
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
 		60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
+		604334D42D08CD1B00819385 /* BuildPaymentPlanEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanEnvelope.swift; sourceTree = "<group>"; };
+		604334D62D08CD4D00819385 /* BuildPaymentPlanEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanEnvelopeTests.swift; sourceTree = "<group>"; };
+		604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BuildPaymentPlanQuery.graphql; sourceTree = "<group>"; };
 		604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		604453252BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		604453272BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryCell.swift; sourceTree = "<group>"; };
@@ -5891,6 +5897,7 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */,
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
 				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
@@ -6925,6 +6932,8 @@
 				77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */,
 				8A4E954824525EC100A578CF /* BackingState.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
+				604334D42D08CD1B00819385 /* BuildPaymentPlanEnvelope.swift */,
+				604334D62D08CD4D00819385 /* BuildPaymentPlanEnvelopeTests.swift */,
 				8A67DDB724DDB21100B4AB10 /* ErroredBackingsEnvelope.swift */,
 				474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */,
 				E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */,
@@ -7714,6 +7723,7 @@
 				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
 				AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */,
+				604334DE2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */,
@@ -9025,6 +9035,7 @@
 				D015883D1EEB2ED7006E7684 /* Route.swift in Sources */,
 				D0158A2B1EEB30A2006E7684 /* UpdateDraftTemplates.swift in Sources */,
 				D08510122195015F00BC418B /* PaymentSourceDeleteInput.swift in Sources */,
+				604334D52D08CD1B00819385 /* BuildPaymentPlanEnvelope.swift in Sources */,
 				D0158A531EEB3734006E7684 /* Secrets.swift in Sources */,
 				D01588A71EEB2ED7006E7684 /* Project.MemberDataLenses.swift in Sources */,
 				D01588C71EEB2ED7006E7684 /* RewardItemLenses.swift in Sources */,
@@ -9239,6 +9250,7 @@
 				19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */,
 				06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
+				604334DF2D08D8FD00819385 /* BuildPaymentPlanEnvelopeTests.swift in Sources */,
 				0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */,
 				066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */,
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
