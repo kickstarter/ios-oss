@@ -2,7 +2,7 @@
 import XCTest
 
 final class BuildPaymentPlanEnvelopeTestsTests: XCTestCase {
-  func testBuildPaymentPlanEnvelopeTestsDecoding() {
+  func testBuildPaymentPlanEnvelopeDecoding() {
     let jsonString = """
     {
       "projectIsPledgeOverTimeAllowed": true,
