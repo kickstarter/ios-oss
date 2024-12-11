@@ -24,6 +24,8 @@ import UserNotifications
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate var disposables: [any Disposable] = []
+
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
@@ -178,6 +180,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           strongSelf.configureRemoteConfig()
         }
     #endif
+
+    self.disposables.append(
+      self.viewModel.outputs.trackingAuthorizationStatus
+        .observeForUI()
+        .startWithValues(self.updateFirebaseConsent(status:))
+    )
 
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
@@ -386,6 +394,21 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  private func updateFirebaseConsent(status: AppTrackingAuthorization) {
+    // https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios&consentmode=advanced
+    let consentStatus: ConsentStatus = if case .authorized = status {
+      .granted
+    } else {
+      .denied
+    }
+    Analytics.setConsent([
+      .analyticsStorage: consentStatus,
+      .adStorage: consentStatus,
+      .adUserData: consentStatus,
+      .adPersonalization: consentStatus
+    ])
   }
 
   private func configureRemoteConfig() {
