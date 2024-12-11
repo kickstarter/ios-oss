@@ -977,6 +977,23 @@ public enum Strings {
     )
   }
   /**
+   "Authentication required"
+
+   - **en**: "Authentication required"
+   - **de**: "Authentifizierung erforderlich"
+   - **es**: "Autenticación necesaria"
+   - **fr**: "Authentification nécessaire"
+   - **ja**: "認証手続きが必要です"
+  */
+  public static func Authentication_required() -> String {
+    return localizedString(
+      key: "Authentication_required",
+      defaultValue: "Authentication required",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Authentication success. Please pull to refresh."
 
    - **en**: "Authentication success. Please pull to refresh."
@@ -991,6 +1008,23 @@ public enum Strings {
       defaultValue: "Authentication success. Please pull to refresh.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Available for pledges over %{amount}"
+
+   - **en**: "Available for pledges over %{amount}"
+   - **de**: "Available for pledges over %{amount}"
+   - **es**: "Available for pledges over %{amount}"
+   - **fr**: "Available for pledges over %{amount}"
+   - **ja**: "Available for pledges over %{amount}"
+  */
+  public static func Available_for_pledges_over(amount: String) -> String {
+    return localizedString(
+      key: "Available_for_pledges_over",
+      defaultValue: "Available for pledges over %{amount}",
+      count: nil,
+      substitutions: ["amount": amount]
     )
   }
   /**
@@ -1148,23 +1182,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backer"
+backers"
 
    - **en**: "%{backers_count}
-backer"
+backers"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinador"
+patrocinadores"
    - **fr**: "%{backers_count}
-contributeur"
+contributeurs"
    - **ja**: "%{backers_count}
 バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbacker",
+      defaultValue: "%{backers_count}\nbackers",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -1255,6 +1289,23 @@ contributeurs"
     return localizedString(
       key: "Become_a_backer_to_leave_a_comment",
       defaultValue: "Become a backer to leave a comment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Beta"
+
+   - **en**: "Beta"
+   - **de**: "Beta"
+   - **es**: "Beta"
+   - **fr**: "Bêta"
+   - **ja**: "ベータ"
+  */
+  public static func Beta() -> String {
+    return localizedString(
+      key: "Beta",
+      defaultValue: "Beta",
       count: nil,
       substitutions: [:]
     )
@@ -1855,6 +1906,23 @@ contributeurs"
     )
   }
   /**
+   "Charge %{number}"
+
+   - **en**: "Charge %{number}"
+   - **de**: "Transaktion %{number}"
+   - **es**: "Cargo %{number}"
+   - **fr**: "Transaction %{number}"
+   - **ja**: "請求 %{number}"
+  */
+  public static func Charge_number(number: String) -> String {
+    return localizedString(
+      key: "Charge_number",
+      defaultValue: "Charge %{number}",
+      count: nil,
+      substitutions: ["number": number]
+    )
+  }
+  /**
    "Chat"
 
    - **en**: "Chat"
@@ -2122,6 +2190,23 @@ contributeurs"
     return localizedString(
       key: "Collapses_subcategories",
       defaultValue: "Collapses subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Collection Plan"
+
+   - **en**: "Collection Plan"
+   - **de**: "Zahlungsplan"
+   - **es**: "Plan de pagos"
+   - **fr**: "Calendrier des prélèvements"
+   - **ja**: "集金プラン"
+  */
+  public static func Collection_plan() -> String {
+    return localizedString(
+      key: "Collection_plan",
+      defaultValue: "Collection Plan",
       count: nil,
       substitutions: [:]
     )
@@ -2422,18 +2507,18 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Continue with %{quantity_count} add-on"
+   "Continue with %{quantity_count} add-ons"
 
-   - **en**: "Continue with %{quantity_count} add-on"
-   - **de**: "Weiter mit %{quantity_count} Add-on"
-   - **es**: "Continuar con %{quantity_count} complemento"
-   - **fr**: "Continuer avec %{quantity_count} complément"
+   - **en**: "Continue with %{quantity_count} add-ons"
+   - **de**: "Weiter mit %{quantity_count} Add-ons"
+   - **es**: "Continuar con %{quantity_count} complementos"
+   - **fr**: "Continuer avec %{quantity_count} compléments"
    - **ja**: "%{quantity_count} 個のアドオンで続行する"
   */
   public static func Continue_with_quantity_count_add_ons(quantity_count: Int) -> String {
     return localizedString(
       key: "Continue_with_quantity_count_add_ons",
-      defaultValue: "Continue with %{quantity_count} add-on",
+      defaultValue: "Continue with %{quantity_count} add-ons",
       count: quantity_count,
       substitutions: ["quantity_count": Format.wholeNumber(quantity_count)]
     )
@@ -4230,18 +4315,18 @@ Cliquez pour réessayer."
     )
   }
   /**
-   "%{filter_name}: %{project_count} live project"
+   "%{filter_name}: %{project_count} live projects"
 
-   - **en**: "%{filter_name}: %{project_count} live project"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
-   - **es**: "%{filter_name}: %{project_count} proyecto activo"
-   - **fr**: "%{filter_name} : %{project_count} projet en cours"
+   - **en**: "%{filter_name}: %{project_count} live projects"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
+   - **es**: "%{filter_name}: %{project_count} proyectos activos"
+   - **fr**: "%{filter_name} : %{project_count} projets en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live project",
+      defaultValue: "%{filter_name}: %{project_count} live projects",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -5869,8 +5954,8 @@ with friends."
 
    - **en**: "Kickstarter Games"
    - **de**: "Kickstarter Games"
-   - **es**: "Kickstarter Games"
-   - **fr**: "Kickstarter Games"
+   - **es**: "Juegos de Kickstarter"
+   - **fr**: "Jeux Kickstarter"
    - **ja**: "Kickstarter Games"
   */
   public static func Kickstarter_Games() -> String {
@@ -5886,8 +5971,8 @@ with friends."
 
    - **en**: "Kickstarter Invent"
    - **de**: "Kickstarter Invent"
-   - **es**: "Kickstarter Invent"
-   - **fr**: "Kickstarter Invent"
+   - **es**: "Invenciones de Kickstarter"
+   - **fr**: "Kickstarter invente"
    - **ja**: "Kickstarter Invent"
   */
   public static func Kickstarter_Invent() -> String {
@@ -6141,8 +6226,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restante"
-   - **fr**: "%{left_count} restante"
+   - **es**: "%{left_count} restantes"
+   - **fr**: "%{left_count} restantes"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -7755,6 +7840,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Payment"
+
+   - **en**: "Payment"
+   - **de**: "Zahlung"
+   - **es**: "Pago"
+   - **fr**: "Paiement"
+   - **ja**: "支払い"
+  */
+  public static func Payment() -> String {
+    return localizedString(
+      key: "Payment",
+      defaultValue: "Payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Payment failure"
 
    - **en**: "Payment failure"
@@ -7959,6 +8061,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Pledge Over Time"
+
+   - **en**: "Pledge Over Time"
+   - **de**: "Ratenzahlung"
+   - **es**: "Contribución en cuotas"
+   - **fr**: "Engagement étalé dans le temps"
+   - **ja**: "経時プレッジ"
+  */
+  public static func Pledge_Over_Time() -> String {
+    return localizedString(
+      key: "Pledge_Over_Time",
+      defaultValue: "Pledge Over Time",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Pledge activity"
 
    - **en**: "Pledge activity"
@@ -8039,6 +8158,40 @@ n'ont rien soutenu."
     return localizedString(
       key: "Pledge_details",
       defaultValue: "Pledge details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge in full"
+
+   - **en**: "Pledge in full"
+   - **de**: "Sofortzahlung"
+   - **es**: "Contribución total"
+   - **fr**: "Engagement intégral"
+   - **ja**: "一括払いのプレッジ"
+  */
+  public static func Pledge_in_full() -> String {
+    return localizedString(
+      key: "Pledge_in_full",
+      defaultValue: "Pledge in full",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge management"
+
+   - **en**: "Pledge management"
+   - **de**: "Beitragsverwaltung"
+   - **es**: "Gestión de contribución"
+   - **fr**: "Gestion des engagements"
+   - **ja**: "プレッジ管理"
+  */
+  public static func Pledge_management() -> String {
+    return localizedString(
+      key: "Pledge_management",
+      defaultValue: "Pledge management",
       count: nil,
       substitutions: [:]
     )
@@ -9492,18 +9645,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} reward"
+   "%{rewards_count} rewards"
 
-   - **en**: "%{rewards_count} reward"
-   - **de**: "%{rewards_count} Belohnung"
-   - **es**: "%{rewards_count} recompensa"
-   - **fr**: "%{rewards_count} récompense"
+   - **en**: "%{rewards_count} rewards"
+   - **de**: "%{rewards_count} Belohnungen"
+   - **es**: "%{rewards_count} recompensas"
+   - **fr**: "%{rewards_count} récompenses"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} reward",
+      defaultValue: "%{rewards_count} rewards",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -9526,18 +9679,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} reward:"
+   "%{rewards_count} rewards:"
 
-   - **en**: "%{rewards_count} reward:"
-   - **de**: "%{rewards_count} Belohnung:"
-   - **es**: "%{rewards_count} recompensa:"
-   - **fr**: "%{rewards_count} récompense :"
+   - **en**: "%{rewards_count} rewards:"
+   - **de**: "%{rewards_count} Belohnungen:"
+   - **es**: "%{rewards_count} recompensas:"
+   - **fr**: "%{rewards_count} récompenses :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} reward:",
+      defaultValue: "%{rewards_count} rewards:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -9713,6 +9866,23 @@ daring ideas."
     )
   }
   /**
+   "Scheduled"
+
+   - **en**: "Scheduled"
+   - **de**: "Geplant"
+   - **es**: "Programado"
+   - **fr**: "Prévu"
+   - **ja**: "スケジュール設定済み"
+  */
+  public static func Scheduled() -> String {
+    return localizedString(
+      key: "Scheduled",
+      defaultValue: "Scheduled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Security code"
 
    - **en**: "Security code"
@@ -9776,6 +9946,23 @@ daring ideas."
     return localizedString(
       key: "See_our_suggestions",
       defaultValue: "See our suggestions ▸",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "See our Terms of Use"
+
+   - **en**: "See our Terms of Use"
+   - **de**: "Weitere Informationen findest du in unseren Nutzungsbedingungen"
+   - **es**: "Ver nuestros Términos de uso"
+   - **fr**: "Consulter nos Conditions d'utilisation"
+   - **ja**: "利用規約を見る"
+  */
+  public static func See_our_terms_of_use() -> String {
+    return localizedString(
+      key: "See_our_terms_of_use",
+      defaultValue: "See our Terms of Use",
       count: nil,
       substitutions: [:]
     )
@@ -10529,18 +10716,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} other"
+   "%{friend_name} and %{remaining_count} others"
 
-   - **en**: "%{friend_name} and %{remaining_count} other"
-   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
-   - **es**: "%{friend_name} y %{remaining_count} persona más"
-   - **fr**: "%{friend_name} et %{remaining_count} autre"
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -13478,6 +13665,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}."
+
+   - **en**: "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}."
+   - **de**: "Du hast dich für die Ratenzahlung entschieden. Wenn das Projekt sein Finanzierungsziel erreicht, wird die erste Rate in Höhe von %{amount} am %{date} eingezogen."
+   - **es**: "Seleccionaste Contribución en cuotas. Si el proyecto alcanza la meta, el primer cargo de %{amount} se cobrará el %{date}."
+   - **fr**: "Vous avez choisi d'étaler votre engagement dans le temps. Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} interviendra le %{date}."
+   - **ja**: "経時プレッジを選択しました。プロジェクトがファンディングゴールに達すると、%{date} に最初のお支払い額 %{amount} が請求されます。"
+  */
+  public static func You_have_selected_pledge_over_time(amount: String, date: String) -> String {
+    return localizedString(
+      key: "You_have_selected_pledge_over_time",
+      defaultValue: "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of %{amount} will be collected on %{date}.",
+      count: nil,
+      substitutions: ["amount": amount, "date": date]
+    )
+  }
+  /**
    "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
 
    - **en**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
@@ -13621,6 +13825,40 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "You_saved_this_project",
       defaultValue: "You saved this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You will be charged for your pledge over four payments, at no extra cost."
+
+   - **en**: "You will be charged for your pledge over four payments, at no extra cost."
+   - **de**: "Dein Finanzierungsbeitrag wird dir in vier Raten belastet. Dir entstehen dadurch keine zusätzlichen Kosten."
+   - **es**: "Se te cobrará tu contribución en cuatro pagos sin costo adicional."
+   - **fr**: "Votre engagement sera étalé en quatre prélèvements, sans frais supplémentaires."
+   - **ja**: "プレッジの請求が4回に分けて行われます。追加の手数料はかかりません。"
+  */
+  public static func You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description() -> String {
+    return localizedString(
+      key: "You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description",
+      defaultValue: "You will be charged for your pledge over four payments, at no extra cost.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+
+   - **en**: "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+   - **de**: "Die erste Rate wird 24 Stunden nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen."
+   - **es**: "El primer pago será 24 horas después de que el proyecto finalice con éxito y luego cada 2 semanas hasta el monto total de la contribución. Cuando se selecciona esta opción, no se pueden realizar más modificaciones en tu contribución."
+   - **fr**: "Le premier prélèvement interviendra 24 heures après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable."
+   - **ja**: "最初の請求はプロジェクトが成功に終わってから24時間後に行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
+  */
+  public static func You_will_be_charged_for_your_pledge_over_four_payments_expanded_description() -> String {
+    return localizedString(
+      key: "You_will_be_charged_for_your_pledge_over_four_payments_expanded_description",
+      defaultValue: "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
       count: nil,
       substitutions: [:]
     )
@@ -16142,18 +16380,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comment"
+   "%{comments_count} comments"
 
-   - **en**: "%{comments_count} comment"
-   - **de**: "%{comments_count} Kommentar"
-   - **es**: "%{comments_count} commentario"
-   - **fr**: "%{comments_count} commentaire"
+   - **en**: "%{comments_count} comments"
+   - **de**: "%{comments_count} Kommentare"
+   - **es**: "%{comments_count} commentarios"
+   - **fr**: "%{comments_count} commentaires"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comment",
+      defaultValue: "%{comments_count} comments",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -21753,18 +21991,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{likes_count} like"
+   "%{likes_count} likes"
 
-   - **en**: "%{likes_count} like"
-   - **de**: "%{likes_count} Person gefällt das"
-   - **es**: "A %{likes_count} persona le gusta"
-   - **fr**: "%{likes_count} mention J'aime"
+   - **en**: "%{likes_count} likes"
+   - **de**: "%{likes_count} Personen gefällt das"
+   - **es**: "A %{likes_count} personas les gusta"
+   - **fr**: "%{likes_count} mentions J'aime"
    - **ja**: "いいね！%{likes_count}件"
   */
   public static func likes_count_likes(likes_count: Int) -> String {
     return localizedString(
       key: "likes_count_likes",
-      defaultValue: "%{likes_count} like",
+      defaultValue: "%{likes_count} likes",
       count: likes_count,
       substitutions: ["likes_count": Format.wholeNumber(likes_count)]
     )
@@ -24037,7 +24275,7 @@ Let's change that!"
    - **de**: "Wir lieben Spiele"
    - **es**: "Nos encantan los juegos"
    - **fr**: "Kickstarter aime les jeux"
-   - **ja**: "Kickstarterが選ぶゲーム"
+   - **ja**: "ゲーム大好き♡Kickstarter"
   */
   public static func profile_settings_newsletter_games() -> String {
     return localizedString(
@@ -24205,8 +24443,8 @@ Let's change that!"
 
    - **en**: "Kickstarter Reads"
    - **de**: "Kickstarter Reads"
-   - **es**: "Kickstarter Reads"
-   - **fr**: "Kickstarter Reads"
+   - **es**: "Lecturas de Kickstarter"
+   - **fr**: "Lectures Kickstarter"
    - **ja**: "Kickstarter Reads"
   */
   public static func profile_settings_newsletter_publishing() -> String {
@@ -26298,18 +26536,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} project"
+   "%{project_count} projects"
 
-   - **en**: "%{project_count} project"
-   - **de**: "%{project_count} Projekt"
-   - **es**: "%{project_count} proyecto"
-   - **fr**: "%{project_count} projet"
+   - **en**: "%{project_count} projects"
+   - **de**: "%{project_count} Projekte"
+   - **es**: "%{project_count} proyectos"
+   - **fr**: "%{project_count} projets"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} project",
+      defaultValue: "%{project_count} projects",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -28150,18 +28388,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} update"
+   "%{updates_count} updates"
 
-   - **en**: "%{updates_count} update"
-   - **de**: "%{updates_count} Update"
-   - **es**: "%{updates_count} actualización"
-   - **fr**: "%{updates_count} actu"
+   - **en**: "%{updates_count} updates"
+   - **de**: "%{updates_count} Updates"
+   - **es**: "%{updates_count} actualizaciones"
+   - **fr**: "%{updates_count} actus"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} update",
+      defaultValue: "%{updates_count} updates",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )
