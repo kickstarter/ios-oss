@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 
@@ -10,22 +11,20 @@ public enum PledgePaymentPlansType: Equatable {
 public struct PledgePaymentPlansAndSelectionData {
   public var selectedPlan: PledgePaymentPlansType
   public var paymentIncrements: [PledgePaymentIncrement]
+  public var project: Project
   /* TODO: add the necesary properties for the next states (PLOT Selected and Ineligible)
      - [MBL-1815](https://kickstarter.atlassian.net/browse/MBL-1815)
      - [MBL-1816](https://kickstarter.atlassian.net/browse/MBL-1816)
    */
 
-  public init() {
-    self.selectedPlan = .pledgeInFull
-    self.paymentIncrements = []
-  }
-
   public init(
     selectedPlan: PledgePaymentPlansType,
-    increments paymentIncrements: [PledgePaymentIncrement] = []
+    increments paymentIncrements: [PledgePaymentIncrement] = [],
+    project: Project
   ) {
     self.selectedPlan = selectedPlan
     self.paymentIncrements = paymentIncrements
+    self.project = project
   }
 }
 
@@ -79,7 +78,11 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
       selectedPlanType
     ).combineLatest(with: configureWithValue)
       .map { selectedPlan, data in
-        PledgePaymentPlansAndSelectionData(selectedPlan: selectedPlan, increments: data.paymentIncrements)
+        PledgePaymentPlansAndSelectionData(
+          selectedPlan: selectedPlan,
+          increments: data.paymentIncrements,
+          project: data.project
+        )
       }
 
     self.notifyDelegatePaymentPlanSelected = selectedPlanType.signal.skipRepeats()

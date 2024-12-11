@@ -5,7 +5,8 @@ import ReactiveSwift
 public typealias PledgePaymentPlanOptionData = (
   type: PledgePaymentPlansType,
   selectedType: PledgePaymentPlansType,
-  paymentIncrements: [PledgePaymentIncrement] // TODO: replece with API model
+  paymentIncrements: [PledgePaymentIncrement], // TODO: replece with API model
+  project: Project
 )
 
 public typealias PledgePaymentIncrement = (
@@ -80,8 +81,12 @@ public final class PledgePaymentPlansOptionViewModel:
 
     self.paymentIncrements = configData
       .filter { $0.type == .pledgeOverTime && $0.selectedType == $0.type }
-      .map {
-        $0.paymentIncrements.enumerated().map(getPledgePaymentIncrementFormatted())
+      .map { data in
+        data.paymentIncrements
+          .enumerated()
+          .map { index, increment in
+            getPledgePaymentIncrementFormatted(increment, at: index, project: data.project)
+          }
       }
       .filter { !$0.isEmpty }
       .take(first: 1)
@@ -143,12 +148,12 @@ private func getSubtitleText(by type: PledgePaymentPlansType, isSelected: Bool) 
   }
 }
 
-private func getPledgePaymentIncrementFormatted()
-  -> ((Int, PledgePaymentIncrement) -> PledgePaymentIncrementFormatted) {
-  return { (index: Int, increment: PledgePaymentIncrement) in
-
-    PledgePaymentIncrementFormatted(from: increment, index: index)
-  }
+private func getPledgePaymentIncrementFormatted(
+  _ increment: PledgePaymentIncrement,
+  at index: Int,
+  project: Project
+) -> PledgePaymentIncrementFormatted {
+  PledgePaymentIncrementFormatted(from: increment, index: index, project: project)
 }
 
 private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
@@ -160,14 +165,16 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
 }
 
 extension PledgePaymentIncrementFormatted {
-  init(from increment: PledgePaymentIncrement, index: Int) {
-    let country = Project
-      .Country(currencyCode: increment.amount.currency) ??
-      .us // TODO: Evaluate if we should use `project.country` instead of the `us` as default.
+  init(from increment: PledgePaymentIncrement, index: Int, project: Project) {
+    let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.title = "Charge \(index + 1)"
-    self.amount = Format.currency(increment.amount.amount, country: country, omitCurrencyCode: true)
+    self.amount = Format.currency(
+      increment.amount.amount,
+      country: projectCurrencyCountry,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
     self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
   }
 }

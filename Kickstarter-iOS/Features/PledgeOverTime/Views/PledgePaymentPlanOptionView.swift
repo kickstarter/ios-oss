@@ -198,6 +198,7 @@ final class PledgePaymentPlanOptionView: UIView {
   // MARK: - Functions
 
   private func setupIncrementsStackView(with increments: [PledgePaymentIncrementFormatted]) {
+    var dateLabels: [UILabel] = []
     increments.forEach { increment in
       let incrementStackView = UIStackView()
       applyIncrementStackViewStyle(incrementStackView)
@@ -210,11 +211,12 @@ final class PledgePaymentPlanOptionView: UIView {
       applyIncrementDetailsStackViewStyle(detailsStackView)
 
       let dateLabel = UILabel()
-      applyDetailLabelStyle(dateLabel)
+      applyIncrementDateLabelStyle(dateLabel)
       dateLabel.text = increment.scheduledCollection
+      dateLabels.append(dateLabel)
 
       let amountLabel = UILabel()
-      applyDetailLabelStyle(amountLabel)
+      applyIncrementDateLabelStyle(amountLabel)
       amountLabel.text = increment.amount
       amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
@@ -223,26 +225,27 @@ final class PledgePaymentPlanOptionView: UIView {
 
       self.paymentIncrementsStackView.addArrangedSubview(incrementStackView)
     }
+
+    if let firstDateLabel = dateLabels.first {
+      dateLabels.forEach { label in
+        label.widthAnchor.constraint(equalTo: firstDateLabel.widthAnchor).isActive = true
+      }
+    }
   }
 }
 
 // MARK: - Styles helper
 
-private func applyDetailLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_footnote()
-  label.textColor = .ksr_support_400
-  label.textAlignment = .left
-  label.adjustsFontForContentSizeCategory = true
-}
-
 private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(1)
+  stackView.alignment = .leading
 }
 
 private func applyPaymentIncrementsStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(2)
+  stackView.alignment = .leading
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
@@ -279,7 +282,6 @@ private func applyTermsOfUseStyle(_ button: UIButton) {
 
 private func applyIncrementStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.alignment = .leading
   stackView.spacing = Styles.gridHalf(1)
 }
 
@@ -294,4 +296,11 @@ private func applyIncrementTitleLabelStyle(_ label: UILabel) {
   label.textAlignment = .left
   label.adjustsFontForContentSizeCategory = true
   label.setContentCompressionResistancePriority(.required, for: .vertical)
+}
+
+private func applyIncrementDateLabelStyle(_ label: UILabel) {
+  label.font = UIFont.ksr_footnote()
+  label.textColor = .ksr_support_400
+  label.textAlignment = .left
+  label.adjustsFontForContentSizeCategory = true
 }

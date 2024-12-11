@@ -94,16 +94,17 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let backing = project.map { $0.personalization.backing }.skipNil()
     self.showPledgeOverTimeUI = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled()
-      }
+      .map { _ in featurePledgeOverTimeEnabled() }
 
     self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .map { showPledgeOverTimeUI -> PledgePaymentPlansAndSelectionData? in
+      .combineLatest(with: project)
+      .map { showPledgeOverTimeUI, project -> PledgePaymentPlansAndSelectionData? in
         guard showPledgeOverTimeUI else { return nil }
 
         return PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeInFull,
-          increments: mockPledgePaymentIncrement()
+          increments: mockPledgePaymentIncrement(),
+          project: project
         )
       }.skipNil()
 

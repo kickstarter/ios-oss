@@ -87,12 +87,14 @@ final class PledgePaymentPlansViewController: UIViewController {
         self.pledgeInFullOption.configureWith(value: PledgePaymentPlanOptionData(
           type: .pledgeInFull,
           selectedType: data.selectedPlan,
-          paymentIncrements: data.paymentIncrements
+          paymentIncrements: data.paymentIncrements,
+          project: data.project
         ))
         self.pledgeOverTimeOption.configureWith(value: PledgePaymentPlanOptionData(
           type: .pledgeOverTime,
           selectedType: data.selectedPlan,
-          paymentIncrements: data.paymentIncrements
+          paymentIncrements: data.paymentIncrements,
+          project: data.project
         ))
       }
 

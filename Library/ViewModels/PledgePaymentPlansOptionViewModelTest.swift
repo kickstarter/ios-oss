@@ -1,4 +1,5 @@
 import Foundation
+@testable import KsApi
 @testable import Library
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -51,7 +52,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     let data = PledgePaymentPlanOptionData(
       type: .pledgeInFull,
       selectedType: .pledgeInFull,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -67,7 +69,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     let data = PledgePaymentPlanOptionData(
       type: .pledgeInFull,
       selectedType: .pledgeOverTime,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -82,11 +85,13 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
   func testPaymentPlanOption_PledgeOverTime_Selected() {
     let increments = mockPaymentIncrements()
-    let incrementsFormatted = paymentIncrementsFormatted(from: increments)
+    let project = Project.template
+    let incrementsFormatted = paymentIncrementsFormatted(from: increments, project: project)
     let data = PledgePaymentPlanOptionData(
       type: .pledgeOverTime,
       selectedType: .pledgeOverTime,
-      paymentIncrements: increments
+      paymentIncrements: increments,
+      project: project
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -105,7 +110,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     let data = PledgePaymentPlanOptionData(
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -122,7 +128,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     let data = PledgePaymentPlanOptionData(
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
     self.vm.inputs.optionTapped()
@@ -139,9 +146,9 @@ private func mockPaymentIncrements() -> [PledgePaymentIncrement] {
   ]
 }
 
-private func paymentIncrementsFormatted(from increments: [PledgePaymentIncrement])
+private func paymentIncrementsFormatted(from increments: [PledgePaymentIncrement], project: Project)
   -> [PledgePaymentIncrementFormatted] {
   increments.enumerated().map {
-    PledgePaymentIncrementFormatted(from: $1, index: $0)
+    PledgePaymentIncrementFormatted(from: $1, index: $0, project: project)
   }
 }

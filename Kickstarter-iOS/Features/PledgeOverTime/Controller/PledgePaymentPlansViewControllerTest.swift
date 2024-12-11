@@ -1,4 +1,5 @@
 @testable import Kickstarter_Framework
+@testable import KsApi
 @testable import Library
 import Prelude
 import SnapshotTesting
@@ -19,11 +20,12 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
   }
 
   func testView_PledgeInFullSelected() {
+    let project = Project.template
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 
-        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
+        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull, project: project)
         controller.configure(with: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -37,6 +39,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
   }
 
   func testView_PledgeOverTimeSelected() {
+    let project = Project.template
     let testIncrements = testPledgePaymentIncrement()
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -44,7 +47,8 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
 
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeOverTime,
-          increments: testIncrements
+          increments: testIncrements,
+          project: project
         )
         controller.configure(with: data)
 

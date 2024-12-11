@@ -1,4 +1,5 @@
 import Foundation
+@testable import KsApi
 @testable import Library
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -13,7 +14,10 @@ final class PledgePaymentPlansViewModelTests: TestCase {
   private var notifyDelegatePaymentPlanSelected = TestObserver<PledgePaymentPlansType, Never>()
   private var notifyDelegateTermsOfUseTapped = TestObserver<HelpType, Never>()
 
-  private let selectionData = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
+  private let selectionData = PledgePaymentPlansAndSelectionData(
+    selectedPlan: .pledgeInFull,
+    project: Project.template
+  )
 
   // MARK: Lifecycle
 
