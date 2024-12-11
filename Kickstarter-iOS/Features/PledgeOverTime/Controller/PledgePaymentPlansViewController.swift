@@ -6,6 +6,10 @@ protocol PledgePaymentPlansViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentPlansViewController,
     didSelectPaymentPlan paymentPlan: PledgePaymentPlansType
   )
+  func pledgePaymentPlansViewController(
+    _ viewController: PledgePaymentPlansViewController,
+    didTapTermsOfUseWith helpType: HelpType
+  )
 }
 
 final class PledgePaymentPlansViewController: UIViewController {
@@ -39,11 +43,11 @@ final class PledgePaymentPlansViewController: UIViewController {
     self.pledgeInFullOption.delegate = self
     self.pledgeOverTimeOption.delegate = self
 
-    self.rootStackView.addArrangedSubviews([
+    self.rootStackView.addArrangedSubviews(
       self.pledgeInFullOption,
       self.separatorView,
       self.pledgeOverTimeOption
-    ])
+    )
   }
 
   private func setupConstraints() {
@@ -82,11 +86,15 @@ final class PledgePaymentPlansViewController: UIViewController {
 
         self.pledgeInFullOption.configureWith(value: PledgePaymentPlanOptionData(
           type: .pledgeInFull,
-          selectedType: data.selectedPlan
+          selectedType: data.selectedPlan,
+          paymentIncrements: data.paymentIncrements,
+          project: data.project
         ))
         self.pledgeOverTimeOption.configureWith(value: PledgePaymentPlanOptionData(
           type: .pledgeOverTime,
-          selectedType: data.selectedPlan
+          selectedType: data.selectedPlan,
+          paymentIncrements: data.paymentIncrements,
+          project: data.project
         ))
       }
 
@@ -96,6 +104,13 @@ final class PledgePaymentPlansViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgePaymentPlansViewController(self, didSelectPaymentPlan: paymentPlan)
+      }
+    self.viewModel.outputs.notifyDelegateTermsOfUseTapped
+      .observeForUI()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentPlansViewController(self, didTapTermsOfUseWith: helpType)
       }
   }
 
@@ -114,6 +129,13 @@ extension PledgePaymentPlansViewController: PledgePaymentPlanOptionViewDelegate 
     didSelectPlanType paymentPlanType: PledgePaymentPlansType
   ) {
     self.viewModel.inputs.didSelectPlanType(paymentPlanType)
+  }
+
+  func pledgePaymentPlansViewController(
+    _: PledgePaymentPlanOptionView,
+    didTapTermsOfUseWith helpType: HelpType
+  ) {
+    self.viewModel.inputs.didTapTermsOfUse(with: helpType)
   }
 }
 
