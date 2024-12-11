@@ -92,6 +92,7 @@
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
     fileprivate let fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>?
     fileprivate let fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>?
+    fileprivate let fetchGraphUserSetupResult: Result<UserEnvelope<GraphUserSetup>, ErrorEnvelope>?
     fileprivate let fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -280,6 +281,7 @@
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
       fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>? = nil,
       fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>? = nil,
+      fetchGraphUserSetupResult: Result<UserEnvelope<GraphUserSetup>, ErrorEnvelope>? = nil,
       fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -414,6 +416,7 @@
       self.fetchGraphUserResult = fetchGraphUserResult
       self.fetchGraphUserSelfResult = fetchGraphUserSelfResult
       self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
+      self.fetchGraphUserSetupResult = fetchGraphUserSetupResult
 
       self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
 
@@ -950,6 +953,25 @@
 
       let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
       return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
+    }
+
+    internal func fetchGraphUserSetup() -> SignalProducer<UserEnvelope<GraphUserSetup>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchGraphUserSetupQuery = GraphAPI.FetchUserSetupQuery()
+
+      return client.fetchWithResult(query: fetchGraphUserSetupQuery, result: self.fetchGraphUserSetupResult)
+    }
+
+    func fetchGraphUserSetupCombine() -> AnyPublisher<UserEnvelope<GraphUserSetup>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
+
+      let fetchGraphUserSetupQuery = GraphAPI.FetchUserSetupQuery()
+      return client.fetchWithResult(query: fetchGraphUserSetupQuery, result: self.fetchGraphUserSetupResult)
     }
 
     // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.

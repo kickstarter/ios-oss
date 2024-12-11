@@ -982,15 +982,17 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     // MARK: Pledge Over Time
 
     self.showPledgeOverTimeUI = project.signal
-      .map { _ in featurePledgeOverTimeEnabled() }
+      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
     self.pledgeOverTimeConfigData = Signal.combineLatest(
       self.showPledgeOverTimeUI,
       project,
       pledgeTotal
-    ).map { showPledgeOverTimeUI, project, pledgeTotal -> PledgePaymentPlansAndSelectionData? in
-      guard showPledgeOverTimeUI else { return nil }
-
+    )
+    .filter { showPledgeOverTimeUI, _, _ in
+      showPledgeOverTimeUI
+    }
+    .map { showPledgeOverTimeUI, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
       // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
       let isIneligible = pledgeTotal < 150
 
@@ -1000,7 +1002,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         ineligible: isIneligible,
         project: project
       )
-    }.skipNil()
+    }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in

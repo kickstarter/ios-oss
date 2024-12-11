@@ -1,3 +1,4 @@
+$(PROJECT_DIR)/KsApi/fragments/UserFeaturesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CreditCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOCardFragment.graphql
@@ -52,6 +53,7 @@ $(PROJECT_DIR)/KsApi/queries/FetchUpdateComments.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserBackings.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsById.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectComments.graphql
+$(PROJECT_DIR)/KsApi/queries/FetchUserSetup.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserStoredCards.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchMyBackedProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsBySlug.graphql

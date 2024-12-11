@@ -1147,6 +1147,7 @@
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
+		AA3EB8432CF687680018C880 /* ServerFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */; };
 		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
 		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
@@ -1156,6 +1157,9 @@
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
 		AA6E9E8A2C63EE78001543FC /* PPOAddressSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */; };
+		AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */; };
+		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
+		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
 		AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOStyles.swift */; };
@@ -2823,11 +2827,15 @@
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewModel.swift; sourceTree = "<group>"; };
+		AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerFeature+Helpers.swift"; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AA645E9D2C772C650034705A /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
 		AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModel.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
+		AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserSetup.swift; sourceTree = "<group>"; };
+		AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserSetup.graphql; sourceTree = "<group>"; };
+		AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFeaturesFragment.graphql; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
@@ -5878,6 +5886,7 @@
 				77C9123023C637FD00F3D2C9 /* DoubleCurrencyTests.swift */,
 				778F891B22D3E37300D095C5 /* Feature+Helpers.swift */,
 				778F891D22D5414F00D095C5 /* Feature+HelpersTests.swift */,
+				AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5897,6 +5906,7 @@
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
+				AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */,
 				4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */,
 				6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */,
 				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
@@ -5985,6 +5995,7 @@
 				D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */,
 				7798B56421750041008BC50D /* GraphUser.swift */,
 				6008633329B8FBD700B87B39 /* GraphUserEmail.swift */,
+				AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */,
 				D63BBD30217F7212007E01F0 /* UserCreditCards.swift */,
 				77DB53292215D0AA0078991C /* UserCreditCardsTests.swift */,
 				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
@@ -6014,6 +6025,7 @@
 				8A1556DF269394B600017845 /* RewardFragment.graphql */,
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
 				6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */,
+				AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
 			);
@@ -7704,6 +7716,7 @@
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
 				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
+				AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */,
@@ -7732,6 +7745,7 @@
 				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
+				AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */,
 				6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */,
 				E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */,
 				0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */,
@@ -8152,6 +8166,7 @@
 				37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
 				1950DBC02A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift in Sources */,
+				AA3EB8432CF687680018C880 /* ServerFeature+Helpers.swift in Sources */,
 				8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */,
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */,
@@ -9052,6 +9067,7 @@
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				478E31C326C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift in Sources */,
+				AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */,
 				19047FC92889BD8100BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.Data.swift in Sources */,
 				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
@@ -9470,7 +9486,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.1;
+				MARKETING_VERSION = 5.20.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
@@ -9984,7 +10000,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.1;
+				MARKETING_VERSION = 5.20.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -10051,7 +10067,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.1;
+				MARKETING_VERSION = 5.20.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -10317,7 +10333,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.1;
+				MARKETING_VERSION = 5.20.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";

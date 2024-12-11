@@ -189,6 +189,13 @@ public protocol ServiceType {
   func fetchGraphUserEmailCombine()
     -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
 
+  /// Fetches the email of the currently logged in User.
+  func fetchGraphUserSetup()
+    -> SignalProducer<UserEnvelope<GraphUserSetup>, ErrorEnvelope>
+
+  func fetchGraphUserSetupCombine()
+    -> AnyPublisher<UserEnvelope<GraphUserSetup>, ErrorEnvelope>
+
   /// Fetches GraphQL user fragment and returns User instance.
   func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope>

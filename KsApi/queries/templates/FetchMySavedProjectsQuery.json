@@ -260,7 +260,6 @@
               }
             ],
             "optedOutOfRecommendations": null,
-            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": {
               "__typename": "UserSavedProjectsConnection",
@@ -506,7 +505,6 @@
               }
             ],
             "optedOutOfRecommendations": null,
-            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": {
               "__typename": "UserSavedProjectsConnection",
@@ -908,7 +906,6 @@
               }
             ],
             "optedOutOfRecommendations": null,
-            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": {
               "__typename": "UserSavedProjectsConnection",
@@ -1243,7 +1240,6 @@
               }
             ],
             "optedOutOfRecommendations": null,
-            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": {
               "__typename": "UserSavedProjectsConnection",
