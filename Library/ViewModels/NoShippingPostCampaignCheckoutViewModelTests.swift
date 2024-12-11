@@ -875,4 +875,35 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       self.checkoutError.assertDidNotEmitValue()
     }
   }
+
+  func testCreatePaymentIntent_emitsOnViewDidLoad() {
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .latePledge
+    )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
+    }
+  }
 }
