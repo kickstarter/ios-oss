@@ -13,7 +13,6 @@ public struct PledgePaymentPlansAndSelectionData {
   public var paymentIncrements: [PledgePaymentIncrement]
   public var project: Project
   /* TODO: add the necesary properties for the next states (PLOT Selected and Ineligible)
-     - [MBL-1815](https://kickstarter.atlassian.net/browse/MBL-1815)
      - [MBL-1816](https://kickstarter.atlassian.net/browse/MBL-1816)
    */
 

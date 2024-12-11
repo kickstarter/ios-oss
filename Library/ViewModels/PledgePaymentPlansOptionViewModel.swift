@@ -5,7 +5,8 @@ import ReactiveSwift
 public typealias PledgePaymentPlanOptionData = (
   type: PledgePaymentPlansType,
   selectedType: PledgePaymentPlansType,
-  paymentIncrements: [PledgePaymentIncrement], // TODO: replece with API model
+  paymentIncrements: [PledgePaymentIncrement],
+  // TODO: replece with API model in [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
   project: Project
 )
 
@@ -20,7 +21,7 @@ public typealias PledgePaymentIncrementAmount = (
 )
 
 public struct PledgePaymentIncrementFormatted: Equatable {
-  public var title: String
+  public var incrementChargeNumber: String
   public var amount: String
   public var scheduledCollection: String
 }
@@ -85,7 +86,7 @@ public final class PledgePaymentPlansOptionViewModel:
         data.paymentIncrements
           .enumerated()
           .map { index, increment in
-            getPledgePaymentIncrementFormatted(increment, at: index, project: data.project)
+            formattedPledgePaymentIncrement(increment, at: index, project: data.project)
           }
       }
       .filter { !$0.isEmpty }
@@ -148,7 +149,7 @@ private func getSubtitleText(by type: PledgePaymentPlansType, isSelected: Bool) 
   }
 }
 
-private func getPledgePaymentIncrementFormatted(
+private func formattedPledgePaymentIncrement(
   _ increment: PledgePaymentIncrement,
   at index: Int,
   project: Project
@@ -169,7 +170,7 @@ extension PledgePaymentIncrementFormatted {
     let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.title = "Charge \(index + 1)"
+    self.incrementChargeNumber = "Charge \(index + 1)"
     self.amount = Format.currency(
       increment.amount.amount,
       country: projectCurrencyCountry,

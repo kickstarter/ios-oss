@@ -1,6 +1,18 @@
 import Library
 import UIKit
 
+private enum Constants {
+  /// Spacing & Padding
+  public static let contentInsets = NSDirectionalEdgeInsets(top: 1.0, leading: 0, bottom: 1.0, trailing: 0)
+  public static let defaultPaddingSpacing = Styles.grid(2)
+  public static let detailsStackViewSpacing = Styles.grid(6)
+  public static let incrementStackViewSpacing = Styles.gridHalf(1)
+  public static let optionDescriptorStackViewSpacing = Styles.grid(1)
+
+  /// Size
+  public static let selectionIndicatorImageWith = Styles.grid(4)
+}
+
 protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
   func pledgePaymentPlanOptionView(
     _ optionView: PledgePaymentPlanOptionView,
@@ -78,16 +90,28 @@ final class PledgePaymentPlanOptionView: UIView {
     self.subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
 
     NSLayoutConstraint.activate([
-      self.contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(2)),
-      self.contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Styles.grid(2)),
-      self.contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: Styles.grid(2)),
-      self.contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Styles.grid(2))
+      self.contentView.leadingAnchor.constraint(
+        equalTo: self.leadingAnchor,
+        constant: Constants.defaultPaddingSpacing
+      ),
+      self.contentView.trailingAnchor.constraint(
+        equalTo: self.trailingAnchor,
+        constant: -Constants.defaultPaddingSpacing
+      ),
+      self.contentView.topAnchor.constraint(
+        equalTo: self.topAnchor,
+        constant: Constants.defaultPaddingSpacing
+      ),
+      self.contentView.bottomAnchor.constraint(
+        equalTo: self.bottomAnchor,
+        constant: -Constants.defaultPaddingSpacing
+      )
     ])
 
     NSLayoutConstraint.activate([
       self.optionDescriptorStackView.leadingAnchor.constraint(
         equalTo: self.selectionIndicatorImageView.trailingAnchor,
-        constant: Styles.grid(2)
+        constant: Constants.defaultPaddingSpacing
       ),
       self.optionDescriptorStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
       self.optionDescriptorStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -97,12 +121,15 @@ final class PledgePaymentPlanOptionView: UIView {
     NSLayoutConstraint.activate([
       self.selectionIndicatorImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
       self.selectionIndicatorImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      self.selectionIndicatorImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
+      self.selectionIndicatorImageView.widthAnchor
+        .constraint(equalToConstant: Constants.selectionIndicatorImageWith),
       self.selectionIndicatorImageView.heightAnchor.constraint(
         equalTo: self.titleLabel.heightAnchor,
         multiplier: 1.0
       )
     ])
+
+    self.termsOfUseButton.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   private func configureTapGestureAndActions() {
@@ -203,9 +230,9 @@ final class PledgePaymentPlanOptionView: UIView {
       let incrementStackView = UIStackView()
       applyIncrementStackViewStyle(incrementStackView)
 
-      let titleLabel = UILabel()
-      applyIncrementTitleLabelStyle(titleLabel)
-      titleLabel.text = increment.title
+      let chargeNumberLabel = UILabel()
+      applyIncrementChargeNumberLabelStyle(chargeNumberLabel)
+      chargeNumberLabel.text = increment.incrementChargeNumber
 
       let detailsStackView = UIStackView()
       applyIncrementDetailsStackViewStyle(detailsStackView)
@@ -221,7 +248,7 @@ final class PledgePaymentPlanOptionView: UIView {
       amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
       detailsStackView.addArrangedSubviews(dateLabel, amountLabel)
-      incrementStackView.addArrangedSubviews(titleLabel, detailsStackView)
+      incrementStackView.addArrangedSubviews(chargeNumberLabel, detailsStackView)
 
       self.paymentIncrementsStackView.addArrangedSubview(incrementStackView)
     }
@@ -238,13 +265,13 @@ final class PledgePaymentPlanOptionView: UIView {
 
 private func applyOptionDescriptorStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = Styles.grid(1)
+  stackView.spacing = Constants.optionDescriptorStackViewSpacing
   stackView.alignment = .leading
 }
 
 private func applyPaymentIncrementsStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = Styles.grid(2)
+  stackView.spacing = Constants.defaultPaddingSpacing
   stackView.alignment = .leading
 }
 
@@ -271,26 +298,25 @@ private func applySelectionIndicatorImageViewStyle(_ imageView: UIImageView) {
 private func applyTermsOfUseStyle(_ button: UIButton) {
   button.configuration = {
     var config = UIButton.Configuration.borderless()
-    config.contentInsets = NSDirectionalEdgeInsets(top: 1.0, leading: 0, bottom: 1.0, trailing: 0)
+    config.contentInsets = Constants.contentInsets
     config.baseForegroundColor = .ksr_create_700
     return config
   }()
 
   button.contentHorizontalAlignment = .leading
-  button.setContentHuggingPriority(.required, for: .horizontal)
 }
 
 private func applyIncrementStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
-  stackView.spacing = Styles.gridHalf(1)
+  stackView.spacing = Constants.incrementStackViewSpacing
 }
 
 private func applyIncrementDetailsStackViewStyle(_ stackview: UIStackView) {
   stackview.axis = .horizontal
-  stackview.spacing = Styles.grid(6)
+  stackview.spacing = Constants.detailsStackViewSpacing
 }
 
-private func applyIncrementTitleLabelStyle(_ label: UILabel) {
+private func applyIncrementChargeNumberLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_footnote().bolded
   label.textColor = .ksr_black
   label.textAlignment = .left
