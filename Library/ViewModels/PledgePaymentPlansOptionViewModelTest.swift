@@ -18,6 +18,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   private var paymentIncrementsHidden = TestObserver<Bool, Never>()
   private var termsOfUseButtonHidden = TestObserver<Bool, Never>()
   private var paymentIncrements = TestObserver<[PledgePaymentIncrementFormatted], Never>()
+  private var ineligibleBadgeHidden = TestObserver<Bool, Never>()
+  private var ineligibleBadgeText = TestObserver<String, Never>()
 
   // MARK: Const
 
@@ -44,12 +46,15 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.vm.outputs.paymentIncrementsHidden.observe(self.paymentIncrementsHidden.observer)
     self.vm.outputs.termsOfUseButtonHidden.observe(self.termsOfUseButtonHidden.observer)
     self.vm.outputs.paymentIncrements.observe(self.paymentIncrements.observer)
+    self.vm.outputs.ineligibleBadgeHidden.observe(self.ineligibleBadgeHidden.observer)
+    self.vm.outputs.ineligibleBadgeText.observe(self.ineligibleBadgeText.observer)
   }
 
   // MARK: Test cases
 
   func testPaymentPlanOption_PledgeinFull_Selected() {
     let data = PledgePaymentPlanOptionData(
+      ineligible: false,
       type: .pledgeInFull,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
@@ -63,10 +68,13 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.paymentIncrementsHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.selectedImageName)
     self.paymentIncrements.assertValues([])
+    self.ineligibleBadgeHidden.assertValue(true)
+    self.ineligibleBadgeText.assertDidNotEmitValue()
   }
 
   func testPaymentPlanOption_PledgeinFull_Unselected() {
     let data = PledgePaymentPlanOptionData(
+      ineligible: false,
       type: .pledgeInFull,
       selectedType: .pledgeOverTime,
       paymentIncrements: mockPaymentIncrements(),
@@ -81,6 +89,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.paymentIncrementsHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
     self.paymentIncrements.assertValues([])
+    self.ineligibleBadgeHidden.assertValue(true)
+    self.ineligibleBadgeText.assertDidNotEmitValue()
   }
 
   func testPaymentPlanOption_PledgeOverTime_Selected() {
@@ -88,6 +98,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     let project = Project.template
     let incrementsFormatted = paymentIncrementsFormatted(from: increments, project: project)
     let data = PledgePaymentPlanOptionData(
+      ineligible: false,
       type: .pledgeOverTime,
       selectedType: .pledgeOverTime,
       paymentIncrements: increments,
@@ -104,10 +115,13 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
     self.selectionIndicatorImageName.assertValue(self.selectedImageName)
     self.paymentIncrements.assertValues([incrementsFormatted])
+    self.ineligibleBadgeHidden.assertValue(true)
+    self.ineligibleBadgeText.assertDidNotEmitValue()
   }
 
   func testPaymentPlanOption_PledgeOverTime_Unselected() {
     let data = PledgePaymentPlanOptionData(
+      ineligible: false,
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
@@ -122,10 +136,13 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.paymentIncrementsHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
     self.paymentIncrements.assertValues([])
+    self.ineligibleBadgeHidden.assertValue(true)
+    self.ineligibleBadgeText.assertDidNotEmitValue()
   }
 
   func testPaymentPlanOption_OptionTapped() {
     let data = PledgePaymentPlanOptionData(
+      ineligible: false,
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
@@ -134,6 +151,25 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.vm.inputs.configureWith(data: data)
     self.vm.inputs.optionTapped()
     self.notifyDelegatePaymentPlanOptionSelected.assertValue(.pledgeOverTime)
+  }
+
+  func testPaymentPlanOption_PledgeOverTime_Ineligible() {
+    let project = Project.template
+    let ineligibleText = "Available for pledges over $150"
+
+    let data = PledgePaymentPlanOptionData(
+      ineligible: true,
+      type: .pledgeOverTime,
+      selectedType: .pledgeInFull,
+      paymentIncrements: [],
+      project: project
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.titleText.assertValue(self.pledgeOverTimeTitle)
+    self.ineligibleBadgeHidden.assertValue(false)
+    self.ineligibleBadgeText.assertValue(ineligibleText)
   }
 }
 

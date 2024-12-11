@@ -2,7 +2,10 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
+private let thresholdAmount: Double = 150.0
+
 public typealias PledgePaymentPlanOptionData = (
+  ineligible: Bool,
   type: PledgePaymentPlansType,
   selectedType: PledgePaymentPlansType,
   paymentIncrements: [PledgePaymentIncrement], // TODO: replece with API model
@@ -37,9 +40,12 @@ public protocol PledgePaymentPlansOptionViewModelOutputs {
   var subtitleText: Signal<String, Never> { get }
   var subtitleLabelHidden: Signal<Bool, Never> { get }
   var selectionIndicatorImageName: Signal<String, Never> { get }
+  var ineligibleBadgeHidden: Signal<Bool, Never> { get }
+  var ineligibleBadgeText: Signal<String, Never> { get }
   var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never> { get }
   var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
   var termsOfUseButtonHidden: Signal<Bool, Never> { get }
+  var optionViewEnable: Signal<Bool, Never> { get }
   var paymentIncrementsHidden: Signal<Bool, Never> { get }
   var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never> { get }
 }
@@ -56,6 +62,8 @@ public final class PledgePaymentPlansOptionViewModel:
   public init() {
     let configData = self.configData.signal.skipNil()
 
+    let ineligible = configData.map { $0.type == .pledgeOverTime && $0.ineligible }
+
     self.selectionIndicatorImageName = configData
       .map {
         $0.selectedType == $0.type ?
@@ -65,7 +73,11 @@ public final class PledgePaymentPlansOptionViewModel:
     self.titleText = configData.map { getTitleText(by: $0.type) }
     self.subtitleText = configData
       .map { getSubtitleText(by: $0.type, isSelected: $0.selectedType == $0.type) }
-    self.subtitleLabelHidden = self.subtitleText.map { $0.isEmpty }
+    self.subtitleLabelHidden = self.subtitleText
+      .combineLatest(with: ineligible)
+      .map { subtitle, ineligible in
+        ineligible || subtitle.isEmpty
+      }
 
     self.notifyDelegatePaymentPlanOptionSelected = self.optionTappedProperty
       .signal
@@ -80,7 +92,7 @@ public final class PledgePaymentPlansOptionViewModel:
     self.paymentIncrementsHidden = isPledgeOverTimeAndSelected
 
     self.paymentIncrements = configData
-      .filter { $0.type == .pledgeOverTime && $0.selectedType == $0.type }
+      .filter { !$0.ineligible && $0.type == .pledgeOverTime && $0.selectedType == $0.type }
       .map { data in
         data.paymentIncrements
           .enumerated()
@@ -91,7 +103,16 @@ public final class PledgePaymentPlansOptionViewModel:
       .filter { !$0.isEmpty }
       .take(first: 1)
 
+    self.ineligibleBadgeHidden = configData
+      .map { $0.type == .pledgeOverTime && $0.ineligible }.negate()
+
+    self.optionViewEnable = self.ineligibleBadgeHidden
+
     self.notifyDelegateTermsOfUseTapped = self.termsOfUseTappedProperty.signal.skipNil()
+
+    self.ineligibleBadgeText = configData
+      .filter { $0.type == .pledgeOverTime && $0.ineligible }
+      .map { getIneligibleBadgeText(with: $0.project) }
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanOptionData?>(nil)
@@ -117,9 +138,12 @@ public final class PledgePaymentPlansOptionViewModel:
   public var titleText: ReactiveSwift.Signal<String, Never>
   public var subtitleText: ReactiveSwift.Signal<String, Never>
   public var subtitleLabelHidden: Signal<Bool, Never>
+  public var ineligibleBadgeHidden: Signal<Bool, Never>
+  public var ineligibleBadgeText: Signal<String, Never>
   public var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never>
   public var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never>
   public var termsOfUseButtonHidden: Signal<Bool, Never>
+  public var optionViewEnable: Signal<Bool, Never>
   public var paymentIncrementsHidden: Signal<Bool, Never>
   public var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never>
 
@@ -162,6 +186,18 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
     dateStyle: .medium,
     timeStyle: .none
   )
+}
+
+private func getIneligibleBadgeText(with project: Project) -> String {
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let thresholdAmountFormatted = Format.currency(
+    thresholdAmount,
+    country: projectCurrencyCountry,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
+
+  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+  return "Available for pledges over \(thresholdAmountFormatted)"
 }
 
 extension PledgePaymentIncrementFormatted {

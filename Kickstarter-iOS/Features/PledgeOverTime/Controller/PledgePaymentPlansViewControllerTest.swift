@@ -48,6 +48,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeOverTime,
           increments: testIncrements,
+          ineligible: false,
           project: project
         )
         controller.configure(with: data)
@@ -66,11 +67,34 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
       }
     }
   }
+
+  func testView_PledgeOverTimeIneligible() {
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let controller = PledgePaymentPlansViewController.instantiate()
+
+        let data = PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          ineligible: true,
+          project: Project.template
+        )
+
+        controller.configure(with: data)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 120
+
+        self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }
 
 private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
-  var timeStamp = TimeInterval(1733931903)
+  var timeStamp = TimeInterval(1_733_931_903)
   for _ in 1...4 {
     timeStamp += 30 * 24 * 60 * 60
     increments.append(PledgePaymentIncrement(

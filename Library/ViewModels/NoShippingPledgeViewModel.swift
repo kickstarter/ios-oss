@@ -93,25 +93,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
-    self.showPledgeOverTimeUI = project.signal
-      .map { _ in featurePledgeOverTimeEnabled() }
-
-    self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .combineLatest(with: project)
-      .map { showPledgeOverTimeUI, project -> PledgePaymentPlansAndSelectionData? in
-        guard showPledgeOverTimeUI else { return nil }
-
-        return PledgePaymentPlansAndSelectionData(
-          selectedPlan: .pledgeInFull,
-          increments: mockPledgePaymentIncrement(),
-          project: project
-        )
-      }.skipNil()
-
-    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
-    }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
@@ -997,6 +978,34 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           refTag: refTag
         )
       }
+
+    // MARK: Pledge Over Time
+
+    self.showPledgeOverTimeUI = project.signal
+      .map { _ in featurePledgeOverTimeEnabled() }
+
+    self.pledgeOverTimeConfigData = Signal.combineLatest(
+      self.showPledgeOverTimeUI,
+      project,
+      pledgeTotal
+    ).map { showPledgeOverTimeUI, project, pledgeTotal -> PledgePaymentPlansAndSelectionData? in
+      guard showPledgeOverTimeUI else { return nil }
+
+      // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
+      let isIneligible = pledgeTotal < 150
+
+      return PledgePaymentPlansAndSelectionData(
+        selectedPlan: .pledgeInFull,
+        increments: mockPledgePaymentIncrement(),
+        ineligible: isIneligible,
+        project: project
+      )
+    }.skipNil()
+
+    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
+    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
+    }
   }
 
   // MARK: - Inputs
