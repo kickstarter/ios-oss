@@ -34,11 +34,12 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var showErrorBanner: Signal<(message: String, persist: Bool), Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
   var checkoutComplete: Signal<ThanksPageData, Never> { get }
+  var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
 public protocol NoShippingPostCampaignCheckoutViewModelType {
@@ -134,7 +135,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       let (
         project,
         rewards,
-        bonusAmount,
+        _,
         selectedQuantities,
         selectedShippingRule,
         pledgeTotal,
@@ -178,7 +179,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     let backingId = createCheckoutEvents.values().map(\.checkout.backingId)
 
-    let createCheckoutError = createCheckoutEvents.errors()
+    let createCheckoutErrors = createCheckoutEvents.errors()
 
     // MARK: Configure views
 
@@ -290,21 +291,15 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .takeWhen(self.goToLoginSignupSignal)
       .map { project, reward in (LoginIntent.backProject, project, reward) }
 
-    // MARK: - Validate Checkout Details On Submit
+    // MARK: Create Payment Intent
 
-    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
-
-    let processingViewIsHidden = MutableProperty<Bool>(true)
-
-    // MARK: Validate Existing Cards
-
-    let newPaymentIntentForExistingCards = Signal.combineLatest(
+    /// Called once on viewDidLoad. All signals, except checkoutId and backingId, are linked ot initialData.
+    let paymentIntentEvent = Signal.combineLatest(
       project,
       pledgeTotal,
       checkoutId,
       backingId
     )
-    .takeWhen(selectedCard)
     .switchMap { project, pledgeTotal, checkoutId, backingId in
       let projectId = project.graphID
 
@@ -317,8 +312,17 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .materialize()
     }
 
-    let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
+    let paymentIntentClientSecret = paymentIntentEvent.values()
       .map { $0.clientSecret }
+
+    let paymentIntentErrors = paymentIntentEvent.errors()
+
+    // MARK: Validate Existing Cards
+
+    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+
+    let paymentIntentClientSecretForExistingCards = paymentIntentClientSecret
+      .takeWhen(selectedCard)
 
     let validateCheckoutExistingCardInput = Signal
       .combineLatest(
@@ -365,7 +369,6 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
      Order of operations:
      1) Apple pay button tapped
-     2) Generate a new payment intent
      3) Present the payment authorization form
      4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
      5) Payment authorization form calls paymentAuthorizationDidFinish
@@ -376,26 +379,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let startApplePayFlow = Signal.combineLatest(project, pledgeTotal, checkoutId, backingId)
       .takeWhen(self.applePayButtonTappedSignal)
 
-    let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
-      startApplePayFlow
-        .switchMap { project, pledgeTotal, checkoutId, backingId in
-          let projectId = project.graphID
-
-          return stripeIntentService.createPaymentIntent(
-            for: projectId,
-            backingId: backingId,
-            checkoutId: checkoutId,
-            pledgeTotal: pledgeTotal
-          )
-          .materialize()
-        }
-
-    let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay
-      .errors()
-
-    let newPaymentIntentForApplePay: Signal<String, Never> = createPaymentIntentForApplePay
-      .values()
-      .map { $0.clientSecret }
+    let paymentIntentClientSecretForApplePay: Signal<String, Never> = paymentIntentClientSecret
+      .takeWhen(startApplePayFlow)
 
     self.goToApplePayPaymentAuthorization = Signal.combineLatest(
       project,
@@ -404,7 +389,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       bonusAmount,
       allRewardsShippingTotal,
       pledgeTotal,
-      newPaymentIntentForApplePay
+      paymentIntentClientSecretForApplePay
     )
     .map { (
       project,
@@ -430,7 +415,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     .skipNil()
 
     let validateCheckoutWithApplePay = Signal.combineLatest(
-      newPaymentIntentForApplePay,
+      paymentIntentClientSecretForApplePay,
       checkoutId,
       self.applePayPaymentMethodIdSignal.signal
     )
@@ -474,7 +459,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       }
 
     let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(newPaymentIntentForApplePay, checkoutId)
+      .combineLatest(paymentIntentClientSecretForApplePay, checkoutId)
       .takeWhen(validateCheckoutWithApplePay.values())
       .map {
         (
@@ -515,29 +500,19 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       .takeWhen(checkoutCompleteSignal.signal.values())
       .map { $0 }
 
-    let checkoutError = checkoutCompleteSignal.signal.errors()
+    self.checkoutError = checkoutCompleteSignal.signal.errors()
 
     // MARK: - Error handling
 
-    self.showErrorBanner = Signal.merge(
-      createCheckoutError.map { ($0, true) },
-      validateCheckoutError.map { ($0, false) },
-      checkoutError.map { ($0, false) }
-    )
-    .map { error, shouldPersist in
-      if error.ksrCode == .ValidateCheckoutError, let message = error.errorMessages.first {
-        return (message: message, persist: shouldPersist)
+    self.showErrorBannerWithMessage = Signal.merge(createCheckoutErrors, validateCheckoutError)
+      .map { error in
+        switch error.ksrCode {
+        case .ValidateCheckoutError:
+          return error.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
+        default:
+          return Strings.Something_went_wrong_please_try_again()
+        }
       }
-
-      #if DEBUG
-        let serverError = error.errorMessages.first ?? ""
-        let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
-      #else
-        let message = Strings.Something_went_wrong_please_try_again()
-      #endif
-
-      return (message: message, persist: shouldPersist)
-    }
 
     // MARK: - UI related to checkout flow
 
@@ -569,7 +544,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       self.submitButtonTappedProperty.signal.mapConst(false),
       startApplePayFlow.mapConst(false),
       // Hide view again whenever pledge flow is completed/cancelled/errors.
-      newPaymentIntentForApplePayError.mapConst(true),
+      paymentIntentErrors.mapConst(true),
       validateCheckoutError.mapConst(true),
       self.checkoutTerminatedProperty.signal.mapConst(true),
       checkoutCompleteSignal.signal.mapConst(true)
@@ -580,7 +555,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     // Use checkoutId in tracking, or default to nil if creating it errors.
     let checkoutIdOrNil = Signal.merge(
       checkoutId.wrapInOptional(),
-      createCheckoutError.mapConst(nil).take(first: 1)
+      createCheckoutErrors.mapConst(nil).take(first: 1)
     )
 
     let checkoutData = Signal.combineLatest(
@@ -762,12 +737,13 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let showErrorBanner: Signal<(message: String, persist: Bool), Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
+  public let checkoutError: Signal<ErrorEnvelope, Never>
 
   public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
   public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
