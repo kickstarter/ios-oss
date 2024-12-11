@@ -98,7 +98,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
 
     self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .filter { $0 }
+      .filter { showUI in showUI == true }
       .combineLatest(with: project)
       .map { _, project -> PledgePaymentPlansAndSelectionData in
         PledgePaymentPlansAndSelectionData(
