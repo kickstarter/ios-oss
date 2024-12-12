@@ -46,7 +46,7 @@ public protocol PledgePaymentPlansOptionViewModelOutputs {
   var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never> { get }
   var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
   var termsOfUseButtonHidden: Signal<Bool, Never> { get }
-  var optionViewEnable: Signal<Bool, Never> { get }
+  var optionViewEnabled: Signal<Bool, Never> { get }
   var paymentIncrementsHidden: Signal<Bool, Never> { get }
   var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never> { get }
 }
@@ -107,7 +107,7 @@ public final class PledgePaymentPlansOptionViewModel:
     self.ineligibleBadgeHidden = configData
       .map { $0.type == .pledgeOverTime && $0.ineligible }.negate()
 
-    self.optionViewEnable = self.ineligibleBadgeHidden
+    self.optionViewEnabled = self.ineligibleBadgeHidden
 
     self.notifyDelegateTermsOfUseTapped = self.termsOfUseTappedProperty.signal.skipNil()
 
@@ -144,7 +144,7 @@ public final class PledgePaymentPlansOptionViewModel:
   public var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never>
   public var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never>
   public var termsOfUseButtonHidden: Signal<Bool, Never>
-  public var optionViewEnable: Signal<Bool, Never>
+  public var optionViewEnabled: Signal<Bool, Never>
   public var paymentIncrementsHidden: Signal<Bool, Never>
   public var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never>
 

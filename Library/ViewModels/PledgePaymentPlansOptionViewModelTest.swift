@@ -22,7 +22,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   private var ineligibleBadgeText = TestObserver<String, Never>()
 
   // MARK: Const
-
+  
+  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   private let pledgeInFullTitle = "Pledge in full"
   private let pledgeOverTimeTitle = "Pledge Over Time"
   private let pledgeOverTimeSubtitle =
@@ -155,6 +156,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
   func testPaymentPlanOption_PledgeOverTime_Ineligible() {
     let project = Project.template
+    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     let ineligibleText = "Available for pledges over $150"
 
     let data = PledgePaymentPlanOptionData(

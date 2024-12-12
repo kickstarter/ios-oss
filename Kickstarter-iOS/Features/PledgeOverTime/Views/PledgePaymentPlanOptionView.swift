@@ -8,9 +8,14 @@ private enum Constants {
   public static let detailsStackViewSpacing = Styles.grid(6)
   public static let incrementStackViewSpacing = Styles.gridHalf(1)
   public static let optionDescriptorStackViewSpacing = Styles.grid(1)
+  public static let ineligibleBadgeTopButtonPadding = 6.0
+  public static let ineligibleBadgeLeadingTrailingPadding = 8.0
 
   /// Size
   public static let selectionIndicatorImageWith = Styles.grid(4)
+  
+  /// Corner radius
+  public static let defaultCornerRadius = Styles.grid(1)
 }
 
 protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
@@ -144,19 +149,19 @@ final class PledgePaymentPlanOptionView: UIView {
     NSLayoutConstraint.activate([
       self.ineligibleBadgeLabel.topAnchor.constraint(
         equalTo: self.ineligibleBadgeView.topAnchor,
-        constant: 6
-      ),
-      self.ineligibleBadgeLabel.leadingAnchor.constraint(
-        equalTo: self.ineligibleBadgeView.leadingAnchor,
-        constant: 8
+        constant: Constants.ineligibleBadgeTopButtonPadding
       ),
       self.ineligibleBadgeLabel.bottomAnchor.constraint(
         equalTo: self.ineligibleBadgeView.bottomAnchor,
-        constant: -6
+        constant: -Constants.ineligibleBadgeTopButtonPadding
+      ),
+      self.ineligibleBadgeLabel.leadingAnchor.constraint(
+        equalTo: self.ineligibleBadgeView.leadingAnchor,
+        constant: Constants.ineligibleBadgeLeadingTrailingPadding
       ),
       self.ineligibleBadgeLabel.trailingAnchor.constraint(
         equalTo: self.ineligibleBadgeView.trailingAnchor,
-        constant: -8
+        constant: -Constants.ineligibleBadgeLeadingTrailingPadding
       )
     ])
   }
@@ -205,7 +210,6 @@ final class PledgePaymentPlanOptionView: UIView {
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
 
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
-    self.subtitleLabel.isHidden = true
     self.subtitleLabel.rac.hidden = self.viewModel.outputs.subtitleLabelHidden
 
     self.viewModel.outputs.notifyDelegatePaymentPlanOptionSelected
@@ -230,11 +234,13 @@ final class PledgePaymentPlanOptionView: UIView {
     self.termsOfUseButton.rac.hidden = self.viewModel.outputs.termsOfUseButtonHidden
     self.paymentIncrementsStackView.rac.hidden = self.viewModel.outputs.paymentIncrementsHidden
 
-    self.viewModel.outputs.optionViewEnable
+    self.viewModel.outputs.optionViewEnabled
       .observeForUI()
-      .observeValues { [weak self] isOptionViewEnable in
-        self?.isUserInteractionEnabled = isOptionViewEnable
-        applyTextColorByState(self!.titleLabel, isEnabled: isOptionViewEnable)
+      .observeValues { [weak self] isOptionViewEnabled in
+        guard let self = self else { return }
+        
+        self.isUserInteractionEnabled = isOptionViewEnabled
+        applyTextColorByState(self.titleLabel, isEnabled: isOptionViewEnabled)
       }
 
     self.viewModel.outputs.paymentIncrements
@@ -375,7 +381,7 @@ private func applyIncrementDateLabelStyle(_ label: UILabel) {
 
 private func applyIneligibleBadgeViewStyle(_ view: UIView) {
   view.backgroundColor = .ksr_support_100
-  view.rounded(with: Styles.grid(1))
+  view.rounded(with: Constants.defaultCornerRadius)
 }
 
 private func applyIneligibleBadgeLabelStyle(_ label: UILabel) {
@@ -387,11 +393,5 @@ private func applyIneligibleBadgeLabelStyle(_ label: UILabel) {
 }
 
 private func applyTextColorByState(_ label: UILabel, isEnabled: Bool) {
-  var textColor = UIColor.ksr_black
-
-  if !isEnabled {
-    textColor = .ksr_support_300
-  }
-
-  label.textColor = textColor
+  label.textColor = isEnabled ? .ksr_black : .ksr_support_300
 }
