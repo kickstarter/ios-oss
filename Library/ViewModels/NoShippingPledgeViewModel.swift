@@ -992,7 +992,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .filter { showPledgeOverTimeUI, _, _ in
       showPledgeOverTimeUI
     }
-    .map { showPledgeOverTimeUI, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
+    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
       // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
       let isIneligible = pledgeTotal < 150
 

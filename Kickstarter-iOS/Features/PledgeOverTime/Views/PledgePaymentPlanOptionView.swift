@@ -13,7 +13,7 @@ private enum Constants {
 
   /// Size
   public static let selectionIndicatorImageWith = Styles.grid(4)
-  
+
   /// Corner radius
   public static let defaultCornerRadius = Styles.grid(1)
 }
@@ -138,7 +138,7 @@ final class PledgePaymentPlanOptionView: UIView {
         multiplier: 1.0
       )
     ])
-    
+
     self.termsOfUseButton.setContentHuggingPriority(.required, for: .horizontal)
 
     self.ineligibleBadgeView.addSubview(self.ineligibleBadgeLabel)
@@ -238,7 +238,7 @@ final class PledgePaymentPlanOptionView: UIView {
       .observeForUI()
       .observeValues { [weak self] isOptionViewEnabled in
         guard let self = self else { return }
-        
+
         self.isUserInteractionEnabled = isOptionViewEnabled
         applyTextColorByState(self.titleLabel, isEnabled: isOptionViewEnabled)
       }

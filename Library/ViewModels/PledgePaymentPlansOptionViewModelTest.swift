@@ -22,7 +22,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   private var ineligibleBadgeText = TestObserver<String, Never>()
 
   // MARK: Const
-  
+
   // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
   private let pledgeInFullTitle = "Pledge in full"
   private let pledgeOverTimeTitle = "Pledge Over Time"
