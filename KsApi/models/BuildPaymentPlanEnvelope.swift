@@ -8,8 +8,13 @@ public struct BuildPaymentPlanEnvelope: Decodable {
 }
 
 public struct PaymentIncrements: Decodable {
+  public var id: String?
   public var amount: Amount
+  public var paymentIncrementableId: String?
+  public var paymentIncrementableType: String?
   public var scheduledCollection: String
+  public var state: String
+  public var stateReason: String?
 
   public struct Amount: Decodable {
     public var amount: String?
@@ -35,7 +40,8 @@ extension BuildPaymentPlanEnvelope {
   ) -> BuildPaymentPlanEnvelope? {
     guard let projectIsPledgeOverTimeAllowed = data.project?.paymentPlan?.projectIsPledgeOverTimeAllowed,
           let amountIsPledgeOverTimeEligible = data.project?.paymentPlan?.amountIsPledgeOverTimeEligible,
-          let graphAPIPaymentIncrements = data.project?.paymentPlan?.paymentIncrements
+          let graphAPIPaymentIncrements = data.project?.paymentPlan?.paymentIncrements,
+          let id = data.project?.paymentPlan?.paymentIncrements
     else {
       return nil
     }
@@ -45,7 +51,15 @@ extension BuildPaymentPlanEnvelope {
         amount: $0.amount.amount,
         currency: $0.amount.currency?.rawValue
       )
-      return PaymentIncrements(amount: amount, scheduledCollection: $0.scheduledCollection)
+      return PaymentIncrements(
+        id: $0.id,
+        amount: amount,
+        paymentIncrementableId: $0.paymentIncrementableId,
+        paymentIncrementableType: $0.paymentIncrementableType,
+        scheduledCollection: $0.scheduledCollection,
+        state: $0.state,
+        stateReason: $0.stateReason
+      )
     }
 
     return BuildPaymentPlanEnvelope(

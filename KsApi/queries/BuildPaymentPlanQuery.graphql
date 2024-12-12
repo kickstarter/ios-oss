@@ -8,7 +8,12 @@ query BuildPaymentPlan($slug: String!, $amount: String!) {
           amount
           currency
         }
+        id
+        paymentIncrementableId
+        paymentIncrementableType
         scheduledCollection
+        state
+        stateReason
       }
     }
   }
