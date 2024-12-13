@@ -85,17 +85,17 @@ final class PledgePaymentPlansViewController: UIViewController {
         guard let self = self else { return }
 
         self.pledgeInFullOption.configureWith(value: PledgePaymentPlanOptionData(
+          ineligible: data.ineligible,
           type: .pledgeInFull,
           selectedType: data.selectedPlan,
           paymentIncrements: data.paymentIncrements,
-          ineligible: data.ineligible,
           project: data.project
         ))
         self.pledgeOverTimeOption.configureWith(value: PledgePaymentPlanOptionData(
+          ineligible: data.ineligible,
           type: .pledgeOverTime,
           selectedType: data.selectedPlan,
           paymentIncrements: data.paymentIncrements,
-          ineligible: data.ineligible,
           project: data.project
         ))
       }
