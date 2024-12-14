@@ -119,7 +119,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           project: data.project,
           total: data.total,
           confirmationLabelHidden: true,
-          pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards)
+          pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards),
+          pledgeOverTimeSelected: false,
+          paymentIncrements: []
         )
         return (rewardsData, data.bonusAmount, pledgeData)
       }

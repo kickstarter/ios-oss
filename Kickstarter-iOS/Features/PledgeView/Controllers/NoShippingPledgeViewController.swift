@@ -730,10 +730,9 @@ private func applySectionStackViewStyle(_ stackView: UIStackView) {
 extension NoShippingPledgeViewController: PledgePaymentPlansViewControllerDelegate {
   func pledgePaymentPlansViewController(
     _: PledgePaymentPlansViewController,
-    didSelectPaymentPlan paymentPlan: Library.PledgePaymentPlansType
+    didSelectPaymentPlan paymentPlan: PledgePaymentPlansType
   ) {
-    // TODO: Implement the necessary functionality once the ticket [MBL-1853] is resolved
-    debugPrint("pledgePaymentPlansViewController:didSelectPaymentPlan: \(paymentPlan)")
+    self.viewModel.inputs.paymentPlanSelected(paymentPlan)
   }
 
   func pledgePaymentPlansViewController(

@@ -22,6 +22,7 @@ public protocol NoShippingPledgeViewModelInputs {
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
   func paymentAuthorizationViewControllerDidFinish()
+  func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
@@ -265,30 +266,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       shippingSummaryViewDataNonnil.wrapInOptional(),
       shippingLocation.filter(isNil).mapConst(nil)
     )
-
-    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
-      initialData,
-      pledgeTotal,
-      additionalPledgeAmount,
-      shippingSummaryViewData,
-      rewards
-    )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
-      let rewardsData = PostCampaignRewardsSummaryViewData(
-        rewards: data.rewards,
-        selectedQuantities: data.selectedQuantities,
-        projectCountry: data.project.country,
-        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-        shipping: shipping
-      )
-      let pledgeData = PledgeSummaryViewData(
-        project: data.project,
-        total: pledgeTotal,
-        confirmationLabelHidden: false,
-        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
-      )
-      return (rewardsData, additionalPledgeAmount, pledgeData)
-    }
 
     self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
       projectAndReward,
@@ -987,22 +964,53 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.pledgeOverTimeConfigData = Signal.combineLatest(
       self.showPledgeOverTimeUI,
       project,
-      pledgeTotal
+      pledgeTotal,
+      self.paymentPlanSelectedSignal
     )
-    .filter { showPledgeOverTimeUI, _, _ in
+    .filter { showPledgeOverTimeUI, _, _, _ in
       showPledgeOverTimeUI
     }
-    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
+    .map { _, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData in
       // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
       let isIneligible = pledgeTotal < 150
 
       return PledgePaymentPlansAndSelectionData(
-        selectedPlan: .pledgeInFull,
+        selectedPlan: planSelected,
         increments: mockPledgePaymentIncrement(),
         ineligible: isIneligible,
         project: project
       )
     }
+
+    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
+      initialData,
+      pledgeTotal,
+      additionalPledgeAmount,
+      shippingSummaryViewData,
+      rewards,
+      self.pledgeOverTimeConfigData
+    )
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards, pledgeOverTimeData in
+      let rewardsData = PostCampaignRewardsSummaryViewData(
+        rewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
+        projectCountry: data.project.country,
+        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
+        shipping: shipping
+      )
+      let pledgeData = PledgeSummaryViewData(
+        project: data.project,
+        total: pledgeTotal,
+        confirmationLabelHidden: false,
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards),
+        pledgeOverTimeSelected: pledgeOverTimeData.selectedPlan == .pledgeOverTime,
+        paymentIncrements: mockPledgePaymentIncrement()
+      )
+      return (rewardsData, additionalPledgeAmount, pledgeData)
+    }
+
+    // Sending `.pledgeInFull` as default option
+    self.paymentPlanSelectedObserver.send(value: .pledgeInFull)
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
@@ -1045,6 +1053,12 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     = Signal<Void, Never>.pipe()
   public func paymentAuthorizationViewControllerDidFinish() {
     self.paymentAuthorizationDidFinishObserver.send(value: ())
+  }
+
+  private let (paymentPlanSelectedSignal, paymentPlanSelectedObserver) = Signal<PledgePaymentPlansType, Never>
+    .pipe()
+  public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
+    self.paymentPlanSelectedObserver.send(value: paymentPlan)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
