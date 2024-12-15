@@ -64,7 +64,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var title: Signal<String, Never> { get }
   var showPledgeOverTimeUI: Signal<Bool, Never> { get }
-  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
+  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
 }
 
 public protocol NoShippingPledgeViewModelType {
@@ -967,10 +967,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       pledgeTotal,
       self.paymentPlanSelectedSignal
     )
-    .filter { showPledgeOverTimeUI, _, _, _ in
-      showPledgeOverTimeUI
-    }
-    .map { _, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData in
+    .map { showUI, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData? in
+      guard showUI else { return nil }
       // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
       let isIneligible = pledgeTotal < 150
 
@@ -1003,8 +1001,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         total: pledgeTotal,
         confirmationLabelHidden: false,
         pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards),
-        pledgeOverTimeSelected: pledgeOverTimeData.selectedPlan == .pledgeOverTime,
-        paymentIncrements: mockPledgePaymentIncrement()
+        pledgeOverTimeData: pledgeOverTimeData
       )
       return (rewardsData, additionalPledgeAmount, pledgeData)
     }
@@ -1146,7 +1143,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
   public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never>
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }

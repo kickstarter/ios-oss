@@ -12,8 +12,7 @@ public typealias PledgeSummaryViewData = (
   total: Double,
   confirmationLabelHidden: Bool,
   pledgeHasNoReward: Bool?,
-  pledgeOverTimeSelected: Bool,
-  paymentIncrements: [PledgePaymentIncrement]
+  pledgeOverTimeData: PledgePaymentPlansAndSelectionData?
 )
 
 public protocol PledgeSummaryViewModelInputs {
@@ -48,16 +47,15 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     .map(first)
 
     let projectAndPledgeTotal = initialData
-      .map { project, total, _, _, _, _ in (project, total) }
+      .map { project, total, _, _, _ in (project, total) }
 
     let pledgeHasNoReward = initialData
-      .map { _, _, _, pledgeHasNoReward, _, _ in pledgeHasNoReward }
+      .map { _, _, _, pledgeHasNoReward, _ in pledgeHasNoReward }
 
     let pledgeOverTimeData = initialData
-      .map { _, _, _, _, pledgeOverTimeSelected, paymentIncrements in (
-        pledgeOverTimeSelected,
-        paymentIncrements
-      ) }
+      .map { _, _, _, _, pledgeOverTimeData in
+        pledgeOverTimeData
+      }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -114,9 +112,11 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
         return true
       }
 
-    self.pledgeOverTimeStackViewHidden = initialData.map { $0.pledgeOverTimeSelected }.negate()
+    self.pledgeOverTimeStackViewHidden = pledgeOverTimeData.map { $0?.isPledgeOverTime ?? false }.negate()
+
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.pledgeOverTimeChargesText = initialData.map { "charged as \($0.paymentIncrements.count) payments" }
+    self.pledgeOverTimeChargesText = pledgeOverTimeData.skipNil()
+      .map { "charged as \($0.paymentIncrements.count) payments" }
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
@@ -206,7 +206,12 @@ private func attributedConfirmationPledgeOverTimeString(
 }
 
 private func attributedConfirmationString(with data: PledgeSummaryViewData) -> NSAttributedString {
-  return data.pledgeOverTimeSelected ?
-    attributedConfirmationPledgeOverTimeString(with: data.project, increments: data.paymentIncrements)
-    : attributedConfirmationString(with: data.project, pledgeTotal: data.total)
+  if let plotData = data.pledgeOverTimeData, plotData.isPledgeOverTime {
+    return attributedConfirmationPledgeOverTimeString(
+      with: data.project,
+      increments: plotData.paymentIncrements
+    )
+  }
+
+  return attributedConfirmationString(with: data.project, pledgeTotal: data.total)
 }

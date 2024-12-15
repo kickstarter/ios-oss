@@ -239,8 +239,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
         total: pledgeTotal,
         confirmationLabelHidden: true,
         pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards),
-        pledgeOverTimeSelected: false,
-        paymentIncrements: []
+        pledgeOverTimeData: nil
       )
       return (rewardsData, bonus, pledgeData)
     }

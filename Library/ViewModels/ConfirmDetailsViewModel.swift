@@ -515,5 +515,5 @@ private func pledgeSummaryViewData(
   confirmationLabelHidden: Bool,
   pledgeHasNoReward: Bool
 ) -> PledgeSummaryViewData {
-  return (project, total, confirmationLabelHidden, pledgeHasNoReward, false, [])
+  return (project, total, confirmationLabelHidden, pledgeHasNoReward, nil)
 }

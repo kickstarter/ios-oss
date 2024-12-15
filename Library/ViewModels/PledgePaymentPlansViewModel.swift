@@ -25,6 +25,10 @@ public struct PledgePaymentPlansAndSelectionData {
     self.project = project
     self.selectedPlan = selectedPlan
   }
+
+  public var isPledgeOverTime: Bool {
+    self.selectedPlan == .pledgeOverTime
+  }
 }
 
 public protocol PledgePaymentPlansViewModelInputs {
