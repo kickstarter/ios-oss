@@ -1249,7 +1249,7 @@ private func pledgeAmountSummaryViewData(
   )
 }
 
-private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   var timeStamp = Date().timeIntervalSince1970
   for _ in 1...4 {

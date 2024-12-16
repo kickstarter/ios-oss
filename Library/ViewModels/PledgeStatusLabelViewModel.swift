@@ -11,6 +11,15 @@ public struct PledgeStatusLabelViewData {
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
   public let backingState: Backing.Status
+  public let paymentIncrements: [PledgePaymentIncrement]?
+}
+
+extension PledgeStatusLabelViewData {
+  public var isPledgeOverTime: Bool {
+    guard let paymentIncrements = self.paymentIncrements, !paymentIncrements.isEmpty else { return false }
+
+    return true
+  }
 }
 
 public protocol PledgeStatusLabelViewModelInputs {
@@ -72,30 +81,32 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
 
   let string: String
 
-  switch (data.backingState, currentUserIsCreatorOfProject) {
+  switch (data.backingState, currentUserIsCreatorOfProject, data.isPledgeOverTime) {
   // Backer context
-  case (.canceled, false):
+  case (.canceled, false, _):
     string = Strings.You_canceled_your_pledge_for_this_project()
-  case (.collected, false):
+  case (.collected, false, _):
     string = Strings.We_collected_your_pledge_for_this_project()
-  case (.dropped, false):
+  case (.dropped, false, _):
     string = Strings.Your_pledge_was_dropped_because_of_payment_errors()
-  case (.errored, false):
+  case (.errored, false, _):
     string = Strings.We_cant_process_your_pledge_Please_update_your_payment_method()
-  case (.pledged, _):
+  case (.pledged, _, false):
     return attributedConfirmationString(with: data)
-  case (.preauth, false):
+  case (.pledged, _, true):
+    return attributedPledgeOverTimeConfirmationString(with: data)
+  case (.preauth, false, _):
     string = Strings.We_re_processing_your_pledge_pull_to_refresh()
   // Creator context
-  case (.canceled, true):
+  case (.canceled, true, _):
     string = Strings.The_backer_canceled_their_pledge_for_this_project()
-  case (.collected, true):
+  case (.collected, true, _):
     string = Strings.We_collected_the_backers_pledge_for_this_project()
-  case (.dropped, true):
+  case (.dropped, true, _):
     string = Strings.This_pledge_was_dropped_because_of_payment_errors()
-  case (.errored, true):
+  case (.errored, true, _):
     string = Strings.We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method()
-  case (.preauth, true):
+  case (.preauth, true, _):
     string = Strings.We_re_processing_this_pledge_pull_to_refresh()
   }
 
@@ -171,5 +182,34 @@ private func attributedConfirmationString(with data: PledgeStatusLabelViewData) 
     )
     .attributed(
       with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
+    )
+}
+
+private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusLabelViewData)
+  -> NSAttributedString {
+  guard let firstPaymentIncrement = data.paymentIncrements?.first,
+        !data.currentUserIsCreatorOfProject else {
+    return attributedConfirmationString(with: data)
+  }
+
+  let date = Format.date(secondsInUTC: firstPaymentIncrement.scheduledCollection, template: "MMMM d, yyyy")
+  let paymentAmount = Format.currency(
+    firstPaymentIncrement.amount.amount,
+    country: data.projectCurrencyCountry
+  )
+
+  let font = UIFont.ksr_subhead()
+  let foregroundColor = UIColor.ksr_support_700
+
+  let paragraphStyle = NSMutableParagraphStyle()
+  paragraphStyle.alignment = .center
+
+  let attributes = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle
+  ]
+
+  return "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of \(paymentAmount) will be collected on \(date)."
+    .attributed(
+      with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [paymentAmount, date]
     )
 }

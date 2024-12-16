@@ -197,7 +197,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 10.0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     withEnvironment(apiService: mockService) {
@@ -872,7 +873,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     // Pledge amount 50
@@ -895,7 +897,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(

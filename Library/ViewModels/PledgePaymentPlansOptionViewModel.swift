@@ -10,15 +10,15 @@ public typealias PledgePaymentPlanOptionData = (
   project: Project
 )
 
-public typealias PledgePaymentIncrement = (
-  amount: PledgePaymentIncrementAmount,
-  scheduledCollection: TimeInterval
-)
+public struct PledgePaymentIncrement: Equatable {
+  public let amount: PledgePaymentIncrementAmount
+  public let scheduledCollection: TimeInterval
+}
 
-public typealias PledgePaymentIncrementAmount = (
-  amount: Double,
-  currency: String
-)
+public struct PledgePaymentIncrementAmount: Equatable {
+  public let amount: Double
+  public let currency: String
+}
 
 public struct PledgePaymentIncrementFormatted: Equatable {
   public var incrementChargeNumber: String
