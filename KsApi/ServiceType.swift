@@ -52,7 +52,7 @@ public protocol ServiceType {
 
   /// Returns Pledge Over Time payment plan data.
   func buildPaymentPlan(projectSlug: String, pledgeAmount: String)
-    -> SignalProducer<BuildPaymentPlanEnvelope, ErrorEnvelope>
+    -> SignalProducer<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>
 
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)

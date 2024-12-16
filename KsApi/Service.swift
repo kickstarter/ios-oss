@@ -120,13 +120,12 @@ public struct Service: ServiceType {
   public func buildPaymentPlan(
     projectSlug: String,
     pledgeAmount: String
-  ) -> SignalProducer<BuildPaymentPlanEnvelope, ErrorEnvelope> {
+  ) -> SignalProducer<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.BuildPaymentPlanQuery(
         slug: projectSlug,
         amount: pledgeAmount
       ))
-      .flatMap(BuildPaymentPlanEnvelope.envelopeProducer(from:))
   }
 
   public func cancelBacking(input: CancelBackingInput)

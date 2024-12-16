@@ -20,7 +20,7 @@
 
     fileprivate let blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let buildPaymentPlanResult: Result<BuildPaymentPlanEnvelope, ErrorEnvelope>?
+    fileprivate let buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>?
 
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
@@ -236,7 +236,7 @@
       addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       apolloClient: ApolloClientType? = nil,
       blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
-      buildPaymentPlanResult: Result<BuildPaymentPlanEnvelope, ErrorEnvelope>? = nil,
+      buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -599,7 +599,7 @@
     func buildPaymentPlan(
       projectSlug: String,
       pledgeAmount: String
-    ) -> SignalProducer<BuildPaymentPlanEnvelope, ErrorEnvelope> {
+    ) -> SignalProducer<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
@@ -1993,6 +1993,12 @@ private extension Result {
 }
 
 extension GraphAPI.CompleteOnSessionCheckoutMutation.Data: Decodable {
+  public init(from _: Decoder) throws {
+    fatalError("The test code should not actually be decoding this object.")
+  }
+}
+
+extension GraphAPI.BuildPaymentPlanQuery.Data: Decodable {
   public init(from _: Decoder) throws {
     fatalError("The test code should not actually be decoding this object.")
   }
