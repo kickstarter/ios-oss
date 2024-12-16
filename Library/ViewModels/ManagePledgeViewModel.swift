@@ -499,14 +499,17 @@ private func actionSheetMenuOptionsFor(
     return [.contactCreator]
   }
 
-  let actions: [ManagePledgeAlertAction]
+  var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 
   // TODO: Remove 'update pledge' from ManagePledgeAlertAction after feature rollout.
   if featureNoShippingAtCheckout() {
-    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards && $0 != .updatePledge }
-  } else {
-    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+    actions = actions.filter { $0 != .updatePledge }
   }
+
+  if isPledgeOverTime(with: backing) {
+    actions = actions.filter { $0 != .chooseAnotherReward }
+  }
+
   return actions
 }
 
@@ -556,6 +559,24 @@ private func managePledgePaymentMethodViewData(
     creditCardType: backing.paymentSource?.type,
     paymentType: backing.paymentSource?.paymentType
   )
+}
+
+private func isPledgeOverTime(with _: Backing) -> Bool {
+  /*
+   TODO: Replace the current logic with `backing.PaymentIncrements` validation.
+
+   Context:
+   - For development purposes, this function currently returns `true` when
+     `featurePledgeOverTimeEnabled()` is `true`.
+   - Final logic: Validate `backing.PaymentIncrements`. If the list is not empty,
+     `isPledgeOverTime(:)` should return `true`.
+
+   Pending:
+   - Awaiting implementation of `backing.PaymentIncrements` data source as part of MBL-1851.
+
+   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+   */
+  return featurePledgeOverTimeEnabled()
 }
 
 private func managePledgeSummaryViewData(
