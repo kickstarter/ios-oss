@@ -571,11 +571,16 @@ private func managePledgeSummaryViewData(
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   /*
-   * TODO: Replace mock data with backing.PaymentIncrements list.
-   * Context: Adding mock data when `featurePledgeOverTimeEnabled()` is `true`.
-   * Pending: Awaiting implementation of the real backing.PaymentIncrements data source.
-   *          [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
-   */
+   TODO: Replace mock data with backing.PaymentIncrements list.
+
+   Context:
+   - Adding mock data when `featurePledgeOverTimeEnabled()` is `true`.
+
+   Pending:
+   - Awaiting implementation of the real backing.PaymentIncrements data source.
+
+   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+    */
   var paymentIncrements: [PledgePaymentIncrement]?
   if featurePledgeOverTimeEnabled() {
     paymentIncrements = mockPledgePaymentIncrement()
