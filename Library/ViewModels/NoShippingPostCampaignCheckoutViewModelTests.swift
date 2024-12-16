@@ -20,7 +20,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   private let checkoutComplete = TestObserver<ThanksPageData, Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
-  private let showErrorBanner = TestObserver<(message: String, persist: Bool), Never>()
+  private let checkoutError = TestObserver<ErrorEnvelope, Never>()
   private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward), Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
@@ -47,7 +47,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
     self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
-    self.vm.showErrorBanner.observe(self.showErrorBanner.observer)
+    self.vm.checkoutError.observe(self.checkoutError.observer)
     self.vm.goToLoginSignup.observe(self.goToLoginSignup.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
@@ -872,7 +872,38 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.goToLoginSignupTapped()
 
       self.goToLoginSignup.assertDidEmitValue()
-      self.showErrorBanner.assertDidNotEmitValue()
+      self.checkoutError.assertDidNotEmitValue()
+    }
+  }
+
+  func testCreatePaymentIntent_emitsOnViewDidLoad() {
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(
+      createCheckoutResult: .success(self.checkoutResponse),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .latePledge
+    )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.mockStripeIntentService.paymentIntentRequests, 1)
     }
   }
 }

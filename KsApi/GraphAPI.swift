@@ -15630,6 +15630,18 @@ public enum GraphAPI {
           ...ProjectAnalyticsFragment
         }
         backingDetailsPageRoute(type: url, tab: survey_responses)
+        deliveryAddress {
+          __typename
+          id
+          addressLine1
+          addressLine2
+          city
+          region
+          postalCode
+          phoneNumber
+          recipientName
+          countryCode
+        }
       }
       """
 
@@ -15642,6 +15654,7 @@ public enum GraphAPI {
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("project", type: .object(Project.selections)),
         GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "survey_responses"], type: .nonNull(.scalar(String.self))),
+        GraphQLField("deliveryAddress", type: .object(DeliveryAddress.selections)),
       ]
     }
 
@@ -15651,8 +15664,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, id: GraphQLID, project: Project? = nil, backingDetailsPageRoute: String) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "backingDetailsPageRoute": backingDetailsPageRoute])
+    public init(amount: Amount, id: GraphQLID, project: Project? = nil, backingDetailsPageRoute: String, deliveryAddress: DeliveryAddress? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "backingDetailsPageRoute": backingDetailsPageRoute, "deliveryAddress": deliveryAddress.flatMap { (value: DeliveryAddress) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -15700,6 +15713,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "backingDetailsPageRoute")
+      }
+    }
+
+    /// The delivery address associated with the backing
+    public var deliveryAddress: DeliveryAddress? {
+      get {
+        return (resultMap["deliveryAddress"] as? ResultMap).flatMap { DeliveryAddress(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "deliveryAddress")
       }
     }
 
@@ -15817,6 +15840,133 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct DeliveryAddress: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Address"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("addressLine1", type: .nonNull(.scalar(String.self))),
+          GraphQLField("addressLine2", type: .scalar(String.self)),
+          GraphQLField("city", type: .nonNull(.scalar(String.self))),
+          GraphQLField("region", type: .scalar(String.self)),
+          GraphQLField("postalCode", type: .scalar(String.self)),
+          GraphQLField("phoneNumber", type: .scalar(String.self)),
+          GraphQLField("recipientName", type: .scalar(String.self)),
+          GraphQLField("countryCode", type: .nonNull(.scalar(CountryCode.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, addressLine1: String, addressLine2: String? = nil, city: String, region: String? = nil, postalCode: String? = nil, phoneNumber: String? = nil, recipientName: String? = nil, countryCode: CountryCode) {
+        self.init(unsafeResultMap: ["__typename": "Address", "id": id, "addressLine1": addressLine1, "addressLine2": addressLine2, "city": city, "region": region, "postalCode": postalCode, "phoneNumber": phoneNumber, "recipientName": recipientName, "countryCode": countryCode])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// Address line 1 (Street address/PO Box/Company name)
+      public var addressLine1: String {
+        get {
+          return resultMap["addressLine1"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "addressLine1")
+        }
+      }
+
+      /// Address line 2 (Apartment/Suite/Unit/Building)
+      public var addressLine2: String? {
+        get {
+          return resultMap["addressLine2"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "addressLine2")
+        }
+      }
+
+      /// City
+      public var city: String {
+        get {
+          return resultMap["city"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "city")
+        }
+      }
+
+      /// State/County/Province/Region.
+      public var region: String? {
+        get {
+          return resultMap["region"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "region")
+        }
+      }
+
+      /// ZIP or postal code
+      public var postalCode: String? {
+        get {
+          return resultMap["postalCode"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "postalCode")
+        }
+      }
+
+      /// Recipient's phone number
+      public var phoneNumber: String? {
+        get {
+          return resultMap["phoneNumber"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "phoneNumber")
+        }
+      }
+
+      /// Address recipient name
+      public var recipientName: String? {
+        get {
+          return resultMap["recipientName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "recipientName")
+        }
+      }
+
+      /// 2-letter country code
+      public var countryCode: CountryCode {
+        get {
+          return resultMap["countryCode"]! as! CountryCode
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "countryCode")
         }
       }
     }
@@ -20206,7 +20356,6 @@ public enum GraphAPI {
           topic
         }
         optedOutOfRecommendations
-        ppoHasAction
         showPublicProfile
         savedProjects {
           __typename
@@ -20254,7 +20403,6 @@ public enum GraphAPI {
         GraphQLField("newsletterSubscriptions", type: .object(NewsletterSubscription.selections)),
         GraphQLField("notifications", type: .list(.nonNull(.object(Notification.selections)))),
         GraphQLField("optedOutOfRecommendations", type: .scalar(Bool.self)),
-        GraphQLField("ppoHasAction", type: .scalar(Bool.self)),
         GraphQLField("showPublicProfile", type: .scalar(Bool.self)),
         GraphQLField("savedProjects", type: .object(SavedProject.selections)),
         GraphQLBooleanCondition(variableName: "withStoredCards", inverted: false, selections: [
@@ -20271,8 +20419,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, backingsCount: Int, chosenCurrency: String? = nil, createdProjects: CreatedProject? = nil, email: String? = nil, hasPassword: Bool? = nil, hasUnreadMessages: Bool? = nil, hasUnseenActivity: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isBlocked: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, isSocializing: Bool? = nil, location: Location? = nil, name: String, needsFreshFacebookToken: Bool? = nil, newsletterSubscriptions: NewsletterSubscription? = nil, notifications: [Notification]? = nil, optedOutOfRecommendations: Bool? = nil, ppoHasAction: Bool? = nil, showPublicProfile: Bool? = nil, savedProjects: SavedProject? = nil, storedCards: StoredCard? = nil, surveyResponses: SurveyResponse? = nil, uid: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backingsCount": backingsCount, "chosenCurrency": chosenCurrency, "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "email": email, "hasPassword": hasPassword, "hasUnreadMessages": hasUnreadMessages, "hasUnseenActivity": hasUnseenActivity, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isBlocked": isBlocked, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "isSocializing": isSocializing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "newsletterSubscriptions": newsletterSubscriptions.flatMap { (value: NewsletterSubscription) -> ResultMap in value.resultMap }, "notifications": notifications.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, "optedOutOfRecommendations": optedOutOfRecommendations, "ppoHasAction": ppoHasAction, "showPublicProfile": showPublicProfile, "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "surveyResponses": surveyResponses.flatMap { (value: SurveyResponse) -> ResultMap in value.resultMap }, "uid": uid])
+    public init(backings: Backing? = nil, backingsCount: Int, chosenCurrency: String? = nil, createdProjects: CreatedProject? = nil, email: String? = nil, hasPassword: Bool? = nil, hasUnreadMessages: Bool? = nil, hasUnseenActivity: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isBlocked: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, isSocializing: Bool? = nil, location: Location? = nil, name: String, needsFreshFacebookToken: Bool? = nil, newsletterSubscriptions: NewsletterSubscription? = nil, notifications: [Notification]? = nil, optedOutOfRecommendations: Bool? = nil, showPublicProfile: Bool? = nil, savedProjects: SavedProject? = nil, storedCards: StoredCard? = nil, surveyResponses: SurveyResponse? = nil, uid: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backingsCount": backingsCount, "chosenCurrency": chosenCurrency, "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "email": email, "hasPassword": hasPassword, "hasUnreadMessages": hasUnreadMessages, "hasUnseenActivity": hasUnseenActivity, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isBlocked": isBlocked, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "isSocializing": isSocializing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "newsletterSubscriptions": newsletterSubscriptions.flatMap { (value: NewsletterSubscription) -> ResultMap in value.resultMap }, "notifications": notifications.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, "optedOutOfRecommendations": optedOutOfRecommendations, "showPublicProfile": showPublicProfile, "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "surveyResponses": surveyResponses.flatMap { (value: SurveyResponse) -> ResultMap in value.resultMap }, "uid": uid])
     }
 
     public var __typename: String {
@@ -20530,16 +20678,6 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "optedOutOfRecommendations")
-      }
-    }
-
-    /// Whether backer has any action in PPO
-    public var ppoHasAction: Bool? {
-      get {
-        return resultMap["ppoHasAction"] as? Bool
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "ppoHasAction")
       }
     }
 
