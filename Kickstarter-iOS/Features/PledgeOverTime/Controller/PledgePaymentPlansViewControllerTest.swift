@@ -6,7 +6,6 @@ import SnapshotTesting
 import UIKit
 
 final class PledgePaymentPlansViewControllerTest: TestCase {
-  
   private let thresholdAmount = 125.0
   override func setUp() {
     super.setUp()
@@ -27,7 +26,11 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 
-        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull, project: project, thresholdAmount: thresholdAmount)
+        let data = PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          project: project,
+          thresholdAmount: thresholdAmount
+        )
         controller.configure(with: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -81,7 +84,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
           increments: testPledgePaymentIncrement(),
           ineligible: true,
           project: Project.template,
-          thresholdAmount: thresholdAmount
+          thresholdAmount: self.thresholdAmount
         )
 
         controller.configure(with: data)
