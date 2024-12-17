@@ -47,6 +47,7 @@ $(PROJECT_DIR)/KsApi/queries/FetchUser.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchBackingQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchRootCategories.graphql
+$(PROJECT_DIR)/KsApi/queries/BuildPaymentPlanQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/ValidateCheckout.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCommentReplies.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUpdateComments.graphql
