@@ -691,9 +691,13 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "Order",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Order",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -14232,13 +14236,19 @@
             "deprecationReason": null
           },
           {
-            "name": "separate_payment_section",
+            "name": "pledge_redemption_unified_creator_ui",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "react_backed_projects",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "copy_addons",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16050,6 +16060,22 @@
             "deprecationReason": null
           },
           {
+            "name": "lowercaseType",
+            "description": "The card type, but in lowercase.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "LowercaseCreditCardTypes",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paymentType",
             "description": "The card's payment type.",
             "args": [],
@@ -16117,6 +16143,59 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "LowercaseCreditCardTypes",
+        "description": "Credit card types.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "amex",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "discover",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "jcb",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mastercard",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visa",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "diners",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unionpay",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -21942,13 +22021,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -21958,13 +22033,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -21974,13 +22045,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -21994,7 +22061,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTime",
+                "name": "ISO8601DateTime",
                 "ofType": null
               }
             },
@@ -29587,22 +29654,6 @@
             "deprecationReason": null
           },
           {
-            "name": "readyToBeFinalized",
-            "description": "Whether the cart could be finalized or is missing required info",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "shouldCollectAddress",
             "description": "Whether or not this cart needs an address to be finalized",
             "args": [],
@@ -30320,6 +30371,54 @@
             "deprecationReason": null
           },
           {
+            "name": "checkoutRequired",
+            "description": "Whether there is required action for the backer to take in their pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "checkoutState",
+            "description": "The state of checkout (taking into account order and cart status)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "CheckoutStateEnum",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "checkoutVoucherAutoCompletable",
+            "description": "Whether or not the order would be auto-exemptable if the order had no cross-sells.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "crossSells",
             "description": "Add-ons selected for this order during Pledge Redemption",
             "args": [],
@@ -30362,6 +30461,22 @@
           {
             "name": "finalized",
             "description": "Whether the order is in a finalized state",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "finalizedAndNotExempt",
+            "description": "Whether or not the order was finalized but non-exempt.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -30436,12 +30551,12 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingAmount",
-            "description": "The cost of shipping",
+            "name": "shippingAmountFormatted",
+            "description": "The cost of shipping, formatted",
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -30476,29 +30591,25 @@
             "deprecationReason": null
           },
           {
-            "name": "totalTax",
-            "description": "The total tax amount for the order",
+            "name": "totalFormatted",
+            "description": "The total cost for the order including taxes and shipping, formatted",
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "voucherAutoExemptable",
-            "description": "Whether or not the order would be auto-exemptable if the order had no cross-sells.",
+            "name": "totalTaxFormatted",
+            "description": "The total tax amount for the order, formatted",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -30516,42 +30627,39 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "CheckoutStateEnum",
+        "description": "The state of checkout, e.g. complete, in progress, incomplete.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "complete",
+            "description": "complete",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "in_progress",
+            "description": "in_progress",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "not_started",
+            "description": "not_started",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "OrderCrossSell",
         "description": "An add-on reward included in an Order during Pledge Redemption as a Cross Sell.",
         "fields": [
-          {
-            "name": "contentsType",
-            "description": "The content type of the reward",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "description",
-            "description": "Description of the add-on",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "id",
             "description": null,
@@ -30569,43 +30677,15 @@
             "deprecationReason": null
           },
           {
-            "name": "name",
-            "description": "The add-on name.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "orderableConfig",
-            "description": "Configuration for the add-on",
+            "name": "orderable",
+            "description": "The orderable of the cross sell",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "OrderableConfig",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "orderableId",
-            "description": "The ID of the orderable",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "UNION",
+                "name": "Orderable",
                 "ofType": null
               }
             },
@@ -30629,8 +30709,8 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingPreference",
-            "description": "The shipping preference of the reward",
+            "name": "totalPriceFormatted",
+            "description": "The total price of the cross-sell",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -30645,24 +30725,16 @@
             "deprecationReason": null
           },
           {
-            "name": "shippingRatesExpanded",
-            "description": "Shipping rates for all shippable countries,\n        including those that are children of superregions",
+            "name": "unitPriceFormatted",
+            "description": "The price of one unit of the cross-sell",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ShippingRate",
-                    "ofType": null
-                  }
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -30673,6 +30745,22 @@
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "Orderable",
+        "description": "Types that can be added to an Order",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Reward",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "UNION",
@@ -36490,6 +36578,33 @@
             "deprecationReason": null
           },
           {
+            "name": "bulkEditStockLocationMappings",
+            "description": "Takes a stock location and bulk edits the location mapping",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BulkEditStockLocationMappingsInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "BulkEditStockLocationMappingsPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "cancelBacking",
             "description": "Cancel a pledged backing",
             "args": [
@@ -41246,6 +41361,102 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "BulkEditStockLocationMappingsInput",
+        "description": "Autogenerated input type of BulkEditStockLocationMappings",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "stockLocationId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "locationIds",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "BulkEditStockLocationMappingsPayload",
+        "description": "Autogenerated return type of BulkEditStockLocationMappings",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stockLocation",
+            "description": "The updated stock location",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "StockLocation",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -47637,22 +47848,6 @@
         "description": "Autogenerated return type of CreateWave",
         "fields": [
           {
-            "name": "checkoutWave",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CheckoutWave",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "args": [],
@@ -47660,6 +47855,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

@@ -368,8 +368,22 @@ extension PPOProjectCardModel {
     let pledge = backing?.amount.fragments.moneyFragment
     let creatorName = ppoProject?.creator?.name
 
-    // TODO: Implement [MBL-1695]
-    let address: String? = nil
+    let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
+      let cityRegionFields: [String?] = [
+        deliveryAddress.city,
+        deliveryAddress.region.flatMap { ", \($0)" },
+        deliveryAddress.postalCode.flatMap { " \($0)" }
+      ]
+      let fields: [String?] = [
+        deliveryAddress.recipientName,
+        deliveryAddress.addressLine1,
+        deliveryAddress.addressLine2,
+        cityRegionFields.compactMap { $0 }.joined(),
+        deliveryAddress.countryCode.rawValue,
+        deliveryAddress.phoneNumber
+      ]
+      return fields.compactMap { $0 }.joined(separator: "\n")
+    }
 
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
