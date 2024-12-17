@@ -22061,7 +22061,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTime",
+                "name": "ISO8601DateTime",
                 "ofType": null
               }
             },
