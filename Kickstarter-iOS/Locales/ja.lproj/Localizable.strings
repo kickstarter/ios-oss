@@ -57,7 +57,7 @@
 "Authentication_failed_please_try_again" = "認証に失敗しました。もう一度お試しください。";
 "Authentication_required" = "認証手続きが必要です";
 "Authentication_success_please_pull_to_refresh" = "認証が成功しました。画面をプルダウンして、更新してください。";
-"Available_for_pledges_over" = "Available for pledges over %{amount}";
+"Available_for_pledges_over" = "%{amount} 以上のプレッジで利用可能";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
 "Back_it_because_you_believe_in_it" = "このプロジェクトの可能性を信じてバックしよう。";
@@ -114,6 +114,7 @@
 "Change_payment_method" = "支払方法の変更";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "配送先を変更するか、アドオン (追加リワード) をスキップして続行してください。";
 "Charge_number" = "請求 %{number}";
+"Charged_as_number_of_payments" = "%{number}回に分けて請求";
 "Chat" = "チャット";
 "Check_back_later_for_an_update_on_your_export" = "しばらくしてからエクスポートの進捗状況を確認してください。";
 "Check_out_these_handpicked_projects" = "あなたにピッタリの Kickstarter イチオシのプロジェクトをご覧ください。";
@@ -328,6 +329,7 @@
 "I_plan_to_use_AI_generated_content" = "自分のプロジェクトで AI で生成されたコンテンツを使用する予定です。";
 "I_understand" = "理解しました";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
+"If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、バッカーへの最初の請求（%{amount}）が%{project_deadline}に行われます。";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline}に%{total}が請求されます。プロジェクトの資金が集まりクリエイターがその取り組み全体に成功した場合に引き換え可能となるプレッジ証明が届きます。";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";

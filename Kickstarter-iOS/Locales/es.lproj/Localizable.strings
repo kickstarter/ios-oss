@@ -57,7 +57,7 @@
 "Authentication_failed_please_try_again" = "Autenticación fallida. Intenta de nuevo.";
 "Authentication_required" = "Autenticación necesaria";
 "Authentication_success_please_pull_to_refresh" = "Autenticación exitosa. Desliza para actualizar.";
-"Available_for_pledges_over" = "Available for pledges over %{amount}";
+"Available_for_pledges_over" = "Disponible para contribuciones superiores a %{amount}";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
 "Back" = "Atrás";
 "Back_it_because_you_believe_in_it" = "Apóyalo porque crees en él.";
@@ -114,6 +114,7 @@
 "Change_payment_method" = "Cambiar método de pago";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Cambia tu ubicación de envío u omite los complementos para continuar.";
 "Charge_number" = "Cargo %{number}";
+"Charged_as_number_of_payments" = "cobrado en %{number} pagos";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Vuelve más tarde para obtener una actualización sobre tu progreso de exportación.";
 "Check_out_these_handpicked_projects" = "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti.";
@@ -328,6 +329,7 @@
 "I_plan_to_use_AI_generated_content" = "Tengo pensado usar contenido generado por IA en mi proyecto.";
 "I_understand" = "Entiendo";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
+"If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Si el proyecto alcanza la meta, el primer cargo de %{amount} se cobrará el %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si el proyecto alcanza la meta de financiamiento, te cobraremos %{total} el %{project_deadline}. Recibirás un comprobante por la contribución que podrás canjear si el proyecto se financia con éxito y el creador logra completar su iniciativa.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";

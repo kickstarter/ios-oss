@@ -57,7 +57,7 @@
 "Authentication_failed_please_try_again" = "Authentification échouée. Veuillez réessayer.";
 "Authentication_required" = "Authentification nécessaire";
 "Authentication_success_please_pull_to_refresh" = "Authentification réussie. Veuillez tirer la page vers le bas pour l'actualiser.";
-"Available_for_pledges_over" = "Available for pledges over %{amount}";
+"Available_for_pledges_over" = "Engagements supérieurs à %{amount}";
 "Available_to_watch_for_time_more_units" = "Plus que %{time}%{units} pour regarder cette diffusion";
 "Back" = "Retour";
 "Back_it_because_you_believe_in_it" = "Ce projet ne décollera pas sans vous.";
@@ -114,6 +114,7 @@
 "Change_payment_method" = "Changer de moyen de paiement";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Changez de lieu de livraison ou ignorez les compléments pour continuer.";
 "Charge_number" = "Transaction %{number}";
+"Charged_as_number_of_payments" = "prélévé en %{number} fois";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Repassez plus tard pour suivre la préparation de votre exportation.";
 "Check_out_these_handpicked_projects" = "Voici quelques projets sélectionnés rien que pour vous.";
@@ -328,6 +329,7 @@
 "I_plan_to_use_AI_generated_content" = "Je prévois d'utiliser du contenu généré par une IA dans mon projet.";
 "I_understand" = "Je comprends";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
+"If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} sera effectué le %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité le %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si l'objectif de financement du projet est atteint, vous serez débité de %{total} le %{project_deadline}. Vous recevrez une preuve d'engagement qui sera échangeable si le projet est intégralement financé et si le créateur mène son projet à bien.";
 "If_you_turn_following_off" = "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée.";

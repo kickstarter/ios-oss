@@ -114,6 +114,7 @@
 "Change_payment_method" = "Change payment method";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Change your shipping location or skip add-ons to continue.";
 "Charge_number" = "Charge %{number}";
+"Charged_as_number_of_payments" = "charged as %{number} payments";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Check back later for an update on your export progress.";
 "Check_out_these_handpicked_projects" = "Check out these handpicked projects just for you.";
@@ -328,6 +329,7 @@
 "I_plan_to_use_AI_generated_content" = "I plan to use AI-generated content in my project.";
 "I_understand" = "I understand";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
+"If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "If the project reaches its funding goal, the first charge of %{amount} will be collected on %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "If the project reaches its funding goal, you will be charged on %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
 "If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers.";

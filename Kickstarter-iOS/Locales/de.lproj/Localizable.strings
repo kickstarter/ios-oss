@@ -57,7 +57,7 @@
 "Authentication_failed_please_try_again" = "Authentifizierung fehlgeschlagen. Bitte versuch es noch einmal.";
 "Authentication_required" = "Authentifizierung erforderlich";
 "Authentication_success_please_pull_to_refresh" = "Authentifizierung erfolgreich. Bitte ziehe, um die Seite zu aktualisieren.";
-"Available_for_pledges_over" = "Available for pledges over %{amount}";
+"Available_for_pledges_over" = "Für Beiträge über %{amount}";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
 "Back_it_because_you_believe_in_it" = "Du glaubst an dieses Projekt. Unterstütze es.";
@@ -114,6 +114,7 @@
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Change_your_shipping_location_or_skip_add_ons_to_continue" = "Um fortzufahren, ändere dein Versandziel oder überspringe Add-ons.";
 "Charge_number" = "Transaktion %{number}";
+"Charged_as_number_of_payments" = "zahlbar in %{number} Raten";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
 "Check_out_these_handpicked_projects" = "Sieh dir dieses speziell für dich ausgesuchten Projekte an.";
@@ -328,6 +329,7 @@
 "I_plan_to_use_AI_generated_content" = "Ich plane, bei meinem Projekt KI-generierte Inhalte zu nutzen.";
 "I_understand" = "Verstanden";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
+"If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Wenn das Projekt sein Finanzierungsziel erreicht, wird die erste Rate in Höhe von %{amount} am %{project_deadline} eingezogen.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am %{project_deadline} belastet.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Wenn das Projekt sein Finanzierungsziel erreicht, wird am %{project_deadline} deine Zahlung in Höhe von %{total} eingezogen. Du erhältst einen Nachweis über den Finanzierungsbeitrag, der einlösbar ist, wenn das Projekt finanziert ist und der Projektgründer seine kreative Idee erfolgreich umgesetzt hat.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";

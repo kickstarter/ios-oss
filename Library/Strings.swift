@@ -1014,10 +1014,10 @@ public enum Strings {
    "Available for pledges over %{amount}"
 
    - **en**: "Available for pledges over %{amount}"
-   - **de**: "Available for pledges over %{amount}"
-   - **es**: "Available for pledges over %{amount}"
-   - **fr**: "Available for pledges over %{amount}"
-   - **ja**: "Available for pledges over %{amount}"
+   - **de**: "Für Beiträge über %{amount}"
+   - **es**: "Disponible para contribuciones superiores a %{amount}"
+   - **fr**: "Engagements supérieurs à %{amount}"
+   - **ja**: "%{amount} 以上のプレッジで利用可能"
   */
   public static func Available_for_pledges_over(amount: String) -> String {
     return localizedString(
@@ -1918,6 +1918,23 @@ contributeurs"
     return localizedString(
       key: "Charge_number",
       defaultValue: "Charge %{number}",
+      count: nil,
+      substitutions: ["number": number]
+    )
+  }
+  /**
+   "charged as %{number} payments"
+
+   - **en**: "charged as %{number} payments"
+   - **de**: "zahlbar in %{number} Raten"
+   - **es**: "cobrado en %{number} pagos"
+   - **fr**: "prélévé en %{number} fois"
+   - **ja**: "%{number}回に分けて請求"
+  */
+  public static func Charged_as_number_of_payments(number: String) -> String {
+    return localizedString(
+      key: "Charged_as_number_of_payments",
+      defaultValue: "charged as %{number} payments",
       count: nil,
       substitutions: ["number": number]
     )
@@ -5434,6 +5451,23 @@ Cliquez pour réessayer."
       defaultValue: "I’d just like to support the project.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "If the project reaches its funding goal, the first charge of %{amount} will be collected on %{project_deadline}."
+
+   - **en**: "If the project reaches its funding goal, the first charge of %{amount} will be collected on %{project_deadline}."
+   - **de**: "Wenn das Projekt sein Finanzierungsziel erreicht, wird die erste Rate in Höhe von %{amount} am %{project_deadline} eingezogen."
+   - **es**: "Si el proyecto alcanza la meta, el primer cargo de %{amount} se cobrará el %{project_deadline}."
+   - **fr**: "Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} sera effectué le %{project_deadline}."
+   - **ja**: "プロジェクトがファンディングゴールに到達すると、バッカーへの最初の請求（%{amount}）が%{project_deadline}に行われます。"
+  */
+  public static func If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline(amount: String, project_deadline: String) -> String {
+    return localizedString(
+      key: "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline",
+      defaultValue: "If the project reaches its funding goal, the first charge of %{amount} will be collected on %{project_deadline}.",
+      count: nil,
+      substitutions: ["amount": amount, "project_deadline": project_deadline]
     )
   }
   /**
@@ -20058,7 +20092,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -23470,7 +23504,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -26581,7 +26615,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -27533,7 +27567,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
