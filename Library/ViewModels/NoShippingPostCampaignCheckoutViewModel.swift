@@ -238,7 +238,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
         project: data.project,
         total: pledgeTotal,
         confirmationLabelHidden: true,
-        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards)
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards),
+        pledgeOverTimeData: nil
       )
       return (rewardsData, bonus, pledgeData)
     }

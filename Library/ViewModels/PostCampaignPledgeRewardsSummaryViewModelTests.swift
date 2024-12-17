@@ -55,7 +55,8 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
       project: Project.template,
       total: total,
       confirmationLabelHidden: true,
-      pledgeHasNoReward: false
+      pledgeHasNoReward: false,
+      pledgeOverTimeData: nil
     )
 
     self.vm.inputs.configureWith(

@@ -3,11 +3,16 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+private enum Constants {
+  public static let dateFormat = "MMMM d, yyyy"
+}
+
 public typealias PledgeSummaryViewData = (
   project: Project,
   total: Double,
   confirmationLabelHidden: Bool,
-  pledgeHasNoReward: Bool?
+  pledgeHasNoReward: Bool?,
+  pledgeOverTimeData: PledgePaymentPlansAndSelectionData?
 )
 
 public protocol PledgeSummaryViewModelInputs {
@@ -21,6 +26,8 @@ public protocol PledgeSummaryViewModelOutputs {
   var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var confirmationLabelHidden: Signal<Bool, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
+  var pledgeOverTimeStackViewHidden: Signal<Bool, Never> { get }
+  var pledgeOverTimeChargesText: Signal<String, Never> { get }
   var totalConversionLabelText: Signal<String, Never> { get }
   var titleLabelText: Signal<String, Never> { get }
 }
@@ -40,10 +47,15 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     .map(first)
 
     let projectAndPledgeTotal = initialData
-      .map { project, total, _, _ in (project, total) }
+      .map { project, total, _, _, _ in (project, total) }
 
     let pledgeHasNoReward = initialData
-      .map { _, _, _, pledgeHasNoReward in pledgeHasNoReward }
+      .map { _, _, _, pledgeHasNoReward, _ in pledgeHasNoReward }
+
+    let pledgeOverTimeData = initialData
+      .map { _, _, _, _, pledgeOverTimeData in
+        pledgeOverTimeData
+      }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -85,13 +97,9 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
           : Strings.Pledge_amount()
       }
 
-    self.confirmationLabelAttributedText = projectAndPledgeTotal
-      .map { project, pledgeTotal in
-        attributedConfirmationString(
-          with: project,
-          pledgeTotal: pledgeTotal
-        )
-      }
+    self.confirmationLabelAttributedText = initialData.map { data in
+      attributedConfirmationString(with: data)
+    }
 
     let project = initialData.map(\.project)
 
@@ -103,6 +111,12 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
         return true
       }
+
+    self.pledgeOverTimeStackViewHidden = pledgeOverTimeData.map { $0?.isPledgeOverTime ?? false }.negate()
+
+    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+    self.pledgeOverTimeChargesText = pledgeOverTimeData.skipNil()
+      .map { "charged as \($0.paymentIncrements.count) payments" }
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
@@ -124,6 +138,8 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
   public let confirmationLabelHidden: Signal<Bool, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
+  public let pledgeOverTimeStackViewHidden: Signal<Bool, Never>
+  public let pledgeOverTimeChargesText: Signal<String, Never>
   public let totalConversionLabelText: Signal<String, Never>
   public let titleLabelText: Signal<String, Never>
 
@@ -149,7 +165,7 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
   var date = ""
 
   if let deadline = project.dates.deadline {
-    date = Format.date(secondsInUTC: deadline, template: "MMMM d, yyyy")
+    date = Format.date(secondsInUTC: deadline, template: Constants.dateFormat)
   }
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
@@ -166,4 +182,36 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
     .attributed(
       with: font, foregroundColor: foregroundColor, attributes: [:], bolding: [pledgeTotal, date]
     )
+}
+
+private func attributedConfirmationPledgeOverTimeString(
+  with project: Project,
+  increments: [PledgePaymentIncrement]
+) -> NSAttributedString {
+  guard let firstIncrement = increments.first else { return NSAttributedString() }
+
+  let date = Format.date(secondsInUTC: firstIncrement.scheduledCollection, template: Constants.dateFormat)
+
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let chargeAmount = Format.currency(firstIncrement.amount.amount, country: projectCurrencyCountry)
+
+  let font = UIFont.ksr_caption1()
+  let foregroundColor = UIColor.ksr_support_400
+
+  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+  return "If the project reaches its funding goal, the first charge of \(chargeAmount) will be collected on \(date)."
+    .attributed(
+      with: font, foregroundColor: foregroundColor, attributes: [:], bolding: [chargeAmount, date]
+    )
+}
+
+private func attributedConfirmationString(with data: PledgeSummaryViewData) -> NSAttributedString {
+  if let plotData = data.pledgeOverTimeData, plotData.isPledgeOverTime {
+    return attributedConfirmationPledgeOverTimeString(
+      with: data.project,
+      increments: plotData.paymentIncrements
+    )
+  }
+
+  return attributedConfirmationString(with: data.project, pledgeTotal: data.total)
 }
