@@ -93,6 +93,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
+    
+    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
+    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
+    }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
@@ -993,20 +998,19 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       showPledgeOverTimeUI
     }
     .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
-      // TODO: temporary code to simulate the ineligible state. Implementation [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-      let isIneligible = pledgeTotal < 150
+      // TODO: Temporary placeholder to simulate the ineligible state for plans.
+      // The `thresholdAmount` will be retrieved from the API in the future.
+      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
+      let thresholdAmount = 125.0
+      let isIneligible = pledgeTotal < thresholdAmount
 
       return PledgePaymentPlansAndSelectionData(
         selectedPlan: .pledgeInFull,
         increments: mockPledgePaymentIncrement(),
         ineligible: isIneligible,
-        project: project
+        project: project,
+        thresholdAmount: thresholdAmount
       )
-    }
-
-    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
     }
   }
 
@@ -1260,16 +1264,19 @@ private func pledgeAmountSummaryViewData(
   )
 }
 
+// TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
 private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
-  var timeStamp = Date().timeIntervalSince1970
-  for _ in 1...4 {
-    timeStamp += 30 * 24 * 60 * 60
-    increments.append(PledgePaymentIncrement(
-      amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-      scheduledCollection: timeStamp
-    ))
-  }
+  #if DEBUG
+    var timeStamp = Date().timeIntervalSince1970
+    for _ in 1...4 {
+      timeStamp += 30 * 24 * 60 * 60
+      increments.append(PledgePaymentIncrement(
+        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+        scheduledCollection: timeStamp
+      ))
+    }
+  #endif
 
   return increments
 }

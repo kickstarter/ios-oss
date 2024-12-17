@@ -2,26 +2,41 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-private let thresholdAmount: Double = 150.0
-
-public typealias PledgePaymentPlanOptionData = (
-  ineligible: Bool,
-  type: PledgePaymentPlansType,
-  selectedType: PledgePaymentPlansType,
-  paymentIncrements: [PledgePaymentIncrement],
+public struct PledgePaymentPlanOptionData: Equatable {
+  public var ineligible: Bool = false
+  public var type: PledgePaymentPlansType
+  public var selectedType: PledgePaymentPlansType
   // TODO: replece with API model in [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-  project: Project
-)
+  public var paymentIncrements: [PledgePaymentIncrement]
+  public var project: Project
+  public var thresholdAmount: Double
 
-public typealias PledgePaymentIncrement = (
-  amount: PledgePaymentIncrementAmount,
-  scheduledCollection: TimeInterval
-)
+  public init(
+    ineligible: Bool,
+    type: PledgePaymentPlansType,
+    selectedType: PledgePaymentPlansType,
+    paymentIncrements: [PledgePaymentIncrement],
+    project: Project,
+    thresholdAmount: Double
+  ) {
+    self.ineligible = ineligible
+    self.type = type
+    self.selectedType = selectedType
+    self.paymentIncrements = paymentIncrements
+    self.project = project
+    self.thresholdAmount = thresholdAmount
+  }
+}
 
-public typealias PledgePaymentIncrementAmount = (
-  amount: Double,
-  currency: String
-)
+public struct PledgePaymentIncrement: Equatable {
+  public let amount: PledgePaymentIncrementAmount
+  public let scheduledCollection: TimeInterval
+}
+
+public struct PledgePaymentIncrementAmount: Equatable {
+  public let amount: Double
+  public let currency: String
+}
 
 public struct PledgePaymentIncrementFormatted: Equatable {
   public var incrementChargeNumber: String
@@ -63,7 +78,7 @@ public final class PledgePaymentPlansOptionViewModel:
   public init() {
     let configData = self.configData.signal.skipNil()
 
-    let ineligible = configData.map { $0.type == .pledgeOverTime && $0.ineligible }
+    let ineligible: Signal<Bool, Never> = configData.map { $0.type == .pledgeOverTime && $0.ineligible }
 
     self.selectionIndicatorImageName = configData
       .map {
@@ -85,12 +100,13 @@ public final class PledgePaymentPlansOptionViewModel:
       .withLatest(from: configData)
       .map { $1.type }
 
-    let isPledgeOverTimeAndSelected = configData.map {
-      $0.type != .pledgeOverTime || $0.type != $0.selectedType
+    let isPledgeOverTimeAndSelected: Signal<Bool, Never> = configData.map {
+      $0.type == .pledgeOverTime && $0.type == $0.selectedType
     }
-    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected
 
-    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected
+    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected.negate()
+
+    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected.negate()
 
     self.paymentIncrements = configData
       .filter { !$0.ineligible && $0.type == .pledgeOverTime && $0.selectedType == $0.type }
@@ -104,16 +120,15 @@ public final class PledgePaymentPlansOptionViewModel:
       .filter { !$0.isEmpty }
       .take(first: 1)
 
-    self.ineligibleBadgeHidden = configData
-      .map { $0.type == .pledgeOverTime && $0.ineligible }.negate()
+    self.ineligibleBadgeHidden = ineligible.negate()
 
     self.optionViewEnabled = self.ineligibleBadgeHidden
 
     self.notifyDelegateTermsOfUseTapped = self.termsOfUseTappedProperty.signal.skipNil()
 
     self.ineligibleBadgeText = configData
-      .filter { $0.type == .pledgeOverTime && $0.ineligible }
-      .map { getIneligibleBadgeText(with: $0.project) }
+      .filterWhenLatestFrom(ineligible, satisfies: { $0 == true })
+      .map { getIneligibleBadgeText(with: $0.project, thresholdAmount: $0.thresholdAmount) }
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanOptionData?>(nil)
@@ -189,7 +204,7 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
   )
 }
 
-private func getIneligibleBadgeText(with project: Project) -> String {
+private func getIneligibleBadgeText(with project: Project, thresholdAmount: Double) -> String {
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
   let thresholdAmountFormatted = Format.currency(
     thresholdAmount,
