@@ -533,7 +533,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
-        refTag: refTag
+        refTag: refTag,
+        incremental: false // TODO: implementation in [mbl-1853](https://kickstarter.atlassian.net/browse/MBL-1853)
       )
     }
 
