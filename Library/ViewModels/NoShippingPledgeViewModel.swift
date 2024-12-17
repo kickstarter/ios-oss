@@ -98,11 +98,15 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
 
     self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .map { showPledgeOverTimeUI -> PledgePaymentPlansAndSelectionData? in
-        guard showPledgeOverTimeUI else { return nil }
-
-        return PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
-      }.skipNil()
+      .filter { showUI in showUI == true }
+      .combineLatest(with: project)
+      .map { _, project -> PledgePaymentPlansAndSelectionData in
+        PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          increments: mockPledgePaymentIncrement(),
+          project: project
+        )
+      }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
@@ -1244,4 +1248,21 @@ private func pledgeAmountSummaryViewData(
     shippingAmountHidden: !shippingViewsHidden,
     rewardIsLocalPickup: rewardIsLocalPickup
   )
+}
+
+// TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
+private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+  var increments: [PledgePaymentIncrement] = []
+  #if DEBUG
+    var timeStamp = Date().timeIntervalSince1970
+    for _ in 1...4 {
+      timeStamp += 30 * 24 * 60 * 60
+      increments.append(PledgePaymentIncrement(
+        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+        scheduledCollection: timeStamp
+      ))
+    }
+  #endif
+
+  return increments
 }

@@ -735,4 +735,12 @@ extension NoShippingPledgeViewController: PledgePaymentPlansViewControllerDelega
     // TODO: Implement the necessary functionality once the ticket [MBL-1853] is resolved
     debugPrint("pledgePaymentPlansViewController:didSelectPaymentPlan: \(paymentPlan)")
   }
+
+  func pledgePaymentPlansViewController(
+    _: PledgePaymentPlansViewController,
+    didTapTermsOfUseWith helpType: HelpType
+  ) {
+    self.paymentMethodsViewController.cancelModalPresentation(true)
+    self.viewModel.inputs.termsOfUseTapped(with: helpType)
+  }
 }
