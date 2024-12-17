@@ -67,7 +67,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 400
 
-        self.scheduler.advance(by: .seconds(3))
+        self.scheduler.advance(by: .seconds(1))
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
