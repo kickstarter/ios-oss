@@ -237,7 +237,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         selectedPlan: .pledgeInFull,
         increments: mockPaymentIncrements(),
         ineligible: false,
-        project: project
+        project: project,
+        thresholdAmount: 125.0 // The value is arbitrary and does not impact this test case logic.
       )
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false, plotData))
@@ -263,7 +264,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         selectedPlan: .pledgeOverTime,
         increments: mockPaymentIncrements(),
         ineligible: false,
-        project: project
+        project: project,
+        thresholdAmount: 125.0 // The value is arbitrary and does not impact this test case logic.
       )
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false, plotData))
