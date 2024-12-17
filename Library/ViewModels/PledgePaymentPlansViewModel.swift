@@ -13,17 +13,20 @@ public struct PledgePaymentPlansAndSelectionData {
   public var paymentIncrements: [PledgePaymentIncrement]
   public var project: Project
   public var selectedPlan: PledgePaymentPlansType
+  public var thresholdAmount: Double
 
   public init(
     selectedPlan: PledgePaymentPlansType,
     increments paymentIncrements: [PledgePaymentIncrement] = [],
     ineligible: Bool = false,
-    project: Project
+    project: Project,
+    thresholdAmount: Double
   ) {
     self.ineligible = ineligible
     self.paymentIncrements = paymentIncrements
     self.project = project
     self.selectedPlan = selectedPlan
+    self.thresholdAmount = thresholdAmount
   }
 
   public var isPledgeOverTime: Bool {
@@ -85,7 +88,8 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
           selectedPlan: selectedPlan,
           increments: data.paymentIncrements,
           ineligible: data.ineligible,
-          project: data.project
+          project: data.project,
+          thresholdAmount: data.thresholdAmount
         )
       }
 

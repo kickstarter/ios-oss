@@ -32,6 +32,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     "You will be charged for your pledge over four payments, at no extra cost.\n\nThe first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
   private let selectedImageName = "icon-payment-method-selected"
   private let unselectedImageName = "icon-payment-method-unselected"
+  private let thresholdAmount = 125.0
 
   // MARK: Lifecycle
 
@@ -59,7 +60,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeInFull,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template
+      project: Project.template,
+      thresholdAmount: self.thresholdAmount
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -79,7 +81,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeInFull,
       selectedType: .pledgeOverTime,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template
+      project: Project.template,
+      thresholdAmount: self.thresholdAmount
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -103,7 +106,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeOverTime,
       paymentIncrements: increments,
-      project: project
+      project: project,
+      thresholdAmount: self.thresholdAmount
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -126,7 +130,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template
+      project: Project.template,
+      thresholdAmount: self.thresholdAmount
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -147,7 +152,8 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template
+      project: Project.template,
+      thresholdAmount: self.thresholdAmount
     )
     self.vm.inputs.configureWith(data: data)
     self.vm.inputs.optionTapped()
@@ -157,14 +163,15 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   func testPaymentPlanOption_PledgeOverTime_Ineligible() {
     let project = Project.template
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    let ineligibleText = "Available for pledges over $150"
+    let ineligibleText = "Available for pledges over $125"
 
     let data = PledgePaymentPlanOptionData(
       ineligible: true,
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: [],
-      project: project
+      project: project,
+      thresholdAmount: self.thresholdAmount
     )
 
     self.vm.inputs.configureWith(data: data)

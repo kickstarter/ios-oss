@@ -84,8 +84,6 @@ final class PledgePaymentPlanOptionView: UIView {
       ),
       for: .normal
     )
-
-    self.ineligibleBadgeLabel.text = "Available for pledges over $150"
   }
 
   private func setupConstraints() {
@@ -301,6 +299,10 @@ final class PledgePaymentPlanOptionView: UIView {
       self.paymentIncrementsStackView.addArrangedSubview(incrementStackView)
     }
 
+    // Ensures all dateLabels have equal width to maintain alignment of amountLabel.
+    // This fixes an issue where dates with one-digit days (e.g., "4 Jan 2025")
+    // and two-digit days (e.g., "14 Feb 2025") caused misalignment of the amountLabel.
+    // By constraining each label's width to the first dateLabel's width, we guarantee consistent alignment.
     if let firstDateLabel = dateLabels.first {
       dateLabels.forEach { label in
         label.widthAnchor.constraint(equalTo: firstDateLabel.widthAnchor).isActive = true

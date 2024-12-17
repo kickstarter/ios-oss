@@ -324,7 +324,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
             project: project,
             rewards: [reward],
             selectedShippingRule: .template,
-            selectedQuantities: [reward.id: 150], // To pass the threshold validation
+            selectedQuantities: [reward.id: 15], // To pass the threshold validation
             selectedLocationId: nil,
             refTag: nil,
             context: .pledge
