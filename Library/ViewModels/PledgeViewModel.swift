@@ -14,7 +14,8 @@ public typealias CreateBackingData = (
   paymentSourceId: String?,
   setupIntentClientSecret: String?,
   applePayParams: ApplePayParams?,
-  refTag: RefTag?
+  refTag: RefTag?,
+  incremental: Bool?
 )
 public typealias UpdateBackingData = (
   backing: Backing,
@@ -581,7 +582,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
-        refTag: refTag
+        refTag: refTag,
+        incremental: false /// This will always be false for our old "shipping included" crowdfunding checkout flow. Pledge Over Time will only be available in our "no shipping at checkout" flow.
       )
     }
 

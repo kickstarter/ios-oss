@@ -1,4 +1,5 @@
 import Foundation
+@testable import KsApi
 @testable import Library
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -11,14 +12,11 @@ final class PledgePaymentPlansViewModelTests: TestCase {
 
   private var reloadPaymentPlansPlanType = TestObserver<PledgePaymentPlansType, Never>()
   private var notifyDelegatePaymentPlanSelected = TestObserver<PledgePaymentPlansType, Never>()
+  private var notifyDelegateTermsOfUseTapped = TestObserver<HelpType, Never>()
 
-  private let pledgeInFullIndexPath = IndexPath(
-    row: 0,
-    section: 0
-  )
-  private let pledgeOverTimeIndexPath = IndexPath(
-    row: 0,
-    section: 1
+  private let selectionData = PledgePaymentPlansAndSelectionData(
+    selectedPlan: .pledgeInFull,
+    project: Project.template
   )
 
   // MARK: Lifecycle
@@ -32,6 +30,8 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     self.vm.outputs.reloadPaymentPlans
       .map { $0.selectedPlan }
       .observe(self.reloadPaymentPlansPlanType.observer)
+
+    self.vm.outputs.notifyDelegateTermsOfUseTapped.observe(self.notifyDelegateTermsOfUseTapped.observer)
   }
 
   // MARK: Test cases
@@ -49,9 +49,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
-      let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull)
-
-      self.vm.inputs.configure(with: data)
+      self.vm.inputs.configure(with: self.selectionData)
       self.reloadPaymentPlansPlanType.assertValues([.pledgeInFull])
       self.notifyDelegatePaymentPlanSelected.assertDidNotEmitValue()
     }
@@ -61,8 +59,10 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.didSelectPlanType(.pledgeInFull)
+      self.vm.inputs.configure(with: self.selectionData)
       self.reloadPaymentPlansPlanType.assertValues([.pledgeInFull])
+      self.vm.inputs.didSelectPlanType(.pledgeInFull)
+      self.reloadPaymentPlansPlanType.assertValues([.pledgeInFull, .pledgeInFull])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeInFull])
     }
   }
@@ -71,9 +71,20 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.viewDidLoad()
 
+      self.vm.inputs.configure(with: self.selectionData)
+      self.reloadPaymentPlansPlanType.assertValues([.pledgeInFull])
       self.vm.inputs.didSelectPlanType(.pledgeOverTime)
-      self.reloadPaymentPlansPlanType.assertValues([.pledgeOverTime])
+      self.reloadPaymentPlansPlanType.assertValues([.pledgeInFull, .pledgeOverTime])
       self.notifyDelegatePaymentPlanSelected.assertValues([.pledgeOverTime])
     }
+  }
+
+  func testPaymenPlans_TermsOfUseTapped() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.configure(with: self.selectionData)
+    self.vm.inputs.didTapTermsOfUse(with: .terms)
+
+    self.notifyDelegateTermsOfUseTapped.assertValues([HelpType.terms])
   }
 }

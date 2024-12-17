@@ -6,6 +6,7 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
     let input = CreateBackingInput(
       amount: "50.00",
       applePay: nil,
+      incremental: false,
       locationId: "1234",
       paymentSourceId: "1111",
       projectId: "5555",
@@ -18,6 +19,7 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
 
     XCTAssertEqual(graphInput.amount, input.amount)
     XCTAssertNil(graphInput.applePay??.token)
+    XCTAssertEqual(graphInput.incremental, input.incremental)
     XCTAssertEqual(graphInput.locationId, input.locationId)
     XCTAssertEqual(graphInput.paymentSourceId, input.paymentSourceId)
     XCTAssertEqual(graphInput.projectId, input.projectId)
@@ -35,6 +37,7 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
         transactionIdentifier: "transaction-identifier",
         token: "token"
       ),
+      incremental: false,
       locationId: "1234",
       paymentSourceId: "1111",
       projectId: "5555",
@@ -50,6 +53,7 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(graphInput.applePay??.paymentInstrumentName, "instrument-name")
     XCTAssertEqual(graphInput.applePay??.paymentNetwork, "payment-network")
     XCTAssertEqual(graphInput.applePay??.transactionIdentifier, "transaction-identifier")
+    XCTAssertEqual(graphInput.incremental, input.incremental)
     XCTAssertEqual(graphInput.locationId, input.locationId)
     XCTAssertEqual(graphInput.paymentSourceId, input.paymentSourceId)
     XCTAssertEqual(graphInput.projectId, input.projectId)
