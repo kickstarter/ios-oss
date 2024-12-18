@@ -117,6 +117,17 @@ public struct Service: ServiceType {
       }
   }
 
+  public func buildPaymentPlan(
+    projectSlug: String,
+    pledgeAmount: String
+  ) -> SignalProducer<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.BuildPaymentPlanQuery(
+        slug: projectSlug,
+        amount: pledgeAmount
+      ))
+  }
+
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

@@ -16,7 +16,8 @@ final class PledgePaymentPlansViewModelTests: TestCase {
 
   private let selectionData = PledgePaymentPlansAndSelectionData(
     selectedPlan: .pledgeInFull,
-    project: Project.template
+    project: Project.template,
+    thresholdAmount: 125.0
   )
 
   // MARK: Lifecycle

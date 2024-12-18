@@ -267,6 +267,7 @@
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
 		3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */; };
 		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
+		33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */; };
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
 		33C9F0BE2CF5104C00B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
@@ -494,6 +495,7 @@
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
 		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
+		604334DE2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */; };
 		604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */; };
 		604453262BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453252BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift */; };
 		604453282BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604453272BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift */; };
@@ -1159,6 +1161,7 @@
 		AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */; };
 		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
+		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
 		AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOStyles.swift */; };
@@ -1924,6 +1927,7 @@
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
 		3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModel.swift; sourceTree = "<group>"; };
 		338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
+		33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
@@ -2161,6 +2165,7 @@
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
 		60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
+		604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BuildPaymentPlanQuery.graphql; sourceTree = "<group>"; };
 		604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		604453252BA08F0500B8F485 /* PostCampaignPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		604453272BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryCell.swift; sourceTree = "<group>"; };
@@ -2834,6 +2839,7 @@
 		AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserSetup.swift; sourceTree = "<group>"; };
 		AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserSetup.graphql; sourceTree = "<group>"; };
 		AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFeaturesFragment.graphql; sourceTree = "<group>"; };
+		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
@@ -5878,6 +5884,7 @@
 		778F891A22D3E35600D095C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */,
 				3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */,
 				77C9122623C4F99400F3D2C9 /* Double+Currency.swift */,
 				77C9123023C637FD00F3D2C9 /* DoubleCurrencyTests.swift */,
@@ -5891,6 +5898,7 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */,
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
 				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
@@ -6820,6 +6828,7 @@
 				AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */,
 				AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */,
 				AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */,
+				AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */,
 				AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */,
 				AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */,
 				AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */,
@@ -7714,6 +7723,7 @@
 				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
 				AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */,
+				604334DE2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */,
@@ -8075,6 +8085,7 @@
 				8AC3E13A269F781D00168BF8 /* ErrorEnvelope+LocalizedDescription.swift in Sources */,
 				D04AAC34218BB70D00CF713E /* SettingsAccountPickerCellViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
+				33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */,
 				06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */,
 				064B007827A463D2007B21FE /* ImageViewElementCellViewModel.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
@@ -8799,6 +8810,7 @@
 				A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */,
 				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
 				394BB7132C5ACCBA007F0FFD /* ButtonStylesTests.swift in Sources */,
+				AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */,
 				A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */,
 				3959A62F2B69BC6D00FE8055 /* CombineTestObserver.swift in Sources */,
@@ -9482,7 +9494,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.2;
+				MARKETING_VERSION = 5.21.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
@@ -9996,7 +10008,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.2;
+				MARKETING_VERSION = 5.21.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -10063,7 +10075,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.2;
+				MARKETING_VERSION = 5.21.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -10329,7 +10341,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 5.20.2;
+				MARKETING_VERSION = 5.21.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";

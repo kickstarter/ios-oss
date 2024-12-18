@@ -6,6 +6,7 @@ import SnapshotTesting
 import UIKit
 
 final class PledgePaymentPlansViewControllerTest: TestCase {
+  private let thresholdAmount = 125.0
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -25,7 +26,11 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
 
-        let data = PledgePaymentPlansAndSelectionData(selectedPlan: .pledgeInFull, project: project)
+        let data = PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          project: project,
+          thresholdAmount: thresholdAmount
+        )
         controller.configure(with: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -48,7 +53,9 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeOverTime,
           increments: testIncrements,
-          project: project
+          ineligible: false,
+          project: project,
+          thresholdAmount: thresholdAmount
         )
         controller.configure(with: data)
 
@@ -60,7 +67,32 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 400
 
-        self.scheduler.advance(by: .seconds(3))
+        self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_PledgeOverTimeIneligible() {
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let controller = PledgePaymentPlansViewController.instantiate()
+
+        let data = PledgePaymentPlansAndSelectionData(
+          selectedPlan: .pledgeInFull,
+          increments: testPledgePaymentIncrement(),
+          ineligible: true,
+          project: Project.template,
+          thresholdAmount: self.thresholdAmount
+        )
+
+        controller.configure(with: data)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 120
+
+        self.scheduler.advance(by: .seconds(1))
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
