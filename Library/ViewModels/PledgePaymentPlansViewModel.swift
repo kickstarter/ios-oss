@@ -9,21 +9,24 @@ public enum PledgePaymentPlansType: Equatable {
 }
 
 public struct PledgePaymentPlansAndSelectionData {
-  public var selectedPlan: PledgePaymentPlansType
+  public var ineligible: Bool
   public var paymentIncrements: [PledgePaymentIncrement]
   public var project: Project
-  /* TODO: add the necesary properties for the next states (PLOT Selected and Ineligible)
-     - [MBL-1816](https://kickstarter.atlassian.net/browse/MBL-1816)
-   */
+  public var selectedPlan: PledgePaymentPlansType
+  public var thresholdAmount: Double
 
   public init(
     selectedPlan: PledgePaymentPlansType,
     increments paymentIncrements: [PledgePaymentIncrement] = [],
-    project: Project
+    ineligible: Bool = false,
+    project: Project,
+    thresholdAmount: Double
   ) {
-    self.selectedPlan = selectedPlan
+    self.ineligible = ineligible
     self.paymentIncrements = paymentIncrements
     self.project = project
+    self.selectedPlan = selectedPlan
+    self.thresholdAmount = thresholdAmount
   }
 }
 
@@ -80,7 +83,9 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
         PledgePaymentPlansAndSelectionData(
           selectedPlan: selectedPlan,
           increments: data.paymentIncrements,
-          project: data.project
+          ineligible: data.ineligible,
+          project: data.project,
+          thresholdAmount: data.thresholdAmount
         )
       }
 

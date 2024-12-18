@@ -4281,7 +4281,9 @@ public enum GraphAPI {
     case partialRefunds_2024
     case notificationBannerUpdate_2024
     case multipleShipfromLocations_2024
+    case pledgeRedemptionUnifiedCreatorUi
     case reactBackedProjects
+    case copyAddons
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4396,7 +4398,9 @@ public enum GraphAPI {
         case "partial_refunds_2024": self = .partialRefunds_2024
         case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
         case "multiple_shipfrom_locations_2024": self = .multipleShipfromLocations_2024
+        case "pledge_redemption_unified_creator_ui": self = .pledgeRedemptionUnifiedCreatorUi
         case "react_backed_projects": self = .reactBackedProjects
+        case "copy_addons": self = .copyAddons
         default: self = .__unknown(rawValue)
       }
     }
@@ -4512,7 +4516,9 @@ public enum GraphAPI {
         case .partialRefunds_2024: return "partial_refunds_2024"
         case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
         case .multipleShipfromLocations_2024: return "multiple_shipfrom_locations_2024"
+        case .pledgeRedemptionUnifiedCreatorUi: return "pledge_redemption_unified_creator_ui"
         case .reactBackedProjects: return "react_backed_projects"
+        case .copyAddons: return "copy_addons"
         case .__unknown(let value): return value
       }
     }
@@ -4628,7 +4634,9 @@ public enum GraphAPI {
         case (.partialRefunds_2024, .partialRefunds_2024): return true
         case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
         case (.multipleShipfromLocations_2024, .multipleShipfromLocations_2024): return true
+        case (.pledgeRedemptionUnifiedCreatorUi, .pledgeRedemptionUnifiedCreatorUi): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
+        case (.copyAddons, .copyAddons): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4745,7 +4753,9 @@ public enum GraphAPI {
         .partialRefunds_2024,
         .notificationBannerUpdate_2024,
         .multipleShipfromLocations_2024,
+        .pledgeRedemptionUnifiedCreatorUi,
         .reactBackedProjects,
+        .copyAddons,
       ]
     }
   }
