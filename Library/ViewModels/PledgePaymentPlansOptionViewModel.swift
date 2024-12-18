@@ -2,23 +2,35 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias PledgePaymentPlanOptionData = (
-  type: PledgePaymentPlansType,
-  selectedType: PledgePaymentPlansType,
-  paymentIncrements: [PledgePaymentIncrement],
+public struct PledgePaymentPlanOptionData: Equatable {
+  public let type: PledgePaymentPlansType
+  public var selectedType: PledgePaymentPlansType
   // TODO: replece with API model in [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-  project: Project
-)
+  public let paymentIncrements: [PledgePaymentIncrement]
+  public let project: Project
 
-public typealias PledgePaymentIncrement = (
-  amount: PledgePaymentIncrementAmount,
-  scheduledCollection: TimeInterval
-)
+  public init(
+    type: PledgePaymentPlansType,
+    selectedType: PledgePaymentPlansType,
+    paymentIncrements: [PledgePaymentIncrement],
+    project: Project
+  ) {
+    self.type = type
+    self.selectedType = selectedType
+    self.paymentIncrements = paymentIncrements
+    self.project = project
+  }
+}
 
-public typealias PledgePaymentIncrementAmount = (
-  amount: Double,
-  currency: String
-)
+public struct PledgePaymentIncrement: Equatable {
+  public let amount: PledgePaymentIncrementAmount
+  public let scheduledCollection: TimeInterval
+}
+
+public struct PledgePaymentIncrementAmount: Equatable {
+  public let amount: Double
+  public let currency: String
+}
 
 public struct PledgePaymentIncrementFormatted: Equatable {
   public var incrementChargeNumber: String
@@ -74,11 +86,12 @@ public final class PledgePaymentPlansOptionViewModel:
       .map { $1.type }
 
     let isPledgeOverTimeAndSelected = configData.map {
-      $0.type != .pledgeOverTime || $0.type != $0.selectedType
+      $0.type == .pledgeOverTime && $0.type == $0.selectedType
     }
-    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected
 
-    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected
+    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected.negate()
+
+    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected.negate()
 
     self.paymentIncrements = configData
       .filter { $0.type == .pledgeOverTime && $0.selectedType == $0.type }
