@@ -8,9 +8,14 @@ private enum Constants {
   public static let detailsStackViewSpacing = Styles.grid(6)
   public static let incrementStackViewSpacing = Styles.gridHalf(1)
   public static let optionDescriptorStackViewSpacing = Styles.grid(1)
+  public static let ineligibleBadgeTopButtonPadding = 6.0
+  public static let ineligibleBadgeLeadingTrailingPadding = 8.0
 
   /// Size
   public static let selectionIndicatorImageWith = Styles.grid(4)
+
+  /// Corner radius
+  public static let defaultCornerRadius = Styles.grid(1)
 }
 
 protocol PledgePaymentPlanOptionViewDelegate: AnyObject {
@@ -34,6 +39,8 @@ final class PledgePaymentPlanOptionView: UIView {
   private lazy var selectionIndicatorImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var termsOfUseButton: UIButton = { UIButton(frame: .zero) }()
   private lazy var paymentIncrementsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var ineligibleBadgeLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var ineligibleBadgeView: UIView = { UIView(frame: .zero) }()
 
   private let viewModel: PledgePaymentPlansOptionViewModelType = PledgePaymentPlansOptionViewModel()
 
@@ -64,6 +71,7 @@ final class PledgePaymentPlanOptionView: UIView {
     self.optionDescriptorStackView.addArrangedSubviews(
       self.titleLabel,
       self.subtitleLabel,
+      self.ineligibleBadgeView,
       self.termsOfUseButton,
       self.paymentIncrementsStackView
     )
@@ -130,6 +138,30 @@ final class PledgePaymentPlanOptionView: UIView {
     ])
 
     self.termsOfUseButton.setContentHuggingPriority(.required, for: .horizontal)
+
+    self.ineligibleBadgeView.addSubview(self.ineligibleBadgeLabel)
+    self.ineligibleBadgeLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.ineligibleBadgeLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.ineligibleBadgeView.setContentHuggingPriority(.required, for: .horizontal)
+
+    NSLayoutConstraint.activate([
+      self.ineligibleBadgeLabel.topAnchor.constraint(
+        equalTo: self.ineligibleBadgeView.topAnchor,
+        constant: Constants.ineligibleBadgeTopButtonPadding
+      ),
+      self.ineligibleBadgeLabel.bottomAnchor.constraint(
+        equalTo: self.ineligibleBadgeView.bottomAnchor,
+        constant: -Constants.ineligibleBadgeTopButtonPadding
+      ),
+      self.ineligibleBadgeLabel.leadingAnchor.constraint(
+        equalTo: self.ineligibleBadgeView.leadingAnchor,
+        constant: Constants.ineligibleBadgeLeadingTrailingPadding
+      ),
+      self.ineligibleBadgeLabel.trailingAnchor.constraint(
+        equalTo: self.ineligibleBadgeView.trailingAnchor,
+        constant: -Constants.ineligibleBadgeLeadingTrailingPadding
+      )
+    ])
   }
 
   private func configureTapGestureAndActions() {
@@ -158,6 +190,8 @@ final class PledgePaymentPlanOptionView: UIView {
     applySelectionIndicatorImageViewStyle(self.selectionIndicatorImageView)
     applyTermsOfUseStyle(self.termsOfUseButton)
     applyPaymentIncrementsStackViewStyle(self.paymentIncrementsStackView)
+    applyIneligibleBadgeViewStyle(self.ineligibleBadgeView)
+    applyIneligibleBadgeLabelStyle(self.ineligibleBadgeLabel)
   }
 
   // MARK: - View model
@@ -192,8 +226,20 @@ final class PledgePaymentPlanOptionView: UIView {
         self.delegate?.pledgePaymentPlansViewController(self, didTapTermsOfUseWith: helpType)
       }
 
+    self.ineligibleBadgeView.rac.hidden = self.viewModel.outputs.ineligibleBadgeHidden
+    self.ineligibleBadgeLabel.rac.text = self.viewModel.outputs.ineligibleBadgeText
+
     self.termsOfUseButton.rac.hidden = self.viewModel.outputs.termsOfUseButtonHidden
     self.paymentIncrementsStackView.rac.hidden = self.viewModel.outputs.paymentIncrementsHidden
+
+    self.viewModel.outputs.optionViewEnabled
+      .observeForUI()
+      .observeValues { [weak self] isOptionViewEnabled in
+        guard let self = self else { return }
+
+        self.isUserInteractionEnabled = isOptionViewEnabled
+        applyTextColorByState(self.titleLabel, isEnabled: isOptionViewEnabled)
+      }
 
     self.viewModel.outputs.paymentIncrements
       .observeForUI()
@@ -284,7 +330,6 @@ private func applyTitleLabelStyle(_ label: UILabel) {
   label.adjustsFontForContentSizeCategory = true
   label.numberOfLines = 0
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = .ksr_black
 }
 
 private func applySubtitleLabelStyle(_ label: UILabel) {
@@ -317,6 +362,7 @@ private func applyIncrementStackViewStyle(_ stackView: UIStackView) {
 
 private func applyIncrementDetailsStackViewStyle(_ stackview: UIStackView) {
   stackview.axis = .horizontal
+  stackview.distribution = .fill
   stackview.spacing = Constants.detailsStackViewSpacing
 }
 
@@ -333,4 +379,21 @@ private func applyIncrementDateLabelStyle(_ label: UILabel) {
   label.textColor = .ksr_support_400
   label.textAlignment = .left
   label.adjustsFontForContentSizeCategory = true
+}
+
+private func applyIneligibleBadgeViewStyle(_ view: UIView) {
+  view.backgroundColor = .ksr_support_100
+  view.rounded(with: Constants.defaultCornerRadius)
+}
+
+private func applyIneligibleBadgeLabelStyle(_ label: UILabel) {
+  label.font = UIFont.ksr_caption1().bolded
+  label.textColor = .ksr_support_500
+  label.textAlignment = .center
+  label.numberOfLines = 0
+  label.adjustsFontForContentSizeCategory = true
+}
+
+private func applyTextColorByState(_ label: UILabel, isEnabled: Bool) {
+  label.textColor = isEnabled ? .ksr_black : .ksr_support_300
 }

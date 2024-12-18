@@ -93,20 +93,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
-    self.showPledgeOverTimeUI = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled()
-      }
-
-    self.pledgeOverTimeConfigData = self.showPledgeOverTimeUI
-      .filter { showUI in showUI == true }
-      .combineLatest(with: project)
-      .map { _, project -> PledgePaymentPlansAndSelectionData in
-        PledgePaymentPlansAndSelectionData(
-          selectedPlan: .pledgeInFull,
-          increments: mockPledgePaymentIncrement(),
-          project: project
-        )
-      }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
@@ -998,6 +984,35 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           refTag: refTag
         )
       }
+
+    // MARK: Pledge Over Time
+
+    self.showPledgeOverTimeUI = project.signal
+      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
+
+    self.pledgeOverTimeConfigData = Signal.combineLatest(
+      self.showPledgeOverTimeUI,
+      project,
+      pledgeTotal
+    )
+    .filter { showPledgeOverTimeUI, _, _ in
+      showPledgeOverTimeUI
+    }
+    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
+      // TODO: Temporary placeholder to simulate the ineligible state for plans.
+      // The `thresholdAmount` will be retrieved from the API in the future.
+      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
+      let thresholdAmount = 125.0
+      let isIneligible = pledgeTotal < thresholdAmount
+
+      return PledgePaymentPlansAndSelectionData(
+        selectedPlan: .pledgeInFull,
+        increments: mockPledgePaymentIncrement(),
+        ineligible: isIneligible,
+        project: project,
+        thresholdAmount: thresholdAmount
+      )
+    }
   }
 
   // MARK: - Inputs
