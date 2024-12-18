@@ -19,6 +19,7 @@ extension Backing {
     projectCountry: "US",
     projectId: 1,
     reward: .template,
+    rewardsAmount: nil,
     rewardId: 1,
     sequence: 10,
     shippingAmount: 2,

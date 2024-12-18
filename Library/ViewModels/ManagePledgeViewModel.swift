@@ -586,7 +586,7 @@ private func managePledgeSummaryViewData(
     projectCurrencyCountry: projectCurrencyCountry,
     projectDeadline: deadline,
     projectState: project.state,
-    rewardMinimum: allRewardsTotal(for: backing),
+    rewardMinimum: backing.rewardsAmount ?? allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup
