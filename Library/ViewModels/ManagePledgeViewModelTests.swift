@@ -446,7 +446,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
     }
   }
-  
+
   func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -456,10 +456,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([.template])
     )
-    
+
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
+      RemoteConfigFeature.pledgeOverTime.rawValue: true,
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
     ]
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -474,7 +475,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.showActionSheetMenuWithOptions.assertValues([
         [
-          ManagePledgeAlertAction.updatePledge,
           ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.contactCreator,
           ManagePledgeAlertAction.cancelPledge
