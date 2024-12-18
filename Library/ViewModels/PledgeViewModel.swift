@@ -203,10 +203,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     let allRewardsTotal = Signal.combineLatest(
-      rewards,
-      selectedQuantities
+      project, rewards, selectedQuantities, context
     )
-    .map(calculateAllRewardsTotal)
+    .map { project, rewards, selectedQuantities, context in
+      if context == .fixPaymentMethod,
+         let rewardsAmount = project.personalization.backing?.rewardsAmount {
+        return rewardsAmount
+      }
+      return calculateAllRewardsTotal(addOnRewards: rewards, selectedQuantities: selectedQuantities)
+    }
 
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
