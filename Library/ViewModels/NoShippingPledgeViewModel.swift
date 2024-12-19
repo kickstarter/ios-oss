@@ -1266,10 +1266,10 @@ private func pledgeAmountSummaryViewData(
 }
 
 // TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   #if DEBUG
-    var timeStamp = Date().timeIntervalSince1970
+    var timeStamp = TimeInterval(1_733_931_903)
     for _ in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
