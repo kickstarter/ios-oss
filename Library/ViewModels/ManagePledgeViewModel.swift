@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -624,4 +625,21 @@ private func distinctRewards(_ rewards: [Reward]) -> [Reward] {
     defer { rewardIds.insert(reward.id) }
     return !rewardIds.contains(reward.id)
   }
+}
+
+// TODO: Remove this when implementing the API  [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+  var increments: [PledgePaymentIncrement] = []
+  #if DEBUG
+    var timeStamp = TimeInterval(1_733_931_903)
+    for _ in 1...4 {
+      timeStamp += 30 * 24 * 60 * 60
+      increments.append(PledgePaymentIncrement(
+        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+        scheduledCollection: timeStamp
+      ))
+    }
+  #endif
+
+  return increments
 }
