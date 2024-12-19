@@ -23,6 +23,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let shippingAmount: Double?
   public let shippingAmountHidden: Bool
   public let rewardIsLocalPickup: Bool
+  public let paymentIncrements: [PledgePaymentIncrement]?
 }
 
 public protocol ManagePledgeSummaryViewModelInputs {
@@ -157,7 +158,8 @@ private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -
     projectCurrencyCountry: data.projectCurrencyCountry,
     projectDeadline: data.projectDeadline,
     projectState: data.projectState,
-    backingState: data.backingState
+    backingState: data.backingState,
+    paymentIncrements: data.paymentIncrements
   )
 }
 
