@@ -35,6 +35,7 @@ public struct PostCampaignRewardsSummaryViewData {
   let projectCountry: Project.Country
   let omitCurrencyCode: Bool
   let shipping: PledgeShippingSummaryViewData?
+  let useLatePledgeCosts: Bool
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
@@ -71,6 +72,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     let rewardData = data.map { $0.0 }
     let rewards = data.map(\.0.rewards)
     let selectedQuantities = data.map(\.0.selectedQuantities)
+    let useLatePledgeCosts = data.map(\.0.useLatePledgeCosts)
     let bonusAmount = data.map(\.1)
 
     let latestRewardDeliveryDate = rewards.map { rewards in
@@ -93,11 +95,12 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
 
     let total: Signal<Double, Never> = Signal.combineLatest(
       rewards,
-      selectedQuantities
+      selectedQuantities,
+      useLatePledgeCosts
     )
-    .map { rewards, selectedQuantities in
+    .map { rewards, selectedQuantities, isLatePledge in
       rewards.reduce(0.0) { total, reward in
-        let totalForReward = reward.minimum
+        let totalForReward = isLatePledge ? reward.latePledgeAmount : reward.pledgeAmount
           .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
 
         return total.addingCurrency(totalForReward)
@@ -185,7 +188,8 @@ private func items(
     let quantity = selectedQuantities[reward.id] ?? 0
     let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
 
-    let amount = quantity > 1 ? reward.minimum * Double(quantity) : reward.minimum
+    let itemCost = data.useLatePledgeCosts ? reward.latePledgeAmount : reward.pledgeAmount
+    let amount = quantity > 1 ? itemCost * Double(quantity) : itemCost
     let amountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )

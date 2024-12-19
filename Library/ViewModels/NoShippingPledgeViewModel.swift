@@ -230,13 +230,22 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
      * For a regular reward this includes the bonus support amount,
      * the total of all rewards
      * For No Reward this is only the pledge amount.
+     * Never calculate the pledge total in a fix payment method context.
      */
     let calculatedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
       allRewardsShippingTotal,
-      allRewardsTotal
+      allRewardsTotal,
+      context
     )
-    .map(calculatePledgeTotal)
+    .filter { _, _, _, context in context != .fixPaymentMethod }
+    .map { additionalPledgeAmount, allRewardsShippingTotal, allRewardsTotal, _ in
+      calculatePledgeTotal(
+        pledgeAmount: additionalPledgeAmount,
+        shippingCost: allRewardsShippingTotal,
+        addOnRewardsTotal: allRewardsTotal
+      )
+    }
 
     let pledgeTotal = Signal.merge(
       backing.map(\.amount),
@@ -284,12 +293,20 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       rewards
     )
     .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
+      // This view controller isn't currently used for late pledges and fix payment method should
+      // only happen for crowdfunding pledges, but calculating this just in case.
+      let isLatePledge = data.context == .latePledge ||
+        (
+          data.context == .fixPaymentMethod &&
+            data.project.personalization.backing?.isLatePledge == true
+        )
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
         projectCountry: data.project.country,
         omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-        shipping: shipping
+        shipping: shipping,
+        useLatePledgeCosts: isLatePledge
       )
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
