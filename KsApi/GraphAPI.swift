@@ -7925,12 +7925,7 @@ public enum GraphAPI {
                 amount
                 currency
               }
-              id
-              paymentIncrementableId
-              paymentIncrementableType
               scheduledCollection
-              state
-              stateReason
             }
           }
         }
@@ -8086,12 +8081,7 @@ public enum GraphAPI {
               return [
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                 GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
-                GraphQLField("id", type: .scalar(GraphQLID.self)),
-                GraphQLField("paymentIncrementableId", type: .scalar(GraphQLID.self)),
-                GraphQLField("paymentIncrementableType", type: .scalar(String.self)),
                 GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
-                GraphQLField("state", type: .nonNull(.scalar(String.self))),
-                GraphQLField("stateReason", type: .scalar(String.self)),
               ]
             }
 
@@ -8101,8 +8091,8 @@ public enum GraphAPI {
               self.resultMap = unsafeResultMap
             }
 
-            public init(amount: Amount, id: GraphQLID? = nil, paymentIncrementableId: GraphQLID? = nil, paymentIncrementableType: String? = nil, scheduledCollection: String, state: String, stateReason: String? = nil) {
-              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "id": id, "paymentIncrementableId": paymentIncrementableId, "paymentIncrementableType": paymentIncrementableType, "scheduledCollection": scheduledCollection, "state": state, "stateReason": stateReason])
+            public init(amount: Amount, scheduledCollection: String) {
+              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection])
             }
 
             public var __typename: String {
@@ -8123,57 +8113,12 @@ public enum GraphAPI {
               }
             }
 
-            public var id: GraphQLID? {
-              get {
-                return resultMap["id"] as? GraphQLID
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "id")
-              }
-            }
-
-            public var paymentIncrementableId: GraphQLID? {
-              get {
-                return resultMap["paymentIncrementableId"] as? GraphQLID
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "paymentIncrementableId")
-              }
-            }
-
-            public var paymentIncrementableType: String? {
-              get {
-                return resultMap["paymentIncrementableType"] as? String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "paymentIncrementableType")
-              }
-            }
-
             public var scheduledCollection: String {
               get {
                 return resultMap["scheduledCollection"]! as! String
               }
               set {
                 resultMap.updateValue(newValue, forKey: "scheduledCollection")
-              }
-            }
-
-            public var state: String {
-              get {
-                return resultMap["state"]! as! String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "state")
-              }
-            }
-
-            public var stateReason: String? {
-              get {
-                return resultMap["stateReason"] as? String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "stateReason")
               }
             }
 
