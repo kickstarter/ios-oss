@@ -5,34 +5,19 @@ import XCTest
 final class PledgePaymentIncrementGraphAPITests: TestCase {
   func testPaymentIncrementViewModel_fromValidFragment_isCorrect() {
     let jsonString = """
-    {
-        "project": {
-          "__typename": "Project",
-          "paymentPlan": {
-            "__typename": "PaymentPlan",
-            "projectIsPledgeOverTimeAllowed": true,
-            "amountIsPledgeOverTimeEligible": true,
-            "paymentIncrements": [
-              {
-                "__typename": "PaymentIncrement",
-                "amount": {
-                  "__typename": "Money",
-                  "amount": "99.75",
-                  "currency": "USD"
-                },
-                "scheduledCollection": "2025-03-31T10:29:19-04:00",
-              }
-            ]
-          }
-        }
-    }
+      {
+        "__typename": "PaymentIncrement",
+        "amount": {
+          "__typename": "Money",
+          "amount": "99.75",
+          "currency": "USD"
+        },
+        "scheduledCollection": "2025-03-31T10:29:19-04:00",
+      }
     """
 
-    let mockGraphData = try! GraphAPI.BuildPaymentPlanQuery.Data(jsonString: jsonString)
-    guard let fragment = mockGraphData.project?.paymentPlan?.paymentIncrements?.first else {
-      XCTFail("Unable to create mock GraphQL fragment to test with")
-      return
-    }
+    let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
+      .PaymentIncrement(jsonString: jsonString)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment)
     XCTAssertNotNil(increment)
@@ -43,34 +28,19 @@ final class PledgePaymentIncrementGraphAPITests: TestCase {
 
   func testPaymentIncrementViewModel_fromInvalidFragment_isNil() {
     let jsonString = """
-    {
-        "project": {
-          "__typename": "Project",
-          "paymentPlan": {
-            "__typename": "PaymentPlan",
-            "projectIsPledgeOverTimeAllowed": true,
-            "amountIsPledgeOverTimeEligible": true,
-            "paymentIncrements": [
-              {
-                "__typename": "PaymentIncrement",
-                "amount": {
-                  "__typename": "Money",
-                  "amount": "99.75",
-                  "currency": "USD"
-                },
-                "scheduledCollection": "not a date :(",
-              }
-            ]
-          }
-        }
-    }
+      {
+        "__typename": "PaymentIncrement",
+        "amount": {
+          "__typename": "Money",
+          "amount": "99.75",
+          "currency": "USD"
+        },
+        "scheduledCollection": "not a date :(",
+      }
     """
 
-    let mockGraphData = try! GraphAPI.BuildPaymentPlanQuery.Data(jsonString: jsonString)
-    guard let fragment = mockGraphData.project?.paymentPlan?.paymentIncrements?.first else {
-      XCTFail("Unable to create mock GraphQL fragment to test with")
-      return
-    }
+    let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
+      .PaymentIncrement(jsonString: jsonString)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment)
     XCTAssertNil(increment)
