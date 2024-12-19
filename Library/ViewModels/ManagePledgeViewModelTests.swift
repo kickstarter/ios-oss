@@ -448,6 +448,42 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true,
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
+    }
+  }
+
   func testGoToCancelPledge() {
     let project = Project.template
 
