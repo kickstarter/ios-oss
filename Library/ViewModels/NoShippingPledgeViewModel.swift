@@ -1269,7 +1269,7 @@ private func pledgeAmountSummaryViewData(
 public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   #if DEBUG
-    var timeStamp = Date().timeIntervalSince1970
+    var timeStamp = TimeInterval(1_733_931_903)
     for _ in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
