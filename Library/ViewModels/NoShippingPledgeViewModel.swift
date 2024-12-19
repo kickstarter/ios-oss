@@ -987,32 +987,53 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: Pledge Over Time
 
-    self.showPledgeOverTimeUI = project.signal
+    let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
-    self.pledgeOverTimeConfigData = Signal.combineLatest(
-      self.showPledgeOverTimeUI,
-      project,
-      pledgeTotal
-    )
-    .filter { showPledgeOverTimeUI, _, _ in
-      showPledgeOverTimeUI
-    }
-    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
-      // TODO: Temporary placeholder to simulate the ineligible state for plans.
-      // The `thresholdAmount` will be retrieved from the API in the future.
-      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-      let thresholdAmount = 125.0
-      let isIneligible = pledgeTotal < thresholdAmount
+    let pledgeOverTimeQuery = Signal.combineLatest(project, pledgeTotal)
+      // Only make the query when PLOT is enabled
+      .filterWhenLatestFrom(pledgeOverTimeUIEnabled, satisfies: {
+        $0 == true
+      })
+      // Only call the query once
+      .take(first: 1)
+      .switchMap { (project: Project, pledgeTotal: Double) -> SignalProducer<
+        Signal<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>.Event,
+        Never
+      > in
+        let nf = NumberFormatter()
+        let amount = nf.string(from: NSNumber(value: pledgeTotal)) ?? ""
+        return AppEnvironment.current.apiService.buildPaymentPlan(
+          projectSlug: project.slug,
+          pledgeAmount: amount
+        ).materialize()
+      }
 
-      return PledgePaymentPlansAndSelectionData(
-        selectedPlan: .pledgeInFull,
-        increments: mockPledgePaymentIncrement(),
-        ineligible: isIneligible,
-        project: project,
-        thresholdAmount: thresholdAmount
-      )
-    }
+    self.showPledgeOverTimeUI = Signal.merge(
+      // Hide PLOT if the feature flag is off on either client or server
+      pledgeOverTimeUIEnabled,
+      // Hide PLOT if an error occurs
+      pledgeOverTimeQuery.errors().map(value: false)
+    )
+
+    self.pledgeOverTimeConfigData = pledgeOverTimeQuery
+      .values()
+      .compactMap { $0.project?.paymentPlan }
+      .combineLatest(with: project)
+      .map { paymentPlan, project in
+
+        // TODO: Temporary placeholder to simulate the ineligible state for plans.
+        // The `thresholdAmount` will be retrieved from the API in the future.
+        // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
+        let thresholdAmount = 125.0
+
+        return PledgePaymentPlansAndSelectionData(
+          withPaymentPlanFragment: paymentPlan,
+          selectedPlan: .pledgeInFull,
+          project: project,
+          thresholdAmount: thresholdAmount
+        )
+      }
   }
 
   // MARK: - Inputs
