@@ -64,7 +64,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     case editAddress
     case completeSurvey
     case fixPayment
-    case authenticateCard
+    case authenticateCard(clientSecret: String)
 
     public var label: String {
       switch self {
@@ -297,7 +297,7 @@ extension PPOProjectCardModel {
     pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
-    actions: (.authenticateCard, nil),
+    actions: (.authenticateCard(clientSecret: ""), nil),
     tierType: .authenticateCard,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
@@ -403,24 +403,25 @@ extension PPOProjectCardModel {
     let backingDetailsUrl = backing?.backingDetailsPageRoute
     let backingId = backing.flatMap { decompose(id: $0.id) }
 
-    switch card.tierType {
-    case PPOProjectCardModelConstants.paymentFailed:
+    switch (card.tierType, backing?.clientSecret) {
+    case (PPOProjectCardModelConstants.paymentFailed, _):
       primaryAction = .fixPayment
       secondaryAction = nil
       tierType = .fixPayment
-    case PPOProjectCardModelConstants.confirmAddress:
+    case (PPOProjectCardModelConstants.confirmAddress, _):
       primaryAction = .confirmAddress
       secondaryAction = .editAddress
       tierType = .confirmAddress
-    case PPOProjectCardModelConstants.completeSurvey:
+    case (PPOProjectCardModelConstants.completeSurvey, _):
       primaryAction = .completeSurvey
       secondaryAction = nil
       tierType = .openSurvey
-    case PPOProjectCardModelConstants.authenticationRequired:
-      primaryAction = .authenticateCard
+    case let (PPOProjectCardModelConstants.authenticationRequired, .some(clientSecret)):
+      primaryAction = .authenticateCard(clientSecret: clientSecret)
       secondaryAction = nil
       tierType = .authenticateCard
-    case .some(_), .none:
+    case (PPOProjectCardModelConstants.authenticationRequired, .none),
+         _:
       return nil
     }
 
