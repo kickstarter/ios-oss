@@ -975,7 +975,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map { showUI, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData? in
       guard showUI else { return nil }
-      
+
       // TODO: Temporary placeholder to simulate the ineligible state for plans.
       // The `thresholdAmount` will be retrieved from the API in the future.
       // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
