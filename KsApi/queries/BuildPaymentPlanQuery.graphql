@@ -9,6 +9,7 @@ query BuildPaymentPlan($slug: String!, $amount: String!) {
           currency
         }
         scheduledCollection
+        state
       }
     }
   }

@@ -7926,6 +7926,7 @@ public enum GraphAPI {
                 currency
               }
               scheduledCollection
+              state
             }
           }
         }
@@ -8082,6 +8083,7 @@ public enum GraphAPI {
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                 GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
                 GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
+                GraphQLField("state", type: .nonNull(.scalar(String.self))),
               ]
             }
 
@@ -8091,8 +8093,8 @@ public enum GraphAPI {
               self.resultMap = unsafeResultMap
             }
 
-            public init(amount: Amount, scheduledCollection: String) {
-              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection])
+            public init(amount: Amount, scheduledCollection: String, state: String) {
+              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection, "state": state])
             }
 
             public var __typename: String {
@@ -8119,6 +8121,15 @@ public enum GraphAPI {
               }
               set {
                 resultMap.updateValue(newValue, forKey: "scheduledCollection")
+              }
+            }
+
+            public var state: String {
+              get {
+                return resultMap["state"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "state")
               }
             }
 

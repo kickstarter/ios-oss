@@ -423,8 +423,9 @@ private let buildPaymentPlanQueryJson_Eligible = """
               "currency": "USD"
             },
             "scheduledCollection": "2025-03-31T10:29:19-04:00",
+            "state": "some state",
           }
-        ]
+        ],
       }
     }
 }
@@ -447,6 +448,7 @@ private let buildPaymentPlanQueryJson_Ineligible = """
               "currency": "USD"
             },
             "scheduledCollection": "2025-03-31T10:29:19-04:00",
+=           "state": "some state",
           }
         ]
       }

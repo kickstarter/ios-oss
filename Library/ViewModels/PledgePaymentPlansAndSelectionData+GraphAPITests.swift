@@ -21,6 +21,7 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
                   "currency": "JPY"
                 },
                 "scheduledCollection": "2025-03-31T10:29:19-04:00",
+                "state": "some state",
               }
             ]
           }
