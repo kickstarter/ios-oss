@@ -280,8 +280,11 @@ class PPOViewModelTests: XCTestCase {
 
   func testNavigationFix3DSChallenge() {
     self.verifyNavigationEvent(
-      { self.viewModel.fix3DSChallenge(from: PPOProjectCardModel.authenticateCardTemplate) },
-      event: .fix3DSChallenge
+      { self.viewModel.fix3DSChallenge(
+        from: PPOProjectCardModel.authenticateCardTemplate,
+        clientSecret: "test123"
+      ) },
+      event: .fix3DSChallenge(clientSecret: "test123")
     )
   }
 
@@ -392,6 +395,7 @@ class PPOViewModelTests: XCTestCase {
           "symbol": "$"
         },
         "deliveryAddress": null,
+        "clientSecret": null,
         "backingDetailsPageRoute": "fake-backings-route",
         "id": "\(UUID().uuidString)",
         "project": {

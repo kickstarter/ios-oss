@@ -54,8 +54,8 @@ struct PPOView: View {
         },
         onPerformAction: { card, action in
           switch action {
-          case .authenticateCard:
-            self.viewModel.fix3DSChallenge(from: card)
+          case let .authenticateCard(clientSecret):
+            self.viewModel.fix3DSChallenge(from: card, clientSecret: clientSecret)
           case .completeSurvey:
             self.viewModel.openSurvey(from: card)
           case .confirmAddress:

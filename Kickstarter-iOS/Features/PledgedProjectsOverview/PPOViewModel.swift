@@ -18,7 +18,7 @@ protocol PPOViewModelInputs {
 
   func openBackedProjects()
   func fixPaymentMethod(from: PPOProjectCardModel)
-  func fix3DSChallenge(from: PPOProjectCardModel)
+  func fix3DSChallenge(from: PPOProjectCardModel, clientSecret: String)
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
@@ -34,7 +34,7 @@ protocol PPOViewModelOutputs {
 enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod
-  case fix3DSChallenge
+  case fix3DSChallenge(clientSecret: String)
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
@@ -93,7 +93,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
-      self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
+      self.fix3DSChallengeSubject.map { secret in
+        PPONavigationEvent.fix3DSChallenge(
+          clientSecret: secret
+        )
+      },
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
@@ -219,8 +223,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge(from: PPOProjectCardModel) {
-    self.fix3DSChallengeSubject.send(from)
+  func fix3DSChallenge(from _: PPOProjectCardModel, clientSecret: String) {
+    self.fix3DSChallengeSubject.send(clientSecret)
   }
 
   func openSurvey(from: PPOProjectCardModel) {
@@ -262,7 +266,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<String, Never>()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()

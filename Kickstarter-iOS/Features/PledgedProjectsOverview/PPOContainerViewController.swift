@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import KsApi
 import Library
+import Stripe
 import SwiftUI
 
 public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
@@ -64,7 +65,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.openSurvey(url)
       case let .contactCreator(messageSubject):
         self?.messageCreator(messageSubject)
-      case .confirmAddress, .fix3DSChallenge, .fixPaymentMethod:
+      case let .fix3DSChallenge(clientSecret):
+        self?.handle3DSChallenge(setupIntent: clientSecret)
+      case .confirmAddress, .fixPaymentMethod:
         // TODO: MBL-1451
         break
       }
@@ -122,6 +125,18 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
   }
+
+  private func handle3DSChallenge(setupIntent: String) {
+    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
+
+    STPPaymentHandler.shared().confirmSetupIntent(
+      confirmParams,
+      with: self,
+      completion: { _, _, _ in
+        // Routing will be handled separately
+      }
+    )
+  }
 }
 
 extension PPOContainerViewController: MessageDialogViewControllerDelegate {
@@ -130,4 +145,10 @@ extension PPOContainerViewController: MessageDialogViewControllerDelegate {
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+extension PPOContainerViewController: STPAuthenticationContext {
+  public func authenticationPresentingViewController() -> UIViewController {
+    return self
+  }
 }
