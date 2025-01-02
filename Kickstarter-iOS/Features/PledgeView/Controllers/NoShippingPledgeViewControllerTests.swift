@@ -298,8 +298,14 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   }
 
   func testView_ShowCollectionPlans() {
-    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
+    let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(
+      buildPaymentPlanResult: .success(paymentPlanResponse),
+      fetchGraphUserResult: .success(userResponse)
+    )
+
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
       |> Project.lens.isPledgeOverTimeAllowed .~ true
@@ -346,8 +352,14 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   }
 
   func testView_ShowCollectionPlans_Ineligible() {
-    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
+    let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: false))
+    let mockService = MockService(
+      buildPaymentPlanResult: .success(paymentPlanResponse),
+      fetchGraphUserResult: .success(userResponse)
+    )
+
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
       |> Project.lens.isPledgeOverTimeAllowed .~ true
