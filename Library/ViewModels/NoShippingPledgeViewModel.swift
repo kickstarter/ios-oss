@@ -975,6 +975,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
     .map { showUI, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData? in
       guard showUI else { return nil }
+      
       // TODO: Temporary placeholder to simulate the ineligible state for plans.
       // The `thresholdAmount` will be retrieved from the API in the future.
       // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
@@ -1275,10 +1276,10 @@ private func pledgeAmountSummaryViewData(
 }
 
 // TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   #if DEBUG
-    var timeStamp = Date().timeIntervalSince1970
+    var timeStamp = TimeInterval(1_733_931_903)
     for _ in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
