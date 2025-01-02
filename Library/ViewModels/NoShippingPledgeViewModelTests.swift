@@ -5294,32 +5294,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let jsonString = """
-    {
-        "project": {
-          "__typename": "Project",
-          "paymentPlan": {
-            "__typename": "PaymentPlan",
-            "projectIsPledgeOverTimeAllowed": true,
-            "amountIsPledgeOverTimeEligible": true,
-            "paymentIncrements": [
-              {
-                "__typename": "PaymentIncrement",
-                "amount": {
-                  "__typename": "Money",
-                  "amount": "933.23",
-                  "currency": "USD"
-                },
-                "scheduledCollection": "2025-03-31T10:29:19-04:00",
-                "state": "some state",
-              }
-            ]
-          }
-        }
-    }
-    """
-
-    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery.Data(jsonString: jsonString)
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {

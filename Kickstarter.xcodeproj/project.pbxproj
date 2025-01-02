@@ -1593,6 +1593,8 @@
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
 		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
 		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
+		E1A310232D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
+		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
@@ -3285,6 +3287,7 @@
 		E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProjectsEnvelope.swift; sourceTree = "<group>"; };
 		E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift"; sourceTree = "<group>"; };
 		E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackerProjectsQueryDataTemplate.swift; sourceTree = "<group>"; };
+		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
@@ -6558,6 +6561,7 @@
 				A7ED1F5C1E831C5C00BFFA01 /* BackingCellViewModelTests.swift */,
 				D04AAC12218BB70A00CF713E /* BetaToolsViewModel.swift */,
 				D04AAC1A218BB70B00CF713E /* BetaToolsViewModelTests.swift */,
+				E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */,
 				771E6308234258D1005967E8 /* CancelPledgeViewModel.swift */,
 				771E630D23426B74005967E8 /* CancelPledgeViewModelTests.swift */,
 				77C26956240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift */,
@@ -8303,6 +8307,7 @@
 				4746FFF5272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */,
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
+				E1A310232D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */,
 				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
 				A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */,
 				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
@@ -8831,6 +8836,7 @@
 				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
 				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
+				E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */,
 				339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */,
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,

@@ -300,7 +300,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   func testView_ShowCollectionPlans() {
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
     let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson_Eligible)
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(
       buildPaymentPlanResult: .success(paymentPlanResponse),
       fetchGraphUserResult: .success(userResponse)
@@ -354,7 +354,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   func testView_ShowCollectionPlans_Ineligible() {
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
     let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson_Ineligible)
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: false))
     let mockService = MockService(
       buildPaymentPlanResult: .success(paymentPlanResponse),
       fetchGraphUserResult: .success(userResponse)
@@ -405,53 +405,3 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       }
   }
 }
-
-private let buildPaymentPlanQueryJson_Eligible = """
-{
-    "project": {
-      "__typename": "Project",
-      "paymentPlan": {
-        "__typename": "PaymentPlan",
-        "projectIsPledgeOverTimeAllowed": true,
-        "amountIsPledgeOverTimeEligible": true,
-        "paymentIncrements": [
-          {
-            "__typename": "PaymentIncrement",
-            "amount": {
-              "__typename": "Money",
-              "amount": "933.23",
-              "currency": "USD"
-            },
-            "scheduledCollection": "2025-03-31T10:29:19-04:00",
-            "state": "some state",
-          }
-        ],
-      }
-    }
-}
-"""
-
-private let buildPaymentPlanQueryJson_Ineligible = """
-{
-    "project": {
-      "__typename": "Project",
-      "paymentPlan": {
-        "__typename": "PaymentPlan",
-        "projectIsPledgeOverTimeAllowed": true,
-        "amountIsPledgeOverTimeEligible": false,
-        "paymentIncrements": [
-          {
-            "__typename": "PaymentIncrement",
-            "amount": {
-              "__typename": "Money",
-              "amount": "933.23",
-              "currency": "USD"
-            },
-            "scheduledCollection": "2025-03-31T10:29:19-04:00",
-=           "state": "some state",
-          }
-        ]
-      }
-    }
-}
-"""
