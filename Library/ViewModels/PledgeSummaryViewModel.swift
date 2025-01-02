@@ -116,9 +116,10 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
     self.pledgeOverTimeStackViewHidden = pledgeOverTimeData.map { $0?.isPledgeOverTime ?? false }.negate()
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.pledgeOverTimeChargesText = pledgeOverTimeData.skipNil()
-      .map { "charged as \($0.paymentIncrements.count) payments" }
+      .map {
+        Strings.Charged_as_number_of_payments(number: "\($0.paymentIncrements.count)")
+      }
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
@@ -205,8 +206,11 @@ private func attributedConfirmationPledgeOverTimeString(
   let font = UIFont.ksr_caption1()
   let foregroundColor = UIColor.ksr_support_400
 
-  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-  return "If the project reaches its funding goal, the first charge of \(chargeAmount) will be collected on \(date)."
+  return Strings
+    .If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline(
+      amount: chargeAmount,
+      project_deadline: date
+    )
     .attributed(
       with: font, foregroundColor: foregroundColor, attributes: [:], bolding: [chargeAmount, date]
     )

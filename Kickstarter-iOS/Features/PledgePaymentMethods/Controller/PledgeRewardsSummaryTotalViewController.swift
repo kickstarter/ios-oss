@@ -13,7 +13,7 @@ private enum Constants {
   public static let defaultCornerRadius = Styles.grid(1)
 }
 
-final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewController {
+final class PledgeRewardsSummaryTotalViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var titleAndTotalStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -108,8 +108,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
     )
     self.pledgeOverTimeStackView.isHidden = true
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.pledgeOverTimeBadgeLabel.text = "Pledge Over Time"
+    self.pledgeOverTimeBadgeLabel.text = Strings.Pledge_Over_Time()
   }
 
   private func setupConstraints() {

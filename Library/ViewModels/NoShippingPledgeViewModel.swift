@@ -272,6 +272,30 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       shippingLocation.filter(isNil).mapConst(nil)
     )
 
+    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
+      initialData,
+      pledgeTotal,
+      additionalPledgeAmount,
+      shippingSummaryViewData,
+      rewards
+    )
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
+      let rewardsData = PostCampaignRewardsSummaryViewData(
+        rewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
+        projectCountry: data.project.country,
+        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
+        shipping: shipping
+      )
+      let pledgeData = PledgeSummaryViewData(
+        project: data.project,
+        total: pledgeTotal,
+        confirmationLabelHidden: false,
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
+      )
+      return (rewardsData, additionalPledgeAmount, pledgeData)
+    }
+
     self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
       projectAndReward,
       allRewardsTotal,
@@ -962,7 +986,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         )
       }
 
-    // MARK: Pledge Over Time
+    // MARK: - Pledge Over Time
 
     self.showPledgeOverTimeUI = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
@@ -989,30 +1013,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         project: project,
         thresholdAmount: thresholdAmount
       )
-    }
-
-    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
-      initialData,
-      pledgeTotal,
-      additionalPledgeAmount,
-      shippingSummaryViewData,
-      rewards
-    )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
-      let rewardsData = PostCampaignRewardsSummaryViewData(
-        rewards: data.rewards,
-        selectedQuantities: data.selectedQuantities,
-        projectCountry: data.project.country,
-        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-        shipping: shipping
-      )
-      let pledgeData = PledgeSummaryViewData(
-        project: data.project,
-        total: pledgeTotal,
-        confirmationLabelHidden: false,
-        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
-      )
-      return (rewardsData, additionalPledgeAmount, pledgeData)
     }
 
     // Sending `.pledgeInFull` as default option

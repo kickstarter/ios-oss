@@ -4,7 +4,7 @@
 import SnapshotTesting
 import UIKit
 
-final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
+final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
@@ -19,13 +19,13 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_WithReward() {
+  func testViewWithReward() {
     let project = Project.template
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
-          let controller = PostCampaignPledgeRewardsSummaryTotalViewController.instantiate()
+          let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
             project: project,
@@ -52,7 +52,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testView_WithoutReward() {
+  func testViewWithoutReward_WithNoShippingAtCheckoutEnabled() {
     let project = Project.template
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -63,7 +63,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignPledgeRewardsSummaryTotalViewController.instantiate()
+          let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
             project: project,
@@ -91,7 +91,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testView_PledgeInFull() {
+  func testViewWithPledgeInFull_WithNoShippingAtCheckoutEnabled() {
     let project = Project.template
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -102,7 +102,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignPledgeRewardsSummaryTotalViewController.instantiate()
+          let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
             project: project,
@@ -140,7 +140,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testView_PledgeOverTime() {
+  func testViewWithPledgeOverTime_WithNoShippingAtCheckoutEnabled() {
     let project = Project.template
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -151,7 +151,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-          let controller = PostCampaignPledgeRewardsSummaryTotalViewController.instantiate()
+          let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
             project: project,
