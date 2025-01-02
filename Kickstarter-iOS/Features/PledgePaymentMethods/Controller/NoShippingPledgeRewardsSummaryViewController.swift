@@ -169,6 +169,10 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     self.view.setNeedsLayout()
   }
 
+  func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.pledgeTotalViewController.configureWith(pledeOverTimeData: pledgeOverTimeData)
+  }
+
   // MARK: Styles
 
   private func applyTableViewStyle(_ tableView: UITableView) {

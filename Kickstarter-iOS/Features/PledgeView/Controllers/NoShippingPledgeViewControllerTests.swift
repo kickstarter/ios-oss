@@ -297,7 +297,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       }
   }
 
-  func testView_ShowCollectionPlans() {
+  func testView_ShowCollectionPlans_PledgeInFull() {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
     let project = Project.template
@@ -331,6 +331,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           )
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = 1_250
 
           self.scheduler.advance(by: .seconds(1))
 
@@ -379,6 +380,61 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           )
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = 1_250
+
+          self.scheduler.advance(by: .seconds(1))
+
+          self.allowLayoutPass()
+
+          assertSnapshot(
+            matching: parent.view,
+            as: .image(perceptualPrecision: 0.98),
+            named: "lang_\(language)_device_\(device)"
+          )
+        }
+      }
+  }
+
+  func testView_ShowCollectionPlans_PledgeOverTime() {
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let project = Project.template
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
+      |> Project.lens.isPledgeOverTimeAllowed .~ true
+    let reward = Reward.template
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true,
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
+        withEnvironment(
+          apiService: mockService,
+          currentUser: User.template,
+          language: language,
+          remoteConfigClient: mockConfigClient
+        ) {
+          let controller = NoShippingPledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: project,
+            rewards: [reward],
+            selectedShippingRule: .template,
+            selectedQuantities: [reward.id: 15], // To pass the threshold validation
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          controller.pledgePaymentPlansViewController(
+            PledgePaymentPlansViewController.instantiate(),
+            didSelectPaymentPlan: .pledgeOverTime
+          )
+
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = 1_550
 
           self.scheduler.advance(by: .seconds(1))
 

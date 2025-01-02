@@ -295,10 +295,12 @@ final class NoShippingPledgeViewController: UIViewController,
       }
 
     self.viewModel.outputs.pledgeOverTimeConfigData
-      .skipNil()
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.paymentPlansViewController.configure(with: data)
+        if let data = data {
+          self?.paymentPlansViewController.configure(with: data)
+        }
+        self?.pledgeRewardsSummaryViewController.configureWith(pledgeOverTimeData: data)
       }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData

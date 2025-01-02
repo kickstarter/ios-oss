@@ -995,10 +995,9 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       pledgeTotal,
       additionalPledgeAmount,
       shippingSummaryViewData,
-      rewards,
-      self.pledgeOverTimeConfigData
+      rewards
     )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards, pledgeOverTimeData in
+    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
@@ -1010,8 +1009,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         project: data.project,
         total: pledgeTotal,
         confirmationLabelHidden: false,
-        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards),
-        pledgeOverTimeData: pledgeOverTimeData
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
       )
       return (rewardsData, additionalPledgeAmount, pledgeData)
     }

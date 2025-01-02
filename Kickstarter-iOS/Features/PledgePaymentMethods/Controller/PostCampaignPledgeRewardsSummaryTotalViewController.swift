@@ -106,6 +106,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
       self.pledgeOverTimeBadgeView,
       self.pledgeOverTimeChargesLabel
     )
+    self.pledgeOverTimeStackView.isHidden = true
 
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.pledgeOverTimeBadgeLabel.text = "Pledge Over Time"
@@ -162,6 +163,10 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
   internal func configure(with data: PledgeSummaryViewData) {
     self.viewModel.inputs.configure(with: data)
+  }
+
+  internal func configureWith(pledeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.viewModel.inputs.configureWith(pledgeOverTimeData: pledeOverTimeData)
   }
 }
 

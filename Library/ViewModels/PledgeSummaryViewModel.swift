@@ -11,12 +11,12 @@ public typealias PledgeSummaryViewData = (
   project: Project,
   total: Double,
   confirmationLabelHidden: Bool,
-  pledgeHasNoReward: Bool?,
-  pledgeOverTimeData: PledgePaymentPlansAndSelectionData?
+  pledgeHasNoReward: Bool?
 )
 
 public protocol PledgeSummaryViewModelInputs {
   func configure(with data: PledgeSummaryViewData)
+  func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?)
   func tapped(_ url: URL)
   func viewDidLoad()
 }
@@ -47,15 +47,16 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     .map(first)
 
     let projectAndPledgeTotal = initialData
-      .map { project, total, _, _, _ in (project, total) }
+      .map { project, total, _, _ in (project, total) }
 
     let pledgeHasNoReward = initialData
-      .map { _, _, _, pledgeHasNoReward, _ in pledgeHasNoReward }
+      .map { _, _, _, pledgeHasNoReward in pledgeHasNoReward }
 
-    let pledgeOverTimeData = initialData
-      .map { _, _, _, _, pledgeOverTimeData in
-        pledgeOverTimeData
-      }
+    let pledgeOverTimeData = Signal.combineLatest(
+      self.pledgeOverTimeDataProperty.signal,
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -97,9 +98,10 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
           : Strings.Pledge_amount()
       }
 
-    self.confirmationLabelAttributedText = initialData.map { data in
-      attributedConfirmationString(with: data)
-    }
+    self.confirmationLabelAttributedText = Signal.combineLatest(initialData, pledgeOverTimeData)
+      .map { data, pledgeOverTimeData in
+        attributedConfirmationString(with: data, pledgeOverTimeData: pledgeOverTimeData)
+      }
 
     let project = initialData.map(\.project)
 
@@ -122,6 +124,11 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
   public func configure(with data: PledgeSummaryViewData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let pledgeOverTimeDataProperty = MutableProperty<PledgePaymentPlansAndSelectionData?>(nil)
+  public func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.pledgeOverTimeDataProperty.value = pledgeOverTimeData
   }
 
   private let (tappedUrlSignal, tappedUrlObserver) = Signal<URL, Never>.pipe()
@@ -205,8 +212,11 @@ private func attributedConfirmationPledgeOverTimeString(
     )
 }
 
-private func attributedConfirmationString(with data: PledgeSummaryViewData) -> NSAttributedString {
-  if let plotData = data.pledgeOverTimeData, plotData.isPledgeOverTime {
+private func attributedConfirmationString(
+  with data: PledgeSummaryViewData,
+  pledgeOverTimeData: PledgePaymentPlansAndSelectionData?
+) -> NSAttributedString {
+  if let plotData = pledgeOverTimeData, plotData.isPledgeOverTime {
     return attributedConfirmationPledgeOverTimeString(
       with: data.project,
       increments: plotData.paymentIncrements
