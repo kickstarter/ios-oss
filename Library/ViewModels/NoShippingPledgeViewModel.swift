@@ -1001,8 +1001,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         Signal<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>.Event,
         Never
       > in
-        let nf = NumberFormatter()
-        let amount = nf.string(from: NSNumber(value: pledgeTotal)) ?? ""
+        let amountFormatter = NumberFormatter()
+        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
         return AppEnvironment.current.apiService.buildPaymentPlan(
           projectSlug: project.slug,
           pledgeAmount: amount
