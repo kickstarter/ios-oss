@@ -988,32 +988,68 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: - Pledge Over Time
 
-    self.showPledgeOverTimeUI = project.signal
+    let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
-    self.pledgeOverTimeConfigData = Signal.combineLatest(
-      self.showPledgeOverTimeUI,
-      project,
-      pledgeTotal,
-      self.paymentPlanSelectedSignal
+    let pledgeOverTimeQuery = Signal.combineLatest(project, pledgeTotal, pledgeOverTimeUIEnabled)
+      // Only call the query once
+      .take(first: 1)
+      .switchMap { (project: Project, pledgeTotal: Double, pledgeOverTimeUIEnabled: Bool) -> SignalProducer<
+        Signal<GraphAPI.BuildPaymentPlanQuery.Data?, ErrorEnvelope>.Event,
+        Never
+      > in
+        // Proceed with the query only if Pledge Over Time (PLOT) is enabled.
+        // If PLOT is disabled, return nil to ensure that the `combineLatest` in `pledgeOverTimeConfigData`
+        // emits a value, maintaining the Signal pipeline's flow.
+        guard pledgeOverTimeUIEnabled else {
+          return SignalProducer(value: .value(nil))
+        }
+
+        let amountFormatter = NumberFormatter()
+        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
+        return AppEnvironment.current.apiService.buildPaymentPlan(
+          projectSlug: project.slug,
+          pledgeAmount: amount
+        )
+        // Wrap the response in an optional and convert the SignalProducer events into materialized values
+        // to handle success or error scenarios downstream.
+        .wrapInOptional()
+        .materialize()
+      }
+
+    self.showPledgeOverTimeUI = Signal.merge(
+      // Hide PLOT if the feature flag is off on either client or server
+      pledgeOverTimeUIEnabled,
+      // Hide PLOT if an error occurs
+      pledgeOverTimeQuery.errors().map(value: false)
     )
-    .map { showUI, project, pledgeTotal, planSelected -> PledgePaymentPlansAndSelectionData? in
-      guard showUI else { return nil }
 
-      // TODO: Temporary placeholder to simulate the ineligible state for plans.
-      // The `thresholdAmount` will be retrieved from the API in the future.
-      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-      let thresholdAmount = 125.0
-      let isIneligible = pledgeTotal < thresholdAmount
+    let pledgeOverTimeApiValues = pledgeOverTimeQuery
+      .values()
+      // Emit a default `nil` value to ensure the Signal pipeline remains active
+      // and `combineLatest` in `pledgeOverTimeConfigData` emits a value even when errors occur.
+      .demoteErrors(replaceErrorWith: nil)
 
-      return PledgePaymentPlansAndSelectionData(
-        selectedPlan: planSelected,
-        increments: mockPledgePaymentIncrement(),
-        ineligible: isIneligible,
-        project: project,
-        thresholdAmount: thresholdAmount
-      )
-    }
+    self.pledgeOverTimeConfigData = Signal
+      .combineLatest(project, pledgeOverTimeApiValues, self.paymentPlanSelectedSignal)
+      .map { project, pledgeOverTimeApiValues, paymentPlanSelected in
+
+        // Wrap the value in `nil` to ensure the Signal emits consistently,
+        // even when the API request fails or Pledge Over Time is disabled.
+        guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
+
+        // TODO: Temporary placeholder to simulate the ineligible state for plans.
+        // The `thresholdAmount` will be retrieved from the API in the future.
+        // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
+        let thresholdAmount = 125.0
+
+        return PledgePaymentPlansAndSelectionData(
+          withPaymentPlanFragment: paymentPlan,
+          selectedPlan: paymentPlanSelected,
+          project: project,
+          thresholdAmount: thresholdAmount
+        )
+      }
 
     // Sending `.pledgeInFull` as default option
     self.paymentPlanSelectedObserver.send(value: .pledgeInFull)
@@ -1273,21 +1309,4 @@ private func pledgeAmountSummaryViewData(
     shippingAmountHidden: !shippingViewsHidden,
     rewardIsLocalPickup: rewardIsLocalPickup
   )
-}
-
-// TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
-  var increments: [PledgePaymentIncrement] = []
-  #if DEBUG
-    var timeStamp = TimeInterval(1_733_931_903)
-    for _ in 1...4 {
-      timeStamp += 30 * 24 * 60 * 60
-      increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-        scheduledCollection: timeStamp
-      ))
-    }
-  #endif
-
-  return increments
 }
