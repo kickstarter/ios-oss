@@ -41,8 +41,6 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
 
           self.scheduler.advance(by: .seconds(1))
 
-          self.allowLayoutPass()
-
           assertSnapshot(
             matching: parent.view,
             as: .image(perceptualPrecision: 0.98),
@@ -79,8 +77,6 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
           parent.view.frame.size.height = 180
 
           self.scheduler.advance(by: .seconds(1))
-
-          self.allowLayoutPass()
 
           assertSnapshot(
             matching: parent.view,
@@ -129,8 +125,6 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
 
           self.scheduler.advance(by: .seconds(1))
 
-          self.allowLayoutPass()
-
           assertSnapshot(
             matching: parent.view,
             as: .image(perceptualPrecision: 0.98),
@@ -177,8 +171,6 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
           parent.view.frame.size.height = 180
 
           self.scheduler.advance(by: .seconds(1))
-
-          self.allowLayoutPass()
 
           assertSnapshot(
             matching: parent.view,

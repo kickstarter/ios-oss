@@ -143,7 +143,7 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.titleLabelText
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] text in
         self?.titleLabel.text = text
       }
