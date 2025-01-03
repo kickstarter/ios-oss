@@ -101,6 +101,7 @@ final class PledgeSummaryViewController: UIViewController {
 
   internal func configure(with data: PledgeSummaryViewData) {
     self.viewModel.inputs.configure(with: data)
+    self.viewModel.inputs.configureWith(pledgeOverTimeData: nil)
   }
 }
 
