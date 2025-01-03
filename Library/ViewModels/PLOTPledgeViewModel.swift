@@ -23,7 +23,7 @@ public protocol PLOTPledgeViewModelOutputs {
   - `project`: A project.
   - `pledgeTotal`: Total amount to pledge, a double.
   - `paymentPlanSelected:`: The payment plan selected by the user.
- 
+
  A `project` and `pledgeTotal` are required for `showPledgeOverTimeUI` or `pledgeOverTimeIsLoading` to send.
  In addition, `paymentPlanSelected:` must be called before `pledgeOverTimeConfigData` sends.
 
@@ -33,7 +33,7 @@ public protocol PLOTPledgeViewModelOutputs {
   - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events, since loading can start and stop.
  */
 
-  public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
+public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
   init(project: Signal<Project, Never>, pledgeTotal: Signal<Double, Never>) {
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
@@ -85,7 +85,7 @@ public protocol PLOTPledgeViewModelOutputs {
       // Hide PLOT if an error occurs
       pledgeOverTimeQuery.errors().map(value: false)
     )
-    
+
     self.pledgeOverTimeIsLoading = Signal.merge(
       pledgeOverTimeUIEnabled,
       pledgeOverTimeQuery.values().map(value: false),
@@ -137,5 +137,4 @@ public protocol PLOTPledgeViewModelOutputs {
   }
 
   // MARK: - Outputs
-
 }

@@ -5378,6 +5378,14 @@ final class NoShippingPledgeViewModelTests: TestCase {
       XCTAssertEqual(configValue!.selectedPlan, .pledgeInFull)
       XCTAssertFalse(configValue!.ineligible)
       XCTAssertEqual(configValue!.paymentIncrements.count, 1)
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+      // Should be true, since pledge over time loaded and everything else is correct
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
     }
   }
 
@@ -5409,6 +5417,56 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.showPledgeOverTimeUI.assertValues([true, false])
       self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+      // Should be true, since pledge over time never loaded and everything else is correct
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
+    }
+  }
+
+  func testPledgeIsDisabled_whenShowPledgeOverUIIsTrue_andPledgeOverTimeIsLoading() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+
+      // Hasn't loaded yet
+      self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      // Should still be disabled, since pledge over time never loaded
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
     }
   }
 }
