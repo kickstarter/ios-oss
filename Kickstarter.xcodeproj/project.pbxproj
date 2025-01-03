@@ -526,6 +526,7 @@
 		606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */; };
 		606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */; };
 		606C45FA29FACE17001BA067 /* MockRemoteConfigClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */; };
+		606EC1EA2D2847CA00286CBD /* PaymentIncrementFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 606EC1E92D2847CA00286CBD /* PaymentIncrementFragment.graphql */; };
 		6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106A2A0419130050D4F7 /* FirebaseCrashlytics */; };
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
@@ -2202,6 +2203,7 @@
 		606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+Helpers.swift"; sourceTree = "<group>"; };
 		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
+		606EC1E92D2847CA00286CBD /* PaymentIncrementFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentIncrementFragment.graphql; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
 		608B5B202CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDiffableDataSource.swift; sourceTree = "<group>"; };
 		608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ValidateCheckout.graphql; sourceTree = "<group>"; };
@@ -6035,6 +6037,7 @@
 				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
 				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
 				8A1556F0269398CB00017845 /* MoneyFragment.graphql */,
+				606EC1E92D2847CA00286CBD /* PaymentIncrementFragment.graphql */,
 				393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */,
 				393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */,
 				393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */,
@@ -7768,6 +7771,7 @@
 				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */,
+				606EC1EA2D2847CA00286CBD /* PaymentIncrementFragment.graphql in Resources */,
 				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
