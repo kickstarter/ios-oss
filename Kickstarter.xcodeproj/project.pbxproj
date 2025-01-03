@@ -1595,6 +1595,8 @@
 		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
 		E1A310232D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
+		E1A310262D28406F0062646C /* PLOTPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PLOTPledgeViewModel.swift */; };
+		E1A310292D2845E00062646C /* PLOTPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PLOTPledgeViewModelTests.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
@@ -3288,6 +3290,8 @@
 		E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift"; sourceTree = "<group>"; };
 		E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackerProjectsQueryDataTemplate.swift; sourceTree = "<group>"; };
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
+		E1A310252D2840680062646C /* PLOTPledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLOTPledgeViewModel.swift; sourceTree = "<group>"; };
+		E1A310272D2845CB0062646C /* PLOTPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLOTPledgeViewModelTests.swift; sourceTree = "<group>"; };
 		E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
@@ -6722,6 +6726,8 @@
 				6035AFB22C594817007E28FC /* NoShippingPledgeViewModelTests.swift */,
 				601342F02C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift */,
 				601342F22C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift */,
+				E1A310252D2840680062646C /* PLOTPledgeViewModel.swift */,
+				E1A310272D2845CB0062646C /* PLOTPledgeViewModelTests.swift */,
 				395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */,
 				E1972EA12BB4722D002517E6 /* PostCampaignCheckoutViewModelTests.swift */,
 				6044532D2BA0905600B8F485 /* PostCampaignPledgeRewardsSummaryViewModel.swift */,
@@ -8036,6 +8042,7 @@
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
 				A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */,
+				E1A310262D28406F0062646C /* PLOTPledgeViewModel.swift in Sources */,
 				AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */,
 				370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */,
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
@@ -8446,6 +8453,7 @@
 				D6600790241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
+				E1A310292D2845E00062646C /* PLOTPledgeViewModelTests.swift in Sources */,
 				1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */,
 				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
 				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,
