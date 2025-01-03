@@ -987,53 +987,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: Pledge Over Time
 
-    let pledgeOverTimeUIEnabled = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
-
-    let pledgeOverTimeQuery = Signal.combineLatest(project, pledgeTotal)
-      // Only make the query when PLOT is enabled
-      .filterWhenLatestFrom(pledgeOverTimeUIEnabled, satisfies: {
-        $0 == true
-      })
-      // Only call the query once
-      .take(first: 1)
-      .switchMap { (project: Project, pledgeTotal: Double) -> SignalProducer<
-        Signal<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>.Event,
-        Never
-      > in
-        let amountFormatter = NumberFormatter()
-        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
-        return AppEnvironment.current.apiService.buildPaymentPlan(
-          projectSlug: project.slug,
-          pledgeAmount: amount
-        ).materialize()
-      }
-
-    self.showPledgeOverTimeUI = Signal.merge(
-      // Hide PLOT if the feature flag is off on either client or server
-      pledgeOverTimeUIEnabled,
-      // Hide PLOT if an error occurs
-      pledgeOverTimeQuery.errors().map(value: false)
-    )
-
-    self.pledgeOverTimeConfigData = pledgeOverTimeQuery
-      .values()
-      .compactMap { $0.project?.paymentPlan }
-      .combineLatest(with: project)
-      .map { paymentPlan, project in
-
-        // TODO: Temporary placeholder to simulate the ineligible state for plans.
-        // The `thresholdAmount` will be retrieved from the API in the future.
-        // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-        let thresholdAmount = 125.0
-
-        return PledgePaymentPlansAndSelectionData(
-          withPaymentPlanFragment: paymentPlan,
-          selectedPlan: .pledgeInFull,
-          project: project,
-          thresholdAmount: thresholdAmount
-        )
-      }
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
   }
 
   // MARK: - Inputs
@@ -1157,11 +1111,20 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
-  public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
+  public var showPledgeOverTimeUI: Signal<Bool, Never> {
+    return self.plotViewModel.outputs.showPledgeOverTimeUI
+  }
+
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> {
+    return self.plotViewModel.outputs.pledgeOverTimeConfigData
+  }
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
+
+  // MARK: - Component view models
+
+  private let plotViewModel: PLOTPledgeViewModel
 }
 
 // MARK: - Functions
