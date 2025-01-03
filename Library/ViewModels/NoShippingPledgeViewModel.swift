@@ -986,73 +986,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         )
       }
 
-    // MARK: - Pledge Over Time
-
-    let pledgeOverTimeUIEnabled = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
-
-    let pledgeOverTimeQuery = Signal.combineLatest(project, pledgeTotal, pledgeOverTimeUIEnabled)
-      // Only call the query once
-      .take(first: 1)
-      .switchMap { (project: Project, pledgeTotal: Double, pledgeOverTimeUIEnabled: Bool) -> SignalProducer<
-        Signal<GraphAPI.BuildPaymentPlanQuery.Data?, ErrorEnvelope>.Event,
-        Never
-      > in
-        // Proceed with the query only if Pledge Over Time (PLOT) is enabled.
-        // If PLOT is disabled, return nil to ensure that the `combineLatest` in `pledgeOverTimeConfigData`
-        // emits a value, maintaining the Signal pipeline's flow.
-        guard pledgeOverTimeUIEnabled else {
-          return SignalProducer(value: .value(nil))
-        }
-
-        let amountFormatter = NumberFormatter()
-        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
-        return AppEnvironment.current.apiService.buildPaymentPlan(
-          projectSlug: project.slug,
-          pledgeAmount: amount
-        )
-        // Wrap the response in an optional and convert the SignalProducer events into materialized values
-        // to handle success or error scenarios downstream.
-        .wrapInOptional()
-        .materialize()
-      }
-
-    self.showPledgeOverTimeUI = Signal.merge(
-      // Hide PLOT if the feature flag is off on either client or server
-      pledgeOverTimeUIEnabled,
-      // Hide PLOT if an error occurs
-      pledgeOverTimeQuery.errors().map(value: false)
-    )
-
-    let pledgeOverTimeApiValues = pledgeOverTimeQuery
-      .values()
-      // Emit a default `nil` value to ensure the Signal pipeline remains active
-      // and `combineLatest` in `pledgeOverTimeConfigData` emits a value even when errors occur.
-      .demoteErrors(replaceErrorWith: nil)
-
-    self.pledgeOverTimeConfigData = Signal
-      .combineLatest(project, pledgeOverTimeApiValues, self.paymentPlanSelectedSignal)
-      .map { project, pledgeOverTimeApiValues, paymentPlanSelected in
-
-        // Wrap the value in `nil` to ensure the Signal emits consistently,
-        // even when the API request fails or Pledge Over Time is disabled.
-        guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
-
-        // TODO: Temporary placeholder to simulate the ineligible state for plans.
-        // The `thresholdAmount` will be retrieved from the API in the future.
-        // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-        let thresholdAmount = 125.0
-
-        return PledgePaymentPlansAndSelectionData(
-          withPaymentPlanFragment: paymentPlan,
-          selectedPlan: paymentPlanSelected,
-          project: project,
-          thresholdAmount: thresholdAmount
-        )
-      }
-
-    // Sending `.pledgeInFull` as default option
-    self.paymentPlanSelectedObserver.send(value: .pledgeInFull)
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
   }
 
   // MARK: - Inputs
@@ -1092,10 +1026,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
-  private let (paymentPlanSelectedSignal, paymentPlanSelectedObserver) = Signal<PledgePaymentPlansType, Never>
-    .pipe()
   public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
-    self.paymentPlanSelectedObserver.send(value: paymentPlan)
+    self.plotViewModel.inputs.paymentPlanSelected(paymentPlan)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -1182,11 +1114,21 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
-  public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never>
+
+  public var showPledgeOverTimeUI: Signal<Bool, Never> {
+    return self.plotViewModel.outputs.showPledgeOverTimeUI
+  }
+
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> {
+    return self.plotViewModel.outputs.pledgeOverTimeConfigData
+  }
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
+
+  // MARK: - Component view models
+
+  private let plotViewModel: PLOTPledgeViewModel
 }
 
 // MARK: - Functions
