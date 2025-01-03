@@ -27,6 +27,16 @@ extension Backing {
       locationId = decompose(id: locationGraphId)
     }
 
+    let paymentIncrements: [PaymentIncrement] = backingFragment.paymentIncrements?.map {
+      let fragment = $0.fragments.paymentIncrementFragment
+
+      return PaymentIncrement(
+        amount: .init(amount: fragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0),
+        scheduledCollection: fragment.scheduledCollection,
+        state: fragment.state
+      )
+    } ?? []
+
     return Backing(
       addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
@@ -39,6 +49,7 @@ extension Backing {
       isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
+      paymentIncrements: paymentIncrements,
       paymentSource: backingPaymentSource(from: backingFragment),
       pledgedAt: backingFragment.pledgedOn.flatMap(Double.init) ?? 0,
       projectCountry: projectCountry.rawValue,

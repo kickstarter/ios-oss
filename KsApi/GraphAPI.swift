@@ -4267,6 +4267,7 @@ public enum GraphAPI {
     case pledgeProjectsOverviewIos_2024
     case copyRewards
     case pledgeRedemptionV1
+    case pledgeRedemptionVat
     case surveyRewardQuestions_2024
     case addressCollectionForDigitalRewards_2024
     case prelaunchStoryEditor
@@ -4384,6 +4385,7 @@ public enum GraphAPI {
         case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
         case "copy_rewards": self = .copyRewards
         case "pledge_redemption_v1": self = .pledgeRedemptionV1
+        case "pledge_redemption_vat": self = .pledgeRedemptionVat
         case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
         case "address_collection_for_digital_rewards_2024": self = .addressCollectionForDigitalRewards_2024
         case "prelaunch_story_editor": self = .prelaunchStoryEditor
@@ -4502,6 +4504,7 @@ public enum GraphAPI {
         case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
         case .copyRewards: return "copy_rewards"
         case .pledgeRedemptionV1: return "pledge_redemption_v1"
+        case .pledgeRedemptionVat: return "pledge_redemption_vat"
         case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
         case .addressCollectionForDigitalRewards_2024: return "address_collection_for_digital_rewards_2024"
         case .prelaunchStoryEditor: return "prelaunch_story_editor"
@@ -4620,6 +4623,7 @@ public enum GraphAPI {
         case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
         case (.copyRewards, .copyRewards): return true
         case (.pledgeRedemptionV1, .pledgeRedemptionV1): return true
+        case (.pledgeRedemptionVat, .pledgeRedemptionVat): return true
         case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
         case (.addressCollectionForDigitalRewards_2024, .addressCollectionForDigitalRewards_2024): return true
         case (.prelaunchStoryEditor, .prelaunchStoryEditor): return true
@@ -4739,6 +4743,7 @@ public enum GraphAPI {
         .pledgeProjectsOverviewIos_2024,
         .copyRewards,
         .pledgeRedemptionV1,
+        .pledgeRedemptionVat,
         .surveyRewardQuestions_2024,
         .addressCollectionForDigitalRewards_2024,
         .prelaunchStoryEditor,
@@ -8573,6 +8578,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
@@ -12896,6 +12902,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
@@ -13936,6 +13943,10 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
+        paymentIncrements {
+          __typename
+          ...PaymentIncrementFragment
+        }
         pledgedOn
         project {
           __typename
@@ -13968,6 +13979,7 @@ public enum GraphAPI {
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isLatePledge", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
+        GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
         GraphQLField("pledgedOn", type: .scalar(String.self)),
         GraphQLField("project", type: .object(Project.selections)),
         GraphQLField("reward", type: .object(Reward.selections)),
@@ -13983,8 +13995,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
     }
 
     public var __typename: String {
@@ -14082,6 +14094,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "location")
+      }
+    }
+
+    /// Scheduled incremental payments
+    public var paymentIncrements: [PaymentIncrement]? {
+      get {
+        return (resultMap["paymentIncrements"] as? [ResultMap]).flatMap { (value: [ResultMap]) -> [PaymentIncrement] in value.map { (value: ResultMap) -> PaymentIncrement in PaymentIncrement(unsafeResultMap: value) } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, forKey: "paymentIncrements")
       }
     }
 
@@ -14417,6 +14439,58 @@ public enum GraphAPI {
         public var locationFragment: LocationFragment {
           get {
             return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct PaymentIncrement: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PaymentIncrement"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(PaymentIncrementFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var paymentIncrementFragment: PaymentIncrementFragment {
+          get {
+            return PaymentIncrementFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -15896,6 +15970,135 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "symbol")
+      }
+    }
+  }
+
+  public struct PaymentIncrementFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PaymentIncrementFragment on PaymentIncrement {
+        __typename
+        amount {
+          __typename
+          ...MoneyFragment
+        }
+        scheduledCollection
+        state
+      }
+      """
+
+    public static let possibleTypes: [String] = ["PaymentIncrement"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
+        GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
+        GraphQLField("state", type: .nonNull(.scalar(String.self))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(amount: Amount, scheduledCollection: String, state: String) {
+      self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection, "state": state])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var amount: Amount {
+      get {
+        return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "amount")
+      }
+    }
+
+    public var scheduledCollection: String {
+      get {
+        return resultMap["scheduledCollection"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "scheduledCollection")
+      }
+    }
+
+    public var state: String {
+      get {
+        return resultMap["state"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "state")
+      }
+    }
+
+    public struct Amount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Money"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(MoneyFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var moneyFragment: MoneyFragment {
+          get {
+            return MoneyFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
       }
     }
   }

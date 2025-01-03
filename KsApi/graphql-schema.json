@@ -14152,6 +14152,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pledge_redemption_vat",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "survey_reward_questions_2024",
             "description": null,
             "isDeprecated": false,
@@ -28710,8 +28716,8 @@
             "description": "current bonus amount for backing",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
+              "kind": "OBJECT",
+              "name": "AdjustmentAmount",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28746,8 +28752,8 @@
             "description": "current shipping amount for backing",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
+              "kind": "OBJECT",
+              "name": "AdjustmentAmount",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28830,7 +28836,7 @@
           },
           {
             "name": "rewardId",
-            "description": "id of reward to be refunded",
+            "description": " graphql id of reward to be refunded",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -28852,12 +28858,71 @@
       },
       {
         "kind": "OBJECT",
+        "name": "AdjustmentAmount",
+        "description": "A hash containing the original, refunded, and remaining amounts.",
+        "fields": [
+          {
+            "name": "originalTotal",
+            "description": "the original total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedTotal",
+            "description": "the refunded total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingTotal",
+            "description": "the remaining total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "AdjustmentItem",
         "description": "An item in a backing that might be modified (removal, change in quantity) by an adjustment.",
         "fields": [
           {
             "name": "itemId",
-            "description": "id of item in backing",
+            "description": "graphql id of item in backing",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -28872,7 +28937,7 @@
             "deprecationReason": null
           },
           {
-            "name": "itemQuantity",
+            "name": "quantity",
             "description": "quantity of item in backing",
             "args": [],
             "type": {
@@ -29248,7 +29313,7 @@
             "deprecationReason": null
           },
           {
-            "name": "BONUS_SUPPORT",
+            "name": "BONUS_AMOUNT",
             "description": "refund for bonus support",
             "isDeprecated": false,
             "deprecationReason": null
@@ -30610,6 +30675,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "vatLocation",
+            "description": "Whether or not the location is in the EU or UK (uses VAT)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -42774,7 +42855,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -42809,13 +42890,9 @@
             "name": "id",
             "description": "id of object to be refunded",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -42858,19 +42935,7 @@
         "description": "Autogenerated return type of CreateAdjustment",
         "fields": [
           {
-            "name": "clientMutationId",
-            "description": "A unique identifier for the client performing the mutation.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "refundCheckout",
+            "name": "adjustedSummary",
             "description": null,
             "args": [],
             "type": {
@@ -42878,9 +42943,21 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "RefundCheckout",
+                "name": "AdjustedSummary",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

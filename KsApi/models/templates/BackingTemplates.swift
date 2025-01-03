@@ -14,6 +14,11 @@ extension Backing {
     isLatePledge: false,
     locationId: 1,
     locationName: "United States",
+    paymentIncrements: [.init(
+      amount: .init(amount: 10),
+      scheduledCollection: "2025-03-31T10:29:19-04:00",
+      state: "collected"
+    )],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
