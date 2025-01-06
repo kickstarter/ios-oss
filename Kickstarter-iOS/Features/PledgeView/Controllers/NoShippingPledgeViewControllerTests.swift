@@ -446,13 +446,14 @@ final class NoShippingPledgeViewControllerTests: TestCase {
             context: .pledge
           )
           controller.configure(with: data)
+
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = 1_550
+
           controller.pledgePaymentPlansViewController(
             PledgePaymentPlansViewController.instantiate(),
             didSelectPaymentPlan: .pledgeOverTime
           )
-
-          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-          parent.view.frame.size.height = 1_550
 
           self.scheduler.advance(by: .seconds(1))
 

@@ -170,7 +170,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   }
 
   func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
-    self.pledgeTotalViewController.configureWith(pledeOverTimeData: pledgeOverTimeData)
+    self.pledgeTotalViewController.configureWith(pledgeOverTimeData: pledgeOverTimeData)
   }
 
   // MARK: Styles

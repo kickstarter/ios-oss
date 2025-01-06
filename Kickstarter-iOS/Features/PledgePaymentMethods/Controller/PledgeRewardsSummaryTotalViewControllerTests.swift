@@ -35,7 +35,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
           )
 
           controller.configure(with: data)
-          controller.configureWith(pledeOverTimeData: nil)
+          controller.configureWith(pledgeOverTimeData: nil)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 200
 
@@ -71,7 +71,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
           )
 
           controller.configure(with: data)
-          controller.configureWith(pledeOverTimeData: nil)
+          controller.configureWith(pledgeOverTimeData: nil)
 
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 180
@@ -118,7 +118,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
             thresholdAmount: 125.0
           )
 
-          controller.configureWith(pledeOverTimeData: plotData)
+          controller.configureWith(pledgeOverTimeData: plotData)
 
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 180
@@ -165,7 +165,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
             thresholdAmount: 125.0
           )
 
-          controller.configureWith(pledeOverTimeData: plotData)
+          controller.configureWith(pledgeOverTimeData: plotData)
 
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 180

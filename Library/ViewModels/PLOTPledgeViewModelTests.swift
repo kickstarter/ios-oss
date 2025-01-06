@@ -11,7 +11,7 @@ final class PLOTPledgeViewModelTests: TestCase {
 
   var vm: PLOTPledgeViewModel?
 
-  let buildPaymentPlanInputs = TestObserver<(String, String, Bool), Never>()
+  let buildPaymentPlanInputs = TestObserver<(String, String), Never>()
 
   override func setUp() {
     super.setUp()

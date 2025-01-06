@@ -156,6 +156,9 @@ final class NoShippingPledgeViewController: UIViewController,
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+
+    // Sending `.pledgeInFull` as default option
+    self.viewModel.inputs.paymentPlanSelected(.pledgeInFull)
   }
 
   deinit {

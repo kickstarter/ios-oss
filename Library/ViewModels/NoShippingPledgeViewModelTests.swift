@@ -5297,6 +5297,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       )
 
       self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
       self.vm.inputs.viewDidLoad()
 
       self.showPledgeOverTimeUI.assertValues([true])
@@ -5336,7 +5337,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.showPledgeOverTimeUI.assertValues([true])
       self.pledgeOverTimeConfigData.assertDidEmitValue()
-      self.plotSelectedPlan.assertValues([.pledgeInFull, .pledgeOverTime])
+      self.plotSelectedPlan.assertValues([.pledgeOverTime])
     }
   }
 
@@ -5366,6 +5367,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       )
 
       self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
       self.vm.inputs.viewDidLoad()
 
       self.showPledgeOverTimeUI.assertValues([true])

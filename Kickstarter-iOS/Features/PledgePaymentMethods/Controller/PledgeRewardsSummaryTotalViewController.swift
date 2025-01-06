@@ -3,16 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Constants {
-  /// Spacing & Padding
-  public static let badgeTopButtonPadding = 6.0
-  public static let badgeLeadingTrailingPadding = 8.0
-  public static let defaultStackViewSpacing = Styles.grid(1)
-
-  /// Corner radius
-  public static let defaultCornerRadius = Styles.grid(1)
-}
-
 final class PledgeRewardsSummaryTotalViewController: UIViewController {
   // MARK: - Properties
 
@@ -27,10 +17,10 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
   private lazy var totalConversionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var pledgeOverTimeStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var pledgeOverTimeBadgeView: UIView = { UIView(frame: .zero) }()
-  private lazy var pledgeOverTimeBadgeLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeOverTimeChargesLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var pledgeOverTimeBadgeView: PledgeOverTimeBadgeView = {
+    PledgeOverTimeBadgeView(frame: .zero)
+  }()
+
   private let viewModel: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
@@ -39,7 +29,6 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
-    self.setupConstraints()
     self.bindStyles()
 
     self.viewModel.inputs.viewDidLoad()
@@ -48,8 +37,6 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
   // MARK: - Styles
 
   override func bindStyles() {
-    super.bindStyles()
-
     _ = self.view
       |> checkoutBackgroundStyle
 
@@ -75,11 +62,6 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
       |> totalConversionLabelStyle
 
     applyConfirmationLabelStyle(self.confirmationLabel)
-
-    applyPledgeOverTimeStackViewStyle(self.pledgeOverTimeStackView)
-    applyPledgeOverTimeBadgeViewStyle(self.pledgeOverTimeBadgeView)
-    applyPledgeOverTimeBadgeLabelStyle(self.pledgeOverTimeBadgeLabel)
-    applyPledgeOverTimeChargesLabelStyle(self.pledgeOverTimeChargesLabel)
   }
 
   // MARK: - Configuration
@@ -90,7 +72,7 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (
-      [self.titleAndTotalStackView, self.pledgeOverTimeStackView, self.confirmationLabel],
+      [self.titleAndTotalStackView, self.pledgeOverTimeBadgeView, self.confirmationLabel],
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
@@ -101,40 +83,7 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
     _ = ([self.amountLabel, self.totalConversionLabel], self.totalStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pledgeOverTimeBadgeView.addSubview(self.pledgeOverTimeBadgeLabel)
-    self.pledgeOverTimeStackView.addArrangedSubviews(
-      self.pledgeOverTimeBadgeView,
-      self.pledgeOverTimeChargesLabel
-    )
-    self.pledgeOverTimeStackView.isHidden = true
-
-    self.pledgeOverTimeBadgeLabel.text = Strings.Pledge_Over_Time()
-  }
-
-  private func setupConstraints() {
-    self.pledgeOverTimeBadgeLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.pledgeOverTimeBadgeLabel.setContentHuggingPriority(.required, for: .horizontal)
-    self.pledgeOverTimeBadgeView.setContentHuggingPriority(.required, for: .horizontal)
-    self.pledgeOverTimeChargesLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
-    NSLayoutConstraint.activate([
-      self.pledgeOverTimeBadgeLabel.topAnchor.constraint(
-        equalTo: self.pledgeOverTimeBadgeView.topAnchor,
-        constant: Constants.badgeTopButtonPadding
-      ),
-      self.pledgeOverTimeBadgeLabel.bottomAnchor.constraint(
-        equalTo: self.pledgeOverTimeBadgeView.bottomAnchor,
-        constant: -Constants.badgeTopButtonPadding
-      ),
-      self.pledgeOverTimeBadgeLabel.leadingAnchor.constraint(
-        equalTo: self.pledgeOverTimeBadgeView.leadingAnchor,
-        constant: Constants.badgeLeadingTrailingPadding
-      ),
-      self.pledgeOverTimeBadgeLabel.trailingAnchor.constraint(
-        equalTo: self.pledgeOverTimeBadgeView.trailingAnchor,
-        constant: -Constants.badgeLeadingTrailingPadding
-      )
-    ])
+    self.pledgeOverTimeBadgeView.isHidden = true
   }
 
   // MARK: - View model
@@ -154,8 +103,13 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
     self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
     self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
 
-    self.pledgeOverTimeStackView.rac.hidden = self.viewModel.outputs.pledgeOverTimeStackViewHidden
-    self.pledgeOverTimeChargesLabel.rac.text = self.viewModel.outputs.pledgeOverTimeChargesText
+    self.pledgeOverTimeBadgeView.rac.hidden = self.viewModel.outputs.pledgeOverTimeStackViewHidden
+    self.viewModel.outputs
+      .pledgeOverTimeChargesText
+      .observeForUI()
+      .observeValues { chargesText in
+        self.pledgeOverTimeBadgeView.configure(with: chargesText)
+      }
   }
 
   // MARK: - Configuration
@@ -164,8 +118,8 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
     self.viewModel.inputs.configure(with: data)
   }
 
-  internal func configureWith(pledeOverTimeData: PledgePaymentPlansAndSelectionData?) {
-    self.viewModel.inputs.configureWith(pledgeOverTimeData: pledeOverTimeData)
+  internal func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.viewModel.inputs.configureWith(pledgeOverTimeData: pledgeOverTimeData)
   }
 }
 
@@ -232,31 +186,4 @@ private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewSt
 private func applyConfirmationLabelStyle(_ label: UILabel) {
   label.numberOfLines = 0
   label.backgroundColor = UIColor.ksr_white
-}
-
-private func applyPledgeOverTimeStackViewStyle(_ stackView: UIStackView) {
-  stackView.axis = .horizontal
-  stackView.spacing = Constants.defaultStackViewSpacing
-  stackView.alignment = .center
-}
-
-private func applyPledgeOverTimeBadgeViewStyle(_ view: UIView) {
-  view.backgroundColor = .ksr_create_100
-  view.rounded(with: Constants.defaultCornerRadius)
-}
-
-private func applyPledgeOverTimeBadgeLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_caption1().bolded
-  label.textColor = .ksr_create_700
-  label.textAlignment = .center
-  label.numberOfLines = 1
-  label.adjustsFontForContentSizeCategory = true
-}
-
-private func applyPledgeOverTimeChargesLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_footnote()
-  label.textColor = .ksr_support_700
-  label.textAlignment = .right
-  label.numberOfLines = 0
-  label.adjustsFontForContentSizeCategory = true
 }

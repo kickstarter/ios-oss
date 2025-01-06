@@ -11,7 +11,7 @@ public protocol PLOTPledgeViewModelOutputs {
   var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
 
   // Visible only for testing
-  var buildPaymentPlanInputs: Signal<(String, String, Bool), Never> { get }
+  var buildPaymentPlanInputs: Signal<(String, String), Never> { get }
 }
 
 public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
@@ -19,24 +19,27 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
-    self.buildPaymentPlanInputs = Signal.combineLatest(project, pledgeTotal, pledgeOverTimeUIEnabled)
+    self.buildPaymentPlanInputs = Signal.combineLatest(project, pledgeTotal)
       // Only call the query once
       .take(first: 1)
-      .map { (project: Project, pledgeTotal: Double, pledgeOverTimeUIEnabled: Bool) -> (
+      .map { (project: Project, pledgeTotal: Double) -> (
         String,
-        String,
-        Bool
+        String
       ) in
         let amountFormatter = NumberFormatter()
         amountFormatter.minimumFractionDigits = 2
         amountFormatter.maximumFractionDigits = 2
         let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
 
-        return (project.slug, amount, pledgeOverTimeUIEnabled)
+        return (project.slug, amount)
       }
 
     let pledgeOverTimeQuery = self.buildPaymentPlanInputs
-      .switchMap { (slug: String, amount: String, pledgeOverTimeUIEnabled: Bool) -> SignalProducer<
+      .combineLatest(with: pledgeOverTimeUIEnabled)
+      .switchMap { (
+        paymentPlanInputs: (slug: String, amount: String),
+        pledgeOverTimeUIEnabled: Bool
+      ) -> SignalProducer<
         Signal<GraphAPI.BuildPaymentPlanQuery.Data?, ErrorEnvelope>.Event,
         Never
       > in
@@ -48,8 +51,8 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
         }
 
         return AppEnvironment.current.apiService.buildPaymentPlan(
-          projectSlug: slug,
-          pledgeAmount: amount
+          projectSlug: paymentPlanInputs.slug,
+          pledgeAmount: paymentPlanInputs.amount
         )
         // Wrap the response in an optional and convert the SignalProducer events into materialized values
         // to handle success or error scenarios downstream.
@@ -71,7 +74,7 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
       .demoteErrors(replaceErrorWith: nil)
 
     self.pledgeOverTimeConfigData = Signal
-      .combineLatest(project, pledgeOverTimeApiValues, self.paymentPlanSelectedSignal)
+      .combineLatest(project, pledgeOverTimeApiValues, self.paymentPlanSelectedProperty.signal)
       .map { project, pledgeOverTimeApiValues, paymentPlanSelected in
 
         // Wrap the value in `nil` to ensure the Signal emits consistently,
@@ -90,9 +93,6 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
           thresholdAmount: thresholdAmount
         )
       }
-
-    // Sending `.pledgeInFull` as default option
-    self.paymentPlanSelectedObserver.send(value: .pledgeInFull)
   }
 
   public var outputs: PLOTPledgeViewModelOutputs { return self }
@@ -100,15 +100,14 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
 
   // MARK: - Inputs
 
-  private let (paymentPlanSelectedSignal, paymentPlanSelectedObserver) = Signal<PledgePaymentPlansType, Never>
-    .pipe()
+  private let paymentPlanSelectedProperty = MutableProperty<PledgePaymentPlansType>(.pledgeInFull)
   public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
-    self.paymentPlanSelectedObserver.send(value: paymentPlan)
+    self.paymentPlanSelectedProperty.value = paymentPlan
   }
 
   // MARK: - Outputs
 
   public let showPledgeOverTimeUI: Signal<Bool, Never>
   public let pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never>
-  public let buildPaymentPlanInputs: Signal<(String, String, Bool), Never>
+  public let buildPaymentPlanInputs: Signal<(String, String), Never>
 }
