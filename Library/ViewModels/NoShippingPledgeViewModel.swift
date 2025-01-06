@@ -22,6 +22,7 @@ public protocol NoShippingPledgeViewModelInputs {
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
   func paymentAuthorizationViewControllerDidFinish()
+  func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
@@ -63,7 +64,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var title: Signal<String, Never> { get }
   var showPledgeOverTimeUI: Signal<Bool, Never> { get }
-  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
+  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
 }
 
 public protocol NoShippingPledgeViewModelType {
@@ -985,8 +986,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         )
       }
 
-    // MARK: Pledge Over Time
-
     self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
   }
 
@@ -1025,6 +1024,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     = Signal<Void, Never>.pipe()
   public func paymentAuthorizationViewControllerDidFinish() {
     self.paymentAuthorizationDidFinishObserver.send(value: ())
+  }
+
+  public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
+    self.plotViewModel.inputs.paymentPlanSelected(paymentPlan)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -1111,11 +1114,12 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
+
   public var showPledgeOverTimeUI: Signal<Bool, Never> {
     return self.plotViewModel.outputs.showPledgeOverTimeUI
   }
 
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> {
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> {
     return self.plotViewModel.outputs.pledgeOverTimeConfigData
   }
 
