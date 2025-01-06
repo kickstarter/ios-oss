@@ -28,6 +28,10 @@ public struct PledgePaymentPlansAndSelectionData {
     self.selectedPlan = selectedPlan
     self.thresholdAmount = thresholdAmount
   }
+
+  public var isPledgeOverTime: Bool {
+    self.selectedPlan == .pledgeOverTime
+  }
 }
 
 public protocol PledgePaymentPlansViewModelInputs {

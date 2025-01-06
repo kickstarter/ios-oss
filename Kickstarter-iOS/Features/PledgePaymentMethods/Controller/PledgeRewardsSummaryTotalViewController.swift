@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewController {
+final class PledgeRewardsSummaryTotalViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var titleAndTotalStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -17,6 +17,10 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
   private lazy var totalConversionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var pledgeOverTimeBadgeView: PledgeOverTimeBadgeView = {
+    PledgeOverTimeBadgeView(frame: .zero)
+  }()
+
   private let viewModel: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
@@ -33,8 +37,6 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
   // MARK: - Styles
 
   override func bindStyles() {
-    super.bindStyles()
-
     _ = self.view
       |> checkoutBackgroundStyle
 
@@ -62,12 +64,17 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
     applyConfirmationLabelStyle(self.confirmationLabel)
   }
 
+  // MARK: - Configuration
+
   private func configureSubviews() {
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleAndTotalStackView, self.confirmationLabel], self.rootStackView)
+    _ = (
+      [self.titleAndTotalStackView, self.pledgeOverTimeBadgeView, self.confirmationLabel],
+      self.rootStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.titleLabel, self.totalStackView], self.titleAndTotalStackView)
@@ -75,6 +82,8 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
     _ = ([self.amountLabel, self.totalConversionLabel], self.totalStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.pledgeOverTimeBadgeView.isHidden = true
   }
 
   // MARK: - View model
@@ -83,7 +92,7 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
     super.bindViewModel()
 
     self.viewModel.outputs.titleLabelText
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] text in
         self?.titleLabel.text = text
       }
@@ -93,12 +102,24 @@ final class PostCampaignPledgeRewardsSummaryTotalViewController: UIViewControlle
 
     self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
     self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
+
+    self.pledgeOverTimeBadgeView.rac.hidden = self.viewModel.outputs.pledgeOverTimeStackViewHidden
+    self.viewModel.outputs
+      .pledgeOverTimeChargesText
+      .observeForUI()
+      .observeValues { chargesText in
+        self.pledgeOverTimeBadgeView.configure(with: chargesText)
+      }
   }
 
   // MARK: - Configuration
 
   internal func configure(with data: PledgeSummaryViewData) {
     self.viewModel.inputs.configure(with: data)
+  }
+
+  internal func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.viewModel.inputs.configureWith(pledgeOverTimeData: pledgeOverTimeData)
   }
 }
 
