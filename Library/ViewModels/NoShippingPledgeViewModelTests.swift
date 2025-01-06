@@ -68,6 +68,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let showWebHelp = TestObserver<HelpType, Never>()
   private let title = TestObserver<String, Never>()
   private let showPledgeOverTimeUI = TestObserver<Bool, Never>()
+  private let plotSelectedPlan = TestObserver<PledgePaymentPlansType, Never>()
   private let pledgeOverTimeConfigData = TestObserver<PledgePaymentPlansAndSelectionData, Never>()
 
   let shippingRule = ShippingRule.template
@@ -150,7 +151,15 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.title.observe(self.title.observer)
 
     self.vm.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
-    self.vm.outputs.pledgeOverTimeConfigData.observe(self.pledgeOverTimeConfigData.observer)
+
+    self.vm.outputs.pledgeOverTimeConfigData
+      .skipNil()
+      .map { $0.selectedPlan }
+      .observe(self.plotSelectedPlan.observer)
+
+    self.vm.outputs.pledgeOverTimeConfigData
+      .skipNil()
+      .observe(self.pledgeOverTimeConfigData.observer)
   }
 
   func testShowWebHelp() {
@@ -5232,34 +5241,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testShowPledgeOverTimeUI_True() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      let project = Project.template
-        |> Project.lens.isPledgeOverTimeAllowed .~ true
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.showPledgeOverTimeUI.assertValues([true])
-    }
-  }
-
   func testShowPledgeOverTimeUI_False() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
@@ -5285,6 +5266,78 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.showPledgeOverTimeUI.assertValues([false])
+      self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+      self.plotSelectedPlan.assertDidNotEmitValue()
+    }
+  }
+
+  func testPledgeOverTime_PledgeInFullSelected() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeConfigData.assertDidEmitValue()
+      self.plotSelectedPlan.assertValue(.pledgeInFull)
+    }
+  }
+
+  func testPledgeOverTime_PledgeOverTimeSelected() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.paymentPlanSelected(.pledgeOverTime)
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeConfigData.assertDidEmitValue()
+      self.plotSelectedPlan.assertValues([.pledgeOverTime])
     }
   }
 
@@ -5314,6 +5367,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       )
 
       self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
       self.vm.inputs.viewDidLoad()
 
       self.showPledgeOverTimeUI.assertValues([true])
