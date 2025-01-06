@@ -987,32 +987,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: Pledge Over Time
 
-    self.showPledgeOverTimeUI = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
-
-    self.pledgeOverTimeConfigData = Signal.combineLatest(
-      self.showPledgeOverTimeUI,
-      project,
-      pledgeTotal
-    )
-    .filter { showPledgeOverTimeUI, _, _ in
-      showPledgeOverTimeUI
-    }
-    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
-      // TODO: Temporary placeholder to simulate the ineligible state for plans.
-      // The `thresholdAmount` will be retrieved from the API in the future.
-      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-      let thresholdAmount = 125.0
-      let isIneligible = pledgeTotal < thresholdAmount
-
-      return PledgePaymentPlansAndSelectionData(
-        selectedPlan: .pledgeInFull,
-        increments: mockPledgePaymentIncrement(),
-        ineligible: isIneligible,
-        project: project,
-        thresholdAmount: thresholdAmount
-      )
-    }
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
   }
 
   // MARK: - Inputs
@@ -1136,11 +1111,20 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
-  public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
+  public var showPledgeOverTimeUI: Signal<Bool, Never> {
+    return self.plotViewModel.outputs.showPledgeOverTimeUI
+  }
+
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> {
+    return self.plotViewModel.outputs.pledgeOverTimeConfigData
+  }
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
+
+  // MARK: - Component view models
+
+  private let plotViewModel: PLOTPledgeViewModel
 }
 
 // MARK: - Functions
@@ -1263,21 +1247,4 @@ private func pledgeAmountSummaryViewData(
     shippingAmountHidden: !shippingViewsHidden,
     rewardIsLocalPickup: rewardIsLocalPickup
   )
-}
-
-// TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
-  var increments: [PledgePaymentIncrement] = []
-  #if DEBUG
-    var timeStamp = Date().timeIntervalSince1970
-    for _ in 1...4 {
-      timeStamp += 30 * 24 * 60 * 60
-      increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-        scheduledCollection: timeStamp
-      ))
-    }
-  #endif
-
-  return increments
 }
