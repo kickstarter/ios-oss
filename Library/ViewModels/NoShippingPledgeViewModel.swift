@@ -638,6 +638,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     self.processingViewIsHidden = processingViewIsHidden.signal
 
+    // MARK: Pledge Over Time
+
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
+
     // MARK: - Form Validation
 
     let amountChangedAndValid = Signal.combineLatest(
@@ -695,6 +699,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let valuesChangedAndValid = Signal.combineLatest(
       amountChangedAndValid,
       paymentMethodChangedAndValid,
+      self.plotViewModel.pledgeOverTimeIsLoading,
       context
     )
     .map(allValuesChangedAndValid)
@@ -985,8 +990,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           refTag: refTag
         )
       }
-
-    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
   }
 
   // MARK: - Inputs
@@ -1214,13 +1217,14 @@ private func paymentMethodValid(
 private func allValuesChangedAndValid(
   amountValid: Bool,
   paymentSourceValid: Bool,
+  pledgeOverTimeIsLoading: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
     return amountValid || paymentSourceValid
   }
 
-  return amountValid
+  return amountValid && !pledgeOverTimeIsLoading
 }
 
 // MARK: - Helper Functions

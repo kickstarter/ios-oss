@@ -9,10 +9,29 @@ public protocol PLOTPledgeViewModelInputs {
 public protocol PLOTPledgeViewModelOutputs {
   var showPledgeOverTimeUI: Signal<Bool, Never> { get }
   var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
+  var pledgeOverTimeIsLoading: Signal<Bool, Never> { get }
 
   // Visible only for testing
   var buildPaymentPlanInputs: Signal<(String, String), Never> { get }
 }
+
+/**
+ A component view model for Pledge Over Time in the pledge checkout flow.
+ Creates one BuildPaymentPlanQuery and uses those results to create data for the UI.
+
+ Inputs:
+  - `project`: A project.
+  - `pledgeTotal`: Total amount to pledge, a double.
+  - `paymentPlanSelected:`: The payment plan selected by the user.
+
+ A `project` and `pledgeTotal` are required for `showPledgeOverTimeUI` or `pledgeOverTimeIsLoading` to send.
+ In addition, `paymentPlanSelected:` must be called before `pledgeOverTimeConfigData` sends.
+
+ Outputs:
+  - `showPledgeOverTimeUI`:  Whether the PLOT module should be shown. Sends one or more events; the PLOT module should disappear if an error occurs in the BuildPaymentPlanQuery. Requires
+  - `pledgeOverTimeConfigData`: Info needed to display the PLOT module. Sends one or more events.
+  - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events, since loading can start and stop.
+ */
 
 public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
   init(project: Signal<Project, Never>, pledgeTotal: Signal<Double, Never>) {
@@ -67,6 +86,13 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
       pledgeOverTimeQuery.errors().map(value: false)
     )
 
+    self.pledgeOverTimeIsLoading = Signal.merge(
+      pledgeOverTimeUIEnabled,
+      pledgeOverTimeQuery.values().map(value: false),
+      pledgeOverTimeQuery.errors().map(value: false)
+    )
+    .skipRepeats()
+
     let pledgeOverTimeApiValues = pledgeOverTimeQuery
       .values()
       // Emit a default `nil` value to ensure the Signal pipeline remains active
@@ -95,6 +121,11 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
       }
   }
 
+  public let showPledgeOverTimeUI: Signal<Bool, Never>
+  public let pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never>
+  public let pledgeOverTimeIsLoading: Signal<Bool, Never>
+  public let buildPaymentPlanInputs: Signal<(String, String), Never>
+
   public var outputs: PLOTPledgeViewModelOutputs { return self }
   public var inputs: PLOTPledgeViewModelInputs { return self }
 
@@ -106,8 +137,4 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
   }
 
   // MARK: - Outputs
-
-  public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public let pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never>
-  public let buildPaymentPlanInputs: Signal<(String, String), Never>
 }
