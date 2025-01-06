@@ -24,13 +24,15 @@ public protocol PLOTPledgeViewModelOutputs {
   - `pledgeTotal`: Total amount to pledge, a double.
   - `paymentPlanSelected:`: The payment plan selected by the user.
 
- A `project` and `pledgeTotal` are required for `showPledgeOverTimeUI` or `pledgeOverTimeIsLoading` to send.
- In addition, `paymentPlanSelected:` must be called before `pledgeOverTimeConfigData` sends.
+ A `project` and `pledgeTotal` are required before `showPledgeOverTimeUI` or `pledgeOverTimeIsLoading` will send.
+
+ If `showPledgeOverTimeUI` is false, or if a server error occurs, the model will immediately send `nil` for `pledgeOverTimeConfigData`.
+ Otherwise, `pledgeOverTimeConfigData` send after the BuildPaymentPlanQuery loads. It will also send again each time `paymentPlanSelected:` is called.
 
  Outputs:
-  - `showPledgeOverTimeUI`:  Whether the PLOT module should be shown. Sends one or more events; the PLOT module should disappear if an error occurs in the BuildPaymentPlanQuery. Requires
+  - `showPledgeOverTimeUI`:  Whether the PLOT module should be shown. Sends one or more events. The PLOT module should disappear if an error occurs in the BuildPaymentPlanQuery.
   - `pledgeOverTimeConfigData`: Info needed to display the PLOT module. Sends one or more events.
-  - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events, since loading can start and stop.
+  - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events.
  */
 
 public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
@@ -54,22 +56,13 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
       }
 
     let pledgeOverTimeQuery = self.buildPaymentPlanInputs
-      .combineLatest(with: pledgeOverTimeUIEnabled)
       .switchMap { (
-        paymentPlanInputs: (slug: String, amount: String),
-        pledgeOverTimeUIEnabled: Bool
+        paymentPlanInputs: (slug: String, amount: String)
       ) -> SignalProducer<
         Signal<GraphAPI.BuildPaymentPlanQuery.Data?, ErrorEnvelope>.Event,
         Never
       > in
-        // Proceed with the query only if Pledge Over Time (PLOT) is enabled.
-        // If PLOT is disabled, return nil to ensure that the `combineLatest` in `pledgeOverTimeConfigData`
-        // emits a value, maintaining the Signal pipeline's flow.
-        guard pledgeOverTimeUIEnabled else {
-          return SignalProducer(value: .value(nil))
-        }
-
-        return AppEnvironment.current.apiService.buildPaymentPlan(
+        AppEnvironment.current.apiService.buildPaymentPlan(
           projectSlug: paymentPlanInputs.slug,
           pledgeAmount: paymentPlanInputs.amount
         )
@@ -99,9 +92,18 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
       // and `combineLatest` in `pledgeOverTimeConfigData` emits a value even when errors occur.
       .demoteErrors(replaceErrorWith: nil)
 
-    self.pledgeOverTimeConfigData = Signal
-      .combineLatest(project, pledgeOverTimeApiValues, self.paymentPlanSelectedProperty.signal)
-      .map { project, pledgeOverTimeApiValues, paymentPlanSelected in
+    // Send an empty config when the view model is initialized
+    let emptyConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> = self.showPledgeOverTimeUI
+      .filter { $0 == false }
+      .mapConst(nil)
+
+    // Send a config once the query loads, defaulting to .pledgeInFull
+    let configDataAfterQueryLoads: Signal<PledgePaymentPlansAndSelectionData?, Never> = Signal
+      .combineLatest(project, pledgeOverTimeApiValues)
+      .map { (
+        project: Project,
+        pledgeOverTimeApiValues: GraphAPI.BuildPaymentPlanQuery.Data?
+      ) -> PledgePaymentPlansAndSelectionData? in
 
         // Wrap the value in `nil` to ensure the Signal emits consistently,
         // even when the API request fails or Pledge Over Time is disabled.
@@ -111,14 +113,41 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
         // The `thresholdAmount` will be retrieved from the API in the future.
         // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
         let thresholdAmount = 125.0
+        let defaultPlan = PledgePaymentPlansType.pledgeInFull
 
         return PledgePaymentPlansAndSelectionData(
           withPaymentPlanFragment: paymentPlan,
-          selectedPlan: paymentPlanSelected,
+          selectedPlan: defaultPlan,
           project: project,
           thresholdAmount: thresholdAmount
         )
       }
+
+    // Send an updated config after changing the plan
+    let configDataAfterChangingPlan: Signal<PledgePaymentPlansAndSelectionData?, Never> = Signal
+      .combineLatest(configDataAfterQueryLoads.skipNil(), self.paymentPlanSelectedProperty.signal)
+      .map { data, selectedPlan in
+        PledgePaymentPlansAndSelectionData(
+          selectedPlan: selectedPlan,
+          increments: data.paymentIncrements,
+          ineligible: data.ineligible,
+          project: data.project,
+          thresholdAmount: data.thresholdAmount
+        )
+      }
+
+    self.pledgeOverTimeConfigData = Signal.merge(
+      emptyConfigData,
+      configDataAfterQueryLoads,
+      configDataAfterChangingPlan
+    )
+    .skipRepeats { a, b in
+      if a.isNil && b.isNil {
+        return true
+      }
+
+      return false
+    }
   }
 
   public let showPledgeOverTimeUI: Signal<Bool, Never>
