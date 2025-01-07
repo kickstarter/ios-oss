@@ -15,7 +15,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: ShippingRule.template,
       paymentSourceId: nil,
       setupIntentClientSecret: "seti_1Lq2At4VvJ2PtfhKRtPWTnKh_secret_MZAVRP2SXO5bvZzZ2bi1W7o5Wsz4BuN",
-      applePayParams: nil
+      applePayParams: nil,
+      pledgeContext: .updateReward
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -50,7 +51,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
-      applePayParams: applePayParams
+      applePayParams: applePayParams,
+      pledgeContext: .changePaymentMethod
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -81,7 +83,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
-      applePayParams: applePayParams
+      applePayParams: applePayParams,
+      pledgeContext: .changePaymentMethod
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -115,7 +118,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
-      applePayParams: applePayParams
+      applePayParams: applePayParams,
+      pledgeContext: .latePledge
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -142,7 +146,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
-      applePayParams: nil
+      applePayParams: nil,
+      pledgeContext: .latePledge
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -181,7 +186,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       shippingRule: shippingRule,
       paymentSourceId: "123",
       setupIntentClientSecret: nil,
-      applePayParams: applePayParams
+      applePayParams: applePayParams,
+      pledgeContext: .updateReward
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -194,6 +200,71 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       input.rewardIds,
       ["UmV3YXJkLTE=", "UmV3YXJkLTI=", "UmV3YXJkLTI=", "UmV3YXJkLTM=", "UmV3YXJkLTM=", "UmV3YXJkLTM="]
     )
+    XCTAssertNil(input.paymentSourceId)
+  }
+
+  func testUpdateBackingInput_FixPaymentMethod_card() {
+    let reward = Reward.template
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .. Location.lens.id .~ 1
+      |> ShippingRule.lens.cost .~ 5.0
+
+    let data: UpdateBackingData = (
+      backing: Backing.template,
+      rewards: [reward],
+      pledgeTotal: 15,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: shippingRule,
+      paymentSourceId: "123",
+      setupIntentClientSecret: "fake_secret",
+      applePayParams: nil,
+      pledgeContext: .fixPaymentMethod
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: false)
+
+    XCTAssertNil(input.amount)
+    XCTAssertNil(input.locationId)
+    XCTAssertNil(input.rewardIds)
+
+    XCTAssertEqual(input.setupIntentClientSecret, "fake_secret")
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertEqual(input.paymentSourceId, "123")
+  }
+
+  func testUpdateBackingInput_FixPaymentMethod_applePay() {
+    let reward = Reward.template
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .. Location.lens.id .~ 1
+      |> ShippingRule.lens.cost .~ 5.0
+
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
+    )
+
+    let data: UpdateBackingData = (
+      backing: Backing.template,
+      rewards: [reward],
+      pledgeTotal: 15,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: shippingRule,
+      paymentSourceId: "123",
+      setupIntentClientSecret: nil,
+      applePayParams: applePayParams,
+      pledgeContext: .fixPaymentMethod
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+
+    XCTAssertNil(input.amount)
+    XCTAssertNil(input.locationId)
+    XCTAssertNil(input.rewardIds)
+
+    XCTAssertEqual(input.applePay, applePayParams)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertNil(input.paymentSourceId)
   }
 }

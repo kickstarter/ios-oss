@@ -25,7 +25,8 @@ public typealias UpdateBackingData = (
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   setupIntentClientSecret: String?,
-  applePayParams: ApplePayParams?
+  applePayParams: ApplePayParams?,
+  pledgeContext: PledgeViewContext
 )
 public typealias PaymentAuthorizationData = (
   project: Project,
@@ -637,7 +638,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedQuantities,
       selectedShippingRule,
       selectedPaymentSource,
-      applePayParamsData
+      applePayParamsData,
+      context
     )
     .map {
       backing,
@@ -646,7 +648,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         selectedQuantities,
         selectedShippingRule,
         selectedPaymentSource,
-        applePayParams
+        applePayParams,
+        context
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
@@ -658,7 +661,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         shippingRule: selectedShippingRule,
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
-        applePayParams: applePayParams
+        applePayParams: applePayParams,
+        pledgeContext: context
       )
     }
 

@@ -591,7 +591,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       selectedQuantities,
       selectedShippingRule,
       selectedPaymentSource,
-      applePayParamsData
+      applePayParamsData,
+      context
     )
     .map {
       backing,
@@ -600,7 +601,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         selectedQuantities,
         selectedShippingRule,
         selectedPaymentSource,
-        applePayParams
+        applePayParams,
+        context
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
@@ -612,7 +614,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         shippingRule: selectedShippingRule,
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
-        applePayParams: applePayParams
+        applePayParams: applePayParams,
+        context
       )
     }
 
