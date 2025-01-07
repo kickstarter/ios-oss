@@ -197,7 +197,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 10.0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     withEnvironment(apiService: mockService) {
@@ -444,6 +445,42 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.menuButtonTapped()
 
       self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
+    }
+  }
+
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true,
+      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
     }
   }
 
@@ -872,7 +909,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     // Pledge amount 50
@@ -895,7 +933,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
-      rewardIsLocalPickup: false
+      rewardIsLocalPickup: false,
+      paymentIncrements: nil
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(

@@ -22,6 +22,7 @@ public protocol NoShippingPledgeViewModelInputs {
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
   func paymentAuthorizationViewControllerDidFinish()
+  func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
@@ -63,7 +64,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var title: Signal<String, Never> { get }
   var showPledgeOverTimeUI: Signal<Bool, Never> { get }
-  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
+  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
 }
 
 public protocol NoShippingPledgeViewModelType {
@@ -507,7 +508,14 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       applePayParams.wrapInOptional()
     )
 
+    // MARK: Pledge Over Time
+
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
+
     // MARK: - Create Backing
+
+    let selectedPaymentPlan = self.plotViewModel.pledgeOverTimeConfigData
+      .map { $0?.selectedPlan ?? .pledgeInFull }
 
     let createBackingData = Signal.combineLatest(
       project,
@@ -517,6 +525,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       selectedShippingRule,
       selectedPaymentSource,
       applePayParamsData,
+      selectedPaymentPlan,
       refTag
     )
     .map {
@@ -527,10 +536,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         selectedShippingRule,
         selectedPaymentSource,
         applePayParams,
+        selectedPaymentPlan,
         refTag
         -> CreateBackingData in
 
-      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      let paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
       return (
         project: project,
@@ -542,7 +552,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         refTag: refTag,
-        incremental: false // TODO: implementation in [mbl-1853](https://kickstarter.atlassian.net/browse/MBL-1853)
+        incremental: selectedPaymentPlan == .pledgeOverTime
       )
     }
 
@@ -719,6 +729,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let valuesChangedAndValid = Signal.combineLatest(
       amountChangedAndValid,
       paymentMethodChangedAndValid,
+      self.plotViewModel.pledgeOverTimeIsLoading,
       context
     )
     .map(allValuesChangedAndValid)
@@ -1009,35 +1020,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
           refTag: refTag
         )
       }
-
-    // MARK: Pledge Over Time
-
-    self.showPledgeOverTimeUI = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
-
-    self.pledgeOverTimeConfigData = Signal.combineLatest(
-      self.showPledgeOverTimeUI,
-      project,
-      pledgeTotal
-    )
-    .filter { showPledgeOverTimeUI, _, _ in
-      showPledgeOverTimeUI
-    }
-    .map { _, project, pledgeTotal -> PledgePaymentPlansAndSelectionData in
-      // TODO: Temporary placeholder to simulate the ineligible state for plans.
-      // The `thresholdAmount` will be retrieved from the API in the future.
-      // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-      let thresholdAmount = 125.0
-      let isIneligible = pledgeTotal < thresholdAmount
-
-      return PledgePaymentPlansAndSelectionData(
-        selectedPlan: .pledgeInFull,
-        increments: mockPledgePaymentIncrement(),
-        ineligible: isIneligible,
-        project: project,
-        thresholdAmount: thresholdAmount
-      )
-    }
   }
 
   // MARK: - Inputs
@@ -1075,6 +1057,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     = Signal<Void, Never>.pipe()
   public func paymentAuthorizationViewControllerDidFinish() {
     self.paymentAuthorizationDidFinishObserver.send(value: ())
+  }
+
+  public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
+    self.plotViewModel.inputs.paymentPlanSelected(paymentPlan)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -1161,11 +1147,21 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
-  public let showPledgeOverTimeUI: Signal<Bool, Never>
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData, Never>
+
+  public var showPledgeOverTimeUI: Signal<Bool, Never> {
+    return self.plotViewModel.outputs.showPledgeOverTimeUI
+  }
+
+  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> {
+    return self.plotViewModel.outputs.pledgeOverTimeConfigData
+  }
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
+
+  // MARK: - Component view models
+
+  private let plotViewModel: PLOTPledgeViewModel
 }
 
 // MARK: - Functions
@@ -1251,13 +1247,14 @@ private func paymentMethodValid(
 private func allValuesChangedAndValid(
   amountValid: Bool,
   paymentSourceValid: Bool,
+  pledgeOverTimeIsLoading: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
     return amountValid || paymentSourceValid
   }
 
-  return amountValid
+  return amountValid && !pledgeOverTimeIsLoading
 }
 
 // MARK: - Helper Functions
@@ -1288,21 +1285,4 @@ private func pledgeAmountSummaryViewData(
     shippingAmountHidden: !shippingViewsHidden,
     rewardIsLocalPickup: rewardIsLocalPickup
   )
-}
-
-// TODO: Remove this when implementing the API [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
-private func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
-  var increments: [PledgePaymentIncrement] = []
-  #if DEBUG
-    var timeStamp = Date().timeIntervalSince1970
-    for _ in 1...4 {
-      timeStamp += 30 * 24 * 60 * 60
-      increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-        scheduledCollection: timeStamp
-      ))
-    }
-  #endif
-
-  return increments
 }

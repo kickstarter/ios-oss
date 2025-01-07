@@ -35,7 +35,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
   private lazy var pledgeTotalViewController = {
-    PostCampaignPledgeRewardsSummaryTotalViewController.instantiate()
+    PledgeRewardsSummaryTotalViewController.instantiate()
   }()
 
   private let viewModel: PostCampaignPledgeRewardsSummaryViewModelType =
@@ -167,6 +167,10 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
       .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
 
     self.view.setNeedsLayout()
+  }
+
+  func configureWith(pledgeOverTimeData: PledgePaymentPlansAndSelectionData?) {
+    self.pledgeTotalViewController.configureWith(pledgeOverTimeData: pledgeOverTimeData)
   }
 
   // MARK: Styles

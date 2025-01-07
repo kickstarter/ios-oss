@@ -68,6 +68,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
   private let showWebHelp = TestObserver<HelpType, Never>()
   private let title = TestObserver<String, Never>()
   private let showPledgeOverTimeUI = TestObserver<Bool, Never>()
+  private let plotSelectedPlan = TestObserver<PledgePaymentPlansType, Never>()
+  private let pledgeOverTimeConfigData = TestObserver<PledgePaymentPlansAndSelectionData, Never>()
 
   let shippingRule = ShippingRule.template
     |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
@@ -149,6 +151,15 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.outputs.title.observe(self.title.observer)
 
     self.vm.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
+
+    self.vm.outputs.pledgeOverTimeConfigData
+      .skipNil()
+      .map { $0.selectedPlan }
+      .observe(self.plotSelectedPlan.observer)
+
+    self.vm.outputs.pledgeOverTimeConfigData
+      .skipNil()
+      .observe(self.pledgeOverTimeConfigData.observer)
   }
 
   func testShowWebHelp() {
@@ -5230,34 +5241,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testShowPledgeOverTimeUI_True() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      let project = Project.template
-        |> Project.lens.isPledgeOverTimeAllowed .~ true
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.showPledgeOverTimeUI.assertValues([true])
-    }
-  }
-
   func testShowPledgeOverTimeUI_False() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
@@ -5283,6 +5266,334 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.showPledgeOverTimeUI.assertValues([false])
+      self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+      self.plotSelectedPlan.assertDidNotEmitValue()
+    }
+  }
+
+  func testPledgeOverTime_PledgeInFullSelected() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeConfigData.assertDidEmitValue()
+      self.plotSelectedPlan.assertValues([.pledgeInFull, .pledgeInFull])
+    }
+  }
+
+  func testPledgeOverTime_PledgeOverTimeSelected() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.paymentPlanSelected(.pledgeOverTime)
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeConfigData.assertDidEmitValue()
+      self.plotSelectedPlan.assertValues([.pledgeInFull, .pledgeOverTime])
+    }
+  }
+
+  func testPledgeOverTimeConfigData_LoadsAfterBuildPledgeQuery() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.paymentPlanSelected(.pledgeInFull)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeConfigData.assertDidEmitValue()
+
+      let configValue = self.pledgeOverTimeConfigData.lastValue
+
+      XCTAssertEqual(configValue!.selectedPlan, .pledgeInFull)
+      XCTAssertFalse(configValue!.ineligible)
+      XCTAssertEqual(configValue!.paymentIncrements.count, 1)
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+      // Should be true, since pledge over time loaded and everything else is correct
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
+    }
+  }
+
+  func testShowPledgeOverTimeUI_IsFalseWhenBuildPaymentPlanQueryFails() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockService = MockService(buildPaymentPlanResult: .failure(.couldNotParseJSON))
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true, false])
+      self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+      // Should be true, since pledge over time never loaded and everything else is correct
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
+    }
+  }
+
+  func testPledgeIsDisabled_whenShowPledgeOverUIIsTrue_andPledgeOverTimeIsLoading() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPledgeOverTimeUI.assertValues([true])
+
+      // Hasn't loaded yet
+      self.pledgeOverTimeConfigData.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      // Should still be disabled, since pledge over time never loaded
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
+    }
+  }
+
+  func testCreateBacking_projectEligibleForPledgeOverTime_Success() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+
+    let buildPaymentPlan = try! GraphAPI.BuildPaymentPlanQuery
+      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+
+    let mockService = MockService(
+      buildPaymentPlanResult: Result.success(buildPaymentPlan),
+      createBackingResult: Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template, remoteConfigClient: mockConfigClient) {
+      let shippingRule = ShippingRule.template
+
+      let reward = Reward.template
+        |> Reward.lens.id .~ 1
+        |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.minimum .~ 10.0
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
+        |> Reward.lens.shippingRules .~ [shippingRule]
+
+      let addOn1 = Reward.template
+        |> Reward.lens.id .~ 2
+        |> Reward.lens.minimum .~ 5.0
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
+        |> Reward.lens.shippingRules .~ [shippingRule]
+
+      let addOn2 = Reward.template
+        |> Reward.lens.id .~ 3
+        |> Reward.lens.minimum .~ 8.0
+        |> Reward.lens.shipping.enabled .~ false
+
+      let project = Project.template
+        |> Project.lens.rewardData.rewards .~ [reward]
+        |> Project.lens.rewardData.addOns .~ [addOn1, addOn2]
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward, addOn1, addOn2],
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 1],
+        selectedLocationId: shippingRule.location.id,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.processingViewIsHidden.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
+
+      self.vm.inputs.paymentPlanSelected(.pledgeOverTime)
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.processingViewIsHidden.assertValues([false])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false, true])
+
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
+        addOnsCountTotal: 3,
+        addOnsCountUnique: 2,
+        addOnsMinimumUsd: 18.00,
+        bonusAmountInUsd: 15.00,
+        checkoutId: "1",
+        estimatedDelivery: reward.estimatedDeliveryOn,
+        paymentType: "credit_card",
+        revenueInUsd: 58.00,
+        rewardId: String(reward.id),
+        rewardMinimumUsd: 10.00,
+        rewardTitle: reward.title,
+        shippingEnabled: true,
+        shippingAmountUsd: 15.0,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([.template])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      XCTAssertEqual(
+        ["Page Viewed", "CTA Clicked"],
+        self.segmentTrackingClient.events
+      )
     }
   }
 }

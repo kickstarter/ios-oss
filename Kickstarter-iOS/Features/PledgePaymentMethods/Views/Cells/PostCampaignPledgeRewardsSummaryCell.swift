@@ -142,6 +142,7 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     label.font = UIFont.ksr_subhead().bolded
     label.textColor = self.labelType == .bonusSupport ? UIColor.ksr_black : UIColor.ksr_support_400
     label.numberOfLines = 0
+    label.adjustsFontForContentSizeCategory = true
   }
 
   private func applyRootStackViewStyle(_ stackView: UIStackView) {

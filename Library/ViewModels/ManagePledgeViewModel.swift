@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -499,14 +500,17 @@ private func actionSheetMenuOptionsFor(
     return [.contactCreator]
   }
 
-  let actions: [ManagePledgeAlertAction]
+  var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 
   // TODO: Remove 'update pledge' from ManagePledgeAlertAction after feature rollout.
   if featureNoShippingAtCheckout() {
-    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards && $0 != .updatePledge }
-  } else {
-    actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+    actions = actions.filter { $0 != .updatePledge }
   }
+
+  if isPledgeOverTime(with: backing) {
+    actions = actions.filter { $0 != .chooseAnotherReward }
+  }
+
   return actions
 }
 
@@ -558,6 +562,24 @@ private func managePledgePaymentMethodViewData(
   )
 }
 
+private func isPledgeOverTime(with _: Backing) -> Bool {
+  /*
+   TODO: Replace the current logic with `backing.PaymentIncrements` validation.
+
+   Context:
+   - For development purposes, this function currently returns `true` when
+     `featurePledgeOverTimeEnabled()` is `true`.
+   - Final logic: Validate `backing.PaymentIncrements`. If the list is not empty,
+     `isPledgeOverTime(:)` should return `true`.
+
+   Pending:
+   - Awaiting implementation of `backing.PaymentIncrements` data source as part of MBL-1851.
+
+   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+   */
+  return featurePledgeOverTimeEnabled()
+}
+
 private func managePledgeSummaryViewData(
   with project: Project,
   backedReward: Reward,
@@ -569,6 +591,22 @@ private func managePledgeSummaryViewData(
   let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
+  /*
+   TODO: Replace mock data with backing.PaymentIncrements list.
+
+   Context:
+   - Adding mock data when `featurePledgeOverTimeEnabled()` is `true`.
+
+   Pending:
+   - Awaiting implementation of the real backing.PaymentIncrements data source.
+
+   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+    */
+  var paymentIncrements: [PledgePaymentIncrement]?
+  if featurePledgeOverTimeEnabled() {
+    paymentIncrements = mockPledgePaymentIncrement()
+  }
 
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
@@ -589,7 +627,8 @@ private func managePledgeSummaryViewData(
     rewardMinimum: backing.rewardsAmount ?? allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
-    rewardIsLocalPickup: isRewardLocalPickup
+    rewardIsLocalPickup: isRewardLocalPickup,
+    paymentIncrements: paymentIncrements
   )
 }
 
@@ -607,4 +646,21 @@ private func distinctRewards(_ rewards: [Reward]) -> [Reward] {
     defer { rewardIds.insert(reward.id) }
     return !rewardIds.contains(reward.id)
   }
+}
+
+// TODO: Remove this when implementing the API  [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
+public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
+  var increments: [PledgePaymentIncrement] = []
+  #if DEBUG
+    var timeStamp = TimeInterval(1_733_931_903)
+    for _ in 1...4 {
+      timeStamp += 30 * 24 * 60 * 60
+      increments.append(PledgePaymentIncrement(
+        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+        scheduledCollection: timeStamp
+      ))
+    }
+  #endif
+
+  return increments
 }
