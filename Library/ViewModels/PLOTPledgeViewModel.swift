@@ -27,7 +27,7 @@ public protocol PLOTPledgeViewModelOutputs {
  A `project` and `pledgeTotal` are required before `showPledgeOverTimeUI` or `pledgeOverTimeIsLoading` will send.
 
  If `showPledgeOverTimeUI` is false, or if a server error occurs, the model will immediately send `nil` for `pledgeOverTimeConfigData`.
- Otherwise, `pledgeOverTimeConfigData` send after the BuildPaymentPlanQuery loads. It will also send again each time `paymentPlanSelected:` is called.
+ Otherwise, `pledgeOverTimeConfigData` sends after the BuildPaymentPlanQuery loads. It will also send again each time `paymentPlanSelected:` is called.
 
  Outputs:
   - `showPledgeOverTimeUI`:  Whether the PLOT module should be shown. Sends one or more events. The PLOT module should disappear if an error occurs in the BuildPaymentPlanQuery.
