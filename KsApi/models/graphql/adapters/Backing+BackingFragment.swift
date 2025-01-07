@@ -27,15 +27,12 @@ extension Backing {
       locationId = decompose(id: locationGraphId)
     }
 
-    let paymentIncrements: [PaymentIncrement] = backingFragment.paymentIncrements?.map {
-      let fragment = $0.fragments.paymentIncrementFragment
+    var paymentIncrements: [PledgePaymentIncrement] = []
 
-      return PaymentIncrement(
-        amount: .init(amount: fragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0),
-        scheduledCollection: fragment.scheduledCollection,
-        state: fragment.state
-      )
-    } ?? []
+    if let backingIncrements = backingFragment.paymentIncrements {
+      paymentIncrements = backingIncrements
+        .compactMap { PledgePaymentIncrement(withGraphQLBackingFragment: $0) }
+    }
 
     return Backing(
       addOns: addOns,

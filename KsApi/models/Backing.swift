@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 
 public struct Backing {
   public let addOns: [Reward]?
@@ -12,7 +13,7 @@ public struct Backing {
   public let isLatePledge: Bool
   public let locationId: Int?
   public let locationName: String?
-  public let paymentIncrements: [PaymentIncrement]
+  public let paymentIncrements: [PledgePaymentIncrement]
   public let paymentSource: PaymentSource?
   public let pledgedAt: TimeInterval
   public let projectCountry: String
@@ -39,12 +40,6 @@ public struct Backing {
     case errored
     case pledged
     case preauth
-  }
-
-  public struct PaymentIncrement: Decodable {
-    public var amount: Money
-    public var scheduledCollection: String
-    public var state: String
   }
 }
 
@@ -92,8 +87,10 @@ extension Backing: Decodable {
     self.isLatePledge = try values.decodeIfPresent(Bool.self, forKey: .isLatePledge) ?? false
     self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
     self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
-    self.paymentIncrements = try values
-      .decodeIfPresent([PaymentIncrement].self, forKey: .paymentIncrements) ?? []
+    self.paymentIncrements = try values.decodeIfPresent(
+      [PledgePaymentIncrement].self,
+      forKey: .paymentIncrements
+    ) ?? []
     self.paymentSource = try? values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)
     self.pledgedAt = try values.decode(TimeInterval.self, forKey: .pledgedAt)
     self.projectCountry = try values.decode(String.self, forKey: .projectCountry)

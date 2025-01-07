@@ -31,7 +31,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
       XCTAssertEqual(backing.locationName, "Canada")
       XCTAssertEqual(backing.paymentIncrements.count, 1)
-      XCTAssertEqual(backing.paymentIncrements[0].scheduledCollection, "2025-02-17T10:29:19-05:00")
+      XCTAssertEqual(backing.paymentIncrements[0].scheduledCollection, 1_739_806_159.0)
       XCTAssertEqual(backing.paymentSource?.type, .visa)
       XCTAssertEqual(backing.pledgedAt, 1_625_613_342.0)
       XCTAssertEqual(backing.projectCountry, "US")

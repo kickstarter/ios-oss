@@ -28,26 +28,6 @@ public struct PledgePaymentPlanOptionData: Equatable {
   }
 }
 
-public struct PledgePaymentIncrement: Equatable {
-  public let amount: PledgePaymentIncrementAmount
-  public let scheduledCollection: TimeInterval
-
-  public init(amount: PledgePaymentIncrementAmount, scheduledCollection: TimeInterval) {
-    self.amount = amount
-    self.scheduledCollection = scheduledCollection
-  }
-}
-
-public struct PledgePaymentIncrementAmount: Equatable {
-  public let amount: Double
-  public let currency: String
-
-  public init(amount: Double, currency: String) {
-    self.amount = amount
-    self.currency = currency
-  }
-}
-
 public struct PledgePaymentIncrementFormatted: Equatable {
   public var incrementChargeNumber: String
   public var amount: String

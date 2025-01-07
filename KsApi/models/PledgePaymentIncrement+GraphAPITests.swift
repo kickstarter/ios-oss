@@ -1,8 +1,7 @@
 @testable import KsApi
-@testable import Library
 import XCTest
 
-final class PledgePaymentIncrementGraphAPITests: TestCase {
+final class PledgePaymentIncrementGraphAPITests: XCTestCase {
   func testPaymentIncrementViewModel_fromValidFragment_isCorrect() {
     let jsonString = """
       {

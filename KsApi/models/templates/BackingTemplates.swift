@@ -15,8 +15,8 @@ extension Backing {
     locationId: 1,
     locationName: "United States",
     paymentIncrements: [.init(
-      amount: .init(amount: 10),
-      scheduledCollection: "2025-03-31T10:29:19-04:00",
+      amount: .init(amount: 10, currency: "USD"),
+      scheduledCollection: ApiMockDate().timeIntervalSince1970,
       state: "collected"
     )],
     paymentSource: .template,

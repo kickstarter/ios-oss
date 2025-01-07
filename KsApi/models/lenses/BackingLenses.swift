@@ -327,7 +327,7 @@ extension Backing {
       ) }
     )
 
-    public static let paymentIncrements = Lens<Backing, [PaymentIncrement]>(
+    public static let paymentIncrements = Lens<Backing, [PledgePaymentIncrement]>(
       view: { $0.paymentIncrements },
       set: { Backing(
         addOns: $1.addOns,
