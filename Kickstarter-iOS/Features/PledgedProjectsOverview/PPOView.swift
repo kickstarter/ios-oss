@@ -52,18 +52,24 @@ struct PPOView: View {
         onSendMessage: { card in
           self.viewModel.contactCreator(from: card)
         },
-        onPerformAction: { card, action in
+        onPerformAction: { model, action in
           switch action {
           case let .authenticateCard(clientSecret):
-            self.viewModel.fix3DSChallenge(from: card, clientSecret: clientSecret)
+            self.viewModel.fix3DSChallenge(
+              from: model,
+              clientSecret: clientSecret,
+              setLoading: { loading in
+                card.setLoading(loading)
+              }
+            )
           case .completeSurvey:
-            self.viewModel.openSurvey(from: card)
+            self.viewModel.openSurvey(from: model)
           case .confirmAddress:
-            self.viewModel.confirmAddress(from: card)
+            self.viewModel.confirmAddress(from: model)
           case .editAddress:
-            self.viewModel.editAddress(from: card)
+            self.viewModel.editAddress(from: model)
           case .fixPayment:
-            self.viewModel.fixPaymentMethod(from: card)
+            self.viewModel.fixPaymentMethod(from: model)
           }
         }
       )

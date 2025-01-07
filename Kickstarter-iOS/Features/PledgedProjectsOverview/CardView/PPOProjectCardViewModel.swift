@@ -34,6 +34,7 @@ typealias PPOProjectCardViewModelType = Equatable & Hashable & Identifiable & Ob
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published private(set) var card: PPOProjectCardModel
+  @Published var isLoading: Bool = false
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.card)
@@ -81,5 +82,9 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
     lhs.card == rhs.card
+  }
+
+  func setLoading(_ loading: Bool) {
+    self.isLoading = loading
   }
 }

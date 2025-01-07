@@ -18,7 +18,11 @@ protocol PPOViewModelInputs {
 
   func openBackedProjects()
   func fixPaymentMethod(from: PPOProjectCardModel)
-  func fix3DSChallenge(from: PPOProjectCardModel, clientSecret: String)
+  func fix3DSChallenge(
+    from: PPOProjectCardModel,
+    clientSecret: String,
+    setLoading: @escaping (Bool) -> Void
+  )
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
@@ -34,12 +38,33 @@ protocol PPOViewModelOutputs {
 enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
-  case fix3DSChallenge(clientSecret: String)
+  case fix3DSChallenge(clientSecret: String, setLoading: (Bool) -> Void)
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
   case confirmAddress
   case contactCreator(messageSubject: MessageSubject)
+
+  static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
+    switch (lhs, rhs) {
+    case let (.fix3DSChallenge(lhsSecret, _), .fix3DSChallenge(rhsSecret, _)):
+      return lhsSecret == rhsSecret
+    case let (.survey(lhsUrl), .survey(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.backingDetails(lhsUrl), .backingDetails(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.editAddress(lhsUrl), .editAddress(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
+      return lhsSubject == rhsSubject
+    case (.backedProjects, .backedProjects),
+         (.confirmAddress, .confirmAddress),
+         (.fixPaymentMethod, .fixPaymentMethod):
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
@@ -92,20 +117,16 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Route navigation events
     Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-<<<<<<< HEAD
       self.fixPaymentMethodSubject
         .map { viewModel in
           PPONavigationEvent.fixPaymentMethod(projectId: viewModel.projectId, backingId: viewModel.backingId)
         },
-      self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
-=======
-      self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
-      self.fix3DSChallengeSubject.map { secret in
+      self.fix3DSChallengeSubject.map { _, secret, setLoading in
         PPONavigationEvent.fix3DSChallenge(
-          clientSecret: secret
+          clientSecret: secret,
+          setLoading: setLoading
         )
       },
->>>>>>> ccf05dbeb (Propagate client secret through PPOProjectCardModel action and bubble it up through to PPOContainerViewController)
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
@@ -231,8 +252,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge(from _: PPOProjectCardModel, clientSecret: String) {
-    self.fix3DSChallengeSubject.send(clientSecret)
+  func fix3DSChallenge(
+    from: PPOProjectCardModel,
+    clientSecret: String,
+    setLoading: @escaping (Bool) -> Void
+  ) {
+    self.fix3DSChallengeSubject.send((from, clientSecret, setLoading))
   }
 
   func openSurvey(from: PPOProjectCardModel) {
@@ -274,7 +299,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<String, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<
+    (PPOProjectCardModel, String, (Bool) -> Void),
+    Never
+  >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
