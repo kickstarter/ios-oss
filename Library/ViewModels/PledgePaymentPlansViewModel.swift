@@ -45,7 +45,7 @@ public protocol PledgePaymentPlansViewModelOutputs {
   var notifyDelegatePaymentPlanSelected: Signal<PledgePaymentPlansType, Never> { get }
   var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
   var reloadPaymentPlans: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
-  /// `true` when no payment plan data has been set. An single `isLoading` event is after `viewDidLoad()` is called; more events are sent whenever `configure(with:)` is called.
+  /// `true` when no payment plan data has been set. An single `isLoading` event is sent after `viewDidLoad()` is called; more events are sent whenever `configure(with:)` is called.
   var isLoading: Signal<Bool, Never> { get }
 }
 
