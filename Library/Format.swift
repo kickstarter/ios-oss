@@ -413,8 +413,8 @@ public enum Format {
     env: Environment = AppEnvironment.current
   ) -> String? {
     guard
-      let amount = Double(money.amount),
-      let symbol = money.symbol
+      let symbol = money.symbol,
+      let amount = money.amount.flatMap(Double.init)
     else { return nil }
 
     let formatter = NumberFormatterConfig.cachedFormatter(

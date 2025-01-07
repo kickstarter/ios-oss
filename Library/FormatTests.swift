@@ -357,6 +357,58 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testCurrencyMoneyFragment_USD() {
+    withEnvironment(locale: Locale(identifier: "en")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_EUR() {
+    withEnvironment(locale: Locale(identifier: "de")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .eur, symbol: "€")
+      XCTAssertEqual(Format.currency(fragment), "1.000,00 €")
+    }
+  }
+
+  func testCurrencyMoneyFragment_GBP() {
+    withEnvironment(locale: Locale(identifier: "en-GB")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .gbp, symbol: "£")
+      XCTAssertEqual(Format.currency(fragment), "£1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_JPY() {
+    withEnvironment(locale: Locale(identifier: "ja")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .jpy, symbol: "¥")
+      XCTAssertEqual(Format.currency(fragment), "¥1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_InvalidAmount() {
+    let fragment = GraphAPI.MoneyFragment(amount: "invalid", currency: .usd, symbol: "$")
+    XCTAssertNil(Format.currency(fragment))
+  }
+
+  func testCurrencyMoneyFragment_MissingSymbol() {
+    let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .usd, symbol: nil)
+    XCTAssertNil(Format.currency(fragment))
+  }
+
+  func testCurrencyMoneyFragment_SmallAmount() {
+    withEnvironment(locale: Locale(identifier: "en")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "10.50", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$10.50")
+    }
+  }
+
+  func testCurrencyMoneyFragment_ZeroAmount() {
+    withEnvironment(locale: Locale(identifier: "en")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "0.00", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$0.00")
+    }
+  }
+
   func testPlusSign() {
     withEnvironment(language: .de) {
       XCTAssertEqual(Format.attributedPlusSign().string, "+")
