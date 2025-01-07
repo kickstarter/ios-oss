@@ -399,6 +399,35 @@ public enum Format {
       return Strings.dates_right_now()
     }
   }
+
+  /**
+   Formats a GraphAPI.MoneyFragment into a formatted currency string.
+
+   - parameter money: The GraphAPI.MoneyFragment containing amount and currency symbol
+   - parameter env: (optional) An environment to use for locality
+
+   - returns: A formatted string with the appropriate currency symbol and amount, or nil if the fragment is incomplete
+   */
+  public static func currency(
+    _ money: GraphAPI.MoneyFragment,
+    env: Environment = AppEnvironment.current
+  ) -> String? {
+    guard
+      let amount = Double(money.amount),
+      let symbol = money.symbol
+    else { return nil }
+
+    let formatter = NumberFormatterConfig.cachedFormatter(
+      forConfig: .defaultCurrencyConfig
+        |> NumberFormatterConfig.lens.locale .~ env.locale
+        |> NumberFormatterConfig.lens.currencySymbol .~ symbol
+        |> NumberFormatterConfig.lens.minimumFractionDigits .~ 2
+        |> NumberFormatterConfig.lens.maximumFractionDigits .~ 2
+    )
+
+    return formatter.string(for: amount)?
+      .trimmed()
+  }
 }
 
 public let defaultThresholdInDays = 30 // days
