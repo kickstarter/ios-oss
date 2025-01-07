@@ -45,6 +45,8 @@ public protocol PledgePaymentPlansViewModelOutputs {
   var notifyDelegatePaymentPlanSelected: Signal<PledgePaymentPlansType, Never> { get }
   var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
   var reloadPaymentPlans: Signal<PledgePaymentPlansAndSelectionData, Never> { get }
+  /// `true` when no payment plan data has been set. An single `isLoading` event is after `viewDidLoad()` is called; more events are sent whenever `configure(with:)` is called.
+  var isLoading: Signal<Bool, Never> { get }
 }
 
 public protocol PledgePaymentPlansViewModelType {
@@ -73,6 +75,18 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
       self.configureWithValueProperty.signal.skipNil()
     )
     .map(second)
+
+    let isLoadingAfterConfigData = self.configureWithValueProperty.signal.map { data in
+      data == nil
+    }
+
+    let isLoadingAfterViewDidLoad = self.viewDidLoadProperty.signal.mapConst(true)
+      .take(until: isLoadingAfterConfigData.mapConst(()))
+
+    self.isLoading = Signal.merge(
+      isLoadingAfterViewDidLoad,
+      isLoadingAfterConfigData
+    )
 
     let planType = configureWithValue.map { $0.selectedPlan }
 
@@ -112,4 +126,6 @@ public final class PledgePaymentPlansViewModel: PledgePaymentPlansViewModelType,
   public func didTapTermsOfUse(with helpType: HelpType) {
     self.didTermsOfUseTappedProperty.value = helpType
   }
+
+  public let isLoading: Signal<Bool, Never>
 }

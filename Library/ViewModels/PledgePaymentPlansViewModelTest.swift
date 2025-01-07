@@ -13,6 +13,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
   private var reloadPaymentPlansPlanType = TestObserver<PledgePaymentPlansType, Never>()
   private var notifyDelegatePaymentPlanSelected = TestObserver<PledgePaymentPlansType, Never>()
   private var notifyDelegateTermsOfUseTapped = TestObserver<HelpType, Never>()
+  private var isLoading = TestObserver<Bool, Never>()
 
   private let selectionData = PledgePaymentPlansAndSelectionData(
     selectedPlan: .pledgeInFull,
@@ -33,6 +34,7 @@ final class PledgePaymentPlansViewModelTests: TestCase {
       .observe(self.reloadPaymentPlansPlanType.observer)
 
     self.vm.outputs.notifyDelegateTermsOfUseTapped.observe(self.notifyDelegateTermsOfUseTapped.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
   }
 
   // MARK: Test cases
@@ -87,5 +89,26 @@ final class PledgePaymentPlansViewModelTests: TestCase {
     self.vm.inputs.didTapTermsOfUse(with: .terms)
 
     self.notifyDelegateTermsOfUseTapped.assertValues([HelpType.terms])
+  }
+
+  func testIsLoading_startsOnViewDidLoad_stopsWhenConfigDataIsSet() {
+    self.isLoading.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+    self.isLoading.assertValues([true])
+
+    self.vm.inputs.configure(with: self.selectionData)
+    self.isLoading.assertValues([true, false])
+  }
+
+  func testIsLoading_sendsFalse_ifDataIsSetBeforeViewDidLoad() {
+    self.isLoading.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: self.selectionData)
+    self.isLoading.assertValues([false])
+
+    self.vm.inputs.viewDidLoad()
+
+    self.isLoading.assertValues([false])
   }
 }
