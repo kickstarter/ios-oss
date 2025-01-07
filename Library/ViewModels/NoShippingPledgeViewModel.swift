@@ -486,7 +486,14 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       applePayParams.wrapInOptional()
     )
 
+    // MARK: Pledge Over Time
+
+    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
+
     // MARK: - Create Backing
+
+    let selectedPaymentPlan = self.plotViewModel.pledgeOverTimeConfigData
+      .map { $0?.selectedPlan ?? .pledgeInFull }
 
     let createBackingData = Signal.combineLatest(
       project,
@@ -496,6 +503,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       selectedShippingRule,
       selectedPaymentSource,
       applePayParamsData,
+      selectedPaymentPlan,
       refTag
     )
     .map {
@@ -506,10 +514,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         selectedShippingRule,
         selectedPaymentSource,
         applePayParams,
+        selectedPaymentPlan,
         refTag
         -> CreateBackingData in
 
-      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      let paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
       return (
         project: project,
@@ -521,7 +530,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         refTag: refTag,
-        incremental: false // TODO: implementation in [mbl-1853](https://kickstarter.atlassian.net/browse/MBL-1853)
+        incremental: selectedPaymentPlan == .pledgeOverTime
       )
     }
 
@@ -637,10 +646,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     self.processingViewIsHidden = processingViewIsHidden.signal
-
-    // MARK: Pledge Over Time
-
-    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
 
     // MARK: - Form Validation
 
