@@ -420,7 +420,7 @@ public enum Format {
 
     return decimal.formatted(
       .currency(code: currencyCode)
-      .locale(env.locale)
+        .locale(env.locale)
     )
   }
 }

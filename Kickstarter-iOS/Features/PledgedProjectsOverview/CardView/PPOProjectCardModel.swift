@@ -366,7 +366,7 @@ extension PPOProjectCardModel {
     let projectName = ppoProject?.name
     let projectId = ppoProject?.pid
     let pledgeFragment = backing?.amount.fragments.moneyFragment
-    let formattedPledge = pledgeFragment.flatMap({ Format.currency($0) })
+    let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
     let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
