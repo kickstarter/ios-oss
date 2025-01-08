@@ -21,8 +21,7 @@ public protocol PledgeOverTimePaymentScheduleViewModelType {
 }
 
 public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentScheduleViewModelType,
-  PledgeOverTimePaymentScheduleViewModelInputs,
-  PledgeOverTimePaymentScheduleViewModelOutputs {
+  PledgeOverTimePaymentScheduleViewModelInputs, PledgeOverTimePaymentScheduleViewModelOutputs {
   public init() {
     let configureWith = Signal.combineLatest(
       self.configureWithProperty.signal,

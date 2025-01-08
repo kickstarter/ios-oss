@@ -66,7 +66,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var plotPaymentScheduleViewController: PledgeOverTimePaymentScheduleViewController = {
-    PledgeOverTimePaymentScheduleViewController.instantiate()
+    let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
+    controller.delegate = self
+    return controller
   }()
 
   private lazy var plotPaymentScheduleSectionSeparator: UIView = {
@@ -353,6 +355,13 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
           project: project,
           collapsed: collapsed
         )
+      }
+
+    self.viewModel.outputs.showWebHelp
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
   }
 
@@ -704,5 +713,13 @@ extension ManagePledgeViewController {
     }
 
     return navigationController
+  }
+}
+
+// MARK: - PledgeOverTimePaymentScheduleViewControllerDelegate
+
+extension ManagePledgeViewController: PledgeOverTimePaymentScheduleDelegate {
+  func termsOfUseTapped(with helpType: HelpType) {
+    self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }

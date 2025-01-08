@@ -5,8 +5,13 @@ import UIKit
 private enum Constants {
   static let animationDuration: TimeInterval = 0.3
   static let collapseIndicatorSize: CGFloat = 20.0
+  static let contentInsets = NSDirectionalEdgeInsets(top: 1.0, leading: 0, bottom: 1.0, trailing: 0)
   static let paymentsScheduleStackViewSpacing = Styles.grid(3)
   static let rootStackViewSpacing = Styles.grid(4)
+}
+
+protocol PledgeOverTimePaymentScheduleDelegate: AnyObject {
+  func termsOfUseTapped(with helpType: HelpType)
 }
 
 final class PledgeOverTimePaymentScheduleViewController: UIViewController {
@@ -17,9 +22,12 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var collapseIndicatorImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var paymentsScheduleStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var termsOfUseButton: UIButton = { UIButton(frame: .zero) }()
 
   private let viewModel: PledgeOverTimePaymentScheduleViewModelType =
     PledgeOverTimePaymentScheduleViewModel()
+
+  public weak var delegate: PledgeOverTimePaymentScheduleDelegate?
 
   // MARK: - Lifecycle
 
@@ -49,6 +57,14 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
 
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.titleLabel.text = "Payment Schedule"
+
+    self.termsOfUseButton.setAttributedTitle(
+      NSAttributedString(
+        string: Strings.login_tout_help_sheet_terms(),
+        attributes: [NSAttributedString.Key.font: UIFont.ksr_subhead()]
+      ),
+      for: .normal
+    )
   }
 
   private func setupConstraints() {
@@ -66,6 +82,17 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     self.viewModel.inputs.configure(with: increments, project: project, collapsed: collapsed)
   }
 
+  private func setupGestureRecognizers() {
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.headerTapped))
+    self.headerStackView.addGestureRecognizer(tapGestureRecognizer)
+
+    self.termsOfUseButton.addTarget(
+      self,
+      action: #selector(self.onTermsOfUseButtonTapped),
+      for: .touchUpInside
+    )
+  }
+
   private func configurePaymentScheduleItems(_ items: [PLOTPaymentScheduleItem]) {
     self.paymentsScheduleStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
@@ -80,6 +107,8 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
       )
       self.paymentsScheduleStackView.addArrangedSubview(itemView)
     }
+
+    self.paymentsScheduleStackView.addArrangedSubview(self.termsOfUseButton)
   }
 
   // MARK: - View model
@@ -110,18 +139,20 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     applyCollapseIndicatorImageViewStyle(self.collapseIndicatorImageView)
     applyRootStackViewStyle(self.rootStackView)
     applyPaymentsScheduleStackViewStyle(self.paymentsScheduleStackView)
+    applyTermsOfUseStyle(self.termsOfUseButton)
   }
 
-  // MARK: - Collapse/Expand Logic
-
-  private func setupGestureRecognizers() {
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.headerTapped))
-    self.headerStackView.addGestureRecognizer(tapGestureRecognizer)
-  }
+  // MARK: - Actions
 
   @objc public func headerTapped() {
     self.viewModel.inputs.collapseToggle()
   }
+
+  @objc private func onTermsOfUseButtonTapped() {
+    self.delegate?.termsOfUseTapped(with: .terms)
+  }
+
+  // MARK: - Collapse/Expand Logic
 
   private func updateCollapseState(isCollapsed: Bool, animated: Bool) {
     guard animated else {
@@ -178,4 +209,15 @@ private func applyCollapseIndicatorImageViewStyle(_ imageView: UIImageView) {
   imageView.contentMode = .scaleAspectFit
   imageView.image = UIImage(systemName: "chevron.down")
   imageView.tintColor = .ksr_support_700
+}
+
+private func applyTermsOfUseStyle(_ button: UIButton) {
+  button.configuration = {
+    var config = UIButton.Configuration.borderless()
+    config.contentInsets = Constants.contentInsets
+    config.baseForegroundColor = .ksr_create_700
+    return config
+  }()
+
+  button.contentHorizontalAlignment = .leading
 }

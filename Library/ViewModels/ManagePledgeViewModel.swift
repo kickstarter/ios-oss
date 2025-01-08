@@ -28,6 +28,7 @@ public protocol ManagePledgeViewModelInputs {
   func menuOptionSelected(with action: ManagePledgeAlertAction)
   func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
   func viewDidLoad()
+  func termsOfUseTapped(with helpType: HelpType)
 }
 
 public protocol ManagePledgeViewModelOutputs {
@@ -52,6 +53,7 @@ public protocol ManagePledgeViewModelOutputs {
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
+  var showWebHelp: Signal<HelpType, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
   var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project, Bool), Never> { get }
@@ -394,6 +396,8 @@ public final class ManagePledgeViewModel:
 
         return (increments, project, collapsed)
       }
+
+    self.showWebHelp = self.termsOfUseTappedSignal
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
@@ -433,6 +437,11 @@ public final class ManagePledgeViewModel:
     self.menuOptionSelectedObserver.send(value: action)
   }
 
+  private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
+  public func termsOfUseTapped(with helpType: HelpType) {
+    self.termsOfUseTappedObserver.send(value: helpType)
+  }
+
   private let (
     pledgeViewControllerDidUpdatePledgeWithMessageSignal,
     pledgeViewControllerDidUpdatePledgeWithMessageObserver
@@ -469,6 +478,7 @@ public final class ManagePledgeViewModel:
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
+  public let showWebHelp: Signal<HelpType, Never>
   public let startRefreshing: Signal<(), Never>
   public let title: Signal<String, Never>
 
