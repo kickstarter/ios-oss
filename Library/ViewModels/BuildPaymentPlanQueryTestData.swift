@@ -14,7 +14,8 @@ public func buildPaymentPlanQueryJson(eligible: Bool) -> String {
               "amount": {
                 "__typename": "Money",
                 "amount": "933.23",
-                "currency": "USD"
+                "currency": "USD",
+                "symbol": "$"
               },
               "scheduledCollection": "2025-03-31T10:29:19-04:00",
               "state": "some state",

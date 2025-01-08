@@ -18,7 +18,8 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
                 "amount": {
                   "__typename": "Money",
                   "amount": "974",
-                  "currency": "JPY"
+                  "currency": "JPY",
+                  "symbol": "$"
                 },
                 "scheduledCollection": "2025-03-31T10:29:19-04:00",
                 "state": "some state",
