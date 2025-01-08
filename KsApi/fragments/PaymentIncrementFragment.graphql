@@ -1,0 +1,7 @@
+fragment PaymentIncrementFragment on PaymentIncrement {
+  amount {
+    ...MoneyFragment
+  }
+  scheduledCollection
+  state
+}

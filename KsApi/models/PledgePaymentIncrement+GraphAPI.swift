@@ -1,14 +1,11 @@
 import Foundation
-import KsApi
 
 extension PledgePaymentIncrement {
-  init?(
-    withGraphQLFragment fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement
-  ) {
-    guard let amountAsString = fragment.amount.amount,
+  public init?(withGraphQLFragment fragment: GraphAPI.PaymentIncrementFragment) {
+    let moneyFragment = fragment.amount.fragments.moneyFragment
+    guard let amountAsString = moneyFragment.amount,
           let amountAsDouble = Double(amountAsString),
-          let currency = fragment.amount.currency?.rawValue else {
+          let currency = moneyFragment.currency?.rawValue else {
       return nil
     }
 
@@ -18,5 +15,6 @@ extension PledgePaymentIncrement {
 
     self.amount = PledgePaymentIncrementAmount(amount: amountAsDouble, currency: currency)
     self.scheduledCollection = intervalAsTime
+    self.state = fragment.state
   }
 }

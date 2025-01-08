@@ -1,8 +1,7 @@
 @testable import KsApi
-@testable import Library
 import XCTest
 
-final class PledgePaymentIncrementGraphAPITests: TestCase {
+final class PledgePaymentIncrementGraphAPITests: XCTestCase {
   func testPaymentIncrementViewModel_fromValidFragment_isCorrect() {
     let jsonString = """
       {
@@ -10,7 +9,8 @@ final class PledgePaymentIncrementGraphAPITests: TestCase {
         "amount": {
           "__typename": "Money",
           "amount": "99.75",
-          "currency": "USD"
+          "currency": "USD",
+          "symbol": "$"
         },
         "scheduledCollection": "2025-03-31T10:29:19-04:00",
         "state": "some state"
@@ -20,7 +20,7 @@ final class PledgePaymentIncrementGraphAPITests: TestCase {
     let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
       .PaymentIncrement(jsonString: jsonString)
 
-    let increment = PledgePaymentIncrement(withGraphQLFragment: fragment)
+    let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNotNil(increment)
     XCTAssertEqual(increment!.amount.currency, "USD")
     XCTAssertEqual(increment!.amount.amount, Double(99.75))
@@ -34,7 +34,8 @@ final class PledgePaymentIncrementGraphAPITests: TestCase {
         "amount": {
           "__typename": "Money",
           "amount": "99.75",
-          "currency": "USD"
+          "currency": "USD",
+          "symbol": "$"
         },
         "scheduledCollection": "not a date :(",
         "state": "some state"
@@ -44,7 +45,7 @@ final class PledgePaymentIncrementGraphAPITests: TestCase {
     let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
       .PaymentIncrement(jsonString: jsonString)
 
-    let increment = PledgePaymentIncrement(withGraphQLFragment: fragment)
+    let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNil(increment)
   }
 }
