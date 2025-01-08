@@ -221,7 +221,7 @@ extension PPOProjectCardModel {
       .init(type: .warning, icon: .time, message: "Address locks in 8 hours")
     ],
     image: .network(URL(string: "https:///")!),
-    projectName: "Sugardew Island - Your cozy farm shop let's pretend this is a way way way longer title",
+    projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
     pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
