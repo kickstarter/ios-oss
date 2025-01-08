@@ -413,20 +413,15 @@ public enum Format {
     env: Environment = AppEnvironment.current
   ) -> String? {
     guard
-      let symbol = money.symbol,
-      let amount = money.amount.flatMap(Double.init)
+      let currencyCode = money.currency?.rawValue,
+      let amountString = money.amount,
+      let decimal = try? Decimal(amountString, format: .number)
     else { return nil }
 
-    let formatter = NumberFormatterConfig.cachedFormatter(
-      forConfig: .defaultCurrencyConfig
-        |> NumberFormatterConfig.lens.locale .~ env.locale
-        |> NumberFormatterConfig.lens.currencySymbol .~ symbol
-        |> NumberFormatterConfig.lens.minimumFractionDigits .~ 2
-        |> NumberFormatterConfig.lens.maximumFractionDigits .~ 2
+    return decimal.formatted(
+      .currency(code: currencyCode)
+      .locale(env.locale)
     )
-
-    return formatter.string(for: amount)?
-      .trimmed()
   }
 }
 
@@ -544,6 +539,7 @@ extension NumberFormatterConfig: Hashable {
     hasher.combine(self.numberStyle)
     hasher.combine(self.roundingMode)
     hasher.combine(self.maximumFractionDigits)
+    hasher.combine(self.minimumFractionDigits)
     hasher.combine(self.generatesDecimalNumbers)
     hasher.combine(self.locale)
     hasher.combine(self.currencySymbol)
@@ -555,6 +551,7 @@ private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool
     lhs.numberStyle == rhs.numberStyle
       && lhs.roundingMode == rhs.roundingMode
       && lhs.maximumFractionDigits == rhs.maximumFractionDigits
+      && lhs.minimumFractionDigits == rhs.minimumFractionDigits
       && lhs.generatesDecimalNumbers == rhs.generatesDecimalNumbers
       && lhs.locale == rhs.locale
       && lhs.currencySymbol == rhs.currencySymbol
