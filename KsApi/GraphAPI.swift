@@ -4234,7 +4234,6 @@ public enum GraphAPI {
     case dkCurrencySelector
     case noCurrencySelector
     case seCurrencySelector
-    case projectsOnProjectPage
     case datalakeFeEvents
     case creatorDemographicsSurvey
     case saveProjectExperiment
@@ -4352,7 +4351,6 @@ public enum GraphAPI {
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
         case "se_currency_selector": self = .seCurrencySelector
-        case "projects_on_project_page": self = .projectsOnProjectPage
         case "datalake_fe_events": self = .datalakeFeEvents
         case "creator_demographics_survey": self = .creatorDemographicsSurvey
         case "save_project_experiment": self = .saveProjectExperiment
@@ -4471,7 +4469,6 @@ public enum GraphAPI {
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
         case .seCurrencySelector: return "se_currency_selector"
-        case .projectsOnProjectPage: return "projects_on_project_page"
         case .datalakeFeEvents: return "datalake_fe_events"
         case .creatorDemographicsSurvey: return "creator_demographics_survey"
         case .saveProjectExperiment: return "save_project_experiment"
@@ -4590,7 +4587,6 @@ public enum GraphAPI {
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
         case (.seCurrencySelector, .seCurrencySelector): return true
-        case (.projectsOnProjectPage, .projectsOnProjectPage): return true
         case (.datalakeFeEvents, .datalakeFeEvents): return true
         case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
         case (.saveProjectExperiment, .saveProjectExperiment): return true
@@ -4710,7 +4706,6 @@ public enum GraphAPI {
         .dkCurrencySelector,
         .noCurrencySelector,
         .seCurrencySelector,
-        .projectsOnProjectPage,
         .datalakeFeEvents,
         .creatorDemographicsSurvey,
         .saveProjectExperiment,
@@ -7925,13 +7920,7 @@ public enum GraphAPI {
             amountIsPledgeOverTimeEligible
             paymentIncrements {
               __typename
-              amount {
-                __typename
-                amount
-                currency
-              }
-              scheduledCollection
-              state
+              ...PaymentIncrementFragment
             }
           }
         }
@@ -7939,6 +7928,13 @@ public enum GraphAPI {
       """
 
     public let operationName: String = "BuildPaymentPlan"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      return document
+    }
 
     public var slug: String
     public var amount: String
@@ -8086,9 +8082,7 @@ public enum GraphAPI {
             public static var selections: [GraphQLSelection] {
               return [
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
-                GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
-                GraphQLField("state", type: .nonNull(.scalar(String.self))),
+                GraphQLFragmentSpread(PaymentIncrementFragment.self),
               ]
             }
 
@@ -8096,10 +8090,6 @@ public enum GraphAPI {
 
             public init(unsafeResultMap: ResultMap) {
               self.resultMap = unsafeResultMap
-            }
-
-            public init(amount: Amount, scheduledCollection: String, state: String) {
-              self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection, "state": state])
             }
 
             public var __typename: String {
@@ -8111,80 +8101,28 @@ public enum GraphAPI {
               }
             }
 
-            public var amount: Amount {
+            public var fragments: Fragments {
               get {
-                return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+                return Fragments(unsafeResultMap: resultMap)
               }
               set {
-                resultMap.updateValue(newValue.resultMap, forKey: "amount")
+                resultMap += newValue.resultMap
               }
             }
 
-            public var scheduledCollection: String {
-              get {
-                return resultMap["scheduledCollection"]! as! String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "scheduledCollection")
-              }
-            }
-
-            public var state: String {
-              get {
-                return resultMap["state"]! as! String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "state")
-              }
-            }
-
-            public struct Amount: GraphQLSelectionSet {
-              public static let possibleTypes: [String] = ["Money"]
-
-              public static var selections: [GraphQLSelection] {
-                return [
-                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                  GraphQLField("amount", type: .scalar(String.self)),
-                  GraphQLField("currency", type: .scalar(CurrencyCode.self)),
-                ]
-              }
-
+            public struct Fragments {
               public private(set) var resultMap: ResultMap
 
               public init(unsafeResultMap: ResultMap) {
                 self.resultMap = unsafeResultMap
               }
 
-              public init(amount: String? = nil, currency: CurrencyCode? = nil) {
-                self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency])
-              }
-
-              public var __typename: String {
+              public var paymentIncrementFragment: PaymentIncrementFragment {
                 get {
-                  return resultMap["__typename"]! as! String
+                  return PaymentIncrementFragment(unsafeResultMap: resultMap)
                 }
                 set {
-                  resultMap.updateValue(newValue, forKey: "__typename")
-                }
-              }
-
-              /// Floating-point numeric value of monetary amount represented as a string
-              public var amount: String? {
-                get {
-                  return resultMap["amount"] as? String
-                }
-                set {
-                  resultMap.updateValue(newValue, forKey: "amount")
-                }
-              }
-
-              /// Currency of the monetary amount
-              public var currency: CurrencyCode? {
-                get {
-                  return resultMap["currency"] as? CurrencyCode
-                }
-                set {
-                  resultMap.updateValue(newValue, forKey: "currency")
+                  resultMap += newValue.resultMap
                 }
               }
             }

@@ -31,7 +31,7 @@ extension Backing {
 
     if let backingIncrements = backingFragment.paymentIncrements {
       paymentIncrements = backingIncrements
-        .compactMap { PledgePaymentIncrement(withGraphQLBackingFragment: $0) }
+        .compactMap { PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment) }
     }
 
     return Backing(
