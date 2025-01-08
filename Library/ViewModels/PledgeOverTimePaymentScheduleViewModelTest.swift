@@ -43,7 +43,7 @@ final class PledgeOverTimePaymentScheduleViewModelTest: TestCase {
     self.paymentScheduleItems.assertValue(self.expectedItems)
   }
 
-  func testCollapseToggle_NonCollapsed() {
+  func testCollapseToggle_Expanded() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: self.increments, project: self.project, collapsed: true)
     self.vm.inputs.collapseToggle()

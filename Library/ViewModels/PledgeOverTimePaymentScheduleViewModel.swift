@@ -39,7 +39,7 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.collapsed = initialCollapsed
 
     self.paymentScheduleItems = configureWith
-      .map { increments, project, _ in
+      .map { increments, project in
         guard let project = project else { return [] }
 
         return increments.map { increment in
@@ -53,13 +53,9 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.viewDidLoadProperty.value = ()
   }
 
-  private let configureWithProperty = MutableProperty<([PledgePaymentIncrement], Project?, Bool)>((
-    [],
-    nil,
-    true
-  ))
+  private let configureWithProperty = MutableProperty<([PledgePaymentIncrement], Project?)>(([], nil))
   public func configure(with increments: [PledgePaymentIncrement], project: Project, collapsed: Bool = true) {
-    self.configureWithProperty.value = (increments, project, collapsed)
+    self.configureWithProperty.value = (increments, project)
     self.collapsedProperty.value = collapsed
   }
 

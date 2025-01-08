@@ -138,12 +138,8 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
       initialSpringVelocity: 0.7,
       options: .curveEaseInOut,
       animations: {
-        print("updateCollapseState: \(isCollapsed)")
         self.paymentsScheduleStackView.isHidden = isCollapsed
         self.paymentsScheduleStackView.alpha = isCollapsed ? 0 : 1
-
-        print("self.paymentsScheduleStackView.isHidden: \(self.paymentsScheduleStackView.isHidden)")
-        print("self.paymentsScheduleStackView.alpha: \(self.paymentsScheduleStackView.alpha)")
 
         self.view.layoutIfNeeded()
 

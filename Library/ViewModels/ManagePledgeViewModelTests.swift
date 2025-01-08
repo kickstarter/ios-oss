@@ -1766,7 +1766,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance(by: .seconds(1))
+      self.scheduler.advance()
 
       self.plotPaymentScheduleViewHidden.assertValue(false)
       self.configurePlotPaymentScheduleView.assertDidEmitValue()
