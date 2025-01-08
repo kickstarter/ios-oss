@@ -34,6 +34,11 @@ public struct PledgePaymentIncrementFormatted: Equatable {
   public var scheduledCollection: String
 }
 
+public enum SelectionIndicatorImageName: String {
+  case selected = "icon-payment-method-selected"
+  case unselected = "icon-payment-method-unselected"
+}
+
 public protocol PledgePaymentPlansOptionViewModelInputs {
   func configureWith(data: PledgePaymentPlanOptionData)
   func optionTapped()
@@ -73,7 +78,7 @@ public final class PledgePaymentPlansOptionViewModel:
     self.selectionIndicatorImageName = configData
       .map {
         $0.selectedType == $0.type ?
-          "icon-payment-method-selected" : "icon-payment-method-unselected"
+          SelectionIndicatorImageName.selected.rawValue : SelectionIndicatorImageName.unselected.rawValue
       }
 
     self.titleText = configData.map { getTitleText(by: $0.type) }
