@@ -273,6 +273,12 @@
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
 		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
 		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
+		33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */; };
+		33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */; };
+		33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */; };
+		33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */; };
+		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
+		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
 		33C9F0BE2CF5104C00B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33F04B262D28A8090078AED1 /* PledgeOverTimeBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */; };
@@ -1943,6 +1949,12 @@
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
 		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
+		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
+		33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleItemView.swift; sourceTree = "<group>"; };
+		33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModel.swift; sourceTree = "<group>"; };
+		33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentIncrementState+Extension.swift"; sourceTree = "<group>"; };
+		33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
+		33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewControllerTest.swift; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
 		33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeBadgeView.swift; sourceTree = "<group>"; };
 		37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewController.swift; sourceTree = "<group>"; };
@@ -5452,6 +5464,7 @@
 		19A97D2428C7FD7B0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */,
 				8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */,
 				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
 				19A97D2628C7FD950031B857 /* Cells */,
@@ -5467,6 +5480,8 @@
 				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
 				D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */,
 				D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */,
+				33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */,
+				33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -6703,6 +6718,8 @@
 				8A13D16D24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift */,
 				8A13D16024955A2E007E2C0B /* PledgeExpandableRewardsHeaderViewModel.swift */,
 				8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */,
+				33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */,
+				33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */,
 				8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */,
 				8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */,
 				D6534D3B22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift */,
@@ -6725,6 +6742,7 @@
 				336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */,
 				338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */,
 				3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */,
+				33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */,
 				339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */,
 				E171A5742D147CFD00AFE0EE /* PledgePaymentIncrement+GraphAPI.swift */,
 				E171A5762D147DC200AFE0EE /* PledgePaymentIncrement+GraphAPITests.swift */,
@@ -8184,6 +8202,7 @@
 				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
 				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
+				33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				77556F5420A099B3008CEA57 /* ExperimentName+Helpers.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
@@ -8195,6 +8214,7 @@
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
+				33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */,
 				606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
@@ -8361,6 +8381,7 @@
 				77C9122F23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift in Sources */,
 				A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */,
 				D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */,
+				33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */,
 				D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
 				0602002A27D271B900909500 /* ExternalSourceViewElementCellViewModelTests.swift in Sources */,
 				A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
@@ -8679,6 +8700,7 @@
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
 				D6600786240EFD6300AC1EDB /* CuratedProjectsViewController.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
+				33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */,
 				D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */,
 				94BA168E2667C37F0034CC3F /* CommentTableViewFooterView.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
@@ -8763,6 +8785,7 @@
 				37DEC2222257CB470051EF9B /* PledgeViewController.swift in Sources */,
 				47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */,
 				770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */,
+				33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */,
 				6035AF9C2C51696C007E28FC /* WithShippingRewardsCollectionViewController.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
@@ -8919,6 +8942,7 @@
 				77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */,
 				A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */,
 				AAE7C9AC2C75949600800E03 /* PPOProjectCardTests.swift in Sources */,
+				33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */,
 				37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */,
 				A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */,
 				D6F741A821836E5700C2DDA2 /* PaymentMethodSettingsViewControllerTests.swift in Sources */,

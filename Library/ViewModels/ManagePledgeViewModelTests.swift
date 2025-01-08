@@ -11,6 +11,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   private let configurePaymentMethodView = TestObserver<ManagePledgePaymentMethodViewData, Never>()
   private let configurePledgeSummaryView = TestObserver<ManagePledgeSummaryViewData, Never>()
+  private let configurePlotPaymentScheduleView = TestObserver<
+    ([PledgePaymentIncrement], Project, Bool),
+    Never
+  >()
   private let configureRewardReceivedWithData = TestObserver<ManageViewPledgeRewardReceivedViewData, Never>()
   private let endRefreshing = TestObserver<Void, Never>()
   private let goToCancelPledge = TestObserver<CancelPledgeViewData, Never>()
@@ -28,6 +32,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let paymentMethodViewHidden = TestObserver<Bool, Never>()
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
+  private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
@@ -74,6 +79,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
     self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
     self.vm.outputs.startRefreshing.observe(self.startRefreshing.observer)
+
+    self.vm.outputs.configurePlotPaymentScheduleView.observe(self.configurePlotPaymentScheduleView.observer)
+    self.vm.outputs.plotPaymentScheduleViewHidden.observe(self.plotPaymentScheduleViewHidden.observer)
   }
 
   func testNavigationBarTitle_LiveProject() {
@@ -1708,6 +1716,60 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.pledgeDetailsSectionLabelText.assertValues(["Pledge details"])
+    }
+  }
+
+  func testPlotPaymentScheduleView_IsHiddenWhenFeatureFlagIsDisabled() {
+    self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: false
+    ]
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.plotPaymentScheduleViewHidden.assertValue(true)
+      self.configurePlotPaymentScheduleView.assertDidNotEmitValue()
+    }
+  }
+
+  func testPlotPaymentScheduleView_IsVisibleWhenFeatureFlagIsEnabled() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.plotPaymentScheduleViewHidden.assertValue(false)
+      self.configurePlotPaymentScheduleView.assertDidEmitValue()
     }
   }
 }

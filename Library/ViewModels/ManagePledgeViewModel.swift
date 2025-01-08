@@ -21,6 +21,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 public protocol ManagePledgeViewModelInputs {
   func beginRefresh()
   func configureWith(_ params: ManagePledgeViewParamConfigData)
+  func configurePlotPaymentScheduleForTesting(collapsed: Bool)
   func cancelPledgeDidFinish(with message: String)
   func fixButtonTapped()
   func menuButtonTapped()
@@ -53,6 +54,8 @@ public protocol ManagePledgeViewModelOutputs {
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
+  var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project, Bool), Never> { get }
+  var plotPaymentScheduleViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ManagePledgeViewModelType {
@@ -370,6 +373,27 @@ public final class ManagePledgeViewModel:
           checkoutData: checkoutData
         )
       }
+
+    // Pledge Over Time
+
+    let pledgeOverTimeEnabled = backing.map {
+      isPledgeOverTime(with: $0)
+    }
+
+    let collapsedState = Signal.merge(
+      pledgeOverTimeEnabled.mapConst(true),
+      self.plotPaymentScheduleCollapsedProperty.signal
+    )
+
+    self.plotPaymentScheduleViewHidden = pledgeOverTimeEnabled.negate()
+
+    self.configurePlotPaymentScheduleView = Signal.combineLatest(project, collapsedState)
+      .filterWhenLatestFrom(pledgeOverTimeEnabled, satisfies: { $0 })
+      .map { project, collapsed in
+        let increments = mockPledgePaymentIncrement()
+
+        return (increments, project, collapsed)
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
@@ -381,6 +405,11 @@ public final class ManagePledgeViewModel:
     = Signal<ManagePledgeViewParamConfigData, Never>.pipe()
   public func configureWith(_ params: ManagePledgeViewParamConfigData) {
     self.configureWithProjectOrParamObserver.send(value: params)
+  }
+
+  private let plotPaymentScheduleCollapsedProperty = MutableProperty<Bool>(true)
+  public func configurePlotPaymentScheduleForTesting(collapsed: Bool) {
+    self.plotPaymentScheduleCollapsedProperty.value = collapsed
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -419,6 +448,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
+  public let configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project, Bool), Never>
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
@@ -432,6 +462,7 @@ public final class ManagePledgeViewModel:
   public let paymentMethodViewHidden: Signal<Bool, Never>
   public let pledgeDetailsSectionLabelText: Signal<String, Never>
   public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
+  public let plotPaymentScheduleViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let rightBarButtonItemHidden: Signal<Bool, Never>
@@ -653,14 +684,14 @@ public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   #if DEBUG
     var timeStamp = TimeInterval(1_733_931_903)
-    for _ in 1...4 {
+    for i in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
         amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-        scheduledCollection: timeStamp
+        scheduledCollection: timeStamp,
+        state: i == 1 ? .collected : .unattemped
       ))
     }
   #endif
-
   return increments
 }

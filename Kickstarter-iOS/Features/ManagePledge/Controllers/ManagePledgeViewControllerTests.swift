@@ -364,7 +364,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_IsBacker_PledgeOverTime() {
+  func testView_CurrentUser_IsBacker_PledgeOverTime_PaymentSchedule_Collapsed() {
     let user = User.template
       |> User.lens.id .~ 1
 
@@ -413,6 +413,73 @@ final class ManagePledgeViewControllerTests: TestCase {
 
         // Network request completes
         self.scheduler.advance()
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_CurrentUser_IsBacker_PledgeOverTime_PaymentSchedule_Expanded() {
+    let user = User.template
+      |> User.lens.id .~ 1
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.remaining .~ 49
+      |> Reward.lens.localPickup .~ nil
+
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    // TODO: Update to `all` languages when the string translations task is finished. [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        currentUser: user,
+        language: language,
+        remoteConfigClient: mockConfigClient
+      ) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_200
+
+        // Network request completes
+        self.scheduler.advance()
+
+        controller.configurePlotPaymentScheduleForTesting(collapsed: false)
 
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))

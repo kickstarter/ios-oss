@@ -65,6 +65,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
+  private lazy var plotPaymentScheduleViewController: PledgeOverTimePaymentScheduleViewController = {
+    PledgeOverTimePaymentScheduleViewController.instantiate()
+  }()
+
+  private lazy var plotPaymentScheduleSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var plotPaymentScheduleViews = {
+    [self.plotPaymentScheduleViewController.view, self.plotPaymentScheduleSectionSeparator]
+  }()
+
   private lazy var pledgeDetailsSectionLabel: UILabel = {
     UILabel(frame: .zero)
   }()
@@ -120,7 +133,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var sectionSeparatorViews = {
-    [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator]
+    [
+      self.pledgeSummarySectionSeparator,
+      self.paymentMethodSectionSeparator,
+      self.plotPaymentScheduleSectionSeparator
+    ]
   }()
 
   // MARK: - Lifecycle
@@ -323,12 +340,33 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
+
+    self.plotPaymentScheduleViewController.view.rac.hidden = self.viewModel.outputs
+      .plotPaymentScheduleViewHidden
+    self.plotPaymentScheduleSectionSeparator.rac.hidden = self.viewModel.outputs.plotPaymentScheduleViewHidden
+
+    self.viewModel.outputs.configurePlotPaymentScheduleView
+      .observeForUI()
+      .observeValues { [weak self] increments, project, collapsed in
+        self?.plotPaymentScheduleViewController.configure(
+          with: increments,
+          project: project,
+          collapsed: collapsed
+        )
+      }
   }
 
   // MARK: - Configuration
 
   func configureWith(params: ManagePledgeViewParamConfigData) {
     self.viewModel.inputs.configureWith(params)
+  }
+
+  /// Configures the collapsed state of the `PledgeOverTimePaymentScheduleView` via the ViewModel for testing purposes.
+  /// This is specifically used in UI tests to ensure the component is tested in both collapsed and expanded states.
+  /// - Parameter collapsed: A Boolean value to set the desired collapsed state of the view.
+  public func configurePlotPaymentScheduleForTesting(collapsed: Bool) {
+    self.viewModel.inputs.configurePlotPaymentScheduleForTesting(collapsed: collapsed)
   }
 
   // MARK: Functions
@@ -372,6 +410,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
+      self.plotPaymentScheduleViews,
       self.pledgeDetailsSectionViews
     ]
     .flatMap { $0 }
@@ -382,7 +421,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     [
       self.rewardReceivedViewController,
-      self.pledgeSummaryViewController
+      self.pledgeSummaryViewController,
+      self.plotPaymentScheduleViewController
     ]
     .forEach { viewController in
       self.addChild(viewController)

@@ -31,11 +31,23 @@ public struct PledgePaymentPlanOptionData: Equatable {
 public struct PledgePaymentIncrement: Equatable {
   public let amount: PledgePaymentIncrementAmount
   public let scheduledCollection: TimeInterval
+  public let state: PledgePaymentIncrementState
 
-  public init(amount: PledgePaymentIncrementAmount, scheduledCollection: TimeInterval) {
+  public init(
+    amount: PledgePaymentIncrementAmount,
+    scheduledCollection: TimeInterval,
+    state: PledgePaymentIncrementState = .unknown
+  ) {
     self.amount = amount
     self.scheduledCollection = scheduledCollection
+    self.state = state
   }
+}
+
+public enum PledgePaymentIncrementState: String {
+  case collected
+  case unattemped
+  case unknown
 }
 
 public struct PledgePaymentIncrementAmount: Equatable {
