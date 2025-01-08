@@ -288,7 +288,10 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationFixPaymentMethod() {
     self.verifyNavigationEvent(
       { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .fixPaymentMethod
+      event: .fixPaymentMethod(
+        projectId: PPOProjectCardModel.fixPaymentTemplate.projectId,
+        backingId: PPOProjectCardModel.fixPaymentTemplate.backingId
+      )
     )
   }
 
