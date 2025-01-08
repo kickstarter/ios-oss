@@ -3,78 +3,58 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+import Stripe
 
-public typealias NoShippingPledgeViewCTAContainerViewData = (
-  project: Project,
-  total: Double,
-  isLoggedIn: Bool,
-  isEnabled: Bool,
-  context: PledgeViewContext,
-  willRetryPaymentMethod: Bool
-)
-
-public protocol NoShippingPledgeViewModelInputs {
-  func applePayButtonTapped()
+public protocol NoShippingPostCampaignCheckoutViewModelInputs {
+  func checkoutTerminated()
   func configure(with data: PledgeViewData)
-  func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
+  func confirmPaymentSuccessful(clientSecret: String)
+  func creditCardSelected(source: PaymentSourceSelected)
   func goToLoginSignupTapped()
-  func paymentAuthorizationDidAuthorizePayment(
-    paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
-  )
-  func paymentAuthorizationViewControllerDidFinish()
-  func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
-  func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
-  func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
-  func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
+  func applePayButtonTapped()
+  func applePayContextDidCreatePayment(with paymentMethodId: String)
+  func applePayContextDidComplete()
 }
 
-public protocol NoShippingPledgeViewModelOutputs {
-  var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
+public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
-  var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
-  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
-  var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   > { get }
-  var configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never> { get }
+  var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
-  var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
-  var localPickupViewHidden: Signal<Bool, Never> { get }
-  var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
-  var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
-  var pledgeAmountViewHidden: Signal<Bool, Never> { get }
-  var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
-  var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var title: Signal<String, Never> { get }
-  var showPledgeOverTimeUI: Signal<Bool, Never> { get }
-  var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
+  var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
+  var checkoutComplete: Signal<ThanksPageData, Never> { get }
+  var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
-public protocol NoShippingPledgeViewModelType {
-  var inputs: NoShippingPledgeViewModelInputs { get }
-  var outputs: NoShippingPledgeViewModelOutputs { get }
+public protocol NoShippingPostCampaignCheckoutViewModelType {
+  var inputs: NoShippingPostCampaignCheckoutViewModelInputs { get }
+  var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { get }
 }
 
-public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippingPledgeViewModelInputs,
-  NoShippingPledgeViewModelOutputs {
-  public init() {
+public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignCheckoutViewModelType,
+  NoShippingPostCampaignCheckoutViewModelInputs,
+  NoShippingPostCampaignCheckoutViewModelOutputs {
+  let stripeIntentService: StripeIntentServiceType
+
+  public init(stripeIntentService: StripeIntentServiceType) {
+    self.stripeIntentService = stripeIntentService
+
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
       self.viewDidLoadProperty.signal
@@ -82,49 +62,22 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .map(first)
     .skipNil()
 
-    let project = initialData.map(\.project)
-    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
-    let rewards = initialData.map(\.rewards)
-    let selectedQuantities = initialData.map(\.selectedQuantities)
-    let selectedLocationId = initialData.map(\.selectedLocationId)
-    let selectedShippingRule = initialData.map(\.selectedShippingRule)
-    let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
+    let rewards = initialData.map(\.rewards)
+    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
+    let project = initialData.map(\.project)
+    let selectedShippingRule = initialData.map(\.selectedShippingRule)
+    let selectedQuantities = initialData.map(\.selectedQuantities)
+    let refTag = initialData.map(\.refTag)
+    let bonusAmount = initialData.map { $0.bonusSupport ?? 0.0 }
 
-    let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
-
-    let backing = project.map { $0.personalization.backing }.skipNil()
-
-    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
-    }
-
-    self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
-      .map { context, reward in
-        if context.isAny(of: .pledge, .updateReward) {
-          return reward.isNoReward == false
-        }
-
-        return context.sectionSeparatorsHidden
-      }
+    let backing = project.map(\.personalization.backing).skipNil()
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let allRewardsTotal = Signal.combineLatest(
-      rewards,
-      selectedQuantities
-    )
-    .map(calculateAllRewardsTotal)
-
-    let initialShippingTotal = project.map { project in
-      guard let backing = project.personalization.backing else {
-        return 0.0
-      }
-      return backing.shippingAmount ?? 0.0
-    }
+    // MARK: Calculate totals
 
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
@@ -134,101 +87,23 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     .map(calculateShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(
-      initialShippingTotal,
+      selectedShippingRule.filter(isNil).mapConst(0.0),
       calculatedShippingTotal
     )
 
-    // Initial pledge amount is zero if not backed and not set previously in the flow.
-    let initialAdditionalPledgeAmount = initialData.map {
-      if let bonusSupport = $0.bonusSupport {
-        return bonusSupport
-      } else if let backing = $0.project.personalization.backing {
-        return backing.bonusAmount
-      } else {
-        return 0.0
-      }
-    }
-
-    // TODO(MBL-1670): Delete the additional pledge amount, any validation, and the stepper class.
-    let additionalPledgeAmount = Signal.merge(
-      self.pledgeAmountDataSignal.map { $0.amount },
-      initialAdditionalPledgeAmount
+    let allRewardsTotal = Signal.combineLatest(
+      rewards,
+      selectedQuantities
     )
-
-    self.notifyPledgeAmountViewControllerUnavailableAmountChanged = allRewardsTotal
-
-    let projectAndReward = Signal.zip(project, baseReward)
+    .map(calculateAllRewardsTotal)
 
     /**
-     Shipping location selector is hidden if the context hides it,
-     if the base reward has no shipping, when add-ons were selected or when base reward has local pickup option.
-     */
-    let nonLocalPickupShippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
-      .map { baseReward, rewards, context in
-        [
-          context.shippingLocationViewHidden,
-          !baseReward.shipping.enabled,
-          rewards.count > 1
-        ].contains(true)
-      }
-
-    /**
-     if the base reward has no shipping, when NO add-ons were selected or when base reward has local pickup option.
-     */
-    let nonLocalPickupShippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
-      .map { baseReward, rewards, context in
-        [
-          context.isAny(of: .update, .changePaymentMethod, .fixPaymentMethod),
-          !baseReward.shipping.enabled,
-          rewards.count == 1
-        ].contains(true)
-      }
-
-    let shippingViewsHiddenConditionsForPledgeAmountSummary: Signal<Bool, Never> = Signal
-      .combineLatest(
-        nonLocalPickupShippingLocationViewHidden,
-        nonLocalPickupShippingSummaryViewHidden
-      )
-      .map { a, b -> Bool in
-        let r = a && b
-        return r
-      }
-
-    self.localPickupViewHidden = baseReward.map(isRewardLocalPickup).negate()
-
-    self.configurePledgeAmountViewWithData = Signal.combineLatest(
-      projectAndReward,
-      initialAdditionalPledgeAmount
-    )
-    .map(unpack)
-    .map { project, reward, additionalPledgeAmount in
-      (
-        project,
-        reward,
-        additionalPledgeAmount
-      )
-    }
-
-    self.configureLocalPickupViewWithData = projectAndReward
-      .switchMap { projectAndReward -> SignalProducer<PledgeLocalPickupViewData?, Never> in
-        guard let locationName = projectAndReward.1.localPickup?.displayableName else {
-          return SignalProducer(value: nil)
-        }
-
-        let localPickupLocationData = PledgeLocalPickupViewData(locationName: locationName)
-
-        return SignalProducer(value: localPickupLocationData)
-      }
-      .skipNil()
-
-    /**
-     * The total pledge amount that will be used to create the backing.
      * For a regular reward this includes the bonus support amount,
-     * the total of all rewards
+     * the total of all rewards and their respective shipping costs.
      * For No Reward this is only the pledge amount.
      */
     let calculatedPledgeTotal = Signal.combineLatest(
-      additionalPledgeAmount,
+      bonusAmount,
       allRewardsShippingTotal,
       allRewardsTotal
     )
@@ -239,100 +114,134 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       calculatedPledgeTotal
     )
 
-    let projectAndConfirmationLabelHidden = Signal.combineLatest(
+    // MARK: Create checkout
+
+    let pledgeDetailsData = Signal.combineLatest(
       project,
-      context.map { $0.confirmationLabelHidden }
+      rewards,
+      bonusAmount,
+      selectedQuantities,
+      selectedShippingRule,
+      pledgeTotal,
+      refTag
     )
 
-    // The selected shipping rule, if present, is always the most up-to-date shipping information.
-    // If not present, get shipping location from the backing instead.
-    let shippingLocation: Signal<String?, Never> = Signal.combineLatest(project, selectedShippingRule)
-      .map { project, shippingRule in
-        if let shippingRule {
-          return shippingRule.location.localizedName
+    let createCheckoutEvents = Signal.combineLatest(
+      isLoggedIn,
+      pledgeDetailsData
+    )
+    .filter { isLoggedIn, _ in isLoggedIn }
+    .map { _, data in
+      let (
+        project,
+        rewards,
+        _,
+        selectedQuantities,
+        selectedShippingRule,
+        pledgeTotal,
+        refTag
+      ) = data
+      let rewardsIDs: [String] = rewards.first?.isNoReward == true
+        ? []
+        : rewards.flatMap { reward -> [String] in
+          guard let count = selectedQuantities[reward.id] else {
+            return []
+          }
+          return [String](repeating: reward.graphID, count: count)
         }
-        if let backing = project.personalization.backing {
-          return backing.locationName
+
+      let locationId = selectedShippingRule.flatMap { String($0.location.id) }
+
+      return CreateCheckoutInput(
+        projectId: project.graphID,
+        amount: String(format: "%.2f", pledgeTotal),
+        locationId: locationId,
+        rewardIds: rewardsIDs,
+        refParam: refTag?.stringTag
+      )
+    }
+    .switchMap { input in
+      AppEnvironment.current.apiService
+        .createCheckout(input: input)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+    let checkoutId = createCheckoutEvents.values()
+      .map { values in
+        var checkoutId = values.checkout.id
+        if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
+          let id = decoded[range.upperBound...]
+          checkoutId = String(id)
         }
-        return nil
+        return checkoutId
       }
 
-    let shippingSummaryViewDataNonnil = Signal.combineLatest(
-      shippingLocation.skipNil(),
-      project.map(\.stats.omitUSCurrencyCode),
-      project.map { project in
-        projectCountry(forCurrency: project.stats.currency) ?? project.country
-      },
-      allRewardsShippingTotal
-    )
-    .map(PledgeShippingSummaryViewData.init)
+    let backingId = createCheckoutEvents.values().map(\.checkout.backingId)
 
-    let shippingSummaryViewData = Signal.merge(
-      shippingSummaryViewDataNonnil.wrapInOptional(),
-      shippingLocation.filter(isNil).mapConst(nil)
+    let createCheckoutErrors = createCheckoutEvents.errors()
+
+    // MARK: Configure views
+
+    self.paymentMethodsViewHidden = isLoggedIn.map(negate)
+
+    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
+      project,
+      baseReward,
+      context,
+      refTag,
+      checkoutId
+    )
+    .compactMap { project, reward, context, refTag, checkoutId -> PledgePaymentMethodsValue? in
+      guard let user = AppEnvironment.current.currentUser else { return nil }
+
+      return (user, project, checkoutId, reward, context, refTag)
+    }
+
+    self.showWebHelp = Signal.merge(
+      self.termsOfUseTappedSignal,
+      self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
     )
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
       initialData,
-      pledgeTotal,
-      additionalPledgeAmount,
-      shippingSummaryViewData,
-      rewards
+      allRewardsShippingTotal,
+      pledgeTotal
     )
-    .compactMap { data, pledgeTotal, additionalPledgeAmount, shipping, rewards in
+    .compactMap { data, shippingTotal, pledgeTotal in
+      var rewards = data.rewards
+      var bonus = data.bonusSupport
+      if let reward = rewards.first, reward.isNoReward, let bonusAmount = bonus {
+        rewards[0] = reward
+          |> Reward.lens.minimum .~ bonusAmount
+          |> Reward.lens.title .~ Strings.Pledge_without_a_reward()
+        bonus = 0
+      }
+      let omitUSCurrencyCode = data.project.stats.omitUSCurrencyCode
+      let projectCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project.country
+      let shippingSummary = data.selectedShippingRule.flatMap {
+        PledgeShippingSummaryViewData(
+          locationName: $0.location.localizedName,
+          omitUSCurrencyCode: omitUSCurrencyCode,
+          projectCountry: projectCountry,
+          total: shippingTotal
+        )
+      }
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
         projectCountry: data.project.country,
-        omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-        shipping: shipping
+        omitCurrencyCode: omitUSCurrencyCode,
+        shipping: shippingSummary
       )
       let pledgeData = PledgeSummaryViewData(
         project: data.project,
         total: pledgeTotal,
-        confirmationLabelHidden: false,
-        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewards)
+        confirmationLabelHidden: true,
+        pledgeHasNoReward: pledgeHasNoRewards(rewards: rewardsData.rewards)
       )
-      return (rewardsData, additionalPledgeAmount, pledgeData)
+      return (rewardsData, bonus, pledgeData)
     }
-
-    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndReward,
-      allRewardsTotal,
-      additionalPledgeAmount,
-      shippingViewsHiddenConditionsForPledgeAmountSummary,
-      context
-    )
-    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
-      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
-    }
-    .map(pledgeAmountSummaryViewData)
-    .skipNil()
-
-    let configurePaymentMethodsViewController = Signal.merge(
-      initialDataUnpacked,
-      initialDataUnpacked.takeWhen(self.userSessionStartedSignal)
-    )
-
-    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
-      .filter { !$3.paymentMethodsViewHidden }
-      .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
-        guard let user = AppEnvironment.current.currentUser else { return nil }
-
-        // This second to last value - pledgeTotal - is only needed when the payment methods controller
-        // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
-        // we don't accidentally propagate this nan downstream.
-        return (user, project, "", reward, context, refTag)
-      }
-
-    self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.0, $0.1) }
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { !$0 || $1.paymentMethodsViewHidden }
-
-    let pledgeAmountIsValid: Signal<Bool, Never> = self.pledgeAmountDataSignal
-      .map { $0.isValid }
 
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
@@ -346,17 +255,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
-
-    /// The `selectedPaymentSource` will take the payment source id (A) or the setup intent client secret (B) and map only to `createBackingData` or `updateBackingData`
-    let selectedPaymentSource = Signal.merge(
-      initialData.mapConst(nil),
-      self.creditCardSelectedSignal.wrapInOptional()
-    )
-
-    self.showWebHelp = Signal.merge(
-      self.termsOfUseTappedSignal,
-      self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
-    )
 
     self.configureEstimatedShippingView = Signal.combineLatest(
       project,
@@ -389,619 +287,375 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         return reward.shipping.enabled == false || estimatedShipping == nil
       }
 
-    // MARK: - Apple Pay
+    self.goToLoginSignup = Signal.combineLatest(project, baseReward)
+      .takeWhen(self.goToLoginSignupSignal)
+      .map { project, reward in (LoginIntent.backProject, project, reward) }
 
-    let changingApplePayPaymentMethod = self.applePayButtonTappedSignal
-      .combineLatest(with: context)
-      .map(second)
-      .filter { $0 == .changePaymentMethod }
-      .ignoreValues()
+    // MARK: Create Payment Intent
 
-    let goToApplePayPaymentAuthorization = pledgeAmountIsValid
+    /// Called once on viewDidLoad. All signals, except checkoutId and backingId, are linked ot initialData.
+    let paymentIntentEvent = Signal.combineLatest(
+      project,
+      pledgeTotal,
+      checkoutId,
+      backingId
+    )
+    .switchMap { project, pledgeTotal, checkoutId, backingId in
+      let projectId = project.graphID
+
+      return stripeIntentService.createPaymentIntent(
+        for: projectId,
+        backingId: backingId,
+        checkoutId: checkoutId,
+        pledgeTotal: pledgeTotal
+      )
+      .materialize()
+    }
+
+    let paymentIntentClientSecret = paymentIntentEvent.values()
+      .map { $0.clientSecret }
+
+    let paymentIntentErrors = paymentIntentEvent.errors()
+
+    // MARK: Validate Existing Cards
+
+    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+
+    let paymentIntentClientSecretForExistingCards = paymentIntentClientSecret
+      .takeWhen(selectedCard)
+
+    let validateCheckoutExistingCardInput = Signal
+      .combineLatest(
+        checkoutId,
+        selectedCard,
+        paymentIntentClientSecretForExistingCards
+      )
+
+    // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
+    let validateCheckoutExistingCard = validateCheckoutExistingCardInput
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .switchMap { checkoutId, selectedCard, paymentIntentClientSecret in
+
+        assert(
+          selectedCard.stripePaymentMethodId.isSome && selectedCard.stripePaymentMethodId != "",
+          "Payment method ID should not be missing in a late pledge context."
+        )
+
+        return AppEnvironment.current.apiService
+          .validateCheckout(
+            checkoutId: checkoutId,
+            paymentSourceId: selectedCard.stripePaymentMethodId ?? "",
+            paymentIntentClientSecret: paymentIntentClientSecret
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.validateCheckoutSuccess = Signal
+      .combineLatest(paymentIntentClientSecretForExistingCards, selectedCard)
+      .takeWhen(validateCheckoutExistingCard.values())
+      .map { paymentIntentClientSecret, selectedCard in
+
+        PaymentSourceValidation(
+          paymentIntentClientSecret: paymentIntentClientSecret,
+          selectedCardStripeCardId: selectedCard.stripePaymentMethodId,
+          requiresConfirmation: true
+        )
+      }
+
+    // MARK: ApplePay
+
+    /*
+
+     Order of operations:
+     1) Apple pay button tapped
+     3) Present the payment authorization form
+     4) Payment authorization form calls applePayContextDidCreatePayment with the payment method Id
+     5) Payment authorization form calls paymentAuthorizationDidFinish
+     6) Validate checkout using the checkoutId, payment source id, and payment intent
+     */
+
+    // Ensure all required data exists before assuming apple pay flow starts.
+    let startApplePayFlow = Signal.combineLatest(project, pledgeTotal, checkoutId, backingId)
       .takeWhen(self.applePayButtonTappedSignal)
-      .filter(isTrue)
 
-    let showApplePayAlert = pledgeAmountIsValid
-      .takeWhen(self.applePayButtonTappedSignal)
-      .filter(isFalse)
+    let paymentIntentClientSecretForApplePay: Signal<String, Never> = paymentIntentClientSecret
+      .takeWhen(startApplePayFlow)
 
-    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
+    self.goToApplePayPaymentAuthorization = Signal.combineLatest(
       project,
       baseReward,
       allRewardsTotal,
-      additionalPledgeAmount,
-      allRewardsShippingTotal
-    )
-    .map { project, reward, allRewardsTotal, additionalPledgeAmount, shippingTotal -> PaymentAuthorizationData in
-      let r = (
-        project,
-        reward,
-        allRewardsTotal,
-        additionalPledgeAmount,
-        shippingTotal,
-        Secrets.ApplePay.merchantIdentifier
-      ) as PaymentAuthorizationData
-
-      return r
-    }
-
-    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
-      .takeWhen(goToApplePayPaymentAuthorization)
-
-    let pkPaymentData = self.pkPaymentSignal
-      .map { pkPayment -> PKPaymentData? in
-        guard let displayName = pkPayment.displayName, let network = pkPayment.network else {
-          return nil
-        }
-
-        return (displayName, network, pkPayment.transactionIdentifier)
-      }
-
-    // MARK: - Create Apple Pay Backing
-
-    let applePayStatusSuccess = Signal.combineLatest(
-      self.stripeTokenSignal.skipNil(),
-      self.stripeErrorSignal.filter(isNil),
-      pkPaymentData.skipNil()
-    )
-    .mapConst(PKPaymentAuthorizationStatus.success)
-
-    let applePayStatusFailure = Signal.merge(
-      self.stripeErrorSignal.skipNil().ignoreValues(),
-      self.stripeTokenSignal.filter(isNil).ignoreValues(),
-      pkPaymentData.filter(isNil).ignoreValues()
-    )
-    .mapConst(PKPaymentAuthorizationStatus.failure)
-
-    self.createApplePayBackingStatusProperty <~ Signal.merge(
-      applePayStatusSuccess,
-      applePayStatusFailure
-    )
-
-    let willCreateApplePayBacking = Signal.combineLatest(
-      applePayStatusSuccess,
-      context
-    )
-    .map { $1.isCreating }
-    .filter(isTrue)
-
-    // MARK: - Update Apple Pay Backing
-
-    let applePayParams = Signal.combineLatest(
-      pkPaymentData.skipNil(),
-      self.stripeTokenSignal.skipNil()
-    )
-    .map { paymentData, token in
-      (
-        paymentData.displayName,
-        paymentData.network,
-        paymentData.transactionIdentifier,
-        token
-      )
-    }
-    .map(ApplePayParams.init)
-
-    let applePayParamsData = Signal.merge(
-      initialData.mapConst(nil),
-      applePayParams.wrapInOptional()
-    )
-
-    // MARK: Pledge Over Time
-
-    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
-
-    // MARK: - Create Backing
-
-    let selectedPaymentPlan = self.plotViewModel.pledgeOverTimeConfigData
-      .map { $0?.selectedPlan ?? .pledgeInFull }
-
-    let createBackingData = Signal.combineLatest(
-      project,
-      rewards,
+      bonusAmount,
+      allRewardsShippingTotal,
       pledgeTotal,
-      selectedQuantities,
-      selectedShippingRule,
-      selectedPaymentSource,
-      applePayParamsData,
-      selectedPaymentPlan,
-      refTag
+      paymentIntentClientSecretForApplePay
     )
-    .map {
+    .map { (
       project,
-        rewards,
-        pledgeTotal,
-        selectedQuantities,
-        selectedShippingRule,
-        selectedPaymentSource,
-        applePayParams,
-        selectedPaymentPlan,
-        refTag
-        -> CreateBackingData in
+      baseReward,
+      allRewardsTotal,
+      bonusAmount,
+      allRewardsShippingTotal,
+      pledgeTotal,
+      paymentIntent: String
+    ) -> PostCampaignPaymentAuthorizationData? in
 
-      let paymentSourceId = selectedPaymentSource?.savedCreditCardId
-
-      return (
+      PostCampaignPaymentAuthorizationData(
         project: project,
-        rewards: rewards,
-        pledgeTotal: pledgeTotal,
-        selectedQuantities: selectedQuantities,
-        shippingRule: selectedShippingRule,
-        paymentSourceId: paymentSourceId,
-        setupIntentClientSecret: nil,
-        applePayParams: applePayParams,
-        refTag: refTag,
-        incremental: selectedPaymentPlan == .pledgeOverTime
+        hasNoReward: baseReward.isNoReward,
+        subtotal: baseReward.isNoReward ? bonusAmount : allRewardsTotal,
+        bonus: baseReward.isNoReward ? 0.0 : bonusAmount,
+        shipping: allRewardsShippingTotal,
+        total: pledgeTotal,
+        merchantIdentifier: Secrets.ApplePay.merchantIdentifier,
+        paymentIntent: paymentIntent
       )
-    }
-
-    let createButtonTapped = context
-      .takeWhen(self.submitButtonTappedSignal)
-      .filter { context in context.isCreating }
-      .ignoreValues()
-
-    let createBackingDataAndIsApplePay = createBackingData.takePairWhen(
-      Signal.merge(
-        createButtonTapped.mapConst(false),
-        willCreateApplePayBacking
-      )
-    )
-
-    // Captures the checkoutId immediately and avoids a race condition further down the chain.
-    let checkoutIdProperty = MutableProperty<Int?>(nil)
-    let processingViewIsHidden = MutableProperty<Bool>(true)
-
-    let createBackingEvents = createBackingDataAndIsApplePay
-      .map(CreateBackingInput.input(from:isApplePay:))
-      .switchMap { [checkoutIdProperty] input in
-        AppEnvironment.current.apiService.createBacking(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(
-            starting: {
-              processingViewIsHidden.value = false
-            },
-            terminated: {
-              processingViewIsHidden.value = true
-            }
-          )
-          .map { envelope -> StripeSCARequiring in
-            checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
-            return envelope as StripeSCARequiring
-          }
-          .materialize()
-      }
-
-    // MARK: - Update Backing
-
-    let updateBackingData = Signal.combineLatest(
-      backing,
-      rewards,
-      pledgeTotal,
-      selectedQuantities,
-      selectedShippingRule,
-      selectedPaymentSource,
-      applePayParamsData
-    )
-    .map {
-      backing,
-        rewards,
-        pledgeTotal,
-        selectedQuantities,
-        selectedShippingRule,
-        selectedPaymentSource,
-        applePayParams
-        -> UpdateBackingData in
-      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
-
-      return (
-        backing: backing,
-        rewards: rewards,
-        pledgeTotal: pledgeTotal,
-        selectedQuantities: selectedQuantities,
-        shippingRule: selectedShippingRule,
-        paymentSourceId: paymentSourceId,
-        setupIntentClientSecret: nil,
-        applePayParams: applePayParams
-      )
-    }
-
-    let willUpdateApplePayBacking = Signal.combineLatest(
-      applePayStatusSuccess,
-      context
-    )
-    .map { $1.isUpdating }
-    .filter(isTrue)
-
-    let updateButtonTapped = context
-      .takeWhen(self.submitButtonTappedSignal)
-      .filter { context in context.isUpdating }
-      .ignoreValues()
-
-    let updateBackingDataAndIsApplePay = updateBackingData.takePairWhen(
-      Signal.merge(
-        updateButtonTapped.mapConst(false),
-        willUpdateApplePayBacking
-      )
-    )
-
-    let updateBackingEvents = updateBackingDataAndIsApplePay
-      .map(UpdateBackingInput.input(from:isApplePay:))
-      .switchMap { input in
-        AppEnvironment.current.apiService.updateBacking(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(
-            starting: {
-              processingViewIsHidden.value = false
-            },
-            terminated: {
-              processingViewIsHidden.value = true
-            }
-          )
-          .map { $0 as StripeSCARequiring }
-          .materialize()
-      }
-
-    let createOrUpdateEvent = Signal.merge(
-      createBackingEvents,
-      updateBackingEvents
-    )
-
-    self.processingViewIsHidden = processingViewIsHidden.signal
-
-    // MARK: - Form Validation
-
-    let amountChangedAndValid = Signal.combineLatest(
-      project,
-      baseReward,
-      self.pledgeAmountDataSignal,
-      initialAdditionalPledgeAmount,
-      context
-    )
-    .map(amountValid)
-
-    self.showApplePayAlert = Signal.combineLatest(
-      project,
-      self.pledgeAmountDataSignal
-    )
-    .takeWhen(showApplePayAlert)
-    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-    .map { project, min, max in
-      (
-        Strings.Almost_there(),
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format
-            .currency(
-              min,
-              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
-              omitCurrencyCode: false
-            ),
-          max: Format
-            .currency(
-              max,
-              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
-              omitCurrencyCode: false
-            )
-        )
-      )
-    }
-
-    let notChangingPaymentMethod = context.map { context in
-      context.isUpdating && context != .changePaymentMethod
-    }
-    .filter(isTrue)
-
-    /// The `paymentMethodChangedAndValid` will do as it before taking the payment source id (A) or the setup intent client secret (B), one or the other for comparison against the existing backing payment source id. It does not care which of two payment sources the id refers to.
-    let paymentMethodChangedAndValid = Signal.merge(
-      notChangingPaymentMethod.mapConst(false),
-      Signal.combineLatest(
-        project,
-        baseReward,
-        self.creditCardSelectedSignal,
-        context
-      )
-      .map(paymentMethodValid)
-    )
-
-    let valuesChangedAndValid = Signal.combineLatest(
-      amountChangedAndValid,
-      paymentMethodChangedAndValid,
-      self.plotViewModel.pledgeOverTimeIsLoading,
-      context
-    )
-    .map(allValuesChangedAndValid)
-
-    let isEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false)
-        .take(until: valuesChangedAndValid.ignoreValues()),
-      valuesChangedAndValid,
-      self.submitButtonTappedSignal.mapConst(false),
-      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
-    )
-    .skipRepeats()
-
-    let isCreateOrUpdateBacking = Signal.merge(
-      self.submitButtonTappedSignal.mapConst(true),
-      Signal.merge(willUpdateApplePayBacking, willCreateApplePayBacking).mapConst(false)
-    )
-
-    // MARK: - Success/Failure
-
-    let scaFlowCompletedWithError = self.scaFlowCompletedWithResultSignal
-      .filter { $0.0.status == .failed }
-      .map(second)
-      .skipNil()
-
-    let scaFlowCompletedWithSuccess = self.scaFlowCompletedWithResultSignal
-      .filter { $0.0.status == .succeeded }
-      .map(first)
-      .ignoreValues()
-
-    let didInitiateApplePayBacking = Signal.merge(
-      willCreateApplePayBacking,
-      willUpdateApplePayBacking
-    )
-
-    let paymentAuthorizationDidFinish = didInitiateApplePayBacking
-      .takeWhen(self.paymentAuthorizationDidFinishSignal)
-
-    let createOrUpdateApplePayBackingCompleted = Signal.zip(
-      didInitiateApplePayBacking,
-      createOrUpdateEvent.filter { $0.isTerminating }.ignoreValues(),
-      paymentAuthorizationDidFinish
-    )
-
-    let valuesOrNil = Signal.merge(
-      createOrUpdateEvent.values().wrapInOptional(),
-      isCreateOrUpdateBacking.mapConst(nil)
-    )
-
-    let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
-      .skipNil()
-      .filter(requiresSCA >>> isFalse)
-
-    let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
-      .takeWhen(createOrUpdateBackingEventValuesNoSCA)
-      .filter(isTrue)
-      .ignoreValues()
-
-    let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
-      .skipNil()
-      .filter(requiresSCA)
-
-    self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA
-      .map { $0.clientSecret }
-      .skipNil()
-
-    let didCompleteApplePayBacking = valuesOrNil
-      .takeWhen(createOrUpdateApplePayBackingCompleted)
-      .skipNil()
-
-    let creatingContext = context.filter { $0.isCreating }
-
-    let createBackingCompletionEvents = Signal.merge(
-      didCompleteApplePayBacking.combineLatest(with: willCreateApplePayBacking).ignoreValues(),
-      createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
-      scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
-    )
-
-    let thanksPageData = Signal.combineLatest(
-      createBackingDataAndIsApplePay,
-      checkoutIdProperty.signal,
-      baseReward,
-      additionalPledgeAmount,
-      allRewardsShippingTotal
-    )
-    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
-      -> (CreateBackingData, Bool, String?, Reward, Double, Double) in
-      let (data, isApplePay) = dataAndIsApplePay
-      guard let checkoutId = checkoutId else {
-        return (
-          data,
-          isApplePay,
-          nil,
-          baseReward,
-          additionalPledgeAmount,
-          shippingTotal
-        )
-      }
-      return (
-        data,
-        isApplePay,
-        String(checkoutId),
-        baseReward,
-        additionalPledgeAmount,
-        shippingTotal
-      )
-    }
-    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, shippingTotal
-      -> ThanksPageData? in
-      let checkoutPropsData = checkoutProperties(
-        from: data.project,
-        baseReward: baseReward,
-        addOnRewards: data.rewards,
-        selectedQuantities: data.selectedQuantities,
-        additionalPledgeAmount: additionalPledgeAmount,
-        pledgeTotal: data.pledgeTotal,
-        shippingTotal: shippingTotal,
-        checkoutId: checkoutId,
-        isApplePay: isApplePay
-      )
-
-      return (data.project, baseReward, checkoutPropsData, data.pledgeTotal)
     }
     .skipNil()
 
-    self.goToThanks = thanksPageData
-      .takeWhen(createBackingCompletionEvents)
-
-    let errorsOrNil = Signal.merge(
-      createOrUpdateEvent.errors().wrapInOptional(),
-      isCreateOrUpdateBacking.mapConst(nil)
+    let validateCheckoutWithApplePay = Signal.combineLatest(
+      paymentIntentClientSecretForApplePay,
+      checkoutId,
+      self.applePayPaymentMethodIdSignal.signal
     )
-
-    let createOrUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
-      .withLatest(from: errorsOrNil)
-      .map(second)
-      .skipNil()
-
-    let createOrUpdateBackingError = isCreateOrUpdateBacking
-      .takePairWhen(errorsOrNil.skipNil())
-      .filter(first >>> isTrue)
-      .map(second)
-
-    let updatingContext = context.filter { $0.isUpdating }
-
-    let updateBackingCompletionEvents = Signal.merge(
-      didCompleteApplePayBacking.combineLatest(with: willUpdateApplePayBacking).ignoreValues(),
-      createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: updatingContext).ignoreValues(),
-      scaFlowCompletedWithSuccess.combineLatest(with: updatingContext).ignoreValues()
-    )
-
-    self.notifyDelegateUpdatePledgeDidSucceedWithMessage = updateBackingCompletionEvents
-      .mapConst(Strings.Got_it_your_changes_have_been_saved())
-
-    let graphErrors = Signal.merge(
-      createOrUpdateApplePayBackingError,
-      createOrUpdateBackingError
-    )
-    .map { $0.localizedDescription }
-
-    let scaErrors = scaFlowCompletedWithError.map { $0.localizedDescription }
-
-    self.showErrorBannerWithMessage = Signal.merge(
-      graphErrors,
-      scaErrors
-    )
-
-    self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
-
-    let willRetryPaymentMethod = Signal.combineLatest(
-      context,
-      project,
-      selectedPaymentSource
-    )
-    .map { context, project, selectedPaymentSource -> Bool in
-
-      context == .fixPaymentMethod
-        && project.personalization.backing?.paymentSource?.id == selectedPaymentSource?.savedCreditCardId
+    .takeWhen(self.applePayContextDidCompleteSignal)
+    .switchMap { (clientSecret: String, checkoutId: String, paymentMethodId: String) in
+      AppEnvironment.current.apiService
+        .validateCheckout(
+          checkoutId: checkoutId,
+          paymentSourceId: paymentMethodId,
+          paymentIntentClientSecret: clientSecret
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
     }
+
+    let validateCheckoutError = Signal
+      .merge(
+        validateCheckoutExistingCard.errors(),
+        validateCheckoutWithApplePay.errors()
+      )
+
+    // MARK: CompleteOnSessionCheckout
+
+    let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
+      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedCard)
+      .takeWhen(self.confirmPaymentSuccessfulProperty.signal.skipNil())
+      .map { (
+        clientSecret: String,
+        checkoutId: String,
+        selectedCard: PaymentSourceSelected
+      ) -> GraphAPI.CompleteOnSessionCheckoutInput in
+
+        GraphAPI
+          .CompleteOnSessionCheckoutInput(
+            checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+            paymentIntentClientSecret: clientSecret,
+            paymentSourceId: selectedCard.savedCreditCardId,
+            paymentSourceReusable: true,
+            applePay: nil
+          )
+      }
+
+    let completeCheckoutWithApplePayInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
+      .combineLatest(paymentIntentClientSecretForApplePay, checkoutId)
+      .takeWhen(validateCheckoutWithApplePay.values())
+      .map {
+        (
+          clientSecret: String,
+          checkoutId: String
+        ) -> GraphAPI.CompleteOnSessionCheckoutInput in
+        GraphAPI
+          .CompleteOnSessionCheckoutInput(
+            checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+            paymentIntentClientSecret: clientSecret,
+            paymentSourceId: nil,
+            paymentSourceReusable: false,
+            /* We are no longer sending ApplePay parameters to the backend, because Stripe Tokens are
+              considered deprecated and are incompatible with PaymentIntent-based payments.
+
+              In the future, we may use the other parameters in the ApplePayParams object, but for now,
+              send nil.
+              */
+            applePay: nil
+          )
+      }
+
+    let checkoutCompleteSignal = Signal
+      .merge(
+        completeCheckoutWithCreditCardInput,
+        completeCheckoutWithApplePayInput
+      )
+      .switchMap { input in
+        AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
+      }
+
+    let thanksPageData = Signal.combineLatest(project, baseReward, pledgeTotal)
+      .compactMap { project, baseReward, pledgeTotal -> ThanksPageData in
+        (project, baseReward, nil, pledgeTotal)
+      }
+
+    self.checkoutComplete = thanksPageData
+      .takeWhen(checkoutCompleteSignal.signal.values())
+      .map { $0 }
+
+    self.checkoutError = checkoutCompleteSignal.signal.errors()
+
+    // MARK: - Error handling
+
+    self.showErrorBannerWithMessage = Signal.merge(createCheckoutErrors, validateCheckoutError)
+      .map { error in
+        switch error.ksrCode {
+        case .ValidateCheckoutError:
+          return error.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
+        default:
+          return Strings.Something_went_wrong_please_try_again()
+        }
+      }
+
+    // MARK: - UI related to checkout flow
+
+    let existingCardActivatesPledgeButton = validateCheckoutExistingCardInput
+      .mapConst(true)
+
+    let pledgeButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      existingCardActivatesPledgeButton
+    )
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
-      project,
-      pledgeTotal.skipRepeats(),
-      isLoggedIn,
-      isEnabled,
+      pledgeButtonEnabled,
       context,
-      willRetryPaymentMethod
+      isLoggedIn
     )
-    .map { $0 as NoShippingPledgeViewCTAContainerViewData }
+    .map { pledgeButtonEnabled, context, isLoggedIn in
+      PledgeViewCTAContainerViewData(
+        isLoggedIn: isLoggedIn,
+        isEnabled: pledgeButtonEnabled,
+        context: context,
+        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
+      )
+    }
 
-    self.title = context.map { $0.title }
-
-    let trackCheckoutPageViewData = Signal.zip(
-      project,
-      baseReward,
-      rewards,
-      selectedQuantities,
-      refTag,
-      initialAdditionalPledgeAmount,
-      pledgeTotal,
-      context
+    self.processingViewIsHidden = Signal.merge(
+      // Processing view starts hidden, so show at the start of a pledge flow.
+      self.submitButtonTappedProperty.signal.mapConst(false),
+      startApplePayFlow.mapConst(false),
+      // Hide view again whenever pledge flow is completed/cancelled/errors.
+      paymentIntentErrors.mapConst(true),
+      validateCheckoutError.mapConst(true),
+      self.checkoutTerminatedProperty.signal.mapConst(true),
+      checkoutCompleteSignal.signal.mapConst(true)
     )
 
     // MARK: - Tracking
 
-    trackCheckoutPageViewData
-      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, pledgeViewContext in
-        let checkoutData = checkoutProperties(
-          from: project,
-          baseReward: baseReward,
-          addOnRewards: rewards,
-          selectedQuantities: selectedQuantities,
-          additionalPledgeAmount: additionalPledgeAmount,
-          pledgeTotal: pledgeTotal,
-          shippingTotal: 0,
-          checkoutId: nil,
-          isApplePay: false
-        )
-
-        AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
-          project: project,
-          reward: baseReward,
-          pledgeViewContext: pledgeViewContext,
-          checkoutData: checkoutData,
-          refTag: refTag
-        )
-      }
-
-    let pledgeSubmitEventsSignal = Signal.combineLatest(
-      createBackingData,
-      baseReward,
-      additionalPledgeAmount
+    // Use checkoutId in tracking, or default to nil if creating it errors.
+    let checkoutIdOrNil = Signal.merge(
+      checkoutId.wrapInOptional(),
+      createCheckoutErrors.mapConst(nil).take(first: 1)
     )
 
-    // Pledge pledge_submit event
-    pledgeSubmitEventsSignal
-      .takeWhen(self.submitButtonTappedSignal)
-      .map { data, baseReward, additionalPledgeAmount in
-        let checkoutData = checkoutProperties(
-          from: data.project,
-          baseReward: baseReward,
-          addOnRewards: data.rewards,
-          selectedQuantities: data.selectedQuantities,
-          additionalPledgeAmount: additionalPledgeAmount,
-          pledgeTotal: data.pledgeTotal,
-          shippingTotal: 0,
-          checkoutId: nil,
-          isApplePay: false
-        )
+    let checkoutData = Signal.combineLatest(
+      initialData,
+      baseReward,
+      pledgeTotal,
+      allRewardsShippingTotal,
+      checkoutIdOrNil
+    )
 
-        return (data.project, baseReward, data.refTag, checkoutData)
+    // Page viewed event
+    checkoutData.take(first: 1)
+      .observeValues { data, baseReward, pledgeTotal, shippingTotal, checkoutId in
+        let checkoutData = self.trackingDataFromCheckoutParams(
+          data,
+          baseReward: baseReward,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          checkoutId: checkoutId
+        )
+        AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
+          project: data.project,
+          reward: data.rewards[0],
+          pledgeViewContext: data.context,
+          checkoutData: checkoutData,
+          refTag: data.refTag
+        )
       }
-      .observeValues { project, reward, refTag, checkoutData in
+
+    // Pledge button tapped event
+    checkoutData
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .observeValues { data, baseReward, pledgeTotal, shippingTotal, checkoutId in
+        let checkoutData = self.trackingDataFromCheckoutParams(
+          data,
+          baseReward: baseReward,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          checkoutId: checkoutId
+        )
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
-          project: project,
-          reward: reward,
+          project: data.project,
+          reward: baseReward,
           typeContext: .creditCard,
           checkoutData: checkoutData,
-          refTag: refTag
+          refTag: data.refTag
         )
       }
 
-    // Pay With Apple pledge_submit event
-    pledgeSubmitEventsSignal
+    // Apple pay button tapped event
+    checkoutData
       .takeWhen(self.applePayButtonTappedSignal)
-      .map { data, baseReward, additionalPledgeAmount in
-        let checkoutData = checkoutProperties(
-          from: data.project,
+      .observeValues { data, baseReward, pledgeTotal, shippingTotal, checkoutId in
+        let checkoutData = self.trackingDataFromCheckoutParams(
+          data,
           baseReward: baseReward,
-          addOnRewards: data.rewards,
-          selectedQuantities: data.selectedQuantities,
-          additionalPledgeAmount: additionalPledgeAmount,
-          pledgeTotal: data.pledgeTotal,
-          shippingTotal: 0,
-          checkoutId: nil,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          checkoutId: checkoutId,
           isApplePay: true
         )
-
-        return (data.project, baseReward, data.refTag, checkoutData)
-      }
-      .observeValues { project, reward, refTag, checkoutData in
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
-          project: project,
-          reward: reward,
+          project: data.project,
+          reward: baseReward,
           typeContext: .applePay,
           checkoutData: checkoutData,
-          refTag: refTag
+          refTag: data.refTag
         )
       }
   }
 
+  // MARK: - Helpers
+
+  private func trackingDataFromCheckoutParams(
+    _ data: PledgeViewData,
+    baseReward: Reward,
+    pledgeTotal: Double,
+    shippingTotal: Double,
+    checkoutId: String?,
+    isApplePay: Bool = false
+  )
+    -> KSRAnalytics.CheckoutPropertiesData {
+    return checkoutProperties(
+      from: data.project,
+      baseReward: baseReward,
+      addOnRewards: data.rewards,
+      selectedQuantities: data.selectedQuantities,
+      additionalPledgeAmount: data.bonusSupport ?? 0,
+      pledgeTotal: pledgeTotal,
+      shippingTotal: shippingTotal,
+      checkoutId: checkoutId,
+      isApplePay: isApplePay
+    )
+  }
+
   // MARK: - Inputs
 
-  private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
-  public func applePayButtonTapped() {
-    self.applePayButtonTappedObserver.send(value: ())
+  private let checkoutTerminatedProperty = MutableProperty(())
+  public func checkoutTerminated() {
+    self.checkoutTerminatedProperty.value = ()
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
@@ -1009,43 +663,22 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.configureWithDataProperty.value = data
   }
 
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
-    .pipe()
-  public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
-    self.creditCardSelectedObserver.send(value: paymentSourceData)
+  private let confirmPaymentSuccessfulProperty = MutableProperty<String?>(nil)
+  public func confirmPaymentSuccessful(clientSecret: String) {
+    self.confirmPaymentSuccessfulProperty.value = clientSecret
   }
 
-  private let (pkPaymentSignal, pkPaymentObserver) = Signal<(
-    displayName: String?,
-    network: String?,
-    transactionIdentifier: String
-  ), Never>.pipe()
-  public func paymentAuthorizationDidAuthorizePayment(paymentData: (
-    displayName: String?,
-    network: String?,
-    transactionIdentifier: String
-  )) {
-    self.pkPaymentObserver.send(value: paymentData)
-  }
-
-  private let (paymentAuthorizationDidFinishSignal, paymentAuthorizationDidFinishObserver)
-    = Signal<Void, Never>.pipe()
-  public func paymentAuthorizationViewControllerDidFinish() {
-    self.paymentAuthorizationDidFinishObserver.send(value: ())
-  }
-
-  public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
-    self.plotViewModel.inputs.paymentPlanSelected(paymentPlan)
+  private let creditCardSelectedProperty =
+    MutableProperty<PaymentSourceSelected?>(nil)
+  public func creditCardSelected(
+    source: PaymentSourceSelected
+  ) {
+    self.creditCardSelectedProperty.value = source
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
   public func goToLoginSignupTapped() {
     self.goToLoginSignupObserver.send(value: ())
-  }
-
-  private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
-  public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
-    self.pledgeAmountObserver.send(value: data)
   }
 
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
@@ -1054,26 +687,9 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
 
-  private let (scaFlowCompletedWithResultSignal, scaFlowCompletedWithResultObserver)
-    = Signal<(StripePaymentHandlerActionStatusType, Error?), Never>.pipe()
-  public func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?) {
-    self.scaFlowCompletedWithResultObserver.send(value: (result, error))
-  }
-
-  private let (stripeTokenSignal, stripeTokenObserver) = Signal<String?, Never>.pipe()
-  private let (stripeErrorSignal, stripeErrorObserver) = Signal<Error?, Never>.pipe()
-
-  private let (submitButtonTappedSignal, submitButtonTappedObserver) = Signal<Void, Never>.pipe()
+  private let submitButtonTappedProperty = MutableProperty(())
   public func submitButtonTapped() {
-    self.submitButtonTappedObserver.send(value: ())
-  }
-
-  private let createApplePayBackingStatusProperty = MutableProperty<PKPaymentAuthorizationStatus>(.failure)
-  public func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus {
-    self.stripeTokenObserver.send(value: token)
-    self.stripeErrorObserver.send(value: error)
-
-    return self.createApplePayBackingStatusProperty.value
+    self.submitButtonTappedProperty.value = ()
   }
 
   private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
@@ -1091,173 +707,44 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.viewDidLoadProperty.value = ()
   }
 
+  private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedObserver.send(value: ())
+  }
+
+  private let (applePayPaymentMethodIdSignal, applePayPaymentMethodIdObserver) = Signal<String, Never>.pipe()
+  public func applePayContextDidCreatePayment(with paymentMethodId: String) {
+    self.applePayPaymentMethodIdObserver.send(value: paymentMethodId)
+  }
+
+  private let (applePayContextDidCompleteSignal, applePayContextDidCompleteObserver)
+    = Signal<Void, Never>.pipe()
+  public func applePayContextDidComplete() {
+    self.applePayContextDidCompleteObserver.send(value: ())
+  }
+
   // MARK: - Outputs
 
-  public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configureEstimatedShippingView: Signal<(String?, String?), Never>
-  public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
-  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
-  public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
-  public let configurePledgeRewardsSummaryViewWithData: Signal<
-    (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
-    Never
-  >
-  public let configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never>
+  public let configurePledgeRewardsSummaryViewWithData: Signal<(
+    PostCampaignRewardsSummaryViewData,
+    Double?,
+    PledgeSummaryViewData
+  ), Never>
+  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
-  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
-  public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
-  public let localPickupViewHidden: Signal<Bool, Never>
-  public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
-  public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
-  public let paymentMethodsViewHidden: Signal<Bool, Never>
-  public let pledgeAmountViewHidden: Signal<Bool, Never>
-  public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
-  public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
-  public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let title: Signal<String, Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
+  public let checkoutComplete: Signal<ThanksPageData, Never>
+  public let checkoutError: Signal<ErrorEnvelope, Never>
 
-  public var showPledgeOverTimeUI: Signal<Bool, Never> {
-    return self.plotViewModel.outputs.showPledgeOverTimeUI
-  }
-
-  public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> {
-    return self.plotViewModel.outputs.pledgeOverTimeConfigData
-  }
-
-  public var inputs: NoShippingPledgeViewModelInputs { return self }
-  public var outputs: NoShippingPledgeViewModelOutputs { return self }
-
-  // MARK: - Component view models
-
-  private let plotViewModel: PLOTPledgeViewModel
-}
-
-// MARK: - Functions
-
-private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
-  return envelope.requiresSCAFlow
-}
-
-// MARK: - Validation Functions
-
-private func amountValid(
-  project: Project,
-  reward: Reward,
-  pledgeAmountData: PledgeAmountData,
-  initialAdditionalPledgeAmount: Double,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    project.personalization.backing != nil,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return pledgeAmountData.isValid
-  }
-
-  /**
-   The amount is valid if it's changed or if the reward has add-ons.
-   This works because of the validation that would have occurred during add-ons selection,
-   that is, in `RewardAddOnSelectionViewController` we don't navigate further unless the selection changes.
-   */
-  return [
-    pledgeAmountData
-      .amount != initialAdditionalPledgeAmount || (reward.hasAddOns || featureNoShippingAtCheckout()),
-    pledgeAmountData.isValid
-  ]
-  .allSatisfy(isTrue)
-}
-
-private func shippingRuleValid(
-  project: Project,
-  reward: Reward,
-  shippingRule: ShippingRule?,
-  context: PledgeViewContext
-) -> Bool {
-  if context.isCreating || context == .updateReward {
-    return !reward.shipping.enabled || shippingRule != nil
-  }
-
-  guard
-    let backing = project.personalization.backing,
-    let shippingRule = shippingRule,
-    context.isUpdating
-  else {
-    return false
-  }
-
-  return backing.locationId != shippingRule.location.id
-}
-
-private func paymentMethodValid(
-  project: Project,
-  reward: Reward,
-  paymentSource: PaymentSourceSelected,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return true
-  }
-
-  if project.personalization.backing?.status == .errored {
-    return true
-  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
-    return true
-  }
-
-  return false
-}
-
-private func allValuesChangedAndValid(
-  amountValid: Bool,
-  paymentSourceValid: Bool,
-  pledgeOverTimeIsLoading: Bool,
-  context: PledgeViewContext
-) -> Bool {
-  if context.isUpdating, context != .updateReward {
-    return amountValid || paymentSourceValid
-  }
-
-  return amountValid && !pledgeOverTimeIsLoading
-}
-
-// MARK: - Helper Functions
-
-private func pledgeAmountSummaryViewData(
-  with project: Project,
-  reward _: Reward,
-  allRewardsTotal: Double,
-  additionalPledgeAmount: Double,
-  shippingViewsHidden: Bool,
-  context: PledgeViewContext
-) -> PledgeAmountSummaryViewData? {
-  guard let backing = project.personalization.backing else { return nil }
-
-  let rewardIsLocalPickup = isRewardLocalPickup(backing.reward)
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
-  return .init(
-    bonusAmount: additionalPledgeAmount,
-    bonusAmountHidden: context == .update,
-    isNoReward: backing.reward?.isNoReward ?? false,
-    locationName: backing.locationName,
-    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    projectCurrencyCountry: projectCurrencyCountry,
-    pledgedOn: backing.pledgedAt,
-    rewardMinimum: allRewardsTotal,
-    shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: !shippingViewsHidden,
-    rewardIsLocalPickup: rewardIsLocalPickup
-  )
+  public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
+  public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
 }
