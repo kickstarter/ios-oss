@@ -65,6 +65,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
+  private lazy var plotPaymentScheduleViewController: PledgeOverTimePaymentScheduleViewController = {
+    let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
+    controller.delegate = self
+    return controller
+  }()
+
+  private lazy var plotPaymentScheduleSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var plotPaymentScheduleStackView = { UIStackView(frame: .zero) }()
+
   private lazy var pledgeDetailsSectionLabel: UILabel = {
     UILabel(frame: .zero)
   }()
@@ -120,7 +133,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var sectionSeparatorViews = {
-    [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator]
+    [
+      self.pledgeSummarySectionSeparator,
+      self.paymentMethodSectionSeparator,
+      self.plotPaymentScheduleSectionSeparator
+    ]
   }()
 
   // MARK: - Lifecycle
@@ -180,6 +197,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
+
+    applyPlotPaymentScheduleStackViewStyle(self.plotPaymentScheduleStackView)
   }
 
   // MARK: - View model
@@ -323,12 +342,39 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
+
+    self.plotPaymentScheduleStackView.rac.hidden = self.viewModel.outputs.plotPaymentScheduleViewHidden
+
+    self.viewModel.outputs.configurePlotPaymentScheduleView
+      .observeForUI()
+      .observeValues { [weak self] increments, project in
+        self?.plotPaymentScheduleViewController.configure(
+          with: increments,
+          project: project
+        )
+      }
+
+    self.viewModel.outputs.showWebHelp
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
   }
 
   // MARK: - Configuration
 
   func configureWith(params: ManagePledgeViewParamConfigData) {
     self.viewModel.inputs.configureWith(params)
+  }
+
+  /// Toggles the collapsed state of the `PledgeOverTimePaymentScheduleViewController` via its `collapseToggle` function.
+  /// This is used specifically in UI tests to simulate user interaction and verify correct behavior
+  /// during transitions between collapsed and expanded states.
+  ///
+  /// This method directly interacts with the `PledgeOverTimePaymentScheduleViewController` to test collapse functionality.
+  public func plotPaymentScheduleToggle() {
+    self.plotPaymentScheduleViewController.collapseToggle()
   }
 
   // MARK: Functions
@@ -360,6 +406,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.tableView
       |> \.refreshControl .~ self.refreshControl
+
+    self.plotPaymentScheduleStackView.addArrangedSubviews(
+      self.plotPaymentScheduleViewController.view,
+      self.plotPaymentScheduleSectionSeparator
+    )
   }
 
   private func configureHeaderView() {
@@ -372,6 +423,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
+      [self.plotPaymentScheduleStackView],
       self.pledgeDetailsSectionViews
     ]
     .flatMap { $0 }
@@ -382,7 +434,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     [
       self.rewardReceivedViewController,
-      self.pledgeSummaryViewController
+      self.pledgeSummaryViewController,
+      self.plotPaymentScheduleViewController
     ]
     .forEach { viewController in
       self.addChild(viewController)
@@ -623,6 +676,11 @@ private let pledgeDetailsSectionLabelStyle: LabelStyle = { label in
     |> checkoutTitleLabelStyle
 }
 
+private func applyPlotPaymentScheduleStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(4)
+}
+
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
   internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
     dialog.dismiss(animated: true, completion: nil)
@@ -664,5 +722,13 @@ extension ManagePledgeViewController {
     }
 
     return navigationController
+  }
+}
+
+// MARK: - PledgeOverTimePaymentScheduleViewControllerDelegate
+
+extension ManagePledgeViewController: PledgeOverTimePaymentScheduleDelegate {
+  func termsOfUseTapped(with helpType: HelpType) {
+    self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }

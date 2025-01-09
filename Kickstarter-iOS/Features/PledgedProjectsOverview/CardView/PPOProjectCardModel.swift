@@ -9,7 +9,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let image: Kingfisher.Source
   public let projectName: String
   public let projectId: Int
-  public let pledge: GraphAPI.MoneyFragment
+  public let pledge: String
   public let creatorName: String
   public let address: String?
   public let actions: (Action, Action?)
@@ -224,7 +224,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: """
       Firsty Lasty
@@ -248,7 +248,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
@@ -271,7 +271,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.fixPayment, nil),
@@ -294,7 +294,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.authenticateCard, nil),
@@ -312,7 +312,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
@@ -371,7 +371,8 @@ extension PPOProjectCardModel {
 
     let projectName = ppoProject?.name
     let projectId = ppoProject?.pid
-    let pledge = backing?.amount.fragments.moneyFragment
+    let pledgeFragment = backing?.amount.fragments.moneyFragment
+    let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
     let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
@@ -425,7 +426,7 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let image, let projectName, let projectId, let pledge, let creatorName,
+    if let image, let projectName, let projectId, let formattedPledge, let creatorName,
        let projectAnalyticsFragment, let backingDetailsUrl, let backingId {
       self.init(
         isUnread: true,
@@ -433,7 +434,7 @@ extension PPOProjectCardModel {
         image: image,
         projectName: projectName,
         projectId: projectId,
-        pledge: pledge,
+        pledge: formattedPledge,
         creatorName: creatorName,
         address: address,
         actions: (primaryAction, secondaryAction),
