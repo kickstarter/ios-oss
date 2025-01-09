@@ -27,6 +27,7 @@ public protocol ManagePledgeViewModelInputs {
   func menuOptionSelected(with action: ManagePledgeAlertAction)
   func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
   func viewDidLoad()
+  func termsOfUseTapped(with helpType: HelpType)
 }
 
 public protocol ManagePledgeViewModelOutputs {
@@ -51,8 +52,11 @@ public protocol ManagePledgeViewModelOutputs {
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
+  var showWebHelp: Signal<HelpType, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
+  var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never> { get }
+  var plotPaymentScheduleViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ManagePledgeViewModelType {
@@ -370,6 +374,23 @@ public final class ManagePledgeViewModel:
           checkoutData: checkoutData
         )
       }
+
+    // Pledge Over Time
+
+    let pledgeOverTimeEnabled = backing.map {
+      isPledgeOverTime(with: $0)
+    }
+
+    self.plotPaymentScheduleViewHidden = pledgeOverTimeEnabled.negate()
+
+    self.configurePlotPaymentScheduleView = project
+      .combineLatest(with: backing)
+      .filterWhenLatestFrom(pledgeOverTimeEnabled, satisfies: { $0 })
+      .map { project, backing in
+        (backing.paymentIncrements, project)
+      }
+
+    self.showWebHelp = self.termsOfUseTappedSignal
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
@@ -404,6 +425,11 @@ public final class ManagePledgeViewModel:
     self.menuOptionSelectedObserver.send(value: action)
   }
 
+  private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
+  public func termsOfUseTapped(with helpType: HelpType) {
+    self.termsOfUseTappedObserver.send(value: helpType)
+  }
+
   private let (
     pledgeViewControllerDidUpdatePledgeWithMessageSignal,
     pledgeViewControllerDidUpdatePledgeWithMessageObserver
@@ -419,6 +445,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
+  public let configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never>
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
@@ -432,12 +459,14 @@ public final class ManagePledgeViewModel:
   public let paymentMethodViewHidden: Signal<Bool, Never>
   public let pledgeDetailsSectionLabelText: Signal<String, Never>
   public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
+  public let plotPaymentScheduleViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let rightBarButtonItemHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
+  public let showWebHelp: Signal<HelpType, Never>
   public let startRefreshing: Signal<(), Never>
   public let title: Signal<String, Never>
 
@@ -562,22 +591,8 @@ private func managePledgePaymentMethodViewData(
   )
 }
 
-private func isPledgeOverTime(with _: Backing) -> Bool {
-  /*
-   TODO: Replace the current logic with `backing.PaymentIncrements` validation.
-
-   Context:
-   - For development purposes, this function currently returns `true` when
-     `featurePledgeOverTimeEnabled()` is `true`.
-   - Final logic: Validate `backing.PaymentIncrements`. If the list is not empty,
-     `isPledgeOverTime(:)` should return `true`.
-
-   Pending:
-   - Awaiting implementation of `backing.PaymentIncrements` data source as part of MBL-1851.
-
-   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
-   */
-  return featurePledgeOverTimeEnabled()
+private func isPledgeOverTime(with backing: Backing) -> Bool {
+  return featurePledgeOverTimeEnabled() && !backing.paymentIncrements.isEmpty
 }
 
 private func managePledgeSummaryViewData(
@@ -592,20 +607,9 @@ private func managePledgeSummaryViewData(
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-  /*
-   TODO: Replace mock data with backing.PaymentIncrements list.
-
-   Context:
-   - Adding mock data when `featurePledgeOverTimeEnabled()` is `true`.
-
-   Pending:
-   - Awaiting implementation of the real backing.PaymentIncrements data source.
-
-   Ticket: [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
-    */
   var paymentIncrements: [PledgePaymentIncrement]?
   if featurePledgeOverTimeEnabled() {
-    paymentIncrements = mockPledgePaymentIncrement()
+    paymentIncrements = backing.paymentIncrements
   }
 
   return ManagePledgeSummaryViewData(
@@ -653,15 +657,14 @@ public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
   var increments: [PledgePaymentIncrement] = []
   #if DEBUG
     var timeStamp = TimeInterval(1_733_931_903)
-    for _ in 1...4 {
+    for i in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
         amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
         scheduledCollection: timeStamp,
-        state: "unattempted"
+        state: i == 1 ? .collected : .unattempted
       ))
     }
   #endif
-
   return increments
 }
