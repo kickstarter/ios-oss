@@ -28,6 +28,9 @@ fragment BackingFragment on Backing {
   reward {
     ...RewardFragment
   }
+  rewardsAmount {
+    ...MoneyFragment
+  }
   sequence
   shippingAmount {
     ...MoneyFragment

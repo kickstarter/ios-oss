@@ -25,7 +25,8 @@ public typealias UpdateBackingData = (
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   setupIntentClientSecret: String?,
-  applePayParams: ApplePayParams?
+  applePayParams: ApplePayParams?,
+  pledgeContext: PledgeViewContext
 )
 public typealias PaymentAuthorizationData = (
   project: Project,
@@ -203,10 +204,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     let allRewardsTotal = Signal.combineLatest(
-      rewards,
-      selectedQuantities
+      project, rewards, selectedQuantities, context
     )
-    .map(calculateAllRewardsTotal)
+    .map { project, rewards, selectedQuantities, context in
+      if context == .fixPaymentMethod,
+         let rewardsAmount = project.personalization.backing?.rewardsAmount {
+        return rewardsAmount
+      }
+      return calculateAllRewardsTotal(addOnRewards: rewards, selectedQuantities: selectedQuantities)
+    }
 
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
@@ -632,7 +638,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedQuantities,
       selectedShippingRule,
       selectedPaymentSource,
-      applePayParamsData
+      applePayParamsData,
+      context
     )
     .map {
       backing,
@@ -641,7 +648,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         selectedQuantities,
         selectedShippingRule,
         selectedPaymentSource,
-        applePayParams
+        applePayParams,
+        context
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
@@ -653,7 +661,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         shippingRule: selectedShippingRule,
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
-        applePayParams: applePayParams
+        applePayParams: applePayParams,
+        pledgeContext: context
       )
     }
 
