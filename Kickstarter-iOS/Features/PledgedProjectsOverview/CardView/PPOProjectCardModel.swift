@@ -15,6 +15,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let actions: (Action, Action?)
   public let tierType: TierType
   public let backingDetailsUrl: String
+  public let backingId: Int
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   public func hash(into hasher: inout Hasher) {
@@ -234,6 +235,7 @@ extension PPOProjectCardModel {
     actions: (.confirmAddress, .editAddress),
     tierType: .confirmAddress,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -252,6 +254,7 @@ extension PPOProjectCardModel {
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -274,6 +277,7 @@ extension PPOProjectCardModel {
     actions: (.fixPayment, nil),
     tierType: .fixPayment,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -296,6 +300,7 @@ extension PPOProjectCardModel {
     actions: (.authenticateCard, nil),
     tierType: .authenticateCard,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -313,6 +318,7 @@ extension PPOProjectCardModel {
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -395,6 +401,7 @@ extension PPOProjectCardModel {
     // For v1 of PPO we're just using the same url for surveys and the backing details page.
     // This specifically links to the survey tab.
     let backingDetailsUrl = backing?.backingDetailsPageRoute
+    let backingId = backing.flatMap { decompose(id: $0.id) }
 
     switch card.tierType {
     case PPOProjectCardModelConstants.paymentFailed:
@@ -420,7 +427,7 @@ extension PPOProjectCardModel {
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
     if let image, let projectName, let projectId, let formattedPledge, let creatorName,
-       let projectAnalyticsFragment, let backingDetailsUrl {
+       let projectAnalyticsFragment, let backingDetailsUrl, let backingId {
       self.init(
         isUnread: true,
         alerts: alerts,
@@ -433,6 +440,7 @@ extension PPOProjectCardModel {
         actions: (primaryAction, secondaryAction),
         tierType: tierType,
         backingDetailsUrl: backingDetailsUrl,
+        backingId: backingId,
         projectAnalytics: projectAnalyticsFragment
       )
     } else {
