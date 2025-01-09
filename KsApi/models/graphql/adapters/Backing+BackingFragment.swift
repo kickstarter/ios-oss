@@ -52,6 +52,7 @@ extension Backing {
       projectCountry: projectCountry.rawValue,
       projectId: projectId,
       reward: reward,
+      rewardsAmount: backingFragment.rewardsAmount.fragments.moneyFragment.amount.flatMap(Double.init),
       rewardId: reward?.id,
       sequence: backingFragment.sequence ?? 0,
       shippingAmount: backingFragment.shippingAmount?.fragments.moneyFragment.amount.flatMap(Double.init),

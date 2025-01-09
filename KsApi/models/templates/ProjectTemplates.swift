@@ -119,6 +119,8 @@ private let cosmicSurgeryRewards: [Reward] = [
   Reward.template
     |> Reward.lens.id .~ 20
     |> Reward.lens.minimum .~ 6.0
+    |> Reward.lens.pledgeAmount .~ 6.0
+    |> Reward.lens.latePledgeAmount .~ 6.0
     |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.limit .~ nil
     |> Reward.lens.backersCount .~ 23
@@ -129,6 +131,8 @@ private let cosmicSurgeryRewards: [Reward] = [
   .template
     |> Reward.lens.id .~ 1
     |> Reward.lens.minimum .~ 25.0
+    |> Reward.lens.pledgeAmount .~ 25.0
+    |> Reward.lens.latePledgeAmount .~ 25.0
     |> Reward.lens.convertedMinimum .~ 32.0
     |> Reward.lens.limit .~ 100
     |> Reward.lens.backersCount .~ 100
@@ -140,6 +144,8 @@ private let cosmicSurgeryRewards: [Reward] = [
   .template
     |> Reward.lens.id .~ 2
     |> Reward.lens.minimum .~ 30.0
+    |> Reward.lens.pledgeAmount .~ 30.0
+    |> Reward.lens.latePledgeAmount .~ 30.0
     |> Reward.lens.convertedMinimum .~ 39.0
     |> Reward.lens.backersCount .~ 83
     |> Reward.lens.title .~ "COSMIC SURGERY BOOK"
@@ -149,6 +155,8 @@ private let cosmicSurgeryRewards: [Reward] = [
   .template
     |> Reward.lens.id .~ 3
     |> Reward.lens.minimum .~ 650.0
+    |> Reward.lens.pledgeAmount .~ 650.0
+    |> Reward.lens.latePledgeAmount .~ 650.0
     |> Reward.lens.convertedMinimum .~ 851.0
     |> Reward.lens.limit .~ 10
     |> Reward.lens.backersCount .~ 3
