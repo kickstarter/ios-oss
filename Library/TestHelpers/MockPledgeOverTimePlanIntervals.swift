@@ -1,11 +1,13 @@
 import Foundation
-import Library
+import KsApi
 
 public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
   let amount = PledgePaymentIncrementAmount(amount: 250.0, currency: "USD")
   let scheduledCollection = TimeInterval(1_553_731_200)
   return [
     PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .collected),
-    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .unattemped)
+    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .unattempted),
+    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .cancelled),
+    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .errored)
   ]
 }

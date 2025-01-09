@@ -1,28 +1,39 @@
 import UIKit
+import KsApi
 
 extension PledgePaymentIncrementState {
-  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+  // TODO: Add string translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
+
+  /// Returns the textual description for each `PledgePaymentIncrementState`.
   public var description: String {
     switch self {
     case .collected: return "Collected"
-    case .unattemped: return "Unattemped"
+    case .unattempted: return "Unattemped"
     case .unknown: return "Unknown"
+    case .cancelled: return "Cancelled"
+    case .errored: return "Errored"
     }
   }
 
+  /// Returns the badge background color based on the state.
   public var badgeColor: UIColor {
     switch self {
-    case .collected: .ksr_create_100
-    case .unattemped: .ksr_support_200
-    case .unknown: .ksr_celebrate_100
+    case .collected:
+      return .ksr_create_100
+    case .unattempted, .unknown:
+      return .ksr_support_200
+    case .cancelled, .errored:
+      return .ksr_celebrate_100
     }
   }
 
+  /// Returns the badge text (foreground) color based on the state.
   public var badgeForegroundColor: UIColor {
     switch self {
-    case .collected: .ksr_create_700
-    case .unattemped: .ksr_support_400
-    case .unknown: .ksr_support_400
+    case .collected:
+      return .ksr_create_700
+    case .unattempted, .unknown, .cancelled, .errored:
+      return .ksr_support_400
     }
   }
 }

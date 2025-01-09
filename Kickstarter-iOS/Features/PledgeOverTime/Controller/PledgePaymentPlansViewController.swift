@@ -16,11 +16,12 @@ final class PledgePaymentPlansViewController: UIViewController {
   // MARK: Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
-
   private lazy var pledgeInFullOption = PledgePaymentPlanOptionView(frame: .zero)
   private lazy var pledgeOverTimeOption = PledgePaymentPlanOptionView(frame: .zero)
+
+  private lazy var pledgeInFullLoadingOption = PledgePaymentPlanOptionLoadingView(frame: .zero)
+  private lazy var pledgeOverTimeLoadingOption = PledgePaymentPlanOptionLoadingView(frame: .zero)
 
   internal weak var delegate: PledgePaymentPlansViewControllerDelegate?
 
@@ -45,8 +46,10 @@ final class PledgePaymentPlansViewController: UIViewController {
 
     self.rootStackView.addArrangedSubviews(
       self.pledgeInFullOption,
+      self.pledgeInFullLoadingOption,
       self.separatorView,
-      self.pledgeOverTimeOption
+      self.pledgeOverTimeOption,
+      self.pledgeOverTimeLoadingOption
     )
   }
 
@@ -78,6 +81,14 @@ final class PledgePaymentPlansViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    let isLoading = self.viewModel.outputs.isLoading
+    let notLoading = self.viewModel.outputs.isLoading.map { !$0 }
+
+    self.pledgeInFullOption.rac.hidden = isLoading
+    self.pledgeOverTimeOption.rac.hidden = isLoading
+    self.pledgeInFullLoadingOption.rac.hidden = notLoading
+    self.pledgeOverTimeLoadingOption.rac.hidden = notLoading
 
     self.viewModel.outputs.reloadPaymentPlans
       .observeForUI()

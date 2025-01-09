@@ -6660,6 +6660,22 @@
             "deprecationReason": null
           },
           {
+            "name": "noVatCollection",
+            "description": "Whether the project's shipping rules designate no vat collection",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "onBehalfOf",
             "description": "A Stripe account identifier",
             "args": [],
@@ -7612,6 +7628,22 @@
             "deprecationReason": null
           },
           {
+            "name": "taxInformationCompletionStatus",
+            "description": "Whether or not the project has configured a deposit account address and vat id",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "PrereqCompletionStatus",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timeline",
             "description": "The timeline of project events, including updates and milestones.",
             "args": [
@@ -7781,6 +7813,18 @@
                 "name": "Boolean",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "vatNumber",
+            "description": "The project's VAT number.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -10400,6 +10444,30 @@
                   "kind": "OBJECT",
                   "name": "UserRestriction",
                   "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "vatNumbers",
+            "description": "List of VAT ids used by the user",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
                 }
               }
             },
@@ -13954,12 +14022,6 @@
             "deprecationReason": null
           },
           {
-            "name": "projects_on_project_page",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "datalake_fe_events",
             "description": null,
             "isDeprecated": false,
@@ -14147,6 +14209,12 @@
           },
           {
             "name": "pledge_redemption_v1",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_redemption_vat",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -27775,6 +27843,22 @@
             "deprecationReason": null
           },
           {
+            "name": "item",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RewardItem",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "marketValue",
             "description": "Value of item pre any bundling discounts",
             "args": [],
@@ -28710,8 +28794,8 @@
             "description": "current bonus amount for backing",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
+              "kind": "OBJECT",
+              "name": "AdjustmentAmount",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28746,8 +28830,8 @@
             "description": "current shipping amount for backing",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
+              "kind": "OBJECT",
+              "name": "AdjustmentAmount",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28830,7 +28914,7 @@
           },
           {
             "name": "rewardId",
-            "description": "id of reward to be refunded",
+            "description": " graphql id of reward to be refunded",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -28852,12 +28936,71 @@
       },
       {
         "kind": "OBJECT",
+        "name": "AdjustmentAmount",
+        "description": "A hash containing the original, refunded, and remaining amounts.",
+        "fields": [
+          {
+            "name": "originalTotal",
+            "description": "the original total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedTotal",
+            "description": "the refunded total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingTotal",
+            "description": "the remaining total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "AdjustmentItem",
         "description": "An item in a backing that might be modified (removal, change in quantity) by an adjustment.",
         "fields": [
           {
             "name": "itemId",
-            "description": "id of item in backing",
+            "description": "graphql id of item in backing",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -28872,7 +29015,7 @@
             "deprecationReason": null
           },
           {
-            "name": "itemQuantity",
+            "name": "quantity",
             "description": "quantity of item in backing",
             "args": [],
             "type": {
@@ -28898,22 +29041,6 @@
         "name": "Adjustment",
         "description": "Adjustment to an order, created to issue a refund.",
         "fields": [
-          {
-            "name": "backingId",
-            "description": "ID of backing that adjustment is associated with",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "createdAt",
             "description": "Timestamp at which adjustment was created",
@@ -28947,18 +29074,6 @@
             "deprecationReason": null
           },
           {
-            "name": "message",
-            "description": "optional message from creator issuing adjustment",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "metadata",
             "description": "Metadata for the adjustment, including refunds and removals",
             "args": [],
@@ -28975,23 +29090,7 @@
             "deprecationReason": null
           },
           {
-            "name": "status",
-            "description": "Status of adjustment",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "AdjustmentStatusType",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "transactionId",
+            "name": "transactionKey",
             "description": "Rosie Stripe transaction ID",
             "args": [],
             "type": {
@@ -29248,7 +29347,7 @@
             "deprecationReason": null
           },
           {
-            "name": "BONUS_SUPPORT",
+            "name": "BONUS_AMOUNT",
             "description": "refund for bonus support",
             "isDeprecated": false,
             "deprecationReason": null
@@ -29309,41 +29408,6 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "AdjustmentStatusType",
-        "description": "Status of an adjustment",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "PENDING",
-            "description": "Adjustment is pending (default status on creation)",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "COMPLETED",
-            "description": "Adjustment has successfully been processed",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FAILED",
-            "description": "Failure in processing adjustment",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CANCELLED",
-            "description": "Adjustment was cancelled before it could be processed",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -30610,6 +30674,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "vatLocation",
+            "description": "Whether or not the location is in the EU or UK (uses VAT)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -37280,6 +37360,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createOrUpdateVatConfig",
+            "description": "Creates/updates a VAT config",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdateVatConfigInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdateVatConfigPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createPaymentIntent",
             "description": "Create a Stripe PaymentIntent in order to collect an on-session payment via the Stripe PaymentElement",
             "args": [
@@ -42677,6 +42784,16 @@
             "defaultValue": null
           },
           {
+            "name": "paymentSourceId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -42774,7 +42891,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -42809,13 +42926,9 @@
             "name": "id",
             "description": "id of object to be refunded",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -42858,19 +42971,7 @@
         "description": "Autogenerated return type of CreateAdjustment",
         "fields": [
           {
-            "name": "clientMutationId",
-            "description": "A unique identifier for the client performing the mutation.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "refundCheckout",
+            "name": "adjustedSummary",
             "description": null,
             "args": [],
             "type": {
@@ -42878,9 +42979,21 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "RefundCheckout",
+                "name": "AdjustedSummary",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -45167,15 +45280,103 @@
             "deprecationReason": null
           },
           {
-            "name": "success",
-            "description": "Success if item tax config was created or updated successfully",
+            "name": "item",
+            "description": "The item for the ID that was passed in",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
+                "kind": "OBJECT",
+                "name": "RewardItem",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdateVatConfigInput",
+        "description": "Autogenerated input type of CreateOrUpdateVatConfig",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
                 "kind": "SCALAR",
-                "name": "Boolean",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "vatNumber",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdateVatConfigPayload",
+        "description": "Autogenerated return type of CreateOrUpdateVatConfig",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": "Project associated with the VAT Config",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
                 "ofType": null
               }
             },
@@ -50092,18 +50293,6 @@
         "description": "Autogenerated return type of LockAddresses",
         "fields": [
           {
-            "name": "addressLockoutDate",
-            "description": "Returns the address lockout date if successful.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "DateTime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "args": [],
@@ -50111,6 +50300,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": "Returns the updated project if successful.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

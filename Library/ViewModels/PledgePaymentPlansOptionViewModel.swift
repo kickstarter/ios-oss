@@ -28,42 +28,15 @@ public struct PledgePaymentPlanOptionData: Equatable {
   }
 }
 
-public struct PledgePaymentIncrement: Equatable {
-  public let amount: PledgePaymentIncrementAmount
-  public let scheduledCollection: TimeInterval
-  public let state: PledgePaymentIncrementState
-
-  public init(
-    amount: PledgePaymentIncrementAmount,
-    scheduledCollection: TimeInterval,
-    state: PledgePaymentIncrementState = .unknown
-  ) {
-    self.amount = amount
-    self.scheduledCollection = scheduledCollection
-    self.state = state
-  }
-}
-
-public enum PledgePaymentIncrementState: String {
-  case collected
-  case unattemped
-  case unknown
-}
-
-public struct PledgePaymentIncrementAmount: Equatable {
-  public let amount: Double
-  public let currency: String
-
-  public init(amount: Double, currency: String) {
-    self.amount = amount
-    self.currency = currency
-  }
-}
-
 public struct PledgePaymentIncrementFormatted: Equatable {
   public var incrementChargeNumber: String
   public var amount: String
   public var scheduledCollection: String
+}
+
+public enum SelectionIndicatorImageName: String {
+  case selected = "icon-payment-method-selected"
+  case unselected = "icon-payment-method-unselected"
 }
 
 public protocol PledgePaymentPlansOptionViewModelInputs {
@@ -105,7 +78,7 @@ public final class PledgePaymentPlansOptionViewModel:
     self.selectionIndicatorImageName = configData
       .map {
         $0.selectedType == $0.type ?
-          "icon-payment-method-selected" : "icon-payment-method-unselected"
+          SelectionIndicatorImageName.selected.rawValue : SelectionIndicatorImageName.unselected.rawValue
       }
 
     self.titleText = configData.map { getTitleText(by: $0.type) }

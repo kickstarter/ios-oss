@@ -1,4 +1,4 @@
-@testable import Library
+@testable import KsApi
 import XCTest
 
 class TimeInterval_ISO8601DateTests: XCTestCase {

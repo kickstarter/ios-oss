@@ -20,11 +20,29 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
     super.tearDown()
   }
 
+  func testView_isLoading() {
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let controller = PledgePaymentPlansViewController.instantiate()
+        controller.viewDidLoad()
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 100
+        parent.view.frame.size.width = 300
+
+        self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testView_PledgeInFullSelected() {
     let project = Project.template
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
+        controller.viewDidLoad()
 
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeInFull,
@@ -49,6 +67,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
+        controller.viewDidLoad()
 
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeOverTime,
@@ -78,6 +97,7 @@ final class PledgePaymentPlansViewControllerTest: TestCase {
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgePaymentPlansViewController.instantiate()
+        controller.viewDidLoad()
 
         let data = PledgePaymentPlansAndSelectionData(
           selectedPlan: .pledgeInFull,
@@ -107,7 +127,8 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
     timeStamp += 30 * 24 * 60 * 60
     increments.append(PledgePaymentIncrement(
       amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
-      scheduledCollection: timeStamp
+      scheduledCollection: timeStamp,
+      state: .unattempted
     ))
   }
 

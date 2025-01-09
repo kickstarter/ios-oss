@@ -10,7 +10,8 @@ extension PledgePaymentPlansAndSelectionData {
     var increments: [PledgePaymentIncrement] = []
 
     if let fetchedIncrements = paymentPlan.paymentIncrements {
-      increments = fetchedIncrements.compactMap { PledgePaymentIncrement(withGraphQLFragment: $0) }
+      increments = fetchedIncrements
+        .compactMap { PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment) }
     }
 
     self.init(
