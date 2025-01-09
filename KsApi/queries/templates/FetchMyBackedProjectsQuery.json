@@ -28,6 +28,7 @@
             }
           },
           "canComment": true,
+          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
@@ -184,6 +185,7 @@
             }
           },
           "canComment": true,
+          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
           "commentsCount": 1,
           "country": {
             "__typename": "Country",
@@ -376,6 +378,7 @@
             }
           },
           "canComment": true,
+          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
