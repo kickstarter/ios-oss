@@ -27,6 +27,13 @@ extension Backing {
       locationId = decompose(id: locationGraphId)
     }
 
+    var paymentIncrements: [PledgePaymentIncrement] = []
+
+    if let backingIncrements = backingFragment.paymentIncrements {
+      paymentIncrements = backingIncrements
+        .compactMap { PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment) }
+    }
+
     return Backing(
       addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
@@ -39,6 +46,7 @@ extension Backing {
       isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
+      paymentIncrements: paymentIncrements,
       paymentSource: backingPaymentSource(from: backingFragment),
       pledgedAt: backingFragment.pledgedOn.flatMap(Double.init) ?? 0,
       projectCountry: projectCountry.rawValue,
