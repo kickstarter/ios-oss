@@ -14,6 +14,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.title = Strings.tabbar_activity()
 
     let ppoView = PPOView(
+      authenticationContext: self,
       onCountChange: { [weak self] count in
         self?.viewModel.projectAlertsCountChanged(count)
       },
@@ -132,32 +133,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
-  }
-
-  private func handle3DSChallenge(setupIntent: String, setLoading: @escaping (Bool) -> Void) {
-    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
-
-    // Set initial loading state
-    setLoading(true)
-
-    STPPaymentHandler.shared().confirmSetupIntent(
-      confirmParams,
-      with: self,
-      completion: { status, _, error in
-        switch (status, error) {
-        case (.succeeded, _):
-          setLoading(false)
-        case (.canceled, _):
-          setLoading(false)
-        case let (.failed, .some(error)):
-          print("Error \(error)")
-          setLoading(false)
-        case (.failed, .none):
-          // failed without an error? shouldn't happen but use a generic error here
-          setLoading(false)
-        }
-      }
-    )
   }
 }
 

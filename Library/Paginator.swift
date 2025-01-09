@@ -140,6 +140,23 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         nil
       }
     }
+
+    public func mapValues(_ transform: ([Value]) -> [Value]) -> Results {
+      switch self {
+      case .unloaded:
+        return .unloaded
+      case let .someLoaded(values, cursor, total, page):
+        return .someLoaded(values: transform(values), cursor: cursor, total: total, page: page)
+      case let .allLoaded(values, page):
+        return .allLoaded(values: transform(values), page: page)
+      case .empty:
+        return .empty
+      case let .error(error):
+        return .error(error)
+      case let .loading(previous):
+        return .loading(previous: previous.mapValues(transform))
+      }
+    }
   }
 
   @Published public var results: Results

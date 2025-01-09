@@ -2,6 +2,8 @@ import Combine
 import Foundation
 import KsApi
 import Library
+import Stripe
+import UIKit
 
 typealias PPOViewModelPaginator = Paginator<
   GraphAPI.FetchPledgedProjectsQuery.Data,
@@ -12,7 +14,7 @@ typealias PPOViewModelPaginator = Paginator<
 >
 
 protocol PPOViewModelInputs {
-  func viewDidAppear()
+  func viewDidAppear(authenticationContext: any STPAuthenticationContext)
   func refresh() async
   func loadMore() async
 
@@ -47,8 +49,6 @@ enum PPONavigationEvent: Equatable {
 
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
     switch (lhs, rhs) {
-    case let (.fix3DSChallenge(lhsSecret, _), .fix3DSChallenge(rhsSecret, _)):
-      return lhsSecret == rhsSecret
     case let (.survey(lhsUrl), .survey(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.backingDetails(lhsUrl), .backingDetails(rhsUrl)):
@@ -95,11 +95,23 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           return false
         }
       })
+      .combineLatest(self.filteredResultsSubject) { results, filteredIds in
+        // Filter out any values that are in the filtered set
+        results.mapValues { values in
+          values.filter { value in
+            !filteredIds.contains(value.card.id)
+          }
+        }
+      }
       .receive(on: RunLoop.main)
-      .assign(to: &self.$results)
+      .sink(receiveValue: { results in
+        self.results = results
+      })
+      .store(in: &self.cancellables)
 
     Publishers.Merge(
       self.viewDidAppearSubject
+        .map { _ in () }
         .first(),
       self.pullToRefreshSubject
     )
@@ -114,19 +126,27 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
+    // Handle 3DS authentication challenges
+    self.fix3DSChallengeSubject
+      .combineLatest(self.viewDidAppearSubject) { ($0.0, $0.1, $0.2, $1) }
+      .sink { [weak self] model, setupIntent, setLoading, authenticationContext in
+        guard let self else { return }
+        self.handle3DSChallenge(
+          model: model,
+          authenticationContext: authenticationContext,
+          setupIntent: setupIntent,
+          setLoading: setLoading
+        )
+      }
+      .store(in: &self.cancellables)
+
     // Route navigation events
-    Publishers.Merge8(
+    Publishers.Merge7(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
       self.fixPaymentMethodSubject
         .map { viewModel in
           PPONavigationEvent.fixPaymentMethod(projectId: viewModel.projectId, backingId: viewModel.backingId)
         },
-      self.fix3DSChallengeSubject.map { _, secret, setLoading in
-        PPONavigationEvent.fix3DSChallenge(
-          clientSecret: secret,
-          setLoading: setLoading
-        )
-      },
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
@@ -140,17 +160,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
-
-    // TODO: Send actual banner messages in response to card actions instead.
-    self.shouldSendSampleMessageSubject
-      .sink { [weak self] _ in
-//        self?.bannerViewModel = MessageBannerViewViewModel((
-//          .success,
-//          "Survey submitted! Need to change your address? Visit your backing details on our website."
-//        ))
-        self?.bannerViewModel = MessageBannerViewViewModel((.success, "Your payment has been processed."))
-      }
-      .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
@@ -220,16 +229,35 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         )
       }
       .store(in: &self.cancellables)
+
+    // Trigger haptic feedback when user taps
+    self.showBannerSubject
+      .dropFirst() // Skip initial nil value
+      .compactMap { $0 } // Only trigger on non-nil values
+      .sink { banner in
+        // Determine feedback type based on banner type
+        switch banner.type {
+        case .success, .info:
+          generateNotificationSuccessFeedback()
+        case .error:
+          generateNotificationWarningFeedback()
+        }
+      }
+      .store(in: &self.cancellables)
+
+    self.showBannerSubject
+      .map { MessageBannerViewViewModel($0) }
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] viewModel in
+        self?.bannerViewModel = viewModel
+      })
+      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
 
-  func shouldSendSampleMessage() {
-    self.shouldSendSampleMessageSubject.send(())
-  }
-
-  func viewDidAppear() {
-    self.viewDidAppearSubject.send(())
+  func viewDidAppear(authenticationContext: any STPAuthenticationContext) {
+    self.viewDidAppearSubject.send(authenticationContext)
   }
 
   func loadMore() async {
@@ -293,10 +321,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   private let paginator: PPOViewModelPaginator
 
-  private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
+  private let viewDidAppearSubject = PassthroughSubject<any STPAuthenticationContext, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let fix3DSChallengeSubject = PassthroughSubject<
@@ -308,13 +335,55 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-
+  private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
+  private let filteredResultsSubject = CurrentValueSubject<Set<UUID>, Never>([])
 
   private var cancellables: Set<AnyCancellable> = []
 
   private enum Constants {
     static let pageSize = 20
+  }
+
+  private func handle3DSChallenge(
+    model: PPOProjectCardModel,
+    authenticationContext: any STPAuthenticationContext,
+    setupIntent: String,
+    setLoading: @escaping (Bool) -> Void
+  ) {
+    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
+
+    // Set initial loading state
+    setLoading(true)
+
+    #if DEBUG
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] () in
+        guard let self else { return }
+
+        self.showBannerSubject.send((.success, "Your payment has been processed."))
+        self.filteredResultsSubject.value.insert(model.id)
+
+        setLoading(false)
+      }
+    #else
+      STPPaymentHandler.shared().confirmSetupIntent(
+        confirmParams,
+        with: authenticationContext,
+        completion: { [weak self] status, _, _ in
+          switch status {
+          case .succeeded:
+            self?.showBannerSubject.send((.success, "Your payment has been processed."))
+            self?.filteredResultsSubject.value.insert(model.id)
+            setLoading(false)
+          case .canceled:
+            setLoading(false)
+          case let .failed:
+            self?.showBannerSubject.send((.error, Strings.Something_went_wrong_please_try_again()))
+            setLoading(false)
+          }
+        }
+      )
+    #endif
   }
 }
 

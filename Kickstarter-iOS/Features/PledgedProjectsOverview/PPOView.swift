@@ -1,8 +1,10 @@
 import Library
+import Stripe
 import SwiftUI
 
 struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
+  var authenticationContext: any STPAuthenticationContext
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
@@ -76,11 +78,13 @@ struct PPOView: View {
       .listRowBackground(EmptyView())
       .listRowSeparator(PPOStyles.list.separator)
       .listRowInsets(PPOStyles.list.rowInsets)
+      .transition(.opacity.combined(with: .move(edge: .leading)))
     } onRefresh: {
       await self.viewModel.refresh()
     } onLoadMore: {
       await self.viewModel.loadMore()
     }
+    .animation(.easeOut(duration: 0.3), value: values.map { $0.card.id })
   }
 
   @ViewBuilder var loadingView: some View {
@@ -129,6 +133,7 @@ struct PPOView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .overlay(alignment: .bottom) {
           MessageBannerView(viewModel: self.$viewModel.bannerViewModel)
+            .padding(.horizontal.union(.bottom), CGFloat(PPOStyles.bannerPadding))
             .frame(
               minWidth: reader.size.width,
               idealWidth: reader.size.width,
@@ -142,8 +147,10 @@ struct PPOView: View {
             self.isBannerFocused = self.viewModel.bannerViewModel != nil
           }
         })
-        .onAppear(perform: { self.viewModel.viewDidAppear() })
-        .onChange(of: self.viewModel.results.total, perform: { value in
+        .onAppear(perform: {
+          self.viewModel.viewDidAppear(authenticationContext: self.authenticationContext)
+        })
+        .onChange(of: self.viewModel.results.values.count, perform: { value in
           self.onCountChange?(value)
         })
         .onReceive(self.viewModel.navigationEvents, perform: { event in
@@ -154,5 +161,13 @@ struct PPOView: View {
 }
 
 #Preview {
-  PPOView()
+  PPOView(authenticationContext: PreviewAuthenticationContext())
 }
+
+#if targetEnvironment(simulator)
+  fileprivate class PreviewAuthenticationContext: NSObject, STPAuthenticationContext {
+    func authenticationPresentingViewController() -> UIViewController {
+      fatalError()
+    }
+  }
+#endif

@@ -31,7 +31,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
       .map { _ in () }
 
     let currentUser = Publishers.Merge4(
-      self.viewWillAppearSubject,
+      self.viewWillAppearSubject.map { _ in () },
       userUpdated,
       sessionStarted,
       sessionEnded
