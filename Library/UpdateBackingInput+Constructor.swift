@@ -14,13 +14,17 @@ extension UpdateBackingInput {
       shippingRule: updateBackingData.shippingRule
     )
 
+    // Check if this is a fix errored pledge context. If it is, do not include fields that cannot
+    // be changed; amount, locationId, and rewardIds.
+    let isFixPledge = updateBackingData.pledgeContext == .fixPaymentMethod
+
     return UpdateBackingInput(
-      amount: updateBackingData.backing.isLatePledge ? nil : pledgeTotal,
+      amount: (updateBackingData.backing.isLatePledge || isFixPledge) ? nil : pledgeTotal,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: backingId,
-      locationId: locationId,
+      locationId: isFixPledge ? nil : locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
-      rewardIds: rewardIds,
+      rewardIds: isFixPledge ? nil : rewardIds,
       setupIntentClientSecret: updateBackingData.setupIntentClientSecret
     )
   }

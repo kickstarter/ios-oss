@@ -12,11 +12,11 @@ extension Reward {
     ).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
     hasAddOns: false,
     id: 1,
-    latePledgeAmount: 0,
+    latePledgeAmount: 10.00,
     limit: 100,
     limitPerBacker: nil,
     minimum: 10.00,
-    pledgeAmount: 0,
+    pledgeAmount: 10.00,
     postCampaignPledgingEnabled: false,
     remaining: 50,
     rewardsItems: [RewardsItem.template],
@@ -100,6 +100,8 @@ extension Reward {
   public static let postcards = Reward.template
     |> Reward.lens.id .~ 20
     |> Reward.lens.minimum .~ 6.0
+    |> Reward.lens.pledgeAmount .~ 0.0 // Default value if missing from server.
+    |> Reward.lens.latePledgeAmount .~ 0.0 // Default value if missing from server.
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 50
     |> Reward.lens.backersCount .~ 23
