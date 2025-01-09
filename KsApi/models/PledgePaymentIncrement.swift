@@ -27,9 +27,7 @@ public struct PledgePaymentIncrementAmount: Equatable, Decodable {
 }
 
 public enum PledgePaymentIncrementState: String, Decodable {
-  case cancelled
   case collected
   case errored
   case unattempted
-  case unknown
 }

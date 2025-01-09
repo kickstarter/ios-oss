@@ -21,6 +21,6 @@ extension PledgePaymentIncrement {
 
 extension PledgePaymentIncrementState {
   init(stateValue value: String) {
-    self = PledgePaymentIncrementState(rawValue: value) ?? .unknown
+    self = PledgePaymentIncrementState(rawValue: value) ?? .unattempted
   }
 }
