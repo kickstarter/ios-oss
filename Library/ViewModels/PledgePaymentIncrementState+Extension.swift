@@ -1,5 +1,5 @@
-import UIKit
 import KsApi
+import UIKit
 
 extension PledgePaymentIncrementState {
   // TODO: Add string translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
@@ -8,10 +8,10 @@ extension PledgePaymentIncrementState {
   public var description: String {
     switch self {
     case .collected: return "Collected"
-    case .unattempted: return "Unattemped"
+    case .unattempted: return "Scheduled"
     case .unknown: return "Unknown"
     case .cancelled: return "Cancelled"
-    case .errored: return "Errored"
+    case .errored: return "Errored payment"
     }
   }
 

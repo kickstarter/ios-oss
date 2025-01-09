@@ -387,7 +387,7 @@ public final class ManagePledgeViewModel:
       .combineLatest(with: backing)
       .filterWhenLatestFrom(pledgeOverTimeEnabled, satisfies: { $0 })
       .map { project, backing in
-        return (backing.paymentIncrements, project)
+        (backing.paymentIncrements, project)
       }
 
     self.showWebHelp = self.termsOfUseTappedSignal
