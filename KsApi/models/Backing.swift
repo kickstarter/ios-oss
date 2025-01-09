@@ -19,6 +19,7 @@ public struct Backing {
   public let projectCountry: String
   public let projectId: Int
   public let reward: Reward?
+  public let rewardsAmount: Double?
   public let rewardId: Int?
   public let sequence: Int
   public let shippingAmount: Double?
@@ -68,6 +69,7 @@ extension Backing: Decodable {
     case projectCountry = "project_country"
     case projectId = "project_id"
     case reward
+    case rewardsAmount = "rewards_amount" // Only available in GraphQL.
     case rewardId = "reward_id"
     case sequence
     case shippingAmount = "shipping_amount"
@@ -96,6 +98,7 @@ extension Backing: Decodable {
     self.projectCountry = try values.decode(String.self, forKey: .projectCountry)
     self.projectId = try values.decode(Int.self, forKey: .projectId)
     self.reward = try values.decodeIfPresent(Reward.self, forKey: .reward)
+    self.rewardsAmount = try? values.decodeIfPresent(Double.self, forKey: .rewardsAmount)
     self.rewardId = try values.decodeIfPresent(Int.self, forKey: .rewardId)
     self.sequence = try values.decode(Int.self, forKey: .sequence)
     self.shippingAmount = try values.decodeIfPresent(Double.self, forKey: .shippingAmount)
