@@ -66,6 +66,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(project.rewardData.addOns)
       XCTAssertEqual(project.sendMetaCapiEvents, false)
       XCTAssertEqual(project.watchesCount, 18)
+      XCTAssertEqual(project.pledgeOverTimeMinimumExplanation, "Available for pledges over $125")
       XCTAssertFalse(project.isPledgeOverTimeAllowed!)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
@@ -400,6 +401,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "minPledge": 23,
        "name":"FINAL GAMBLE Issue #1",
        "pid":1841936784,
+      "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
        "pledged":{
           "__typename":"Money",
           "amount":"3567.0",
