@@ -76,9 +76,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var plotPaymentScheduleViews = {
-    [self.plotPaymentScheduleViewController.view, self.plotPaymentScheduleSectionSeparator]
-  }()
+  private lazy var plotPaymentScheduleStackView = { UIStackView(frame: .zero) }()
 
   private lazy var pledgeDetailsSectionLabel: UILabel = {
     UILabel(frame: .zero)
@@ -199,6 +197,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
+
+    applyPlotPaymentScheduleStackViewStyle(self.plotPaymentScheduleStackView)
   }
 
   // MARK: - View model
@@ -343,9 +343,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
-    self.plotPaymentScheduleViewController.view.rac.hidden = self.viewModel.outputs
-      .plotPaymentScheduleViewHidden
-    self.plotPaymentScheduleSectionSeparator.rac.hidden = self.viewModel.outputs.plotPaymentScheduleViewHidden
+    self.plotPaymentScheduleStackView.rac.hidden = self.viewModel.outputs.plotPaymentScheduleViewHidden
 
     self.viewModel.outputs.configurePlotPaymentScheduleView
       .observeForUI()
@@ -408,6 +406,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.tableView
       |> \.refreshControl .~ self.refreshControl
+
+    self.plotPaymentScheduleStackView.addArrangedSubviews(
+      self.plotPaymentScheduleViewController.view,
+      self.plotPaymentScheduleSectionSeparator
+    )
   }
 
   private func configureHeaderView() {
@@ -420,7 +423,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
-      self.plotPaymentScheduleViews,
+      [self.plotPaymentScheduleStackView],
       self.pledgeDetailsSectionViews
     ]
     .flatMap { $0 }
@@ -671,6 +674,11 @@ extension ManagePledgeViewController: NoShippingPledgeViewControllerDelegate {
 private let pledgeDetailsSectionLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
+}
+
+private func applyPlotPaymentScheduleStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(4)
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
