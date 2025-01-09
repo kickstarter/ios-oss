@@ -479,7 +479,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         // Network request completes
         self.scheduler.advance()
 
-        controller.configurePlotPaymentScheduleForTesting(collapsed: false)
+        controller.plotPaymentScheduleToggle()
 
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))

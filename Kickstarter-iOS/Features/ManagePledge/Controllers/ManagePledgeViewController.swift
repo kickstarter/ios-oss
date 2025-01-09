@@ -349,11 +349,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePlotPaymentScheduleView
       .observeForUI()
-      .observeValues { [weak self] increments, project, collapsed in
+      .observeValues { [weak self] increments, project in
         self?.plotPaymentScheduleViewController.configure(
           with: increments,
-          project: project,
-          collapsed: collapsed
+          project: project
         )
       }
 
@@ -371,11 +370,13 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.configureWith(params)
   }
 
-  /// Configures the collapsed state of the `PledgeOverTimePaymentScheduleView` via the ViewModel for testing purposes.
-  /// This is specifically used in UI tests to ensure the component is tested in both collapsed and expanded states.
-  /// - Parameter collapsed: A Boolean value to set the desired collapsed state of the view.
-  public func configurePlotPaymentScheduleForTesting(collapsed: Bool) {
-    self.viewModel.inputs.configurePlotPaymentScheduleForTesting(collapsed: collapsed)
+  /// Toggles the collapsed state of the `PledgeOverTimePaymentScheduleViewController` via its `collapseToggle` function.
+  /// This is used specifically in UI tests to simulate user interaction and verify correct behavior
+  /// during transitions between collapsed and expanded states.
+  ///
+  /// This method directly interacts with the `PledgeOverTimePaymentScheduleViewController` to test collapse functionality.
+  public func plotPaymentScheduleToggle() {
+    self.plotPaymentScheduleViewController.collapseToggle()
   }
 
   // MARK: Functions

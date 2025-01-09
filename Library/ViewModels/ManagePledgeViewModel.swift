@@ -21,7 +21,6 @@ public enum ManagePledgeAlertAction: CaseIterable {
 public protocol ManagePledgeViewModelInputs {
   func beginRefresh()
   func configureWith(_ params: ManagePledgeViewParamConfigData)
-  func configurePlotPaymentScheduleForTesting(collapsed: Bool)
   func cancelPledgeDidFinish(with message: String)
   func fixButtonTapped()
   func menuButtonTapped()
@@ -56,7 +55,7 @@ public protocol ManagePledgeViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
-  var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project, Bool), Never> { get }
+  var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never> { get }
   var plotPaymentScheduleViewHidden: Signal<Bool, Never> { get }
 }
 
@@ -382,19 +381,14 @@ public final class ManagePledgeViewModel:
       isPledgeOverTime(with: $0)
     }
 
-    let collapsedState = Signal.merge(
-      pledgeOverTimeEnabled.mapConst(true),
-      self.plotPaymentScheduleCollapsedProperty.signal
-    )
-
     self.plotPaymentScheduleViewHidden = pledgeOverTimeEnabled.negate()
 
-    self.configurePlotPaymentScheduleView = Signal.combineLatest(project, collapsedState)
+    self.configurePlotPaymentScheduleView = project
       .filterWhenLatestFrom(pledgeOverTimeEnabled, satisfies: { $0 })
-      .map { project, collapsed in
+      .map { project in
         let increments = mockPledgePaymentIncrement()
 
-        return (increments, project, collapsed)
+        return (increments, project)
       }
 
     self.showWebHelp = self.termsOfUseTappedSignal
@@ -409,11 +403,6 @@ public final class ManagePledgeViewModel:
     = Signal<ManagePledgeViewParamConfigData, Never>.pipe()
   public func configureWith(_ params: ManagePledgeViewParamConfigData) {
     self.configureWithProjectOrParamObserver.send(value: params)
-  }
-
-  private let plotPaymentScheduleCollapsedProperty = MutableProperty<Bool>(true)
-  public func configurePlotPaymentScheduleForTesting(collapsed: Bool) {
-    self.plotPaymentScheduleCollapsedProperty.value = collapsed
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -457,7 +446,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
-  public let configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project, Bool), Never>
+  public let configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never>
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>

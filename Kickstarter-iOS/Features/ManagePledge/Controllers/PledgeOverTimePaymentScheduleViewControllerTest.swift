@@ -29,7 +29,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 80
 
-        controller.configure(with: increments, project: project, collapsed: true)
+        controller.configure(with: increments, project: project)
 
         self.scheduler.advance(by: .seconds(1))
 
@@ -48,7 +48,8 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 200
 
-        controller.configure(with: increments, project: project, collapsed: false)
+        controller.configure(with: increments, project: project)
+        controller.collapseToggle()
 
         self.scheduler.advance(by: .seconds(1))
 

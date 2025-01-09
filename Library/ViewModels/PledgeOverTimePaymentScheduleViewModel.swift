@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol PledgeOverTimePaymentScheduleViewModelInputs {
-  func configure(with increments: [PledgePaymentIncrement], project: Project, collapsed: Bool)
+  func configure(with increments: [PledgePaymentIncrement], project: Project)
   func collapseToggle()
   func viewDidLoad()
 }
@@ -53,12 +53,11 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
   }
 
   private let configureWithProperty = MutableProperty<([PledgePaymentIncrement], Project?)>(([], nil))
-  public func configure(with increments: [PledgePaymentIncrement], project: Project, collapsed: Bool = true) {
+  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
     self.configureWithProperty.value = (increments, project)
-    self.collapsedProperty.value = collapsed
   }
 
-  private let collapsedProperty = MutableProperty<Bool>(false)
+  private let collapsedProperty = MutableProperty<Bool>(true)
   public func collapseToggle() {
     self.collapsedProperty.value = !self.collapsedProperty.value
   }

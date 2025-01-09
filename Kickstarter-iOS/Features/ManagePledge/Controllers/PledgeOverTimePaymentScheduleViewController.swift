@@ -78,12 +78,12 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     ])
   }
 
-  public func configure(with increments: [PledgePaymentIncrement], project: Project, collapsed: Bool = true) {
-    self.viewModel.inputs.configure(with: increments, project: project, collapsed: collapsed)
+  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
+    self.viewModel.inputs.configure(with: increments, project: project)
   }
 
   private func setupGestureRecognizers() {
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.headerTapped))
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.collapseToggle))
     self.headerStackView.addGestureRecognizer(tapGestureRecognizer)
 
     self.termsOfUseButton.addTarget(
@@ -144,7 +144,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
 
   // MARK: - Actions
 
-  @objc public func headerTapped() {
+  @objc public func collapseToggle() {
     self.viewModel.inputs.collapseToggle()
   }
 
