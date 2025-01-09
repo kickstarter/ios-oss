@@ -20,18 +20,18 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   init() {
     let sessionStarted = NotificationCenter.default
       .publisher(for: .ksr_sessionStarted)
-      .map { _ in () }
+      .withEmptyValues()
 
     let sessionEnded = NotificationCenter.default
       .publisher(for: .ksr_sessionEnded)
-      .map { _ in () }
+      .withEmptyValues()
 
     let userUpdated = NotificationCenter.default
       .publisher(for: .ksr_userUpdated)
-      .map { _ in () }
+      .withEmptyValues()
 
     let currentUser = Publishers.Merge4(
-      self.viewWillAppearSubject.map { _ in () },
+      self.viewWillAppearSubject.withEmptyValues(),
       userUpdated,
       sessionStarted,
       sessionEnded

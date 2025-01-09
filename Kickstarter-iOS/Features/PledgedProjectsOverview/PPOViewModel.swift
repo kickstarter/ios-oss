@@ -111,7 +111,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     Publishers.Merge(
       self.viewDidAppearSubject
-        .map { _ in () }
+        .withEmptyValues()
         .first(),
       self.pullToRefreshSubject
     )
