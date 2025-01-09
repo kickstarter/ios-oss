@@ -18,6 +18,9 @@ fragment BackingFragment on Backing {
   location {
     ...LocationFragment
   }
+  paymentIncrements {
+    ...PaymentIncrementFragment
+  }
   pledgedOn
   project {
     ...ProjectFragment
