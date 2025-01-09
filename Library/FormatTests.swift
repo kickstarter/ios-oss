@@ -357,6 +357,113 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testCurrencyMoneyFragment_USD() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_USDCents() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.33", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$1,000.33")
+    }
+  }
+
+  func testCurrencyMoneyFragment_USD_MoreThanTwoDecimals() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.987", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$1,000.99", "Should round to 2 decimal places")
+
+      let fragmentRoundDown = GraphAPI.MoneyFragment(amount: "1000.994", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragmentRoundDown), "$1,000.99", "Should round down")
+
+      let fragmentRoundUp = GraphAPI.MoneyFragment(amount: "1000.995", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragmentRoundUp), "$1,001.00", "Should round up")
+    }
+  }
+
+  func testCurrencyMoneyFragment_EUR() {
+    withEnvironment(locale: Locale(identifier: "de_DE")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .eur, symbol: "€")
+      XCTAssertEqual(Format.currency(fragment), "1.000,00 €")
+    }
+  }
+
+  func testCurrencyMoneyFragment_EUREurocents() {
+    withEnvironment(locale: Locale(identifier: "de_DE")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.33", currency: .eur, symbol: "€")
+      XCTAssertEqual(Format.currency(fragment), "1.000,33 €")
+    }
+  }
+
+  func testCurrencyMoneyFragment_EuroInUS() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .eur, symbol: "€")
+      XCTAssertEqual(Format.currency(fragment), "€1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_GBP() {
+    withEnvironment(locale: Locale(identifier: "en_GB")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .gbp, symbol: "£")
+      XCTAssertEqual(Format.currency(fragment), "£1,000.00")
+    }
+  }
+
+  func testCurrencyMoneyFragment_GBPPence() {
+    withEnvironment(locale: Locale(identifier: "en_GB")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.33", currency: .gbp, symbol: "£")
+      XCTAssertEqual(Format.currency(fragment), "£1,000.33")
+    }
+  }
+
+  func testCurrencyMoneyFragment_JPY() {
+    withEnvironment(locale: Locale(identifier: "ja_JP")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: .jpy, symbol: "¥")
+      XCTAssertEqual(Format.currency(fragment), "¥1,000")
+    }
+  }
+
+  func testCurrencyMoneyFragment_JPY_MoreThanTwoDecimals() {
+    withEnvironment(locale: Locale(identifier: "ja_JP")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "1000.987", currency: .jpy, symbol: "¥")
+      XCTAssertEqual(Format.currency(fragment), "¥1,001", "JPY should round to whole numbers")
+
+      let fragmentRoundDown = GraphAPI.MoneyFragment(amount: "1000.499", currency: .jpy, symbol: "¥")
+      XCTAssertEqual(Format.currency(fragmentRoundDown), "¥1,000", "Should round down")
+
+      // for some reason the exact value of 1000.5 rounds down and not up
+      let fragmentRoundUp = GraphAPI.MoneyFragment(amount: "1000.501", currency: .jpy, symbol: "¥")
+      XCTAssertEqual(Format.currency(fragmentRoundUp), "¥1,001", "Should round up")
+    }
+  }
+
+  func testCurrencyMoneyFragment_InvalidAmount() {
+    let fragment = GraphAPI.MoneyFragment(amount: "invalid", currency: .usd, symbol: "$")
+    XCTAssertNil(Format.currency(fragment))
+  }
+
+  func testCurrencyMoneyFragment_MissingSymbol() {
+    let fragment = GraphAPI.MoneyFragment(amount: "1000.00", currency: nil, symbol: nil)
+    XCTAssertNil(Format.currency(fragment))
+  }
+
+  func testCurrencyMoneyFragment_SmallAmount() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "10.50", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$10.50")
+    }
+  }
+
+  func testCurrencyMoneyFragment_ZeroAmount() {
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      let fragment = GraphAPI.MoneyFragment(amount: "0.00", currency: .usd, symbol: "$")
+      XCTAssertEqual(Format.currency(fragment), "$0.00")
+    }
+  }
+
   func testPlusSign() {
     withEnvironment(language: .de) {
       XCTAssertEqual(Format.attributedPlusSign().string, "+")
