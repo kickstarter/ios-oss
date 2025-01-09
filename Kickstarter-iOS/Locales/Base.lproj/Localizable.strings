@@ -704,6 +704,7 @@
 "The_backer_canceled_their_pledge_for_this_project" = "The backer canceled their pledge for this project.";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "The creator canceled this project, so your payment method was never charged.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "The email associated with this Facebook account is already registered to another Kickstarter user.";
+"The_first_charge_will_occur_when_the_project_ends_successfully" = "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.";
 "The_live_stream_failed_to_connect" = "The live stream failed to connect";
 "The_live_stream_was_interrupted" = "The live stream was interrupted";
 "The_live_stream_will_start_soon" = "The live stream will start soon";

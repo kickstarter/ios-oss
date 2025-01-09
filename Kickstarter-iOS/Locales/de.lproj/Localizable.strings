@@ -704,6 +704,7 @@
 "The_backer_canceled_their_pledge_for_this_project" = "Der Unterstützer hat den Finanzierungsbeitrag zurückgezogen.";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "Der Projektgründer hat das Projekt abgebrochen. Daher wurde deine Zahlungsmethode nicht belastet.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
+"The_first_charge_will_occur_when_the_project_ends_successfully" = "Die erste Rate wird nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen.";
 "The_live_stream_failed_to_connect" = "Keine Verbindungn zu Live-Stream";
 "The_live_stream_was_interrupted" = "Live-Stream wurde unterbrochen";
 "The_live_stream_will_start_soon" = "Live-Stream started in Kürze";

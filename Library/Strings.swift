@@ -11500,6 +11500,23 @@ catch your eye?"
     )
   }
   /**
+   "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+
+   - **en**: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+   - **de**: "Die erste Rate wird nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen."
+   - **es**: "El primer pago se hará cuando el proyecto finalice con éxito, luego cada 2 semanas hasta el monto total de la contribución. Cuando se selecciona esta opción, no se pueden realizar más modificaciones en tu contribución."
+   - **fr**: "Le premier prélèvement interviendra après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable."
+   - **ja**: "最初の請求はプロジェクトが成功に終わった時点で行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
+  */
+  public static func The_first_charge_will_occur_when_the_project_ends_successfully() -> String {
+    return localizedString(
+      key: "The_first_charge_will_occur_when_the_project_ends_successfully",
+      defaultValue: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "The live stream failed to connect"
 
    - **en**: "The live stream failed to connect"

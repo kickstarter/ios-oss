@@ -399,8 +399,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    // TODO: Update to `all` languages when the string translations task is finished. [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: user,
@@ -465,8 +464,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    // TODO: Update to `all` languages when the string translations task is finished. [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: user,

@@ -704,6 +704,7 @@
 "The_backer_canceled_their_pledge_for_this_project" = "Le contributeur a annulé son engagement.";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "Ce projet a été annulé par le créateur, donc votre moyen de paiement n'a pas été débité.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter.";
+"The_first_charge_will_occur_when_the_project_ends_successfully" = "Le premier prélèvement interviendra après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable.";
 "The_live_stream_failed_to_connect" = "Échec de connexion à la diffusion en direct";
 "The_live_stream_was_interrupted" = "Diffusion en direct interrompue";
 "The_live_stream_will_start_soon" = "La diffusion en direct va bientôt commencer";
