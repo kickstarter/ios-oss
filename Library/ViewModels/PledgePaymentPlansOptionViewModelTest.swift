@@ -29,9 +29,11 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     .You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description()
   private let pledgeOverTimeFullSubtitle =
     """
-    \(Strings
-    .You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description())
-    
+    \(
+      Strings
+        .You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description()
+    )
+
     \(Strings.The_first_charge_will_occur_when_the_project_ends_successfully())
     """
   private let selectedImageName = "icon-payment-method-selected"
