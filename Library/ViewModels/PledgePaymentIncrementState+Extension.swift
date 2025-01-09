@@ -7,8 +7,8 @@ extension PledgePaymentIncrementState {
   /// Returns the textual description for each `PledgePaymentIncrementState`.
   public var description: String {
     switch self {
-    case .collected: return "Collected"
-    case .unattempted: return "Scheduled"
+    case .collected: return Strings.project_view_pledge_status_collected()
+    case .unattempted: return Strings.Scheduled()
     case .unknown: return "Unknown"
     case .cancelled: return "Cancelled"
     case .errored: return "Errored payment"
