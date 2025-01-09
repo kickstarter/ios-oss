@@ -64,6 +64,7 @@ fragment ProjectFragment on Project {
   minPledge
   name
   pid
+  pledgeOverTimeMinimumExplanation
   pledged {
     ...MoneyFragment
   }

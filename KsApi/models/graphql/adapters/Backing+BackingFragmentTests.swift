@@ -701,6 +701,7 @@ private func backingDictionary() -> [String: Any] {
           "MASTERCARD",
           "AMEX"
       ],
+      "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
       "backersCount": 135,
       "backing": {
         "__typename": "Backing",
@@ -1005,6 +1006,7 @@ private func backingDictionary() -> [String: Any] {
           "__typename": "ProjectBackerFriendsConnection",
           "nodes": []
         },
+          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
         "isWatched": false
       },
       "remainingQuantity": null,

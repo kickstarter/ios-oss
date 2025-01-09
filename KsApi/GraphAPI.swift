@@ -17829,6 +17829,7 @@ public enum GraphAPI {
         minPledge
         name
         pid
+        pledgeOverTimeMinimumExplanation
         pledged {
           __typename
           ...MoneyFragment
@@ -17904,6 +17905,7 @@ public enum GraphAPI {
         GraphQLField("minPledge", type: .nonNull(.scalar(Int.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("posts", type: .object(Post.selections)),
@@ -17928,8 +17930,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -18227,6 +18229,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "pid")
+      }
+    }
+
+    /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+    public var pledgeOverTimeMinimumExplanation: String? {
+      get {
+        return resultMap["pledgeOverTimeMinimumExplanation"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeMinimumExplanation")
       }
     }
 
