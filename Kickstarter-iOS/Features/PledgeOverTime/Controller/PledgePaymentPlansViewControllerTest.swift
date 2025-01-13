@@ -124,7 +124,7 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
     increments.append(PledgePaymentIncrement(
       amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
       scheduledCollection: timeStamp,
-      state: "unattempted"
+      state: .unattempted
     ))
   }
 
