@@ -195,7 +195,8 @@ private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusL
   let date = Format.date(secondsInUTC: firstPaymentIncrement.scheduledCollection, template: "MMMM d, yyyy")
   let paymentAmount = Format.currency(
     firstPaymentIncrement.amount.amount,
-    country: data.projectCurrencyCountry
+    country: data.projectCurrencyCountry,
+    maximumFractionDigits: 2
   )
 
   let font = UIFont.ksr_subhead()

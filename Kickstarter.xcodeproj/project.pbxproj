@@ -279,7 +279,6 @@
 		33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */; };
 		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
 		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
-		33C9F0BE2CF5104C00B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33F04B262D28A8090078AED1 /* PledgeOverTimeBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
@@ -6745,8 +6744,8 @@
 				336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */,
 				338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */,
 				3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */,
-				33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */,
 				339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */,
+				33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */,
 				E171A57B2D14912500AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPI.swift */,
 				E171A57D2D14985500AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */,
 				E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */,

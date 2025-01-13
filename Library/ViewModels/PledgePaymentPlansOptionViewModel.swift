@@ -220,7 +220,8 @@ extension PledgePaymentIncrementFormatted {
     self.amount = Format.currency(
       increment.amount.amount,
       country: projectCurrencyCountry,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      maximumFractionDigits: 2
     )
     self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
   }
