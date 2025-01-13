@@ -288,7 +288,10 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationFixPaymentMethod() {
     self.verifyNavigationEvent(
       { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .fixPaymentMethod
+      event: .fixPaymentMethod(
+        projectId: PPOProjectCardModel.fixPaymentTemplate.projectId,
+        backingId: PPOProjectCardModel.fixPaymentTemplate.backingId
+      )
     )
   }
 
@@ -384,7 +387,7 @@ class PPOViewModelTests: XCTestCase {
       "__typename": "PledgeProjectOverviewItem",
       "backing": {
         "__typename": "Backing",
-        "id": "\(UUID().uuidString)",
+        "id": "\(encodeToBase64("Backing-43"))",
         "amount": {
           "__typename": "Money",
           "amount": "1.0",
@@ -393,7 +396,6 @@ class PPOViewModelTests: XCTestCase {
         },
         "deliveryAddress": null,
         "backingDetailsPageRoute": "fake-backings-route",
-        "id": "\(UUID().uuidString)",
         "project": {
           "__typename": "Project",
           "creator": {

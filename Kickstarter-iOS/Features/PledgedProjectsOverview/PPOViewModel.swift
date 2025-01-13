@@ -33,7 +33,7 @@ protocol PPOViewModelOutputs {
 
 enum PPONavigationEvent: Equatable {
   case backedProjects
-  case fixPaymentMethod
+  case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge
   case survey(url: String)
   case backingDetails(url: String)
@@ -92,7 +92,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Route navigation events
     Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.fixPaymentMethodSubject.map { _ in PPONavigationEvent.fixPaymentMethod },
+      self.fixPaymentMethodSubject
+        .map { viewModel in
+          PPONavigationEvent.fixPaymentMethod(projectId: viewModel.projectId, backingId: viewModel.backingId)
+        },
       self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject

@@ -17,13 +17,14 @@ extension Backing {
     paymentIncrements: [.init(
       amount: .init(amount: 10, currency: "USD"),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
-      state: "collected"
+      state: .collected
     )],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
     projectId: 1,
     reward: .template,
+    rewardsAmount: nil,
     rewardId: 1,
     sequence: 10,
     shippingAmount: 2,

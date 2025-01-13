@@ -41,6 +41,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertNotNil(backing.reward?.isAvailable)
       XCTAssertNotNil(backing.reward?.latePledgeAmount)
       XCTAssertNotNil(backing.reward?.pledgeAmount)
+      XCTAssertEqual(backing.rewardsAmount, 75)
       XCTAssertEqual(backing.sequence, 148)
       XCTAssertEqual(backing.shippingAmount, 10.0)
       XCTAssertEqual(backing.status, .pledged)
@@ -701,6 +702,7 @@ private func backingDictionary() -> [String: Any] {
           "MASTERCARD",
           "AMEX"
       ],
+      "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
       "backersCount": 135,
       "backing": {
         "__typename": "Backing",
@@ -1005,6 +1007,7 @@ private func backingDictionary() -> [String: Any] {
           "__typename": "ProjectBackerFriendsConnection",
           "nodes": []
         },
+          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
         "isWatched": false
       },
       "remainingQuantity": null,
@@ -1074,6 +1077,12 @@ private func backingDictionary() -> [String: Any] {
       ],
       "startsAt": null
     },
+    "rewardsAmount": {
+      "__typename": "Money",
+      "amount": "75.0",
+      "currency": "USD",
+      "symbol": "$"
+      },
     "sequence": 148,
     "shippingAmount": {
       "__typename": "Money",

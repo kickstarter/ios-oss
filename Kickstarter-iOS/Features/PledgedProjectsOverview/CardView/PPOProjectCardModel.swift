@@ -9,12 +9,13 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let image: Kingfisher.Source
   public let projectName: String
   public let projectId: Int
-  public let pledge: GraphAPI.MoneyFragment
+  public let pledge: String
   public let creatorName: String
   public let address: String?
   public let actions: (Action, Action?)
   public let tierType: TierType
   public let backingDetailsUrl: String
+  public let backingId: Int
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   public func hash(into hasher: inout Hasher) {
@@ -223,7 +224,7 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: """
       Firsty Lasty
@@ -234,6 +235,7 @@ extension PPOProjectCardModel {
     actions: (.confirmAddress, .editAddress),
     tierType: .confirmAddress,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -246,12 +248,13 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -268,12 +271,13 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.fixPayment, nil),
     tierType: .fixPayment,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -290,12 +294,13 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.authenticateCard, nil),
     tierType: .authenticateCard,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -307,12 +312,13 @@ extension PPOProjectCardModel {
     image: .network(URL(string: "https:///")!),
     projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
     projectId: 12_345,
-    pledge: .init(amount: "50.00", currency: .usd, symbol: "$"),
+    pledge: "$50.00",
     creatorName: "rokaplay truncate if longer than",
     address: nil,
     actions: (.completeSurvey, nil),
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
+    backingId: 47,
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -365,7 +371,8 @@ extension PPOProjectCardModel {
 
     let projectName = ppoProject?.name
     let projectId = ppoProject?.pid
-    let pledge = backing?.amount.fragments.moneyFragment
+    let pledgeFragment = backing?.amount.fragments.moneyFragment
+    let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
     let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
@@ -394,6 +401,7 @@ extension PPOProjectCardModel {
     // For v1 of PPO we're just using the same url for surveys and the backing details page.
     // This specifically links to the survey tab.
     let backingDetailsUrl = backing?.backingDetailsPageRoute
+    let backingId = backing.flatMap { decompose(id: $0.id) }
 
     switch card.tierType {
     case PPOProjectCardModelConstants.paymentFailed:
@@ -418,20 +426,21 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    if let image, let projectName, let projectId, let pledge, let creatorName,
-       let projectAnalyticsFragment, let backingDetailsUrl {
+    if let image, let projectName, let projectId, let formattedPledge, let creatorName,
+       let projectAnalyticsFragment, let backingDetailsUrl, let backingId {
       self.init(
         isUnread: true,
         alerts: alerts,
         image: image,
         projectName: projectName,
         projectId: projectId,
-        pledge: pledge,
+        pledge: formattedPledge,
         creatorName: creatorName,
         address: address,
         actions: (primaryAction, secondaryAction),
         tierType: tierType,
         backingDetailsUrl: backingDetailsUrl,
+        backingId: backingId,
         projectAnalytics: projectAnalyticsFragment
       )
     } else {

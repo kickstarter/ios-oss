@@ -109,17 +109,12 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
         // even when the API request fails or Pledge Over Time is disabled.
         guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
 
-        // TODO: Temporary placeholder to simulate the ineligible state for plans.
-        // The `thresholdAmount` will be retrieved from the API in the future.
-        // See [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838) for implementation details.
-        let thresholdAmount = 125.0
         let defaultPlan = PledgePaymentPlansType.pledgeInFull
 
         return PledgePaymentPlansAndSelectionData(
           withPaymentPlanFragment: paymentPlan,
           selectedPlan: defaultPlan,
-          project: project,
-          thresholdAmount: thresholdAmount
+          project: project
         )
       }
 
@@ -131,8 +126,7 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
           selectedPlan: selectedPlan,
           increments: data.paymentIncrements,
           ineligible: data.ineligible,
-          project: data.project,
-          thresholdAmount: data.thresholdAmount
+          project: data.project
         )
       }
 

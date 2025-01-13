@@ -16,6 +16,7 @@ public struct Project {
   public var id: Int
   public var location: Location
   public var name: String
+  public var pledgeOverTimeMinimumExplanation: String
   public var personalization: Personalization
   public var photo: Photo
   public var isInPostCampaignPledgingPhase: Bool
@@ -281,6 +282,7 @@ extension Project: Decodable {
     case location
     case name
     case photo
+    case pledgeOverTimeMinimumExplanation = "pledge_over_time_minimum_explanation"
     case isInPostCampaignPledgingPhase = "is_in_post_campaign_pledging_phase"
     case postCampaignPledgingEnabled = "post_campaign_pledging_enabled"
     case prelaunchActivated = "prelaunch_activated"
@@ -313,6 +315,10 @@ extension Project: Decodable {
     self.photo = try values.decode(Photo.self, forKey: .photo)
     self.isInPostCampaignPledgingPhase =
       try values.decodeIfPresent(Bool.self, forKey: .isInPostCampaignPledgingPhase) ?? false
+    self.pledgeOverTimeMinimumExplanation = try values.decodeIfPresent(
+      String.self,
+      forKey: .pledgeOverTimeMinimumExplanation
+    ) ?? ""
     self.postCampaignPledgingEnabled =
       try values.decodeIfPresent(Bool.self, forKey: .postCampaignPledgingEnabled) ?? false
     self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)

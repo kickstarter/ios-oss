@@ -15,6 +15,12 @@ extension PledgePaymentIncrement {
 
     self.amount = PledgePaymentIncrementAmount(amount: amountAsDouble, currency: currency)
     self.scheduledCollection = intervalAsTime
-    self.state = fragment.state
+    self.state = PledgePaymentIncrementState(stateValue: fragment.state)
+  }
+}
+
+extension PledgePaymentIncrementState {
+  init(stateValue value: String) {
+    self = PledgePaymentIncrementState(rawValue: value) ?? .unattempted
   }
 }

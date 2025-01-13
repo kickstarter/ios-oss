@@ -240,8 +240,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         selectedPlan: .pledgeInFull,
         increments: mockPaymentIncrements(),
         ineligible: false,
-        project: project,
-        thresholdAmount: 125.0 // The value is arbitrary and does not impact this test case logic.
+        project: project
       )
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false))
@@ -268,8 +267,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         selectedPlan: .pledgeOverTime,
         increments: mockPaymentIncrements(),
         ineligible: false,
-        project: project,
-        thresholdAmount: 125.0 // The value is arbitrary and does not impact this test case logic.
+        project: project
       )
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false))
@@ -279,7 +277,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       self.confirmationLabelHidden.assertValues([false])
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.pledgeOverTimeStackViewHidden.assertValue(false)
-      self.pledgeOverTimeChargesText.assertValue("charged as 2 payments")
+      self.pledgeOverTimeChargesText.assertValue("charged as 4 payments")
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, the first charge of $250 will be collected on March 28, 2019."
       ])

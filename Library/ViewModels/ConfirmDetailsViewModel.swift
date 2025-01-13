@@ -320,7 +320,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           selectedQuantities: selectedQuantities,
           projectCountry: project.country,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
-          shipping: shippingSummaryData
+          shipping: shippingSummaryData,
+          useLatePledgeCosts: true // Confirm details is only seen in the late pledge flow.
         ),
         bonusOrPledgeUpdatedAmount,
         pledgeTotalSummaryData

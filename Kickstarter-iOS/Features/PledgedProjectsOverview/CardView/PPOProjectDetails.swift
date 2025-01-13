@@ -7,7 +7,7 @@ import SwiftUI
 struct PPOProjectDetails: View {
   let image: Source?
   let title: String?
-  let pledge: GraphAPI.MoneyFragment
+  let pledge: String
   let leadingColumnWidth: CGFloat
 
   var body: some View {
@@ -37,17 +37,15 @@ struct PPOProjectDetails: View {
             )
             .lineLimit(Constants.titleLineLimit)
         }
-        if let symbol = pledge.symbol, let amount = pledge.amount {
-          Text(Strings.Pledge_amount_pledged(pledge_amount: "\(symbol)\(amount)"))
-            .font(Font(PPOStyles.subtitle.font))
-            .background(Color(PPOStyles.background))
-            .foregroundStyle(Color(PPOStyles.subtitle.color))
-            .frame(
-              maxWidth: Constants.textMaxWidth,
-              alignment: Constants.textAlignment
-            )
-            .lineLimit(Constants.subtitleLineLimit)
-        }
+        Text(Strings.Pledge_amount_pledged(pledge_amount: self.pledge))
+          .font(Font(PPOStyles.subtitle.font))
+          .background(Color(PPOStyles.background))
+          .foregroundStyle(Color(PPOStyles.subtitle.color))
+          .frame(
+            maxWidth: Constants.textMaxWidth,
+            alignment: Constants.textAlignment
+          )
+          .lineLimit(Constants.subtitleLineLimit)
       }
     }
     .fixedSize(horizontal: false, vertical: true)
@@ -75,7 +73,7 @@ struct PPOProjectDetails: View {
       PPOProjectDetails(
         image: .network(URL(string: "http:///")!),
         title: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
-        pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
+        pledge: "$50.00",
         leadingColumnWidth: geometry.size.width / 4
       )
     })
@@ -83,7 +81,7 @@ struct PPOProjectDetails: View {
       PPOProjectDetails(
         image: .network(URL(string: "http:///")!),
         title: "One line",
-        pledge: GraphAPI.MoneyFragment(amount: "50.00", currency: .usd, symbol: "$"),
+        pledge: "$50.00",
         leadingColumnWidth: geometry.size.width / 4
       )
     })

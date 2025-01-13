@@ -64,7 +64,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.openSurvey(url)
       case let .contactCreator(messageSubject):
         self?.messageCreator(messageSubject)
-      case .confirmAddress, .fix3DSChallenge, .fixPaymentMethod:
+      case let .fixPaymentMethod(projectId, backingId):
+        self?.fixPayment(projectId: projectId, backingId: backingId)
+      case .confirmAddress, .fix3DSChallenge:
         // TODO: MBL-1451
         break
       }
@@ -106,6 +108,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - Navigation Helpers
+
+  private func fixPayment(projectId: Int, backingId: Int) {
+    let data = (projectParam: Param.id(projectId), backingParam: Param.id(backingId))
+    let vc = ManagePledgeViewController.controller(with: data, delegate: nil)
+    self.present(vc, animated: true)
+  }
 
   private func openSurvey(_ url: String) {
     let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
