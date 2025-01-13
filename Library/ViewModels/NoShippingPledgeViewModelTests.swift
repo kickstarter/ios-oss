@@ -268,51 +268,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateContext() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .update
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.title.assertValues(["Update pledge"])
-
-      self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
-
-      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
-
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.update])
-
-      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
-      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
-
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
-    }
-  }
-
   func testUpdateRewardContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -1935,7 +1890,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateBacking_Success() {
+  func testChangePaymentMethod_Success() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
 
@@ -1977,43 +1932,118 @@ final class NoShippingPledgeViewModelTests: TestCase {
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .discovery,
-        context: .update
+        context: .changePaymentMethod
       )
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.processingViewIsHidden.assertDidNotEmitValue()
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([false])
 
+      // TODO: remove when no shipping is cleaned up
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false])
       self.processingViewIsHidden.assertDidNotEmitValue()
 
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.vm.inputs.creditCardSelected(with: .savedCreditCard("123", "pm_fake"))
+
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
       self.processingViewIsHidden.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false])
+      self.processingViewIsHidden.assertValues([false])
+
+      self.scheduler.run()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false, true])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
+  }
+
+  func testUpdateReward_Success() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        bonusSupport: 25.0,
+        selectedShippingRule: shippingRule,
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .discovery,
+        context: .updateReward
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([true])
+
+      // TODO: remove when no shipping is cleaned up
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 0, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true])
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false])
       self.processingViewIsHidden.assertValues([false])
 
