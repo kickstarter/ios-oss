@@ -9,22 +9,19 @@ public struct PledgePaymentPlanOptionData: Equatable {
   // TODO: replece with API model in [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
   public var paymentIncrements: [PledgePaymentIncrement]
   public var project: Project
-  public var thresholdAmount: Double
 
   public init(
     ineligible: Bool,
     type: PledgePaymentPlansType,
     selectedType: PledgePaymentPlansType,
     paymentIncrements: [PledgePaymentIncrement],
-    project: Project,
-    thresholdAmount: Double
+    project: Project
   ) {
     self.ineligible = ineligible
     self.type = type
     self.selectedType = selectedType
     self.paymentIncrements = paymentIncrements
     self.project = project
-    self.thresholdAmount = thresholdAmount
   }
 }
 
