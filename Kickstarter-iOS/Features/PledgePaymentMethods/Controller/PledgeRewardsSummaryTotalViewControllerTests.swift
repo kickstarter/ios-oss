@@ -114,8 +114,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
             selectedPlan: .pledgeInFull,
             increments: paymentIncrements,
             ineligible: false,
-            project: project,
-            thresholdAmount: 125.0
+            project: project
           )
 
           controller.configureWith(pledgeOverTimeData: plotData)
@@ -161,8 +160,7 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
             selectedPlan: .pledgeOverTime,
             increments: paymentIncrements,
             ineligible: false,
-            project: project,
-            thresholdAmount: 125.0
+            project: project
           )
 
           controller.configureWith(pledgeOverTimeData: plotData)

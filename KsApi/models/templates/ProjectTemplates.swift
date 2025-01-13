@@ -36,6 +36,7 @@ extension Project {
     id: 1,
     location: .template,
     name: "The Project",
+    pledgeOverTimeMinimumExplanation: "Available for pledges over $125",
     personalization: Project.Personalization(
       backing: nil,
       friends: nil,

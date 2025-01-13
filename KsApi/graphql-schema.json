@@ -5033,15 +5033,31 @@
             "deprecationReason": null
           },
           {
-            "name": "amountCollectedForShipping",
-            "description": "The total amount collected for shipping during pledge redemption",
+            "name": "amountCollectedForPledgeManagerAddons",
+            "description": "The total amount collected for add-ons in the pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amountCollectedForShipping",
+            "description": "The total amount collected for shipping in the pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -5234,7 +5250,7 @@
           },
           {
             "name": "backersRemainingForPledgeRedemption",
-            "description": "The number of backers who have yet to go through pledge redemption",
+            "description": "The number of backers who have yet to go through the pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -6754,6 +6770,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgeOverTimeMinimumExplanation",
+            "description": "The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

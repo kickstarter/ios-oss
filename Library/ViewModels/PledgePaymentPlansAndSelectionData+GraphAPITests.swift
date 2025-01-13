@@ -39,8 +39,7 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
     let selectionData = PledgePaymentPlansAndSelectionData(
       withPaymentPlanFragment: paymentPlan,
       selectedPlan: .pledgeInFull,
-      project: Project.template,
-      thresholdAmount: 125
+      project: Project.template
     )
 
     XCTAssertFalse(selectionData.ineligible)
