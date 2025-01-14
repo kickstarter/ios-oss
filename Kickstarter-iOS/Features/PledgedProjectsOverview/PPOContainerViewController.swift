@@ -15,7 +15,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.title = Strings.tabbar_activity()
 
     let ppoView = PPOView(
-      authenticationContext: self,
       onCountChange: { [weak self] count in
         self?.viewModel.projectAlertsCountChanged(count)
       },

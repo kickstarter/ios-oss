@@ -1,10 +1,8 @@
 import Library
-import Stripe
 import SwiftUI
 
 struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
-  var authenticationContext: any STPAuthenticationContext
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
@@ -150,13 +148,5 @@ struct PPOView: View {
 }
 
 #Preview {
-  PPOView(authenticationContext: PreviewAuthenticationContext())
+  PPOView()
 }
-
-#if targetEnvironment(simulator)
-  fileprivate class PreviewAuthenticationContext: NSObject, STPAuthenticationContext {
-    func authenticationPresentingViewController() -> UIViewController {
-      fatalError()
-    }
-  }
-#endif
