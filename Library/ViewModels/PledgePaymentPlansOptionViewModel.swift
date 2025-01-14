@@ -197,9 +197,7 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
 }
 
 extension PledgePaymentIncrementFormatted {
-  init(from increment: PledgePaymentIncrement, index: Int, project: Project) {
-    let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
+  init(from increment: PledgePaymentIncrement, index: Int, project _: Project) {
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.incrementChargeNumber = "Charge \(index + 1)"
     self.amount = increment.amount.amountFormattedInProjectNativeCurrency
