@@ -38,7 +38,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
           "amountFormattedInProjectNativeCurrency": "$99.75",
           "currency": "USD"
         },
-    
+
         "scheduledCollection": "not a date :(",
         "state": "some state"
       }
