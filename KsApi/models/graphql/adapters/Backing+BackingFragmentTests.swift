@@ -685,10 +685,10 @@ private func backingDictionary() -> [String: Any] {
       {
         "__typename": "PaymentIncrement",
         "amount": {
-          "__typename": "Money",
-          "amount": "37.50",
-          "currency": "USD",
-          "symbol" : "$"
+          "__typename": "PaymentIncrementAmount",
+          "amountAsFloat": "37.50",
+          "amountFormattedInProjectNativeCurrency": "$37.50",
+          "currency": "USD"
         },
         "scheduledCollection": "2025-02-17T10:29:19-05:00",
         "state": "unattempted"

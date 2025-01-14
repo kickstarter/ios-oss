@@ -16,10 +16,10 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
               {
                 "__typename": "PaymentIncrement",
                 "amount": {
-                  "__typename": "Money",
-                  "amount": "974",
-                  "currency": "JPY",
-                  "symbol": "$"
+                  "__typename": "PaymentIncrementAmount",
+                  "amountAsFloat": "974",
+                  "amountFormattedInProjectNativeCurrency": "$974.00",
+                  "currency": "JPY"
                 },
                 "scheduledCollection": "2025-03-31T10:29:19-04:00",
                 "state": "some state",
@@ -47,5 +47,9 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
     XCTAssertEqual(selectionData.paymentIncrements.first!.amount.currency, "JPY")
     XCTAssertEqual(selectionData.paymentIncrements.first!.amount.amount, Double(974))
     XCTAssertEqual(selectionData.paymentIncrements.first!.scheduledCollection, 1_743_431_359.0)
+    XCTAssertEqual(
+      selectionData.paymentIncrements.first!.amount.amountFormattedInProjectNativeCurrency,
+      "$974.00"
+    )
   }
 }
