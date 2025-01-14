@@ -131,7 +131,7 @@
 "Closes_project" = "Closes project.";
 "Collaborator" = "Collaborator";
 "Collapses_subcategories" = "Collapses subcategories.";
-"Collection_plan" = "Collection Plan";
+"Collection_plan" = "Collection plan";
 "Collections" = "Collections";
 "Coming_soon" = "Coming soon";
 "Comment_reply_digest" = "Comment reply digest";
@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Enter an amount less than %{max_pledge}.";
 "Environmental_commitments" = "Environmental commitments";
 "Environmentally_friendly_factories" = "Environmentally friendly factories";
+"Errored_payment" = "Errored payment";
 "Estimated_Shipping" = "Estimated Shipping";
 "Estimated_delivery" = "Estimated delivery";
 "Estimated_delivery_colon" = "Estimated delivery:";
@@ -480,6 +481,7 @@
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
+"Payment_schedule" = "Payment schedule";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Please enter a pledge amount between %{min} and %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";

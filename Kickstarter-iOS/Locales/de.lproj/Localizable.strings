@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
 "Environmental_commitments" = "Verpflichtung zum Umweltschutz";
 "Environmentally_friendly_factories" = "Umweltfreundliche Fertigungsanlagen";
+"Errored_payment" = "Fehlerhafte Zahlung";
 "Estimated_Shipping" = "Geschätzte Versandkosten";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_colon" = "Voraussichtliche Lieferung:";
@@ -480,6 +481,7 @@
 "Payment_method" = "Zahlungsmethode";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
+"Payment_schedule" = "Zahlungsübersicht";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Bitte gebe einen Betrag zwischen %{min} und %{max} ein.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";

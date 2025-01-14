@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Ingresa una cantidad inferior a %{max_pledge}.";
 "Environmental_commitments" = "Compromisos medioambientales";
 "Environmentally_friendly_factories" = "Fábricas ecológicas";
+"Errored_payment" = "Pago fallido";
 "Estimated_Shipping" = "Costo de envío estimado";
 "Estimated_delivery" = "Entrega estimada:";
 "Estimated_delivery_colon" = "Entrega estimada:";
@@ -480,6 +481,7 @@
 "Payment_method" = "Método de pago";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
+"Payment_schedule" = "Calendario de pagos";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Por favor ingresa un monto de contribución entre %{min} y %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";

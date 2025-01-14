@@ -2212,18 +2212,18 @@ contributeurs"
     )
   }
   /**
-   "Collection Plan"
+   "Collection plan"
 
-   - **en**: "Collection Plan"
+   - **en**: "Collection plan"
    - **de**: "Zahlungsplan"
    - **es**: "Plan de pagos"
-   - **fr**: "Calendrier des prélèvements"
+   - **fr**: "Type de règlement"
    - **ja**: "集金プラン"
   */
   public static func Collection_plan() -> String {
     return localizedString(
       key: "Collection_plan",
-      defaultValue: "Collection Plan",
+      defaultValue: "Collection plan",
       count: nil,
       substitutions: [:]
     )
@@ -3834,6 +3834,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Environmentally_friendly_factories",
       defaultValue: "Environmentally friendly factories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Errored payment"
+
+   - **en**: "Errored payment"
+   - **de**: "Fehlerhafte Zahlung"
+   - **es**: "Pago fallido"
+   - **fr**: "Échec de règlement"
+   - **ja**: "エラーが発生したお支払い"
+  */
+  public static func Errored_payment() -> String {
+    return localizedString(
+      key: "Errored_payment",
+      defaultValue: "Errored payment",
       count: nil,
       substitutions: [:]
     )
@@ -7954,6 +7971,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Payment_methods",
       defaultValue: "Payment methods",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Payment schedule"
+
+   - **en**: "Payment schedule"
+   - **de**: "Zahlungsübersicht"
+   - **es**: "Calendario de pagos"
+   - **fr**: "Calendrier des règlements"
+   - **ja**: "お支払いのスケジュール"
+  */
+  public static func Payment_schedule() -> String {
+    return localizedString(
+      key: "Payment_schedule",
+      defaultValue: "Payment schedule",
       count: nil,
       substitutions: [:]
     )

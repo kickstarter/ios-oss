@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "%{max_pledge} 以下の額を入力してください。";
 "Environmental_commitments" = "環境への取り組み";
 "Environmentally_friendly_factories" = "環境に優しい工場";
+"Errored_payment" = "エラーが発生したお支払い";
 "Estimated_Shipping" = "推定送料";
 "Estimated_delivery" = "配達予定";
 "Estimated_delivery_colon" = "配達予定:";
@@ -480,6 +481,7 @@
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
+"Payment_schedule" = "お支払いのスケジュール";
 "Please_enter_a_pledge_amount_between_min_and_max" = "%{min} から %{max} までのプレッジ額を入力してください。";
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
 "Please_enter_an_amount_of_amount_or_more" = "%{amount} 以上の金額を入力してください。";

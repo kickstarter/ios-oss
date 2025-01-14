@@ -2,14 +2,12 @@ import KsApi
 import UIKit
 
 extension PledgePaymentIncrementState {
-  // TODO: Add string translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-
   /// Returns the textual description for each `PledgePaymentIncrementState`.
   public var description: String {
     switch self {
     case .collected: return Strings.project_view_pledge_status_collected()
     case .unattempted: return Strings.Scheduled()
-    case .errored: return "Errored payment"
+    case .errored: return Strings.Errored_payment()
     }
   }
 
