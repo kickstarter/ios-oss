@@ -8,12 +8,14 @@ protocol PPOContainerViewModelInputs {
   func viewWillAppear()
   func projectAlertsCountChanged(_ count: Int?)
   func handle(navigationEvent: PPONavigationEvent)
+  func process3DSAuthentication(state: PPOActionState)
 }
 
 protocol PPOContainerViewModelOutputs {
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> { get }
   var activityBadge: AnyPublisher<TabBarBadge, Never> { get }
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
+  var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -49,6 +51,23 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
       .map { count in TabBarBadge(count: count) }
       .subscribe(self.projectAlertsBadgeSubject)
       .store(in: &self.cancellables)
+
+    // Handle 3DS authentication event banners
+    self.process3DSAuthenticationState
+      .compactMap { state -> MessageBannerConfiguration? in
+        switch state {
+        case .succeeded:
+          return (.success, "Your payment has been processed.")
+        case .failed:
+          return (.error, Strings.Something_went_wrong_please_try_again())
+        case .processing, .cancelled:
+          return nil
+        }
+      }
+      .sink { [weak self] configuration in
+        self?.showBannerSubject.send(configuration)
+      }
+      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
@@ -65,6 +84,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.handleNavigationEventSubject.send(navigationEvent)
   }
 
+  func process3DSAuthentication(state: PPOActionState) {
+    self.process3DSAuthenticationState.send(state)
+  }
+
   // MARK: - Outputs
 
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> {
@@ -79,6 +102,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.handleNavigationEventSubject.eraseToAnyPublisher()
   }
 
+  var showBanner: AnyPublisher<MessageBannerConfiguration, Never> {
+    self.showBannerSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - Private
 
   private var viewWillAppearSubject = PassthroughSubject<Void, Never>()
@@ -86,6 +113,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private var projectAlertsBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
   private var activityBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
   private var handleNavigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
+  private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
+  private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }

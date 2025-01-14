@@ -2,7 +2,6 @@ import Combine
 import Foundation
 import KsApi
 import Library
-import Stripe
 import UIKit
 
 typealias PPOViewModelPaginator = Paginator<
@@ -14,7 +13,7 @@ typealias PPOViewModelPaginator = Paginator<
 >
 
 protocol PPOViewModelInputs {
-  func viewDidAppear(authenticationContext: any STPAuthenticationContext)
+  func viewDidAppear()
   func refresh() async
   func loadMore() async
 
@@ -226,35 +225,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         )
       }
       .store(in: &self.cancellables)
-
-    // Trigger haptic feedback when user taps
-    self.showBannerSubject
-      .dropFirst() // Skip initial nil value
-      .compactMap { $0 } // Only trigger on non-nil values
-      .sink { banner in
-        // Determine feedback type based on banner type
-        switch banner.type {
-        case .success, .info:
-          generateNotificationSuccessFeedback()
-        case .error:
-          generateNotificationWarningFeedback()
-        }
-      }
-      .store(in: &self.cancellables)
-
-    self.showBannerSubject
-      .map { MessageBannerViewViewModel($0) }
-      .receive(on: RunLoop.main)
-      .sink(receiveValue: { [weak self] viewModel in
-        self?.bannerViewModel = viewModel
-      })
-      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
 
-  func viewDidAppear(authenticationContext: any STPAuthenticationContext) {
-    self.viewDidAppearSubject.send(authenticationContext)
+  func viewDidAppear() {
+    self.viewDidAppearSubject.send()
   }
 
   func loadMore() async {
@@ -307,7 +283,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   // MARK: - Outputs
 
-  @Published var bannerViewModel: MessageBannerViewViewModel? = nil
   @Published var results = PPOViewModelPaginator.Results.unloaded
 
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
@@ -318,7 +293,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   private let paginator: PPOViewModelPaginator
 
-  private let viewDidAppearSubject = PassthroughSubject<any STPAuthenticationContext, Never>()
+  private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
@@ -332,7 +307,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
   private let filteredResultsSubject = CurrentValueSubject<Set<UUID>, Never>([])
 

@@ -1,13 +1,11 @@
 import Combine
 @testable import Kickstarter_Framework
 @testable import KsApi
-import Stripe
 import XCTest
 
 class PPOViewModelTests: XCTestCase {
   var viewModel: PPOViewModel!
   var cancellables: Set<AnyCancellable>!
-  fileprivate let mockAuthenticationContext = MockAuthenticationContext()
 
   override func setUp() {
     super.setUp()
@@ -36,7 +34,7 @@ class PPOViewModelTests: XCTestCase {
     withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData())
     )) {
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext)
+      self.viewModel.viewDidAppear()
     }
 
     wait(for: [expectation], timeout: 0.1)
@@ -67,12 +65,8 @@ class PPOViewModelTests: XCTestCase {
     withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData())
     )) {
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext)
-      self.viewModel
-        .viewDidAppear(
-          authenticationContext: self
-            .mockAuthenticationContext
-        ) // This should not trigger another load
+      self.viewModel.viewDidAppear()
+      self.viewModel.viewDidAppear() // This should not trigger another load
     }
 
     wait(for: [expectation], timeout: 0.1)
@@ -108,7 +102,7 @@ class PPOViewModelTests: XCTestCase {
     withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
     )) {
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext) // Initial load
+      self.viewModel.viewDidAppear() // Initial load
     }
 
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
@@ -160,7 +154,7 @@ class PPOViewModelTests: XCTestCase {
     withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
     )) {
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext) // Initial load
+      self.viewModel.viewDidAppear() // Initial load
     }
 
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
@@ -229,7 +223,7 @@ class PPOViewModelTests: XCTestCase {
         hasNextPage: true
       ))
     )) {
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext) // Initial load
+      self.viewModel.viewDidAppear() // Initial load
     }
 
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
@@ -492,11 +486,5 @@ class PPOViewModelTests: XCTestCase {
       "tierType": "Tier1PaymentFailed"
     }
     """
-  }
-}
-
-private class MockAuthenticationContext: NSObject, STPAuthenticationContext {
-  func authenticationPresentingViewController() -> UIViewController {
-    fatalError("Not implemented in tests")
   }
 }

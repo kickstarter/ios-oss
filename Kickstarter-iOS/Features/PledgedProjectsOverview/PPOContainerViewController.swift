@@ -78,6 +78,29 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }.store(in: &self.subscriptions)
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    self.viewModel.showBanner
+      // This delay is due to a nuance about SwiftUI, where the List we use is backed by a
+      // UITableView which is inserted into the UIView hierarchy at a different level than
+      // the hosting view. If we run this notification immediately, the table view will
+      // update right after, which will push the table view above the message banner in
+      // the view hierarchy, causing the banner to be displayed below the table, leading
+      // to clipping. This delay causes the banner to not show until after the table's
+      // animation has already fired, preventing the reordering issue.
+      .delay(for: 0.1, scheduler: RunLoop.main)
+      .sink { [weak self] configuration in
+        guard let self, let messageBannerViewController = self.messageBannerViewController else { return }
+        messageBannerViewController.showBanner(with: configuration.type, message: configuration.message)
+
+        // Determine feedback type based on banner type
+        switch configuration.type {
+        case .success, .info:
+          generateNotificationSuccessFeedback()
+        case .error:
+          generateNotificationWarningFeedback()
+        }
+      }
+      .store(in: &self.subscriptions)
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -158,17 +181,11 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         guard let self else { return }
 
         if self.test3DSError {
-          self.messageBannerViewController?.showBanner(
-            with: .error,
-            message: Strings.Something_went_wrong_please_try_again()
-          )
           completion(.failed)
+          self.viewModel.process3DSAuthentication(state: .failed)
         } else {
-          self.messageBannerViewController?.showBanner(
-            with: .success,
-            message: "Your payment has been processed."
-          )
           completion(.succeeded)
+          self.viewModel.process3DSAuthentication(state: .succeeded)
         }
         self.test3DSError.toggle()
       }
@@ -179,18 +196,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         completion: { [weak self] status, _, _ in
           switch status {
           case .succeeded:
-            self?.messageBannerViewController?.showBanner(
-              with: .success,
-              message: "Your payment has been processed."
-            )
+            self.viewModel.process3DSAuthentication(state: .succeeded)
             completion(.succeeded)
           case .canceled:
             completion(.cancelled)
           case .failed:
-            self?.messageBannerViewController?.showBanner(
-              with: .error,
-              message: Strings.Something_went_wrong_please_try_again()
-            )
+            self.viewModel.process3DSAuthentication(state: .failed)
             completion(.failed)
           }
         }

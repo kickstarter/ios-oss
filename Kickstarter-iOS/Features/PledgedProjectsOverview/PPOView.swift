@@ -136,24 +136,8 @@ struct PPOView: View {
     GeometryReader { reader in
       self.contentView(parentSize: reader.size)
         .frame(maxWidth: .infinity, alignment: .center)
-        .overlay(alignment: .bottom) {
-          MessageBannerView(viewModel: self.$viewModel.bannerViewModel)
-            .padding(.horizontal.union(.bottom), CGFloat(PPOStyles.bannerPadding))
-            .frame(
-              minWidth: reader.size.width,
-              idealWidth: reader.size.width,
-              alignment: .bottom
-            )
-            .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
-            .accessibilityFocused(self.$isBannerFocused)
-        }
-        .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.isBannerFocused = self.viewModel.bannerViewModel != nil
-          }
-        })
         .onAppear(perform: {
-          self.viewModel.viewDidAppear(authenticationContext: self.authenticationContext)
+          self.viewModel.viewDidAppear()
         })
         .onChange(of: self.viewModel.results.values.count, perform: { value in
           self.onCountChange?(value)
