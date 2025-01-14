@@ -56,6 +56,11 @@ enum PPONavigationEvent: Equatable {
       return lhsUrl == rhsUrl
     case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
       return lhsSubject == rhsSubject
+    case let (
+      .fix3DSChallenge(clientSecret: lhsSecret, completion: _),
+      .fix3DSChallenge(clientSecret: rhsSecret, completion: _)
+    ):
+      return lhsSecret == rhsSecret
     case (.backedProjects, .backedProjects),
          (.confirmAddress, .confirmAddress),
          (.fixPaymentMethod, .fixPaymentMethod):
