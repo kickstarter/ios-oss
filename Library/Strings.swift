@@ -2212,18 +2212,18 @@ contributeurs"
     )
   }
   /**
-   "Collection Plan"
+   "Collection plan"
 
-   - **en**: "Collection Plan"
+   - **en**: "Collection plan"
    - **de**: "Zahlungsplan"
    - **es**: "Plan de pagos"
-   - **fr**: "Calendrier des prélèvements"
+   - **fr**: "Type de règlement"
    - **ja**: "集金プラン"
   */
   public static func Collection_plan() -> String {
     return localizedString(
       key: "Collection_plan",
-      defaultValue: "Collection Plan",
+      defaultValue: "Collection plan",
       count: nil,
       substitutions: [:]
     )
@@ -3834,6 +3834,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Environmentally_friendly_factories",
       defaultValue: "Environmentally friendly factories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Errored payment"
+
+   - **en**: "Errored payment"
+   - **de**: "Fehlerhafte Zahlung"
+   - **es**: "Pago fallido"
+   - **fr**: "Échec de règlement"
+   - **ja**: "エラーが発生したお支払い"
+  */
+  public static func Errored_payment() -> String {
+    return localizedString(
+      key: "Errored_payment",
+      defaultValue: "Errored payment",
       count: nil,
       substitutions: [:]
     )
@@ -7959,6 +7976,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Payment schedule"
+
+   - **en**: "Payment schedule"
+   - **de**: "Zahlungsübersicht"
+   - **es**: "Calendario de pagos"
+   - **fr**: "Calendrier des règlements"
+   - **ja**: "お支払いのスケジュール"
+  */
+  public static func Payment_schedule() -> String {
+    return localizedString(
+      key: "Payment_schedule",
+      defaultValue: "Payment schedule",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Please enter a pledge amount between %{min} and %{max}."
 
    - **en**: "Please enter a pledge amount between %{min} and %{max}."
@@ -11495,6 +11529,23 @@ catch your eye?"
     return localizedString(
       key: "The_email_associated_with_this_Facebook_account_is_already_registered",
       defaultValue: "The email associated with this Facebook account is already registered to another Kickstarter user.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+
+   - **en**: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+   - **de**: "Die erste Rate wird nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen."
+   - **es**: "El primer pago se hará cuando el proyecto finalice con éxito, luego cada 2 semanas hasta el monto total de la contribución. Cuando se selecciona esta opción, no se pueden realizar más modificaciones en tu contribución."
+   - **fr**: "Le premier prélèvement interviendra après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable."
+   - **ja**: "最初の請求はプロジェクトが成功に終わった時点で行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
+  */
+  public static func The_first_charge_will_occur_when_the_project_ends_successfully() -> String {
+    return localizedString(
+      key: "The_first_charge_will_occur_when_the_project_ends_successfully",
+      defaultValue: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
       count: nil,
       substitutions: [:]
     )
@@ -20092,7 +20143,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -23504,7 +23555,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -26615,7 +26666,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -27567,7 +27618,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
