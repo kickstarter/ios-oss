@@ -205,16 +205,10 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
 }
 
 extension PledgePaymentIncrementFormatted {
-  init(from increment: PledgePaymentIncrement, index: Int, project: Project) {
-    let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
+  init(from increment: PledgePaymentIncrement, index: Int, project _: Project) {
     let chargeNumber = String(index + 1)
     self.incrementChargeNumber = Strings.Charge_number(number: chargeNumber)
-    self.amount = Format.currency(
-      increment.amount.amount,
-      country: projectCurrencyCountry,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
+    self.amount = increment.amount.amountFormattedInProjectNativeCurrency
     self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
   }
 }

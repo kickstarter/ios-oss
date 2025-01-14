@@ -279,7 +279,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
       self.pledgeOverTimeStackViewHidden.assertValue(false)
       self.pledgeOverTimeChargesText.assertValue("charged as 4 payments")
       self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, the first charge of $250 will be collected on March 28, 2019."
+        "If the project reaches its funding goal, the first charge of $250.00 will be collected on March 28, 2019."
       ])
     }
   }

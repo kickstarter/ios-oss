@@ -12,10 +12,10 @@ public func buildPaymentPlanQueryJson(eligible: Bool) -> String {
             {
               "__typename": "PaymentIncrement",
               "amount": {
-                "__typename": "Money",
-                "amount": "933.23",
-                "currency": "USD",
-                "symbol": "$"
+                "__typename": "PaymentIncrementAmount",
+                "amountAsFloat": "933.23",
+                "amountFormattedInProjectNativeCurrency": "$933.23",
+                "currency": "USD"
               },
               "scheduledCollection": "2025-03-31T10:29:19-04:00",
               "state": "some state",
