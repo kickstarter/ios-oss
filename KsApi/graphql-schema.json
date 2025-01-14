@@ -8726,6 +8726,18 @@
             "deprecationReason": null
           },
           {
+            "name": "backingActionCount",
+            "description": "Count of pledges with pending action",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "backings",
             "description": "A user's backings.",
             "args": [
@@ -14146,12 +14158,6 @@
             "deprecationReason": null
           },
           {
-            "name": "ccp_search_projects",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "global_nav_2023",
             "description": null,
             "isDeprecated": false,
@@ -14296,12 +14302,6 @@
             "deprecationReason": null
           },
           {
-            "name": "backer_survey_intro_2024",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "sepa_debit_payment_element",
             "description": null,
             "isDeprecated": false,
@@ -14345,6 +14345,12 @@
           },
           {
             "name": "copy_addons",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "KDS_messages_app",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -22098,14 +22104,14 @@
         "fields": [
           {
             "name": "amount",
-            "description": null,
+            "description": "The payment increment amount represented in various formats",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Money",
+                "name": "PaymentIncrementAmount",
                 "ofType": null
               }
             },
@@ -22188,6 +22194,97 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PaymentIncrementAmount",
+        "description": "Representations of the payment increment amount with cents, float, and currency variations",
+        "fields": [
+          {
+            "name": "amountAsCents",
+            "description": "The increment amount in the smallest denomination of the currency, ie 3750 for the USD currency",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amountAsFloat",
+            "description": "The increment amount represented as a float, ie 37.50 for the USD currency",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amountFormattedInProjectNativeCurrency",
+            "description": "The increment amount represented as a float with the currency symbol, ie $37.50",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amountFormattedInProjectNativeCurrencyWithCurrencyCode",
+            "description": "The increment amount represented as a float with the currency symbol and three-letter currency code, ie $37.50 USD",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "currency",
+            "description": "A three-letter currency code for the increment (ie the currency of the project)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -29118,12 +29215,12 @@
             "deprecationReason": null
           },
           {
-            "name": "transactionKey",
-            "description": "Rosie Stripe transaction ID",
+            "name": "refundCheckoutState",
+            "description": "State of associated refund checkout",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "RefundCheckoutState",
               "ofType": null
             },
             "isDeprecated": false,
@@ -29436,6 +29533,41 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RefundCheckoutState",
+        "description": "All available states for a refund checkout",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "AUTHORIZING",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SUCCESSFUL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ERRORED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FAILED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -36179,41 +36311,6 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "RefundCheckoutState",
-        "description": "All available states for a refund checkout",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "AUTHORIZING",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "SUCCESSFUL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ERRORED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FAILED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {

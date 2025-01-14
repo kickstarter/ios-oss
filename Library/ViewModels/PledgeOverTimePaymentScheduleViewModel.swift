@@ -89,8 +89,9 @@ public struct PLOTPaymentScheduleItem: Equatable {
     self.stateBackgroundColor = increment.state.badgeColor
     self.stateForegroundColor = increment.state.badgeForegroundColor
 
+    let currencyCountry = projectCountry(forCurrency: increment.amount.currency) ?? project.country
     self.amountAttributedText = attributedCurrency(
-      with: project.country,
+      with: currencyCountry,
       amount: increment.amount.amount,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode
     )

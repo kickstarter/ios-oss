@@ -15,7 +15,7 @@ extension Backing {
     locationId: 1,
     locationName: "United States",
     paymentIncrements: [.init(
-      amount: .init(amount: 10, currency: "USD"),
+      amount: .init(amount: 10, currency: "USD", amountFormattedInProjectNativeCurrency: "$10.00"),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
       state: .collected
     )],
