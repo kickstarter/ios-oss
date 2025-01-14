@@ -13,7 +13,7 @@ extension PledgePaymentIncrement {
 
     self.amount = PledgePaymentIncrementAmount(
       amount: amountAsDouble,
-      currency: fragment.scheduledCollection,
+      currency: fragment.amount.currency,
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )
     self.scheduledCollection = intervalAsTime

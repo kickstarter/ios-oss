@@ -422,7 +422,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
 
     self.labelTextString.assertValues([
-      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250 will be collected on January 10, 2025."
+      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on January 10, 2025."
     ])
   }
 }
