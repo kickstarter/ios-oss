@@ -68,7 +68,11 @@ class PPOViewModelTests: XCTestCase {
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData())
     )) {
       self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext)
-      self.viewModel.viewDidAppear(authenticationContext: self.mockAuthenticationContext) // This should not trigger another load
+      self.viewModel
+        .viewDidAppear(
+          authenticationContext: self
+            .mockAuthenticationContext
+        ) // This should not trigger another load
     }
 
     wait(for: [expectation], timeout: 0.1)

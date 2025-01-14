@@ -139,7 +139,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
         return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
       },
-      self.fixPaymentMethodSubject.map { model in PPONavigationEvent.fixPaymentMethod(projectId: model.projectId, backingId: model.backingId) },
+      self.fixPaymentMethodSubject.map { model in PPONavigationEvent.fixPaymentMethod(
+        projectId: model.projectId,
+        backingId: model.backingId
+      ) },
       self.fix3DSChallengeSubject.map { model, clientSecret, completion in
         PPONavigationEvent.fix3DSChallenge(
           clientSecret: clientSecret,
@@ -338,7 +341,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private enum Constants {
     static let pageSize = 20
   }
-
 }
 
 extension Sequence where Element == PPOProjectCardViewModel {
