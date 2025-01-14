@@ -205,8 +205,7 @@ private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusL
     NSAttributedString.Key.paragraphStyle: paragraphStyle
   ]
 
-  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-  return "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of \(paymentAmount) will be collected on \(date)."
+  return Strings.You_have_selected_pledge_over_time(amount: paymentAmount, date: date)
     .attributed(
       with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [paymentAmount, date]
     )

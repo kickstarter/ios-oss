@@ -143,9 +143,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.titleLabel.text = Strings.Checkout()
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.collectionPlanSectionLabel.text = "Collection plan"
-    self.paymentSectionLabel.text = "Payment"
+    self.collectionPlanSectionLabel.text = Strings.Collection_plan()
+    self.paymentSectionLabel.text = Strings.Payment()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 

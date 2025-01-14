@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "%{max_pledge} 以下の額を入力してください。";
 "Environmental_commitments" = "環境への取り組み";
 "Environmentally_friendly_factories" = "環境に優しい工場";
+"Errored_payment" = "エラーが発生したお支払い";
 "Estimated_Shipping" = "推定送料";
 "Estimated_delivery" = "配達予定";
 "Estimated_delivery_colon" = "配達予定:";
@@ -480,6 +481,7 @@
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
+"Payment_schedule" = "お支払いのスケジュール";
 "Please_enter_a_pledge_amount_between_min_and_max" = "%{min} から %{max} までのプレッジ額を入力してください。";
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
 "Please_enter_an_amount_of_amount_or_more" = "%{amount} 以上の金額を入力してください。";
@@ -704,6 +706,7 @@
 "The_backer_canceled_their_pledge_for_this_project" = "バッカーがこのプロジェクトのプレッジをキャンセルしました。";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "クリエイターがこのプロジェクトをキャンセルしたため、お支払い方法への請求は行われませんでした。";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "このFacebookのメールアドレスは他のKickstarterユーザーが使用中";
+"The_first_charge_will_occur_when_the_project_ends_successfully" = "最初の請求はプロジェクトが成功に終わった時点で行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。";
 "The_live_stream_failed_to_connect" = "ライブ配信に接続できませんでした";
 "The_live_stream_was_interrupted" = "ライブ配信が中断されました";
 "The_live_stream_will_start_soon" = "ライブ配信が開始します";
