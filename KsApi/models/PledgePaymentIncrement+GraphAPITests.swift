@@ -7,10 +7,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
       {
         "__typename": "PaymentIncrement",
         "amount": {
-          "__typename": "Money",
-          "amount": "99.75",
-          "currency": "USD",
-          "symbol": "$"
+          "__typename": "PaymentIncrementAmount",
+          "amountAsFloat": "99.75",
+          "amountFormattedInProjectNativeCurrency": "$99.75",
+          "currency": "USD"
         },
         "scheduledCollection": "2025-03-31T10:29:19-04:00",
         "state": "some state"
@@ -24,6 +24,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertNotNil(increment)
     XCTAssertEqual(increment!.amount.currency, "USD")
     XCTAssertEqual(increment!.amount.amount, Double(99.75))
+    XCTAssertEqual(increment!.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
   }
 
@@ -32,11 +33,12 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
       {
         "__typename": "PaymentIncrement",
         "amount": {
-          "__typename": "Money",
-          "amount": "99.75",
-          "currency": "USD",
-          "symbol": "$"
+          "__typename": "PaymentIncrementAmount",
+          "amountAsFloat": "99.75",
+          "amountFormattedInProjectNativeCurrency": "$99.75",
+          "currency": "USD"
         },
+    
         "scheduledCollection": "not a date :(",
         "state": "some state"
       }
