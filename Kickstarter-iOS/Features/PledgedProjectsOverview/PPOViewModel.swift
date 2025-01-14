@@ -23,7 +23,7 @@ protocol PPOViewModelInputs {
   func fix3DSChallenge(
     from: PPOProjectCardModel,
     clientSecret: String,
-    setLoading: @escaping (Bool) -> Void
+    completion: @escaping (PPOActionState) -> Void
   )
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
@@ -40,7 +40,7 @@ protocol PPOViewModelOutputs {
 enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
-  case fix3DSChallenge(clientSecret: String, setLoading: (Bool) -> Void)
+  case fix3DSChallenge(clientSecret: String, completion: (PPOActionState) -> Void)
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
@@ -126,27 +126,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
-    // Handle 3DS authentication challenges
-    self.fix3DSChallengeSubject
-      .combineLatest(self.viewDidAppearSubject) { ($0.0, $0.1, $0.2, $1) }
-      .sink { [weak self] model, setupIntent, setLoading, authenticationContext in
-        guard let self else { return }
-        self.handle3DSChallenge(
-          model: model,
-          authenticationContext: authenticationContext,
-          setupIntent: setupIntent,
-          setLoading: setLoading
-        )
-      }
-      .store(in: &self.cancellables)
-
     // Route navigation events
-    Publishers.Merge7(
+    Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.fixPaymentMethodSubject
-        .map { viewModel in
-          PPONavigationEvent.fixPaymentMethod(projectId: viewModel.projectId, backingId: viewModel.backingId)
-        },
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
@@ -156,6 +138,18 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.contactCreatorSubject.map { viewModel in
         let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
         return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
+      },
+      self.fixPaymentMethodSubject.map { model in PPONavigationEvent.fixPaymentMethod(projectId: model.projectId, backingId: model.backingId) },
+      self.fix3DSChallengeSubject.map { model, clientSecret, completion in
+        PPONavigationEvent.fix3DSChallenge(
+          clientSecret: clientSecret,
+          completion: { state in
+            if case .succeeded = state {
+              self.filteredResultsSubject.value.insert(model.id)
+            }
+            completion(state)
+          }
+        )
       }
     )
     .subscribe(self.navigationEventSubject)
@@ -283,9 +277,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   func fix3DSChallenge(
     from: PPOProjectCardModel,
     clientSecret: String,
-    setLoading: @escaping (Bool) -> Void
+    completion: @escaping (PPOActionState) -> Void
   ) {
-    self.fix3DSChallengeSubject.send((from, clientSecret, setLoading))
+    self.fix3DSChallengeSubject.send((from, clientSecret, completion))
   }
 
   func openSurvey(from: PPOProjectCardModel) {
@@ -327,7 +321,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let fix3DSChallengeSubject = PassthroughSubject<
-    (PPOProjectCardModel, String, (Bool) -> Void),
+    (PPOProjectCardModel, String, (PPOActionState) -> Void),
     Never
   >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
@@ -345,46 +339,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     static let pageSize = 20
   }
 
-  private func handle3DSChallenge(
-    model: PPOProjectCardModel,
-    authenticationContext: any STPAuthenticationContext,
-    setupIntent: String,
-    setLoading: @escaping (Bool) -> Void
-  ) {
-    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
-
-    // Set initial loading state
-    setLoading(true)
-
-    #if DEBUG
-      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] () in
-        guard let self else { return }
-
-        self.showBannerSubject.send((.success, "Your payment has been processed."))
-        self.filteredResultsSubject.value.insert(model.id)
-
-        setLoading(false)
-      }
-    #else
-      STPPaymentHandler.shared().confirmSetupIntent(
-        confirmParams,
-        with: authenticationContext,
-        completion: { [weak self] status, _, _ in
-          switch status {
-          case .succeeded:
-            self?.showBannerSubject.send((.success, "Your payment has been processed."))
-            self?.filteredResultsSubject.value.insert(model.id)
-            setLoading(false)
-          case .canceled:
-            setLoading(false)
-          case let .failed:
-            self?.showBannerSubject.send((.error, Strings.Something_went_wrong_please_try_again()))
-            setLoading(false)
-          }
-        }
-      )
-    #endif
-  }
 }
 
 extension Sequence where Element == PPOProjectCardViewModel {

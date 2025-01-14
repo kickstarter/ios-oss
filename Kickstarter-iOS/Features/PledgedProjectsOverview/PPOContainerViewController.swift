@@ -5,7 +5,8 @@ import Library
 import Stripe
 import SwiftUI
 
-public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
+public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page>,
+  MessageBannerViewControllerPresenting {
   private let viewModel = PPOContainerViewModel()
 
   public override func viewDidLoad() {
@@ -68,13 +69,15 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.messageCreator(messageSubject)
       case let .fixPaymentMethod(projectId, backingId):
         self?.fixPayment(projectId: projectId, backingId: backingId)
-      case let .fix3DSChallenge(clientSecret, setLoading):
-        self?.handle3DSChallenge(setupIntent: clientSecret, setLoading: setLoading)
+      case let .fix3DSChallenge(clientSecret, completion):
+        self?.handle3DSChallenge(setupIntent: clientSecret, completion: completion)
       case .confirmAddress:
         // TODO: MBL-1451
         break
       }
     }.store(in: &self.subscriptions)
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +112,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
   }
 
+  public var messageBannerViewController: MessageBannerViewController?
+
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - Navigation Helpers
@@ -133,6 +138,64 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
+  }
+
+  #if DEBUG
+    private var test3DSError = true
+  #endif
+
+  private func handle3DSChallenge(
+    setupIntent: String,
+    completion: @escaping (PPOActionState) -> Void
+  ) {
+    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
+
+    // Set initial loading state
+    completion(.processing)
+
+    #if DEBUG
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
+        guard let self else { return }
+
+        if self.test3DSError {
+          self.messageBannerViewController?.showBanner(
+            with: .error,
+            message: Strings.Something_went_wrong_please_try_again()
+          )
+          completion(.failed)
+        } else {
+          self.messageBannerViewController?.showBanner(
+            with: .success,
+            message: "Your payment has been processed."
+          )
+          completion(.succeeded)
+        }
+        self.test3DSError.toggle()
+      }
+    #else
+      STPPaymentHandler.shared().confirmSetupIntent(
+        confirmParams,
+        with: self,
+        completion: { [weak self] status, _, _ in
+          switch status {
+          case .succeeded:
+            self?.messageBannerViewController?.showBanner(
+              with: .success,
+              message: "Your payment has been processed."
+            )
+            completion(.succeeded)
+          case .canceled:
+            completion(.cancelled)
+          case .failed:
+            self?.messageBannerViewController?.showBanner(
+              with: .error,
+              message: Strings.Something_went_wrong_please_try_again()
+            )
+            completion(.failed)
+          }
+        }
+      )
+    #endif
   }
 }
 
