@@ -202,11 +202,7 @@ extension PledgePaymentIncrementFormatted {
 
     // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.incrementChargeNumber = "Charge \(index + 1)"
-    self.amount = Format.currency(
-      increment.amount.amount,
-      country: projectCurrencyCountry,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
+    self.amount = increment.amount.amountFormattedInProjectNativeCurrency
     self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
   }
 }

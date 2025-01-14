@@ -1,6 +1,8 @@
 fragment PaymentIncrementFragment on PaymentIncrement {
   amount {
-    ...MoneyFragment
+    amountAsFloat
+    amountFormattedInProjectNativeCurrency
+    currency
   }
   scheduledCollection
   state
