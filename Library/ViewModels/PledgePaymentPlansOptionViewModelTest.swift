@@ -23,13 +23,12 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
   // MARK: Const
 
-  // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-  private let pledgeInFullTitle = "Pledge in full"
-  private let pledgeOverTimeTitle = "Pledge Over Time"
+  private let pledgeInFullTitle = Strings.Pledge_in_full()
+  private let pledgeOverTimeTitle = Strings.Pledge_Over_Time()
   private let pledgeOverTimeSubtitle =
-    "You will be charged for your pledge over four payments, at no extra cost."
+    Strings.You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description()
   private let pledgeOverTimeFullSubtitle =
-    "You will be charged for your pledge over four payments, at no extra cost.\n\nThe first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+    Strings.You_will_be_charged_for_your_pledge_over_four_payments_expanded_description()
   private let selectedImageName = "icon-payment-method-selected"
   private let unselectedImageName = "icon-payment-method-unselected"
 
@@ -156,8 +155,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
 
   func testPaymentPlanOption_PledgeOverTime_Ineligible() {
     let project = Project.template
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    let ineligibleText = "Available for pledges over $125"
+    let ineligibleText = project.pledgeOverTimeMinimumExplanation
 
     let data = PledgePaymentPlanOptionData(
       ineligible: true,

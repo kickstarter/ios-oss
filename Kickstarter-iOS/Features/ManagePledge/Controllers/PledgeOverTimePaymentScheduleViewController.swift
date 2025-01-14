@@ -55,8 +55,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
 
     self.paymentsScheduleStackView.isHidden = true
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.titleLabel.text = "Payment Schedule"
+    self.titleLabel.text = Strings.Payment_schedule()
 
     self.termsOfUseButton.setAttributedTitle(
       NSAttributedString(

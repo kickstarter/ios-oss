@@ -159,23 +159,22 @@ public final class PledgePaymentPlansOptionViewModel:
   public var outputs: PledgePaymentPlansOptionViewModelOutputs { return self }
 }
 
-// TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
 private func getTitleText(by type: PledgePaymentPlansType) -> String {
   switch type {
-  case .pledgeInFull: "Pledge in full"
-  case .pledgeOverTime: "Pledge Over Time"
+  case .pledgeInFull: Strings.Pledge_in_full()
+  case .pledgeOverTime: Strings.Pledge_Over_Time()
   }
 }
 
-// TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
 private func getSubtitleText(by type: PledgePaymentPlansType, isSelected: Bool) -> String {
   switch type {
   case .pledgeInFull: ""
   case .pledgeOverTime: {
-      let subtitle = "You will be charged for your pledge over four payments, at no extra cost."
+      let subtitle = Strings.You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description()
       guard isSelected else { return subtitle }
 
-      return "\(subtitle)\n\nThe first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge."
+      return "\(subtitle)\n\n" + Strings
+        .You_will_be_charged_for_your_pledge_over_four_payments_expanded_description()
     }()
   }
 }
@@ -200,8 +199,7 @@ extension PledgePaymentIncrementFormatted {
   init(from increment: PledgePaymentIncrement, index: Int, project: Project) {
     let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
-    self.incrementChargeNumber = "Charge \(index + 1)"
+    self.incrementChargeNumber = Strings.Charge_number(number: "\(index + 1)")
     self.amount = Format.currency(
       increment.amount.amount,
       country: projectCurrencyCountry,
