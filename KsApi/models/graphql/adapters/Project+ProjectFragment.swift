@@ -82,6 +82,7 @@ extension Project {
         id: projectFragment.pid,
         location: location,
         name: projectFragment.name,
+        pledgeOverTimeMinimumExplanation: "Available for pledges over $125",
         personalization: projectPersonalization(
           isStarred: projectFragment.isWatched,
           backing: backing,

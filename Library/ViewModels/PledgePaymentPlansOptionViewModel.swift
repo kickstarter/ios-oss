@@ -9,22 +9,19 @@ public struct PledgePaymentPlanOptionData: Equatable {
   // TODO: replece with API model in [MBL-1838](https://kickstarter.atlassian.net/browse/MBL-1838)
   public var paymentIncrements: [PledgePaymentIncrement]
   public var project: Project
-  public var thresholdAmount: Double
 
   public init(
     ineligible: Bool,
     type: PledgePaymentPlansType,
     selectedType: PledgePaymentPlansType,
     paymentIncrements: [PledgePaymentIncrement],
-    project: Project,
-    thresholdAmount: Double
+    project: Project
   ) {
     self.ineligible = ineligible
     self.type = type
     self.selectedType = selectedType
     self.paymentIncrements = paymentIncrements
     self.project = project
-    self.thresholdAmount = thresholdAmount
   }
 }
 
@@ -123,7 +120,7 @@ public final class PledgePaymentPlansOptionViewModel:
 
     self.ineligibleBadgeText = configData
       .filterWhenLatestFrom(ineligible, satisfies: { $0 == true })
-      .map { getIneligibleBadgeText(with: $0.project, thresholdAmount: $0.thresholdAmount) }
+      .map { $0.project.pledgeOverTimeMinimumExplanation }
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanOptionData?>(nil)
@@ -205,17 +202,6 @@ private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
     dateStyle: .medium,
     timeStyle: .none
   )
-}
-
-private func getIneligibleBadgeText(with project: Project, thresholdAmount: Double) -> String {
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-  let thresholdAmountFormatted = Format.currency(
-    thresholdAmount,
-    country: projectCurrencyCountry,
-    omitCurrencyCode: project.stats.omitUSCurrencyCode
-  )
-
-  return Strings.Available_for_pledges_over(amount: thresholdAmountFormatted)
 }
 
 extension PledgePaymentIncrementFormatted {

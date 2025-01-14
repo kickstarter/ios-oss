@@ -38,7 +38,6 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     """
   private let selectedImageName = "icon-payment-method-selected"
   private let unselectedImageName = "icon-payment-method-unselected"
-  private let thresholdAmount = 125.0
 
   // MARK: Lifecycle
 
@@ -66,8 +65,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeInFull,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template,
-      thresholdAmount: self.thresholdAmount
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -87,8 +85,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeInFull,
       selectedType: .pledgeOverTime,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template,
-      thresholdAmount: self.thresholdAmount
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -112,8 +109,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeOverTime,
       paymentIncrements: increments,
-      project: project,
-      thresholdAmount: self.thresholdAmount
+      project: project
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -136,8 +132,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template,
-      thresholdAmount: self.thresholdAmount
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
 
@@ -158,8 +153,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: mockPaymentIncrements(),
-      project: Project.template,
-      thresholdAmount: self.thresholdAmount
+      project: Project.template
     )
     self.vm.inputs.configureWith(data: data)
     self.vm.inputs.optionTapped()
@@ -176,8 +170,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
       type: .pledgeOverTime,
       selectedType: .pledgeInFull,
       paymentIncrements: [],
-      project: project,
-      thresholdAmount: self.thresholdAmount
+      project: project
     )
 
     self.vm.inputs.configureWith(data: data)
