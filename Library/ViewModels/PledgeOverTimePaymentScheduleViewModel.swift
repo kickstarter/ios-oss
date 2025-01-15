@@ -85,7 +85,7 @@ public struct PLOTPaymentScheduleItem: Equatable {
       timeStyle: .none
     )
 
-    self.stateLabel = increment.state.description
+    self.stateLabel = stateLabelText(from: increment)
     self.stateBackgroundColor = increment.state.badgeColor
     self.stateForegroundColor = increment.state.badgeForegroundColor
 
@@ -116,4 +116,16 @@ private func attributedCurrency(
     ) else { return nil }
 
   return attributedCurrency
+}
+
+private func stateLabelText(from increment: PledgePaymentIncrement) -> String {
+  let state = increment.state
+  let stateReason = increment.stateReason
+
+  switch (state, stateReason) {
+  case (.errored, .requiresAction):
+    return Strings.Authentication_required()
+  default:
+    return state.description
+  }
 }
