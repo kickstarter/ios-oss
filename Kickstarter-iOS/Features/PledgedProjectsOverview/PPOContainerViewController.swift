@@ -79,9 +79,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.fixPayment(projectId: projectId, backingId: backingId)
       case let .fix3DSChallenge(clientSecret, onProgress):
         self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
-      case .confirmAddress:
-        // TODO: MBL-1451
-        break
+      case let .confirmAddress(backingId, addressId, address):
+        self?.confirmAddress(backingId: backingId, addressId: addressId, address: address)
       }
     }.store(in: &self.subscriptions)
 
@@ -169,6 +168,26 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
+  }
+
+  private func confirmAddress(backingId: Int, addressId: Int, address: String) {
+    let alert = UIAlertController(
+      title: Strings.Confirm_your_address(),
+      message: address,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(
+      title: NSLocalizedString(Strings.Cancel(), comment: "Cancel action"),
+      style: .cancel
+    ))
+    alert.addAction(UIAlertAction(
+      title: NSLocalizedString(Strings.Confirm(), comment: "Default action"),
+      style: .default,
+      handler: { _ in
+        // TODO: Time to confirm the address!
+      }
+    ))
+    self.present(alert, animated: true, completion: nil)
   }
 
   #if DEBUG

@@ -27,7 +27,7 @@ protocol PPOViewModelInputs {
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
-  func confirmAddress(from: PPOProjectCardModel)
+  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: Int)
   func contactCreator(from: PPOProjectCardModel)
 }
 
@@ -43,7 +43,7 @@ enum PPONavigationEvent: Equatable {
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
-  case confirmAddress
+  case confirmAddress(backingId: Int, addressId: Int, address: String)
   case contactCreator(messageSubject: MessageSubject)
 
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
@@ -130,7 +130,13 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.editAddressSubject
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
-      self.confirmAddressSubject.map { _ in PPONavigationEvent.confirmAddress },
+      self.confirmAddressSubject.map { viewModel, address, addressId in
+        PPONavigationEvent.confirmAddress(
+          backingId: viewModel.backingId,
+          addressId: addressId,
+          address: address
+        )
+      },
       self.contactCreatorSubject.map { viewModel in
         let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
         return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
@@ -199,7 +205,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
       .combineLatest(latestLoadedResults)
-      .sink { card, overallProperties in
+      .sink { cardProperties, overallProperties in
+        let (card, _, _) = cardProperties
         AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
           project: card.projectAnalytics,
           properties: overallProperties
@@ -265,8 +272,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.editAddressSubject.send(from)
   }
 
-  func confirmAddress(from: PPOProjectCardModel) {
-    self.confirmAddressSubject.send(from)
+  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: Int) {
+    self.confirmAddressSubject.send((from, address, addressId))
   }
 
   func contactCreator(from: PPOProjectCardModel) {
@@ -297,7 +304,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, Int), Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 

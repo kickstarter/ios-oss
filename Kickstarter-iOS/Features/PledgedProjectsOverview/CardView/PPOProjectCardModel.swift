@@ -60,7 +60,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   }
 
   public enum Action: Identifiable, Equatable, Hashable {
-    case confirmAddress
+    case confirmAddress(address: String, addressId: Int)
     case editAddress
     case completeSurvey
     case fixPayment
@@ -232,7 +232,14 @@ extension PPOProjectCardModel {
       Los Angeles, CA 90025-1234
       United States
     """,
-    actions: (.confirmAddress, .editAddress),
+    actions: (.confirmAddress(
+      address: """
+        123 First Street, Apt #5678
+        Los Angeles, CA 90025-1234
+        United States
+      """,
+      addressId: 98
+    ), .editAddress),
     tierType: .confirmAddress,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
@@ -375,6 +382,7 @@ extension PPOProjectCardModel {
     let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
+    let addressId: Int? = backing?.deliveryAddress.flatMap { decompose(id: $0.id) }
     let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
       let cityRegionFields: [String?] = [
         deliveryAddress.city,
@@ -403,24 +411,27 @@ extension PPOProjectCardModel {
     let backingDetailsUrl = backing?.backingDetailsPageRoute
     let backingId = backing.flatMap { decompose(id: $0.id) }
 
-    switch (card.tierType, backing?.clientSecret) {
-    case (PPOProjectCardModelConstants.paymentFailed, _):
+    switch (card.tierType, backing?.clientSecret, address, addressId) {
+    case (PPOProjectCardModelConstants.paymentFailed, _, _, _):
       primaryAction = .fixPayment
       secondaryAction = nil
       tierType = .fixPayment
-    case (PPOProjectCardModelConstants.confirmAddress, _):
-      primaryAction = .confirmAddress
+    case let (PPOProjectCardModelConstants.confirmAddress, _, .some(address), .some(addressId)):
+      primaryAction = .confirmAddress(address: address, addressId: addressId)
       secondaryAction = .editAddress
       tierType = .confirmAddress
-    case (PPOProjectCardModelConstants.completeSurvey, _):
+    case (PPOProjectCardModelConstants.confirmAddress, _, _, _):
+      // Return nil instead of a card if there's no address to confirm.
+      return nil
+    case (PPOProjectCardModelConstants.completeSurvey, _, _, _):
       primaryAction = .completeSurvey
       secondaryAction = nil
       tierType = .openSurvey
-    case let (PPOProjectCardModelConstants.authenticationRequired, .some(clientSecret)):
+    case let (PPOProjectCardModelConstants.authenticationRequired, .some(clientSecret), _, _):
       primaryAction = .authenticateCard(clientSecret: clientSecret)
       secondaryAction = nil
       tierType = .authenticateCard
-    case (PPOProjectCardModelConstants.authenticationRequired, .none),
+    case (PPOProjectCardModelConstants.authenticationRequired, .none, _, _),
          _:
       return nil
     }
