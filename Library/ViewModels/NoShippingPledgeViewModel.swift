@@ -23,7 +23,6 @@ public protocol NoShippingPledgeViewModelInputs {
   )
   func paymentAuthorizationViewControllerDidFinish()
   func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
-  func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -38,7 +37,6 @@ public protocol NoShippingPledgeViewModelOutputs {
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
-  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -53,13 +51,10 @@ public protocol NoShippingPledgeViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
-  var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
-  var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var title: Signal<String, Never> { get }
@@ -95,7 +90,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
-    self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
@@ -142,7 +136,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     // Initial pledge amount is zero if not backed and not set previously in the flow.
-    let initialAdditionalPledgeAmount = initialData.map {
+    let additionalPledgeAmount = initialData.map {
       if let bonusSupport = $0.bonusSupport {
         return bonusSupport
       } else if let backing = $0.project.personalization.backing {
@@ -151,14 +145,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         return 0.0
       }
     }
-
-    // TODO(MBL-1670): Delete the additional pledge amount, any validation, and the stepper class.
-    let additionalPledgeAmount = Signal.merge(
-      self.pledgeAmountDataSignal.map { $0.amount },
-      initialAdditionalPledgeAmount
-    )
-
-    self.notifyPledgeAmountViewControllerUnavailableAmountChanged = allRewardsTotal
 
     let projectAndReward = Signal.zip(project, baseReward)
 
@@ -198,19 +184,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
 
     self.localPickupViewHidden = baseReward.map(isRewardLocalPickup).negate()
-
-    self.configurePledgeAmountViewWithData = Signal.combineLatest(
-      projectAndReward,
-      initialAdditionalPledgeAmount
-    )
-    .map(unpack)
-    .map { project, reward, additionalPledgeAmount in
-      (
-        project,
-        reward,
-        additionalPledgeAmount
-      )
-    }
 
     self.configureLocalPickupViewWithData = projectAndReward
       .switchMap { projectAndReward -> SignalProducer<PledgeLocalPickupViewData?, Never> in
@@ -350,9 +323,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
 
-    let pledgeAmountIsValid: Signal<Bool, Never> = self.pledgeAmountDataSignal
-      .map { $0.isValid }
-
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
       context
@@ -416,14 +386,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
 
-    let goToApplePayPaymentAuthorization = pledgeAmountIsValid
-      .takeWhen(self.applePayButtonTappedSignal)
-      .filter(isTrue)
-
-    let showApplePayAlert = pledgeAmountIsValid
-      .takeWhen(self.applePayButtonTappedSignal)
-      .filter(isFalse)
-
     let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
       project,
       baseReward,
@@ -445,7 +407,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     }
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
-      .takeWhen(goToApplePayPaymentAuthorization)
+      .takeWhen(self.applePayButtonTappedSignal)
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
@@ -671,41 +633,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: - Form Validation
 
-    let amountChangedAndValid = Signal.combineLatest(
-      project,
-      baseReward,
-      self.pledgeAmountDataSignal,
-      initialAdditionalPledgeAmount,
-      context
-    )
-    .map(amountValid)
-
-    self.showApplePayAlert = Signal.combineLatest(
-      project,
-      self.pledgeAmountDataSignal
-    )
-    .takeWhen(showApplePayAlert)
-    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-    .map { project, min, max in
-      (
-        Strings.Almost_there(),
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format
-            .currency(
-              min,
-              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
-              omitCurrencyCode: false
-            ),
-          max: Format
-            .currency(
-              max,
-              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
-              omitCurrencyCode: false
-            )
-        )
-      )
-    }
-
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
     }
@@ -724,19 +651,20 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
-      amountChangedAndValid,
       paymentMethodChangedAndValid,
       self.plotViewModel.pledgeOverTimeIsLoading,
       context
     )
     .map(allValuesChangedAndValid)
 
+    let didCreateOrUpdateBacking = createOrUpdateEvent.filter { $0.isTerminating }
+
     let isEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false)
         .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
       self.submitButtonTappedSignal.mapConst(false),
-      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
+      valuesChangedAndValid.takeWhen(didCreateOrUpdateBacking)
     )
     .skipRepeats()
 
@@ -926,7 +854,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       rewards,
       selectedQuantities,
       refTag,
-      initialAdditionalPledgeAmount,
+      additionalPledgeAmount,
       pledgeTotal,
       context
     )
@@ -1065,11 +993,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.goToLoginSignupObserver.send(value: ())
   }
 
-  private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
-  public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
-    self.pledgeAmountObserver.send(value: data)
-  }
-
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
@@ -1119,7 +1042,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
-  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -1134,14 +1056,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
-  public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
-  public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
-  public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let title: Signal<String, Never>
 
@@ -1168,34 +1087,6 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
 }
 
 // MARK: - Validation Functions
-
-private func amountValid(
-  project: Project,
-  reward: Reward,
-  pledgeAmountData: PledgeAmountData,
-  initialAdditionalPledgeAmount: Double,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    project.personalization.backing != nil,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return pledgeAmountData.isValid
-  }
-
-  /**
-   The amount is valid if it's changed or if the reward has add-ons.
-   This works because of the validation that would have occurred during add-ons selection,
-   that is, in `RewardAddOnSelectionViewController` we don't navigate further unless the selection changes.
-   */
-  return [
-    pledgeAmountData
-      .amount != initialAdditionalPledgeAmount || (reward.hasAddOns || featureNoShippingAtCheckout()),
-    pledgeAmountData.isValid
-  ]
-  .allSatisfy(isTrue)
-}
 
 private func shippingRuleValid(
   project: Project,
@@ -1242,16 +1133,15 @@ private func paymentMethodValid(
 }
 
 private func allValuesChangedAndValid(
-  amountValid: Bool,
   paymentSourceValid: Bool,
   pledgeOverTimeIsLoading: Bool,
   context: PledgeViewContext
 ) -> Bool {
   if context.isUpdating, context != .updateReward {
-    return amountValid || paymentSourceValid
+    return paymentSourceValid
   }
 
-  return amountValid && !pledgeOverTimeIsLoading
+  return !pledgeOverTimeIsLoading
 }
 
 // MARK: - Helper Functions
