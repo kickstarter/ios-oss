@@ -425,7 +425,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on January 10, 2025."
     ])
   }
-  
+
   func testBackingStatus_Pledged_Backer_PledgeOverTime_NotLiveProject() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
