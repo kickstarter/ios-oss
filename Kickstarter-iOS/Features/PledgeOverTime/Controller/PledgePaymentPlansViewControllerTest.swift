@@ -128,7 +128,8 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
         amountFormattedInProjectNativeCurrency: "$250.00"
       ),
       scheduledCollection: timeStamp,
-      state: .unattempted
+      state: .unattempted,
+      stateReason: .requiresAction
     ))
   }
 

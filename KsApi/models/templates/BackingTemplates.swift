@@ -17,7 +17,8 @@ extension Backing {
     paymentIncrements: [.init(
       amount: .init(amount: 10, currency: "USD", amountFormattedInProjectNativeCurrency: "$10.00"),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
-      state: .collected
+      state: .collected,
+      stateReason: nil
     )],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,

@@ -8,6 +8,7 @@ extension PledgePaymentIncrementState {
     case .collected: return Strings.project_view_pledge_status_collected()
     case .unattempted: return Strings.Scheduled()
     case .errored: return Strings.Errored_payment()
+    case .cancelled: return Strings.profile_projects_status_canceled()
     }
   }
 
@@ -16,7 +17,7 @@ extension PledgePaymentIncrementState {
     switch self {
     case .collected:
       return .ksr_create_100
-    case .unattempted:
+    case .unattempted, .cancelled:
       return .ksr_support_200
     case .errored:
       return .ksr_celebrate_100
@@ -28,7 +29,7 @@ extension PledgePaymentIncrementState {
     switch self {
     case .collected:
       return .ksr_create_700
-    case .unattempted, .errored:
+    case .unattempted, .errored, .cancelled:
       return .ksr_support_400
     }
   }

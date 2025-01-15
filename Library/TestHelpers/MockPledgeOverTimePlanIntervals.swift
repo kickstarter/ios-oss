@@ -9,9 +9,35 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
   )
   let scheduledCollection = TimeInterval(1_553_731_200)
   return [
-    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .collected),
-    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .errored),
-    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .unattempted),
-    PledgePaymentIncrement(amount: amount, scheduledCollection: scheduledCollection, state: .unattempted)
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .collected,
+      stateReason: nil
+    ),
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .unattempted,
+      stateReason: nil
+    ),
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .cancelled,
+      stateReason: nil
+    ),
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .errored,
+      stateReason: nil
+    ),
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .errored,
+      stateReason: .requiresAction
+    )
   ]
 }

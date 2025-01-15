@@ -651,24 +651,3 @@ private func distinctRewards(_ rewards: [Reward]) -> [Reward] {
     return !rewardIds.contains(reward.id)
   }
 }
-
-// TODO: Remove this when implementing the API  [MBL-1851](https://kickstarter.atlassian.net/browse/MBL-1851)
-public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
-  var increments: [PledgePaymentIncrement] = []
-  #if DEBUG
-    var timeStamp = TimeInterval(1_733_931_903)
-    for i in 1...4 {
-      timeStamp += 30 * 24 * 60 * 60
-      increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(
-          amount: 250.0,
-          currency: "USD",
-          amountFormattedInProjectNativeCurrency: "$250.00"
-        ),
-        scheduledCollection: timeStamp,
-        state: i == 1 ? .collected : .unattempted
-      ))
-    }
-  #endif
-  return increments
-}
