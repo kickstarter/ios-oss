@@ -2097,7 +2097,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 0, min: 25.0, max: 10_000.0, isValid: true)
+      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(
