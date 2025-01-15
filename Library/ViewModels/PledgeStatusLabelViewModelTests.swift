@@ -407,7 +407,26 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     self.labelTextString.assertValues([])
   }
 
-  func testBackingStatus_Pledged_Backer_PledgeOverTime() {
+  func testBackingStatus_Pledged_Backer_PledgeOverTime_LiveProject() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.live,
+      backingState: Backing.Status.pledged,
+      paymentIncrements: mockPaymentIncrements()
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on March 28, 2019."
+    ])
+  }
+
+  func testBackingStatus_Pledged_Backer_PledgeOverTime_NotLiveProject() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
@@ -416,34 +435,32 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.pledged,
-      paymentIncrements: mockPledgePaymentIncrement()
+      paymentIncrements: mockPaymentIncrements()
     )
 
     self.vm.inputs.configure(with: data)
 
     self.labelTextString.assertValues([
-      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on January 10, 2025."
+      "We collected your pledge for this project."
     ])
   }
-}
 
-public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
-  var increments: [PledgePaymentIncrement] = []
-  #if DEBUG
-    var timeStamp = TimeInterval(1_733_931_903)
-    for i in 1...4 {
-      timeStamp += 30 * 24 * 60 * 60
-      increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(
-          amount: 250.0,
-          currency: "USD",
-          amountFormattedInProjectNativeCurrency: "$250.00"
-        ),
-        scheduledCollection: timeStamp,
-        state: .collected,
-        stateReason: .requiresAction
-      ))
-    }
-  #endif
-  return increments
+  func testBackingStatus_Errored_Backer_PledgeOverTime() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.successful,
+      backingState: Backing.Status.errored,
+      paymentIncrements: mockPaymentIncrements()
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "We can’t process your pledge. Please update your payment method."
+    ])
+  }
 }
