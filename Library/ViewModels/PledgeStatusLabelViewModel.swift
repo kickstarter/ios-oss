@@ -205,8 +205,22 @@ private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusL
     NSAttributedString.Key.paragraphStyle: paragraphStyle
   ]
 
-  return Strings.You_have_selected_pledge_over_time(amount: paymentAmount, date: date)
-    .attributed(
-      with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [paymentAmount, date]
-    )
+  let confirmationString: String = {
+    switch data.projectState {
+    case .live:
+      return Strings.You_have_selected_pledge_over_time(
+        amount: paymentAmount,
+        date: date
+      )
+    default:
+      return Strings.We_collected_your_pledge_for_this_project()
+    }
+  }()
+
+  return confirmationString.attributed(
+    with: font,
+    foregroundColor: foregroundColor,
+    attributes: attributes,
+    bolding: [paymentAmount, date]
+  )
 }
