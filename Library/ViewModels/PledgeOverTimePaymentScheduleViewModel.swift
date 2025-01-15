@@ -119,13 +119,7 @@ private func attributedCurrency(
 }
 
 private func stateLabelText(from increment: PledgePaymentIncrement) -> String {
-  let state = increment.state
-  let stateReason = increment.stateReason
+  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
-  switch (state, stateReason) {
-  case (.errored, .requiresAction):
-    return Strings.Authentication_required()
-  default:
-    return state.description
-  }
+  return requiresAction ? Strings.Authentication_required() : increment.state.description
 }
