@@ -22,4 +22,7 @@ fragment PPOBackingFragment on Backing {
     recipientName
     countryCode
   }
+
+  # For Stripe
+  clientSecret
 }

@@ -2,9 +2,11 @@ import Combine
 import Foundation
 import KsApi
 import Library
+import Stripe
 import SwiftUI
 
-public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page> {
+public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page>,
+  MessageBannerViewControllerPresenting {
   private let viewModel = PPOContainerViewModel()
 
   public override func viewDidLoad() {
@@ -56,6 +58,15 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
     .store(in: &self.subscriptions)
 
+    // On the first 3DS challenge, set up the Stripe SDK
+    self.viewModel.stripeConfiguration
+      .first()
+      .sink { publishableKey, merchantIdentifier in
+        STPAPIClient.shared.publishableKey = publishableKey
+        STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
+      }
+      .store(in: &self.subscriptions)
+
     self.viewModel.navigationEvents.sink { [weak self] nav in
       switch nav {
       case .backedProjects:
@@ -66,11 +77,38 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.messageCreator(messageSubject)
       case let .fixPaymentMethod(projectId, backingId):
         self?.fixPayment(projectId: projectId, backingId: backingId)
-      case .confirmAddress, .fix3DSChallenge:
+      case let .fix3DSChallenge(clientSecret, onProgress):
+        self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
+      case .confirmAddress:
         // TODO: MBL-1451
         break
       }
     }.store(in: &self.subscriptions)
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    self.viewModel.showBanner
+      // This delay is due to a nuance about SwiftUI, where the List we use is backed by a
+      // UITableView which is inserted into the UIView hierarchy at a different level than
+      // the hosting view. If we run this notification immediately, the table view will
+      // update right after, which will push the table view above the message banner in
+      // the view hierarchy, causing the banner to be displayed below the table, leading
+      // to clipping. This delay causes the banner to not show until after the table's
+      // animation has already fired, preventing the reordering issue.
+      .delay(for: 0.1, scheduler: RunLoop.main)
+      .sink { [weak self] configuration in
+        guard let self, let messageBannerViewController = self.messageBannerViewController else { return }
+        messageBannerViewController.showBanner(with: configuration.type, message: configuration.message)
+
+        // Determine feedback type based on banner type
+        switch configuration.type {
+        case .success, .info:
+          generateNotificationSuccessFeedback()
+        case .error:
+          generateNotificationWarningFeedback()
+        }
+      }
+      .store(in: &self.subscriptions)
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +143,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
   }
 
+  public var messageBannerViewController: MessageBannerViewController?
+
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - Navigation Helpers
@@ -130,6 +170,74 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
   }
+
+  #if DEBUG
+    private var test3DSError = true
+  #endif
+
+  private func handle3DSChallenge(
+    clientSecret: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+
+    if clientSecret.hasPrefix("seti_") {
+      onProgress(.processing)
+
+      let confirmParams = STPSetupIntentConfirmParams(clientSecret: clientSecret)
+      self.handle3DSSetupIntent(confirmParams: confirmParams, onProgress: onProgress)
+    } else if clientSecret.hasPrefix("pi_") {
+      onProgress(.processing)
+
+      let paymentParams = STPPaymentIntentParams(clientSecret: clientSecret)
+      self.handle3DSPaymentIntent(paymentParams: paymentParams, onProgress: onProgress)
+    } else {
+      onProgress(.failed)
+    }
+  }
+
+  private func handle3DSSetupIntent(
+    confirmParams: STPSetupIntentConfirmParams,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    STPPaymentHandler.shared().confirmSetupIntent(
+      confirmParams,
+      with: self,
+      completion: { [weak self] status, _, _ in
+        switch status {
+        case .succeeded:
+          self?.viewModel.process3DSAuthentication(state: .succeeded)
+          onProgress(.succeeded)
+        case .canceled:
+          onProgress(.cancelled)
+        case .failed:
+          self?.viewModel.process3DSAuthentication(state: .failed)
+          onProgress(.failed)
+        }
+      }
+    )
+  }
+
+  private func handle3DSPaymentIntent(
+    paymentParams: STPPaymentIntentParams,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    STPPaymentHandler.shared().confirmPayment(
+      paymentParams,
+      with: self,
+      completion: { [weak self] status, _, y in
+        switch status {
+        case .succeeded:
+          self?.viewModel.process3DSAuthentication(state: .succeeded)
+          onProgress(.succeeded)
+        case .canceled:
+          onProgress(.cancelled)
+        case .failed:
+          self?.viewModel.process3DSAuthentication(state: .failed)
+          onProgress(.failed)
+        }
+      }
+    )
+  }
 }
 
 extension PPOContainerViewController: MessageDialogViewControllerDelegate {
@@ -138,4 +246,10 @@ extension PPOContainerViewController: MessageDialogViewControllerDelegate {
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+extension PPOContainerViewController: STPAuthenticationContext {
+  public func authenticationPresentingViewController() -> UIViewController {
+    return self
+  }
 }

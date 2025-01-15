@@ -140,6 +140,29 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         nil
       }
     }
+
+    /**
+     Transforms the values array within the current Results state while preserving the case and other properties.
+
+     - Parameter transform: A closure that takes an array of Values and returns a transformed array of Values
+     - Returns: A new Results instance with the transformed values (if the case has values)
+     */
+    public func mapValues(_ transform: ([Value]) -> [Value]) -> Results {
+      switch self {
+      case .unloaded:
+        return .unloaded
+      case let .someLoaded(values, cursor, total, page):
+        return .someLoaded(values: transform(values), cursor: cursor, total: total, page: page)
+      case let .allLoaded(values, page):
+        return .allLoaded(values: transform(values), page: page)
+      case .empty:
+        return .empty
+      case let .error(error):
+        return .error(error)
+      case let .loading(previous):
+        return .loading(previous: previous.mapValues(transform))
+      }
+    }
   }
 
   @Published public var results: Results

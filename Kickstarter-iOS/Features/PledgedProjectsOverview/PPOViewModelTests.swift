@@ -110,7 +110,7 @@ class PPOViewModelTests: XCTestCase {
     await withEnvironment(apiService: MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
     )) { () async in
-      await self.viewModel.refresh() // Refresh
+      await self.viewModel.refresh()
     }
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
@@ -279,9 +279,15 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationFix3DSChallenge() {
+    let clientSecret = "xyz"
+    let onProgress: (PPOActionState) -> Void = { _ in }
     self.verifyNavigationEvent(
-      { self.viewModel.fix3DSChallenge(from: PPOProjectCardModel.authenticateCardTemplate) },
-      event: .fix3DSChallenge
+      { self.viewModel.fix3DSChallenge(
+        from: PPOProjectCardModel.authenticateCardTemplate,
+        clientSecret: clientSecret,
+        onProgress: onProgress
+      ) },
+      event: .fix3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     )
   }
 
@@ -395,6 +401,7 @@ class PPOViewModelTests: XCTestCase {
           "symbol": "$"
         },
         "deliveryAddress": null,
+        "clientSecret": null,
         "backingDetailsPageRoute": "fake-backings-route",
         "project": {
           "__typename": "Project",

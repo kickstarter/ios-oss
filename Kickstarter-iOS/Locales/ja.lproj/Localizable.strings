@@ -881,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "<b>%{project_name}</b> への <b>%{pledge_amount}</b> のプレッジを取り消しました。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "%{project_name} へのプレッジを %{amount} に更新しました。プロジェクトがファンディングゴールに達成した場合には、%{project_deadline} 付けでご登録いただいたクレジットカードに請求されます。";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "認証が成功しました！画面をプルダウンして更新してください。";
 "Zip_code" = "郵便番号";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
 "accessibility.dashboard.buttons.activity_hint" = "アクティビティをみる";
