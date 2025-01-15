@@ -68,8 +68,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.messageCreator(messageSubject)
       case let .fixPaymentMethod(projectId, backingId):
         self?.fixPayment(projectId: projectId, backingId: backingId)
-      case let .fix3DSChallenge(clientSecret, completion):
-        self?.handle3DSChallenge(setupIntent: clientSecret, completion: completion)
+      case let .fix3DSChallenge(clientSecret, onProgress):
+        self?.handle3DSChallenge(setupIntent: clientSecret, onProgress: onProgress)
       case .confirmAddress:
         // TODO: MBL-1451
         break
@@ -168,22 +168,22 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
   private func handle3DSChallenge(
     setupIntent: String,
-    completion: @escaping (PPOActionState) -> Void
+    onProgress: @escaping (PPOActionState) -> Void
   ) {
     let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
 
     // Set initial loading state
-    completion(.processing)
+    onProgress(.processing)
 
     #if DEBUG
       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
         guard let self else { return }
 
         if self.test3DSError {
-          completion(.failed)
+          onProgress(.failed)
           self.viewModel.process3DSAuthentication(state: .failed)
         } else {
-          completion(.succeeded)
+          onProgress(.succeeded)
           self.viewModel.process3DSAuthentication(state: .succeeded)
         }
         self.test3DSError.toggle()
@@ -196,12 +196,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
           switch status {
           case .succeeded:
             self.viewModel.process3DSAuthentication(state: .succeeded)
-            completion(.succeeded)
+            onProgress(.succeeded)
           case .canceled:
-            completion(.cancelled)
+            onProgress(.cancelled)
           case .failed:
             self.viewModel.process3DSAuthentication(state: .failed)
-            completion(.failed)
+            onProgress(.failed)
           }
         }
       )

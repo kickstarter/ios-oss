@@ -58,7 +58,7 @@ struct PPOView: View {
             self.viewModel.fix3DSChallenge(
               from: model,
               clientSecret: clientSecret,
-              completion: { status in
+              onProgress: { status in
                 switch status {
                 case .processing:
                   card.setLoading(true)

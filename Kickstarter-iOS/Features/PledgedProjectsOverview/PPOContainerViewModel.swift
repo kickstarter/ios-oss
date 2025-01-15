@@ -57,7 +57,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
       .compactMap { state -> MessageBannerConfiguration? in
         switch state {
         case .succeeded:
-          return (.success, "Your payment has been processed.")
+          return (
+            .success,
+            Strings.Youve_been_authenticated_successfully_pull_to_refresh()
+          )
         case .failed:
           return (.error, Strings.Something_went_wrong_please_try_again())
         case .processing, .cancelled:

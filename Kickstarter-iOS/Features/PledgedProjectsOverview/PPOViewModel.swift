@@ -22,7 +22,7 @@ protocol PPOViewModelInputs {
   func fix3DSChallenge(
     from: PPOProjectCardModel,
     clientSecret: String,
-    completion: @escaping (PPOActionState) -> Void
+    onProgress: @escaping (PPOActionState) -> Void
   )
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
@@ -39,7 +39,7 @@ protocol PPOViewModelOutputs {
 enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
-  case fix3DSChallenge(clientSecret: String, completion: (PPOActionState) -> Void)
+  case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
@@ -57,8 +57,8 @@ enum PPONavigationEvent: Equatable {
     case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
       return lhsSubject == rhsSubject
     case let (
-      .fix3DSChallenge(clientSecret: lhsSecret, completion: _),
-      .fix3DSChallenge(clientSecret: rhsSecret, completion: _)
+      .fix3DSChallenge(clientSecret: lhsSecret, onProgress: _),
+      .fix3DSChallenge(clientSecret: rhsSecret, onProgress: _)
     ):
       return lhsSecret == rhsSecret
     case (.backedProjects, .backedProjects),
@@ -147,14 +147,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         projectId: model.projectId,
         backingId: model.backingId
       ) },
-      self.fix3DSChallengeSubject.map { model, clientSecret, completion in
+      self.fix3DSChallengeSubject.map { model, clientSecret, onProgress in
         PPONavigationEvent.fix3DSChallenge(
           clientSecret: clientSecret,
-          completion: { state in
+          onProgress: { state in
             if case .succeeded = state {
               self.filteredResultsSubject.value.insert(model.id)
             }
-            completion(state)
+            onProgress(state)
           }
         )
       }
@@ -261,9 +261,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   func fix3DSChallenge(
     from: PPOProjectCardModel,
     clientSecret: String,
-    completion: @escaping (PPOActionState) -> Void
+    onProgress: @escaping (PPOActionState) -> Void
   ) {
-    self.fix3DSChallengeSubject.send((from, clientSecret, completion))
+    self.fix3DSChallengeSubject.send((from, clientSecret, onProgress))
   }
 
   func openSurvey(from: PPOProjectCardModel) {

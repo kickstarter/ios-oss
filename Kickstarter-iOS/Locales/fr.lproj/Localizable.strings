@@ -881,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Vous avez annulé votre engagement de <b>%{pledge_amount}</b> pour le projet <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Votre engagement de %{amount} en soutien du projet %{project_name} a bien été mis à jour. Si le créateur atteint son objectif de financement, votre carte sera débitée le %{project_deadline}. Veuillez consulter votre messagerie pour plus d'informations.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "Vous avez été authentifié ! Veuillez tirer l\'écran vers le bas pour l\'actualiser.";
 "Zip_code" = "Code postal";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";

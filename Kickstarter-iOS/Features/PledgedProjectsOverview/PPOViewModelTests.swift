@@ -280,14 +280,14 @@ class PPOViewModelTests: XCTestCase {
 
   func testNavigationFix3DSChallenge() {
     let clientSecret = "xyz"
-    let completion: (PPOActionState) -> Void = { _ in }
+    let onProgress: (PPOActionState) -> Void = { _ in }
     self.verifyNavigationEvent(
       { self.viewModel.fix3DSChallenge(
         from: PPOProjectCardModel.authenticateCardTemplate,
         clientSecret: clientSecret,
-        completion: completion
+        onProgress: onProgress
       ) },
-      event: .fix3DSChallenge(clientSecret: clientSecret, completion: completion)
+      event: .fix3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     )
   }
 
