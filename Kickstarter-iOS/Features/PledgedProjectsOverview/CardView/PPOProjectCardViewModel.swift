@@ -34,6 +34,7 @@ typealias PPOProjectCardViewModelType = Equatable & Hashable & Identifiable & Ob
 
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published private(set) var card: PPOProjectCardModel
+  @Published var isLoading: Bool = false
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.card)
@@ -82,4 +83,28 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
     lhs.card == rhs.card
   }
+
+  func setLoading(_ loading: Bool) {
+    self.isLoading = loading
+  }
+
+  func fix3DSChallenge(clientSecret: String) {
+    self.performAction(action: .authenticateCard(clientSecret: clientSecret))
+  }
+
+  func handle3DSState(_ state: PPOActionState) {
+    switch state {
+    case .processing:
+      self.isLoading = true
+    case .succeeded, .cancelled, .failed:
+      self.isLoading = false
+    }
+  }
+}
+
+public enum PPOActionState {
+  case processing
+  case succeeded
+  case cancelled
+  case failed
 }

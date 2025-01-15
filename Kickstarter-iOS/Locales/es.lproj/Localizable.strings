@@ -881,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Has cancelado tu contribución de <b>%{pledge_amount}</b> para el proyecto <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Has actualizado con éxito tu contribución a %{amount} para %{project_name}. Si el proyecto alcanza su meta de financiamiento, se efectuará un cargo en tu tarjeta el %{project_deadline}. Consulta tu correo electrónico para obtener más detalles.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "La autenticación se completó con éxito. Desliza para actualizar.";
 "Zip_code" = "Código postal";
 "accessibility.dashboard.buttons.activity" = "Actividad";
 "accessibility.dashboard.buttons.activity_hint" = "Abre actividades.";

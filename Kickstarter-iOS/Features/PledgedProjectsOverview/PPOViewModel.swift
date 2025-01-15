@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import KsApi
 import Library
+import UIKit
 
 typealias PPOViewModelPaginator = Paginator<
   GraphAPI.FetchPledgedProjectsQuery.Data,
@@ -18,7 +19,11 @@ protocol PPOViewModelInputs {
 
   func openBackedProjects()
   func fixPaymentMethod(from: PPOProjectCardModel)
-  func fix3DSChallenge(from: PPOProjectCardModel)
+  func fix3DSChallenge(
+    from: PPOProjectCardModel,
+    clientSecret: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  )
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
@@ -34,12 +39,36 @@ protocol PPOViewModelOutputs {
 enum PPONavigationEvent: Equatable {
   case backedProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
-  case fix3DSChallenge
+  case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
   case confirmAddress
   case contactCreator(messageSubject: MessageSubject)
+
+  static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
+    switch (lhs, rhs) {
+    case let (.survey(lhsUrl), .survey(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.backingDetails(lhsUrl), .backingDetails(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.editAddress(lhsUrl), .editAddress(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
+      return lhsSubject == rhsSubject
+    case let (
+      .fix3DSChallenge(clientSecret: lhsSecret, onProgress: _),
+      .fix3DSChallenge(clientSecret: rhsSecret, onProgress: _)
+    ):
+      return lhsSecret == rhsSecret
+    case (.backedProjects, .backedProjects),
+         (.confirmAddress, .confirmAddress),
+         (.fixPaymentMethod, .fixPaymentMethod):
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
@@ -71,10 +100,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         }
       })
       .receive(on: RunLoop.main)
-      .assign(to: &self.$results)
+      .sink(receiveValue: { results in
+        self.results = results
+      })
+      .store(in: &self.cancellables)
 
     Publishers.Merge(
       self.viewDidAppearSubject
+        .withEmptyValues()
         .first(),
       self.pullToRefreshSubject
     )
@@ -92,11 +125,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Route navigation events
     Publishers.Merge8(
       self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.fixPaymentMethodSubject
-        .map { viewModel in
-          PPONavigationEvent.fixPaymentMethod(projectId: viewModel.projectId, backingId: viewModel.backingId)
-        },
-      self.fix3DSChallengeSubject.map { _ in PPONavigationEvent.fix3DSChallenge },
       self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
       self.viewBackingDetailsSubject
         .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
@@ -106,21 +134,20 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.contactCreatorSubject.map { viewModel in
         let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
         return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
+      },
+      self.fixPaymentMethodSubject.map { model in PPONavigationEvent.fixPaymentMethod(
+        projectId: model.projectId,
+        backingId: model.backingId
+      ) },
+      self.fix3DSChallengeSubject.map { _, clientSecret, onProgress in
+        PPONavigationEvent.fix3DSChallenge(
+          clientSecret: clientSecret,
+          onProgress: onProgress
+        )
       }
     )
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
-
-    // TODO: Send actual banner messages in response to card actions instead.
-    self.shouldSendSampleMessageSubject
-      .sink { [weak self] _ in
-//        self?.bannerViewModel = MessageBannerViewViewModel((
-//          .success,
-//          "Survey submitted! Need to change your address? Visit your backing details on our website."
-//        ))
-        self?.bannerViewModel = MessageBannerViewViewModel((.success, "Your payment has been processed."))
-      }
-      .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
@@ -194,12 +221,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   // MARK: - Inputs
 
-  func shouldSendSampleMessage() {
-    self.shouldSendSampleMessageSubject.send(())
-  }
-
   func viewDidAppear() {
-    self.viewDidAppearSubject.send(())
+    self.viewDidAppearSubject.send()
   }
 
   func loadMore() async {
@@ -222,8 +245,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.fixPaymentMethodSubject.send(from)
   }
 
-  func fix3DSChallenge(from: PPOProjectCardModel) {
-    self.fix3DSChallengeSubject.send(from)
+  func fix3DSChallenge(
+    from: PPOProjectCardModel,
+    clientSecret: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    self.fix3DSChallengeSubject.send((from, clientSecret, onProgress))
   }
 
   func openSurvey(from: PPOProjectCardModel) {
@@ -248,7 +275,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   // MARK: - Outputs
 
-  @Published var bannerViewModel: MessageBannerViewViewModel? = nil
   @Published var results = PPOViewModelPaginator.Results.unloaded
 
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
@@ -262,16 +288,17 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let shouldSendSampleMessageSubject = PassthroughSubject<Void, Never>()
   private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let fixPaymentMethodSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let fix3DSChallengeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let fix3DSChallengeSubject = PassthroughSubject<
+    (PPOProjectCardModel, String, (PPOActionState) -> Void),
+    Never
+  >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
