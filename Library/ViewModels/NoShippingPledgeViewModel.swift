@@ -96,9 +96,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let backing = project.map { $0.personalization.backing }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
-    }
+    self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
@@ -183,7 +181,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     let nonLocalPickupShippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
       .map { baseReward, rewards, context in
         [
-          context.isAny(of: .update, .changePaymentMethod, .fixPaymentMethod),
+          context.isAny(of: .changePaymentMethod, .fixPaymentMethod),
           !baseReward.shipping.enabled,
           rewards.count == 1
         ].contains(true)
@@ -322,11 +320,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       projectAndReward,
       allRewardsTotal,
       additionalPledgeAmount,
-      shippingViewsHiddenConditionsForPledgeAmountSummary,
-      context
+      shippingViewsHiddenConditionsForPledgeAmountSummary
     )
-    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
-      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
+    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden in
+      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden)
     }
     .map(pledgeAmountSummaryViewData)
     .skipNil()
@@ -1264,8 +1261,7 @@ private func pledgeAmountSummaryViewData(
   reward _: Reward,
   allRewardsTotal: Double,
   additionalPledgeAmount: Double,
-  shippingViewsHidden: Bool,
-  context: PledgeViewContext
+  shippingViewsHidden: Bool
 ) -> PledgeAmountSummaryViewData? {
   guard let backing = project.personalization.backing else { return nil }
 
@@ -1274,7 +1270,7 @@ private func pledgeAmountSummaryViewData(
 
   return .init(
     bonusAmount: additionalPledgeAmount,
-    bonusAmountHidden: context == .update,
+    bonusAmountHidden: false,
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
