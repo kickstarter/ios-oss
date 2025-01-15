@@ -16240,6 +16240,7 @@ public enum GraphAPI {
           recipientName
           countryCode
         }
+        clientSecret
       }
       """
 
@@ -16253,6 +16254,7 @@ public enum GraphAPI {
         GraphQLField("project", type: .object(Project.selections)),
         GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "survey_responses"], type: .nonNull(.scalar(String.self))),
         GraphQLField("deliveryAddress", type: .object(DeliveryAddress.selections)),
+        GraphQLField("clientSecret", type: .scalar(String.self)),
       ]
     }
 
@@ -16262,8 +16264,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, id: GraphQLID, project: Project? = nil, backingDetailsPageRoute: String, deliveryAddress: DeliveryAddress? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "backingDetailsPageRoute": backingDetailsPageRoute, "deliveryAddress": deliveryAddress.flatMap { (value: DeliveryAddress) -> ResultMap in value.resultMap }])
+    public init(amount: Amount, id: GraphQLID, project: Project? = nil, backingDetailsPageRoute: String, deliveryAddress: DeliveryAddress? = nil, clientSecret: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "id": id, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "backingDetailsPageRoute": backingDetailsPageRoute, "deliveryAddress": deliveryAddress.flatMap { (value: DeliveryAddress) -> ResultMap in value.resultMap }, "clientSecret": clientSecret])
     }
 
     public var __typename: String {
@@ -16321,6 +16323,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "deliveryAddress")
+      }
+    }
+
+    /// If `requires_action` is true, `client_secret` should be used to initiate additional client-side authentication steps
+    public var clientSecret: String? {
+      get {
+        return resultMap["clientSecret"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "clientSecret")
       }
     }
 

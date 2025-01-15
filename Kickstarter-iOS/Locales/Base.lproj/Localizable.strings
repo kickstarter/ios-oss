@@ -881,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "You’ve canceled your pledge of <b>%{pledge_amount}</b> for <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "You’ve successfully updated your pledge to %{amount} for %{project_name}. If the project reaches its funding goal, your card will be charged on %{project_deadline}. Check your email for details.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "You’ve been authenticated successfully! Pull to refresh.";
 "Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Activity";
 "accessibility.dashboard.buttons.activity_hint" = "Opens activity.";

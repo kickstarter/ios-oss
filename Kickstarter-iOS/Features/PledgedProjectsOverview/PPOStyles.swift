@@ -48,6 +48,8 @@ enum PPOStyles {
     color: UIColor.ksr_black
   )
 
+  static let bannerPadding = 7
+
   static let background = UIColor.ksr_white
 
   static let timeImage = ImageResource.iconLimitedTime

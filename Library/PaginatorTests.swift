@@ -353,4 +353,82 @@ final class PaginatorTests: XCTestCase {
     XCTAssertEqual(paginator.results, .error(ConcreteError()))
     XCTAssertNotNil(paginator.results.error)
   }
+
+  func testPaginatorResults_mapValues_unloaded_remainsUnloaded() {
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results = .unloaded
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(mapped, .unloaded)
+  }
+
+  func testPaginatorResults_mapValues_someLoaded_transformsValues() {
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results =
+      .someLoaded(values: [1, 2, 3], cursor: 42, total: 6, page: 1)
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(
+      mapped,
+      .someLoaded(values: [2, 4, 6], cursor: 42, total: 6, page: 1),
+      "Should transform values while preserving cursor, total and page"
+    )
+  }
+
+  func testPaginatorResults_mapValues_allLoaded_transformsValues() {
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results =
+      .allLoaded(values: [1, 2, 3], page: 2)
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(
+      mapped,
+      .allLoaded(values: [2, 4, 6], page: 2),
+      "Should transform values while preserving page"
+    )
+  }
+
+  func testPaginatorResults_mapValues_empty_remainsEmpty() {
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results = .empty
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(mapped, .empty)
+  }
+
+  func testPaginatorResults_mapValues_error_remainsError() {
+    let error = ConcreteError()
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results = .error(error)
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(mapped, .error(error))
+  }
+
+  func testPaginatorResults_mapValues_loading_transformsUnderlyingValues() {
+    let underlying: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results =
+      .someLoaded(values: [1, 2, 3], cursor: 42, total: 6, page: 1)
+    let results: Paginator<TestEnvelope, Int, Int, ConcreteError, Void>.Results =
+      .loading(previous: underlying)
+
+    let mapped = results.mapValues { values in
+      values.map { $0 * 2 }
+    }
+
+    XCTAssertEqual(
+      mapped,
+      .loading(previous: .someLoaded(values: [2, 4, 6], cursor: 42, total: 6, page: 1)),
+      "Should transform values in the underlying state while preserving loading status"
+    )
+  }
 }

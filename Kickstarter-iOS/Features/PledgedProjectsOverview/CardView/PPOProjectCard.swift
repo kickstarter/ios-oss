@@ -116,17 +116,25 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private func button(for action: PPOProjectCardViewModel.Action) -> some View {
-    switch action.style {
-    case .green:
-      self.baseButton(for: action)
-        .buttonStyle(GreenButtonStyle())
-    case .red:
-      self.baseButton(for: action)
-        .buttonStyle(RedButtonStyle())
-    case .black:
-      self.baseButton(for: action)
-        .buttonStyle(BlackButtonStyle())
+    ZStack {
+      switch action.style {
+      case .green:
+        self.baseButton(for: action)
+          .buttonStyle(GreenButtonStyle())
+      case .red:
+        self.baseButton(for: action)
+          .buttonStyle(RedButtonStyle())
+      case .black:
+        self.baseButton(for: action)
+          .buttonStyle(BlackButtonStyle())
+      }
+
+      if self.viewModel.isLoading {
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle(tint: .white))
+      }
     }
+    .disabled(self.viewModel.isLoading)
   }
 
   @ViewBuilder

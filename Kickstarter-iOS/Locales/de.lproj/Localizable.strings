@@ -881,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Du hast den Finanzierungsbeitrag in Höhe von <b>%{pledge_amount}</b> für das Projekt <b>%{project_name}</b> zurückgezogen.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Dein Finanzierungsbeitrag für or %{project_name} wurde erfolgreich auf %{amount} geändert. Wenn das Projekt sein Finanzierungsziel erreicht, wird deine Karte am %{project_deadline} belastet. Wir haben dir eine E-Mail mit genaueren Angaben gesendet.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "Du wurdest erfolgreich authentifiziert! Ziehe, um die Seite zu aktualisieren.";
 "Zip_code" = "Postleitzahl";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
