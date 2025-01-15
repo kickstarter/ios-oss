@@ -407,7 +407,26 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     self.labelTextString.assertValues([])
   }
 
-  func testBackingStatus_Pledged_Backer_PledgeOverTime() {
+  func testBackingStatus_Pledged_Backer_PledgeOverTime_LiveProject() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.live,
+      backingState: Backing.Status.pledged,
+      paymentIncrements: mockPledgePaymentIncrement()
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on January 10, 2025."
+    ])
+  }
+  
+  func testBackingStatus_Pledged_Backer_PledgeOverTime_NotLiveProject() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
@@ -422,7 +441,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
 
     self.labelTextString.assertValues([
-      "You have selected Pledge Over Time. If the project reaches its funding goal, the first charge of $250.00 will be collected on January 10, 2025."
+      "We collected your pledge for this project."
     ])
   }
 }
