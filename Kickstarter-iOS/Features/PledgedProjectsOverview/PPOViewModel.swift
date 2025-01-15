@@ -99,14 +99,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           return false
         }
       })
-      .combineLatest(self.filteredResultsSubject) { results, filteredIds in
-        // Filter out any values that are in the filtered set
-        results.mapValues { values in
-          values.filter { value in
-            !filteredIds.contains(value.card.id)
-          }
-        }
-      }
       .receive(on: RunLoop.main)
       .sink(receiveValue: { results in
         self.results = results
@@ -150,12 +142,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.fix3DSChallengeSubject.map { model, clientSecret, onProgress in
         PPONavigationEvent.fix3DSChallenge(
           clientSecret: clientSecret,
-          onProgress: { state in
-            if case .succeeded = state {
-              self.filteredResultsSubject.value.insert(model.id)
-            }
-            onProgress(state)
-          }
+          onProgress: onProgress
         )
       }
     )
@@ -313,7 +300,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let confirmAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
-  private let filteredResultsSubject = CurrentValueSubject<Set<UUID>, Never>([])
 
   private var cancellables: Set<AnyCancellable> = []
 
