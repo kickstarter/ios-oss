@@ -131,7 +131,7 @@
 "Closes_project" = "Ferme le projet.";
 "Collaborator" = "Collaborateur";
 "Collapses_subcategories" = "Masque les sous-catégories.";
-"Collection_plan" = "Calendrier des prélèvements";
+"Collection_plan" = "Type de règlement";
 "Collections" = "Collections";
 "Coming_soon" = "Bientôt disponible";
 "Comment_reply_digest" = "Résumé des réponses aux commentaires";
@@ -230,6 +230,7 @@
 "Enter_an_amount_less_than_max_pledge" = "Veuillez saisir un montant inférieur à %{max_pledge}.";
 "Environmental_commitments" = "Engagements pour l'environnement";
 "Environmentally_friendly_factories" = "Usines respectueuses de l'environnement";
+"Errored_payment" = "Échec de règlement";
 "Estimated_Shipping" = "Frais de port estimés";
 "Estimated_delivery" = "Livraison prévue :";
 "Estimated_delivery_colon" = "Livraison prévue :";
@@ -480,6 +481,7 @@
 "Payment_method" = "Moyen de paiement ";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Payment_methods" = "Moyens de paiement ";
+"Payment_schedule" = "Calendrier des règlements";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Veuillez saisir un engagement entre %{min} et %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";
@@ -704,6 +706,7 @@
 "The_backer_canceled_their_pledge_for_this_project" = "Le contributeur a annulé son engagement.";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "Ce projet a été annulé par le créateur, donc votre moyen de paiement n'a pas été débité.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter.";
+"The_first_charge_will_occur_when_the_project_ends_successfully" = "Le premier prélèvement interviendra après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable.";
 "The_live_stream_failed_to_connect" = "Échec de connexion à la diffusion en direct";
 "The_live_stream_was_interrupted" = "Diffusion en direct interrompue";
 "The_live_stream_will_start_soon" = "La diffusion en direct va bientôt commencer";
@@ -878,6 +881,7 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Vous avez annulé votre engagement de <b>%{pledge_amount}</b> pour le projet <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Votre engagement de %{amount} en soutien du projet %{project_name} a bien été mis à jour. Si le créateur atteint son objectif de financement, votre carte sera débitée le %{project_deadline}. Veuillez consulter votre messagerie pour plus d'informations.";
+"Youve_been_authenticated_successfully_pull_to_refresh" = "Vous avez été authentifié ! Veuillez tirer l\'écran vers le bas pour l\'actualiser.";
 "Zip_code" = "Code postal";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";

@@ -52,29 +52,42 @@ struct PPOView: View {
         onSendMessage: { card in
           self.viewModel.contactCreator(from: card)
         },
-        onPerformAction: { card, action in
+        onPerformAction: { model, action in
           switch action {
-          case .authenticateCard:
-            self.viewModel.fix3DSChallenge(from: card)
+          case let .authenticateCard(clientSecret):
+            self.viewModel.fix3DSChallenge(
+              from: model,
+              clientSecret: clientSecret,
+              onProgress: { status in
+                switch status {
+                case .processing:
+                  card.setLoading(true)
+                case .succeeded, .cancelled, .failed:
+                  card.setLoading(false)
+                }
+              }
+            )
           case .completeSurvey:
-            self.viewModel.openSurvey(from: card)
+            self.viewModel.openSurvey(from: model)
           case .confirmAddress:
-            self.viewModel.confirmAddress(from: card)
+            self.viewModel.confirmAddress(from: model)
           case .editAddress:
-            self.viewModel.editAddress(from: card)
+            self.viewModel.editAddress(from: model)
           case .fixPayment:
-            self.viewModel.fixPaymentMethod(from: card)
+            self.viewModel.fixPaymentMethod(from: model)
           }
         }
       )
       .listRowBackground(EmptyView())
       .listRowSeparator(PPOStyles.list.separator)
       .listRowInsets(PPOStyles.list.rowInsets)
+      .transition(.opacity.combined(with: .move(edge: .leading)))
     } onRefresh: {
       await self.viewModel.refresh()
     } onLoadMore: {
       await self.viewModel.loadMore()
     }
+    .animation(.easeOut(duration: 0.3), value: values.map { $0.card.id })
   }
 
   @ViewBuilder var loadingView: some View {
@@ -91,6 +104,7 @@ struct PPOView: View {
     PPOEmptyStateView {
       self.onNavigate?(.backedProjects)
     }
+    .frame(maxHeight: .infinity)
   }
 
   @ViewBuilder var errorView: some View {
@@ -121,23 +135,10 @@ struct PPOView: View {
     GeometryReader { reader in
       self.contentView(parentSize: reader.size)
         .frame(maxWidth: .infinity, alignment: .center)
-        .overlay(alignment: .bottom) {
-          MessageBannerView(viewModel: self.$viewModel.bannerViewModel)
-            .frame(
-              minWidth: reader.size.width,
-              idealWidth: reader.size.width,
-              alignment: .bottom
-            )
-            .animation(.easeInOut, value: self.viewModel.bannerViewModel != nil)
-            .accessibilityFocused(self.$isBannerFocused)
-        }
-        .onChange(of: self.viewModel.bannerViewModel, perform: { _ in
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.isBannerFocused = self.viewModel.bannerViewModel != nil
-          }
+        .onAppear(perform: {
+          self.viewModel.viewDidAppear()
         })
-        .onAppear(perform: { self.viewModel.viewDidAppear() })
-        .onChange(of: self.viewModel.results.total, perform: { value in
+        .onChange(of: self.viewModel.results.values.count, perform: { value in
           self.onCountChange?(value)
         })
         .onReceive(self.viewModel.navigationEvents, perform: { event in

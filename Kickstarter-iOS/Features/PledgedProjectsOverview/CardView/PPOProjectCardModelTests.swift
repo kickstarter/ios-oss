@@ -171,7 +171,8 @@ final class PPOProjectCardModelTests: XCTestCase {
                   "slug": "2071399561/ppo-failed-payment-0"
                 },
                 "backingDetailsPageRoute": "https://staging.kickstarter.com/projects/2071399561/ppo-failed-payment-0/backing/survey_responses",
-                "deliveryAddress": \(addressJSON)
+                "deliveryAddress": \(addressJSON),
+                "clientSecret": null
               },
               "tierType": "Tier1PaymentFailed",
               "flags": [

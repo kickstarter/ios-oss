@@ -2113,6 +2113,22 @@
             "deprecationReason": null
           },
           {
+            "name": "payoutStarted",
+            "description": "If the payout for the backing has happened",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pledgedOn",
             "description": "When the backing was created",
             "args": [],
@@ -14158,12 +14174,6 @@
             "deprecationReason": null
           },
           {
-            "name": "global_nav_2023",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "late_pledges_learn_more_cta",
             "description": null,
             "isDeprecated": false,
@@ -14177,12 +14187,6 @@
           },
           {
             "name": "ckeditor_project_updates",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "backer_discovery_features_2023",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -14351,6 +14355,12 @@
           },
           {
             "name": "KDS_messages_app",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_management_refunds",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -22178,8 +22188,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "PaymentIncrementState",
                 "ofType": null
               }
             },
@@ -22191,8 +22201,8 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "PaymentIncrementStateReason",
               "ofType": null
             },
             "isDeprecated": false,
@@ -22293,6 +22303,58 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PaymentIncrementState",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "UNATTEMPTED",
+            "description": "The initial state of the payment increment; payment source has not been charged",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COLLECTED",
+            "description": "Payment source was successfully charged",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ERRORED",
+            "description": "Payment source could not be charged due to an errored payment source or authentication being required",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CANCELLED",
+            "description": "Payment increment is cancelled by user action or is an abandoned increment due to failure to complete payment",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PaymentIncrementStateReason",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "REQUIRES_ACTION",
+            "description": "The payment source has attempted to be charged, but issuer requires additional authentication to complete the payment",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -42910,10 +42972,10 @@
           },
           {
             "name": "paymentSourceId",
-            "description": null,
+            "description": "Stripe Payment Source ID",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "ID",
               "ofType": null
             },
             "defaultValue": null

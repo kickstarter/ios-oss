@@ -1175,6 +1175,7 @@
 		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AAD759F42D2FA1F200A4E003 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
 		AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOStyles.swift */; };
@@ -2873,6 +2874,7 @@
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
+		AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Helpers.swift"; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
 		AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectAnalyticsFragment.graphql; sourceTree = "<group>"; };
 		AAE7C9A12C75142A00800E03 /* PPOStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOStyles.swift; sourceTree = "<group>"; };
@@ -5925,6 +5927,7 @@
 		778F891A22D3E35600D095C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */,
 				33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */,
 				3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */,
 				77C9122623C4F99400F3D2C9 /* Double+Currency.swift */,
@@ -8069,6 +8072,7 @@
 				771E630C23426B27005967E8 /* CancelPledgeViewModel.swift in Sources */,
 				A7F441C51D005A9400FE6FC5 /* LoginToutViewModel.swift in Sources */,
 				D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */,
+				AAD759F42D2FA1F200A4E003 /* Publisher+Helpers.swift in Sources */,
 				A75C811E1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
 				370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */,
 				606C45FA29FACE17001BA067 /* MockRemoteConfigClient.swift in Sources */,

@@ -46,7 +46,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 340
+        parent.view.frame.size.height = 420
 
         controller.configure(with: increments, project: project)
         controller.collapseToggle()

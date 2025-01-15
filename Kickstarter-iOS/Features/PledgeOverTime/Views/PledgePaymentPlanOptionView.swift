@@ -76,10 +76,9 @@ final class PledgePaymentPlanOptionView: UIView {
       self.paymentIncrementsStackView
     )
 
-    // TODO: add strings translations [MBL-1860](https://kickstarter.atlassian.net/browse/MBL-1860)
     self.termsOfUseButton.setAttributedTitle(
       NSAttributedString(
-        string: "See our Terms of Use",
+        string: Strings.See_our_terms_of_use(),
         attributes: [NSAttributedString.Key.font: UIFont.ksr_caption1()]
       ),
       for: .normal

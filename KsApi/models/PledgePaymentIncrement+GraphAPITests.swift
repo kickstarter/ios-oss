@@ -13,7 +13,8 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
           "currency": "USD"
         },
         "scheduledCollection": "2025-03-31T10:29:19-04:00",
-        "state": "some state"
+        "state": "COLLECTED",
+        "stateReason": "REQUIRES_ACTION"
       }
     """
 
@@ -26,6 +27,8 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment!.amount.amount, Double(99.75))
     XCTAssertEqual(increment!.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
+    XCTAssertEqual(increment!.state, .collected)
+    XCTAssertEqual(increment!.stateReason, .requiresAction)
   }
 
   func testPaymentIncrementViewModel_fromInvalidFragment_isNil() {
@@ -40,7 +43,8 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
         },
 
         "scheduledCollection": "not a date :(",
-        "state": "some state"
+        "state": "COLLECTED",
+        "stateReason": "REQUIRES ACTION"
       }
     """
 
