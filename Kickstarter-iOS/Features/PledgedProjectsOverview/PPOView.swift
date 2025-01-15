@@ -104,6 +104,7 @@ struct PPOView: View {
     PPOEmptyStateView {
       self.onNavigate?(.backedProjects)
     }
+    .frame(maxHeight: .infinity)
   }
 
   @ViewBuilder var errorView: some View {

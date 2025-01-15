@@ -4,6 +4,8 @@ import KsApi
 import Library
 import UIKit
 
+typealias PPOStripeConfiguration = (publishableKey: String, merchantIdentifier: String)
+
 protocol PPOContainerViewModelInputs {
   func viewWillAppear()
   func projectAlertsCountChanged(_ count: Int?)
@@ -16,6 +18,7 @@ protocol PPOContainerViewModelOutputs {
   var activityBadge: AnyPublisher<TabBarBadge, Never> { get }
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
+  var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -39,6 +42,16 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
       sessionEnded
     )
     .map { _ in AppEnvironment.current.currentUser }
+
+    self.viewWillAppearSubject
+      .map { _ -> PPOStripeConfiguration in
+        (
+          publishableKey: AppEnvironment.current.environmentType.stripePublishableKey,
+          merchantIdentifier: Secrets.ApplePay.merchantIdentifier
+        )
+      }
+      .subscribe(self.stripeConfigurationSubject)
+      .store(in: &self.cancellables)
 
     // Update the activity tab bar badge from the user object when it changes
     currentUser
@@ -109,6 +122,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.showBannerSubject.eraseToAnyPublisher()
   }
 
+  var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> {
+    self.stripeConfigurationSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - Private
 
   private var viewWillAppearSubject = PassthroughSubject<Void, Never>()
@@ -118,6 +135,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private var handleNavigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
+  private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }

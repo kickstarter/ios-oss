@@ -139,7 +139,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         projectId: model.projectId,
         backingId: model.backingId
       ) },
-      self.fix3DSChallengeSubject.map { model, clientSecret, onProgress in
+      self.fix3DSChallengeSubject.map { _, clientSecret, onProgress in
         PPONavigationEvent.fix3DSChallenge(
           clientSecret: clientSecret,
           onProgress: onProgress

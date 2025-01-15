@@ -58,6 +58,15 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
     .store(in: &self.subscriptions)
 
+    // On the first 3DS challenge, set up the Stripe SDK
+    self.viewModel.stripeConfiguration
+      .first()
+      .sink { publishableKey, merchantIdentifier in
+        STPAPIClient.shared.publishableKey = publishableKey
+        STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
+      }
+      .store(in: &self.subscriptions)
+
     self.viewModel.navigationEvents.sink { [weak self] nav in
       switch nav {
       case .backedProjects:
@@ -69,7 +78,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       case let .fixPaymentMethod(projectId, backingId):
         self?.fixPayment(projectId: projectId, backingId: backingId)
       case let .fix3DSChallenge(clientSecret, onProgress):
-        self?.handle3DSChallenge(setupIntent: clientSecret, onProgress: onProgress)
+        self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
       case .confirmAddress:
         // TODO: MBL-1451
         break
@@ -167,45 +176,67 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   #endif
 
   private func handle3DSChallenge(
-    setupIntent: String,
+    clientSecret: String,
     onProgress: @escaping (PPOActionState) -> Void
   ) {
-    let confirmParams = STPSetupIntentConfirmParams(clientSecret: setupIntent)
 
-    // Set initial loading state
-    onProgress(.processing)
+    if clientSecret.hasPrefix("seti_") {
+      onProgress(.processing)
 
-    #if DEBUG
-      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
-        guard let self else { return }
+      let confirmParams = STPSetupIntentConfirmParams(clientSecret: clientSecret)
+      self.handle3DSSetupIntent(confirmParams: confirmParams, onProgress: onProgress)
+    } else if clientSecret.hasPrefix("pi_") {
+      onProgress(.processing)
 
-        if self.test3DSError {
-          onProgress(.failed)
-          self.viewModel.process3DSAuthentication(state: .failed)
-        } else {
+      let paymentParams = STPPaymentIntentParams(clientSecret: clientSecret)
+      self.handle3DSPaymentIntent(paymentParams: paymentParams, onProgress: onProgress)
+    } else {
+      onProgress(.failed)
+    }
+  }
+
+  private func handle3DSSetupIntent(
+    confirmParams: STPSetupIntentConfirmParams,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    STPPaymentHandler.shared().confirmSetupIntent(
+      confirmParams,
+      with: self,
+      completion: { [weak self] status, _, _ in
+        switch status {
+        case .succeeded:
+          self?.viewModel.process3DSAuthentication(state: .succeeded)
           onProgress(.succeeded)
-          self.viewModel.process3DSAuthentication(state: .succeeded)
+        case .canceled:
+          onProgress(.cancelled)
+        case .failed:
+          self?.viewModel.process3DSAuthentication(state: .failed)
+          onProgress(.failed)
         }
-        self.test3DSError.toggle()
       }
-    #else
-      STPPaymentHandler.shared().confirmSetupIntent(
-        confirmParams,
-        with: self,
-        completion: { [weak self] status, _, _ in
-          switch status {
-          case .succeeded:
-            self.viewModel.process3DSAuthentication(state: .succeeded)
-            onProgress(.succeeded)
-          case .canceled:
-            onProgress(.cancelled)
-          case .failed:
-            self.viewModel.process3DSAuthentication(state: .failed)
-            onProgress(.failed)
-          }
+    )
+  }
+
+  private func handle3DSPaymentIntent(
+    paymentParams: STPPaymentIntentParams,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    STPPaymentHandler.shared().confirmPayment(
+      paymentParams,
+      with: self,
+      completion: { [weak self] status, _, y in
+        switch status {
+        case .succeeded:
+          self?.viewModel.process3DSAuthentication(state: .succeeded)
+          onProgress(.succeeded)
+        case .canceled:
+          onProgress(.cancelled)
+        case .failed:
+          self?.viewModel.process3DSAuthentication(state: .failed)
+          onProgress(.failed)
         }
-      )
-    #endif
+      }
+    )
   }
 }
 
