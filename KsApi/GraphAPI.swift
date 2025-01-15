@@ -4250,7 +4250,6 @@ public enum GraphAPI {
     case enableSpotlightBgImage
     case ecovadisComponent_2023
     case webBraze
-    case ccpSearchProjects
     case globalNav_2023
     case latePledgesLearnMoreCta
     case postCampaignBackings_2024
@@ -4275,7 +4274,6 @@ public enum GraphAPI {
     case skuEditing_2024
     case superbackerProgress
     case backersCanChoosePlotV1
-    case backerSurveyIntro_2024
     case sepaDebitPaymentElement
     case trustAndSafetyProjectBanner
     case partialRefunds_2024
@@ -4284,6 +4282,7 @@ public enum GraphAPI {
     case pledgeRedemptionUnifiedCreatorUi
     case reactBackedProjects
     case copyAddons
+    case kdsMessagesApp
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4367,7 +4366,6 @@ public enum GraphAPI {
         case "enable_spotlight_bg_image": self = .enableSpotlightBgImage
         case "ecovadis_component_2023": self = .ecovadisComponent_2023
         case "web_braze": self = .webBraze
-        case "ccp_search_projects": self = .ccpSearchProjects
         case "global_nav_2023": self = .globalNav_2023
         case "late_pledges_learn_more_cta": self = .latePledgesLearnMoreCta
         case "post_campaign_backings_2024": self = .postCampaignBackings_2024
@@ -4392,7 +4390,6 @@ public enum GraphAPI {
         case "sku_editing_2024": self = .skuEditing_2024
         case "superbacker_progress": self = .superbackerProgress
         case "backers_can_choose_plot_v1": self = .backersCanChoosePlotV1
-        case "backer_survey_intro_2024": self = .backerSurveyIntro_2024
         case "sepa_debit_payment_element": self = .sepaDebitPaymentElement
         case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
         case "partial_refunds_2024": self = .partialRefunds_2024
@@ -4401,6 +4398,7 @@ public enum GraphAPI {
         case "pledge_redemption_unified_creator_ui": self = .pledgeRedemptionUnifiedCreatorUi
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
+        case "KDS_messages_app": self = .kdsMessagesApp
         default: self = .__unknown(rawValue)
       }
     }
@@ -4485,7 +4483,6 @@ public enum GraphAPI {
         case .enableSpotlightBgImage: return "enable_spotlight_bg_image"
         case .ecovadisComponent_2023: return "ecovadis_component_2023"
         case .webBraze: return "web_braze"
-        case .ccpSearchProjects: return "ccp_search_projects"
         case .globalNav_2023: return "global_nav_2023"
         case .latePledgesLearnMoreCta: return "late_pledges_learn_more_cta"
         case .postCampaignBackings_2024: return "post_campaign_backings_2024"
@@ -4510,7 +4507,6 @@ public enum GraphAPI {
         case .skuEditing_2024: return "sku_editing_2024"
         case .superbackerProgress: return "superbacker_progress"
         case .backersCanChoosePlotV1: return "backers_can_choose_plot_v1"
-        case .backerSurveyIntro_2024: return "backer_survey_intro_2024"
         case .sepaDebitPaymentElement: return "sepa_debit_payment_element"
         case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
         case .partialRefunds_2024: return "partial_refunds_2024"
@@ -4519,6 +4515,7 @@ public enum GraphAPI {
         case .pledgeRedemptionUnifiedCreatorUi: return "pledge_redemption_unified_creator_ui"
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
+        case .kdsMessagesApp: return "KDS_messages_app"
         case .__unknown(let value): return value
       }
     }
@@ -4603,7 +4600,6 @@ public enum GraphAPI {
         case (.enableSpotlightBgImage, .enableSpotlightBgImage): return true
         case (.ecovadisComponent_2023, .ecovadisComponent_2023): return true
         case (.webBraze, .webBraze): return true
-        case (.ccpSearchProjects, .ccpSearchProjects): return true
         case (.globalNav_2023, .globalNav_2023): return true
         case (.latePledgesLearnMoreCta, .latePledgesLearnMoreCta): return true
         case (.postCampaignBackings_2024, .postCampaignBackings_2024): return true
@@ -4628,7 +4624,6 @@ public enum GraphAPI {
         case (.skuEditing_2024, .skuEditing_2024): return true
         case (.superbackerProgress, .superbackerProgress): return true
         case (.backersCanChoosePlotV1, .backersCanChoosePlotV1): return true
-        case (.backerSurveyIntro_2024, .backerSurveyIntro_2024): return true
         case (.sepaDebitPaymentElement, .sepaDebitPaymentElement): return true
         case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
         case (.partialRefunds_2024, .partialRefunds_2024): return true
@@ -4637,6 +4632,7 @@ public enum GraphAPI {
         case (.pledgeRedemptionUnifiedCreatorUi, .pledgeRedemptionUnifiedCreatorUi): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
+        case (.kdsMessagesApp, .kdsMessagesApp): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4722,7 +4718,6 @@ public enum GraphAPI {
         .enableSpotlightBgImage,
         .ecovadisComponent_2023,
         .webBraze,
-        .ccpSearchProjects,
         .globalNav_2023,
         .latePledgesLearnMoreCta,
         .postCampaignBackings_2024,
@@ -4747,7 +4742,6 @@ public enum GraphAPI {
         .skuEditing_2024,
         .superbackerProgress,
         .backersCanChoosePlotV1,
-        .backerSurveyIntro_2024,
         .sepaDebitPaymentElement,
         .trustAndSafetyProjectBanner,
         .partialRefunds_2024,
@@ -4756,6 +4750,7 @@ public enum GraphAPI {
         .pledgeRedemptionUnifiedCreatorUi,
         .reactBackedProjects,
         .copyAddons,
+        .kdsMessagesApp,
       ]
     }
   }
@@ -7932,7 +7927,6 @@ public enum GraphAPI {
     public var queryDocument: String {
       var document: String = operationDefinition
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
-      document.append("\n" + MoneyFragment.fragmentDefinition)
       return document
     }
 
@@ -15991,7 +15985,9 @@ public enum GraphAPI {
         __typename
         amount {
           __typename
-          ...MoneyFragment
+          amountAsFloat
+          amountFormattedInProjectNativeCurrency
+          currency
         }
         scheduledCollection
         state
@@ -16028,6 +16024,7 @@ public enum GraphAPI {
       }
     }
 
+    /// The payment increment amount represented in various formats
     public var amount: Amount {
       get {
         return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
@@ -16056,12 +16053,14 @@ public enum GraphAPI {
     }
 
     public struct Amount: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["Money"]
+      public static let possibleTypes: [String] = ["PaymentIncrementAmount"]
 
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(MoneyFragment.self),
+          GraphQLField("amountAsFloat", type: .nonNull(.scalar(String.self))),
+          GraphQLField("amountFormattedInProjectNativeCurrency", type: .nonNull(.scalar(String.self))),
+          GraphQLField("currency", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -16071,8 +16070,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
+      public init(amountAsFloat: String, amountFormattedInProjectNativeCurrency: String, currency: String) {
+        self.init(unsafeResultMap: ["__typename": "PaymentIncrementAmount", "amountAsFloat": amountAsFloat, "amountFormattedInProjectNativeCurrency": amountFormattedInProjectNativeCurrency, "currency": currency])
       }
 
       public var __typename: String {
@@ -16084,29 +16083,33 @@ public enum GraphAPI {
         }
       }
 
-      public var fragments: Fragments {
+      /// The increment amount represented as a float, ie 37.50 for the USD currency
+      public var amountAsFloat: String {
         get {
-          return Fragments(unsafeResultMap: resultMap)
+          return resultMap["amountAsFloat"]! as! String
         }
         set {
-          resultMap += newValue.resultMap
+          resultMap.updateValue(newValue, forKey: "amountAsFloat")
         }
       }
 
-      public struct Fragments {
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
+      /// The increment amount represented as a float with the currency symbol, ie $37.50
+      public var amountFormattedInProjectNativeCurrency: String {
+        get {
+          return resultMap["amountFormattedInProjectNativeCurrency"]! as! String
         }
+        set {
+          resultMap.updateValue(newValue, forKey: "amountFormattedInProjectNativeCurrency")
+        }
+      }
 
-        public var moneyFragment: MoneyFragment {
-          get {
-            return MoneyFragment(unsafeResultMap: resultMap)
-          }
-          set {
-            resultMap += newValue.resultMap
-          }
+      /// A three-letter currency code for the increment (ie the currency of the project)
+      public var currency: String {
+        get {
+          return resultMap["currency"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "currency")
         }
       }
     }

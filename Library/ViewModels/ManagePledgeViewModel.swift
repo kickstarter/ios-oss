@@ -660,7 +660,11 @@ public func mockPledgePaymentIncrement() -> [PledgePaymentIncrement] {
     for i in 1...4 {
       timeStamp += 30 * 24 * 60 * 60
       increments.append(PledgePaymentIncrement(
-        amount: PledgePaymentIncrementAmount(amount: 250.0, currency: "USD"),
+        amount: PledgePaymentIncrementAmount(
+          amount: 250.0,
+          currency: "USD",
+          amountFormattedInProjectNativeCurrency: "$250.00"
+        ),
         scheduledCollection: timeStamp,
         state: i == 1 ? .collected : .unattempted
       ))

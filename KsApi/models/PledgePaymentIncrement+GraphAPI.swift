@@ -2,10 +2,8 @@ import Foundation
 
 extension PledgePaymentIncrement {
   public init?(withGraphQLFragment fragment: GraphAPI.PaymentIncrementFragment) {
-    let moneyFragment = fragment.amount.fragments.moneyFragment
-    guard let amountAsString = moneyFragment.amount,
-          let amountAsDouble = Double(amountAsString),
-          let currency = moneyFragment.currency?.rawValue else {
+    let amountAsString = fragment.amount.amountAsFloat
+    guard let amountAsDouble = Double(amountAsString) else {
       return nil
     }
 
@@ -13,7 +11,11 @@ extension PledgePaymentIncrement {
       return nil
     }
 
-    self.amount = PledgePaymentIncrementAmount(amount: amountAsDouble, currency: currency)
+    self.amount = PledgePaymentIncrementAmount(
+      amount: amountAsDouble,
+      currency: fragment.amount.currency,
+      amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
+    )
     self.scheduledCollection = intervalAsTime
     self.state = PledgePaymentIncrementState(stateValue: fragment.state)
   }
