@@ -3972,6 +3972,96 @@ public enum GraphAPI {
     }
   }
 
+  public enum PaymentIncrementState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// The initial state of the payment increment; payment source has not been charged
+    case unattempted
+    /// Payment source was successfully charged
+    case collected
+    /// Payment source could not be charged due to an errored payment source or authentication being required
+    case errored
+    /// Payment increment is cancelled by user action or is an abandoned increment due to failure to complete payment
+    case cancelled
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "UNATTEMPTED": self = .unattempted
+        case "COLLECTED": self = .collected
+        case "ERRORED": self = .errored
+        case "CANCELLED": self = .cancelled
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .unattempted: return "UNATTEMPTED"
+        case .collected: return "COLLECTED"
+        case .errored: return "ERRORED"
+        case .cancelled: return "CANCELLED"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: PaymentIncrementState, rhs: PaymentIncrementState) -> Bool {
+      switch (lhs, rhs) {
+        case (.unattempted, .unattempted): return true
+        case (.collected, .collected): return true
+        case (.errored, .errored): return true
+        case (.cancelled, .cancelled): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [PaymentIncrementState] {
+      return [
+        .unattempted,
+        .collected,
+        .errored,
+        .cancelled,
+      ]
+    }
+  }
+
+  public enum PaymentIncrementStateReason: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// The payment source has attempted to be charged, but issuer requires additional authentication to complete the payment
+    case requiresAction
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "REQUIRES_ACTION": self = .requiresAction
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .requiresAction: return "REQUIRES_ACTION"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: PaymentIncrementStateReason, rhs: PaymentIncrementStateReason) -> Bool {
+      switch (lhs, rhs) {
+        case (.requiresAction, .requiresAction): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [PaymentIncrementStateReason] {
+      return [
+        .requiresAction,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -4250,11 +4340,9 @@ public enum GraphAPI {
     case enableSpotlightBgImage
     case ecovadisComponent_2023
     case webBraze
-    case globalNav_2023
     case latePledgesLearnMoreCta
     case postCampaignBackings_2024
     case ckeditorProjectUpdates
-    case backerDiscoveryFeatures_2023
     case paymentsStripeLinkOnCheckout
     case addressCollection_2024
     case backerReportUpdate_2024
@@ -4283,6 +4371,7 @@ public enum GraphAPI {
     case reactBackedProjects
     case copyAddons
     case kdsMessagesApp
+    case pledgeManagementRefunds
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4366,11 +4455,9 @@ public enum GraphAPI {
         case "enable_spotlight_bg_image": self = .enableSpotlightBgImage
         case "ecovadis_component_2023": self = .ecovadisComponent_2023
         case "web_braze": self = .webBraze
-        case "global_nav_2023": self = .globalNav_2023
         case "late_pledges_learn_more_cta": self = .latePledgesLearnMoreCta
         case "post_campaign_backings_2024": self = .postCampaignBackings_2024
         case "ckeditor_project_updates": self = .ckeditorProjectUpdates
-        case "backer_discovery_features_2023": self = .backerDiscoveryFeatures_2023
         case "payments_stripe_link_on_checkout": self = .paymentsStripeLinkOnCheckout
         case "address_collection_2024": self = .addressCollection_2024
         case "backer_report_update_2024": self = .backerReportUpdate_2024
@@ -4399,6 +4486,7 @@ public enum GraphAPI {
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
         case "KDS_messages_app": self = .kdsMessagesApp
+        case "pledge_management_refunds": self = .pledgeManagementRefunds
         default: self = .__unknown(rawValue)
       }
     }
@@ -4483,11 +4571,9 @@ public enum GraphAPI {
         case .enableSpotlightBgImage: return "enable_spotlight_bg_image"
         case .ecovadisComponent_2023: return "ecovadis_component_2023"
         case .webBraze: return "web_braze"
-        case .globalNav_2023: return "global_nav_2023"
         case .latePledgesLearnMoreCta: return "late_pledges_learn_more_cta"
         case .postCampaignBackings_2024: return "post_campaign_backings_2024"
         case .ckeditorProjectUpdates: return "ckeditor_project_updates"
-        case .backerDiscoveryFeatures_2023: return "backer_discovery_features_2023"
         case .paymentsStripeLinkOnCheckout: return "payments_stripe_link_on_checkout"
         case .addressCollection_2024: return "address_collection_2024"
         case .backerReportUpdate_2024: return "backer_report_update_2024"
@@ -4516,6 +4602,7 @@ public enum GraphAPI {
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
         case .kdsMessagesApp: return "KDS_messages_app"
+        case .pledgeManagementRefunds: return "pledge_management_refunds"
         case .__unknown(let value): return value
       }
     }
@@ -4600,11 +4687,9 @@ public enum GraphAPI {
         case (.enableSpotlightBgImage, .enableSpotlightBgImage): return true
         case (.ecovadisComponent_2023, .ecovadisComponent_2023): return true
         case (.webBraze, .webBraze): return true
-        case (.globalNav_2023, .globalNav_2023): return true
         case (.latePledgesLearnMoreCta, .latePledgesLearnMoreCta): return true
         case (.postCampaignBackings_2024, .postCampaignBackings_2024): return true
         case (.ckeditorProjectUpdates, .ckeditorProjectUpdates): return true
-        case (.backerDiscoveryFeatures_2023, .backerDiscoveryFeatures_2023): return true
         case (.paymentsStripeLinkOnCheckout, .paymentsStripeLinkOnCheckout): return true
         case (.addressCollection_2024, .addressCollection_2024): return true
         case (.backerReportUpdate_2024, .backerReportUpdate_2024): return true
@@ -4633,6 +4718,7 @@ public enum GraphAPI {
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
         case (.kdsMessagesApp, .kdsMessagesApp): return true
+        case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4718,11 +4804,9 @@ public enum GraphAPI {
         .enableSpotlightBgImage,
         .ecovadisComponent_2023,
         .webBraze,
-        .globalNav_2023,
         .latePledgesLearnMoreCta,
         .postCampaignBackings_2024,
         .ckeditorProjectUpdates,
-        .backerDiscoveryFeatures_2023,
         .paymentsStripeLinkOnCheckout,
         .addressCollection_2024,
         .backerReportUpdate_2024,
@@ -4751,6 +4835,7 @@ public enum GraphAPI {
         .reactBackedProjects,
         .copyAddons,
         .kdsMessagesApp,
+        .pledgeManagementRefunds,
       ]
     }
   }
@@ -15991,6 +16076,7 @@ public enum GraphAPI {
         }
         scheduledCollection
         state
+        stateReason
       }
       """
 
@@ -16001,7 +16087,8 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
         GraphQLField("scheduledCollection", type: .nonNull(.scalar(String.self))),
-        GraphQLField("state", type: .nonNull(.scalar(String.self))),
+        GraphQLField("state", type: .nonNull(.scalar(PaymentIncrementState.self))),
+        GraphQLField("stateReason", type: .scalar(PaymentIncrementStateReason.self)),
       ]
     }
 
@@ -16011,8 +16098,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, scheduledCollection: String, state: String) {
-      self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection, "state": state])
+    public init(amount: Amount, scheduledCollection: String, state: PaymentIncrementState, stateReason: PaymentIncrementStateReason? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PaymentIncrement", "amount": amount.resultMap, "scheduledCollection": scheduledCollection, "state": state, "stateReason": stateReason])
     }
 
     public var __typename: String {
@@ -16043,12 +16130,21 @@ public enum GraphAPI {
       }
     }
 
-    public var state: String {
+    public var state: PaymentIncrementState {
       get {
-        return resultMap["state"]! as! String
+        return resultMap["state"]! as! PaymentIncrementState
       }
       set {
         resultMap.updateValue(newValue, forKey: "state")
+      }
+    }
+
+    public var stateReason: PaymentIncrementStateReason? {
+      get {
+        return resultMap["stateReason"] as? PaymentIncrementStateReason
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "stateReason")
       }
     }
 
