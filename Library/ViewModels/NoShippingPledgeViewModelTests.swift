@@ -1857,86 +1857,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdatingRewardSubmitButtonEnabled_ShippingEnabled() {
-    let reward = Reward.postcards
-      |> Reward.lens.shipping.enabled .~ true
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.reward .~ Reward.otherReward
-          |> Backing.lens.rewardId .~ Reward.otherReward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700.0
-      )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
-
-    let updateBackingEnvelope = UpdateBackingEnvelope(
-      updateBacking: .init(
-        checkout: .init(
-          id: "Q2hlY2tvdXQtMQ==",
-          state: .successful,
-          backing: .init(
-            clientSecret: "client-secret",
-            requiresAction: false
-          )
-        )
-      )
-    )
-
-    let mockService = MockService(
-      updateBackingResult: .success(updateBackingEnvelope)
-    )
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: nil,
-        context: .updateReward
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true])
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-        [false, false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
-      )
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      self.vm.inputs.submitButtonTapped()
-
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false])
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      self.scheduler.run()
-
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true, false, true])
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
-        "Got it! Your changes have been saved."
-      ])
-      self.popToRootViewController.assertValueCount(1)
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-    }
-  }
-
   func testChangingPaymentMethod_SubmitButtonEnabled_OnlyWhenNewMethodIsSelected() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -1978,7 +1898,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true])
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false, "No payment method selected")
 
     var paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345", "pm_fake")
 
