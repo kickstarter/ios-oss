@@ -268,51 +268,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateContext() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: shippingRule,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .update
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.title.assertValues(["Update pledge"])
-
-      self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
-
-      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
-
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.update])
-
-      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
-      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
-
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
-    }
-  }
-
   func testUpdateRewardContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -991,106 +946,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([25])
     self.goToApplePayPaymentAuthorizationAllRewardsShippingTotal.assertValues([5])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
-  }
-
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_US_ProjectCurrency_US_ProjectCountry(
-  ) {
-    let project = Project.template
-      |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 25
-    let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
-    self.vm.inputs.viewDidLoad()
-
-    self.showApplePayAlertMessage.assertDidNotEmitValue()
-    self.showApplePayAlertTitle.assertDidNotEmitValue()
-
-    self.vm.inputs.applePayButtonTapped()
-
-    self.showApplePayAlertMessage.assertValues(
-      ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
-    )
-    self.showApplePayAlertTitle.assertValues(["Almost there!"])
-  }
-
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_NonUS_ProjectCurrency_US_ProjectCountry(
-  ) {
-    let project = Project.template
-      |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 25
-    let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
-    self.vm.inputs.viewDidLoad()
-
-    self.showApplePayAlertMessage.assertDidNotEmitValue()
-    self.showApplePayAlertTitle.assertDidNotEmitValue()
-
-    self.vm.inputs.applePayButtonTapped()
-
-    self.showApplePayAlertMessage.assertValues(
-      ["Please enter a pledge amount between MX$ 25 and MX$ 10,000."]
-    )
-    self.showApplePayAlertTitle.assertValues(["Almost there!"])
-  }
-
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_BellowMin() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 25
-    let pledgeAmountData = (amount: 10.0, min: 25.0, max: 10_000.0, isValid: false)
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
-    self.vm.inputs.viewDidLoad()
-
-    self.showApplePayAlertMessage.assertDidNotEmitValue()
-    self.showApplePayAlertTitle.assertDidNotEmitValue()
-
-    self.vm.inputs.applePayButtonTapped()
-
-    self.showApplePayAlertMessage.assertValues(
-      ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
-    )
-    self.showApplePayAlertTitle.assertValues(["Almost there!"])
   }
 
   func testPaymentAuthorizationViewControllerDidFinish_WithoutCompletingTransaction() {
@@ -1935,7 +1790,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateBacking_Success() {
+  func testUpdateReward_Success() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
 
@@ -1977,7 +1832,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .discovery,
-        context: .update
+        context: .updateReward
       )
 
       self.vm.inputs.configure(with: data)
@@ -2030,7 +1885,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateBacking_Failure() {
+  func testUpdateReward_Failure() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
 
@@ -2059,7 +1914,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
         refTag: .discovery,
-        context: .update
+        context: .updateReward
       )
 
       self.vm.inputs.configure(with: data)
@@ -2108,225 +1963,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValueCount(1)
     }
-  }
-
-  func testUpdatingSubmitButtonEnabled_BackingHasAddOns() {
-    let addOn = Reward.template
-      |> Reward.lens.id .~ 55
-
-    let reward = Reward.postcards
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.minimum .~ 10.0
-      |> Reward.lens.hasAddOns .~ true
-
-    let shippingRule = ShippingRule.template
-      |> ShippingRule.lens.location .~ .brooklyn
-      |> ShippingRule.lens.cost .~ 10
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.rewardData.addOns .~ [addOn]
-      |> Project.lens.rewardData.rewards .~ [reward]
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.addOns .~ [addOn]
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.locationId .~ shippingRule.location.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.bonusAmount .~ 680.0
-          |> Backing.lens.amount .~ 700.0
-      )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: shippingRule.location.id,
-      refTag: .discovery,
-      context: .update
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, true],
-      "Amount unchanged, but is enabled because Reward has add-ons"
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues(
-        [false, true],
-        "Shipping rule and amount unchanged, but is enabled because Reward has add-ons"
-      )
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true], "Amount unchanged")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, true], "Amount changed")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, true, true, true],
-      "Amount unchanged"
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues([false, true, true, true], "Shipping rule changed")
-  }
-
-  func testUpdatingSubmitButtonEnabled_ShippingEnabled() {
-    let reward = Reward.postcards
-      |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.minimum .~ 10.0
-
-    let shippingRule = ShippingRule.template
-      |> ShippingRule.lens.location .~ .brooklyn
-      |> ShippingRule.lens.cost .~ 10
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.locationId .~ shippingRule.location.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.bonusAmount .~ 680.0
-          |> Backing.lens.amount .~ 700.0
-      )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: shippingRule.location.id,
-      refTag: .discovery,
-      context: .update
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Amount unchanged")
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues([false], "Shipping rule and amount unchanged")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Amount unchanged")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true], "Amount changed")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false],
-      "Amount unchanged"
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues([false, false, true, true, false])
-  }
-
-  func testUpdatingSubmitButtonEnabled_NoShipping() {
-    let reward = Reward.postcards
-      |> Reward.lens.shipping.enabled .~ false
-      |> Reward.lens.minimum .~ 10
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ nil
-          |> Backing.lens.bonusAmount .~ 690.0
-          |> Backing.lens.amount .~ 700
-      )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .discovery,
-      context: .update
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Amount unchanged")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true], "Amount changed")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false],
-      "Amount unchanged"
-    )
   }
 
   func testUpdatingRewardSubmitButtonEnabled_ShippingEnabled() {
@@ -2454,58 +2090,26 @@ final class NoShippingPledgeViewModelTests: TestCase {
       selectedQuantities: [reward.id: 1],
       selectedLocationId: defaultShippingRule.location.id,
       refTag: .discovery,
-      context: .update
+      context: .changePaymentMethod
     )
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues([false], "Shipping rule and amount unchanged")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Amount unchanged")
-
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false, true], "Amount changed")
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false],
-      "Amount unchanged"
-    )
-
-    self.configurePledgeViewCTAContainerViewIsEnabled
-      .assertValues([false, false, true, true, false])
-
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false],
-      "Amount and shipping rule unchanged"
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(
+      false,
+      "CTA shouldn't be enabled until payment method is selected"
     )
 
     var paymentSourceSelected = PaymentSourceSelected.savedCreditCard("12345", "pm_fake")
 
     self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false, true],
-      "Payment method changed"
-    )
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
 
     paymentSourceSelected = PaymentSourceSelected.savedCreditCard(
       Backing.PaymentSource.template.id ?? "",
@@ -2514,10 +2118,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
     self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-      [false, false, true, true, false, true, false],
-      "Payment method unchanged"
-    )
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true, "Payment method unchanged")
   }
 
   func testGoToApplePayPaymentAuthorization_HasAddOns() {
