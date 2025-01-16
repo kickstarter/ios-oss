@@ -86,6 +86,9 @@ struct PPOProjectCard: View {
       leadingColumnWidth: leadingColumnWidth
     )
     .padding([.horizontal])
+    .onTapGesture {
+      self.viewModel.viewBackingDetails()
+    }
   }
 
   @ViewBuilder
