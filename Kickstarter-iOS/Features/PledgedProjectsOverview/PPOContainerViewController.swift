@@ -179,7 +179,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     clientSecret: String,
     onProgress: @escaping (PPOActionState) -> Void
   ) {
-
     if clientSecret.hasPrefix("seti_") {
       onProgress(.processing)
 
@@ -224,7 +223,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     STPPaymentHandler.shared().confirmPayment(
       paymentParams,
       with: self,
-      completion: { [weak self] status, _, y in
+      completion: { [weak self] status, _, _ in
         switch status {
         case .succeeded:
           self?.viewModel.process3DSAuthentication(state: .succeeded)
