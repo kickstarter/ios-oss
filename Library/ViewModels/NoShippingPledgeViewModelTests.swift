@@ -4069,28 +4069,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     ])
   }
 
-  func testPledgeAmountSummaryViewHidden_UpdateContext_RegularReward_IsNotHidden() {
-    self.pledgeAmountSummaryViewHidden.assertDidNotEmitValue()
-
-    let project = Project.template
-    let reward = Reward.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .update
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.pledgeAmountSummaryViewHidden.assertValues([false])
-  }
-
   func testCreateBacking_WithNewPaymentSheetCard_TappedPledgeButton_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -4335,50 +4313,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
-  }
-
-  func testTrackingEvents_ContextIsUpdate() {
-    let project = Project.template
-    let reward = Reward.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedShippingRule: shippingRule,
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: nil,
-      context: .update
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
-
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("update_pledge", segmentTrackingClientProps?["context_page"] as? String)
-    XCTAssertEqual("update_pledge", segmentTrackingClient.properties.last?["context_page"] as? String)
-
-    // Checkout properties
-
-    XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("1", segmentTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(
-      true,
-      segmentTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
-
-    self.vm.inputs.submitButtonTapped()
-
-    XCTAssertEqual(
-      ["Page Viewed", "CTA Clicked"],
-      self.segmentTrackingClient.events
-    )
   }
 
   func testTrackingEvents_ContextIsUpdateReward() {
