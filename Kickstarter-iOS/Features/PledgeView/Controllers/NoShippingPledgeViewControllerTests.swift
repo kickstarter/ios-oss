@@ -267,6 +267,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [nonReward],
+      bonusSupport: 1.0,
       selectedShippingRule: shippingRule,
       selectedQuantities: [nonReward.id: 1],
       selectedLocationId: ShippingRule.template.id,
