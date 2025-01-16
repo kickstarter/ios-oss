@@ -4778,9 +4778,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
-      /* self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-         with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
-       ) */
       // Should be true, since pledge over time loaded and everything else is correct
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
     }
@@ -4818,9 +4815,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
       let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
-      /* self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-         with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
-       ) */
       // Should be true, since pledge over time never loaded and everything else is correct
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
     }
@@ -4858,10 +4852,6 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       let paymentSourceSelected = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
       self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
-
-      // self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      //   with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
-      // )
 
       // Should still be disabled, since pledge over time never loaded
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
