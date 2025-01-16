@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 
 extension ServerFeature {
-  fileprivate func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
+  private func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
     environment.currentUserServerFeatures?.contains(self) ?? false
   }
 }
