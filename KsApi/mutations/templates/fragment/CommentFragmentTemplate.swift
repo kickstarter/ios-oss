@@ -59,6 +59,7 @@ public enum CommentFragmentTemplate {
            "totalCount": 2
         },
         "optedOutOfRecommendations":true,
+        "ppoHasAction": false,
         "email": "m@example.com",
         "isAppleConnected": true,
         "isBlocked": false,

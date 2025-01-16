@@ -612,6 +612,7 @@ private func backingDictionary() -> [String: Any] {
          "totalCount": 2
       },
       "optedOutOfRecommendations": true,
+      "ppoHasAction": false,
       "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
       "imageUrl": "https://i.kickstarter.com/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?anim=false&fit=crop&height=1024&origin=ugc-qa&q=92&width=1024&sig=R3eM4ky3JqjYS9y8bIqPAag33sV10pfZu16tveritQY%3D",
@@ -837,6 +838,7 @@ private func backingDictionary() -> [String: Any] {
           "totalCount": 2
         },
         "optedOutOfRecommendations": true,
+        "ppoHasAction": false,
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [
