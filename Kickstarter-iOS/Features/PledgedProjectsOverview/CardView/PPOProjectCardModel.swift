@@ -16,6 +16,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let tierType: TierType
   public let backingDetailsUrl: String
   public let backingId: Int
+  public let backingGraphId: String
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
 
   public func hash(into hasher: inout Hasher) {
@@ -60,7 +61,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   }
 
   public enum Action: Identifiable, Equatable, Hashable {
-    case confirmAddress(address: String, addressId: Int)
+    case confirmAddress(address: String, addressId: String)
     case editAddress
     case completeSurvey
     case fixPayment
@@ -238,11 +239,12 @@ extension PPOProjectCardModel {
         Los Angeles, CA 90025-1234
         United States
       """,
-      addressId: 98
+      addressId: "fake-address-id"
     ), .editAddress),
     tierType: .confirmAddress,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
+    backingGraphId: "backing-fake-id",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -262,6 +264,7 @@ extension PPOProjectCardModel {
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
+    backingGraphId: "backing-fake-id",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -285,6 +288,7 @@ extension PPOProjectCardModel {
     tierType: .fixPayment,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
+    backingGraphId: "backing-fake-id",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -308,6 +312,7 @@ extension PPOProjectCardModel {
     tierType: .authenticateCard,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
+    backingGraphId: "backing-fake-id",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -326,6 +331,7 @@ extension PPOProjectCardModel {
     tierType: .openSurvey,
     backingDetailsUrl: "fakeBackingDetailsUrl",
     backingId: 47,
+    backingGraphId: "backing-fake-id",
     projectAnalytics: Self.projectAnalyticsFragmentTemplate
   )
 
@@ -382,7 +388,7 @@ extension PPOProjectCardModel {
     let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
-    let addressId: Int? = backing?.deliveryAddress.flatMap { decompose(id: $0.id) }
+    let addressId: String? = backing?.deliveryAddress?.id
     let addressWithoutName: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
       let cityRegionFields: [String?] = [
         deliveryAddress.city,
@@ -416,6 +422,7 @@ extension PPOProjectCardModel {
     // This specifically links to the survey tab.
     let backingDetailsUrl = backing?.backingDetailsPageRoute
     let backingId = backing.flatMap { decompose(id: $0.id) }
+    let backingGraphId = backing?.id
 
     switch (card.tierType, backing?.clientSecret, addressWithoutName, addressId) {
     case (PPOProjectCardModelConstants.paymentFailed, _, _, _):
@@ -445,7 +452,7 @@ extension PPOProjectCardModel {
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
     if let image, let projectName, let projectId, let formattedPledge, let creatorName,
-       let projectAnalyticsFragment, let backingDetailsUrl, let backingId {
+       let projectAnalyticsFragment, let backingDetailsUrl, let backingId, let backingGraphId {
       self.init(
         isUnread: true,
         alerts: alerts,
@@ -459,6 +466,7 @@ extension PPOProjectCardModel {
         tierType: tierType,
         backingDetailsUrl: backingDetailsUrl,
         backingId: backingId,
+        backingGraphId: backingGraphId,
         projectAnalytics: projectAnalyticsFragment
       )
     } else {

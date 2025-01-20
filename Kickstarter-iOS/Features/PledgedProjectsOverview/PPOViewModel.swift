@@ -27,7 +27,7 @@ protocol PPOViewModelInputs {
   func openSurvey(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
-  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: Int)
+  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: String)
   func contactCreator(from: PPOProjectCardModel)
 }
 
@@ -43,7 +43,7 @@ enum PPONavigationEvent: Equatable {
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
-  case confirmAddress(backingId: Int, addressId: Int, address: String)
+  case confirmAddress(backingId: String, addressId: String, address: String)
   case contactCreator(messageSubject: MessageSubject)
 
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
@@ -132,7 +132,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
       self.confirmAddressSubject.map { viewModel, address, addressId in
         PPONavigationEvent.confirmAddress(
-          backingId: viewModel.backingId,
+          backingId: viewModel.backingGraphId,
           addressId: addressId,
           address: address
         )
@@ -272,7 +272,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.editAddressSubject.send(from)
   }
 
-  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: Int) {
+  func confirmAddress(from: PPOProjectCardModel, address: String, addressId: String) {
     self.confirmAddressSubject.send((from, address, addressId))
   }
 
@@ -304,7 +304,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, Int), Never>()
+  private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 

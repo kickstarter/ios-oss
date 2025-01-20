@@ -170,7 +170,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func confirmAddress(backingId: Int, addressId: Int, address: String) {
+  private func confirmAddress(backingId: String, addressId: String, address: String) {
     let alert = UIAlertController(
       title: Strings.Confirm_your_address(),
       message: address,
@@ -183,8 +183,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     alert.addAction(UIAlertAction(
       title: NSLocalizedString(Strings.Confirm(), comment: "Default action"),
       style: .default,
-      handler: { _ in
-        // TODO: Time to confirm the address!
+      handler: { [weak self] _ in
+        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId)
       }
     ))
     self.present(alert, animated: true, completion: nil)
