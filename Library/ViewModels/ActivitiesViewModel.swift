@@ -179,6 +179,8 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .map { _ in AppEnvironment.current.currentUser }
 
     let erroredBackingsEvent = currentUser
+      // Only fetch/show errored backings in activity if PPO is not available.
+      .filter { _ in !featurePledgedProjectsOverviewEnabled() }
       .skipNil()
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchErroredUserBackings(status: .errored)
@@ -233,7 +235,8 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
           self.surveyResponseViewControllerDismissedProperty.signal
         )
       )
-      .filter { $0 != nil }
+      // Only fetch survey events if there's a logged-in user and PPO is not available.
+      .filter { $0 != nil && !featurePledgedProjectsOverviewEnabled() }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .materialize()
