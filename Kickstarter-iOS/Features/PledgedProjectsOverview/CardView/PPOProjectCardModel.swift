@@ -383,21 +383,27 @@ extension PPOProjectCardModel {
     let creatorName = ppoProject?.creator?.name
 
     let addressId: Int? = backing?.deliveryAddress.flatMap { decompose(id: $0.id) }
-    let address: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
+    let addressWithoutName: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
       let cityRegionFields: [String?] = [
         deliveryAddress.city,
         deliveryAddress.region.flatMap { ", \($0)" },
         deliveryAddress.postalCode.flatMap { " \($0)" }
       ]
       let fields: [String?] = [
-        deliveryAddress.recipientName,
         deliveryAddress.addressLine1,
         deliveryAddress.addressLine2,
         cityRegionFields.compactMap { $0 }.joined(),
         deliveryAddress.countryCode.rawValue,
         deliveryAddress.phoneNumber
       ]
-      return fields.compactMap { $0 }.joined(separator: "\n")
+      // Create address from all fields that are not nil and not the empty string.
+      return fields.compactMap { ($0 ?? "").isEmpty ? nil : $0 }.joined(separator: "\n")
+    }
+    let addressWithName = addressWithoutName.flatMap { address in
+      guard let name = backing?.deliveryAddress?.recipientName else {
+        return address
+      }
+      return name + "\n" + address
     }
 
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
@@ -411,7 +417,7 @@ extension PPOProjectCardModel {
     let backingDetailsUrl = backing?.backingDetailsPageRoute
     let backingId = backing.flatMap { decompose(id: $0.id) }
 
-    switch (card.tierType, backing?.clientSecret, address, addressId) {
+    switch (card.tierType, backing?.clientSecret, addressWithoutName, addressId) {
     case (PPOProjectCardModelConstants.paymentFailed, _, _, _):
       primaryAction = .fixPayment
       secondaryAction = nil
@@ -448,7 +454,7 @@ extension PPOProjectCardModel {
         projectId: projectId,
         pledge: formattedPledge,
         creatorName: creatorName,
-        address: address,
+        address: addressWithName,
         actions: (primaryAction, secondaryAction),
         tierType: tierType,
         backingDetailsUrl: backingDetailsUrl,
