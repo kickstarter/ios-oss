@@ -176,12 +176,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       message: address,
       preferredStyle: .alert
     )
+    alert.addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel))
     alert.addAction(UIAlertAction(
-      title: NSLocalizedString(Strings.Cancel(), comment: "Cancel action"),
-      style: .cancel
-    ))
-    alert.addAction(UIAlertAction(
-      title: NSLocalizedString(Strings.Confirm(), comment: "Default action"),
+      title: Strings.Confirm(),
       style: .default,
       handler: { [weak self] _ in
         self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId)
