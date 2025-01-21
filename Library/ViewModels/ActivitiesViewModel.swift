@@ -235,8 +235,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
           self.surveyResponseViewControllerDismissedProperty.signal
         )
       )
-      // Only fetch survey events if there's a logged-in user and PPO is not available.
-      .filter { $0 != nil && !featurePledgedProjectsOverviewEnabled() }
+      .filter { $0 != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .materialize()
