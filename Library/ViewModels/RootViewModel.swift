@@ -443,12 +443,8 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
     (AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0)
 }
 
-private func isPledgedProjectsOverviewEnabled() -> Bool {
-  featurePledgedProjectsOverviewEnabled() && serverFeaturePledgedProjectsOverviewIsEnabled()
-}
-
 private func generateStandardViewControllers() -> [RootViewControllerData] {
-  if isPledgedProjectsOverviewEnabled() {
+  if featurePledgedProjectsOverviewEnabled() {
     return [.discovery, .pledgedProjectsAndActivities, .search]
   }
   return [.discovery, .activities, .search]
@@ -475,7 +471,7 @@ extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
-  guard !(hasPPOAction && isPledgedProjectsOverviewEnabled()) else {
+  guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
     // an empty string will show a dot as badge
     return ""
   }
