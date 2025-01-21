@@ -224,32 +224,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       }
       .skipNil()
 
-    /**
-     * The total pledge amount that will be used to create the backing.
-     * For a regular reward this includes the bonus support amount,
-     * the total of all rewards
-     * For No Reward this is only the pledge amount.
-     * Never calculate the pledge total in a fix payment method context.
-     */
-    let calculatedPledgeTotal = Signal.combineLatest(
-      additionalPledgeAmount,
-      allRewardsShippingTotal,
-      allRewardsTotal,
-      context
-    )
-    .filter { _, _, _, context in context != .fixPaymentMethod }
-    .map { additionalPledgeAmount, allRewardsShippingTotal, allRewardsTotal, _ in
-      calculatePledgeTotal(
-        pledgeAmount: additionalPledgeAmount,
-        shippingCost: allRewardsShippingTotal,
-        addOnRewardsTotal: allRewardsTotal
-      )
-    }
-
-    let pledgeTotal = Signal.merge(
-      backing.map(\.amount),
-      calculatedPledgeTotal
-    )
+    self.pledgeTotalUseCase = PledgeTotalUseCase(initialData: initialData)
+    let pledgeTotal = self.pledgeTotalUseCase.pledgeTotal
 
     let projectAndConfirmationLabelHidden = Signal.combineLatest(
       project,
@@ -1159,6 +1135,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Component view models
 
   private let plotViewModel: PLOTPledgeViewModel
+  private let pledgeTotalUseCase: PledgeTotalUseCase
 }
 
 // MARK: - Functions

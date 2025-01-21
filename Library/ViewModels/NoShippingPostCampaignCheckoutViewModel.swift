@@ -79,40 +79,10 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: Calculate totals
 
-    let calculatedShippingTotal = Signal.combineLatest(
-      selectedShippingRule.skipNil(),
-      rewards,
-      selectedQuantities
-    )
-    .map(calculateShippingTotal)
-
-    let allRewardsShippingTotal = Signal.merge(
-      selectedShippingRule.filter(isNil).mapConst(0.0),
-      calculatedShippingTotal
-    )
-
-    let allRewardsTotal = Signal.combineLatest(
-      rewards,
-      selectedQuantities
-    )
-    .map(calculateAllRewardsTotal)
-
-    /**
-     * For a regular reward this includes the bonus support amount,
-     * the total of all rewards and their respective shipping costs.
-     * For No Reward this is only the pledge amount.
-     */
-    let calculatedPledgeTotal = Signal.combineLatest(
-      bonusAmount,
-      allRewardsShippingTotal,
-      allRewardsTotal
-    )
-    .map(calculatePledgeTotal)
-
-    let pledgeTotal = Signal.merge(
-      backing.map(\.amount),
-      calculatedPledgeTotal
-    )
+    self.pledgeTotalUseCase = PledgeTotalUseCase(initialData: initialData)
+    let pledgeTotal = self.pledgeTotalUseCase.pledgeTotal
+    let allRewardsShippingTotal = self.pledgeTotalUseCase.allRewardsShippingTotal
+    let allRewardsTotal = self.pledgeTotalUseCase.allRewardsTotal
 
     // MARK: Create checkout
 
@@ -748,4 +718,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
   public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
   public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
+
+  // Components
+  private let pledgeTotalUseCase: PledgeTotalUseCase
 }
