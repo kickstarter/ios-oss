@@ -61,9 +61,17 @@ enum PPONavigationEvent: Equatable {
       .fix3DSChallenge(clientSecret: rhsSecret, onProgress: _)
     ):
       return lhsSecret == rhsSecret
-    case (.backedProjects, .backedProjects),
-         (.confirmAddress, .confirmAddress),
-         (.fixPaymentMethod, .fixPaymentMethod):
+    case let (
+      .confirmAddress(lhsBackingId, lhsAddressId, lhsAddress),
+      .confirmAddress(rhsBackingId, rhsAddressId, rhsAddress)
+    ):
+      return lhsBackingId == rhsBackingId && lhsAddressId == rhsAddressId && lhsAddress == rhsAddress
+    case let (
+      .fixPaymentMethod(lhsProjectId, lhsBackingId),
+      .fixPaymentMethod(rhsProjectId, rhsBackingId)
+    ):
+      return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
+    case (.backedProjects, .backedProjects):
       return true
     default:
       return false
