@@ -440,7 +440,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
 private func currentUserActivitiesAndErroredPledgeCount() -> Int {
   // Do not include errored pledges if PPO is enabled.
-  let errorCount = isPledgedProjectsOverviewEnabled()
+  let errorCount = featurePledgedProjectsOverviewEnabled()
     ? 0
     : AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0
   return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) + errorCount
