@@ -24,6 +24,8 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let shippingAmountHidden: Bool
   public let rewardIsLocalPickup: Bool
   public let paymentIncrements: [PledgePaymentIncrement]?
+  // Temporary property
+  public let project: Project?
 }
 
 public protocol ManagePledgeSummaryViewModelInputs {
@@ -159,7 +161,8 @@ private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -
     projectDeadline: data.projectDeadline,
     projectState: data.projectState,
     backingState: data.backingState,
-    paymentIncrements: data.paymentIncrements
+    paymentIncrements: data.paymentIncrements,
+    project: data.project
   )
 }
 

@@ -10,6 +10,7 @@ public struct ManagePledgePaymentMethodViewData: Equatable {
   public let lastFour: String?
   public let creditCardType: CreditCardType?
   public let paymentType: PaymentType?
+  public let isPledgeOverTime: Bool
 }
 
 public protocol ManagePledgePaymentMethodViewModelInputs {
@@ -87,7 +88,7 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
 
     self.fixButtonHidden = self.configureWithDataSignal
-      .map { $0.backingState != .errored }
+      .map { $0.backingState != .errored || $0.isPledgeOverTime }
 
     self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal
   }

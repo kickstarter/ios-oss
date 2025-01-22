@@ -26,7 +26,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.canceled,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -45,7 +46,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.failed,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -64,7 +66,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.canceled,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -83,7 +86,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.collected,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -102,7 +106,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.dropped,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -121,7 +126,28 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.errored,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "We can’t process your pledge. Please update your payment method."
+    ])
+  }
+
+  func testBackingStatus_AuthenticationRequired_Backer() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCurrencyCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.successful,
+      backingState: Backing.Status.authenticationRequired,
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -140,7 +166,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.preauth,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -159,7 +186,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -179,7 +207,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: Backing.Status.pledged,
-        paymentIncrements: nil
+        paymentIncrements: nil,
+        project: nil
       )
 
       self.vm.inputs.configure(with: data)
@@ -192,7 +221,10 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
   func testBackingStatus_AllOtherStatuses_Backer() {
     let statuses = Backing.Status.allCases
-      .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
+      .filter {
+        ![.canceled, .collected, .dropped, .errored, .authenticationRequired, .pledged, .preauth]
+          .contains($0)
+      }
 
     statuses.forEach { backingState in
       let data = PledgeStatusLabelViewData(
@@ -203,7 +235,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: backingState,
-        paymentIncrements: nil
+        paymentIncrements: nil,
+        project: nil
       )
 
       self.vm.inputs.configure(with: data)
@@ -221,7 +254,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.canceled,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -240,7 +274,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.failed,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -259,7 +294,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.canceled,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -278,7 +314,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.collected,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -297,7 +334,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.dropped,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -316,7 +354,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.errored,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -335,7 +374,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.pledged,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -355,7 +395,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: Backing.Status.pledged,
-        paymentIncrements: nil
+        paymentIncrements: nil,
+        project: nil
       )
 
       self.vm.inputs.configure(with: data)
@@ -375,7 +416,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.preauth,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configure(with: data)
@@ -387,7 +429,10 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
   func testBackingStatus_AllOtherStatuses_Creator() {
     let statuses = Backing.Status.allCases
-      .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
+      .filter {
+        ![.canceled, .collected, .dropped, .errored, .authenticationRequired, .pledged, .preauth]
+          .contains($0)
+      }
 
     statuses.forEach { backingState in
       let data = PledgeStatusLabelViewData(
@@ -398,7 +443,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: backingState,
-        paymentIncrements: nil
+        paymentIncrements: nil,
+        project: nil
       )
 
       self.vm.inputs.configure(with: data)
@@ -416,7 +462,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.pledged,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
 
     self.vm.inputs.configure(with: data)
@@ -435,7 +482,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.pledged,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
 
     self.vm.inputs.configure(with: data)
@@ -454,13 +502,34 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.errored,
-      paymentIncrements: mockPaymentIncrements()
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
     )
 
     self.vm.inputs.configure(with: data)
 
     self.labelTextString.assertValues([
-      "We can’t process your pledge. Please update your payment method."
+      "We can’t process your Pledge Over Time payment. Please view your pledge on a web browser and log in to fix your payment."
+    ])
+  }
+
+  func testBackingStatus_AuthenticationRequired_Backer_PledgeOverTime() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.successful,
+      backingState: Backing.Status.authenticationRequired,
+      paymentIncrements: mockPaymentIncrements(),
+      project: Project.template
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "We can’t process your Pledge Over Time payment. Please view your pledge on a web browser and log in to fix your payment."
     ])
   }
 }

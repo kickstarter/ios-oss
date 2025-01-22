@@ -12,6 +12,8 @@ public struct PledgeStatusLabelViewData {
   public let projectState: Project.State
   public let backingState: Backing.Status
   public let paymentIncrements: [PledgePaymentIncrement]?
+  // Temporary property
+  public let project: Project?
 }
 
 extension PledgeStatusLabelViewData {
@@ -28,6 +30,7 @@ public protocol PledgeStatusLabelViewModelInputs {
 
 public protocol PledgeStatusLabelViewModelOutputs {
   var labelText: Signal<NSAttributedString, Never> { get }
+  var badgeHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeStatusLabelViewModelType {
@@ -42,6 +45,13 @@ public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
       .skipNil()
       .map(statusLabelText(with:))
       .skipNil()
+
+    self.badgeHidden = self.configureWithDataProperty.signal.skipNil()
+      .map {
+        $0.projectState != .live && $0
+          .isPledgeOverTime && ($0.backingState == .errored || $0.backingState == .authenticationRequired)
+      }
+      .negate()
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeStatusLabelViewData?>(nil)
@@ -50,6 +60,7 @@ public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
   }
 
   public let labelText: Signal<NSAttributedString, Never>
+  public let badgeHidden: Signal<Bool, Never>
 
   public var inputs: PledgeStatusLabelViewModelInputs { return self }
   public var outputs: PledgeStatusLabelViewModelOutputs { return self }
@@ -65,11 +76,13 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
 
   let font = UIFont.ksr_subhead()
   let foregroundColor = UIColor.ksr_support_700
+  let underlineStyle = false
 
-  let attributes = [
-    NSAttributedString.Key.paragraphStyle: paragraphStyle,
-    NSAttributedString.Key.font: font,
-    NSAttributedString.Key.foregroundColor: foregroundColor
+  let attributes: [NSAttributedString.Key: Any] = [
+    .paragraphStyle: paragraphStyle,
+    .font: font,
+    .foregroundColor: foregroundColor,
+    .underlineStyle: underlineStyle
   ]
 
   if let stringFromProject = projectStatusLabelText(
@@ -89,8 +102,10 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
     string = Strings.We_collected_your_pledge_for_this_project()
   case (.dropped, false, _):
     string = Strings.Your_pledge_was_dropped_because_of_payment_errors()
-  case (.errored, false, _):
+  case (.errored, false, false), (.authenticationRequired, false, false):
     string = Strings.We_cant_process_your_pledge_Please_update_your_payment_method()
+  case (.errored, false, true), (.authenticationRequired, false, true):
+    return attributedPlotErroredString(with: data, attributes: attributes)
   case (.pledged, _, false):
     return attributedConfirmationString(with: data)
   case (.pledged, _, true):
@@ -104,7 +119,7 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
     string = Strings.We_collected_the_backers_pledge_for_this_project()
   case (.dropped, true, _):
     string = Strings.This_pledge_was_dropped_because_of_payment_errors()
-  case (.errored, true, _):
+  case (.errored, true, _), (.authenticationRequired, true, _):
     string = Strings.We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method()
   case (.preauth, true, _):
     string = Strings.We_re_processing_this_pledge_pull_to_refresh()
@@ -223,4 +238,41 @@ private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusL
     attributes: attributes,
     bolding: [paymentAmount, date]
   )
+}
+
+private func attributedPlotErroredString(
+  with data: PledgeStatusLabelViewData,
+  attributes attrs: [NSAttributedString.Key: Any]
+) -> NSAttributedString? {
+  guard let project = data.project else {
+    return nil
+  }
+
+  guard let backingDetailLink = getProjectBackingDetailsURL(with: project) else {
+    return nil
+  }
+
+  let labelString =
+    "We can’t process your Pledge Over Time payment. Please <a href=\"\(backingDetailLink.absoluteString)\">view your pledge</a> on a web browser and log in to fix your payment."
+
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(labelString.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+  attributedString.addAttributes(attrs, range: fullRange)
+
+  return attributedString
+}
+
+private func getProjectBackingDetailsURL(with project: Project) -> URL? {
+  let urlString =
+    "\(AppEnvironment.current.apiService.serverConfig.webBaseUrl)/projects/\(project.creator.id)/\(project.slug)/backing/details"
+
+  return URL(string: urlString)
 }

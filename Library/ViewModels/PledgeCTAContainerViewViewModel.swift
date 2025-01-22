@@ -80,7 +80,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
-      project.ignoreValues().mapConst(false)
+      project.ignoreValues().mapConst(false),
+      // TODO: temporary change to force the error state when non-PLOT pledge with backing state "authentication_required".
+      project.filter {
+        $0.personalization.backing?.status == .authenticationRequired && $0.personalization.backing?
+          .paymentIncrements.isEmpty == true
+      }.mapConst(true)
     )
 
     let updateButtonStates = Signal.merge(

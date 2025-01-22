@@ -56,7 +56,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configureWith(data)
@@ -88,7 +89,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configureWith(data)
@@ -124,7 +126,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     withEnvironment(currentUser: user) {
@@ -163,7 +166,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     withEnvironment(currentUser: user) {
@@ -199,7 +203,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: true,
-      paymentIncrements: nil
+      paymentIncrements: nil,
+      project: nil
     )
 
     self.vm.inputs.configureWith(data)
