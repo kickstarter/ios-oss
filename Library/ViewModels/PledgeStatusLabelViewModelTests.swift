@@ -152,9 +152,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
 
-    self.labelTextString.assertValues([
-      "We can’t process your pledge. Please update your payment method."
-    ])
+    // TODO: for now we expected a nil `labelTextString`, this will be addressed when we get to the native implementation in this ticket [MBL-2012](https://kickstarter.atlassian.net/browse/MBL-2012)
+    self.labelTextString.assertValues([])
   }
 
   func testBackingStatus_Preauth_Backer() {
