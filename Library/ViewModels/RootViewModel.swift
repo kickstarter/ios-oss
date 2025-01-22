@@ -439,8 +439,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 }
 
 private func currentUserActivitiesAndErroredPledgeCount() -> Int {
-  (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) +
-    (AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0)
+  // Do not include errored pledges if PPO is enabled.
+  let errorCount = featurePledgedProjectsOverviewEnabled()
+    ? 0
+    : AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0
+  return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) + errorCount
 }
 
 private func generateStandardViewControllers() -> [RootViewControllerData] {
