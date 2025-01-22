@@ -48,8 +48,10 @@ public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
 
     self.badgeHidden = self.configureWithDataProperty.signal.skipNil()
       .map {
-        $0.projectState != .live && $0
-          .isPledgeOverTime && ($0.backingState == .errored || $0.backingState == .authenticationRequired)
+        let pledgeIsErrored = $0.backingState == .errored || $0.backingState == .authenticationRequired
+        let projectIsComplete = $0.projectState != .live
+
+        return projectIsComplete && $0.isPledgeOverTime && pledgeIsErrored
       }
       .negate()
   }
@@ -102,8 +104,11 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
     string = Strings.We_collected_your_pledge_for_this_project()
   case (.dropped, false, _):
     string = Strings.Your_pledge_was_dropped_because_of_payment_errors()
-  case (.errored, false, false), (.authenticationRequired, false, false):
+  case (.errored, false, false):
     string = Strings.We_cant_process_your_pledge_Please_update_your_payment_method()
+  case (.authenticationRequired, false, false):
+    // TODO: These changes are temporary and will be updated to return the correct text once the native implementation for this case is complete. [MBL-2012](https://kickstarter.atlassian.net/browse/MBL-2012)
+    return nil
   case (.errored, false, true), (.authenticationRequired, false, true):
     return attributedPlotErroredString(with: data, attributes: attributes)
   case (.pledged, _, false):
@@ -252,6 +257,7 @@ private func attributedPlotErroredString(
     return nil
   }
 
+  // TODO: Replace with the translated string once the translation ticket is completed. [MBL-2011](https://kickstarter.atlassian.net/browse/MBL-2011)
   let labelString =
     "We can’t process your Pledge Over Time payment. Please <a href=\"\(backingDetailLink.absoluteString)\">view your pledge</a> on a web browser and log in to fix your payment."
 

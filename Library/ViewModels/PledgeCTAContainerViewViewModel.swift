@@ -81,7 +81,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
       project.ignoreValues().mapConst(false),
-      // TODO: temporary change to force the error state when non-PLOT pledge with backing state "authentication_required".
+      // TODO: these changes are temporary and will likely be removed when we get to the native implementation in this ticket [MBL-2012](https://kickstarter.atlassian.net/browse/MBL-2012)
+      // The purpose of this change is to force the error state when a non-PLOT pledge has a backing state of "authentication_required"
       project.filter {
         $0.personalization.backing?.status == .authenticationRequired && $0.personalization.backing?
           .paymentIncrements.isEmpty == true
