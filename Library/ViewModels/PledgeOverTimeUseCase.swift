@@ -2,11 +2,11 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public protocol PLOTPledgeViewModelInputs {
+public protocol PledgeOverTimeUseCaseInputs {
   func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType)
 }
 
-public protocol PLOTPledgeViewModelOutputs {
+public protocol PledgeOverTimeUseCaseOutputs {
   var showPledgeOverTimeUI: Signal<Bool, Never> { get }
   var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
   var pledgeOverTimeIsLoading: Signal<Bool, Never> { get }
@@ -35,7 +35,7 @@ public protocol PLOTPledgeViewModelOutputs {
   - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events.
  */
 
-public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeViewModelOutputs {
+public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseInputs, PledgeOverTimeUseCaseOutputs {
   init(project: Signal<Project, Never>, pledgeTotal: Signal<Double, Never>) {
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
@@ -149,8 +149,8 @@ public final class PLOTPledgeViewModel: PLOTPledgeViewModelInputs, PLOTPledgeVie
   public let pledgeOverTimeIsLoading: Signal<Bool, Never>
   public let buildPaymentPlanInputs: Signal<(String, String), Never>
 
-  public var outputs: PLOTPledgeViewModelOutputs { return self }
-  public var inputs: PLOTPledgeViewModelInputs { return self }
+  public var outputs: PledgeOverTimeUseCaseOutputs { return self }
+  public var inputs: PledgeOverTimeUseCaseInputs { return self }
 
   // MARK: - Inputs
 
