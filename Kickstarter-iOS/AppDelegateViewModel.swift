@@ -226,7 +226,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return
         }
 
+        let currentUser = AppEnvironment.current.currentUser
+          .flatMap { currentUser in
+            currentUser
+            |> \.ppoHasAction .~ user?.me.ppoHasAction
+          }
+
         AppEnvironment.replaceCurrentEnvironment(
+          currentUser: currentUser,
           currentUserEmail: email,
           currentUserServerFeatures: features
         )

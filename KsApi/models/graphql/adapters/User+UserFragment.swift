@@ -37,7 +37,7 @@ extension User {
       newsletters: self.newsletterSubscriptions(userFragment: userFragment),
       notifications: self.notifications(userFragment: userFragment),
       optedOutOfRecommendations: userFragment.optedOutOfRecommendations,
-      ppoHasAction: userFragment.ppoHasAction,
+      ppoHasAction: nil,
       showPublicProfile: userFragment.showPublicProfile,
       social: userFragment.isSocializing,
       stats: self.userStats(userFragment: userFragment),
