@@ -587,12 +587,13 @@ private func managePledgePaymentMethodViewData(
     expirationDate: backing.paymentSource?.expirationDate,
     lastFour: backing.paymentSource?.lastFour,
     creditCardType: backing.paymentSource?.type,
-    paymentType: backing.paymentSource?.paymentType
+    paymentType: backing.paymentSource?.paymentType,
+    isPledgeOverTime: !backing.paymentIncrements.isEmpty
   )
 }
 
 private func isPledgeOverTime(with backing: Backing) -> Bool {
-  return featurePledgeOverTimeEnabled() && !backing.paymentIncrements.isEmpty
+  return !backing.paymentIncrements.isEmpty
 }
 
 private func managePledgeSummaryViewData(
@@ -607,10 +608,7 @@ private func managePledgeSummaryViewData(
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-  var paymentIncrements: [PledgePaymentIncrement]?
-  if featurePledgeOverTimeEnabled() {
-    paymentIncrements = backing.paymentIncrements
-  }
+  var paymentIncrements = backing.paymentIncrements
 
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
@@ -632,7 +630,8 @@ private func managePledgeSummaryViewData(
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup,
-    paymentIncrements: paymentIncrements
+    paymentIncrements: paymentIncrements,
+    project: project
   )
 }
 
