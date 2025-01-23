@@ -265,8 +265,8 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] intent, project, reward in
-        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
       }
 
     self.viewModel.outputs.validateCheckoutSuccess
@@ -325,11 +325,9 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
   // MARK: - Functions
 
-  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+  private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(
-      loginIntent: intent,
-      project: project,
-      reward: reward
+      loginIntent: intent
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
