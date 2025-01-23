@@ -15,6 +15,11 @@ public protocol PledgeOverTimeUseCaseOutputs {
   var buildPaymentPlanInputs: Signal<(String, String), Never> { get }
 }
 
+public protocol PledgeOverTimeUseCaseType {
+  var inputs: PledgeOverTimeUseCaseInputs { get }
+  var outputs: PledgeOverTimeUseCaseOutputs { get }
+}
+
 /**
  A component view model for Pledge Over Time in the pledge checkout flow.
  Creates one BuildPaymentPlanQuery and uses those results to create data for the UI.
@@ -35,7 +40,8 @@ public protocol PledgeOverTimeUseCaseOutputs {
   - `pledgeOverTimeIsLoading`: Whether the PLOT module is loading. Sends one or more events.
  */
 
-public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseInputs, PledgeOverTimeUseCaseOutputs {
+public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverTimeUseCaseInputs,
+  PledgeOverTimeUseCaseOutputs {
   init(project: Signal<Project, Never>, pledgeTotal: Signal<Double, Never>) {
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
