@@ -178,7 +178,8 @@ private func attributedConfirmationString(with data: PledgeStatusLabelViewData) 
       .attributed(with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [date])
     }
 
-    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
       project_deadline: date
     )
     .attributed(with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [date])
@@ -257,9 +258,8 @@ private func attributedPlotErroredString(
     return nil
   }
 
-  // TODO: Replace with the translated string once the translation ticket is completed. [MBL-2011](https://kickstarter.atlassian.net/browse/MBL-2011)
-  let labelString =
-    "We can’t process your Pledge Over Time payment. Please <a href=\"\(backingDetailLink.absoluteString)\">view your pledge</a> on a web browser and log in to fix your payment."
+  let labelString = Strings
+    .We_cant_process_your_Pledge_Over_Time_payment(view_your_pledge_link: backingDetailLink.absoluteString)
 
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(labelString.utf8),
