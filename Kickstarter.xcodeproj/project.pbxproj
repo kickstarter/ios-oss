@@ -1176,6 +1176,7 @@
 		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAD759F42D2FA1F200A4E003 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
@@ -2876,6 +2877,7 @@
 		AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFeaturesFragment.graphql; sourceTree = "<group>"; };
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
+		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
 		AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Helpers.swift"; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
@@ -6356,6 +6358,7 @@
 				D78E0355229305E20043E92F /* PledgeStateCTAType.swift */,
 				8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */,
 				8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */,
+				AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */,
 				37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */,
 				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
@@ -8269,6 +8272,7 @@
 				941710B526557A6A00F5954E /* CommentCellStyles.swift in Sources */,
 				77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,
+				AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

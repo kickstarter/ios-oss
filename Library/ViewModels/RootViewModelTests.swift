@@ -616,7 +616,6 @@ final class RootViewModelTests: TestCase {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
-      |> \.ppoHasAction .~ true
 
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
@@ -627,6 +626,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
+      currentUserPPOSettings: PPOUserSettings(hasAction: true),
       currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
@@ -644,7 +644,6 @@ final class RootViewModelTests: TestCase {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
-      |> \.ppoHasAction .~ true
 
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
@@ -654,7 +653,10 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(remoteConfigClient: remoteConfig) {
+    withEnvironment(
+      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      remoteConfigClient: remoteConfig
+    ) {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))

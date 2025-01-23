@@ -114,6 +114,8 @@ public struct AppEnvironment: AppEnvironmentType {
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
       currentUserEmail: nil,
+      currentUserPPOSettings: nil,
+      currentUserServerFeatures: nil,
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ nil
     )
   }
@@ -250,6 +252,7 @@ public struct AppEnvironment: AppEnvironmentType {
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     currentUserEmail: String? = AppEnvironment.current.currentUserEmail,
+    currentUserPPOSettings: PPOUserSettings? = AppEnvironment.current.currentUserPPOSettings,
     currentUserServerFeatures: Set<ServerFeature>? = AppEnvironment.current.currentUserServerFeatures,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
@@ -285,6 +288,7 @@ public struct AppEnvironment: AppEnvironmentType {
         countryCode: countryCode,
         currentUser: currentUser,
         currentUserEmail: currentUserEmail,
+        currentUserPPOSettings: currentUserPPOSettings,
         currentUserServerFeatures: currentUserServerFeatures,
         dateType: dateType,
         debounceInterval: debounceInterval,
@@ -446,10 +450,14 @@ public struct AppEnvironment: AppEnvironmentType {
         .compactMap { ServerFeature(rawValue: $0) }
     }
 
+    // Try restore the PPO settings
+    let currentUserPPOSettings: PPOUserSettings? = data["currentUserPPOSettings"].flatMap(tryDecode)
+
     return Environment(
       apiService: service,
       config: config,
       currentUser: currentUser,
+      currentUserPPOSettings: currentUserPPOSettings,
       currentUserServerFeatures: currentUserServerFeatures.flatMap(Set.init),
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser |> KSRAnalytics
         .lens.appTrackingTransparency .~ self.current.appTrackingTransparency
@@ -486,6 +494,7 @@ public struct AppEnvironment: AppEnvironmentType {
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
     data["currentUserServerFeatures"] = env.currentUserServerFeatures?.map { $0.rawValue }
+    data["currentUserPPOSettings"] = env.currentUserPPOSettings?.encode()
     // swiftformat:enable wrap
 
     userDefaults.set(data, forKey: self.environmentStorageKey)
