@@ -257,9 +257,8 @@ private func attributedPlotErroredString(
     return nil
   }
 
-  // TODO: Replace with the translated string once the translation ticket is completed. [MBL-2011](https://kickstarter.atlassian.net/browse/MBL-2011)
-  let labelString =
-    "We can’t process your Pledge Over Time payment. Please <a href=\"\(backingDetailLink.absoluteString)\">view your pledge</a> on a web browser and log in to fix your payment."
+  let labelString = Strings
+    .We_cant_process_your_Pledge_Over_Time_payment(view_your_pledge_link: backingDetailLink.absoluteString)
 
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(labelString.utf8),

@@ -332,6 +332,7 @@
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Wenn das Projekt sein Finanzierungsziel erreicht, wird die erste Rate in Höhe von %{amount} am %{project_deadline} eingezogen.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am %{project_deadline} belastet.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Wenn dieses Projekt das Finanzierungsziel erreicht, wird deine Karte am %{project_deadline} mit %{total} belastet.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Wenn das Projekt sein Finanzierungsziel erreicht, wird am %{project_deadline} deine Zahlung in Höhe von %{total} eingezogen. Du erhältst einen Nachweis über den Finanzierungsbeitrag, der einlösbar ist, wenn das Projekt finanziert ist und der Projektgründer seine kreative Idee erfolgreich umgesetzt hat.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
 "If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.";
@@ -788,6 +789,7 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "Wir können deine Zahlungsmethode nicht authentifizieren. Ziehe nach unten, um die Seite zu aktualisieren und eine andere Zahlungsmethode auszuwählen.";
 "We_can_no_longer_log_you_in_through_Facebook" = "Wir können dich nicht mehr über Facebook anmelden. Bitte melde dich mit deinem Kickstarter-Passwort an oder leg für deine Facebook-E-Mail-Adresse ein neues Passwort fest.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
+"We_cant_process_your_Pledge_Over_Time_payment" = "We can’t process your Pledge Over Time payment. Please <a href=\"%{view_your_pledge_link}\">view your pledge</a> on a web browser and log in to fix your payment.";
 "We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
 "We_cant_process_your_pledge_for" = "Wir können deine Zahlung aus folgendem Grund leider nicht bearbeiten:";
@@ -881,7 +883,6 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Du hast den Finanzierungsbeitrag in Höhe von <b>%{pledge_amount}</b> für das Projekt <b>%{project_name}</b> zurückgezogen.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Dein Finanzierungsbeitrag für or %{project_name} wurde erfolgreich auf %{amount} geändert. Wenn das Projekt sein Finanzierungsziel erreicht, wird deine Karte am %{project_deadline} belastet. Wir haben dir eine E-Mail mit genaueren Angaben gesendet.";
-"Youve_been_authenticated_successfully_pull_to_refresh" = "Du wurdest erfolgreich authentifiziert! Ziehe, um die Seite zu aktualisieren.";
 "Zip_code" = "Postleitzahl";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
@@ -1712,6 +1713,10 @@
 "project.menu.buttons.updates" = "Updates";
 "project.menu.created_by" = "Erstellt von";
 "project.menu.explore_this_project" = "Projekt erkunden";
+"project.project_notices.header" = "Kickstarter hat diesen Projektgründer eingeschränkt";
+"project.project_notices.notice_cta" = "Weitere Info";
+"project.project_notices.notice_intro" = "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator.";
+"project.project_notices.notice_sheet_cta" = "Weitere Informationen zur Rechenschaftspflicht von Projektgründern";
 "project.share.twitter.message" = "%{project_title}, via @Kickstarter";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} und %{second_friend_name} unterstützen dieses Projekt.";
 "project.social.friend_is_backer" = "%{friend_name} unterstützt dieses Projekt.";
