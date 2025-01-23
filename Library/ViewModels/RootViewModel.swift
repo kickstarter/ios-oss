@@ -269,10 +269,9 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       integerBadgeValueAndIndex,
       integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
     )
-    .withLatest(from: currentUser.map { user in user?.ppoHasAction ?? false })
-    .map(unpack)
-    .map { value, index, hasPPOAction in
-      (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
+    .map { value, index in
+      let hasPPOAction = AppEnvironment.current.currentUserPPOSettings?.hasAction ?? false
+      return (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
     }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
