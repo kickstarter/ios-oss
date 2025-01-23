@@ -5,11 +5,11 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class PLOTPledgeViewModelTests: TestCase {
+final class PledgeOverTimeUseCaseTests: TestCase {
   let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
   let (pledgeTotalSignal, pledgeTotalObserver) = Signal<Double, Never>.pipe()
 
-  var vm: PLOTPledgeViewModel?
+  var useCase: PledgeOverTimeUseCase?
 
   let buildPaymentPlanInputs = TestObserver<(String, String), Never>()
   let pledgeOverTimeIsLoading = TestObserver<Bool, Never>()
@@ -19,14 +19,15 @@ final class PLOTPledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = PLOTPledgeViewModel(project: self.projectSignal, pledgeTotal: self.pledgeTotalSignal)
-    self.vm!.outputs.buildPaymentPlanInputs.observe(self.buildPaymentPlanInputs.observer)
-    self.vm!.outputs.pledgeOverTimeIsLoading.observe(self.pledgeOverTimeIsLoading.observer)
-    self.vm!.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
-    self.vm!.outputs.pledgeOverTimeConfigData.map { $0?.selectedPlan }.observe(self.selectedPlan.observer)
+    self.useCase = PledgeOverTimeUseCase(project: self.projectSignal, pledgeTotal: self.pledgeTotalSignal)
+    self.useCase!.outputs.buildPaymentPlanInputs.observe(self.buildPaymentPlanInputs.observer)
+    self.useCase!.outputs.pledgeOverTimeIsLoading.observe(self.pledgeOverTimeIsLoading.observer)
+    self.useCase!.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
+    self.useCase!.outputs.pledgeOverTimeConfigData.map { $0?.selectedPlan }
+      .observe(self.selectedPlan.observer)
   }
 
-  func testViewModel_callsBuildPaymentPlanQuery_withCorrectSlugAndPledgeTotal() {
+  func testUseCase_callsBuildPaymentPlanQuery_withCorrectSlugAndPledgeTotal() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -49,7 +50,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_callsBuildPaymentPlanQuery_onlyOnce() {
+  func testUseCase_callsBuildPaymentPlanQuery_onlyOnce() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -73,15 +74,15 @@ final class PLOTPledgeViewModelTests: TestCase {
       self.pledgeTotalObserver.send(value: 2.0)
       self.pledgeTotalObserver.send(value: 3.0)
 
-      self.vm!.paymentPlanSelected(.pledgeInFull)
-      self.vm!.paymentPlanSelected(.pledgeOverTime)
-      self.vm!.paymentPlanSelected(.pledgeInFull)
+      self.useCase!.paymentPlanSelected(.pledgeInFull)
+      self.useCase!.paymentPlanSelected(.pledgeOverTime)
+      self.useCase!.paymentPlanSelected(.pledgeInFull)
 
       self.buildPaymentPlanInputs.assertValueCount(1)
     }
   }
 
-  func testViewModel_sendsLoadingEvent_whenPledgeOverTimeIsEnabled() {
+  func testUseCase_sendsLoadingEvent_whenPledgeOverTimeIsEnabled() {
     let queryData = try! GraphAPI.BuildPaymentPlanQuery
       .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
@@ -104,7 +105,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_doesntLoad_whenPledgeOverTimeIsDisabled() {
+  func testUseCase_doesntLoad_whenPledgeOverTimeIsDisabled() {
     let queryData = try! GraphAPI.BuildPaymentPlanQuery
       .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
@@ -127,7 +128,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_hidesUIAndStopsLoading_whenBuildPaymentPlanQueryFails() {
+  func testUseCase_hidesUIAndStopsLoading_whenBuildPaymentPlanQueryFails() {
     let mockApiService = MockService(buildPaymentPlanResult: .failure(.couldNotParseJSON))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -149,7 +150,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_emitsNilPaymentPlan_andHidesUI_ifPledgeOverTimeIsDisabled() {
+  func testUseCase_emitsNilPaymentPlan_andHidesUI_ifPledgeOverTimeIsDisabled() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -170,7 +171,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_emitsNilPaymentPlan_andHidesUI_ifPledgeOverQueryReturnsAnError() {
+  func testUseCase_emitsNilPaymentPlan_andHidesUI_ifPledgeOverQueryReturnsAnError() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -193,7 +194,7 @@ final class PLOTPledgeViewModelTests: TestCase {
     }
   }
 
-  func testViewModel_paymentPlanSelected_changesSelectedPaymentPlan() {
+  func testUseCase_paymentPlanSelected_changesSelectedPaymentPlan() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -217,10 +218,10 @@ final class PLOTPledgeViewModelTests: TestCase {
       // Defaults to pledgeInFull
       self.selectedPlan.assertValues([.pledgeInFull])
 
-      self.vm!.paymentPlanSelected(.pledgeOverTime)
+      self.useCase!.paymentPlanSelected(.pledgeOverTime)
       self.selectedPlan.assertValues([.pledgeInFull, .pledgeOverTime])
 
-      self.vm!.paymentPlanSelected(.pledgeInFull)
+      self.useCase!.paymentPlanSelected(.pledgeInFull)
       self.selectedPlan.assertValues([.pledgeInFull, .pledgeOverTime, .pledgeInFull])
     }
   }
