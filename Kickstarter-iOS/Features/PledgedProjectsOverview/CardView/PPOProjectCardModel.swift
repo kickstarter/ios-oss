@@ -415,41 +415,30 @@ extension PPOProjectCardModel {
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
 
-    let primaryAction: PPOProjectCardModel.Action
-    let secondaryAction: PPOProjectCardModel.Action?
-    let tierType: PPOProjectCardModel.TierType
+    let actionResult: (primary: Action, secondary: Action?, tier: TierType)?
+
+    switch card.tierType {
+    case PPOProjectCardModelConstants.paymentFailed:
+      actionResult = Self.actionsForPaymentFailed()
+    case PPOProjectCardModelConstants.confirmAddress:
+      actionResult = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
+    case PPOProjectCardModelConstants.completeSurvey:
+      actionResult = Self.actionsForSurvey()
+    case PPOProjectCardModelConstants.authenticationRequired:
+      actionResult = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
+    default:
+      return nil
+    }
+
+    guard let (primaryAction, secondaryAction, tierType) = actionResult else { return nil }
+
+    let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
+
     // For v1 of PPO we're just using the same url for surveys and the backing details page.
     // This specifically links to the survey tab.
     let backingDetailsUrl = backing?.backingDetailsPageRoute
     let backingId = backing.flatMap { decompose(id: $0.id) }
     let backingGraphId = backing?.id
-
-    switch (card.tierType, backing?.clientSecret, addressWithoutName, addressId) {
-    case (PPOProjectCardModelConstants.paymentFailed, _, _, _):
-      primaryAction = .fixPayment
-      secondaryAction = nil
-      tierType = .fixPayment
-    case let (PPOProjectCardModelConstants.confirmAddress, _, .some(address), .some(addressId)):
-      primaryAction = .confirmAddress(address: address, addressId: addressId)
-      secondaryAction = .editAddress
-      tierType = .confirmAddress
-    case (PPOProjectCardModelConstants.confirmAddress, _, _, _):
-      // Return nil instead of a card if there's no address to confirm.
-      return nil
-    case (PPOProjectCardModelConstants.completeSurvey, _, _, _):
-      primaryAction = .completeSurvey
-      secondaryAction = nil
-      tierType = .openSurvey
-    case let (PPOProjectCardModelConstants.authenticationRequired, .some(clientSecret), _, _):
-      primaryAction = .authenticateCard(clientSecret: clientSecret)
-      secondaryAction = nil
-      tierType = .authenticateCard
-    case (PPOProjectCardModelConstants.authenticationRequired, .none, _, _),
-         _:
-      return nil
-    }
-
-    let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
     if let image, let projectName, let projectId, let formattedPledge, let creatorName,
        let projectAnalyticsFragment, let backingDetailsUrl, let backingId, let backingGraphId {
@@ -472,5 +461,36 @@ extension PPOProjectCardModel {
     } else {
       return nil
     }
+  }
+
+  private static func actionsForPaymentFailed() -> (Action, Action?, TierType) {
+    (.fixPayment, nil, .fixPayment)
+  }
+
+  private static func actionsForConfirmAddress(address: String?, addressId: String?)
+    -> (Action, Action?, TierType)? {
+    guard let address = address,
+          let addressId = addressId else { return nil }
+
+    return (
+      .confirmAddress(address: address, addressId: addressId),
+      .editAddress,
+      .confirmAddress
+    )
+  }
+
+  private static func actionsForSurvey() -> (Action, Action?, TierType) {
+    (.completeSurvey, nil, .openSurvey)
+  }
+
+  private static func actionsForAuthentication(clientSecret: String?)
+    -> (Action, Action?, TierType)? {
+    guard let clientSecret = clientSecret else { return nil }
+
+    return (
+      .authenticateCard(clientSecret: clientSecret),
+      nil,
+      .authenticateCard
+    )
   }
 }
