@@ -332,6 +332,7 @@
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "If the project reaches its funding goal, the first charge of %{amount} will be collected on %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "If the project reaches its funding goal, you will be charged on %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture.";
 "If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers.";
 "If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
@@ -788,6 +789,7 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "We are unable to authenticate your payment method. Please pull to refresh and choose a different payment method.";
 "We_can_no_longer_log_you_in_through_Facebook" = "We can no longer log you in through Facebook. Please log in with your Kickstarter password, or set a new password with your Facebook email.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "We can’t process this pledge because of a problem with the backer’s payment method.";
+"We_cant_process_your_Pledge_Over_Time_payment" = "We can’t process your Pledge Over Time payment. Please <a href=\"%{view_your_pledge_link}\">view your pledge</a> on a web browser and log in to fix your payment.";
 "We_cant_process_your_pledge" = "We can't process your pledge.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
 "We_cant_process_your_pledge_for" = "We can't process your pledge for:";
@@ -881,7 +883,6 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "You’ve canceled your pledge of <b>%{pledge_amount}</b> for <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "You’ve successfully updated your pledge to %{amount} for %{project_name}. If the project reaches its funding goal, your card will be charged on %{project_deadline}. Check your email for details.";
-"Youve_been_authenticated_successfully_pull_to_refresh" = "You’ve been authenticated successfully! Pull to refresh.";
 "Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Activity";
 "accessibility.dashboard.buttons.activity_hint" = "Opens activity.";
@@ -1712,6 +1713,10 @@
 "project.menu.buttons.updates" = "Updates";
 "project.menu.created_by" = "Created by";
 "project.menu.explore_this_project" = "Explore this project";
+"project.project_notices.header" = "Kickstarter has restricted this creator";
+"project.project_notices.notice_cta" = "Learn more";
+"project.project_notices.notice_intro" = "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator.";
+"project.project_notices.notice_sheet_cta" = "Learn more about creator accountability";
 "project.share.twitter.message" = "%{project_title}, via @Kickstarter";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} and %{second_friend_name} are backers.";
 "project.social.friend_is_backer" = "%{friend_name} is a backer.";
