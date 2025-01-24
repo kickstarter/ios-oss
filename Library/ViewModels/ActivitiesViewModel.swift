@@ -180,7 +180,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
 
     let erroredBackingsEvent = currentUser
       // Only fetch/show errored backings in activity if PPO is not available.
-      .filter { _ in !featurePledgedProjectsOverviewEnabled() }
+      .filter { user in !(featurePledgedProjectsOverviewEnabled() && user != nil) }
       .skipNil()
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchErroredUserBackings(status: .errored)

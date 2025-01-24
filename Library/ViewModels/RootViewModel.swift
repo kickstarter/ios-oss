@@ -149,16 +149,10 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       }
       .skipRepeats(==)
 
-    let standardViewControllers = self.viewDidLoadProperty.signal
-      .combineLatest(with: loginState)
-      .map { _, loginState -> [RootViewControllerData] in
-        generateStandardViewControllers(isLoggedIn: loginState)
-      }
-    let personalizedViewControllers = loginState.map { loginState -> [RootViewControllerData] in
-      generatePersonalizedViewControllers(isLoggedIn: loginState)
+    let viewControllers = loginState.map { loginState -> [RootViewControllerData] in
+      generateStandardViewControllers(isLoggedIn: loginState) +
+        generatePersonalizedViewControllers(isLoggedIn: loginState)
     }
-
-    let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     let refreshedViewControllers = loginState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
       .map { loginState -> [RootViewControllerData] in
@@ -448,7 +442,7 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
 }
 
 private func generateStandardViewControllers(isLoggedIn: Bool) -> [RootViewControllerData] {
-  if featurePledgedProjectsOverviewEnabled() && isLoggedIn {
+  if featurePledgedProjectsOverviewEnabled(), isLoggedIn {
     return [.discovery, .pledgedProjectsAndActivities, .search]
   }
   return [.discovery, .activities, .search]
