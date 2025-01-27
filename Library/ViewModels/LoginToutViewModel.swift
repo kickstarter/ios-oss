@@ -21,7 +21,7 @@ public protocol LoginToutViewModelInputs {
   func appleLoginButtonPressed()
 
   /// Call to set the reason the user is attempting to log in
-  func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
+  func configureWith(_ intent: LoginIntent)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -279,12 +279,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  fileprivate let rewardProperty = MutableProperty<Reward?>(nil)
-  public func configureWith(_ intent: LoginIntent, project: Project? = nil, reward: Reward? = nil) {
+  public func configureWith(_ intent: LoginIntent) {
     self.loginIntentProperty.value = intent
-    self.projectProperty.value = project
-    self.rewardProperty.value = reward
   }
 
   fileprivate let environmentLoggedInProperty = MutableProperty(())
