@@ -48,7 +48,7 @@ public protocol NoShippingPledgeViewModelOutputs {
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
-  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -317,8 +317,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         return (user, project, "", reward, context, refTag)
       }
 
-    self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.0, $0.1) }
+    self.goToLoginSignup = self.goToLoginSignupSignal
+      .mapConst(LoginIntent.backProject)
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
@@ -469,11 +469,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     // MARK: Pledge Over Time
 
-    self.plotViewModel = PLOTPledgeViewModel(project: project, pledgeTotal: pledgeTotal)
+    self.pledgeOverTimeUseCase = PledgeOverTimeUseCase(project: project, pledgeTotal: pledgeTotal)
 
     // MARK: - Create Backing
 
-    let selectedPaymentPlan = self.plotViewModel.pledgeOverTimeConfigData
+    let selectedPaymentPlan = self.pledgeOverTimeUseCase.pledgeOverTimeConfigData
       .map { $0?.selectedPlan ?? .pledgeInFull }
 
     let createBackingData = Signal.combineLatest(
@@ -652,7 +652,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let valuesChangedAndValid = Signal.combineLatest(
       paymentMethodChangedAndValid,
-      self.plotViewModel.pledgeOverTimeIsLoading,
+      self.pledgeOverTimeUseCase.pledgeOverTimeIsLoading,
       context
     )
     .map(allValuesChangedAndValid)
@@ -985,7 +985,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   }
 
   public func paymentPlanSelected(_ paymentPlan: PledgePaymentPlansType) {
-    self.plotViewModel.inputs.paymentPlanSelected(paymentPlan)
+    self.pledgeOverTimeUseCase.inputs.paymentPlanSelected(paymentPlan)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -1053,7 +1053,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
-  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
+  public let goToLoginSignup: Signal<LoginIntent, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
@@ -1065,19 +1065,19 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let title: Signal<String, Never>
 
   public var showPledgeOverTimeUI: Signal<Bool, Never> {
-    return self.plotViewModel.outputs.showPledgeOverTimeUI
+    return self.pledgeOverTimeUseCase.outputs.showPledgeOverTimeUI
   }
 
   public var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> {
-    return self.plotViewModel.outputs.pledgeOverTimeConfigData
+    return self.pledgeOverTimeUseCase.outputs.pledgeOverTimeConfigData
   }
 
   public var inputs: NoShippingPledgeViewModelInputs { return self }
   public var outputs: NoShippingPledgeViewModelOutputs { return self }
 
-  // MARK: - Component view models
+  // MARK: - Use cases
 
-  private let plotViewModel: PLOTPledgeViewModel
+  private let pledgeOverTimeUseCase: PledgeOverTimeUseCase
 }
 
 // MARK: - Functions

@@ -42,7 +42,6 @@ final class UserTests: XCTestCase {
       "is_friend": false,
       "isBlocked": false,
       "opted_out_of_recommendations": true,
-      "ppo_has_action": false,
       "show_public_profile": false,
       "social": true
     ]
@@ -102,7 +101,6 @@ final class UserTests: XCTestCase {
       "is_friend": false,
       "isBlocked": true,
       "opted_out_of_recommendations": true,
-      "ppo_has_action": false,
       "show_public_profile": false,
       "social": true
     ]

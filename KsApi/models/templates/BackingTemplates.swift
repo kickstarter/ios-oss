@@ -14,12 +14,7 @@ extension Backing {
     isLatePledge: false,
     locationId: 1,
     locationName: "United States",
-    paymentIncrements: [.init(
-      amount: .init(amount: 10, currency: "USD", amountFormattedInProjectNativeCurrency: "$10.00"),
-      scheduledCollection: ApiMockDate().timeIntervalSince1970,
-      state: .collected,
-      stateReason: nil
-    )],
+    paymentIncrements: [],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
@@ -33,4 +28,11 @@ extension Backing {
   )
 
   internal static let errored = Backing.template |> Backing.lens.status .~ .errored
+  internal static let templatePlot = Backing.template
+    |> Backing.lens.paymentIncrements .~ [.init(
+      amount: .init(amount: 10, currency: "USD", amountFormattedInProjectNativeCurrency: "$10.00"),
+      scheduledCollection: ApiMockDate().timeIntervalSince1970,
+      state: .collected,
+      stateReason: nil
+    )]
 }

@@ -51,6 +51,9 @@ public struct Environment {
   /// The currently logged in user's email.
   public let currentUserEmail: String?
 
+  /// The currently logged in user's PPO settings.
+  public let currentUserPPOSettings: PPOUserSettings?
+
   /// The currently logged in user's ServerFeatures.
   public let currentUserServerFeatures: Set<ServerFeature>?
 
@@ -130,6 +133,7 @@ public struct Environment {
     countryCode: String = "US",
     currentUser: User? = nil,
     currentUserEmail: String? = nil,
+    currentUserPPOSettings: PPOUserSettings? = nil,
     currentUserServerFeatures: Set<ServerFeature>? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
@@ -164,6 +168,7 @@ public struct Environment {
     self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
     self.currentUserEmail = currentUserEmail
+    self.currentUserPPOSettings = currentUserPPOSettings
     self.currentUserServerFeatures = currentUserServerFeatures
     self.dateType = dateType
     self.debounceInterval = debounceInterval

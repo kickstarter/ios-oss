@@ -334,8 +334,8 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] intent, project, reward in
-        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -470,11 +470,9 @@ final class NoShippingPledgeViewController: UIViewController,
     self.estimatedShippingStackView.layoutIfNeeded()
   }
 
-  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+  private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(
-      loginIntent: intent,
-      project: project,
-      reward: reward
+      loginIntent: intent
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)

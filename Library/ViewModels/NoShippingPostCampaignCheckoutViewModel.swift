@@ -31,7 +31,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
-  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -288,9 +288,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
         return reward.shipping.enabled == false || estimatedShipping == nil
       }
 
-    self.goToLoginSignup = Signal.combineLatest(project, baseReward)
-      .takeWhen(self.goToLoginSignupSignal)
-      .map { project, reward in (LoginIntent.backProject, project, reward) }
+    self.goToLoginSignup = self.goToLoginSignupSignal
+      .mapConst(LoginIntent.backProject)
 
     // MARK: Create Payment Intent
 
@@ -736,7 +735,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
-  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
+  public let goToLoginSignup: Signal<LoginIntent, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
