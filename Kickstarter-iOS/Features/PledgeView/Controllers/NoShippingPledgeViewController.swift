@@ -41,11 +41,6 @@ final class NoShippingPledgeViewController: UIViewController,
 
   private var paymentSectionLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private lazy var pledgeAmountViewController = {
-    PledgeAmountViewController.instantiate()
-      |> \.delegate .~ self
-  }()
-
   internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
     PledgeDisclaimerView(frame: .zero)
@@ -305,12 +300,6 @@ final class NoShippingPledgeViewController: UIViewController,
         self?.pledgeRewardsSummaryViewController.configureWith(pledgeOverTimeData: data)
       }
 
-    self.viewModel.outputs.configurePledgeAmountViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeAmountViewController.configureWith(value: data)
-      }
-
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -335,12 +324,6 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
-      }
-
-    self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
-      .observeForUI()
-      .observeValues { [weak self] amount in
-        self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
@@ -394,7 +377,6 @@ final class NoShippingPledgeViewController: UIViewController,
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
-    self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -429,12 +411,6 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
-
-    self.viewModel.outputs.showApplePayAlert
-      .observeForControllerAction()
-      .observeValues { [weak self] title, message in
-        self?.presentApplePayInvalidAmountAlert(title: title, message: message)
-      }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
@@ -459,10 +435,6 @@ final class NoShippingPledgeViewController: UIViewController,
   private func goToThanks(data: ThanksPageData) {
     let thanksVC = ThanksViewController.configured(with: data)
     self.navigationController?.pushViewController(thanksVC, animated: true)
-  }
-
-  private func presentApplePayInvalidAmountAlert(title: String, message: String) {
-    self.present(UIAlertController.alert(title, message: message), animated: true)
   }
 
   // MARK: - Actions
@@ -557,17 +529,6 @@ final class NoShippingPledgeViewController: UIViewController,
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
     }
-  }
-}
-
-// MARK: - PledgeAmountViewControllerDelegate
-
-extension NoShippingPledgeViewController: PledgeAmountViewControllerDelegate {
-  func pledgeAmountViewController(
-    _: PledgeAmountViewController,
-    didUpdateWith data: PledgeAmountData
-  ) {
-    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 
