@@ -226,8 +226,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return
         }
 
+        let ppoSettings = user
+          .flatMap { $0.me.ppoHasAction }
+          .flatMap { PPOUserSettings(hasAction: $0) }
+
         AppEnvironment.replaceCurrentEnvironment(
           currentUserEmail: email,
+          currentUserPPOSettings: ppoSettings,
           currentUserServerFeatures: features
         )
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))

@@ -332,6 +332,7 @@
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、バッカーへの最初の請求（%{amount}）が%{project_deadline}に行われます。";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline}に%{total}が請求されます。プロジェクトの資金が集まりクリエイターがその取り組み全体に成功した場合に引き換え可能となるプレッジ証明が届きます。";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
 "If_your_profile_is_private" = "プロフィールがプライベート (非公開) 設定の場合、あなたの名前と写真が表示されます。";
@@ -788,6 +789,7 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "お支払い方法を認証できませんでした。プルダウンしてページを更新し、別のお支払い方法をお選びください。";
 "We_can_no_longer_log_you_in_through_Facebook" = "Facebook を介したログインはできなくなりました。Kickstarter のパスワードを使ってログインするか、Facebook のメールアドレスを使って新しいパスワードを設定してください。";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "バッカーのお支払い方法で問題があったためこのプレッジを処理することができません。";
+"We_cant_process_your_Pledge_Over_Time_payment" = "経時プレッジのお支払いを処理できませんでした。ウェブブラウザから<a href=\"%{view_your_pledge_link}\">プレッジを確認</a>し、ログインしてお支払い方法を修正してください。";
 "We_cant_process_your_pledge" = "プレッジを処理することができません。";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "プレッジを処理できません。お支払い方法を更新してください。";
 "We_cant_process_your_pledge_for" = "以下のプレッジを処理することが出来ません:";
@@ -881,7 +883,6 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "<b>%{project_name}</b> への <b>%{pledge_amount}</b> のプレッジを取り消しました。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "%{project_name} へのプレッジを %{amount} に更新しました。プロジェクトがファンディングゴールに達成した場合には、%{project_deadline} 付けでご登録いただいたクレジットカードに請求されます。";
-"Youve_been_authenticated_successfully_pull_to_refresh" = "認証が成功しました！画面をプルダウンして更新してください。";
 "Zip_code" = "郵便番号";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
 "accessibility.dashboard.buttons.activity_hint" = "アクティビティをみる";
@@ -1712,6 +1713,10 @@
 "project.menu.buttons.updates" = "アップデート";
 "project.menu.created_by" = "製作者";
 "project.menu.explore_this_project" = "このプロジェクトをさらに知る";
+"project.project_notices.header" = "このクリエイターは Kickstarter によってアクセス制限されています";
+"project.project_notices.notice_cta" = "もっとくわしく";
+"project.project_notices.notice_intro" = "Kickstarter の「トラスト＆セーフティ」チームが、このプロジェクトおよび/またはそのクリエイターに関するユーザーからの報告を調査しました。";
+"project.project_notices.notice_sheet_cta" = "クリエイターのアカウンタビリティ（説明責任）について詳しく見る";
 "project.share.twitter.message" = "%{project_title} (@Kickstarter_JP より)";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} と%{second_friend_name} がバッカー";
 "project.social.friend_is_backer" = "%{friend_name} がバッカー";

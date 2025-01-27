@@ -7,8 +7,9 @@ import UIKit
 final class PledgeStatusLabelView: UIView {
   // MARK: - Properties
 
-  private lazy var containerView: UIView = { UIView(frame: .zero) }()
-  private lazy var label: UILabel = { UILabel(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var textView = { UITextView(frame: .zero) }()
+  private lazy var badgeView = { BadgeView(frame: .zero) }()
 
   private let viewModel: PledgeStatusLabelViewModelType = PledgeStatusLabelViewModel()
 
@@ -31,21 +32,23 @@ final class PledgeStatusLabelView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.containerView
+    _ = self.rootStackView
       |> containerViewStyle
 
-    _ = self.label
-      |> labelStyle
+    applyTextViewStyle(self.textView)
   }
 
   private func configureSubviews() {
-    _ = (self.containerView, self)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.label, self.containerView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+    self.badgeView.configure(with: Strings.Beta())
+    self.badgeView.isHidden = true
+
+    applyRootStackViewStyle(self.rootStackView)
+
+    self.rootStackView.addArrangedSubviews(self.badgeView, self.textView)
   }
 
   // MARK: - View model
@@ -53,7 +56,13 @@ final class PledgeStatusLabelView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.label.rac.attributedText = self.viewModel.outputs.labelText
+    self.viewModel.outputs.labelText
+      .observeForUI()
+      .observeValues { attributedText in
+        self.textView.attributedText = attributedText
+      }
+
+    self.badgeView.rac.hidden = self.viewModel.outputs.badgeHidden
   }
 
   // MARK: - Configuration
@@ -72,10 +81,26 @@ private let containerViewStyle: ViewStyle = { (view: UIView) in
     |> roundedStyle()
 }
 
-private let labelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.isAccessibilityElement .~ true
-    |> \.numberOfLines .~ 0
-    |> \.backgroundColor .~ .ksr_support_200
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.backgroundColor = .ksr_support_200
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = .init(all: Styles.grid(2))
+  stackView.rounded()
+  stackView.axis = .vertical
+  stackView.alignment = .center
+  stackView.spacing = Styles.grid(2)
+}
+
+private func applyTextViewStyle(_ textView: UITextView) {
+  textView.accessibilityTraits = [.staticText]
+  textView.backgroundColor = .ksr_support_200
+  textView.isScrollEnabled = false
+  textView.isEditable = false
+  textView.isUserInteractionEnabled = true
+  textView.adjustsFontForContentSizeCategory = true
+  textView.textContainerInset = .zero
+  textView.textContainer.lineFragmentPadding = 0
+  textView.linkTextAttributes = [
+    .foregroundColor: UIColor.ksr_create_700
+  ]
 }

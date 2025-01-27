@@ -59,12 +59,14 @@ extension UserEnvelope {
   static func userEnvelope(from data: GraphAPI.FetchUserSetupQuery.Data) -> UserEnvelope<GraphUserSetup>? {
     guard
       let userFragment = data.me?.fragments.userEmailFragment,
-      let featuresFragment = data.me?.fragments.userFeaturesFragment
+      let featuresFragment = data.me?.fragments.userFeaturesFragment,
+      let ppoUserFragment = data.me?.fragments.ppoUserSetupFragment
     else { return nil }
 
     let graphUser = GraphUserSetup(
       email: userFragment.email,
-      enabledFeatures: Set(featuresFragment.enabledFeatures)
+      enabledFeatures: Set(featuresFragment.enabledFeatures),
+      ppoHasAction: ppoUserFragment.ppoHasAction
     )
 
     return UserEnvelope<GraphUserSetup>(me: graphUser)

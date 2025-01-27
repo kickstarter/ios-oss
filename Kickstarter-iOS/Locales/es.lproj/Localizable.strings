@@ -332,6 +332,7 @@
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Si el proyecto alcanza la meta, el primer cargo de %{amount} se cobrará el %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará %{total} el %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si el proyecto alcanza la meta de financiamiento, te cobraremos %{total} el %{project_deadline}. Recibirás un comprobante por la contribución que podrás canjear si el proyecto se financia con éxito y el creador logra completar su iniciativa.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";
 "If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n";
@@ -788,6 +789,7 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "No podemos autenticar tu método de pago. Desliza para actualizar la página y elegir otro.";
 "We_can_no_longer_log_you_in_through_Facebook" = "Ya no admitimos el inicio de sesión a través de Facebook. Inicia sesión con tu contraseña de Kickstarter o configura una nueva contraseña con tu correo electrónico de Facebook.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
+"We_cant_process_your_Pledge_Over_Time_payment" = "No podemos procesar el pago de tu contribución en cuotas. Es necesario que <a href=\"%{view_your_pledge_link}\">revises tu contribución</a> en un navegador web e inicies sesión para arreglar el pago.";
 "We_cant_process_your_pledge" = "No podemos procesar tu contribución.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
 "We_cant_process_your_pledge_for" = "No podemos procesar tu contribución para:";
@@ -881,7 +883,6 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Has cancelado tu contribución de <b>%{pledge_amount}</b> para el proyecto <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Has actualizado con éxito tu contribución a %{amount} para %{project_name}. Si el proyecto alcanza su meta de financiamiento, se efectuará un cargo en tu tarjeta el %{project_deadline}. Consulta tu correo electrónico para obtener más detalles.";
-"Youve_been_authenticated_successfully_pull_to_refresh" = "La autenticación se completó con éxito. Desliza para actualizar.";
 "Zip_code" = "Código postal";
 "accessibility.dashboard.buttons.activity" = "Actividad";
 "accessibility.dashboard.buttons.activity_hint" = "Abre actividades.";
@@ -1712,6 +1713,10 @@
 "project.menu.buttons.updates" = "Actualizaciones";
 "project.menu.created_by" = "Creado por";
 "project.menu.explore_this_project" = "Explorar este proyecto";
+"project.project_notices.header" = "Creador restringido por Kickstarter";
+"project.project_notices.notice_cta" = "Más información";
+"project.project_notices.notice_intro" = "El equipo de confianza y seguridad de Kickstarter analizó los informes recibidos de los usuarios en relación con este proyecto o su creador.";
+"project.project_notices.notice_sheet_cta" = "Más información sobre las responsabilidades del creador";
 "project.share.twitter.message" = "%{project_title}, via @Kickstarter";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} y %{second_friend_name} patrocinan este proyecto.";
 "project.social.friend_is_backer" = "%{friend_name} patrocina este proyecto.";

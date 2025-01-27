@@ -145,7 +145,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard
+      paymentType: .creditCard,
+      isPledgeOverTime: false
     )
 
     withEnvironment(apiService: mockService) {
@@ -203,7 +204,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: [],
+      project: project
     )
 
     withEnvironment(apiService: mockService) {
@@ -457,8 +459,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
+    let backing = Backing.templatePlot
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([.template])
     )
@@ -915,7 +921,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: [],
+      project: project
     )
 
     // Pledge amount 50
@@ -939,7 +946,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
-      paymentIncrements: nil
+      paymentIncrements: [],
+      project: project
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -947,7 +955,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard
+      paymentType: .creditCard,
+      isPledgeOverTime: false
     )
 
     let initialBackingEnvelope = envelope
@@ -1716,22 +1725,24 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testPlotPaymentScheduleView_IsHiddenWhenFeatureFlagIsDisabled() {
+  func testPlotPaymentScheduleView_IsHiddenWhenThereIsNoPaymentIncrements() {
     self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    let backing = Backing.template
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let user = User.template
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: false
-    ]
-
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResult: .success(.template)
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project)
     )
 
-    withEnvironment(apiService: mockService, currentUser: user, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
@@ -1748,18 +1759,17 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
+    let backing = Backing.templatePlot
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([.template])
     )
 
-    withEnvironment(apiService: mockService, currentUser: user, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 

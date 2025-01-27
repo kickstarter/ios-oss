@@ -236,6 +236,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
              "alumniNewsletter":true
           },
           "optedOutOfRecommendations":true,
+          "ppoHasAction": false,
           "notifications":[
              {
                 "__typename":"Notification",
