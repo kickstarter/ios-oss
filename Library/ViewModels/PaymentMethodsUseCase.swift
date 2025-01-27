@@ -1,5 +1,10 @@
 import ReactiveSwift
 
+public protocol PaymentMethodsUseCaseType {
+  var inputs: PaymentMethodsUseCaseInputs { get }
+  var outputs: PaymentMethodsUseCaseOutputs { get }
+}
+
 public protocol PaymentMethodsUseCaseInputs {
   func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
 }
@@ -16,12 +21,14 @@ public protocol PaymentMethodsUseCaseOutputs {
   * `initialData` - Pledge configuration data. Must send at least one event for any outputs to send.
   * `userSessionStarted` - Empty signal that indicates when a user logs in.
   * `creditCardSelected(with:)` - Call this when the user selects a new card.
+
  Outputs:
   * `configurePaymentMethodsViewControllerWithValue` - Configuration data for `PledgePaymentMethodsViewController`. May be sent never (if payment methods are disabled, or if the user is logged out), once, or many times (if the user logs out and in again.)
   * `paymentMethodsViewHidden` - Whether or not to show the payment methods view. Sent at least once after `initialData` is sent.
   * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after `initialData` is sent.
   */
-public final class PaymentMethodsUseCase: PaymentMethodsUseCaseInputs, PaymentMethodsUseCaseOutputs {
+public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseInputs,
+  PaymentMethodsUseCaseOutputs {
   init(initialData: Signal<PledgeViewData, Never>, userSessionStarted: Signal<(), Never>) {
     let project = initialData.map(\.project)
     let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
@@ -29,8 +36,7 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseInputs, PaymentMe
     let context = initialData.map(\.context)
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), userSessionStarted)
-      .map { _ in AppEnvironment.current.currentUser }
-      .map { $0 != nil }
+      .map { _ in AppEnvironment.current.currentUser != nil }
 
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
