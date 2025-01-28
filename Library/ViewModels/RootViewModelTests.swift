@@ -627,7 +627,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUserPPOSettings: nil,
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -657,7 +656,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUserPPOSettings: PPOUserSettings(hasAction: true),
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -705,7 +703,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: nil,
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -727,7 +724,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: nil,
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -771,7 +767,6 @@ final class RootViewModelTests: TestCase {
     ]
 
     withEnvironment(
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
