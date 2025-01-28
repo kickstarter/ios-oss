@@ -13,11 +13,10 @@ public typealias NoShippingPledgeViewCTAContainerViewData = (
   willRetryPaymentMethod: Bool
 )
 
-public protocol NoShippingPledgeViewModelInputs {
+public protocol NoShippingPledgeViewModelInputs: LoginSignupUseCaseInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
   func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
-  func goToLoginSignupTapped()
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
@@ -28,11 +27,10 @@ public protocol NoShippingPledgeViewModelInputs {
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
-  func userSessionStarted()
   func viewDidLoad()
 }
 
-public protocol NoShippingPledgeViewModelOutputs {
+public protocol NoShippingPledgeViewModelOutputs: LoginSignupUseCaseOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
@@ -48,7 +46,6 @@ public protocol NoShippingPledgeViewModelOutputs {
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -92,6 +89,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
 
+    self.loginSignupUseCase = LoginSignupUseCase(
+      withLoginIntent: .backProject,
+      initialData: initialData.ignoreValues()
+    )
+
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
@@ -100,10 +102,6 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
         return context.sectionSeparatorsHidden
       }
-
-    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
-      .map { _ in AppEnvironment.current.currentUser }
-      .map(isNotNil)
 
     let allRewardsTotal = Signal.combineLatest(
       project, rewards, selectedQuantities, context
@@ -303,7 +301,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialDataUnpacked,
-      initialDataUnpacked.takeWhen(self.userSessionStartedSignal)
+      initialDataUnpacked.takeWhen(self.loginSignupUseCase.inbetween.userSessionChanged)
     )
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
@@ -317,11 +315,11 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
         return (user, project, "", reward, context, refTag)
       }
 
-    self.goToLoginSignup = self.goToLoginSignupSignal
-      .mapConst(LoginIntent.backProject)
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { !$0 || $1.paymentMethodsViewHidden }
+    self.paymentMethodsViewHidden = Signal.combineLatest(
+      self.loginSignupUseCase.inbetween.isLoggedIn,
+      context
+    )
+    .map { !$0 || $1.paymentMethodsViewHidden }
 
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
@@ -839,7 +837,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       project,
       pledgeTotal.skipRepeats(),
-      isLoggedIn,
+      self.loginSignupUseCase.inbetween.isLoggedIn,
       isEnabled,
       context,
       willRetryPaymentMethod
@@ -988,9 +986,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.pledgeOverTimeUseCase.inputs.paymentPlanSelected(paymentPlan)
   }
 
-  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
   public func goToLoginSignupTapped() {
-    self.goToLoginSignupObserver.send(value: ())
+    self.loginSignupUseCase.inputs.goToLoginSignupTapped()
   }
 
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
@@ -1026,14 +1023,13 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     self.termsOfUseTappedObserver.send(value: helpType)
   }
 
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
-  public func userSessionStarted() {
-    self.userSessionStartedObserver.send(value: ())
-  }
-
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  public func userSessionDidChange() {
+    self.loginSignupUseCase.inputs.userSessionDidChange()
   }
 
   // MARK: - Outputs
@@ -1053,7 +1049,10 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
-  public let goToLoginSignup: Signal<LoginIntent, Never>
+  public var goToLoginSignup: Signal<LoginIntent, Never> {
+    return self.loginSignupUseCase.outputs.goToLoginSignup
+  }
+
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
@@ -1078,6 +1077,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
   // MARK: - Use cases
 
   private let pledgeOverTimeUseCase: PledgeOverTimeUseCase
+  private let loginSignupUseCase: LoginSignupUseCase
 }
 
 // MARK: - Functions

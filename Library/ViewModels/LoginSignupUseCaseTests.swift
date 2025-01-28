@@ -18,8 +18,8 @@ final class LoginSignupUseCaseTests: TestCase {
     self.useCase = LoginSignupUseCase(withLoginIntent: .generic, initialData: self.initialDataSignal)
 
     self.useCase.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-    self.useCase.outputs.userSessionChanged.observe(self.userSessionChanged.observer)
-    self.useCase.outputs.isLoggedIn.observe(self.isLoggedIn.observer)
+    self.useCase.inbetween.userSessionChanged.observe(self.userSessionChanged.observer)
+    self.useCase.inbetween.isLoggedIn.observe(self.isLoggedIn.observer)
   }
 
   func testUseCase_SendsUserSessionChange_WhenUserSessionIsChanged() {
