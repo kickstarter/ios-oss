@@ -1,22 +1,22 @@
 import Foundation
 import ReactiveSwift
 
-public protocol LoginSignupUseCaseInputs {
+public protocol LoginSignupUseCaseType {
+  var uiInputs: LoginSignupUseCaseUIInputs { get }
+  var uiOutputs: LoginSignupUseCaseUIOutputs { get }
+  var dataOutputs: LoginSignupUseCaseDataOutputs { get }
+}
+
+public protocol LoginSignupUseCaseUIInputs {
   func goToLoginSignupTapped()
   func userSessionDidChange()
 }
 
-public protocol LoginSignupUseCaseType {
-  var inputs: LoginSignupUseCaseInputs { get }
-  var outputs: LoginSignupUseCaseOutputs { get }
-  var inbetween: LoginSignupUseCaseInbetween { get }
-}
-
-public protocol LoginSignupUseCaseOutputs {
+public protocol LoginSignupUseCaseUIOutputs {
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
 }
 
-public protocol LoginSignupUseCaseInbetween {
+public protocol LoginSignupUseCaseDataOutputs {
   var userSessionChanged: Signal<Void, Never> { get }
   var isLoggedIn: Signal<Bool, Never> { get }
 }
@@ -24,20 +24,24 @@ public protocol LoginSignupUseCaseInbetween {
 /**
  A use case for logging in and signing up during the pledge flow.
 
- Inputs:
-  - `initialData` - An empty signal. Triggers an initial `isLoggedIn` event to fire.
-  - `goToLoginSignupTapped()` - The user tapped the login button. Triggers `goToLoginSignup`.
-  - `userSessionDidChange()` - The user completed login, sign up, or log out. Triggers a new `isLoggedIn` event.
+ User Interface Inputs:
+ - `goToLoginSignupTapped()` - The user tapped the login button. Triggers `goToLoginSignup`.
 
- Inbetween:
+ Data Inputs:
+  - `initialData` - An empty signal. Triggers an initial `isLoggedIn` event to fire.
+  - `loginIntent` - What kind of login intent to use when showing the login page.
+
+ User Interface Outputs:
+ - `goToLoginSignup` - The view controller should display a login screen. Can happen never, once, or many times.
+ - `userSessionDidChange()` - The user completed login, sign up, or log out. Triggers a new `isLoggedIn` event. Usually hooked up to a notification for .ksr_sessionStarted.
+
+ Data Outputs:
  - `userSessionChanged` - A user has logged in or out. Can happen never, once, or many times.
  - `isLoggedIn` - A user is logged in or out. Happens once on `initialData`, and any time `userSessionDidChange` afterwards.
-
- Outputs:
-  - `goToLoginSignup` - The view controller should display a login screen. Can happen never, once, or many times.
  */
-public final class LoginSignupUseCase: LoginSignupUseCaseType, LoginSignupUseCaseInputs,
-  LoginSignupUseCaseOutputs, LoginSignupUseCaseInbetween {
+
+public final class LoginSignupUseCase: LoginSignupUseCaseType, LoginSignupUseCaseUIInputs,
+  LoginSignupUseCaseUIOutputs, LoginSignupUseCaseDataOutputs {
   init(withLoginIntent loginIntent: LoginIntent, initialData: Signal<Void, Never>) {
     self.goToLoginSignup = self.goToLoginSignupSignal
       .mapConst(loginIntent)
@@ -72,7 +76,7 @@ public final class LoginSignupUseCase: LoginSignupUseCaseType, LoginSignupUseCas
 
   // MARK: - Type
 
-  public var inputs: any LoginSignupUseCaseInputs { return self }
-  public var outputs: any LoginSignupUseCaseOutputs { return self }
-  public var inbetween: any LoginSignupUseCaseInbetween { return self }
+  public var uiInputs: any LoginSignupUseCaseUIInputs { return self }
+  public var uiOutputs: any LoginSignupUseCaseUIOutputs { return self }
+  public var dataOutputs: any LoginSignupUseCaseDataOutputs { return self }
 }

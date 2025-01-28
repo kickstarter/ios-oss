@@ -5,11 +5,13 @@ import Prelude
 import ReactiveSwift
 import Stripe
 
-public protocol NoShippingPostCampaignCheckoutViewModelInputs: LoginSignupUseCaseInputs {
+public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func checkoutTerminated()
   func configure(with data: PledgeViewData)
   func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected)
+  func goToLoginSignupTapped()
+  func userSessionDidChange()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
@@ -19,7 +21,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelInputs: LoginSignupUseCas
   func applePayContextDidComplete()
 }
 
-public protocol NoShippingPostCampaignCheckoutViewModelOutputs: LoginSignupUseCaseOutputs {
+public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
@@ -31,6 +33,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs: LoginSignupUseCa
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
@@ -125,7 +128,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     )
 
     let createCheckoutEvents = Signal.combineLatest(
-      self.loginSignupUseCase.inbetween.isLoggedIn,
+      self.loginSignupUseCase.dataOutputs.isLoggedIn,
       pledgeDetailsData
     )
     .filter { isLoggedIn, _ in isLoggedIn }
@@ -181,7 +184,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: Configure views
 
-    self.paymentMethodsViewHidden = self.loginSignupUseCase.inbetween.isLoggedIn.map(negate)
+    self.paymentMethodsViewHidden = self.loginSignupUseCase.dataOutputs.isLoggedIn.map(negate)
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
       project,
@@ -523,7 +526,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       pledgeButtonEnabled,
       context,
-      self.loginSignupUseCase.isLoggedIn
+      self.loginSignupUseCase.dataOutputs.isLoggedIn
     )
     .map { pledgeButtonEnabled, context, isLoggedIn in
       PledgeViewCTAContainerViewData(
@@ -672,7 +675,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   }
 
   public func goToLoginSignupTapped() {
-    self.loginSignupUseCase.inputs.goToLoginSignupTapped()
+    self.loginSignupUseCase.uiInputs.goToLoginSignupTapped()
   }
 
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
@@ -692,7 +695,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   }
 
   public func userSessionDidChange() {
-    self.loginSignupUseCase.userSessionDidChange()
+    self.loginSignupUseCase.uiInputs.userSessionDidChange()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -729,7 +732,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
   public var goToLoginSignup: Signal<LoginIntent, Never> {
-    self.loginSignupUseCase.outputs.goToLoginSignup
+    self.loginSignupUseCase.uiOutputs.goToLoginSignup
   }
 
   public let processingViewIsHidden: Signal<Bool, Never>
