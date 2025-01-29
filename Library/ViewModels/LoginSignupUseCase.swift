@@ -22,7 +22,7 @@ public protocol LoginSignupUseCaseDataOutputs {
 }
 
 /**
- A use case for logging in and signing up during the pledge flow.
+ A use case for logging in and signing up during the pledge flow: for both late and live pledges.
 
  User Interface Inputs:
  - `goToLoginSignupTapped()` - The user tapped the login button. Triggers `goToLoginSignup`.

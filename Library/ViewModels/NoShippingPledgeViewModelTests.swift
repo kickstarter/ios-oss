@@ -12,12 +12,6 @@ private struct MockStripePaymentHandlerActionStatus: StripePaymentHandlerActionS
   let status: StripePaymentHandlerActionStatus
 }
 
-/*
- The vm is subscribing to this thing
- it accepts an event in the test
- then user session started always has a value??
- */
-
 final class NoShippingPledgeViewModelTests: TestCase {
   private let vm: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
 
