@@ -10,7 +10,6 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
           "__typename": "Project",
           "paymentPlan": {
             "__typename": "PaymentPlan",
-            "projectIsPledgeOverTimeAllowed": true,
             "amountIsPledgeOverTimeEligible": true,
             "paymentIncrements": [
               {

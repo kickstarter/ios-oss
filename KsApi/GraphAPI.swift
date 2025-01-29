@@ -7996,7 +7996,6 @@ public enum GraphAPI {
           __typename
           paymentPlan(amount: $amount) {
             __typename
-            projectIsPledgeOverTimeAllowed
             amountIsPledgeOverTimeEligible
             paymentIncrements {
               __typename
@@ -8101,7 +8100,6 @@ public enum GraphAPI {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("projectIsPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
               GraphQLField("amountIsPledgeOverTimeEligible", type: .nonNull(.scalar(Bool.self))),
               GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
             ]
@@ -8113,8 +8111,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(projectIsPledgeOverTimeAllowed: Bool, amountIsPledgeOverTimeEligible: Bool, paymentIncrements: [PaymentIncrement]? = nil) {
-            self.init(unsafeResultMap: ["__typename": "PaymentPlan", "projectIsPledgeOverTimeAllowed": projectIsPledgeOverTimeAllowed, "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }])
+          public init(amountIsPledgeOverTimeEligible: Bool, paymentIncrements: [PaymentIncrement]? = nil) {
+            self.init(unsafeResultMap: ["__typename": "PaymentPlan", "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }])
           }
 
           public var __typename: String {
@@ -8123,16 +8121,6 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          /// Whether the project permits pledge over time pledges
-          public var projectIsPledgeOverTimeAllowed: Bool {
-            get {
-              return resultMap["projectIsPledgeOverTimeAllowed"]! as! Bool
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "projectIsPledgeOverTimeAllowed")
             }
           }
 
