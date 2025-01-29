@@ -131,8 +131,6 @@ final class PledgePaymentPlanOptionView: UIView {
     ])
 
     self.termsOfUseButton.setContentHuggingPriority(.required, for: .horizontal)
-
-    self.paymentIncrementsStackView.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   private func configureTapGestureAndActions() {
