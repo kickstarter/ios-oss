@@ -155,6 +155,8 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
     self.setViewControllers = Signal.merge(
       standardViewControllers,
+      // FIXME: Look at moving the userLocalePreferencesChangedProperty signal into the currentUser signal
+      // https://kickstarter.atlassian.net/browse/MBL-2053
       loginState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
         .map { isLoggedIn in
           generateViewControllers(isLoggedIn: isLoggedIn)
