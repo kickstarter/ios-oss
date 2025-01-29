@@ -50,7 +50,7 @@ public final class LoginSignupUseCase: LoginSignupUseCaseType, LoginSignupUseCas
       .map { _ in AppEnvironment.current.currentUser != nil }
   }
 
-  // MARK: - Inputs
+  // MARK: - UI Inputs
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
   public func goToLoginSignupTapped() {
@@ -62,11 +62,11 @@ public final class LoginSignupUseCase: LoginSignupUseCaseType, LoginSignupUseCas
     self.userSessionDidChangeObserver.send(value: ())
   }
 
-  // MARK: - Outputs
+  // MARK: - UI Outputs
 
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
-  // MARK: - Inbetween
+  // MARK: - Data Outputs
 
   public var userSessionChanged: Signal<Void, Never> {
     return self.userSessionDidChangeSignal
