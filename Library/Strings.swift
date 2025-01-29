@@ -8658,8 +8658,8 @@ n'ont rien soutenu."
   /**
    "Project Alerts"
 
-   - **en**: "Project alerts"
-   - **de**: "Wichtige projekthinweise"
+   - **en**: "Project Alerts"
+   - **de**: "Wichtige Projekthinweise"
    - **es**: "Alertas del proyecto"
    - **fr**: "Alertes sur les projets"
    - **ja**: "プロジェクトのアラート"
@@ -8667,7 +8667,7 @@ n'ont rien soutenu."
   public static func Project_alerts() -> String {
     return localizedString(
       key: "Project_alerts",
-      defaultValue: "Project alerts",
+      defaultValue: "Project Alerts",
       count: nil,
       substitutions: [:]
     )
