@@ -24,10 +24,10 @@ final class ApplePayTokenUseCaseTests: TestCase {
       initialData: self.initialDataSignal
     )
 
-    self.useCase.outputs.goToApplePayPaymentAuthorization
+    self.useCase.uiOutputs.goToApplePayPaymentAuthorization
       .observe(self.goToApplePayPaymentAuthorization.observer)
-    self.useCase.outputs.applePayAuthorizationStatus.observe(self.applePayAuthorizationStatus.observer)
-    self.useCase.outputs.applePayParams.observe(self.applePayParams.observer)
+    self.useCase.dataOutputs.applePayAuthorizationStatus.observe(self.applePayAuthorizationStatus.observer)
+    self.useCase.dataOutputs.applePayParams.observe(self.applePayParams.observer)
   }
 
   func testUseCase_GoesToPaymentAuthorization_WhenApplePayButtonIsTapped() {
@@ -44,7 +44,7 @@ final class ApplePayTokenUseCaseTests: TestCase {
 
     self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
 
-    self.useCase.inputs.applePayButtonTapped()
+    self.useCase.uiInputs.applePayButtonTapped()
 
     self.goToApplePayPaymentAuthorization.assertDidEmitValue()
   }
@@ -75,22 +75,22 @@ final class ApplePayTokenUseCaseTests: TestCase {
 
     self.initialDataObserver.send(value: data)
 
-    self.useCase.inputs.applePayButtonTapped()
+    self.useCase.uiInputs.applePayButtonTapped()
     self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
-    self.useCase.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
+    self.useCase.uiInputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
       "Display Name",
       "Network",
       "Transaction Identifier"
     ))
     self.applePayParams.assertLastValue(nil, "Params shouldn't emit until transaction is finished")
 
-    let status = self.useCase.inputs.stripeTokenCreated(token: "some_stripe_token", error: nil)
+    let status = self.useCase.uiInputs.stripeTokenCreated(token: "some_stripe_token", error: nil)
     XCTAssertEqual(status, PKPaymentAuthorizationStatus.success)
 
     self.applePayParams.assertLastValue(nil, "Params shouldn't emit until transaction is finished")
 
-    self.useCase.inputs.paymentAuthorizationViewControllerDidFinish()
+    self.useCase.uiInputs.paymentAuthorizationViewControllerDidFinish()
 
     self.applePayAuthorizationStatus.assertLastValue(PKPaymentAuthorizationStatus.success)
     self.applePayParams.assertDidEmitValue()
@@ -116,17 +116,17 @@ final class ApplePayTokenUseCaseTests: TestCase {
 
     self.initialDataObserver.send(value: data)
 
-    self.useCase.inputs.applePayButtonTapped()
-    self.useCase.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
+    self.useCase.uiInputs.applePayButtonTapped()
+    self.useCase.uiInputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
       "Display Name",
       "Network",
       "Transaction Identifier"
     ))
 
-    let status = self.useCase.inputs.stripeTokenCreated(token: nil, error: TestError())
+    let status = self.useCase.uiInputs.stripeTokenCreated(token: nil, error: TestError())
     XCTAssertEqual(status, PKPaymentAuthorizationStatus.failure)
 
-    self.useCase.inputs.paymentAuthorizationViewControllerDidFinish()
+    self.useCase.uiInputs.paymentAuthorizationViewControllerDidFinish()
 
     self.applePayAuthorizationStatus.assertLastValue(PKPaymentAuthorizationStatus.failure)
     self.applePayParams.assertLastValue(nil, "Params shouldn't emit when Stripe fails")
@@ -144,8 +144,8 @@ final class ApplePayTokenUseCaseTests: TestCase {
 
     self.initialDataObserver.send(value: data)
 
-    self.useCase.inputs.applePayButtonTapped()
-    self.useCase.inputs.paymentAuthorizationViewControllerDidFinish()
+    self.useCase.uiInputs.applePayButtonTapped()
+    self.useCase.uiInputs.paymentAuthorizationViewControllerDidFinish()
 
     self.applePayAuthorizationStatus.assertDidNotEmitValue()
     self.applePayParams.assertLastValue(nil, "Params shouldn't emit when ApplePay is canceled")

@@ -3,7 +3,13 @@ import KsApi
 import PassKit
 import ReactiveSwift
 
-public protocol ApplePayTokenUseCaseInputs {
+public protocol ApplePayTokenUseCaseType {
+  var uiInputs: ApplePayTokenUseCaseUIInputs { get }
+  var uiOutputs: ApplePayTokenUseCaseUIOutputs { get }
+  var dataOutputs: ApplePayTokenUseCaseDataOutputs { get }
+}
+
+public protocol ApplePayTokenUseCaseUIInputs {
   func applePayButtonTapped()
   func paymentAuthorizationDidAuthorizePayment(paymentData: (
     displayName: String?,
@@ -14,8 +20,11 @@ public protocol ApplePayTokenUseCaseInputs {
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
 }
 
-public protocol ApplePayTokenUseCaseOutputs {
+public protocol ApplePayTokenUseCaseUIOutputs {
   var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
+}
+
+public protocol ApplePayTokenUseCaseDataOutputs {
   var applePayParams: Signal<ApplePayParams?, Never> { get }
   var applePayAuthorizationStatus: Signal<PKPaymentAuthorizationStatus, Never> { get }
 }
@@ -33,14 +42,15 @@ public protocol ApplePayTokenUseCaseOutputs {
 
  Other inputs and outputs:
 
- Inputs:
+ Data Inputs:
  - `initialData` - An `initialData` event is required for any other signals to send.
 
- Outputs:
+ Data Outputs:
  - `applePayAuthorizationStatus` - Sends an event indicating whether the ApplePay flow succeeded or failed.
   */
 
-public final class ApplePayTokenUseCase: ApplePayTokenUseCaseInputs, ApplePayTokenUseCaseOutputs {
+public final class ApplePayTokenUseCase: ApplePayTokenUseCaseType, ApplePayTokenUseCaseUIInputs,
+  ApplePayTokenUseCaseUIOutputs, ApplePayTokenUseCaseDataOutputs {
   init(initialData: Signal<PaymentAuthorizationData, Never>) {
     let paymentAuthorizationData: Signal<PKPaymentRequest, Never> =
       initialData
@@ -155,6 +165,7 @@ public final class ApplePayTokenUseCase: ApplePayTokenUseCaseInputs, ApplePayTok
 
   // MARK: - Interface
 
-  public var inputs: ApplePayTokenUseCaseInputs { return self }
-  public var outputs: ApplePayTokenUseCaseOutputs { return self }
+  public var uiInputs: ApplePayTokenUseCaseUIInputs { return self }
+  public var uiOutputs: ApplePayTokenUseCaseUIOutputs { return self }
+  public var dataOutputs: ApplePayTokenUseCaseDataOutputs { return self }
 }
