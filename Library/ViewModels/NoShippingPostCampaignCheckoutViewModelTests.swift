@@ -21,7 +21,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
   private let checkoutError = TestObserver<ErrorEnvelope, Never>()
-  private let goToLoginSignup = TestObserver<(LoginIntent, Project, Reward), Never>()
+  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()

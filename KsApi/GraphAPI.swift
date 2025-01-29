@@ -7996,7 +7996,6 @@ public enum GraphAPI {
           __typename
           paymentPlan(amount: $amount) {
             __typename
-            projectIsPledgeOverTimeAllowed
             amountIsPledgeOverTimeEligible
             paymentIncrements {
               __typename
@@ -8101,7 +8100,6 @@ public enum GraphAPI {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("projectIsPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
               GraphQLField("amountIsPledgeOverTimeEligible", type: .nonNull(.scalar(Bool.self))),
               GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
             ]
@@ -8113,8 +8111,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(projectIsPledgeOverTimeAllowed: Bool, amountIsPledgeOverTimeEligible: Bool, paymentIncrements: [PaymentIncrement]? = nil) {
-            self.init(unsafeResultMap: ["__typename": "PaymentPlan", "projectIsPledgeOverTimeAllowed": projectIsPledgeOverTimeAllowed, "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }])
+          public init(amountIsPledgeOverTimeEligible: Bool, paymentIncrements: [PaymentIncrement]? = nil) {
+            self.init(unsafeResultMap: ["__typename": "PaymentPlan", "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }])
           }
 
           public var __typename: String {
@@ -8123,16 +8121,6 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          /// Whether the project permits pledge over time pledges
-          public var projectIsPledgeOverTimeAllowed: Bool {
-            get {
-              return resultMap["projectIsPledgeOverTimeAllowed"]! as! Bool
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "projectIsPledgeOverTimeAllowed")
             }
           }
 
@@ -13392,6 +13380,7 @@ public enum GraphAPI {
           __typename
           ...UserEmailFragment
           ...UserFeaturesFragment
+          ...PPOUserSetupFragment
         }
       }
       """
@@ -13402,6 +13391,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + UserEmailFragment.fragmentDefinition)
       document.append("\n" + UserFeaturesFragment.fragmentDefinition)
+      document.append("\n" + PpoUserSetupFragment.fragmentDefinition)
       return document
     }
 
@@ -13445,6 +13435,7 @@ public enum GraphAPI {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLFragmentSpread(UserEmailFragment.self),
             GraphQLFragmentSpread(UserFeaturesFragment.self),
+            GraphQLFragmentSpread(PpoUserSetupFragment.self),
           ]
         }
 
@@ -13454,8 +13445,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(email: String? = nil, enabledFeatures: [Feature]) {
-          self.init(unsafeResultMap: ["__typename": "User", "email": email, "enabledFeatures": enabledFeatures])
+        public init(email: String? = nil, enabledFeatures: [Feature], ppoHasAction: Bool? = nil) {
+          self.init(unsafeResultMap: ["__typename": "User", "email": email, "enabledFeatures": enabledFeatures, "ppoHasAction": ppoHasAction])
         }
 
         public var __typename: String {
@@ -13495,6 +13486,15 @@ public enum GraphAPI {
           public var userFeaturesFragment: UserFeaturesFragment {
             get {
               return UserFeaturesFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public var ppoUserSetupFragment: PpoUserSetupFragment {
+            get {
+              return PpoUserSetupFragment(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -16990,6 +16990,55 @@ public enum GraphAPI {
         set {
           resultMap.updateValue(newValue, forKey: "url")
         }
+      }
+    }
+  }
+
+  public struct PpoUserSetupFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PPOUserSetupFragment on User {
+        __typename
+        ppoHasAction
+      }
+      """
+
+    public static let possibleTypes: [String] = ["User"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("ppoHasAction", type: .scalar(Bool.self)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(ppoHasAction: Bool? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "ppoHasAction": ppoHasAction])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// Whether backer has any action in PPO
+    public var ppoHasAction: Bool? {
+      get {
+        return resultMap["ppoHasAction"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "ppoHasAction")
       }
     }
   }

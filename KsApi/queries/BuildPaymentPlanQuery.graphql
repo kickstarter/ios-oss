@@ -1,7 +1,6 @@
 query BuildPaymentPlan($slug: String!, $amount: String!) {
   project(slug: $slug) {
     paymentPlan(amount: $amount) {
-      projectIsPledgeOverTimeAllowed
       amountIsPledgeOverTimeEligible
       paymentIncrements {
         ...PaymentIncrementFragment
