@@ -249,7 +249,8 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
     aiDisclosure: aiDisclosure,
     risks: risks,
     story: storyElements(from: projectFragment),
-    minimumPledgeAmount: minimumSingleTierPledgeAmount
+    minimumPledgeAmount: minimumSingleTierPledgeAmount,
+    projectNotice: projectFragment.projectNotice
   )
 
   return extendedProjectProperties

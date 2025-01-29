@@ -588,6 +588,8 @@ public enum GraphAPI {
     case plagiarism
     /// prototype-misrepresentation
     case prototypeMisrepresentation
+    /// undisclosed-ai-use
+    case undisclosedAiUse
     /// misrep-support-impersonation
     case misrepSupportImpersonation
     /// misrep-support-outstanding-fulfillment
@@ -670,6 +672,7 @@ public enum GraphAPI {
         case "RESELLING": self = .reselling
         case "PLAGIARISM": self = .plagiarism
         case "PROTOTYPE_MISREPRESENTATION": self = .prototypeMisrepresentation
+        case "UNDISCLOSED_AI_USE": self = .undisclosedAiUse
         case "MISREP_SUPPORT_IMPERSONATION": self = .misrepSupportImpersonation
         case "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT": self = .misrepSupportOutstandingFulfillment
         case "MISREP_SUPPORT_SUSPICIOUS_PLEDGING": self = .misrepSupportSuspiciousPledging
@@ -727,6 +730,7 @@ public enum GraphAPI {
         case .reselling: return "RESELLING"
         case .plagiarism: return "PLAGIARISM"
         case .prototypeMisrepresentation: return "PROTOTYPE_MISREPRESENTATION"
+        case .undisclosedAiUse: return "UNDISCLOSED_AI_USE"
         case .misrepSupportImpersonation: return "MISREP_SUPPORT_IMPERSONATION"
         case .misrepSupportOutstandingFulfillment: return "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT"
         case .misrepSupportSuspiciousPledging: return "MISREP_SUPPORT_SUSPICIOUS_PLEDGING"
@@ -784,6 +788,7 @@ public enum GraphAPI {
         case (.reselling, .reselling): return true
         case (.plagiarism, .plagiarism): return true
         case (.prototypeMisrepresentation, .prototypeMisrepresentation): return true
+        case (.undisclosedAiUse, .undisclosedAiUse): return true
         case (.misrepSupportImpersonation, .misrepSupportImpersonation): return true
         case (.misrepSupportOutstandingFulfillment, .misrepSupportOutstandingFulfillment): return true
         case (.misrepSupportSuspiciousPledging, .misrepSupportSuspiciousPledging): return true
@@ -842,6 +847,7 @@ public enum GraphAPI {
         .reselling,
         .plagiarism,
         .prototypeMisrepresentation,
+        .undisclosedAiUse,
         .misrepSupportImpersonation,
         .misrepSupportOutstandingFulfillment,
         .misrepSupportSuspiciousPledging,
@@ -2113,6 +2119,8 @@ public enum GraphAPI {
     case plagiarism
     /// prototype-misrepresentation
     case prototypeMisrepresentation
+    /// undisclosed-ai-use
+    case undisclosedAiUse
     /// misrep-support-impersonation
     case misrepSupportImpersonation
     /// misrep-support-outstanding-fulfillment
@@ -2196,6 +2204,7 @@ public enum GraphAPI {
         case "RESELLING": self = .reselling
         case "PLAGIARISM": self = .plagiarism
         case "PROTOTYPE_MISREPRESENTATION": self = .prototypeMisrepresentation
+        case "UNDISCLOSED_AI_USE": self = .undisclosedAiUse
         case "MISREP_SUPPORT_IMPERSONATION": self = .misrepSupportImpersonation
         case "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT": self = .misrepSupportOutstandingFulfillment
         case "MISREP_SUPPORT_SUSPICIOUS_PLEDGING": self = .misrepSupportSuspiciousPledging
@@ -2254,6 +2263,7 @@ public enum GraphAPI {
         case .reselling: return "RESELLING"
         case .plagiarism: return "PLAGIARISM"
         case .prototypeMisrepresentation: return "PROTOTYPE_MISREPRESENTATION"
+        case .undisclosedAiUse: return "UNDISCLOSED_AI_USE"
         case .misrepSupportImpersonation: return "MISREP_SUPPORT_IMPERSONATION"
         case .misrepSupportOutstandingFulfillment: return "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT"
         case .misrepSupportSuspiciousPledging: return "MISREP_SUPPORT_SUSPICIOUS_PLEDGING"
@@ -2312,6 +2322,7 @@ public enum GraphAPI {
         case (.reselling, .reselling): return true
         case (.plagiarism, .plagiarism): return true
         case (.prototypeMisrepresentation, .prototypeMisrepresentation): return true
+        case (.undisclosedAiUse, .undisclosedAiUse): return true
         case (.misrepSupportImpersonation, .misrepSupportImpersonation): return true
         case (.misrepSupportOutstandingFulfillment, .misrepSupportOutstandingFulfillment): return true
         case (.misrepSupportSuspiciousPledging, .misrepSupportSuspiciousPledging): return true
@@ -2371,6 +2382,7 @@ public enum GraphAPI {
         .reselling,
         .plagiarism,
         .prototypeMisrepresentation,
+        .undisclosedAiUse,
         .misrepSupportImpersonation,
         .misrepSupportOutstandingFulfillment,
         .misrepSupportSuspiciousPledging,
@@ -4348,12 +4360,9 @@ public enum GraphAPI {
     case backerReportUpdate_2024
     case delayBackerTrustModule_2024
     case resetBackerSurvey_2024
-    case disableShippingAtPledge
     case pledgeProjectsOverview_2024
     case pledgeProjectsOverviewIos_2024
     case copyRewards
-    case pledgeRedemptionV1
-    case pledgeRedemptionVat
     case surveyRewardQuestions_2024
     case addressCollectionForDigitalRewards_2024
     case prelaunchStoryEditor
@@ -4366,12 +4375,13 @@ public enum GraphAPI {
     case trustAndSafetyProjectBanner
     case partialRefunds_2024
     case notificationBannerUpdate_2024
-    case multipleShipfromLocations_2024
-    case pledgeRedemptionUnifiedCreatorUi
     case reactBackedProjects
     case copyAddons
     case kdsMessagesApp
     case pledgeManagementRefunds
+    case discoverUi_2025
+    case pledgeManagementBeta
+    case creatorExperience_2025
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4463,12 +4473,9 @@ public enum GraphAPI {
         case "backer_report_update_2024": self = .backerReportUpdate_2024
         case "delay_backer_trust_module_2024": self = .delayBackerTrustModule_2024
         case "reset_backer_survey_2024": self = .resetBackerSurvey_2024
-        case "disable_shipping_at_pledge": self = .disableShippingAtPledge
         case "pledge_projects_overview_2024": self = .pledgeProjectsOverview_2024
         case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
         case "copy_rewards": self = .copyRewards
-        case "pledge_redemption_v1": self = .pledgeRedemptionV1
-        case "pledge_redemption_vat": self = .pledgeRedemptionVat
         case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
         case "address_collection_for_digital_rewards_2024": self = .addressCollectionForDigitalRewards_2024
         case "prelaunch_story_editor": self = .prelaunchStoryEditor
@@ -4481,12 +4488,13 @@ public enum GraphAPI {
         case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
         case "partial_refunds_2024": self = .partialRefunds_2024
         case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
-        case "multiple_shipfrom_locations_2024": self = .multipleShipfromLocations_2024
-        case "pledge_redemption_unified_creator_ui": self = .pledgeRedemptionUnifiedCreatorUi
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
         case "KDS_messages_app": self = .kdsMessagesApp
         case "pledge_management_refunds": self = .pledgeManagementRefunds
+        case "discover_ui_2025": self = .discoverUi_2025
+        case "pledge_management_beta": self = .pledgeManagementBeta
+        case "creator_experience_2025": self = .creatorExperience_2025
         default: self = .__unknown(rawValue)
       }
     }
@@ -4579,12 +4587,9 @@ public enum GraphAPI {
         case .backerReportUpdate_2024: return "backer_report_update_2024"
         case .delayBackerTrustModule_2024: return "delay_backer_trust_module_2024"
         case .resetBackerSurvey_2024: return "reset_backer_survey_2024"
-        case .disableShippingAtPledge: return "disable_shipping_at_pledge"
         case .pledgeProjectsOverview_2024: return "pledge_projects_overview_2024"
         case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
         case .copyRewards: return "copy_rewards"
-        case .pledgeRedemptionV1: return "pledge_redemption_v1"
-        case .pledgeRedemptionVat: return "pledge_redemption_vat"
         case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
         case .addressCollectionForDigitalRewards_2024: return "address_collection_for_digital_rewards_2024"
         case .prelaunchStoryEditor: return "prelaunch_story_editor"
@@ -4597,12 +4602,13 @@ public enum GraphAPI {
         case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
         case .partialRefunds_2024: return "partial_refunds_2024"
         case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
-        case .multipleShipfromLocations_2024: return "multiple_shipfrom_locations_2024"
-        case .pledgeRedemptionUnifiedCreatorUi: return "pledge_redemption_unified_creator_ui"
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
         case .kdsMessagesApp: return "KDS_messages_app"
         case .pledgeManagementRefunds: return "pledge_management_refunds"
+        case .discoverUi_2025: return "discover_ui_2025"
+        case .pledgeManagementBeta: return "pledge_management_beta"
+        case .creatorExperience_2025: return "creator_experience_2025"
         case .__unknown(let value): return value
       }
     }
@@ -4695,12 +4701,9 @@ public enum GraphAPI {
         case (.backerReportUpdate_2024, .backerReportUpdate_2024): return true
         case (.delayBackerTrustModule_2024, .delayBackerTrustModule_2024): return true
         case (.resetBackerSurvey_2024, .resetBackerSurvey_2024): return true
-        case (.disableShippingAtPledge, .disableShippingAtPledge): return true
         case (.pledgeProjectsOverview_2024, .pledgeProjectsOverview_2024): return true
         case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
         case (.copyRewards, .copyRewards): return true
-        case (.pledgeRedemptionV1, .pledgeRedemptionV1): return true
-        case (.pledgeRedemptionVat, .pledgeRedemptionVat): return true
         case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
         case (.addressCollectionForDigitalRewards_2024, .addressCollectionForDigitalRewards_2024): return true
         case (.prelaunchStoryEditor, .prelaunchStoryEditor): return true
@@ -4713,12 +4716,13 @@ public enum GraphAPI {
         case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
         case (.partialRefunds_2024, .partialRefunds_2024): return true
         case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
-        case (.multipleShipfromLocations_2024, .multipleShipfromLocations_2024): return true
-        case (.pledgeRedemptionUnifiedCreatorUi, .pledgeRedemptionUnifiedCreatorUi): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
         case (.kdsMessagesApp, .kdsMessagesApp): return true
         case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
+        case (.discoverUi_2025, .discoverUi_2025): return true
+        case (.pledgeManagementBeta, .pledgeManagementBeta): return true
+        case (.creatorExperience_2025, .creatorExperience_2025): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4812,12 +4816,9 @@ public enum GraphAPI {
         .backerReportUpdate_2024,
         .delayBackerTrustModule_2024,
         .resetBackerSurvey_2024,
-        .disableShippingAtPledge,
         .pledgeProjectsOverview_2024,
         .pledgeProjectsOverviewIos_2024,
         .copyRewards,
-        .pledgeRedemptionV1,
-        .pledgeRedemptionVat,
         .surveyRewardQuestions_2024,
         .addressCollectionForDigitalRewards_2024,
         .prelaunchStoryEditor,
@@ -4830,12 +4831,13 @@ public enum GraphAPI {
         .trustAndSafetyProjectBanner,
         .partialRefunds_2024,
         .notificationBannerUpdate_2024,
-        .multipleShipfromLocations_2024,
-        .pledgeRedemptionUnifiedCreatorUi,
         .reactBackedProjects,
         .copyAddons,
         .kdsMessagesApp,
         .pledgeManagementRefunds,
+        .discoverUi_2025,
+        .pledgeManagementBeta,
+        .creatorExperience_2025,
       ]
     }
   }
@@ -18083,6 +18085,7 @@ public enum GraphAPI {
           totalCount
         }
         prelaunchActivated
+        projectNotice
         risks
         sendMetaCapiEvents
         slug
@@ -18153,6 +18156,7 @@ public enum GraphAPI {
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("posts", type: .object(Post.selections)),
         GraphQLField("prelaunchActivated", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("projectNotice", type: .scalar(String.self)),
         GraphQLField("risks", type: .nonNull(.scalar(String.self))),
         GraphQLField("sendMetaCapiEvents", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("slug", type: .nonNull(.scalar(String.self))),
@@ -18173,8 +18177,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, projectNotice: String? = nil, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "projectNotice": projectNotice, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -18522,6 +18526,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "prelaunchActivated")
+      }
+    }
+
+    /// The text of the currently applied project notice, empty if there is no notice
+    public var projectNotice: String? {
+      get {
+        return resultMap["projectNotice"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "projectNotice")
       }
     }
 

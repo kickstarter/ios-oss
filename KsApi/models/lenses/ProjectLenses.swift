@@ -11,7 +11,8 @@ extension ExtendedProjectProperties {
         aiDisclosure: $1.aiDisclosure,
         risks: $1.risks,
         story: $1.story,
-        minimumPledgeAmount: $1.minimumPledgeAmount
+        minimumPledgeAmount: $1.minimumPledgeAmount,
+        projectNotice: $1.projectNotice
       ) }
     )
   }

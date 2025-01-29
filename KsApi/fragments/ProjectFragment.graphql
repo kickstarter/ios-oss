@@ -73,6 +73,7 @@ fragment ProjectFragment on Project {
     totalCount
   }
   prelaunchActivated
+  projectNotice
   risks
   sendMetaCapiEvents
   slug

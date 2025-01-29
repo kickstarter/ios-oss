@@ -52,7 +52,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
         )
       ]
     ),
-    minimumPledgeAmount: 1
+    minimumPledgeAmount: 1,
+    projectNotice: nil
   )
   private let emptyProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: [],
@@ -60,7 +61,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     aiDisclosure: nil,
     risks: "",
     story: ProjectStoryElements(htmlViewElements: []),
-    minimumPledgeAmount: 1
+    minimumPledgeAmount: 1,
+    projectNotice: nil
   )
   private let user = User.brando
 
@@ -1111,7 +1113,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
           )
         ]
       ),
-      minimumPledgeAmount: 1
+      minimumPledgeAmount: 1,
+      projectNotice: nil
     )
 
     let project = Project.cosmicSurgery

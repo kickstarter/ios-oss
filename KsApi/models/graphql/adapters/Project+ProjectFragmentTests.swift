@@ -416,6 +416,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "totalCount":3
        },
        "prelaunchActivated":true,
+       "projectNotice": null,
        "sendMetaCapiEvents": false,
        "slug":"bandofbards/final-gamble-issue-1",
        "state":"LIVE",
