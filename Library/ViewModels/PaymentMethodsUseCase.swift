@@ -1,3 +1,4 @@
+import KsApi
 import ReactiveSwift
 
 public protocol PaymentMethodsUseCaseType {
@@ -17,6 +18,7 @@ public protocol PaymentMethodsUseCaseUIOutputs {
 
 public protocol PaymentMethodsUseCaseDataOutputs {
   var selectedPaymentSource: Signal<PaymentSourceSelected?, Never> { get }
+  var paymentMethodChangedAndValid: Signal<Bool, Never> { get }
 }
 
 /**
@@ -35,6 +37,7 @@ public protocol PaymentMethodsUseCaseDataOutputs {
 
  Data Outputs:
   * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after   `initialData` is sent.
+  * `paymentMethodChangedAndValid` - Whether or not the payment method is valid for the current pledge type. Sends an event after `initialData` and potentially more after `creditCardSelected(with:)` has happened.
   */
 public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseUIInputs,
   PaymentMethodsUseCaseUIOutputs, PaymentMethodsUseCaseDataOutputs {
@@ -71,11 +74,32 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
       initialData.mapConst(nil),
       self.creditCardSelectedSignal.wrapInOptional()
     )
+
+    let notChangingPaymentMethod = context.map { context in
+      if context.isUpdating {
+        return context == .updateReward
+      }
+
+      return false
+    }
+
+    /// The `paymentMethodChangedAndValid` compares  against the existing backing payment source id.
+    self.paymentMethodChangedAndValid = Signal.merge(
+      notChangingPaymentMethod,
+      Signal.combineLatest(
+        project,
+        baseReward,
+        self.creditCardSelectedSignal,
+        context
+      )
+      .map(paymentMethodValid)
+    )
   }
 
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let selectedPaymentSource: Signal<PaymentSourceSelected?, Never>
+  public let paymentMethodChangedAndValid: Signal<Bool, Never>
 
   private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
     .pipe()
@@ -86,4 +110,27 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
   public var uiInputs: PaymentMethodsUseCaseUIInputs { return self }
   public var uiOutputs: PaymentMethodsUseCaseUIOutputs { return self }
   public var dataOutputs: PaymentMethodsUseCaseDataOutputs { return self }
+}
+
+private func paymentMethodValid(
+  project: Project,
+  reward: Reward,
+  paymentSource: PaymentSourceSelected,
+  context: PledgeViewContext
+) -> Bool {
+  guard
+    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
+    context.isUpdating,
+    userIsBacking(reward: reward, inProject: project)
+  else {
+    return true
+  }
+
+  if project.personalization.backing?.status == .errored {
+    return true
+  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
+    return true
+  }
+
+  return false
 }
