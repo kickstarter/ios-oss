@@ -79,9 +79,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.fixPayment(projectId: projectId, backingId: backingId)
       case let .fix3DSChallenge(clientSecret, onProgress):
         self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
-      case .confirmAddress:
-        // TODO: MBL-1451
-        break
+      case let .confirmAddress(backingId, addressId, address):
+        self?.confirmAddress(backingId: backingId, addressId: addressId, address: address)
       }
     }.store(in: &self.subscriptions)
 
@@ -171,6 +170,23 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.present(nav, animated: true, completion: nil)
   }
 
+  private func confirmAddress(backingId: String, addressId: String, address: String) {
+    let alert = UIAlertController(
+      title: Strings.Confirm_your_address(),
+      message: address,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel))
+    alert.addAction(UIAlertAction(
+      title: Strings.Confirm(),
+      style: .default,
+      handler: { [weak self] _ in
+        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId)
+      }
+    ))
+    self.present(alert, animated: true, completion: nil)
+  }
+
   #if DEBUG
     private var test3DSError = true
   #endif
@@ -179,7 +195,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     clientSecret: String,
     onProgress: @escaping (PPOActionState) -> Void
   ) {
-
     if clientSecret.hasPrefix("seti_") {
       onProgress(.processing)
 
@@ -224,7 +239,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     STPPaymentHandler.shared().confirmPayment(
       paymentParams,
       with: self,
-      completion: { [weak self] status, _, y in
+      completion: { [weak self] status, _, _ in
         switch status {
         case .succeeded:
           self?.viewModel.process3DSAuthentication(state: .succeeded)

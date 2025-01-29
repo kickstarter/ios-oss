@@ -269,10 +269,9 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       integerBadgeValueAndIndex,
       integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
     )
-    .withLatest(from: currentUser.map { user in user?.ppoHasAction ?? false })
-    .map(unpack)
-    .map { value, index, hasPPOAction in
-      (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
+    .map { value, index in
+      let hasPPOAction = AppEnvironment.current.currentUserPPOSettings?.hasAction ?? false
+      return (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
     }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
@@ -439,16 +438,15 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 }
 
 private func currentUserActivitiesAndErroredPledgeCount() -> Int {
-  (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) +
-    (AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0)
-}
-
-private func isPledgedProjectsOverviewEnabled() -> Bool {
-  featurePledgedProjectsOverviewEnabled() && serverFeaturePledgedProjectsOverviewIsEnabled()
+  // Do not include errored pledges if PPO is enabled.
+  let errorCount = featurePledgedProjectsOverviewEnabled()
+    ? 0
+    : AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0
+  return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) + errorCount
 }
 
 private func generateStandardViewControllers() -> [RootViewControllerData] {
-  if isPledgedProjectsOverviewEnabled() {
+  if featurePledgedProjectsOverviewEnabled() {
     return [.discovery, .pledgedProjectsAndActivities, .search]
   }
   return [.discovery, .activities, .search]
@@ -475,7 +473,7 @@ extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
-  guard !(hasPPOAction && isPledgedProjectsOverviewEnabled()) else {
+  guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
     // an empty string will show a dot as badge
     return ""
   }

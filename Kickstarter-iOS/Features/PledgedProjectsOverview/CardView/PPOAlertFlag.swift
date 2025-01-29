@@ -15,7 +15,7 @@ struct PPOAlertFlag: View {
       Spacer()
         .frame(width: Constants.spacerWidth)
       Text(self.alert.message)
-        .font(Font(PPOStyles.title.font))
+        .font(Font(PPOStyles.flagFont))
         .foregroundStyle(self.foregroundColor)
     }
     .padding(Constants.padding)

@@ -5505,6 +5505,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
+
+   - **en**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
+   - **de**: "Wenn dieses Projekt das Finanzierungsziel erreicht, wird deine Karte am %{project_deadline} mit %{total} belastet."
+   - **es**: "Si el proyecto alcanza su meta de financiamiento, se te cobrará %{total} el %{project_deadline}."
+   - **fr**: "Si l'objectif de financement est atteint, vous serez débité de %{total} le %{project_deadline}."
+   - **ja**: "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。"
+  */
+  public static func If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(total: String, project_deadline: String) -> String {
+    return localizedString(
+      key: "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline",
+      defaultValue: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.",
+      count: nil,
+      substitutions: ["total": total, "project_deadline": project_deadline]
+    )
+  }
+  /**
    "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
 
    - **en**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}. You will receive a proof of pledge that will be redeemable if the project is funded and the creator is successful at completing the creative venture."
@@ -12928,6 +12945,23 @@ catch your eye?"
     )
   }
   /**
+   "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
+
+   - **en**: "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
+   - **de**: "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
+   - **es**: "No podemos procesar el pago de tu contribución en cuotas. Es necesario que <a href="%{view_your_pledge_link}">revises tu contribución</a> en un navegador web e inicies sesión para arreglar el pago."
+   - **fr**: "Impossible de traiter le règlement de votre engagement étalé dans le temps. Veuillez vous connecter et <a href="%{view_your_pledge_link}">consulter votre engagement</a> sur un navigateur Web pour régler le problème."
+   - **ja**: "経時プレッジのお支払いを処理できませんでした。ウェブブラウザから<a href="%{view_your_pledge_link}">プレッジを確認</a>し、ログインしてお支払い方法を修正してください。"
+  */
+  public static func We_cant_process_your_Pledge_Over_Time_payment(view_your_pledge_link: String) -> String {
+    return localizedString(
+      key: "We_cant_process_your_Pledge_Over_Time_payment",
+      defaultValue: "We can’t process your Pledge Over Time payment. Please <a href=\"%{view_your_pledge_link}\">view your pledge</a> on a web browser and log in to fix your payment.",
+      count: nil,
+      substitutions: ["view_your_pledge_link": view_your_pledge_link]
+    )
+  }
+  /**
    "We can't process your pledge."
 
    - **en**: "We can't process your pledge."
@@ -20143,7 +20177,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -23555,7 +23589,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25992,6 +26026,74 @@ Merci pour votre soutien !"
     )
   }
   /**
+   "Kickstarter has restricted this creator"
+
+   - **en**: "Kickstarter has restricted this creator"
+   - **de**: "Kickstarter hat diesen Projektgründer eingeschränkt"
+   - **es**: "Creador restringido por Kickstarter"
+   - **fr**: "Créateur restreint par Kickstarter"
+   - **ja**: "このクリエイターは Kickstarter によってアクセス制限されています"
+  */
+  public static func project_project_notices_header() -> String {
+    return localizedString(
+      key: "project.project_notices.header",
+      defaultValue: "Kickstarter has restricted this creator",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Learn more"
+
+   - **en**: "Learn more"
+   - **de**: "Weitere Info"
+   - **es**: "Más información"
+   - **fr**: "En savoir plus"
+   - **ja**: "もっとくわしく"
+  */
+  public static func project_project_notices_notice_cta() -> String {
+    return localizedString(
+      key: "project.project_notices.notice_cta",
+      defaultValue: "Learn more",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
+
+   - **en**: "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
+   - **de**: "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
+   - **es**: "El equipo de confianza y seguridad de Kickstarter analizó los informes recibidos de los usuarios en relación con este proyecto o su creador."
+   - **fr**: "Le service Confiance et sécurité de Kickstarter a enquêté sur les signalements reçus à propos de ce projet ou de son créateur."
+   - **ja**: "Kickstarter の「トラスト＆セーフティ」チームが、このプロジェクトおよび/またはそのクリエイターに関するユーザーからの報告を調査しました。"
+  */
+  public static func project_project_notices_notice_intro() -> String {
+    return localizedString(
+      key: "project.project_notices.notice_intro",
+      defaultValue: "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Learn more about creator accountability"
+
+   - **en**: "Learn more about creator accountability"
+   - **de**: "Weitere Informationen zur Rechenschaftspflicht von Projektgründern"
+   - **es**: "Más información sobre las responsabilidades del creador"
+   - **fr**: "En savoir plus sur les responsabilités du créateur"
+   - **ja**: "クリエイターのアカウンタビリティ（説明責任）について詳しく見る"
+  */
+  public static func project_project_notices_notice_sheet_cta() -> String {
+    return localizedString(
+      key: "project.project_notices.notice_sheet_cta",
+      defaultValue: "Learn more about creator accountability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{project_title}, via @Kickstarter"
 
    - **en**: "%{project_title}, via @Kickstarter"
@@ -26666,7 +26768,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -27618,7 +27720,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

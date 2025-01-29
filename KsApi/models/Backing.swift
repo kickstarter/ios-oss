@@ -41,6 +41,7 @@ public struct Backing {
     case errored
     case pledged
     case preauth
+    case authenticationRequired = "authentication_required"
   }
 }
 

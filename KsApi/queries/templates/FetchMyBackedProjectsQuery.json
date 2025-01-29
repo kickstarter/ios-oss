@@ -72,6 +72,7 @@
             "newsletterSubscriptions": null,
             "notifications": null,
             "optedOutOfRecommendations": null,
+            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": null,
             "storedCards": {
@@ -232,6 +233,7 @@
             "newsletterSubscriptions": null,
             "notifications": null,
             "optedOutOfRecommendations": null,
+            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": null,
             "storedCards": {
@@ -422,6 +424,7 @@
             "newsletterSubscriptions": null,
             "notifications": null,
             "optedOutOfRecommendations": null,
+            "ppoHasAction": false,
             "showPublicProfile": null,
             "savedProjects": null,
             "storedCards": {

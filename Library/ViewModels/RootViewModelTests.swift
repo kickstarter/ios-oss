@@ -612,11 +612,10 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testPPOTabBarBadging_FeatureFlagEnabled() {
+  func testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
-      |> \.ppoHasAction .~ true
 
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
@@ -627,6 +626,37 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
+      currentUserPPOSettings: nil,
+      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
+      remoteConfigClient: remoteConfig
+    ) {
+      self.vm.inputs.viewDidLoad()
+
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true)) {
+        self.vm.inputs.currentUserUpdated()
+      }
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testPPOTabBarBadging_FeatureFlagEnabledWithPersistence() {
+    let user = User.template
+      |> \.unseenActivityCount .~ 50
+      |> \.erroredBackingsCount .~ 4
+
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+    ]
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(
+      currentUserPPOSettings: PPOUserSettings(hasAction: true),
       currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
@@ -635,7 +665,7 @@ final class RootViewModelTests: TestCase {
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
       self.vm.inputs.currentUserUpdated()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
+      self.setBadgeValueAtIndexValue.assertValues(["", ""])
       self.setBadgeValueAtIndexIndex.assertValues([1, 1])
     }
   }
@@ -644,7 +674,6 @@ final class RootViewModelTests: TestCase {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
-      |> \.ppoHasAction .~ true
 
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
@@ -654,33 +683,10 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(remoteConfigClient: remoteConfig) {
-      self.vm.inputs.viewDidLoad()
-
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      self.vm.inputs.currentUserUpdated()
-
-      self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-    }
-  }
-
-  func testPPOTabBarBadging_ServerFeatureFlagDisabled() {
-    let user = User.template
-      |> \.unseenActivityCount .~ 50
-      |> \.erroredBackingsCount .~ 4
-      |> \.ppoHasAction .~ true
-
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
-    let currentUserServerFeatures: Set<ServerFeature> = Set()
-
-    self.setBadgeValueAtIndexValue.assertValues([])
-    self.setBadgeValueAtIndexIndex.assertValues([])
-
-    withEnvironment(currentUserServerFeatures: currentUserServerFeatures, remoteConfigClient: remoteConfig) {
+    withEnvironment(
+      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      remoteConfigClient: remoteConfig
+    ) {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))

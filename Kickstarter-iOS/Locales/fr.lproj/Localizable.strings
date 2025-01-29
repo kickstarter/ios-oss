@@ -332,6 +332,7 @@
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "If_the_project_reaches_its_funding_goal_the_first_charge_will_be_collected_on_project_deadline" = "Si l'objectif de financement du projet est atteint, le premier prélèvement de %{amount} sera effectué le %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité le %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité de %{total} le %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline_and_receive_proof_of_pledge" = "Si l'objectif de financement du projet est atteint, vous serez débité de %{total} le %{project_deadline}. Vous recevrez une preuve d'engagement qui sera échangeable si le projet est intégralement financé et si le créateur mène son projet à bien.";
 "If_you_turn_following_off" = "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée.";
 "If_your_profile_is_private" = "Si votre profil est privé, seuls votre nom et votre photo seront visibles.";
@@ -788,6 +789,7 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "Impossible d'authentifier votre moyen de paiement. Veuillez faire glisser la page vers le bas pour l'actualiser et sélectionner un autre choix.";
 "We_can_no_longer_log_you_in_through_Facebook" = "La connexion Facebook est désormais impossible. Veuillez vous connecter avec votre mot de passe Kickstarter, ou créer un autre mot de passe pour votre adresse Facebook.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Impossible de traiter cet engagement en raison d'un problème survenu au niveau du moyen de paiement du contributeur.";
+"We_cant_process_your_Pledge_Over_Time_payment" = "Impossible de traiter le règlement de votre engagement étalé dans le temps. Veuillez vous connecter et <a href=\"%{view_your_pledge_link}\">consulter votre engagement</a> sur un navigateur Web pour régler le problème.";
 "We_cant_process_your_pledge" = "Impossible de traiter votre engagement.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Impossible de traiter votre engagement. Veuillez mettre à jour votre moyen de paiement.";
 "We_cant_process_your_pledge_for" = "Impossible de traiter votre engagement pour :";
@@ -881,7 +883,6 @@
 "Youve_canceled_your_pledge_of_pledge_amount_for_project_name" = "Vous avez annulé votre engagement de <b>%{pledge_amount}</b> pour le projet <b>%{project_name}</b>.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
 "Youve_successfully_updated_your_pledge_to_amount_for_project_name" = "Votre engagement de %{amount} en soutien du projet %{project_name} a bien été mis à jour. Si le créateur atteint son objectif de financement, votre carte sera débitée le %{project_deadline}. Veuillez consulter votre messagerie pour plus d'informations.";
-"Youve_been_authenticated_successfully_pull_to_refresh" = "Vous avez été authentifié ! Veuillez tirer l\'écran vers le bas pour l\'actualiser.";
 "Zip_code" = "Code postal";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";
@@ -1712,6 +1713,10 @@
 "project.menu.buttons.updates" = "Actus";
 "project.menu.created_by" = "Créé par";
 "project.menu.explore_this_project" = "Découvrir ce projet";
+"project.project_notices.header" = "Créateur restreint par Kickstarter";
+"project.project_notices.notice_cta" = "En savoir plus";
+"project.project_notices.notice_intro" = "Le service Confiance et sécurité de Kickstarter a enquêté sur les signalements reçus à propos de ce projet ou de son créateur.";
+"project.project_notices.notice_sheet_cta" = "En savoir plus sur les responsabilités du créateur";
 "project.share.twitter.message" = "%{project_title}, via @Kickstarter";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} et %{second_friend_name} sont contributeurs.";
 "project.social.friend_is_backer" = "%{friend_name} est contributeur.";

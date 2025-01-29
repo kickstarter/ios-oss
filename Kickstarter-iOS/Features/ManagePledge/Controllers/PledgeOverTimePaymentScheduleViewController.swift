@@ -56,6 +56,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     self.paymentsScheduleStackView.isHidden = true
     self.titleLabel.text = Strings.Payment_schedule()
 
+    self.termsOfUseButton.setContentCompressionResistancePriority(.required, for: .vertical)
     self.termsOfUseButton.setAttributedTitle(
       NSAttributedString(
         string: Strings.login_tout_help_sheet_terms(),
