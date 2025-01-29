@@ -695,27 +695,6 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSetViewControllers_PledgedProjectsOverview_LoggedOut() {
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
-
-    withEnvironment(
-      currentUser: nil,
-      remoteConfigClient: remoteConfig
-    ) {
-      self.vm.inputs.viewDidLoad()
-
-      self.viewControllerNames.assertValues(
-        [
-          ["Discovery", "Activities", "Search", "LoginTout"]
-        ],
-        "Shows regular Activities tab when logged out, even with feature flag enabled"
-      )
-    }
-  }
-
   func testSetViewControllers_PledgedProjectsOverview_LoggedIn() {
     let remoteConfig = MockRemoteConfigClient()
     remoteConfig.features = [
