@@ -1,24 +1,28 @@
 import ReactiveSwift
 
 public protocol PaymentMethodsUseCaseType {
-  var inputs: PaymentMethodsUseCaseInputs { get }
-  var outputs: PaymentMethodsUseCaseOutputs { get }
+  var uiInputs: PaymentMethodsUseCaseUIInputs { get }
+  var uiOutputs: PaymentMethodsUseCaseUIOutputs { get }
+  var dataOutputs: PaymentMethodsUseCaseDataOutputs { get }
 }
 
-public protocol PaymentMethodsUseCaseInputs {
+public protocol PaymentMethodsUseCaseUIInputs {
   func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
 }
 
-public protocol PaymentMethodsUseCaseOutputs {
+public protocol PaymentMethodsUseCaseUIOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
+}
+
+public protocol PaymentMethodsUseCaseDataOutputs {
   var selectedPaymentSource: Signal<PaymentSourceSelected?, Never> { get }
 }
 
 /** A use case for turning `PledgeViewData` into `PledgePaymentMethodsValue`. Used to configure `PledgePaymentMethodsViewController` in the late or live pledge flows.
 
  Inputs:
-  * `initialData` - Pledge configuration data. Must send at least one event for any outputs to send.
+  * `initialData` - Pledge configuration data. Must send at least one event for any uiOutputs to send.
   * `userSessionStarted` - Empty signal that indicates when a user logs in.
   * `creditCardSelected(with:)` - Call this when the user selects a new card.
 
@@ -27,8 +31,8 @@ public protocol PaymentMethodsUseCaseOutputs {
   * `paymentMethodsViewHidden` - Whether or not to show the payment methods view. Sent at least once after `initialData` is sent.
   * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after `initialData` is sent.
   */
-public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseInputs,
-  PaymentMethodsUseCaseOutputs {
+public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseUIInputs,
+  PaymentMethodsUseCaseUIOutputs, PaymentMethodsUseCaseDataOutputs {
   init(initialData: Signal<PledgeViewData, Never>, userSessionStarted: Signal<(), Never>) {
     let project = initialData.map(\.project)
     let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
@@ -71,6 +75,7 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
     self.creditCardSelectedObserver.send(value: paymentSourceData)
   }
 
-  public var inputs: PaymentMethodsUseCaseInputs { return self }
-  public var outputs: PaymentMethodsUseCaseOutputs { return self }
+  public var uiInputs: PaymentMethodsUseCaseUIInputs { return self }
+  public var uiOutputs: PaymentMethodsUseCaseUIOutputs { return self }
+  public var dataOutputs: PaymentMethodsUseCaseDataOutputs { return self }
 }

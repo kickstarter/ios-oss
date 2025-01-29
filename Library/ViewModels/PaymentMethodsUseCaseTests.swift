@@ -26,10 +26,10 @@ final class PaymentMethodsUseCaseTests: TestCase {
       userSessionStarted: self.userSessionStartedSignal
     )
 
-    self.useCase.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
-    self.useCase.outputs.configurePaymentMethodsViewControllerWithValue
+    self.useCase.uiOutputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+    self.useCase.uiOutputs.configurePaymentMethodsViewControllerWithValue
       .observe(self.configureWithValue.observer)
-    self.useCase.outputs.selectedPaymentSource.observe(self.selectedPaymentSource.observer)
+    self.useCase.dataOutputs.selectedPaymentSource.observe(self.selectedPaymentSource.observer)
   }
 
   func test_LoggedInUser_SendsConfigValue_AndShowsPaymentMethods() {
@@ -122,7 +122,7 @@ final class PaymentMethodsUseCaseTests: TestCase {
 
       let card = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
-      self.useCase.inputs.creditCardSelected(with: card)
+      self.useCase.uiInputs.creditCardSelected(with: card)
       self.selectedPaymentSource.assertDidEmitValue()
       XCTAssertEqual(self.selectedPaymentSource.lastValue!, card)
     }
