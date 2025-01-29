@@ -1177,6 +1177,8 @@
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
+		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
+		AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */; };
 		AAD759F42D2FA1F200A4E003 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */; };
 		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
@@ -2882,6 +2884,8 @@
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
+		AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Templates.swift"; sourceTree = "<group>"; };
+		AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Parsing.swift"; sourceTree = "<group>"; };
 		AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAlertFlag.swift; sourceTree = "<group>"; };
 		AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Helpers.swift"; sourceTree = "<group>"; };
 		AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsProperties.swift; sourceTree = "<group>"; };
@@ -6893,9 +6897,11 @@
 		AAD2BEE72C59B964003D8B95 /* CardView */ = {
 			isa = PBXGroup;
 			children = (
+				AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */,
 				AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */,
 				AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */,
 				AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */,
+				AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */,
 				AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */,
 				AAE7C9A52C75948B00800E03 /* PPOProjectCardViewModel.swift */,
 				AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */,
@@ -8538,6 +8544,7 @@
 				D0237C1522BC2B640092C792 /* PledgeSummaryViewController.swift in Sources */,
 				015706BB1E68DE580087DD68 /* ProfileSortBarView.swift in Sources */,
 				77A64E5824645DCE003BF98E /* DiscoveryProjectCardCell.swift in Sources */,
+				AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */,
 				A74FFE691CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */,
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */,
@@ -8819,6 +8826,7 @@
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
 				60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */,
+				AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,

@@ -6,7 +6,6 @@ public func buildPaymentPlanQueryJson(eligible: Bool) -> String {
         "__typename": "Project",
         "paymentPlan": {
           "__typename": "PaymentPlan",
-          "projectIsPledgeOverTimeAllowed": true,
           "amountIsPledgeOverTimeEligible": \(eligible ? "true" : "false"),
           "paymentIncrements": [
             {

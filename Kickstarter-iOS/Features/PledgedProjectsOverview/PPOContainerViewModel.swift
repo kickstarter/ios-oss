@@ -84,6 +84,27 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
         self?.showBannerSubject.send(configuration)
       }
       .store(in: &self.cancellables)
+
+    // Confirm address call with result banners.
+    self.confirmAddressSubject
+      .flatMap { data in
+        AppEnvironment.current.apiService.confirmBackingAddress(
+          backingId: data.backingId,
+          addressId: data.addressId
+        )
+        .catch { _ in Just(false) }
+      }
+      .compactMap { success -> MessageBannerConfiguration in
+        if success {
+          return (.success, Strings.Address_confirmed_need_to_change_your_address_before_it_locks())
+        } else {
+          return (.error, Strings.Something_went_wrong_please_try_again())
+        }
+      }
+      .sink { [weak self] configuration in
+        self?.showBannerSubject.send(configuration)
+      }
+      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
@@ -102,6 +123,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
 
   func process3DSAuthentication(state: PPOActionState) {
     self.process3DSAuthenticationState.send(state)
+  }
+
+  func confirmAddress(addressId: String, backingId: String) {
+    self.confirmAddressSubject.send((addressId: addressId, backingId: backingId))
   }
 
   // MARK: - Outputs
@@ -136,6 +161,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
+  private let confirmAddressSubject = PassthroughSubject<(addressId: String, backingId: String), Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }
