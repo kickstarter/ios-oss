@@ -19,34 +19,42 @@ public protocol PaymentMethodsUseCaseDataOutputs {
   var selectedPaymentSource: Signal<PaymentSourceSelected?, Never> { get }
 }
 
-/** A use case for turning `PledgeViewData` into `PledgePaymentMethodsValue`. Used to configure `PledgePaymentMethodsViewController` in the late or live pledge flows.
+/**
+ A use case for turning `PledgeViewData` into `PledgePaymentMethodsValue`. Used to configure `PledgePaymentMethodsViewController` in the late or live pledge flows.
 
- Inputs:
-  * `initialData` - Pledge configuration data. Must send at least one event for any uiOutputs to send.
-  * `userSessionStarted` - Empty signal that indicates when a user logs in.
+ UI Inputs:
   * `creditCardSelected(with:)` - Call this when the user selects a new card.
 
- Outputs:
+ Data Inputs:
+  * `initialData` - Pledge configuration data. Must send at least one event for any outputs to send.
+  * `isLoggedIn` - Boolean signal that indicates whether or not the user is logged in.
+
+ UI Outputs:
   * `configurePaymentMethodsViewControllerWithValue` - Configuration data for `PledgePaymentMethodsViewController`. May be sent never (if payment methods are disabled, or if the user is logged out), once, or many times (if the user logs out and in again.)
   * `paymentMethodsViewHidden` - Whether or not to show the payment methods view. Sent at least once after `initialData` is sent.
-  * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after `initialData` is sent.
+
+ Data Outputs:
+  * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after   `initialData` is sent.
   */
 public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseUIInputs,
   PaymentMethodsUseCaseUIOutputs, PaymentMethodsUseCaseDataOutputs {
-  init(initialData: Signal<PledgeViewData, Never>, userSessionStarted: Signal<(), Never>) {
+  init(initialData: Signal<PledgeViewData, Never>, isLoggedIn isLoggedInChanged: Signal<Bool, Never>) {
     let project = initialData.map(\.project)
     let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
     let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
 
-    let isLoggedIn = Signal.merge(initialData.ignoreValues(), userSessionStarted)
-      .map { _ in AppEnvironment.current.currentUser != nil }
-
     let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
+    let initialLoggedIn = initialData.map { _ in AppEnvironment.current.currentUser != nil }
+
+    let isLoggedIn = Signal.merge(
+      initialLoggedIn,
+      isLoggedInChanged
+    ).skipRepeats()
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialDataUnpacked,
-      initialDataUnpacked.takeWhen(userSessionStarted)
+      initialDataUnpacked.takeWhen(isLoggedIn.filter { $0 == true })
     )
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController

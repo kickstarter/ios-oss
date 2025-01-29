@@ -15,7 +15,7 @@ final class PaymentMethodsUseCaseTests: TestCase {
 
   private let (initialDataSignal, initialDataObserver) = Signal<PledgeViewData, Never>
     .pipe()
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>
+  private let (isLoggedInSignal, isLoggedInObserver) = Signal<Bool, Never>
     .pipe()
 
   override func setUp() {
@@ -23,7 +23,7 @@ final class PaymentMethodsUseCaseTests: TestCase {
 
     self.useCase = PaymentMethodsUseCase(
       initialData: self.initialDataSignal,
-      userSessionStarted: self.userSessionStartedSignal
+      isLoggedIn: self.isLoggedInSignal
     )
 
     self.useCase.uiOutputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
@@ -59,7 +59,7 @@ final class PaymentMethodsUseCaseTests: TestCase {
     )
 
     withEnvironment(currentUser: User.template) {
-      self.initialDataObserver.send(value: data)
+      self.isLoggedInObserver.send(value: true)
 
       self.configureWithValue
         .assertDidEmitValue("A user is logged in, so a configuration event should be sent.")
