@@ -12,9 +12,9 @@ final class PledgeOverTimeIncrementView: UIView {
 
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var detailsStackView = { UIStackView(frame: .zero) }()
-  public lazy var chargeNumberLabel = { UILabel(frame: .zero) }()
-  public lazy var dateLabel = { UILabel(frame: .zero) }()
-  public lazy var amountLabel = { UILabel(frame: .zero) }()
+  private lazy var chargeNumberLabel = { UILabel(frame: .zero) }()
+  private lazy var dateLabel = { UILabel(frame: .zero) }()
+  private lazy var amountLabel = { UILabel(frame: .zero) }()
 
   // MARK: Lifecycle
 
