@@ -20,7 +20,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToContactCreatorContext = TestObserver<KSRAnalytics.MessageDialogContext, Never>()
   private let goToFixPaymentMethod = TestObserver<PledgeViewData, Never>()
   private let goToRewards = TestObserver<Project, Never>()
-  private let goToUpdatePledge = TestObserver<PledgeViewData, Never>()
   private let loadProjectAndRewardsIntoDataSourceProject = TestObserver<Project, Never>()
   private let loadProjectAndRewardsIntoDataSourceReward = TestObserver<[Reward], Never>()
   private let loadPullToRefreshHeaderView = TestObserver<(), Never>()
@@ -62,7 +61,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToContactCreator.map(second).observe(self.goToContactCreatorContext.observer)
     self.vm.outputs.goToFixPaymentMethod.observe(self.goToFixPaymentMethod.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
-    self.vm.outputs.goToUpdatePledge.observe(self.goToUpdatePledge.observer)
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)

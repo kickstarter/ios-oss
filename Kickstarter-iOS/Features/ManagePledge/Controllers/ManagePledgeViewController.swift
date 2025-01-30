@@ -289,12 +289,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToRewards(project)
       }
 
-    self.viewModel.outputs.goToUpdatePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] data in
-        self?.goToUpdatePledge(data: data)
-      }
-
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
       .observeValues { [weak self] data in
@@ -551,14 +545,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       context: .managePledge
     )
     vc.pledgeViewDelegate = self
-
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
-  private func goToUpdatePledge(data: PledgeViewData) {
-    let vc = NoShippingPledgeViewController.instantiate()
-    vc.configure(with: data)
-    vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }

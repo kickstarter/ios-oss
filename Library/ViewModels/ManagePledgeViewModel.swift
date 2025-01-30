@@ -39,7 +39,6 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
-  var goToUpdatePledge: Signal<PledgeViewData, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -282,12 +281,6 @@ public final class ManagePledgeViewModel:
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
-    // TODO: Cleanup goToUpdatePledge inputs/outputs in next commit. No longer an available menu option. Defaulting to .contactCreator to avoid breaking change.
-    self.goToUpdatePledge = Signal.combineLatest(project, backing, backedRewards)
-      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
-      .map { project, backing, rewards in (project, backing, rewards, .update) }
-      .map(pledgeViewData)
-
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
 
@@ -453,7 +446,6 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
-  public let goToUpdatePledge: Signal<PledgeViewData, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
