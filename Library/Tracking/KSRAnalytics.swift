@@ -240,7 +240,6 @@ public final class KSRAnalytics {
     case changePaymentMethod
     case chooseAnotherReward
     case contactCreator
-    case updatePledge
     case viewRewards
 
     var trackingString: String {
@@ -249,7 +248,6 @@ public final class KSRAnalytics {
       case .changePaymentMethod: return "change_payment_method"
       case .chooseAnotherReward: return "choose_another_reward"
       case .contactCreator: return "contact_creator"
-      case .updatePledge: return "update_pledge"
       case .viewRewards: return "view_rewards"
       }
     }

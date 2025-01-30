@@ -367,7 +367,7 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
   let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
-  let isAvailableForExistingBackerToEdit = (isBacking && (reward.hasAddOns || featureNoShippingAtCheckout()))
+  let isAvailableForExistingBackerToEdit = isBacking
 
   if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {
     return [

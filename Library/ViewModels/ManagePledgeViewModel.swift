@@ -10,7 +10,6 @@ public typealias ManagePledgeViewParamConfigData = (
 )
 
 public enum ManagePledgeAlertAction: CaseIterable {
-  case updatePledge
   case changePaymentMethod
   case chooseAnotherReward
   case contactCreator
@@ -283,8 +282,9 @@ public final class ManagePledgeViewModel:
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
+    // TODO: Cleanup goToUpdatePledge inputs/outputs in next commit. No longer an available menu option. Defaulting to .contactCreator to avoid breaking change.
     self.goToUpdatePledge = Signal.combineLatest(project, backing, backedRewards)
-      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
       .map { project, backing, rewards in (project, backing, rewards, .update) }
       .map(pledgeViewData)
 
@@ -531,11 +531,6 @@ private func actionSheetMenuOptionsFor(
 
   var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 
-  // TODO: Remove 'update pledge' from ManagePledgeAlertAction after feature rollout.
-  if featureNoShippingAtCheckout() {
-    actions = actions.filter { $0 != .updatePledge }
-  }
-
   if isPledgeOverTime(with: backing) {
     actions = actions.filter { $0 != .chooseAnotherReward }
   }
@@ -561,7 +556,6 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .changePaymentMethod: return .changePaymentMethod
   case .chooseAnotherReward: return .chooseAnotherReward
   case .contactCreator: return .contactCreator
-  case .updatePledge: return .updatePledge
   case .viewRewards: return .viewRewards
   }
 }

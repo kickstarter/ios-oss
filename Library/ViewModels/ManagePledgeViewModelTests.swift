@@ -303,7 +303,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.showActionSheetMenuWithOptions.assertValues([
         [
-          ManagePledgeAlertAction.updatePledge,
           ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.chooseAnotherReward,
           ManagePledgeAlertAction.contactCreator,
@@ -313,7 +312,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsLive_NoShippingAtCheckout_doesNotInclude_updatePledge() {
+  func testMenuButtonTapped_WhenProject_IsLive_doesNotInclude_updatePledge() {
     let project = Project.template
       |> Project.lens.state .~ .live
 
@@ -323,12 +322,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchProjectRewardsResult: .success([.template])
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
@@ -471,8 +465,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true,
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -676,103 +669,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
         self.goToRewards.lastValue?.rewards.first?.localPickup,
         .canada
       )
-    }
-  }
-
-  func testGoToUpdatePledge() {
-    let reward = Reward.template
-
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-
-    let env = ProjectAndBackingEnvelope.template
-      |> \.backing .~ (
-        Backing.template
-          |> Backing.lens.locationId .~ nil
-          |> Backing.lens.addOns .~ nil
-      )
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.goToUpdatePledge.assertDidNotEmitValue()
-
-      self.vm.inputs.menuButtonTapped()
-      self.vm.inputs.menuOptionSelected(with: .updatePledge)
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedShippingRule: nil,
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: nil,
-        context: .update
-      )
-
-      self.goToUpdatePledge.assertValues([data])
-    }
-  }
-
-  func testGoToUpdatePledge_WithAddOns() {
-    let baseReward = Reward.template
-      |> Reward.lens.id .~ 99
-      |> Reward.lens.shipping.enabled .~ false
-
-    let addOn1 = Reward.template
-      |> Reward.lens.id .~ 2
-      |> Reward.lens.shipping.enabled .~ true
-
-    let addOn2 = Reward.template
-      |> Reward.lens.id .~ 3
-      |> Reward.lens.shipping.enabled .~ true
-
-    let project = Project.template
-
-    let env = ProjectAndBackingEnvelope.template
-      |> \.backing .~ (
-        Backing.template
-          |> Backing.lens.locationId .~ nil
-          |> Backing.lens.addOns .~ [addOn1, addOn2, addOn2]
-          |> Backing.lens.reward .~ baseReward
-      )
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([baseReward])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.goToUpdatePledge.assertDidNotEmitValue()
-
-      self.vm.inputs.menuButtonTapped()
-      self.vm.inputs.menuOptionSelected(with: .updatePledge)
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [baseReward, addOn1, addOn2],
-        selectedShippingRule: nil,
-        selectedQuantities: [baseReward.id: 1, addOn1.id: 1, addOn2.id: 2],
-        selectedLocationId: nil,
-        refTag: nil,
-        context: .update
-      )
-      self.goToUpdatePledge.assertValues([data])
     }
   }
 

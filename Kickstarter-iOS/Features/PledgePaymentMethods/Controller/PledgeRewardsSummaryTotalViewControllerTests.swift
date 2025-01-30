@@ -50,17 +50,12 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testViewWithoutReward_WithNoShippingAtCheckoutEnabled() {
+  func testViewWithoutReward() {
     let project = Project.template
-
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
@@ -87,17 +82,12 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testViewWithPledgeInFull_WithNoShippingAtCheckoutEnabled() {
+  func testViewWithPledgeInFull() {
     let project = Project.template
-
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
@@ -133,17 +123,12 @@ final class PledgeRewardsSummaryTotalViewControllerTests: TestCase {
       }
   }
 
-  func testViewWithPledgeOverTime_WithNoShippingAtCheckoutEnabled() {
+  func testViewWithPledgeOverTime() {
     let project = Project.template
-
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PledgeRewardsSummaryTotalViewController.instantiate()
 
           let data = PledgeSummaryViewData(
