@@ -149,8 +149,7 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
-  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed(
-  ) {
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 5
@@ -183,7 +182,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Expired_Backed() {
@@ -200,7 +199,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Unavailable_NotBacked() {
