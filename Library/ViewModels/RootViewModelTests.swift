@@ -627,7 +627,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUserPPOSettings: nil,
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -657,7 +656,6 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUserPPOSettings: PPOUserSettings(hasAction: true),
-      currentUserServerFeatures: Set([.pledgeProjectsOverviewIos_2024]),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -694,6 +692,74 @@ final class RootViewModelTests: TestCase {
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
       self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testSetViewControllers_PledgedProjectsOverview_LoggedIn() {
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+    ]
+
+    withEnvironment(
+      currentUser: nil,
+      remoteConfigClient: remoteConfig
+    ) {
+      self.vm.inputs.viewDidLoad()
+
+      self.viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Shows regular Activities tab initially"
+      )
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+
+      self.viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+        ],
+        "Shows PPO tab when logged in with feature flag enabled"
+      )
+
+      AppEnvironment.logout()
+      self.vm.inputs.userSessionEnded()
+
+      self.viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Shows regular Activities tab when logged out again"
+      )
+    }
+  }
+
+  func testSetViewControllers_PledgedProjectsOverview_FeatureFlagDisabled() {
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
+    ]
+
+    withEnvironment(
+      remoteConfigClient: remoteConfig
+    ) {
+      self.vm.inputs.viewDidLoad()
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+
+      self.viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Shows regular Activities tab when feature flag disabled, even when logged in"
+      )
     }
   }
 }

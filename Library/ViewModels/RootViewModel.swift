@@ -149,28 +149,18 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       }
       .skipRepeats(==)
 
-    let standardViewControllers = self.viewDidLoadProperty.signal.map { _ -> [RootViewControllerData] in
-      generateStandardViewControllers()
+    let standardViewControllers = loginState.map { isLoggedIn -> [RootViewControllerData] in
+      generateViewControllers(isLoggedIn: isLoggedIn)
     }
-    let personalizedViewControllers = loginState.map { loginState -> [RootViewControllerData] in
-      generatePersonalizedViewControllers(isLoggedIn: loginState)
-    }
-
-    let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
-
-    let refreshedViewControllers = loginState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
-      .map { loginState -> [RootViewControllerData] in
-        let standard = generateStandardViewControllers()
-        let personalized = generatePersonalizedViewControllers(
-          isLoggedIn: loginState
-        )
-
-        return standard + personalized
-      }
 
     self.setViewControllers = Signal.merge(
-      viewControllers,
-      refreshedViewControllers
+      standardViewControllers,
+      // FIXME: Look at moving the userLocalePreferencesChangedProperty signal into the currentUser signal
+      // https://kickstarter.atlassian.net/browse/MBL-2053
+      loginState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
+        .map { isLoggedIn in
+          generateViewControllers(isLoggedIn: isLoggedIn)
+        }
     )
 
     let vcCount = self.setViewControllers.map { $0.count }
@@ -445,16 +435,20 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
   return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) + errorCount
 }
 
-private func generateStandardViewControllers() -> [RootViewControllerData] {
-  if featurePledgedProjectsOverviewEnabled() {
-    return [.discovery, .pledgedProjectsAndActivities, .search]
-  }
-  return [.discovery, .activities, .search]
-}
+private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerData] {
+  var controllers: [RootViewControllerData] = []
+  controllers.append(.discovery)
 
-private func generatePersonalizedViewControllers(isLoggedIn: Bool)
-  -> [RootViewControllerData] {
-  return [.profile(isLoggedIn: isLoggedIn)]
+  if featurePledgedProjectsOverviewEnabled(), isLoggedIn {
+    controllers.append(.pledgedProjectsAndActivities)
+  } else {
+    controllers.append(.activities)
+  }
+
+  controllers.append(.search)
+  controllers.append(.profile(isLoggedIn: isLoggedIn))
+
+  return controllers
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
