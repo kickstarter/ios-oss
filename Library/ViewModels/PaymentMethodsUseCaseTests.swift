@@ -224,6 +224,12 @@ final class PaymentMethodsUseCaseTests: TestCase {
         true,
         "Selecting a new credit card should fix the payment method"
       )
+
+      self.useCase.creditCardSelected(with: .savedCreditCard(backing.paymentSource!.id!, "pm_fake"))
+      self.paymentMethodChangedAndValid.assertLastValue(
+        false,
+        "Selecting the same credit card again should not fix the payment method"
+      )
     }
   }
 }
