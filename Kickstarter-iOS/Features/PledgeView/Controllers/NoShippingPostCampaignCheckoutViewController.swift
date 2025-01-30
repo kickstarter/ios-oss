@@ -260,7 +260,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
+        self?.viewModel.inputs.userSessionDidChange()
       }
 
     self.viewModel.outputs.goToLoginSignup

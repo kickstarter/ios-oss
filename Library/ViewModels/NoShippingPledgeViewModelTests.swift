@@ -748,7 +748,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
 
       withEnvironment(currentUser: user) {
-        self.vm.inputs.userSessionStarted()
+        self.vm.inputs.userSessionDidChange()
 
         self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
         self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
