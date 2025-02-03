@@ -594,8 +594,6 @@ private func managePledgeSummaryViewData(
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-  var paymentIncrements = backing.paymentIncrements
-
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
     backerName: backer.name,
@@ -616,7 +614,7 @@ private func managePledgeSummaryViewData(
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup,
-    paymentIncrements: paymentIncrements,
+    paymentIncrements: backing.paymentIncrements,
     project: project
   )
 }
