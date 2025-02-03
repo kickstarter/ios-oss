@@ -289,12 +289,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToRewards(project)
       }
 
-    self.viewModel.outputs.goToUpdatePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] data in
-        self?.goToUpdatePledge(data: data)
-      }
-
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
       .observeValues { [weak self] data in
@@ -509,8 +503,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       let title: String
 
       switch option {
-      case .updatePledge:
-        title = Strings.Update_pledge()
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
@@ -546,42 +538,15 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    if featureNoShippingAtCheckout() {
-      /// Render rewards carousel that has the shipping location dropdown
-      let vc = WithShippingRewardsCollectionViewController.instantiate(
-        with: project,
-        refTag: nil,
-        context: .managePledge
-      )
-      vc.pledgeViewDelegate = self
+    /// Render rewards carousel that has the shipping location dropdown
+    let vc = WithShippingRewardsCollectionViewController.instantiate(
+      with: project,
+      refTag: nil,
+      context: .managePledge
+    )
+    vc.pledgeViewDelegate = self
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = RewardsCollectionViewController.instantiate(
-        with: project,
-        refTag: nil,
-        context: .managePledge
-      )
-      vc.pledgeViewDelegate = self
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
-  }
-
-  private func goToUpdatePledge(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingPledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = PledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToCancelPledge(with data: CancelPledgeViewData) {
@@ -593,35 +558,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func goToChangePaymentMethod(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingPledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
+    let vc = NoShippingPledgeViewController.instantiate()
+    vc.configure(with: data)
+    vc.delegate = self
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = PledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToFixPaymentMethod(data: PledgeViewData) {
-    if featureNoShippingAtCheckout() {
-      let vc = NoShippingPledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
+    let vc = NoShippingPledgeViewController.instantiate()
+    vc.configure(with: data)
+    vc.delegate = self
 
-      self.navigationController?.pushViewController(vc, animated: true)
-    } else {
-      let vc = PledgeViewController.instantiate()
-      vc.configure(with: data)
-      vc.delegate = self
-
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToContactCreator(

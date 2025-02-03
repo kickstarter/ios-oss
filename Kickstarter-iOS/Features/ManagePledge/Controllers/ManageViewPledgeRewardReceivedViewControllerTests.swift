@@ -86,12 +86,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
     orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
-      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+      withEnvironment(language: language) {
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
         controller.configureWith(data: data)
 
@@ -118,12 +114,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
     orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
-      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+      withEnvironment(language: language) {
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
         controller.configureWith(data: data)
 
