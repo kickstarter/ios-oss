@@ -31,17 +31,12 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphUserResult: .success(response))
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = PostCampaignCheckoutViewController.instantiate()
 
@@ -99,17 +94,12 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
           |> Backing.lens.bonusAmount .~ 695.0
           |> Backing.lens.shippingAmount .~ 0
       )
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = PostCampaignCheckoutViewController.instantiate()
         let reward = Reward.noReward
@@ -160,14 +150,10 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
       )
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PostCampaignCheckoutViewController.instantiate()
           let data = PostCampaignCheckoutData(
             project: project,
@@ -220,14 +206,10 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRules .~ [shippingRule]
       |> Reward.lens.id .~ 99
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PostCampaignCheckoutViewController.instantiate()
           let data = PostCampaignCheckoutData(
             project: project,
@@ -283,14 +265,10 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
       backingId: "backingId",
       selectedShippingRule: .template
     )
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = PostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

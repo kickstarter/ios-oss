@@ -75,9 +75,7 @@ public final class RewardCardView: UIView {
       self.rewardLocationStackView
     ]
 
-    if featureNoShippingAtCheckout() {
-      stackViews.insert(self.estimatedShippingStackView, at: 4)
-    }
+    stackViews.insert(self.estimatedShippingStackView, at: 4)
 
     _ = stackViews
       ||> { stackView in
@@ -259,9 +257,7 @@ public final class RewardCardView: UIView {
       self.pillsView
     ]
 
-    if featureNoShippingAtCheckout() {
-      baseSubviews.insert(self.estimatedShippingStackView, at: 4)
-    }
+    baseSubviews.insert(self.estimatedShippingStackView, at: 4)
 
     _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -272,10 +268,8 @@ public final class RewardCardView: UIView {
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    if featureNoShippingAtCheckout() {
-      _ = ([self.estimatedShippingTitleLabel, self.estimatedShippingLabel], self.estimatedShippingStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-    }
+    _ = ([self.estimatedShippingTitleLabel, self.estimatedShippingLabel], self.estimatedShippingStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.estimatedDeliveryTitleLabel, self.estimatedDeliveryDateLabel], self.estimatedDeliveryStackView)
       |> ksr_addArrangedSubviewsToStackView()
