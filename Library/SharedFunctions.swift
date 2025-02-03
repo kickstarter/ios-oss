@@ -367,6 +367,7 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
   let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
+  /// Backers should always be able to edit the currently backed reward. It's the only path to update the pledge/bonus amount.
   let isAvailableForExistingBackerToEdit = isBacking
 
   if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {
