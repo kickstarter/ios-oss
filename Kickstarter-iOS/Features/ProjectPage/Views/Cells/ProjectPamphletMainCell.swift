@@ -53,6 +53,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var backingContainerViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var backingLabel: UILabel!
 
+  private var alertBanner = AlertBanner(frame: CGRectZero)
+
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
@@ -61,6 +63,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.creatorButtonTapped),
       for: .touchUpInside
     )
+
+    self.alertBanner.configureWith(
+      title: Strings.project_project_notices_header(),
+      subtitle: Strings.project_project_notices_notice_intro(),
+      buttonTitle: Strings.project_project_notices_notice_cta()
+    ) { [weak self] in
+      self?.alertBannerLearnMoreTapped()
+    }
+    self.contentStackView.insertArrangedSubview(self.alertBanner, at: 1)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -130,17 +141,16 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     let isIpad = self.traitCollection.isRegularRegular == true
     let leftRightInsetValue: CGFloat = isIpad ? Styles.grid(16) : Styles.grid(4)
 
-    _ = self.categoryAndLocationStackView
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
-        leftRight: leftRightInsetValue
-      )
-
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, _ in
         isIpad
-          ? .init(topBottom: Styles.grid(6))
-          : .init(top: Styles.grid(4), left: 0, bottom: Styles.grid(3), right: 0)
+          ? .init(topBottom: Styles.grid(6), leftRight: leftRightInsetValue)
+          : .init(
+            top: Styles.grid(4),
+            left: leftRightInsetValue,
+            bottom: Styles.grid(3),
+            right: leftRightInsetValue
+          )
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ verticalSpacing
@@ -154,9 +164,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.blurbStackView
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
         top: 0,
-        left: leftRightInsetValue,
+        left: 0,
         bottom: verticalSpacing, // Double spacing below blurb.
-        right: leftRightInsetValue
+        right: 0
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
@@ -210,8 +220,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ (verticalSpacing / 2)
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, _ in
@@ -224,8 +232,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.progressBarAndStatsStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ verticalSpacing
 
     _ = self.stateLabel
@@ -279,6 +285,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.backingContainerView.rac.hidden = self.viewModel.outputs.backingLabelHidden
     self.progressBarAndStatsStackView.rac.hidden = self.viewModel.outputs.isPrelaunchProject
     self.backingLabel.rac.text = self.viewModel.outputs.prelaunchProjectBackingText
+    self.alertBanner.rac.hidden = self.viewModel.outputs.projectNoticeBannerHidden
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
@@ -339,6 +346,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.delegate?.projectPamphletMainCell(self, addChildController: vc)
     self.videoController = vc
     self.videoController?.playbackDelegate = vc
+  }
+
+  private func alertBannerLearnMoreTapped() {
+    // TODO:
   }
 
   @objc fileprivate func creatorButtonTapped() {

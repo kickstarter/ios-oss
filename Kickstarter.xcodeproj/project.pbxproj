@@ -388,6 +388,8 @@
 		39B8507C2C3EC52D0045CBA5 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */; };
 		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
 		39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */; };
+		39F48E212D528D5B00090D6C /* RestrictedCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */; };
+		39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E222D543A2700090D6C /* AlertBanner.swift */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
@@ -2066,6 +2068,8 @@
 		39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPledgeViewStyles.swift; sourceTree = "<group>"; };
+		39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedCreatorViewController.swift; sourceTree = "<group>"; };
+		39F48E222D543A2700090D6C /* AlertBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBanner.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
 		471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectPamphletMainCell.xib; sourceTree = "<group>"; };
@@ -6220,6 +6224,7 @@
 			isa = PBXGroup;
 			children = (
 				19C8E56729A923F4007C3504 /* SwiftUIHelpers */,
+				39F48E222D543A2700090D6C /* AlertBanner.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
@@ -8723,6 +8728,7 @@
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				E1BAA03C2C1A1CCD004F8B06 /* PPOContainerViewController.swift in Sources */,
+				39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
 				4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */,

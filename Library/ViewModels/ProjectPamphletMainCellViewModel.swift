@@ -112,6 +112,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the "you're a backer" or "coming soon" label should be hidden.
   var backingLabelHidden: Signal<Bool, Never> { get }
+
+  /// Emits false if the project notice banner should be shown.
+  var projectNoticeBannerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -168,6 +171,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
+
+    self.projectNoticeBannerHidden = project.map {
+      ($0.extendedProjectProperties?.projectNotice ?? "") == ""
+    }
 
     let videoIsPlaying = Signal.merge(
       project.take(first: 1).mapConst(false),
@@ -324,6 +331,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let backingLabelHidden: Signal<Bool, Never>
+  public let projectNoticeBannerHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }
