@@ -58,7 +58,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (
-        project: featureNoShippingAtCheckout() ? project : .template,
+        project: project,
         reward: reward,
         true,
         nil
@@ -100,7 +100,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let projectRewards = featureNoShippingAtCheckout() ? [reward] : []
+    let projectRewards = [reward]
 
     let project = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
@@ -151,7 +151,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (
-        project: featureNoShippingAtCheckout() ? project : .template,
+        project: project,
         reward: reward,
         true,
         Location.australia.id
@@ -215,7 +215,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (
-        project: featureNoShippingAtCheckout() ? project : .template,
+        project: project,
         reward: reward,
         false,
         nil
@@ -264,7 +264,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       self.vm.inputs.configureWith(data: (
-        project: featureNoShippingAtCheckout() ? project : .template,
+        project: project,
         reward: reward,
         false,
         nil
@@ -304,7 +304,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.failure(error))) {
       self.vm.inputs.configureWith(data: (
-        project: featureNoShippingAtCheckout() ? project : .template,
+        project: project,
         reward: reward,
         false,
         nil
@@ -335,7 +335,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let projectRewards = featureNoShippingAtCheckout() ? [reward] : []
+    let projectRewards = [reward]
 
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
@@ -390,7 +390,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let projectRewards = featureNoShippingAtCheckout() ? [reward] : []
+    let projectRewards = [reward]
 
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
