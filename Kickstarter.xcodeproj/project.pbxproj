@@ -373,7 +373,6 @@
 		3959A62F2B69BC6D00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 		395A3BC22B8E54C90091A379 /* AttributionTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC12B8E54C90091A379 /* AttributionTracking.swift */; };
 		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
-		395A3BC72BA8CB6E0091A379 /* PostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */; };
 		395A3BC92BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */; };
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
 		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
@@ -573,7 +572,6 @@
 		60E1BB2B2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */; };
 		60E1BB352C74F7E4007D723B /* EstimatedShippingCheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */; };
 		60E1BB552C7670F6007D723B /* NoShippingPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */; };
-		60E1BB582C7D0BC8007D723B /* PostCampaignCheckoutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB562C7D0BC5007D723B /* PostCampaignCheckoutViewControllerTests.swift */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
@@ -2063,7 +2061,6 @@
 		394BB7122C5ACCBA007F0FFD /* ButtonStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStylesTests.swift; sourceTree = "<group>"; };
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
-		395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
 		395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewModel.swift; sourceTree = "<group>"; };
 		395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerHelpers.swift; sourceTree = "<group>"; };
 		39B5E10D2B86C56600FFB720 /* RefInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfo.swift; sourceTree = "<group>"; };
@@ -2267,7 +2264,6 @@
 		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedShippingCheckoutView.swift; sourceTree = "<group>"; };
 		60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewControllerTests.swift; sourceTree = "<group>"; };
-		60E1BB562C7D0BC5007D723B /* PostCampaignCheckoutViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -3928,8 +3924,6 @@
 			children = (
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
 				395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */,
-				395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */,
-				60E1BB562C7D0BC5007D723B /* PostCampaignCheckoutViewControllerTests.swift */,
 				601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */,
 				601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */,
 				6035AFAE2C594717007E28FC /* NoShippingPledgeViewController.swift */,
@@ -8773,7 +8767,6 @@
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				392BB12A2C3BEB5600A5591B /* PPOEmptyStateView.swift in Sources */,
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
-				395A3BC72BA8CB6E0091A379 /* PostCampaignCheckoutViewController.swift in Sources */,
 				604453282BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift in Sources */,
 				D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */,
 				19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */,
@@ -8956,7 +8949,6 @@
 				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
 				1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */,
 				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
-				60E1BB582C7D0BC8007D723B /* PostCampaignCheckoutViewControllerTests.swift in Sources */,
 				39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */,
 				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
 				70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */,

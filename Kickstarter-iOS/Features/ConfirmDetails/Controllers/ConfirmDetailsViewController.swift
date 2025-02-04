@@ -328,12 +328,14 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.present(navigationController, animated: true)
   }
 
-  private func goToCheckout(data: PostCampaignCheckoutData) {
-    let vc = PostCampaignCheckoutViewController.instantiate()
-    vc.configure(with: data)
-    vc.title = self.title
+  private func goToCheckout(data _: PostCampaignCheckoutData) {
+    // TODO: ConfirmDetails Will be removed as a part of our legacy checkout code refactor/cleanup. Commenting this out for now.
 
-    self.navigationController?.pushViewController(vc, animated: true)
+//    let vc = PostCampaignCheckoutViewController.instantiate()
+//    vc.configure(with: data)
+//    vc.title = self.title
+//
+//    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
