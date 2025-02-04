@@ -15,8 +15,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   private var subtitleText = TestObserver<String, Never>()
   private var subtitleLabelHidden = TestObserver<Bool, Never>()
   private var notifyDelegatePaymentPlanOptionSelected = TestObserver<PledgePaymentPlansType, Never>()
-  private var paymentIncrementsHidden = TestObserver<Bool, Never>()
-  private var termsOfUseButtonHidden = TestObserver<Bool, Never>()
+  private var plotSelectedStackViewHidden = TestObserver<Bool, Never>()
   private var paymentIncrements = TestObserver<[PledgePaymentIncrementFormatted], Never>()
   private var ineligibleBadgeHidden = TestObserver<Bool, Never>()
   private var ineligibleBadgeText = TestObserver<String, Never>()
@@ -50,8 +49,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.vm.outputs.subtitleLabelHidden.observe(self.subtitleLabelHidden.observer)
     self.vm.outputs.notifyDelegatePaymentPlanOptionSelected
       .observe(self.notifyDelegatePaymentPlanOptionSelected.observer)
-    self.vm.outputs.paymentIncrementsHidden.observe(self.paymentIncrementsHidden.observer)
-    self.vm.outputs.termsOfUseButtonHidden.observe(self.termsOfUseButtonHidden.observer)
+    self.vm.outputs.plotSelectedStackViewHidden.observe(self.plotSelectedStackViewHidden.observer)
     self.vm.outputs.paymentIncrements.observe(self.paymentIncrements.observer)
     self.vm.outputs.ineligibleBadgeHidden.observe(self.ineligibleBadgeHidden.observer)
     self.vm.outputs.ineligibleBadgeText.observe(self.ineligibleBadgeText.observer)
@@ -72,7 +70,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.titleText.assertValue(self.pledgeInFullTitle)
     self.subtitleText.assertValue("")
     self.subtitleLabelHidden.assertValue(true)
-    self.paymentIncrementsHidden.assertValue(true)
+    self.plotSelectedStackViewHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.selectedImageName)
     self.paymentIncrements.assertValues([])
     self.ineligibleBadgeHidden.assertValue(true)
@@ -92,8 +90,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.titleText.assertValue(self.pledgeInFullTitle)
     self.subtitleText.assertValue("")
     self.subtitleLabelHidden.assertValue(true)
-    self.termsOfUseButtonHidden.assertValue(true)
-    self.paymentIncrementsHidden.assertValue(true)
+    self.plotSelectedStackViewHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
     self.paymentIncrements.assertValues([])
     self.ineligibleBadgeHidden.assertValue(true)
@@ -103,7 +100,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   func testPaymentPlanOption_PledgeOverTime_Selected() {
     let increments = mockPaymentIncrements()
     let project = Project.template
-    let incrementsFormatted = paymentIncrementsFormatted(from: increments, project: project)
+    let incrementsFormatted = paymentIncrementsFormatted(from: increments)
     let data = PledgePaymentPlanOptionData(
       ineligible: false,
       type: .pledgeOverTime,
@@ -117,8 +114,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.titleText.assertValue(self.pledgeOverTimeTitle)
     self.subtitleText.assertValue(self.pledgeOverTimeFullSubtitle)
     self.subtitleLabelHidden.assertValue(false)
-    self.termsOfUseButtonHidden.assertValue(false)
-    self.paymentIncrementsHidden.assertValue(false)
+    self.plotSelectedStackViewHidden.assertValue(false)
 
     self.selectionIndicatorImageName.assertValue(self.selectedImageName)
     self.paymentIncrements.assertValues([incrementsFormatted])
@@ -139,8 +135,7 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
     self.titleText.assertValue(self.pledgeOverTimeTitle)
     self.subtitleText.assertValue(self.pledgeOverTimeSubtitle)
     self.subtitleLabelHidden.assertValue(false)
-    self.termsOfUseButtonHidden.assertValue(true)
-    self.paymentIncrementsHidden.assertValue(true)
+    self.plotSelectedStackViewHidden.assertValue(true)
     self.selectionIndicatorImageName.assertValue(self.unselectedImageName)
     self.paymentIncrements.assertValues([])
     self.ineligibleBadgeHidden.assertValue(true)
@@ -181,9 +176,9 @@ final class PledgePaymentPlansOptionViewModelTest: TestCase {
   }
 }
 
-private func paymentIncrementsFormatted(from increments: [PledgePaymentIncrement], project: Project)
+private func paymentIncrementsFormatted(from increments: [PledgePaymentIncrement])
   -> [PledgePaymentIncrementFormatted] {
   increments.enumerated().map {
-    PledgePaymentIncrementFormatted(from: $1, index: $0, project: project)
+    PledgePaymentIncrementFormatted(from: $1, index: $0)
   }
 }

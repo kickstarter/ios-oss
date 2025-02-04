@@ -15,6 +15,7 @@ final class BadgeView: UIView {
   // MARK: - Properties
 
   private lazy var badgeLabel: UILabel = { UILabel(frame: .zero) }()
+  private var style: BadgeStyle = .success
 
   // MARK: - Lifecycle
 
@@ -64,8 +65,10 @@ final class BadgeView: UIView {
     ])
   }
 
-  public func configure(with text: String) {
+  public func configure(with text: String, style: BadgeStyle = .success) {
     self.badgeLabel.text = text
+    self.style = style
+    self.updateStyle()
   }
 
   // MARK: - Styles
@@ -75,17 +78,21 @@ final class BadgeView: UIView {
 
     applyBadgeViewStyle(self)
     applyBadgeLabelStyle(self.badgeLabel)
+    self.updateStyle()
+  }
+
+  private func updateStyle() {
+    self.badgeLabel.textColor = self.style.foregroundColor
+    self.backgroundColor = self.style.backgroundColor
   }
 }
 
 private func applyBadgeViewStyle(_ view: UIView) {
-  view.backgroundColor = .ksr_create_100
   view.rounded(with: Constants.defaultCornerRadius)
 }
 
 private func applyBadgeLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_subhead().bolded
-  label.textColor = .ksr_create_700
+  label.font = UIFont.ksr_caption1().bolded
   label.textAlignment = .center
   label.numberOfLines = 1
   label.adjustsFontForContentSizeCategory = true

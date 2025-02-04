@@ -96,9 +96,7 @@ public final class RewardAddOnCardView: UIView {
       self.rewardLocationStackView
     ]
 
-    if featureNoShippingAtCheckout() {
-      stackViews.insert(self.estimatedShippingStackView, at: 3)
-    }
+    stackViews.insert(self.estimatedShippingStackView, at: 3)
 
     _ = stackViews
       ||> { stackView in
@@ -270,9 +268,7 @@ public final class RewardAddOnCardView: UIView {
       self.stepperStackView
     ]
 
-    if featureNoShippingAtCheckout() {
-      rootSubviews.insert(self.estimatedShippingStackView, at: 4)
-    }
+    rootSubviews.insert(self.estimatedShippingStackView, at: 4)
 
     _ = (rootSubviews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()

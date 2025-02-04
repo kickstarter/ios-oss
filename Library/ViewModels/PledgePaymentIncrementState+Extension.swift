@@ -13,24 +13,14 @@ extension PledgePaymentIncrementState {
   }
 
   /// Returns the badge background color based on the state.
-  public var badgeColor: UIColor {
+  public var badgeStyle: BadgeStyle {
     switch self {
     case .collected:
-      return .ksr_create_100
+      return .success
     case .unattempted, .cancelled:
-      return .ksr_support_200
+      return .custom(foregroundColor: .ksr_support_400, backgroundColor: .ksr_support_200)
     case .errored:
-      return .ksr_celebrate_100
-    }
-  }
-
-  /// Returns the badge text (foreground) color based on the state.
-  public var badgeForegroundColor: UIColor {
-    switch self {
-    case .collected:
-      return .ksr_create_700
-    case .unattempted, .errored, .cancelled:
-      return .ksr_support_400
+      return .error
     }
   }
 }

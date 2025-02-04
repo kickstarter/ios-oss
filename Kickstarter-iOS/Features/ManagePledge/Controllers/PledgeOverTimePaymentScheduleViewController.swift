@@ -100,9 +100,8 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
       itemView.configure(
         with: item.dateString,
         badgeTitle: item.stateLabel,
-        badgeBackgroundColor: item.stateBackgroundColor,
-        badgeTextColor: item.stateForegroundColor,
-        amountAttributedText: item.amountAttributedText
+        amountAttributedText: item.amountAttributedText,
+        badgeStyle: item.badgeStyle
       )
       self.paymentsScheduleStackView.addArrangedSubview(itemView)
     }

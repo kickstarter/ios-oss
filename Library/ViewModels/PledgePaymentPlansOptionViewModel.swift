@@ -25,12 +25,6 @@ public struct PledgePaymentPlanOptionData: Equatable {
   }
 }
 
-public struct PledgePaymentIncrementFormatted: Equatable {
-  public var incrementChargeNumber: String
-  public var amount: String
-  public var scheduledCollection: String
-}
-
 public enum SelectionIndicatorImageName: String {
   case selected = "icon-payment-method-selected"
   case unselected = "icon-payment-method-unselected"
@@ -52,10 +46,9 @@ public protocol PledgePaymentPlansOptionViewModelOutputs {
   var ineligibleBadgeText: Signal<String, Never> { get }
   var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never> { get }
   var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
-  var termsOfUseButtonHidden: Signal<Bool, Never> { get }
   var optionViewEnabled: Signal<Bool, Never> { get }
-  var paymentIncrementsHidden: Signal<Bool, Never> { get }
   var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never> { get }
+  var plotSelectedStackViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgePaymentPlansOptionViewModelType {
@@ -96,9 +89,7 @@ public final class PledgePaymentPlansOptionViewModel:
       $0.type == .pledgeOverTime && $0.type == $0.selectedType
     }
 
-    self.termsOfUseButtonHidden = isPledgeOverTimeAndSelected.negate()
-
-    self.paymentIncrementsHidden = isPledgeOverTimeAndSelected.negate()
+    self.plotSelectedStackViewHidden = isPledgeOverTimeAndSelected.negate()
 
     self.paymentIncrements = configData
       .filter { !$0.ineligible && $0.type == .pledgeOverTime && $0.selectedType == $0.type }
@@ -106,7 +97,7 @@ public final class PledgePaymentPlansOptionViewModel:
         data.paymentIncrements
           .enumerated()
           .map { index, increment in
-            formattedPledgePaymentIncrement(increment, at: index, project: data.project)
+            PledgePaymentIncrementFormatted(from: increment, index: index)
           }
       }
       .filter { !$0.isEmpty }
@@ -150,10 +141,9 @@ public final class PledgePaymentPlansOptionViewModel:
   public var ineligibleBadgeText: Signal<String, Never>
   public var notifyDelegatePaymentPlanOptionSelected: Signal<PledgePaymentPlansType, Never>
   public var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never>
-  public var termsOfUseButtonHidden: Signal<Bool, Never>
   public var optionViewEnabled: Signal<Bool, Never>
-  public var paymentIncrementsHidden: Signal<Bool, Never>
   public var paymentIncrements: Signal<[PledgePaymentIncrementFormatted], Never>
+  public var plotSelectedStackViewHidden: Signal<Bool, Never>
 
   public var inputs: PledgePaymentPlansOptionViewModelInputs { return self }
   public var outputs: PledgePaymentPlansOptionViewModelOutputs { return self }
@@ -186,29 +176,4 @@ private func makePledgeOverTimeSubtitle(isSelected: Bool) -> String {
 
   \(Strings.The_first_charge_will_occur_when_the_project_ends_successfully())
   """
-}
-
-private func formattedPledgePaymentIncrement(
-  _ increment: PledgePaymentIncrement,
-  at index: Int,
-  project: Project
-) -> PledgePaymentIncrementFormatted {
-  PledgePaymentIncrementFormatted(from: increment, index: index, project: project)
-}
-
-private func getDateFormatted(_ timeStamp: TimeInterval) -> String {
-  Format.date(
-    secondsInUTC: timeStamp,
-    dateStyle: .medium,
-    timeStyle: .none
-  )
-}
-
-extension PledgePaymentIncrementFormatted {
-  init(from increment: PledgePaymentIncrement, index: Int, project _: Project) {
-    let chargeNumber = String(index + 1)
-    self.incrementChargeNumber = Strings.Charge_number(number: chargeNumber)
-    self.amount = increment.amount.amountFormattedInProjectNativeCurrency
-    self.scheduledCollection = getDateFormatted(increment.scheduledCollection)
-  }
 }

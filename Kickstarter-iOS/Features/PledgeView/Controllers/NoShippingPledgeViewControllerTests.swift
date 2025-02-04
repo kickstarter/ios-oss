@@ -31,17 +31,12 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphUserResult: .success(response))
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = NoShippingPledgeViewController.instantiate()
 
@@ -89,17 +84,12 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           |> Backing.lens.bonusAmount .~ 695.0
           |> Backing.lens.shippingAmount .~ 0
       )
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = NoShippingPledgeViewController.instantiate()
         let reward = Reward.noReward
@@ -132,14 +122,10 @@ final class NoShippingPledgeViewControllerTests: TestCase {
   func testView_ShowsShippingSummaryViewSection() {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = NoShippingPledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
@@ -174,14 +160,10 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
       |> Reward.lens.id .~ 99
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = NoShippingPledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
@@ -233,14 +215,10 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       refTag: .projectPage,
       context: .pledge
     )
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = NoShippingPledgeViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -274,14 +252,10 @@ final class NoShippingPledgeViewControllerTests: TestCase {
       refTag: .projectPage,
       context: .pledge
     )
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        withEnvironment(language: language) {
           let controller = NoShippingPledgeViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -314,7 +288,6 @@ final class NoShippingPledgeViewControllerTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true,
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
@@ -369,7 +342,6 @@ final class NoShippingPledgeViewControllerTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true,
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
@@ -424,7 +396,6 @@ final class NoShippingPledgeViewControllerTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true,
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 

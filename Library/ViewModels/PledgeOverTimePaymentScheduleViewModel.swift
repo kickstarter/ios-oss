@@ -74,8 +74,7 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
 public struct PLOTPaymentScheduleItem: Equatable {
   public var dateString: String
   public var stateLabel: String
-  public var stateBackgroundColor: UIColor
-  public var stateForegroundColor: UIColor
+  public var badgeStyle: BadgeStyle
   public var amountAttributedText: NSAttributedString?
 
   init(with increment: PledgePaymentIncrement, project: Project) {
@@ -85,9 +84,8 @@ public struct PLOTPaymentScheduleItem: Equatable {
       timeStyle: .none
     )
 
-    self.stateLabel = stateLabelText(from: increment)
-    self.stateBackgroundColor = increment.state.badgeColor
-    self.stateForegroundColor = increment.state.badgeForegroundColor
+    self.stateLabel = getStateLabelText(from: increment)
+    self.badgeStyle = getBadgeStyle(from: increment)
 
     let currencyCountry = projectCountry(forCurrency: increment.amount.currency) ?? project.country
     self.amountAttributedText = attributedCurrency(
@@ -118,8 +116,17 @@ private func attributedCurrency(
   return attributedCurrency
 }
 
-private func stateLabelText(from increment: PledgePaymentIncrement) -> String {
+private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
   return requiresAction ? Strings.Authentication_required() : increment.state.description
+}
+
+private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle {
+  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
+  let requiresActionBadgeStyle = BadgeStyle.custom(
+    foregroundColor: .ksr_support_400,
+    backgroundColor: .ksr_celebrate_100
+  )
+  return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
 }

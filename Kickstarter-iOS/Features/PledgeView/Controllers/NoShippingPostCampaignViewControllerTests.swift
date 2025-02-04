@@ -42,17 +42,12 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
     )
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
 
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
 
@@ -113,10 +108,6 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
       |> Reward.lens.id .~ 99
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithoutCards)
     let mockService = MockService(
       createCheckoutResult: .success(self.checkoutResponse),
@@ -128,8 +119,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
         withEnvironment(
           apiService: mockService,
           currentUser: User.template,
-          language: language,
-          remoteConfigClient: mockConfigClient
+          language: language
         ) {
           let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
           let data = PledgeViewData(
@@ -180,18 +170,13 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
       context: .latePledge
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.noShippingAtCheckout.rawValue: true
-    ]
     let mockService = MockService(createCheckoutResult: .success(self.checkoutResponse))
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: mockService,
-          language: language,
-          remoteConfigClient: mockConfigClient
+          language: language
         ) {
           let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)

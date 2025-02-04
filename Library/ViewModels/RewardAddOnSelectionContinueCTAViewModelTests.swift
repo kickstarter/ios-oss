@@ -59,22 +59,22 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: (0, true, false, nil))
 
-    self.buttonTitle.assertValues(["Skip add-ons"])
+    self.buttonTitle.assertValues(["Continue"])
 
     self.vm.inputs.configure(with: (2, true, false, nil))
 
-    self.buttonTitle.assertValues(["Skip add-ons", "Continue with 2 add-ons"])
+    self.buttonTitle.assertValues(["Continue", "Continue with 2 add-ons"])
 
     self.vm.inputs.configure(with: (0, true, false, nil))
 
-    self.buttonTitle.assertValues(["Skip add-ons", "Continue with 2 add-ons", "Skip add-ons"])
+    self.buttonTitle.assertValues(["Continue", "Continue with 2 add-ons", "Continue"])
 
     self.vm.inputs.configure(with: (1, true, false, nil))
 
     self.buttonTitle.assertValues([
-      "Skip add-ons",
+      "Continue",
       "Continue with 2 add-ons",
-      "Skip add-ons",
+      "Continue",
       "Continue with 1 add-on"
     ])
   }

@@ -85,7 +85,7 @@ public class ManageViewPledgeRewardReceivedViewModel:
       .map(formatEstimatedShipping)
 
     self.estimatedShippingHidden = data.map(\.estimatedShipping)
-      .map { !featureNoShippingAtCheckout() || $0 == nil }
+      .map { $0 == nil }
 
     self.rewardReceivedHidden = data.map(\.backingState).map { state in state != .collected }
     self.cornerRadius = self.rewardReceivedHidden.map { $0 ? 0 : Styles.grid(2) }

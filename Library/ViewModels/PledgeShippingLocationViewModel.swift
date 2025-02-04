@@ -54,18 +54,11 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       .map { $0.3 }
 
     let shippingShouldBeginLoading = reward
-      .map { featureNoShippingAtCheckout() ? true : $0.shipping.enabled }
+      .mapConst(true)
 
     let shippingRulesEvent = Signal.zip(project, reward)
-      .filter { _, reward in featureNoShippingAtCheckout() ? true : reward.shipping.enabled }
-      .switchMap { project, reward -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-        if featureNoShippingAtCheckout() {
-          /// Iterates through all reward shipping preferences to get all possible shipping rules.
-          /// The Shipping dropdown is now on the Rewards carousel and will be used to filter rewards based on location and availability.
-          getShippingRulesForAllRewards(in: project)
-        } else {
-          getShippingRules(for: reward, in: project)
-        }
+      .switchMap { project, _ -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
+        getShippingRulesForAllRewards(in: project)
       }
 
     let shippingRulesLoadingCompleted = shippingRulesEvent
@@ -202,16 +195,9 @@ private func determineShippingRule(
   return defaultShippingRule(fromShippingRules: shippingRules)
 }
 
-private func getShippingRules(for reward: Reward, in project: Project) -> SignalProducer<Signal<
-  [ShippingRule],
-  ErrorEnvelope
->.Event, Never> {
-  AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id, rewardId: reward.id)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .map(ShippingRulesEnvelope.lens.shippingRules.view)
-    .retry(upTo: 3)
-    .materialize()
-}
+/*
+ Iterates through all reward shipping preferences to get all possible shipping rules.
+ */
 
 private func getShippingRulesForAllRewards(in project: Project) -> SignalProducer<Signal<
   [ShippingRule],

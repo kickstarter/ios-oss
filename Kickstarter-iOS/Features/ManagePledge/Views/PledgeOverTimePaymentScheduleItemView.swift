@@ -2,9 +2,6 @@ import Library
 import UIKit
 
 private enum Constants {
-  static let badgeTopButtonPadding = 6.0
-  static let badgeLeadingTrailingPadding = 8.0
-  static let cornerRadius = Styles.grid(1)
   static let stackViewSpacing = Styles.grid(1)
 }
 
@@ -14,8 +11,7 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
   // MARK: - Properties
 
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var badgeView: UIView = { UIView(frame: .zero) }()
-  private lazy var badgeLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var badgeView: BadgeView = { BadgeView(frame: .zero) }()
   private lazy var dateAndStatusStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -44,8 +40,6 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
       self.dateLabel,
       self.badgeView
     )
-
-    self.badgeView.addSubview(self.badgeLabel)
   }
 
   private func setupConstraints() {
@@ -67,41 +61,17 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
       self.dateAndStatusStackView.topAnchor.constraint(equalTo: self.topAnchor),
       self.dateAndStatusStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
     ])
-
-    self.badgeLabel.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      self.badgeLabel.topAnchor.constraint(
-        equalTo: self.badgeView.topAnchor,
-        constant: Constants.badgeTopButtonPadding
-      ),
-      self.badgeLabel.bottomAnchor.constraint(
-        equalTo: self.badgeView.bottomAnchor,
-        constant: -Constants.badgeTopButtonPadding
-      ),
-      self.badgeLabel.leadingAnchor.constraint(
-        equalTo: self.badgeView.leadingAnchor,
-        constant: Constants.badgeLeadingTrailingPadding
-      ),
-      self.badgeLabel.trailingAnchor.constraint(
-        equalTo: self.badgeView.trailingAnchor,
-        constant: -Constants.badgeLeadingTrailingPadding
-      )
-    ])
   }
 
   public func configure(
     with date: String,
     badgeTitle: String,
-    badgeBackgroundColor: UIColor,
-    badgeTextColor: UIColor,
-    amountAttributedText: NSAttributedString?
+    amountAttributedText: NSAttributedString?,
+    badgeStyle: BadgeStyle
   ) {
     self.dateLabel.text = date
-    self.badgeLabel.text = badgeTitle
-    self.badgeView.backgroundColor = badgeBackgroundColor
-    self.badgeLabel.textColor = badgeTextColor
     self.amountLabel.attributedText = amountAttributedText
+    self.badgeView.configure(with: badgeTitle, style: badgeStyle)
   }
 
   // MARK: - Styles
@@ -111,8 +81,6 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
 
     applyDateAndStatusStackViewStyle(self.dateAndStatusStackView)
     applyDateLabelStyle(self.dateLabel)
-    applyBadgeViewStyle(self.badgeView)
-    applyBadgeLabelStyle(self.badgeLabel)
     applyAmountLabelStyle(self.amountLabel)
   }
 }
@@ -126,15 +94,6 @@ private func applyDateAndStatusStackViewStyle(_ stackView: UIStackView) {
 private func applyDateLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_subhead().bolded
   label.textColor = .ksr_black
-}
-
-private func applyBadgeViewStyle(_ view: UIView) {
-  view.rounded(with: Constants.cornerRadius)
-}
-
-private func applyBadgeLabelStyle(_ label: UILabel) {
-  label.font = UIFont.ksr_caption1().bolded
-  label.adjustsFontForContentSizeCategory = true
 }
 
 private func applyAmountLabelStyle(_ label: UILabel) {
