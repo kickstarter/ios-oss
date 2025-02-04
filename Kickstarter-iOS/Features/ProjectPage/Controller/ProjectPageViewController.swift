@@ -638,7 +638,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    /// Render rewards carousel that has the shipping location dropdown
     let vc = WithShippingRewardsCollectionViewController.controller(with: project, refTag: refTag)
     self.present(vc, animated: true)
   }

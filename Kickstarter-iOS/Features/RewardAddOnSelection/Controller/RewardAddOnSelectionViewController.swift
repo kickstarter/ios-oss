@@ -21,7 +21,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -219,12 +219,14 @@ final class RewardAddOnSelectionViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToPledge(data: PledgeViewData) {
-    let vc = PledgeViewController.instantiate()
-    vc.delegate = self.pledgeViewDelegate
-    vc.configure(with: data)
+  private func goToPledge(data _: PledgeViewData) {
+    // TODO: This class will be removed as part of our legacy checkout cleanup
 
-    self.navigationController?.pushViewController(vc, animated: true)
+//    let vc = PledgeViewController.instantiate()
+//    vc.delegate = self.pledgeViewDelegate
+//    vc.configure(with: data)
+//
+//    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
