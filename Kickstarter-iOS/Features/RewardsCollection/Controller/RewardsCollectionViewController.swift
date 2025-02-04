@@ -32,7 +32,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_support_400)
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
@@ -285,12 +285,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToPledge(data: PledgeViewData) {
-    let pledgeViewController = PledgeViewController.instantiate()
-    pledgeViewController.delegate = self.pledgeViewDelegate
-    pledgeViewController.configure(with: data)
+  private func goToPledge(data _: PledgeViewData) {
+    // TODO: This class will be removed as part of our legacy checkout cleanup
 
-    self.navigationController?.pushViewController(pledgeViewController, animated: true)
+//    let pledgeViewController = PledgeViewController.instantiate()
+//    pledgeViewController.delegate = self.pledgeViewDelegate
+//    pledgeViewController.configure(with: data)
+//
+//    self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
   private func goToConfirmDetails(data: PledgeViewData) {

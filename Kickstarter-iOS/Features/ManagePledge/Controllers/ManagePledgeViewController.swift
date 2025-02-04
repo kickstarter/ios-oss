@@ -538,13 +538,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    /// Render rewards carousel that has the shipping location dropdown
     let vc = WithShippingRewardsCollectionViewController.instantiate(
       with: project,
       refTag: nil,
       context: .managePledge
     )
-    vc.pledgeViewDelegate = self
+    vc.noShippingPledgeViewDelegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -593,14 +592,6 @@ extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
     didCancelPledgeWithMessage message: String
   ) {
     self.viewModel.inputs.cancelPledgeDidFinish(with: message)
-  }
-}
-
-// MARK: - PledgeViewControllerDelegate
-
-extension ManagePledgeViewController: PledgeViewControllerDelegate {
-  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
-    self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }
 
