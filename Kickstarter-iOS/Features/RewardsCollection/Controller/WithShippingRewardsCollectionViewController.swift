@@ -39,7 +39,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_support_400)
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
   public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
