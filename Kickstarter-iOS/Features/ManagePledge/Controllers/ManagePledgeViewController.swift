@@ -543,7 +543,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       refTag: nil,
       context: .managePledge
     )
-    vc.pledgeViewDelegate = self
+    vc.noShippingPledgeViewDelegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
