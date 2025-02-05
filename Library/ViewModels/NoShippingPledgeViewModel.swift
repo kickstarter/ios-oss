@@ -13,6 +13,94 @@ public typealias NoShippingPledgeViewCTAContainerViewData = (
   willRetryPaymentMethod: Bool
 )
 
+public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
+public typealias CreateBackingData = (
+  project: Project,
+  rewards: [Reward],
+  pledgeTotal: Double,
+  selectedQuantities: SelectedRewardQuantities,
+  shippingRule: ShippingRule?,
+  paymentSourceId: String?,
+  setupIntentClientSecret: String?,
+  applePayParams: ApplePayParams?,
+  refTag: RefTag?,
+  incremental: Bool?
+)
+public typealias UpdateBackingData = (
+  backing: Backing,
+  rewards: [Reward],
+  pledgeTotal: Double,
+  selectedQuantities: SelectedRewardQuantities,
+  shippingRule: ShippingRule?,
+  paymentSourceId: String?,
+  setupIntentClientSecret: String?,
+  applePayParams: ApplePayParams?,
+  pledgeContext: PledgeViewContext
+)
+public typealias PaymentAuthorizationData = (
+  project: Project,
+  reward: Reward,
+  allRewardsTotal: Double,
+  additionalPledgeAmount: Double,
+  allRewardsShippingTotal: Double,
+  merchantIdentifier: String
+)
+public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
+
+public struct PledgeViewData: Equatable {
+  public let project: Project
+  public let rewards: [Reward]
+  public let bonusSupport: Double?
+  public let selectedShippingRule: ShippingRule?
+  public let selectedQuantities: SelectedRewardQuantities
+  public let selectedLocationId: Int?
+  public let refTag: RefTag?
+  public let context: PledgeViewContext
+
+  // Convenience initializer to allow `bonusSupport` to default to `nil`.
+  // TODO(MBL-1670): Delete this when cleaning up the noShippingAtCheckout feature.
+  init(
+    project: Project,
+    rewards: [Reward],
+    selectedShippingRule: ShippingRule?,
+    selectedQuantities: SelectedRewardQuantities,
+    selectedLocationId: Int?,
+    refTag: RefTag?,
+    context: PledgeViewContext
+  ) {
+    self.project = project
+    self.rewards = rewards
+    self.bonusSupport = nil
+    self.selectedShippingRule = selectedShippingRule
+    self.selectedQuantities = selectedQuantities
+    self.selectedLocationId = selectedLocationId
+    self.refTag = refTag
+    self.context = context
+  }
+
+  // Explicitly define initializer for all fields so that it coexists with the convenience
+  // initializer. Can be deleted when the other initializer is no longer used.
+  init(
+    project: Project,
+    rewards: [Reward],
+    bonusSupport: Double?,
+    selectedShippingRule: ShippingRule?,
+    selectedQuantities: SelectedRewardQuantities,
+    selectedLocationId: Int?,
+    refTag: RefTag?,
+    context: PledgeViewContext
+  ) {
+    self.project = project
+    self.rewards = rewards
+    self.bonusSupport = bonusSupport
+    self.selectedShippingRule = selectedShippingRule
+    self.selectedQuantities = selectedQuantities
+    self.selectedLocationId = selectedLocationId
+    self.refTag = refTag
+    self.context = context
+  }
+}
+
 public protocol NoShippingPledgeViewModelInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
