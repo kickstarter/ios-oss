@@ -3,6 +3,11 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+public enum RewardsCollectionViewContext {
+  case createPledge
+  case managePledge
+}
+
 public protocol WithShippingRewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func confirmedEditReward()
