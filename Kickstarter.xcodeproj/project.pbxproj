@@ -684,8 +684,6 @@
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
 		77EBB62123A175C700A58853 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B5451CA871D700BBB587 /* RootViewModel.swift */; };
-		77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */; };
-		77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */; };
 		77EFBAE32268D48A00DA5C3C /* RewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */; };
 		77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE42268E01400DA5C3C /* RewardCell.swift */; };
 		77EFBAE72268E37200DA5C3C /* RewardsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */; };
@@ -2369,8 +2367,6 @@
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewControllerTests.swift; sourceTree = "<group>"; };
-		77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewController.swift; sourceTree = "<group>"; };
-		77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewControllerTests.swift; sourceTree = "<group>"; };
 		77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModel.swift; sourceTree = "<group>"; };
 		77EFBAE42268E01400DA5C3C /* RewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
 		77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -4224,8 +4220,6 @@
 			isa = PBXGroup;
 			children = (
 				6035AF9A2C5168F8007E28FC /* WithShippingRewardsCollectionViewController.swift */,
-				77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */,
-				77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8765,7 +8759,6 @@
 				D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */,
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
-				77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */,
 				8A13D15F249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift in Sources */,
 				77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */,
 				770DF32A2106210900A6D0F1 /* SettingsNotificationsDataSource.swift in Sources */,
@@ -8976,7 +8969,6 @@
 				D6F741A821836E5700C2DDA2 /* PaymentMethodSettingsViewControllerTests.swift in Sources */,
 				33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */,
 				A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */,
-				77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */,
 				8A49395D24B5394700C3C3CE /* RewardAddOnSelectionDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
