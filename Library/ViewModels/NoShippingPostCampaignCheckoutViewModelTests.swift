@@ -818,8 +818,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.run()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
     }
   }
@@ -846,8 +846,8 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.run()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(false)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.latePledge])
     }
   }
