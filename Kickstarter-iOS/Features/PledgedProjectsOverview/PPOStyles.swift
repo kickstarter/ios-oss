@@ -34,7 +34,7 @@ enum PPOStyles {
   )
 
   static let title = (
-    font: UIFont.ksr_caption1().bolded,
+    font: UIFont.ksr_subhead().bolded,
     color: UIColor.ksr_black
   )
 
@@ -47,6 +47,8 @@ enum PPOStyles {
     font: UIFont.ksr_caption1(),
     color: UIColor.ksr_black
   )
+
+  static let flagFont = UIFont.ksr_caption1().bolded
 
   static let bannerPadding = 7
 

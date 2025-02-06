@@ -162,7 +162,7 @@ struct PPOProjectCard: View {
     static let borderColor = UIColor.ksr_support_300
     static let borderWidth: CGFloat = 1
     static let badgeAlignment = Alignment(horizontal: .trailing, vertical: .top)
-    static let badgeSize: CGFloat = Styles.grid(4)
+    static let badgeSize: CGFloat = Styles.grid(2)
     static let spacing: CGFloat = Styles.grid(3)
     static let outerPadding: CGFloat = Styles.grid(4)
     static let firstColumnWidth: CGFloat = 0.25

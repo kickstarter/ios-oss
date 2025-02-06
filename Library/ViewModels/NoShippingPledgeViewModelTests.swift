@@ -197,22 +197,22 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -241,22 +241,22 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(false)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -285,14 +285,14 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
         [true],
         "CTA is automatically enabled when you are updating the pledge."
@@ -306,8 +306,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -346,14 +346,14 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.changePaymentMethod])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(
         false,
         "CTA is disabled until new payment method is selected"
@@ -363,8 +363,8 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(false)
 
       self.vm.inputs.creditCardSelected(with: .savedCreditCard("12345", "pm_fake"))
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(
@@ -415,7 +415,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
@@ -425,11 +425,11 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertLastValue(false)
 
-      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertLastValue(false)
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(false)
 
       let paymentSourceSelected = PaymentSourceSelected.savedCreditCard(backing.paymentSource!.id!, "pm_fake")
 
@@ -475,22 +475,22 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.changePaymentMethod])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(false)
     }
   }
 
@@ -522,22 +522,22 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
-      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertValues([true])
+      self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.changePaymentMethod])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(false)
 
       self.configurePledgeRewardsSummaryViewRewards.assertLastValue([reward])
 
@@ -575,12 +575,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(false)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -608,12 +608,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(false)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -641,12 +641,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -674,12 +674,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -707,12 +707,12 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
     }
   }
 
@@ -740,15 +740,15 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithContext.assertDidNotEmitValue()
 
-      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertValues([false])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(false)
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([true])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.pledgeAmountSummaryViewHidden.assertLastValue(true)
 
       withEnvironment(currentUser: user) {
-        self.vm.inputs.userSessionStarted()
+        self.vm.inputs.userSessionDidChange()
 
         self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
         self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
@@ -1135,11 +1135,11 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.goToThanksProject.assertDidNotEmitValue()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -1224,11 +1224,11 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.goToThanksProject.assertDidNotEmitValue()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -1306,7 +1306,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.paymentMethodsViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertLastValue(false)
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -1438,7 +1438,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -1515,7 +1515,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -1528,7 +1528,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -1608,7 +1608,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -1621,7 +1621,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -1684,7 +1684,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.processingViewIsHidden.assertDidNotEmitValue()
@@ -1697,7 +1697,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -1770,7 +1770,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
       self.processingViewIsHidden.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
@@ -1780,7 +1780,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false])
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
@@ -1834,7 +1834,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
       self.processingViewIsHidden.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
@@ -1844,7 +1844,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false])
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
@@ -2042,7 +2042,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
@@ -2057,7 +2057,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
@@ -2074,7 +2074,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -2092,7 +2092,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
@@ -2107,7 +2107,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -2124,7 +2124,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       ])
       self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
     }
   }
@@ -2210,7 +2210,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
@@ -2225,7 +2225,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -2344,7 +2344,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
@@ -2359,7 +2359,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
@@ -2376,7 +2376,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -2394,7 +2394,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -2409,7 +2409,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
@@ -2424,7 +2424,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
     }
   }
@@ -3438,7 +3438,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -3453,7 +3453,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -3557,7 +3557,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -3573,7 +3573,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -3650,7 +3650,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -3773,7 +3773,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         false,
         "CTA is disabled because submit button was tapped"
       )
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
@@ -3873,7 +3873,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
         false,
         "CTA disabled because submit button tapped"
       )
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
@@ -4004,7 +4004,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.localPickupViewHidden.assertValues([false])
+    self.localPickupViewHidden.assertLastValue(false)
   }
 
   func testLocalRewardView_IsHidden_RegularReward_Shipping_HasAddOns_RewardIsNotLocalPickup() {
@@ -4032,7 +4032,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    self.localPickupViewHidden.assertValues([true])
+    self.localPickupViewHidden.assertLastValue(true)
   }
 
   func testConfigureLocalPickupViewWithData_Success() {
@@ -4107,7 +4107,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -4120,7 +4120,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
@@ -4200,7 +4200,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -4596,7 +4596,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.showPledgeOverTimeUI.assertValues([false])
+      self.showPledgeOverTimeUI.assertLastValue(false)
       self.pledgeOverTimeConfigData.assertDidNotEmitValue()
       self.plotSelectedPlan.assertDidNotEmitValue()
     }
@@ -4631,7 +4631,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.paymentPlanSelected(.pledgeInFull)
       self.vm.inputs.viewDidLoad()
 
-      self.showPledgeOverTimeUI.assertValues([true])
+      self.showPledgeOverTimeUI.assertLastValue(true)
       self.pledgeOverTimeConfigData.assertDidEmitValue()
       self.plotSelectedPlan.assertValues([.pledgeInFull, .pledgeInFull])
     }
@@ -4666,7 +4666,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.paymentPlanSelected(.pledgeOverTime)
 
-      self.showPledgeOverTimeUI.assertValues([true])
+      self.showPledgeOverTimeUI.assertLastValue(true)
       self.pledgeOverTimeConfigData.assertDidEmitValue()
       self.plotSelectedPlan.assertValues([.pledgeInFull, .pledgeOverTime])
     }
@@ -4701,7 +4701,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.paymentPlanSelected(.pledgeInFull)
       self.vm.inputs.viewDidLoad()
 
-      self.showPledgeOverTimeUI.assertValues([true])
+      self.showPledgeOverTimeUI.assertLastValue(true)
       self.pledgeOverTimeConfigData.assertDidEmitValue()
 
       let configValue = self.pledgeOverTimeConfigData.lastValue
@@ -4778,7 +4778,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.showPledgeOverTimeUI.assertValues([true])
+      self.showPledgeOverTimeUI.assertLastValue(true)
 
       // Hasn't loaded yet
       self.pledgeOverTimeConfigData.assertDidNotEmitValue()
@@ -4857,7 +4857,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
@@ -4872,7 +4872,7 @@ final class NoShippingPledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.processingViewIsHidden.assertValues([false])
+      self.processingViewIsHidden.assertLastValue(false)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()

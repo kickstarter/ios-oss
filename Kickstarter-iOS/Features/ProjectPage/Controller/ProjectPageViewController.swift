@@ -644,14 +644,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    if featureNoShippingAtCheckout() {
-      /// Render rewards carousel that has the shipping location dropdown
-      let vc = WithShippingRewardsCollectionViewController.controller(with: project, refTag: refTag)
-      self.present(vc, animated: true)
-    } else {
-      let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
-      self.present(vc, animated: true)
-    }
+    let vc = WithShippingRewardsCollectionViewController.controller(with: project, refTag: refTag)
+    self.present(vc, animated: true)
   }
 
   private func goToManagePledge(params: ManagePledgeViewParamConfigData) {

@@ -262,9 +262,16 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationConfirmAddress() {
+    let template = PPOProjectCardModel.confirmAddressTemplate
+    let address = "fake address"
+    let addressId = "fake id"
     self.verifyNavigationEvent(
-      { self.viewModel.confirmAddress(from: PPOProjectCardModel.confirmAddressTemplate) },
-      event: .confirmAddress
+      { self.viewModel.confirmAddress(from: template, address: address, addressId: addressId) },
+      event: .confirmAddress(
+        backingId: template.backingGraphId,
+        addressId: addressId,
+        address: address
+      )
     )
   }
 

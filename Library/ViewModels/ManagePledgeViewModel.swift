@@ -10,7 +10,6 @@ public typealias ManagePledgeViewParamConfigData = (
 )
 
 public enum ManagePledgeAlertAction: CaseIterable {
-  case updatePledge
   case changePaymentMethod
   case chooseAnotherReward
   case contactCreator
@@ -40,7 +39,6 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
-  var goToUpdatePledge: Signal<PledgeViewData, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -283,11 +281,6 @@ public final class ManagePledgeViewModel:
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
-    self.goToUpdatePledge = Signal.combineLatest(project, backing, backedRewards)
-      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
-      .map { project, backing, rewards in (project, backing, rewards, .update) }
-      .map(pledgeViewData)
-
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
 
@@ -453,7 +446,6 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
-  public let goToUpdatePledge: Signal<PledgeViewData, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
@@ -531,11 +523,6 @@ private func actionSheetMenuOptionsFor(
 
   var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 
-  // TODO: Remove 'update pledge' from ManagePledgeAlertAction after feature rollout.
-  if featureNoShippingAtCheckout() {
-    actions = actions.filter { $0 != .updatePledge }
-  }
-
   if isPledgeOverTime(with: backing) {
     actions = actions.filter { $0 != .chooseAnotherReward }
   }
@@ -561,7 +548,6 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .changePaymentMethod: return .changePaymentMethod
   case .chooseAnotherReward: return .chooseAnotherReward
   case .contactCreator: return .contactCreator
-  case .updatePledge: return .updatePledge
   case .viewRewards: return .viewRewards
   }
 }
@@ -608,8 +594,6 @@ private func managePledgeSummaryViewData(
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
-  var paymentIncrements = backing.paymentIncrements
-
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
     backerName: backer.name,
@@ -630,7 +614,7 @@ private func managePledgeSummaryViewData(
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: backing.reward?.shipping.enabled == false || backing.shippingAmount == 0,
     rewardIsLocalPickup: isRewardLocalPickup,
-    paymentIncrements: paymentIncrements,
+    paymentIncrements: backing.paymentIncrements,
     project: project
   )
 }

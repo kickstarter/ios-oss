@@ -39,7 +39,6 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_support_400)
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
   public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
@@ -302,7 +301,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
 
   private func goToNoShippingAddOnSelection(data: PledgeViewData) {
     let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
-    vc.pledgeViewDelegate = self.pledgeViewDelegate
+    vc.noShippingPledgeViewDelegate = self.noShippingPledgeViewDelegate
     vc.configure(with: data)
     vc.navigationItem.title = self.title
     self.navigationController?.pushViewController(vc, animated: true)

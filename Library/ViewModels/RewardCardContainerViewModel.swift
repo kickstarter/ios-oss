@@ -105,7 +105,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   case (.backed(.live), false, true):
     return Strings.Select()
   case (.backed(.live), true, _), (.backed(.nonLive), true, _):
-    if reward.hasAddOns || featureNoShippingAtCheckout(), project.state == .live {
+    if project.state == .live {
       return Strings.Continue()
     }
     return Strings.Selected()
@@ -135,10 +135,7 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
     }
   case .backed(.live):
     if isBackingThisReward {
-      if reward.hasAddOns || featureNoShippingAtCheckout() {
-        return .green
-      }
-      return .black
+      return .green
     }
   case .nonBacked(.live):
     return .green
