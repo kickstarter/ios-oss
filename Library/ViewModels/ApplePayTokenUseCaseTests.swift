@@ -13,7 +13,7 @@ final class ApplePayTokenUseCaseTests: TestCase {
 
   var useCase: ApplePayTokenUseCase!
 
-  let goToApplePayPaymentAuthorization = TestObserver<PKPaymentRequest, Never>()
+  let goToApplePayPaymentAuthorization = TestObserver<PaymentAuthorizationData, Never>()
   let applePayParams = TestObserver<ApplePayParams?, Never>()
   let applePayAuthorizationStatus = TestObserver<PKPaymentAuthorizationStatus, Never>()
 

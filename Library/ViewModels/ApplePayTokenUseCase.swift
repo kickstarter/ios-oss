@@ -21,24 +21,25 @@ public protocol ApplePayTokenUseCaseUIInputs {
 }
 
 public protocol ApplePayTokenUseCaseUIOutputs {
-  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
 }
 
 public protocol ApplePayTokenUseCaseDataOutputs {
   var applePayParams: Signal<ApplePayParams?, Never> { get }
   var applePayAuthorizationStatus: Signal<PKPaymentAuthorizationStatus, Never> { get }
+  var paymentAuthorizationDidFinish: Signal<Void, Never> { get }
 }
 
 /**
  A use case for ApplePay transactions in the regular (not post!) pledge flow.
 
  To complete an ApplePay payment, the use case should be used in this order:
- - `input.applePayButtonTapped()` - The ApplePay button has been tapped
- - `output.goToApplePayPaymentAuthorization` - The view controller should display a `PKPaymentAuthorizationViewController` with the sent `PKPaymentRequest`
- - `input.paymentAuthorizationDidAuthorizePayment(paymentData:)` - The `PKPaymentAuthorizationViewController` successfully authorized a payment
- - `input.stripeTokenCreated(token:error:)` - Stripe successfully turned the `PKPayment` into a Stripe token. Returns a status, which is also sent by the `applePayAuthorizationStatus` signal.
- - `input.paymentAuthorizationViewControllerDidFinish()` - The `PKPaymentAuthorizationViewController` was dismissed
- - `output.applePayParams` - Sends parameters which can be used in `CreateBacking` or `UpdateBacking`. Sends an initial `nil`value, by default.
+ - `uiInputs.applePayButtonTapped()` - The ApplePay button has been tapped
+ - `uiOutputs.goToApplePayPaymentAuthorization` - The view controller should display a `PKPaymentAuthorizationViewController` with the sent `PKPaymentRequest`
+ - `uiInputs.paymentAuthorizationDidAuthorizePayment(paymentData:)` - The `PKPaymentAuthorizationViewController` successfully authorized a payment
+ - `uiInputs.stripeTokenCreated(token:error:)` - Stripe successfully turned the `PKPayment` into a Stripe token. Returns a status, which is also sent by the `applePayAuthorizationStatus` signal.
+ - `uiInputs.paymentAuthorizationViewControllerDidFinish()` - The `PKPaymentAuthorizationViewController` was dismissed
+ - `dataOutputs.applePayParams` - Sends parameters which can be used in `CreateBacking` or `UpdateBacking`. Sends an initial `nil`value, by default.
 
  Other inputs and outputs:
 
@@ -47,26 +48,13 @@ public protocol ApplePayTokenUseCaseDataOutputs {
 
  Data Outputs:
  - `applePayAuthorizationStatus` - Sends an event indicating whether the ApplePay flow succeeded or failed.
+ - `paymentAuthorizationDidFinish` - Sends an event with the ApplePay spreadsheet closes.
   */
 
 public final class ApplePayTokenUseCase: ApplePayTokenUseCaseType, ApplePayTokenUseCaseUIInputs,
   ApplePayTokenUseCaseUIOutputs, ApplePayTokenUseCaseDataOutputs {
   init(initialData: Signal<PaymentAuthorizationData, Never>) {
-    let paymentAuthorizationData: Signal<PKPaymentRequest, Never> =
-      initialData
-        .map { project, reward, allRewardsTotal, additionalPledgeAmount, shippingTotal, merchantIdentifier -> PKPaymentRequest in
-          PKPaymentRequest
-            .paymentRequest(
-              for: project,
-              reward: reward,
-              allRewardsTotal: allRewardsTotal,
-              additionalPledgeAmount: additionalPledgeAmount,
-              allRewardsShippingTotal: shippingTotal,
-              merchantIdentifier: merchantIdentifier
-            )
-        }
-
-    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
+    self.goToApplePayPaymentAuthorization = initialData
       .takeWhen(self.applePayButtonTappedSignal)
 
     let pkPaymentData = self.pkPaymentSignal
@@ -146,6 +134,10 @@ public final class ApplePayTokenUseCase: ApplePayTokenUseCaseType, ApplePayToken
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
+  public var paymentAuthorizationDidFinish: Signal<Void, Never> {
+    return self.paymentAuthorizationDidFinishSignal
+  }
+
   private let (stripeTokenSignal, stripeTokenObserver) = Signal<String?, Never>.pipe()
   private let (stripeErrorSignal, stripeErrorObserver) = Signal<Error?, Never>.pipe()
 
@@ -159,7 +151,7 @@ public final class ApplePayTokenUseCase: ApplePayTokenUseCaseType, ApplePayToken
 
   // MARK: - Outputs
 
-  public let goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let applePayParams: Signal<ApplePayParams?, Never>
   public let applePayAuthorizationStatus: Signal<PKPaymentAuthorizationStatus, Never>
 
