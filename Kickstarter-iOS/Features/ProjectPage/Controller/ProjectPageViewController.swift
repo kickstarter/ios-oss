@@ -691,7 +691,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private func goToRestrictedCreator(message: String) {
     let restrictedCreatorVC = RestrictedCreatorViewController.configuredWith(message: message)
     let navigationVC = UINavigationController(rootViewController: restrictedCreatorVC)
-    navigationVC.modalPresentationStyle = .pageSheet
+    navigationVC.modalPresentationStyle = .formSheet
     navigationVC.setNavigationBarHidden(true, animated: false)
     if let sheetController = navigationVC.sheetPresentationController {
       sheetController.detents = [.medium(), .large()]
