@@ -70,12 +70,7 @@ public final class RestrictedCreatorViewController: UIViewController {
 
     self.view.backgroundColor = UIColor.ksr_white
     self.view.insetsLayoutMarginsFromSafeArea = true
-    self.view.layoutMargins = UIEdgeInsets(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: 0,
-      right: Styles.grid(4)
-    )
+    self.view.layoutMargins = UIEdgeInsets(top: Styles.grid(4))
 
     self.titleLabel.text = Strings.project_project_notices_header()
     self.titleLabel.numberOfLines = 0
@@ -94,6 +89,14 @@ public final class RestrictedCreatorViewController: UIViewController {
     self.creatorAccountabilityButton.accessibilityTraits.insert(.button)
 
     self.scrollView.translatesAutoresizingMaskIntoConstraints = false
+    self.scrollView.insetsLayoutMarginsFromSafeArea = true
+    self.scrollView.layoutMargins = UIEdgeInsets(topBottom: 0, leftRight: Styles.grid(4))
+    self.scrollView.contentInset = UIEdgeInsets(
+      top: Styles.grid(2),
+      left: 0,
+      bottom: Styles.grid(4),
+      right: 0
+    )
 
     self.contentStackView.translatesAutoresizingMaskIntoConstraints = false
     self.contentStackView.axis = .vertical
@@ -107,9 +110,11 @@ public final class RestrictedCreatorViewController: UIViewController {
       self.scrollView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
       self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
 
-      self.contentStackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
-      self.contentStackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
-      self.contentStackView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor),
+      self.contentStackView.leadingAnchor
+        .constraint(equalTo: self.scrollView.layoutMarginsGuide.leadingAnchor),
+      self.contentStackView.trailingAnchor
+        .constraint(equalTo: self.scrollView.layoutMarginsGuide.trailingAnchor),
+      self.contentStackView.widthAnchor.constraint(equalTo: self.scrollView.layoutMarginsGuide.widthAnchor),
       self.contentStackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
       self.contentStackView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
     ])

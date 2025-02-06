@@ -694,7 +694,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     navigationVC.modalPresentationStyle = .formSheet
     navigationVC.setNavigationBarHidden(true, animated: false)
     if let sheetController = navigationVC.sheetPresentationController {
-      sheetController.detents = [.medium(), .large()]
+      // If large text is on, allow view to scroll to fill entire screen.
+      // This will not update dynamically if the content size category changes while the view is
+      // open, but that's okay for this view.
+      if self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+        sheetController.detents = [.medium(), .large()]
+      } else {
+        sheetController.detents = [.medium()]
+      }
       sheetController.prefersGrabberVisible = true
     }
     present(navigationVC, animated: true)
