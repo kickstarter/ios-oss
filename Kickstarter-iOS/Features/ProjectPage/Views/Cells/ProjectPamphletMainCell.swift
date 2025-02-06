@@ -6,6 +6,7 @@ import UIKit
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
+  func projectPamphletMainCellGoToProjectNotice(_ cell: ProjectPamphletMainCell)
 }
 
 internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
@@ -304,6 +305,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
       }
 
+    self.viewModel.outputs.notifyDelegateToGoToProjectNotice
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.projectPamphletMainCellGoToProjectNotice(self)
+      }
+
     self.viewModel.outputs.opacityForViews
       .observeForUI()
       .observeValues { [weak self] alpha in
@@ -349,7 +357,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   private func alertBannerLearnMoreTapped() {
-    // TODO:
+    self.viewModel.inputs.projectNoticeLearnMoreTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {

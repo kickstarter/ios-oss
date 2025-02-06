@@ -381,6 +381,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToReportProject(projectID: projectID, projectUrl: projectUrl)
       }
 
+    self.viewModel.outputs.goToRestrictedCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToRestrictedCreator(message: $0)
+      }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -688,6 +694,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
   }
 
+  private func goToRestrictedCreator(message: String) {
+    let restrictedCreatorVC = RestrictedCreatorViewController.configuredWith(message: message)
+    let navigationVC = UINavigationController(rootViewController: restrictedCreatorVC)
+    navigationVC.modalPresentationStyle = .pageSheet
+    navigationVC.setNavigationBarHidden(true, animated: false)
+    if let sheetController = navigationVC.sheetPresentationController {
+      sheetController.detents = [.medium(), .large()]
+      sheetController.prefersGrabberVisible = true
+    }
+    present(navigationVC, animated: true)
+  }
+
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
     self.viewModel.inputs.showNavigationBar(false)
@@ -982,6 +1000,10 @@ extension ProjectPageViewController: ProjectRisksDisclaimerCellDelegate {
 // MARK: ProjectPamphletMainCellDelegate
 
 extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
+  func projectPamphletMainCellGoToProjectNotice(_: ProjectPamphletMainCell) {
+    self.viewModel.inputs.projectNoticeDetailsRequested()
+  }
+
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
     addChildController child: UIViewController

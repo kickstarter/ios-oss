@@ -4864,6 +4864,7 @@
 				77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */,
+				39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 			);
 			path = Controller;
@@ -8675,6 +8676,7 @@
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
+				39F48E212D528D5B00090D6C /* RestrictedCreatorViewController.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,

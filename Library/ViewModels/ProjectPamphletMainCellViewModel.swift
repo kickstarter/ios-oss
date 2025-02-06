@@ -21,6 +21,9 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when the delegate has been set on the cell.
   func delegateDidSet()
 
+  /// Call when the project notice learn more button is tapped.
+  func projectNoticeLearnMoreTapped()
+
   func videoDidFinish()
   func videoDidStart()
 }
@@ -67,6 +70,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
+
+  /// Emits the project when project notice details should be displayed.
+  var notifyDelegateToGoToProjectNotice: Signal<(), Never> { get }
 
   /// Emits an alpha value for views to create transition after full project loads.
   var opacityForViews: Signal<CGFloat, Never> { get }
@@ -255,6 +261,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
+    self.notifyDelegateToGoToProjectNotice = self.projectNoticeLearnMoreTappedProperty.signal
+
     self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
       .take(first: 1)
@@ -292,6 +300,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.delegateDidSetProperty.value = ()
   }
 
+  fileprivate let projectNoticeLearnMoreTappedProperty = MutableProperty(())
+  public func projectNoticeLearnMoreTapped() {
+    self.projectNoticeLearnMoreTappedProperty.value = ()
+  }
+
   fileprivate let videoDidFinishProperty = MutableProperty(())
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
@@ -316,6 +329,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
+  public let notifyDelegateToGoToProjectNotice: Signal<(), Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelText: Signal<String, Never>
