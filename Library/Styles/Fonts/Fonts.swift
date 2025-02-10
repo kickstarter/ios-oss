@@ -4,74 +4,74 @@ extension UIFont {
   // MARK: - Old Design System fonts
 
   /// regular, 17pt font, 22pt leading, -24pt tracking
-    public static func ksr_body(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.body : SystemFont.body
+  public static func ksr_body(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.body : SystemFont.body
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 16pt font, 21pt leading, -20pt tracking
-    public static func ksr_callout(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.callout : SystemFont.callout
+  /// regular, 16pt font, 21pt leading, -20pt tracking
+  public static func ksr_callout(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.callout : SystemFont.callout
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 12pt font, 16pt leading, 0pt tracking
-    public static func ksr_caption1(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.caption1 : SystemFont.caption1
+  /// regular, 12pt font, 16pt leading, 0pt tracking
+  public static func ksr_caption1(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.caption1 : SystemFont.caption1
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 11pt font, 13pt leading, 6pt tracking
-    public static func ksr_caption2(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.caption2 : SystemFont.caption2
+  /// regular, 11pt font, 13pt leading, 6pt tracking
+  public static func ksr_caption2(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.caption2 : SystemFont.caption2
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 13pt font, 18pt leading, -6pt tracking
-    public static func ksr_footnote(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.footnote : SystemFont.footnote
+  /// regular, 13pt font, 18pt leading, -6pt tracking
+  public static func ksr_footnote(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.footnote : SystemFont.footnote
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// semi-bold, 17pt font, 22pt leading, -24pt tracking
-    public static func ksr_headline(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.headline : SystemFont.headline
+  /// semi-bold, 17pt font, 22pt leading, -24pt tracking
+  public static func ksr_headline(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.headline : SystemFont.headline
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 15pt font, 20pt leading, -16pt tracking
-    public static func ksr_subhead(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.subhead : SystemFont.subhead
+  /// regular, 15pt font, 20pt leading, -16pt tracking
+  public static func ksr_subhead(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.subhead : SystemFont.subhead
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 28pt font, 34pt leading, 13pt tracking
-    public static func ksr_title1(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title1 : SystemFont.title1
+  /// regular, 28pt font, 34pt leading, 13pt tracking
+  public static func ksr_title1(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title1 : SystemFont.title1
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 22pt font, 28pt leading, 16pt tracking
-    public static func ksr_title2(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title2 : SystemFont.title2
+  /// regular, 22pt font, 28pt leading, 16pt tracking
+  public static func ksr_title2(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title2 : SystemFont.title2
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
-    /// regular, 20pt font, 24pt leading, 19pt tracking
-    public static func ksr_title3(size: CGFloat? = nil) -> UIFont {
-      let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title3 : SystemFont.title3
+  /// regular, 20pt font, 24pt leading, 19pt tracking
+  public static func ksr_title3(size: CGFloat? = nil) -> UIFont {
+    let fontType: CustomFont = featureNewDesignSystemEnabled() ? InterFont.title3 : SystemFont.title3
 
-      return fontType.font(size: size)
-    }
+    return fontType.font(size: size)
+  }
 
   // MARK: - New Design System fonts
 

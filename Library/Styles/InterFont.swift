@@ -7,7 +7,7 @@ public enum KSRFontStyle: CustomFont, CaseIterable {
   // New Design System
   case heading2XL, headingXL, headingLG, headingMD, headingSM, headingXS
   case bodyXL, bodyLG, bodyMD, bodySM, bodyXS, bodyXXS
-  
+
   public func font(size: CGFloat? = nil) -> UIFont {
     return UIFont.customFont(with: self, size: size)
   }
