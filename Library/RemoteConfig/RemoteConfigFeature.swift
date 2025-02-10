@@ -6,6 +6,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case useKeychainForOAuthToken = "use_keychain_for_oauth_token"
   case pledgedProjectsOverviewEnabled = "pledged_projects_overview"
   case pledgeOverTime = "pledge_over_time"
+  case newDesignSystem = "new_design_system"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -16,6 +17,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .useKeychainForOAuthToken: return "Use Keychain for OAuth token"
     case .pledgedProjectsOverviewEnabled: return "Pledged Projects Overview"
     case .pledgeOverTime: return "Pledge Over Time"
+    case .newDesignSystem: return "New Design System"
     }
   }
 }
