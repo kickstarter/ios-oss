@@ -28,6 +28,7 @@ struct PPOProjectCreator: View {
       .foregroundStyle(Color(Constants.sendMessageColor))
       .frame(alignment: Constants.buttonAlignment)
       .lineLimit(Constants.textLineLimit)
+      .buttonStyle(BorderlessButtonStyle())
 
       Spacer()
         .frame(width: Constants.spacerWidth)
