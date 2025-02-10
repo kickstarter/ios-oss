@@ -474,6 +474,11 @@ extension NoShippingPostCampaignCheckoutViewController: PledgeViewControllerMess
 
 // MARK: - STPApplePayContextDelegate
 
+enum PostCampaignCheckoutApplePayError: Error {
+  case missingPaymentMethodInfo(String)
+  case missingPaymentIntent(String)
+}
+
 extension NoShippingPostCampaignCheckoutViewController: STPApplePayContextDelegate {
   func applePayContext(
     _: StripeApplePay.STPApplePayContext,
