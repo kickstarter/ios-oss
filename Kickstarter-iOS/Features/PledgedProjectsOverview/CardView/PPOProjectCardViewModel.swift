@@ -35,6 +35,7 @@ typealias PPOProjectCardViewModelType = Equatable & Hashable & Identifiable & Ob
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published private(set) var card: PPOProjectCardModel
   @Published var isLoading: Bool = false
+  @Published var isComplete: Bool = false
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.card)
@@ -96,8 +97,13 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     switch state {
     case .processing:
       self.isLoading = true
-    case .succeeded, .cancelled, .failed:
+      self.isComplete = false
+    case .succeeded:
+      self.isLoading = true
+      self.isComplete = true
+    case .cancelled, .failed:
       self.isLoading = false
+      self.isComplete = false
     }
   }
 }

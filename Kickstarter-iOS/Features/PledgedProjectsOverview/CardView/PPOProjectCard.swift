@@ -137,7 +137,7 @@ struct PPOProjectCard: View {
           .progressViewStyle(CircularProgressViewStyle(tint: .white))
       }
     }
-    .disabled(self.viewModel.isLoading)
+    .disabled(self.viewModel.isLoading || self.viewModel.isComplete)
   }
 
   @ViewBuilder
