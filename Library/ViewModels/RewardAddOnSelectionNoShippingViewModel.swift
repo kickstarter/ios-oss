@@ -3,6 +3,29 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias SelectedRewardId = Int
+public typealias SelectedRewardQuantity = Int
+public typealias SelectedRewardQuantities = [SelectedRewardId: SelectedRewardQuantity]
+
+public enum RewardAddOnSelectionDataSourceItem: Equatable {
+  case rewardAddOn(RewardAddOnCardViewData)
+  case emptyState(EmptyStateViewType)
+
+  public var rewardAddOnCardViewData: RewardAddOnCardViewData? {
+    switch self {
+    case let .rewardAddOn(data): return data
+    case .emptyState: return nil
+    }
+  }
+
+  public var emptyStateViewType: EmptyStateViewType? {
+    switch self {
+    case .rewardAddOn: return nil
+    case let .emptyState(viewType): return viewType
+    }
+  }
+}
+
 public protocol RewardAddOnSelectionNoShippingViewModelInputs {
   func beginRefresh()
   func configure(with data: PledgeViewData)
