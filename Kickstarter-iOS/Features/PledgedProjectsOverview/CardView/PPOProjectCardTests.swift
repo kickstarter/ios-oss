@@ -78,4 +78,18 @@ final class PPOProjectCardTests: TestCase {
     try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
   }
+
+  @MainActor
+  func testShortTemplateText() async {
+    let card = VStack {
+      PPOProjectCard(viewModel: PPOProjectCardViewModel(
+        card: .shortTextTemplate
+      ), parentSize: self.size)
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
+    }.frame(height: 500)
+    try? await Task.sleep(nanoseconds: 10_000_000)
+    assertSnapshot(matching: card, as: .image, named: "testShortTemplateText")
+  }
 }
