@@ -79,27 +79,33 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
-    PPOProjectDetails(
-      image: self.viewModel.card.image,
-      title: self.viewModel.card.projectName,
-      pledge: self.viewModel.card.pledge,
-      leadingColumnWidth: leadingColumnWidth
-    )
-    .padding([.horizontal])
-    .onTapGesture {
+    Button {
       self.viewModel.viewBackingDetails()
+    } label: {
+      PPOProjectDetails(
+        image: self.viewModel.card.image,
+        title: self.viewModel.card.projectName,
+        pledge: self.viewModel.card.pledge,
+        leadingColumnWidth: leadingColumnWidth
+      )
+      .padding([.horizontal])
     }
+    // MBL-2020: Keeps the button action from being triggered by other taps in the card.
+    .buttonStyle(BorderlessButtonStyle())
   }
 
   @ViewBuilder
   private var projectCreator: some View {
-    PPOProjectCreator(
-      creatorName: self.viewModel.card.creatorName,
-      onSendMessage: { [weak viewModel] () in
-        viewModel?.sendCreatorMessage()
-      }
-    )
-    .padding([.horizontal])
+    Button {
+      self.viewModel.sendCreatorMessage()
+    } label: {
+      PPOProjectCreator(
+        creatorName: self.viewModel.card.creatorName
+      )
+      .padding([.horizontal])
+    }
+    // MBL-2020: Keeps the button action from being triggered by other taps in the card.
+    .buttonStyle(BorderlessButtonStyle())
   }
 
   @ViewBuilder

@@ -4,7 +4,6 @@ import SwiftUI
 
 struct PPOProjectCreator: View {
   let creatorName: String
-  var onSendMessage: (() -> Void)? = nil
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -18,17 +17,12 @@ struct PPOProjectCreator: View {
         )
         .lineLimit(Constants.textLineLimit)
 
-      Button(action: {
-        self.onSendMessage?()
-      }, label: {
-        Text(Strings.Send_a_message())
-      })
-      .font(Font(PPOStyles.subtitle.font))
-      .background(Color(PPOStyles.background))
-      .foregroundStyle(Color(Constants.sendMessageColor))
-      .frame(alignment: Constants.buttonAlignment)
-      .lineLimit(Constants.textLineLimit)
-      .buttonStyle(BorderlessButtonStyle())
+      Text(Strings.Send_a_message())
+        .font(Font(PPOStyles.subtitle.font))
+        .background(Color(PPOStyles.background))
+        .foregroundStyle(Color(Constants.sendMessageColor))
+        .frame(alignment: Constants.buttonAlignment)
+        .lineLimit(Constants.textLineLimit)
 
       Spacer()
         .frame(width: Constants.spacerWidth)
