@@ -99,7 +99,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
       self.isLoading = true
       self.isComplete = false
     case .succeeded:
-      self.isLoading = true
+      self.isLoading = false
       self.isComplete = true
     case .cancelled, .failed:
       self.isLoading = false
