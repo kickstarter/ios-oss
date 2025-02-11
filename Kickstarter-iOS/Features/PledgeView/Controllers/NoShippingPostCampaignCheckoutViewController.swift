@@ -189,7 +189,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
     self.rootStackView.spacing = Styles.grid(1)
     self.rootStackView.isLayoutMarginsRelativeArrangement = true
     self.rootStackView.layoutMargins = UIEdgeInsets(
-      topBottom: ConfirmDetailsLayout.Margin.topBottom,
+      topBottom: Layout.Margin.topBottom,
       leftRight: 0
     )
 
@@ -530,8 +530,8 @@ private func rootInsetStackViewStyle(_ stackView: UIStackView) {
   stackView.spacing = Styles.grid(4)
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.layoutMargins = UIEdgeInsets(
-    topBottom: ConfirmDetailsLayout.Margin.topBottom,
-    leftRight: ConfirmDetailsLayout.Margin.leftRight
+    topBottom: Layout.Margin.topBottom,
+    leftRight: Layout.Margin.leftRight
   )
 }
 
