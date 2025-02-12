@@ -480,8 +480,8 @@
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
 		6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633529B9023300B87B39 /* GraphUserEmailTests.swift */; };
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
-		601342EC2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */; };
-		601342EF2C81419C00B851FA /* NoShippingPostCampaignViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */; };
+		601342EC2C81414000B851FA /* PostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* PostCampaignCheckoutViewController.swift */; };
+		601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */; };
 		601342F12C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F02C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift */; };
 		601342F32C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F22C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift */; };
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
@@ -2166,8 +2166,8 @@
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
 		6008633529B9023300B87B39 /* GraphUserEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTests.swift; sourceTree = "<group>"; };
 		6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAppTrackingTransparency.swift; sourceTree = "<group>"; };
-		601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
-		601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignViewControllerTests.swift; sourceTree = "<group>"; };
+		601342EB2C81414000B851FA /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
+		601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewControllerTests.swift; sourceTree = "<group>"; };
 		601342F02C8141F000B851FA /* NoShippingPostCampaignCheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewModel.swift; sourceTree = "<group>"; };
 		601342F22C81420D00B851FA /* NoShippingPostCampaignCheckoutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPostCampaignCheckoutViewModelTests.swift; sourceTree = "<group>"; };
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
@@ -3900,8 +3900,8 @@
 			children = (
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
 				395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */,
-				601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */,
-				601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */,
+				601342EB2C81414000B851FA /* PostCampaignCheckoutViewController.swift */,
+				601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */,
 				6035AFAE2C594717007E28FC /* PledgeViewController.swift */,
 				60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */,
 			);
@@ -8781,7 +8781,7 @@
 				608B5B212CADA6CD00BCC5F4 /* NoShippingPledgeRewardsSummaryDiffableDataSource.swift in Sources */,
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
-				601342EC2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift in Sources */,
+				601342EC2C81414000B851FA /* PostCampaignCheckoutViewController.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8833,7 +8833,7 @@
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
 				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
 				19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */,
-				601342EF2C81419C00B851FA /* NoShippingPostCampaignViewControllerTests.swift in Sources */,
+				601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */,
 				A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */,
 				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
 				394BB7132C5ACCBA007F0FFD /* ButtonStylesTests.swift in Sources */,

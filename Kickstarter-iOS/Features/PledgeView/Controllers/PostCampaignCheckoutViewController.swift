@@ -17,7 +17,7 @@ private enum Layout {
   }
 }
 
-final class NoShippingPostCampaignCheckoutViewController: UIViewController,
+final class PostCampaignCheckoutViewController: UIViewController,
   MessageBannerViewControllerPresenting,
   ProcessingViewPresenting {
   // MARK: - Properties
@@ -401,7 +401,7 @@ final class NoShippingPostCampaignCheckoutViewController: UIViewController,
 
 // MARK: - STPAuthenticationContext
 
-extension NoShippingPostCampaignCheckoutViewController: STPAuthenticationContext {
+extension PostCampaignCheckoutViewController: STPAuthenticationContext {
   func authenticationPresentingViewController() -> UIViewController {
     return self
   }
@@ -409,7 +409,7 @@ extension NoShippingPostCampaignCheckoutViewController: STPAuthenticationContext
 
 // MARK: - PledgeDisclaimerViewDelegate
 
-extension NoShippingPostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
+extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
   func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
     self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
   }
@@ -417,7 +417,7 @@ extension NoShippingPostCampaignCheckoutViewController: PledgeDisclaimerViewDele
 
 // MARK: - PledgeViewCTAContainerViewDelegate
 
-extension NoShippingPostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
+extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
@@ -441,7 +441,7 @@ extension NoShippingPostCampaignCheckoutViewController: PledgeViewCTAContainerVi
 
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
-extension NoShippingPostCampaignCheckoutViewController: PledgePaymentMethodsViewControllerDelegate {
+extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewController(
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
@@ -452,7 +452,7 @@ extension NoShippingPostCampaignCheckoutViewController: PledgePaymentMethodsView
 
 // MARK: - PledgeViewControllerMessageDisplaying
 
-extension NoShippingPostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
+extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
   func pledgeViewController(_: UIViewController, didErrorWith message: String, error: Error?) {
     // If the error is a stripe error from attempting to add a new card, dismiss the banner only
     // instead of restarting the checkout flow.
@@ -479,7 +479,7 @@ enum PostCampaignCheckoutApplePayError: Error {
   case missingPaymentIntent(String)
 }
 
-extension NoShippingPostCampaignCheckoutViewController: STPApplePayContextDelegate {
+extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
   func applePayContext(
     _: StripeApplePay.STPApplePayContext,
     didCreatePaymentMethod paymentMethod: StripePayments.STPPaymentMethod,

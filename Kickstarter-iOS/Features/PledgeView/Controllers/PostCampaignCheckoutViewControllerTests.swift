@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-final class NoShippingPostCampaignViewControllerTests: TestCase {
+final class PostCampaignCheckoutViewControllerTests: TestCase {
   private let userWithCards = GraphUser.template |> \.storedCards .~ UserCreditCards(
     storedCards: [
       UserCreditCards.visa,
@@ -49,7 +49,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
         currentUser: User.template,
         language: language
       ) {
-        let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
+        let controller = PostCampaignCheckoutViewController.instantiate()
 
         let shippingRule = ShippingRule.template
           |> ShippingRule.lens.estimatedMin .~ Money(amount: 0.0)
@@ -121,7 +121,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
           currentUser: User.template,
           language: language
         ) {
-          let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
+          let controller = PostCampaignCheckoutViewController.instantiate()
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
@@ -178,7 +178,7 @@ final class NoShippingPostCampaignViewControllerTests: TestCase {
           apiService: mockService,
           language: language
         ) {
-          let controller = NoShippingPostCampaignCheckoutViewController.instantiate()
+          let controller = PostCampaignCheckoutViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
