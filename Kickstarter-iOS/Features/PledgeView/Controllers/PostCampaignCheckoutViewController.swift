@@ -80,8 +80,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   private var sessionStartedObserver: Any?
 
-  private let viewModel: NoShippingPostCampaignCheckoutViewModelType =
-    NoShippingPostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
+  private let viewModel: PostCampaignCheckoutViewModelType =
+    PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
   // MARK: - Lifecycle
 
