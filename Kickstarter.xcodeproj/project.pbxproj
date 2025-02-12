@@ -496,7 +496,7 @@
 		6035AFA92C517EDD007E28FC /* RewardAddOnSelectionNoShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA82C517EDD007E28FC /* RewardAddOnSelectionNoShippingViewController.swift */; };
 		6035AFAB2C518222007E28FC /* RewardAddOnSelectionNoShippingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAA2C518222007E28FC /* RewardAddOnSelectionNoShippingViewModel.swift */; };
 		6035AFAD2C518251007E28FC /* RewardAddOnSelectionNoShippingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAC2C518251007E28FC /* RewardAddOnSelectionNoShippingViewModelTests.swift */; };
-		6035AFAF2C594717007E28FC /* NoShippingPledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAE2C594717007E28FC /* NoShippingPledgeViewController.swift */; };
+		6035AFAF2C594717007E28FC /* PledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAE2C594717007E28FC /* PledgeViewController.swift */; };
 		6035AFB12C5947D2007E28FC /* NoShippingPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFB02C5947D2007E28FC /* NoShippingPledgeViewModel.swift */; };
 		6035AFB32C594817007E28FC /* NoShippingPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFB22C594817007E28FC /* NoShippingPledgeViewModelTests.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
@@ -566,7 +566,7 @@
 		60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */; };
 		60E1BB2B2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */; };
 		60E1BB352C74F7E4007D723B /* EstimatedShippingCheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */; };
-		60E1BB552C7670F6007D723B /* NoShippingPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */; };
+		60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
@@ -2182,7 +2182,7 @@
 		6035AFA82C517EDD007E28FC /* RewardAddOnSelectionNoShippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionNoShippingViewController.swift; sourceTree = "<group>"; };
 		6035AFAA2C518222007E28FC /* RewardAddOnSelectionNoShippingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionNoShippingViewModel.swift; sourceTree = "<group>"; };
 		6035AFAC2C518251007E28FC /* RewardAddOnSelectionNoShippingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionNoShippingViewModelTests.swift; sourceTree = "<group>"; };
-		6035AFAE2C594717007E28FC /* NoShippingPledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewController.swift; sourceTree = "<group>"; };
+		6035AFAE2C594717007E28FC /* PledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewController.swift; sourceTree = "<group>"; };
 		6035AFB02C5947D2007E28FC /* NoShippingPledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewModel.swift; sourceTree = "<group>"; };
 		6035AFB22C594817007E28FC /* NoShippingPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewModelTests.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
@@ -2246,7 +2246,7 @@
 		60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedShippingCheckoutView.swift; sourceTree = "<group>"; };
-		60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeViewControllerTests.swift; sourceTree = "<group>"; };
+		60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -3902,8 +3902,8 @@
 				395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */,
 				601342EB2C81414000B851FA /* NoShippingPostCampaignCheckoutViewController.swift */,
 				601342ED2C81418700B851FA /* NoShippingPostCampaignViewControllerTests.swift */,
-				6035AFAE2C594717007E28FC /* NoShippingPledgeViewController.swift */,
-				60E1BB532C7670F1007D723B /* NoShippingPledgeViewControllerTests.swift */,
+				6035AFAE2C594717007E28FC /* PledgeViewController.swift */,
+				60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -8772,7 +8772,7 @@
 				06ED88D727BFF02200893A24 /* AudioVideoViewElementCell.swift in Sources */,
 				A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				D6E7DAFA22089F3900689BD6 /* MessageBannerViewController.swift in Sources */,
-				6035AFAF2C594717007E28FC /* NoShippingPledgeViewController.swift in Sources */,
+				6035AFAF2C594717007E28FC /* PledgeViewController.swift in Sources */,
 				8A8C6134243F99AB0092B682 /* ContentSizeTableView.swift in Sources */,
 				8A45169524B3E8FB00D8CAEF /* RewardAddOnCell.swift in Sources */,
 				8A13D163249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift in Sources */,
@@ -8801,7 +8801,7 @@
 				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
-				60E1BB552C7670F6007D723B /* NoShippingPledgeViewControllerTests.swift in Sources */,
+				60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */,
 				47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,

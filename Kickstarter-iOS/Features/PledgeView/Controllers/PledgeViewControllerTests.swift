@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-final class NoShippingPledgeViewControllerTests: TestCase {
+final class PledgeViewControllerTests: TestCase {
   private let userWithCards = GraphUser.template |> \.storedCards .~ UserCreditCards(
     storedCards: [
       UserCreditCards.visa,
@@ -38,7 +38,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         currentUser: User.template,
         language: language
       ) {
-        let controller = NoShippingPledgeViewController.instantiate()
+        let controller = PledgeViewController.instantiate()
 
         let reward = Reward.template
         let data = PledgeViewData(
@@ -91,7 +91,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
         currentUser: User.template,
         language: language
       ) {
-        let controller = NoShippingPledgeViewController.instantiate()
+        let controller = PledgeViewController.instantiate()
         let reward = Reward.noReward
         let data = PledgeViewData(
           project: project,
@@ -126,7 +126,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
@@ -164,7 +164,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: .template,
             rewards: [reward],
@@ -219,7 +219,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           self.scheduler.advance(by: .seconds(1))
@@ -256,7 +256,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           self.scheduler.advance(by: .seconds(1))
@@ -299,7 +299,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           language: language,
           remoteConfigClient: mockConfigClient
         ) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
@@ -353,7 +353,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           language: language,
           remoteConfigClient: mockConfigClient
         ) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
@@ -407,7 +407,7 @@ final class NoShippingPledgeViewControllerTests: TestCase {
           language: language,
           remoteConfigClient: mockConfigClient
         ) {
-          let controller = NoShippingPledgeViewController.instantiate()
+          let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
