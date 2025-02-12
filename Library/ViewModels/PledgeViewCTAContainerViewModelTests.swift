@@ -37,6 +37,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let context = PledgeViewContext.pledge
 
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: false,
       isEnabled: true,
       context: context,
@@ -60,6 +62,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let context = PledgeViewContext.pledge
 
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: true,
       isEnabled: true,
       context: context,
@@ -84,6 +88,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let context = PledgeViewContext.update
 
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: true,
       isEnabled: true,
       context: context,
@@ -108,6 +114,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let context = PledgeViewContext.changePaymentMethod
 
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: true,
       isEnabled: true,
       context: context,
@@ -132,6 +140,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let context = PledgeViewContext.fixPaymentMethod
 
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: true,
       isEnabled: true,
       context: context,
@@ -154,6 +164,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
 
   func testContinueButtonTapped() {
     let pledgeData = PledgeViewCTAContainerViewData(
+      project: .template,
+      total: 12,
       isLoggedIn: false,
       isEnabled: true,
       context: .pledge,

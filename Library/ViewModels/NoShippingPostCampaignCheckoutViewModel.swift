@@ -556,12 +556,16 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      project,
+      pledgeTotal,
       pledgeButtonEnabled,
       context,
       self.loginSignupUseCase.dataOutputs.isLoggedIn
     )
-    .map { pledgeButtonEnabled, context, isLoggedIn in
+    .map { project, pledgeTotal, pledgeButtonEnabled, context, isLoggedIn in
       PledgeViewCTAContainerViewData(
+        project: project,
+        total: pledgeTotal,
         isLoggedIn: isLoggedIn,
         isEnabled: pledgeButtonEnabled,
         context: context,

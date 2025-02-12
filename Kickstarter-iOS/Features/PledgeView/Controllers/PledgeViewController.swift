@@ -122,7 +122,7 @@ final class PledgeViewController: UIViewController,
   }()
 
   private var sessionStartedObserver: Any?
-  private let viewModel: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
+  private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
 
