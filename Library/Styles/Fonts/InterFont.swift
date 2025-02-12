@@ -11,27 +11,8 @@ public enum InterFont: CustomFont, CaseIterable {
   public func font(size: CGFloat? = nil) -> UIFont {
     return UIFont.customFont(with: self, size: size)
   }
-}
 
-extension InterFont: CustomFontConfigurable {
-  var fontName: String {
-    switch self {
-    case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM,
-         .headingXS: return "Inter-Regular_Medium"
-    case .headline: return "Inter-Regular_SemiBold"
-    default: return "Inter-Regular"
-    }
-  }
-
-  var boldFontName: String {
-    switch self {
-    case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM, .headingXS: return "Inter-Regular_Bold"
-    case .headline: return "Inter-Regular_ExtraBold"
-    default: return "Inter-SemiBold"
-    }
-  }
-
-  var defaultSize: CGFloat {
+  public var defaultSize: CGFloat {
     switch self {
     // Old Design System
     case .title1: return 28
@@ -61,7 +42,7 @@ extension InterFont: CustomFontConfigurable {
     }
   }
 
-  var textStyle: UIFont.TextStyle {
+  public var textStyle: UIFont.TextStyle {
     switch self {
     // Old Design System
     case .title1: return .title1
@@ -87,6 +68,25 @@ extension InterFont: CustomFontConfigurable {
     case .bodyMD: return .footnote
     case .bodySM: return .caption1
     case .bodyXS, .bodyXXS: return .caption1
+    }
+  }
+}
+
+extension InterFont: CustomFontAccessible {
+  var fontName: String {
+    switch self {
+    case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM,
+         .headingXS: return "Inter-Regular_Medium"
+    case .headline: return "Inter-Regular_SemiBold"
+    default: return "Inter-Regular"
+    }
+  }
+
+  var boldFontName: String {
+    switch self {
+    case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM, .headingXS: return "Inter-Regular_Bold"
+    case .headline: return "Inter-Regular_ExtraBold"
+    default: return "Inter-SemiBold"
     }
   }
 }

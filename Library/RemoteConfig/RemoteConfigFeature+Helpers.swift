@@ -36,5 +36,9 @@ public func featurePledgeOverTimeEnabled() -> Bool {
 }
 
 public func featureNewDesignSystemEnabled() -> Bool {
-  featureEnabled(feature: .newDesignSystem)
+  #if DESIGN_SYSTEM_ENABLED
+    featureEnabled(feature: .newDesignSystem)
+  #else
+    false
+  #endif
 }

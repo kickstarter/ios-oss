@@ -1,18 +1,18 @@
 import UIKit
 
 public protocol CustomFont {
+  var defaultSize: CGFloat { get }
+  var textStyle: UIFont.TextStyle { get }
   func font(size: CGFloat?) -> UIFont
 }
 
-protocol CustomFontConfigurable {
+protocol CustomFontAccessible {
   var fontName: String { get }
   var boldFontName: String { get }
-  var defaultSize: CGFloat { get }
-  var textStyle: UIFont.TextStyle { get }
 }
 
 extension UIFont {
-  static func customFont(with fontConfig: CustomFontConfigurable, size: CGFloat? = nil) -> UIFont {
+  static func customFont(with fontConfig: CustomFont & CustomFontAccessible, size: CGFloat? = nil) -> UIFont {
     let fontName = UIAccessibility.isBoldTextEnabled ? fontConfig.boldFontName : fontConfig.fontName
     guard let font = UIFont(name: fontName, size: size ?? fontConfig.defaultSize) else {
       return self.defaultSystemFont(with: fontConfig, size: size)
@@ -23,8 +23,8 @@ extension UIFont {
     return finalFont
   }
 
-  private static func defaultSystemFont(
-    with fontConfig: CustomFontConfigurable,
+  static func defaultSystemFont(
+    with fontConfig: CustomFont,
     size: CGFloat? = nil
   ) -> UIFont {
     let font = UIFont.preferredFont(

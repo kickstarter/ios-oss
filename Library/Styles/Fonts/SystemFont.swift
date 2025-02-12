@@ -13,15 +13,7 @@ enum SystemFont: CustomFont, CaseIterable {
   case caption2
 
   func font(size: CGFloat?) -> UIFont {
-    let font = UIFont.preferredFont(
-      forTextStyle: self.textStyle,
-      compatibleWith: .current
-    )
-    let descriptor = font.fontDescriptor
-    return UIFont(
-      descriptor: descriptor,
-      size: ceil(font.pointSize / self.defaultSize * (size ?? self.defaultSize))
-    )
+    return UIFont.defaultSystemFont(with: self, size: size)
   }
 }
 
