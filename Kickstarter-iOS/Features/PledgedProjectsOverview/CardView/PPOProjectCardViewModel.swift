@@ -102,6 +102,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
 public enum PPOActionState {
   case processing
+  case confirmed
   case succeeded
   case cancelled
   case failed

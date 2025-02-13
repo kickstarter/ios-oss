@@ -76,7 +76,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
           )
         case .failed:
           return (.error, Strings.Something_went_wrong_please_try_again())
-        case .processing, .cancelled:
+        case .processing, .cancelled, .confirmed:
           return nil
         }
       }
