@@ -168,10 +168,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         results.hasLoaded ? results.values
           .ppoAnalyticsProperties(total: results.total, page: results.page) : nil
       }
+      .first()
+      .eraseToAnyPublisher()
 
     // Analytics: When view appears, the next time it loads, send a PPO dashboard open
     self.viewDidAppearSubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { _, properties in
         AppEnvironment.current.ksrAnalytics.trackPPODashboardOpens(properties: properties)
       }
@@ -179,7 +181,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Tap messaging creator
     self.contactCreatorSubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
           from: card.projectAnalytics,
@@ -190,7 +192,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Fixing payment failure
     self.fixPaymentMethodSubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
           project: card.projectAnalytics,
@@ -201,7 +203,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Opening survey
     self.openSurveySubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
           project: card.projectAnalytics,
@@ -212,7 +214,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { cardProperties, overallProperties in
         let (card, _, _) = cardProperties
         AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
@@ -224,7 +226,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Edit address
     self.editAddressSubject
-      .combineLatest(latestLoadedResults)
+      .flatMap { card in latestLoadedResults.map { (card, $0) } }
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
           project: card.projectAnalytics,
