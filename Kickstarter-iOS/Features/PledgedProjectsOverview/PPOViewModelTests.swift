@@ -270,7 +270,8 @@ class PPOViewModelTests: XCTestCase {
       event: .confirmAddress(
         backingId: template.backingGraphId,
         addressId: addressId,
-        address: address
+        address: address,
+        onProgress: { _ in }
       )
     )
   }
