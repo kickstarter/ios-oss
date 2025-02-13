@@ -167,7 +167,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
-  private let confirmAddressSubject = PassthroughSubject<(addressId: String, backingId: String, onProgress: (PPOActionState) -> Void), Never>()
+  private let confirmAddressSubject = PassthroughSubject<
+    (addressId: String, backingId: String, onProgress: (PPOActionState) -> Void),
+    Never
+  >()
 
   private var cancellables: Set<AnyCancellable> = []
 }

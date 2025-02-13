@@ -80,7 +80,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       case let .fix3DSChallenge(clientSecret, onProgress):
         self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
       case let .confirmAddress(backingId, addressId, address, onProgress):
-        self?.confirmAddress(backingId: backingId, addressId: addressId, address: address, onProgress: onProgress)
+        self?.confirmAddress(
+          backingId: backingId,
+          addressId: addressId,
+          address: address,
+          onProgress: onProgress
+        )
       }
     }.store(in: &self.subscriptions)
 
@@ -170,7 +175,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func confirmAddress(backingId: String, addressId: String, address: String, onProgress: @escaping (PPOActionState) -> Void) {
+  private func confirmAddress(
+    backingId: String,
+    addressId: String,
+    address: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
     onProgress(.processing)
 
     let alert = UIAlertController(

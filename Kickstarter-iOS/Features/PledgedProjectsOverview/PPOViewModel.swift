@@ -43,7 +43,12 @@ enum PPONavigationEvent: Equatable {
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
-  case confirmAddress(backingId: String, addressId: String, address: String, onProgress: (PPOActionState) -> Void)
+  case confirmAddress(
+    backingId: String,
+    addressId: String,
+    address: String,
+    onProgress: (PPOActionState) -> Void
+  )
   case contactCreator(messageSubject: MessageSubject)
 
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
@@ -229,7 +234,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Finish confirming address
     self.confirmAddressProgressSubject
-      .filter({ $0.1 == .confirmed })
+      .filter { $0.1 == .confirmed }
       .flatMap { card in latestLoadedResults.map { (card.0, $0) } }
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOSubmitAddressConfirmation(
@@ -330,7 +335,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
-  private let confirmAddressProgressSubject = PassthroughSubject<(PPOProjectCardModel, PPOActionState), Never>()
+  private let confirmAddressProgressSubject = PassthroughSubject<
+    (PPOProjectCardModel, PPOActionState),
+    Never
+  >()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
