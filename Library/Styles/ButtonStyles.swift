@@ -21,7 +21,7 @@ public let baseButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
     |> UIButton.lens.adjustsImageWhenDisabled .~ false
     |> UIButton.lens.adjustsImageWhenHighlighted .~ false
-    <> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
+    <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 16)
     <> UIButton.lens.titleLabel.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
     <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
     <> UIButton.lens.titleLabel.numberOfLines .~ 1

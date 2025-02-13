@@ -22,7 +22,7 @@ public extension String {
     italic optionalItalic: Attributes? = nil
   ) -> NSAttributedString? {
     func parsedHtml() -> NSAttributedString? {
-      let baseFont = (base[NSAttributedString.Key.font] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
+      let baseFont = (base[NSAttributedString.Key.font] as? UIFont) ?? UIFont.ksr_caption1()
 
       // If bold or italic are not specified we can derive them from `font`.
       let bold = optionalBold ?? [NSAttributedString.Key.font: baseFont.bolded]

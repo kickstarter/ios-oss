@@ -10,7 +10,7 @@ struct GreenButtonStyle: SwiftUI.ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
-      .font(Font(UIFont.boldSystemFont(ofSize: 16)))
+      .font(Font(UIFont.ksr_headline(size: 16)))
       .foregroundColor(Color(.ksr_white))
       .padding(Styles.grid(2))
       .background(self.backgroundColor(configuration))
@@ -33,7 +33,7 @@ struct RedButtonStyle: SwiftUI.ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
-      .font(Font(UIFont.boldSystemFont(ofSize: 16)))
+      .font(Font(UIFont.ksr_headline(size: 16)))
       .foregroundColor(Color(.ksr_white))
       .padding(Styles.grid(2))
       .background(self.backgroundColor(configuration))
@@ -56,7 +56,7 @@ struct BlackButtonStyle: SwiftUI.ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .frame(maxWidth: .infinity)
-      .font(Font(UIFont.boldSystemFont(ofSize: 16)))
+      .font(Font(UIFont.ksr_headline(size: 16)))
       .foregroundColor(self.isEnabled ? Color(.ksr_white) : Color(.ksr_support_100))
       .padding(Styles.grid(2))
       .background(self.backgroundColor(configuration))
