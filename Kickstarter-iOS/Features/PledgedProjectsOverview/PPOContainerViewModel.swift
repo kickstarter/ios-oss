@@ -87,11 +87,17 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
 
     // Confirm address call with result banners.
     self.confirmAddressSubject
+      .handleEvents(receiveOutput: { data in
+        data.onProgress(.confirmed)
+      })
       .flatMap { data in
         AppEnvironment.current.apiService.confirmBackingAddress(
           backingId: data.backingId,
           addressId: data.addressId
         )
+        .handleEvents(receiveOutput: { _ in
+          data.onProgress(.succeeded)
+        })
         .catch { _ in Just(false) }
       }
       .compactMap { success -> MessageBannerConfiguration in
@@ -125,8 +131,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.process3DSAuthenticationState.send(state)
   }
 
-  func confirmAddress(addressId: String, backingId: String) {
-    self.confirmAddressSubject.send((addressId: addressId, backingId: backingId))
+  func confirmAddress(addressId: String, backingId: String, onProgress: @escaping (PPOActionState) -> Void) {
+    self.confirmAddressSubject.send((addressId: addressId, backingId: backingId, onProgress: onProgress))
   }
 
   // MARK: - Outputs
@@ -161,7 +167,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
-  private let confirmAddressSubject = PassthroughSubject<(addressId: String, backingId: String), Never>()
+  private let confirmAddressSubject = PassthroughSubject<(addressId: String, backingId: String, onProgress: (PPOActionState) -> Void), Never>()
+  private let refreshSubject = PassthroughSubject<Void, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }
