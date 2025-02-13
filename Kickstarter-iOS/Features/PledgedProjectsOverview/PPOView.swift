@@ -1,8 +1,10 @@
+import Combine
 import Library
 import SwiftUI
 
 struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
+  var shouldRefresh: AnyPublisher<Void, Never>
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
@@ -140,10 +142,15 @@ struct PPOView: View {
         .onReceive(self.viewModel.navigationEvents, perform: { event in
           self.onNavigate?(event)
         })
+        .onReceive(self.shouldRefresh) { () in
+          Task {
+            await self.viewModel.refresh()
+          }
+        }
     }
   }
 }
 
 #Preview {
-  PPOView()
+  PPOView(shouldRefresh: Empty().eraseToAnyPublisher())
 }

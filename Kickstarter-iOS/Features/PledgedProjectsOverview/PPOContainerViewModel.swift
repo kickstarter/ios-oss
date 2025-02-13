@@ -19,6 +19,7 @@ protocol PPOContainerViewModelOutputs {
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
   var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> { get }
+  var refresh: AnyPublisher<Void, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -157,6 +158,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.stripeConfigurationSubject.eraseToAnyPublisher()
   }
 
+  var refresh: AnyPublisher<Void, Never> {
+    self.refreshSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - Private
 
   private var viewWillAppearSubject = PassthroughSubject<Void, Never>()
@@ -171,6 +176,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     (addressId: String, backingId: String, onProgress: (PPOActionState) -> Void),
     Never
   >()
+  private let refreshSubject = PassthroughSubject<Void, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }
