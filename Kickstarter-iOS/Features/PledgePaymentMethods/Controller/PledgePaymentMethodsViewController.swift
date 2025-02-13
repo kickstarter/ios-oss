@@ -159,7 +159,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         assert(
           topViewController is PledgeViewController ||
-            topViewController is NoShippingPostCampaignCheckoutViewController,
+            topViewController is PostCampaignCheckoutViewController,
           "PledgePaymentMethodsViewController is only intended to be presented as part of a pledge flow."
         )
 

@@ -213,7 +213,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   // MARK: Functions
 
   private func goToLatePledge(data: PledgeViewData) {
-    let vc = NoShippingPostCampaignCheckoutViewController.instantiate()
+    let vc = PostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
 

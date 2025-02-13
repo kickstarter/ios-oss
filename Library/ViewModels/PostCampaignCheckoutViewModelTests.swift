@@ -5,8 +5,8 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
-  private var vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
+final class PostCampaignCheckoutViewModelTests: TestCase {
+  private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
 
   private let checkoutResponse = CreateCheckoutEnvelope(
@@ -41,7 +41,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
+    self.vm = PostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
 
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
