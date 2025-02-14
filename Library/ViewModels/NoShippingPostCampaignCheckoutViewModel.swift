@@ -110,6 +110,11 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
       initialData: initialData.ignoreValues()
     )
 
+    self.paymentMethodsUseCase = PaymentMethodsUseCase(
+      initialData: initialData,
+      isLoggedIn: self.loginSignupUseCase.dataOutputs.isLoggedIn
+    )
+
     // MARK: Calculate totals
 
     let calculatedShippingTotal = Signal.combineLatest(
@@ -215,21 +220,6 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     let createCheckoutErrors = createCheckoutEvents.errors()
 
     // MARK: Configure views
-
-    self.paymentMethodsViewHidden = self.loginSignupUseCase.dataOutputs.isLoggedIn.map(negate)
-
-    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
-      project,
-      baseReward,
-      context,
-      refTag,
-      checkoutId
-    )
-    .compactMap { project, reward, context, refTag, checkoutId -> PledgePaymentMethodsValue? in
-      guard let user = AppEnvironment.current.currentUser else { return nil }
-
-      return (user, project, checkoutId, reward, context, refTag)
-    }
 
     self.showWebHelp = Signal.merge(
       self.termsOfUseTappedSignal,
@@ -349,7 +339,7 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
 
     // MARK: Validate Existing Cards
 
-    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+    let selectedCard = self.paymentMethodsUseCase.dataOutputs.selectedPaymentSource.skipNil()
 
     let paymentIntentClientSecretForExistingCards = paymentIntentClientSecret
       .takeWhen(selectedCard)
@@ -698,12 +688,10 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     self.confirmPaymentSuccessfulProperty.value = clientSecret
   }
 
-  private let creditCardSelectedProperty =
-    MutableProperty<PaymentSourceSelected?>(nil)
   public func creditCardSelected(
     source: PaymentSourceSelected
   ) {
-    self.creditCardSelectedProperty.value = source
+    self.paymentMethodsUseCase.creditCardSelected(with: source)
   }
 
   public func goToLoginSignupTapped() {
@@ -754,7 +742,10 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   // MARK: - Outputs
 
   public let configureEstimatedShippingView: Signal<(String?, String?), Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> {
+    return self.paymentMethodsUseCase.configurePaymentMethodsViewControllerWithValue
+  }
+
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     Double?,
@@ -770,7 +761,10 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public var paymentMethodsViewHidden: Signal<Bool, Never> {
+    return self.paymentMethodsUseCase.paymentMethodsViewHidden
+  }
+
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
@@ -782,4 +776,5 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   // MARK: - Use cases
 
   private let loginSignupUseCase: LoginSignupUseCase
+  private let paymentMethodsUseCase: PaymentMethodsUseCase
 }
