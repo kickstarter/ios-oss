@@ -157,5 +157,29 @@ import KsApi
       posts: nil,
       goal: nil
     )
+
+    internal static let shortTextTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .warning, icon: .time, message: "Wait"),
+        .init(
+          type: .alert,
+          icon: .alert,
+          message: "Bad"
+        )
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Project",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "Bob",
+      address: nil,
+      actions: (.completeSurvey, nil),
+      tierType: .openSurvey,
+      backingDetailsUrl: "fakeBackingDetailsUrl",
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
   }
 #endif

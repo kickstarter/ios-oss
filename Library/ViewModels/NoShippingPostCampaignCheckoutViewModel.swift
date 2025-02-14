@@ -5,6 +5,38 @@ import Prelude
 import ReactiveSwift
 import Stripe
 
+public struct PostCampaignCheckoutData: Equatable {
+  public let project: Project
+  public let baseReward: Reward
+  public let rewards: [Reward]
+  public let selectedQuantities: SelectedRewardQuantities
+  public let bonusAmount: Double?
+  public let total: Double
+  public let shipping: PledgeShippingSummaryViewData?
+  public let refTag: RefTag?
+  public let context: PledgeViewContext
+  public let checkoutId: String
+  public let backingId: String
+  public let selectedShippingRule: ShippingRule?
+}
+
+public struct PaymentSourceValidation {
+  public let paymentIntentClientSecret: String
+  public let selectedCardStripeCardId: String?
+  public let requiresConfirmation: Bool
+}
+
+public struct PostCampaignPaymentAuthorizationData: Equatable {
+  public let project: Project
+  public let hasNoReward: Bool
+  public let subtotal: Double
+  public let bonus: Double
+  public let shipping: Double
+  public let total: Double
+  public let merchantIdentifier: String
+  public let paymentIntent: String
+}
+
 public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func checkoutTerminated()
   func configure(with data: PledgeViewData)
