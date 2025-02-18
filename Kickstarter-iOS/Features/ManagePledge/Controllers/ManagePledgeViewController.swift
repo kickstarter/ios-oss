@@ -543,7 +543,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       refTag: nil,
       context: .managePledge
     )
-    vc.noShippingPledgeViewDelegate = self
+    vc.pledgeViewDelegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -604,7 +604,7 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 // MARK: - NoShippingPledgeViewControllerDelegate
 
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
-  func noShippingPledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
+  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
     self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }

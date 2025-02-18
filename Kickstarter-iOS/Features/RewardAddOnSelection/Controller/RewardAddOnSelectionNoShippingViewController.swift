@@ -23,7 +23,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
-  public weak var noShippingPledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -222,7 +222,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
   private func goToPledge(data: PledgeViewData) {
     let vc = PledgeViewController.instantiate()
-    vc.delegate = self.noShippingPledgeViewDelegate
+    vc.delegate = self.pledgeViewDelegate
     vc.configure(with: data)
 
     self.navigationController?.pushViewController(vc, animated: true)

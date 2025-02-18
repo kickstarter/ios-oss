@@ -19,7 +19,7 @@ private enum Layout {
 }
 
 protocol PledgeViewControllerDelegate: AnyObject {
-  func noShippingPledgeViewControllerDidUpdatePledge(
+  func pledgeViewControllerDidUpdatePledge(
     _ viewController: PledgeViewController,
     message: String
   )
@@ -360,7 +360,7 @@ final class PledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] message in
         guard let self = self else { return }
-        self.delegate?.noShippingPledgeViewControllerDidUpdatePledge(self, message: message)
+        self.delegate?.pledgeViewControllerDidUpdatePledge(self, message: message)
       }
 
     self.viewModel.outputs.popToRootViewController
