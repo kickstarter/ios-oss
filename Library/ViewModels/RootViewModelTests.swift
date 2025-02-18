@@ -491,6 +491,16 @@ final class RootViewModelTests: TestCase {
 
       self.setBadgeValueAtIndexIndex.assertLastValue(1, "Turning on PPO should activate badge")
       self.setBadgeValueAtIndexValue.assertLastValue("", "Turning on PPO should show empty badge icon")
+
+      self.vm.inputs.applicationWillEnterForeground()
+      self.viewControllerNames.assertValueCount(
+        2,
+        "PPO hasn't changed, so no new view controllers should be set."
+      )
+      self.tabBarItemsData.assertValueCount(
+        2,
+        "PPO hasn't changed, so no new tab bar data should be set."
+      )
     }
   }
 
