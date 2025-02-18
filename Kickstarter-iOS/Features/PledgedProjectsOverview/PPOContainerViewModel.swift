@@ -11,6 +11,7 @@ protocol PPOContainerViewModelInputs {
   func projectAlertsCountChanged(_ count: Int?)
   func handle(navigationEvent: PPONavigationEvent)
   func process3DSAuthentication(state: PPOActionState)
+  func actionFinishedPerforming()
 }
 
 protocol PPOContainerViewModelOutputs {
@@ -19,7 +20,7 @@ protocol PPOContainerViewModelOutputs {
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
   var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> { get }
-  var refresh: AnyPublisher<Void, Never> { get }
+  var shouldRefresh: AnyPublisher<Void, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -112,6 +113,21 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
         self?.showBannerSubject.send(configuration)
       }
       .store(in: &self.cancellables)
+
+    // Force the view to refresh
+    Publishers.Merge3(
+      self.actionFinishedPerformingSubject,
+      self.process3DSAuthenticationState
+        .filter({ $0 == .succeeded })
+        .withEmptyValues(),
+      self.showBannerSubject
+        .filter { $0.type == .success }
+        .withEmptyValues()
+    )
+    .sink { [weak self] () in
+      self?.shouldRefreshSubject.send(())
+    }
+    .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
@@ -136,6 +152,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.confirmAddressSubject.send((addressId: addressId, backingId: backingId, onProgress: onProgress))
   }
 
+  func actionFinishedPerforming() {
+    self.actionFinishedPerformingSubject.send(())
+  }
+
   // MARK: - Outputs
 
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> {
@@ -158,8 +178,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.stripeConfigurationSubject.eraseToAnyPublisher()
   }
 
-  var refresh: AnyPublisher<Void, Never> {
-    self.refreshSubject.eraseToAnyPublisher()
+  var shouldRefresh: AnyPublisher<Void, Never> {
+    self.shouldRefreshSubject.eraseToAnyPublisher()
   }
 
   // MARK: - Private
@@ -176,7 +196,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     (addressId: String, backingId: String, onProgress: (PPOActionState) -> Void),
     Never
   >()
-  private let refreshSubject = PassthroughSubject<Void, Never>()
+  private let actionFinishedPerformingSubject = PassthroughSubject<Void, Never>()
+  private let shouldRefreshSubject = PassthroughSubject<Void, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }

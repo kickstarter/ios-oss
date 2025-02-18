@@ -8,6 +8,8 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
     _ viewController: ManagePledgeViewController,
     managePledgeViewControllerFinishedWithMessage message: String?
   )
+
+  func managePledgeViewControllerDidDismiss(_ viewController: ManagePledgeViewController)
 }
 
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -533,6 +535,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
+    self.delegate?.managePledgeViewControllerDidDismiss(self)
   }
 
   // MARK: - Functions

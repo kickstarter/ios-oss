@@ -142,7 +142,7 @@ struct PPOView: View {
         .onReceive(self.viewModel.navigationEvents, perform: { event in
           self.onNavigate?(event)
         })
-        .onReceive(self.shouldRefresh) { () in
+        .onReceive(self.shouldRefresh.throttle(for: .milliseconds(300), scheduler: RunLoop.main, latest: false)) { () in
           Task {
             await self.viewModel.refresh()
           }
