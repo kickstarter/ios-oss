@@ -88,7 +88,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh")
-    fullyLoadedExpectation.expectedFulfillmentCount = 5
+    fullyLoadedExpectation.expectedFulfillmentCount = 4
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -116,7 +116,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 5)
+    XCTAssertEqual(values.count, 4)
 
     guard
       case .unloaded = values[0],
@@ -128,8 +128,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(firstData.count, 3)
 
     guard
-      case .loading = values[3],
-      case let .allLoaded(secondData, _) = values[4]
+      case let .allLoaded(secondData, _) = values[3]
     else {
       return XCTFail()
     }
@@ -140,7 +139,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh twice")
-    fullyLoadedExpectation.expectedFulfillmentCount = 7
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -174,7 +173,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 7)
+    XCTAssertEqual(values.count, 5)
 
     guard
       case .unloaded = values[0],
@@ -186,16 +185,14 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(firstData.count, 3)
 
     guard
-      case .loading = values[3],
-      case let .allLoaded(secondData, _) = values[4]
+      case let .allLoaded(secondData, _) = values[3]
     else {
       return XCTFail()
     }
     XCTAssertEqual(secondData.count, 2)
 
     guard
-      case .loading = values[5],
-      case let .allLoaded(thirdData, _) = values[6]
+      case let .allLoaded(thirdData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -206,7 +203,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Load more")
-    fullyLoadedExpectation.expectedFulfillmentCount = 5
+    fullyLoadedExpectation.expectedFulfillmentCount = 4
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -237,7 +234,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 5)
+    XCTAssertEqual(values.count, 4)
 
     guard
       case .unloaded = values[0],
@@ -250,8 +247,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(cursor, "4")
 
     guard
-      case .loading = values[3],
-      case let .allLoaded(secondData, _) = values[4]
+      case let .allLoaded(secondData, _) = values[3]
     else {
       return XCTFail()
     }
