@@ -43,6 +43,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call for audio/video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
   func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement)
 
+  /// Call when project notice details should be displayed.
+  func projectNoticeDetailsRequested()
+
   /// Call when the delegate method for the `ProjectTabDisclaimerCellDelegate` is called.
   func projectTabDisclaimerCellDidTapURL(_ URL: URL)
 
@@ -98,6 +101,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
+
+  /// Emits a `String` that explains why the creator is restricted.
+  var goToRestrictedCreator: Signal<String, Never> { get }
 
   /// Emits a `Bool` to show if the project has been flagged, the projectID as a `String`, and  a  project URL `String` when the report project view is to be rendered.
   var goToReportProject: Signal<(Bool, String, String), Never> { get }
@@ -531,6 +537,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
+    // MARK: Project notice
+
+    self.goToRestrictedCreator = project.takeWhen(self.projectNoticeDetailsRequestedProperty.signal)
+      .map(\.extendedProjectProperties?.projectNotice)
+      .skipNil()
+
+    // MARK: User blocking
+
     let blockUserEvent = self.blockUserProperty.signal
       .map { BlockUserInput.init(blockUserId: "\($0)") }
       .switchMap { input in
@@ -643,6 +657,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.prepareAudioVideoAtProperty.value = (audioVideoViewElement, indexPath)
   }
 
+  fileprivate let projectNoticeDetailsRequestedProperty = MutableProperty(())
+  public func projectNoticeDetailsRequested() {
+    self.projectNoticeDetailsRequestedProperty.value = ()
+  }
+
   fileprivate let projectTabDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
   public func projectTabDisclaimerCellDidTapURL(_ url: URL) {
     self.projectTabDisclaimerCellDidTapURLProperty.value = url
@@ -700,6 +719,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
+  public let goToRestrictedCreator: Signal<String, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
   public let goToReportProject: Signal<(Bool, String, String), Never>

@@ -20,7 +20,8 @@ final class ProjectPageViewModelTests: TestCase {
       aiDisclosure: nil,
       risks: "",
       story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1
+      minimumPledgeAmount: 1,
+      projectNotice: nil
     )
 
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
@@ -1551,7 +1552,8 @@ final class ProjectPageViewModelTests: TestCase {
             caption: nil
           )
         ]),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs
@@ -1594,7 +1596,8 @@ final class ProjectPageViewModelTests: TestCase {
             caption: nil
           )
         ]),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
@@ -1644,7 +1647,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
@@ -1706,7 +1710,8 @@ final class ProjectPageViewModelTests: TestCase {
         story: ProjectStoryElements(htmlViewElements: [
           expectedAudioVideoElement
         ]),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
@@ -1759,7 +1764,8 @@ final class ProjectPageViewModelTests: TestCase {
         story: ProjectStoryElements(htmlViewElements: [
           expectedImageViewElement
         ]),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
@@ -1826,7 +1832,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
@@ -1877,7 +1884,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
@@ -1906,7 +1914,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
@@ -1931,7 +1940,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
@@ -1967,7 +1977,8 @@ final class ProjectPageViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))

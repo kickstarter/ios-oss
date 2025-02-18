@@ -793,6 +793,7 @@
 "We_cant_process_your_pledge" = "No podemos procesar tu contribución.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
 "We_cant_process_your_pledge_for" = "No podemos procesar tu contribución para:";
+"We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate" = "No podemos procesar tu contribución. Visita el panel de alertas del proyecto para autenticar tu tarjeta.";
 "We_collected_the_backers_pledge_for_this_project" = "Hemos recolectado la contribución del patrocinador a este proyecto.";
 "We_collected_your_pledge_for_this_project" = "Hemos recolectado tu contribución a este proyecto.";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";

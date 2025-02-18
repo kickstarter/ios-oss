@@ -793,6 +793,7 @@
 "We_cant_process_your_pledge" = "Impossible de traiter votre engagement.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Impossible de traiter votre engagement. Veuillez mettre à jour votre moyen de paiement.";
 "We_cant_process_your_pledge_for" = "Impossible de traiter votre engagement pour :";
+"We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate" = "Impossible de traiter votre engagement. Veuillez authentifier votre carte dans le tableau de bord des alertes de projet.";
 "We_collected_the_backers_pledge_for_this_project" = "L'engagement de ce contributeur a été débité.";
 "We_collected_your_pledge_for_this_project" = "Votre engagement a été débité.";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";

@@ -138,7 +138,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -194,7 +195,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: nil) {
@@ -240,7 +242,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -295,7 +298,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: nil) {
@@ -337,7 +341,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -390,7 +395,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: self.useOfAIDisclosure,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -471,7 +477,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: updatedUseOfAIDisclosure,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -545,7 +552,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -601,7 +609,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -653,7 +662,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -709,7 +719,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -759,7 +770,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.dataSource.load(
@@ -781,7 +793,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.dataSource.load(
@@ -806,7 +819,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     self.dataSource.load(
@@ -830,7 +844,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -893,7 +908,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -958,7 +974,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -1011,7 +1028,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let image = UIImage(systemName: "camera")!
 
@@ -1065,7 +1083,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -1112,7 +1131,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
@@ -1160,7 +1180,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
     let camera = UIImage(systemName: "camera")!
 
@@ -1213,7 +1234,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     withEnvironment(currentUser: .template) {
