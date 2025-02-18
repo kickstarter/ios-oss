@@ -138,12 +138,12 @@ struct PPOProjectCard: View {
           .buttonStyle(BlackButtonStyle())
       }
 
-      if self.viewModel.isLoading {
+      if self.viewModel.buttonState == .loading {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle(tint: .white))
       }
     }
-    .disabled(self.viewModel.isLoading)
+    .disabled(self.viewModel.buttonState == .loading || self.viewModel.buttonState == .disabled)
   }
 
   @ViewBuilder
