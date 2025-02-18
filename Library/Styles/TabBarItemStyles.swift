@@ -52,3 +52,11 @@ public let searchTabBarItemStyle = { (button: UITabBarItem) -> UITabBarItem in
   button.accessibilityLabel = Strings.tabbar_search()
   return button
 }
+
+public let backingsTabBarItemStyle = { (button: UITabBarItem) -> UITabBarItem in
+  button.title = Strings.tabbar_backings()
+  button.image = image(named: "tabbar-icon-backings")
+  button.selectedImage = image(named: "tabbar-icon-backings-selected")
+  button.accessibilityLabel = Strings.tabbar_backings()
+  return button
+}
