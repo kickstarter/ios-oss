@@ -52,7 +52,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
         )
       ]
     ),
-    minimumPledgeAmount: 1
+    minimumPledgeAmount: 1,
+    projectNotice: nil
   )
   private let emptyProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: [],
@@ -60,7 +61,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     aiDisclosure: nil,
     risks: "",
     story: ProjectStoryElements(htmlViewElements: []),
-    minimumPledgeAmount: 1
+    minimumPledgeAmount: 1,
+    projectNotice: nil
   )
   private let user = User.brando
 
@@ -868,6 +870,55 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
+  func testLoggedOut_LiveProject_ShowProjectNotice() {
+    let config = Config.template
+
+    let extendedProjectProperties = ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      aiDisclosure: nil,
+      risks: "",
+      story: self.extendedProjectProperties.story,
+      minimumPledgeAmount: 1,
+      projectNotice: "fake project notice"
+    )
+
+    let liveProject = self.project
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ extendedProjectProperties
+
+    let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(self.project.rewards)
+    )
+
+    orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: nil, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(liveProject), refInfo: nil)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   // MARK: - Error fetching project
 
   func testErrorFetchingProject() {
@@ -1111,7 +1162,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
           )
         ]
       ),
-      minimumPledgeAmount: 1
+      minimumPledgeAmount: 1,
+      projectNotice: nil
     )
 
     let project = Project.cosmicSurgery

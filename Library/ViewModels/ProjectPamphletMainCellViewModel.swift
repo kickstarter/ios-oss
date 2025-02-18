@@ -21,6 +21,9 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when the delegate has been set on the cell.
   func delegateDidSet()
 
+  /// Call when the project notice learn more button is tapped.
+  func projectNoticeLearnMoreTapped()
+
   func videoDidFinish()
   func videoDidStart()
 }
@@ -68,6 +71,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
 
+  /// Emits the project when project notice details should be displayed.
+  var notifyDelegateToGoToProjectNotice: Signal<(), Never> { get }
+
   /// Emits an alpha value for views to create transition after full project loads.
   var opacityForViews: Signal<CGFloat, Never> { get }
 
@@ -112,6 +118,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the "you're a backer" or "coming soon" label should be hidden.
   var backingLabelHidden: Signal<Bool, Never> { get }
+
+  /// Emits false if the project notice banner should be shown.
+  var projectNoticeBannerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -168,6 +177,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
+
+    self.projectNoticeBannerHidden = project.map {
+      ($0.extendedProjectProperties?.projectNotice ?? "") == ""
+    }
 
     let videoIsPlaying = Signal.merge(
       project.take(first: 1).mapConst(false),
@@ -248,6 +261,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
+    self.notifyDelegateToGoToProjectNotice = self.projectNoticeLearnMoreTappedProperty.signal
+
     self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
       .take(first: 1)
@@ -285,6 +300,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.delegateDidSetProperty.value = ()
   }
 
+  fileprivate let projectNoticeLearnMoreTappedProperty = MutableProperty(())
+  public func projectNoticeLearnMoreTapped() {
+    self.projectNoticeLearnMoreTappedProperty.value = ()
+  }
+
   fileprivate let videoDidFinishProperty = MutableProperty(())
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
@@ -309,6 +329,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
+  public let notifyDelegateToGoToProjectNotice: Signal<(), Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelText: Signal<String, Never>
@@ -324,6 +345,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let backingLabelHidden: Signal<Bool, Never>
+  public let projectNoticeBannerHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }

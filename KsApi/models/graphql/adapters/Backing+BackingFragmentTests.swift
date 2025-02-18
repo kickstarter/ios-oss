@@ -906,6 +906,7 @@ private func backingDictionary() -> [String: Any] {
         "totalCount": 3
       },
       "prelaunchActivated": true,
+      "projectNotice": null,
       "slug": "parliament-of-rooks/wee-william-witchling",
       "state": "LIVE",
       "stateChangedAt": 1617886773,

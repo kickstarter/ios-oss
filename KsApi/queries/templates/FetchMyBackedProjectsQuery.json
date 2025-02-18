@@ -147,6 +147,7 @@
             "totalCount": 0
           },
           "prelaunchActivated": false,
+          "projectNotice": null,
           "postCampaignPledgingEnabled": true,
           "risks": "May not deliver",
           "sendMetaCapiEvents": false,
@@ -327,6 +328,7 @@
             "totalCount": 1
           },
           "prelaunchActivated": true,
+          "projectNotice": null,
           "postCampaignPledgingEnabled": false,
           "risks": "Game components include playing cards, instructional material and scorecards that are printed and shipped. Supply chain challenges that have increased over the past few years have introduced fulfillment risks in terms of shipping delays. We have vetted our printing partner through references from other card game creators and are confident our printing partner will be able to fulfill orders according to schedule.",
           "sendMetaCapiEvents": false,
@@ -542,6 +544,7 @@
             "totalCount": 1
           },
           "prelaunchActivated": true,
+          "projectNotice": null,
           "postCampaignPledgingEnabled": false,
           "risks": "The core concept of \"ShadowKnight\" aims to provide players with an unprecedented and challenging gaming experience. Our goal is to transcend the boundaries of traditional action games by introducing innovative soul-possession mechanics and a complex combat system. This ambitious objective brings significant technical and design challenges. To achieve this vision, our team is committed to relentless effort, continuous innovation, and refinement, ensuring the balance of game mechanics and the coherence of the story.\nOur team faces certain limitations in art and animation. High-quality visuals are a key factor in attracting players, especially in action soul games, where exquisite graphics and smooth animations are crucial. We recognize this and are actively seeking partnerships and external resources to address this shortcoming. We are dedicated to ensuring that the game's visuals meet industry standards, providing players with an immersive gaming experience.\nTo realize the highly interactive and dynamic combat scenes envisioned in \"ShadowKnight\", complex and advanced programming techniques are required. The challenge lies in accurately implementing the game's intricate state system and high-intelligence AI, while maintaining the game's fluidity and stability. Our team is facing the need for innovation and breakthroughs at the technical level.\nIn the end, no matter how much we raise, we will deliver.",
           "sendMetaCapiEvents": false,

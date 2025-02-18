@@ -604,6 +604,7 @@ public enum FetchAddsOnsQueryTemplate {
           "isInPostCampaignPledgingPhase": false,
           "postCampaignPledgingEnabled": false,
           "prelaunchActivated": true,
+          "projectNotice": null,
           "slug": "peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "state": "LIVE",
           "stateChangedAt": 1619603760,

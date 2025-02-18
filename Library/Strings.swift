@@ -1192,8 +1192,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -12948,7 +12947,7 @@ catch your eye?"
    "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
 
    - **en**: "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
-   - **de**: "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
+   - **de**: "Wir können deine Ratenzahlung nicht verarbeiten. Bitte <a href="%{view_your_pledge_link}">sieh dir deinen Finanzierungsbeitrag in einem Webbrowser an</a> und melde dich an, um den Fehler mit deiner Zahlung zu beheben."
    - **es**: "No podemos procesar el pago de tu contribución en cuotas. Es necesario que <a href="%{view_your_pledge_link}">revises tu contribución</a> en un navegador web e inicies sesión para arreglar el pago."
    - **fr**: "Impossible de traiter le règlement de votre engagement étalé dans le temps. Veuillez vous connecter et <a href="%{view_your_pledge_link}">consulter votre engagement</a> sur un navigateur Web pour régler le problème."
    - **ja**: "経時プレッジのお支払いを処理できませんでした。ウェブブラウザから<a href="%{view_your_pledge_link}">プレッジを確認</a>し、ログインしてお支払い方法を修正してください。"
@@ -13008,6 +13007,23 @@ catch your eye?"
     return localizedString(
       key: "We_cant_process_your_pledge_for",
       defaultValue: "We can't process your pledge for:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We can’t process your pledge. Visit the Project Alerts dashboard to authenticate your card."
+
+   - **en**: "We can’t process your pledge. Visit the Project Alerts dashboard to authenticate your card."
+   - **de**: "Wir können deinen Beitrag nicht verarbeiten. Besuche das Dashboard für Projekthinweise, um deine Karte zu authentifizieren."
+   - **es**: "No podemos procesar tu contribución. Visita el panel de alertas del proyecto para autenticar tu tarjeta."
+   - **fr**: "Impossible de traiter votre engagement. Veuillez authentifier votre carte dans le tableau de bord des alertes de projet."
+   - **ja**: "プレッジを処理できません。プロジェクト通知のダッシュボードにアクセスしてカードを認証してください。"
+  */
+  public static func We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate() -> String {
+    return localizedString(
+      key: "We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate",
+      defaultValue: "We can’t process your pledge. Visit the Project Alerts dashboard to authenticate your card.",
       count: nil,
       substitutions: [:]
     )
@@ -26063,7 +26079,7 @@ Merci pour votre soutien !"
    "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
 
    - **en**: "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
-   - **de**: "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator."
+   - **de**: "Das Kickstarter-Team für Vertrauen und Sicherheit hat Meldungen von Nutzern zu diesem Projekt und/oder dem Projektgründer untersucht."
    - **es**: "El equipo de confianza y seguridad de Kickstarter analizó los informes recibidos de los usuarios en relación con este proyecto o su creador."
    - **fr**: "Le service Confiance et sécurité de Kickstarter a enquêté sur les signalements reçus à propos de ce projet ou de son créateur."
    - **ja**: "Kickstarter の「トラスト＆セーフティ」チームが、このプロジェクトおよび/またはそのクリエイターに関するユーザーからの報告を調査しました。"

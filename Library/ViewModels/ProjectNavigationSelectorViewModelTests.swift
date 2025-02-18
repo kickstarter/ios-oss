@@ -24,7 +24,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
         aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
-        minimumPledgeAmount: 1
+        minimumPledgeAmount: 1,
+        projectNotice: nil
       )
 
     return (projectWithEmptyExtendedProperties, nil)
@@ -53,7 +54,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
       aiDisclosure: nil,
       risks: "",
       story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1
+      minimumPledgeAmount: 1,
+      projectNotice: nil
     )
 
   override func setUp() {
