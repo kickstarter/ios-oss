@@ -176,12 +176,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         results.hasLoaded ? results.values
           .ppoAnalyticsProperties(total: results.total, page: results.page) : nil
       }
-      .first()
-      .eraseToAnyPublisher()
 
     // Analytics: When view appears, the next time it loads, send a PPO dashboard open
     self.viewDidAppearSubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { _, properties in
         AppEnvironment.current.ksrAnalytics.trackPPODashboardOpens(properties: properties)
       }
@@ -189,7 +187,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Tap messaging creator
     self.contactCreatorSubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
           from: card.projectAnalytics,
@@ -200,7 +198,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Fixing payment failure
     self.fixPaymentMethodSubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
           project: card.projectAnalytics,
@@ -211,7 +209,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Opening survey
     self.openSurveySubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
           project: card.projectAnalytics,
@@ -222,7 +220,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { cardProperties, overallProperties in
         let (card, _, _) = cardProperties
         AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
@@ -235,7 +233,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Finish confirming address
     self.confirmAddressProgressSubject
       .filter { $0.1 == .confirmed }
-      .flatMap { card in latestLoadedResults.map { (card.0, $0) } }
+      .map { $0.0 } // we just need the card
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOSubmitAddressConfirmation(
           project: card.projectAnalytics,
@@ -246,7 +245,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Edit address
     self.editAddressSubject
-      .flatMap { card in latestLoadedResults.map { (card, $0) } }
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
           project: card.projectAnalytics,
@@ -377,5 +376,18 @@ extension Sequence where Element == PPOProjectCardViewModel {
       total: total,
       page: page
     )
+  }
+}
+
+extension Publisher {
+  /// Combines this publisher with the first value emitted by another publisher.
+  /// - Warning: This is not a direct replacement for `withLatestFrom` from other ReactiveX libraries.
+  /// - Parameter other: The publisher to grab the first value from
+  /// - Returns: A publisher that emits tuples of values from this publisher paired with the first value from the other publisher
+  func withFirst<B>(from other: B) -> AnyPublisher<(Self.Output, B.Output), Self.Failure> where B: Publisher,
+    B.Failure == Self.Failure {
+    return self.flatMap { foo in
+      other.first().map { (foo, $0) }
+    }.eraseToAnyPublisher()
   }
 }

@@ -332,7 +332,10 @@ class PPOViewModelTests: XCTestCase {
     appTrackingTransparency.updateAdvertisingIdentifier()
 
     let mockTrackingClient = MockTrackingClient()
-    let analytics = KSRAnalytics(segmentClient: mockTrackingClient, appTrackingTransparency: appTrackingTransparency)
+    let analytics = KSRAnalytics(
+      segmentClient: mockTrackingClient,
+      appTrackingTransparency: appTrackingTransparency
+    )
 
     let mockService = MockService(
       fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
