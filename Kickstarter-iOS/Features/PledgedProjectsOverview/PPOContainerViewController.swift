@@ -289,7 +289,7 @@ extension PPOContainerViewController: STPAuthenticationContext {
     return self
   }
 
-  public func authenticationContextWillDismiss(_ viewController: UIViewController) {
+  public func authenticationContextWillDismiss(_: UIViewController) {
     self.viewModel.actionFinishedPerforming()
   }
 }
@@ -302,19 +302,19 @@ extension PPOContainerViewController: SurveyResponseViewControllerDelegate {
 
 extension PPOContainerViewController: ManagePledgeViewControllerDelegate {
   func managePledgeViewController(
-    _ viewController: ManagePledgeViewController,
-    managePledgeViewControllerFinishedWithMessage message: String?
+    _: ManagePledgeViewController,
+    managePledgeViewControllerFinishedWithMessage _: String?
   ) {
     self.viewModel.actionFinishedPerforming()
   }
 
-  func managePledgeViewControllerDidDismiss(_ viewController: ManagePledgeViewController) {
+  func managePledgeViewControllerDidDismiss(_: ManagePledgeViewController) {
     self.viewModel.actionFinishedPerforming()
   }
 }
 
 extension PPOContainerViewController: UIAdaptivePresentationControllerDelegate {
-  public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+  public func presentationControllerDidDismiss(_: UIPresentationController) {
     self.viewModel.actionFinishedPerforming()
   }
 }

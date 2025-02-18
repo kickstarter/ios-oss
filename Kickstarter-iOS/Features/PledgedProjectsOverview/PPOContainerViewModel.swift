@@ -118,7 +118,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     Publishers.Merge3(
       self.actionFinishedPerformingSubject,
       self.process3DSAuthenticationState
-        .filter({ $0 == .succeeded })
+        .filter { $0 == .succeeded }
         .withEmptyValues(),
       self.showBannerSubject
         .filter { $0.type == .success }

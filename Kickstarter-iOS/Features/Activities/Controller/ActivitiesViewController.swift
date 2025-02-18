@@ -287,5 +287,5 @@ extension ActivitiesViewController: ManagePledgeViewControllerDelegate {
     self.viewModel.inputs.managePledgeViewControllerDidFinish()
   }
 
-  func managePledgeViewControllerDidDismiss(_ viewController: ManagePledgeViewController) {}
+  func managePledgeViewControllerDidDismiss(_: ManagePledgeViewController) {}
 }
