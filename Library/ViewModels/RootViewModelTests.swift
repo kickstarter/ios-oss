@@ -427,15 +427,81 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(language: .en, locale: Locale(identifier: "en")) {
+      self.vm.inputs.viewDidLoad()
 
-    self.viewControllerNames.assertValueCount(1)
-    self.tabBarItemsData.assertValueCount(1)
+      self.viewControllerNames.assertValueCount(1)
+      self.tabBarItemsData.assertValueCount(1)
+    }
 
-    self.vm.inputs.userLocalePreferencesChanged()
+    withEnvironment(language: .de, locale: Locale(identifier: "de")) {
+      self.vm.inputs.userLocalePreferencesChanged()
 
-    self.viewControllerNames.assertValueCount(2)
-    self.tabBarItemsData.assertValueCount(2)
+      self.viewControllerNames.assertValueCount(
+        2,
+        "The view controllers should be regenerated when the user language or currency changes."
+      )
+      self.tabBarItemsData.assertValueCount(2)
+    }
+  }
+
+  func testAppToForeground_ChangesActivityTabIfNecessary() {
+    let viewControllerNames = TestObserver<[String], Never>()
+    self.vm.outputs.setViewControllers.map(extractRootNames)
+      .observe(viewControllerNames.observer)
+
+    let configClientPPO_Off = MockRemoteConfigClient()
+    configClientPPO_Off.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
+    ]
+
+    let configClientPPO_On = MockRemoteConfigClient()
+    configClientPPO_On.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+    ]
+
+    withEnvironment(currentUser: .template, remoteConfigClient: configClientPPO_Off) {
+      self.vm.inputs.viewDidLoad()
+
+      self.viewControllerNames.assertValueCount(1)
+      self.tabBarItemsData.assertValueCount(1)
+
+      self.setBadgeValueAtIndexIndex.assertLastValue(1)
+      self.setBadgeValueAtIndexValue.assertLastValue(
+        nil,
+        "Current user should have a cleared badge on activity"
+      )
+    }
+
+    withEnvironment(
+      currentUser: .template,
+      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      remoteConfigClient: configClientPPO_On
+    ) {
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.viewControllerNames.assertValueCount(
+        2,
+        "Turning on PPO and returning the app to foreground should change the view controller tabs."
+      )
+      self.tabBarItemsData.assertValueCount(
+        2,
+        "Turning on PPO and returning the app to foreground should refresh the tab bar data."
+      )
+
+      self.setBadgeValueAtIndexIndex.assertLastValue(1, "Turning on PPO should activate badge")
+      self.setBadgeValueAtIndexValue.assertLastValue("", "Turning on PPO should show empty badge icon")
+
+      self.vm.inputs.applicationWillEnterForeground()
+      self.viewControllerNames.assertValueCount(
+        2,
+        "PPO hasn't changed, so no new view controllers should be set."
+      )
+      self.tabBarItemsData.assertValueCount(
+        2,
+        "PPO hasn't changed, so no new tab bar data should be set."
+      )
+    }
   }
 
   func testSelectedIndex() {
