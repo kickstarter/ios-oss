@@ -115,7 +115,13 @@ extension PPOProjectCardModel {
   private static func actionsForConfirmAddress(address: String?, addressId: String?)
     -> PPOParsedAction? {
     guard let address = address,
-          let addressId = addressId else { return nil }
+          let addressId = addressId else {
+      return PPOParsedAction(
+        primaryAction: .completeSurvey,
+        secondaryAction: nil,
+        tierType: .confirmAddress
+      )
+    }
 
     return PPOParsedAction(
       primaryAction: .confirmAddress(address: address, addressId: addressId),
