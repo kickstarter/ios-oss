@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class RewardAddOnSelectionNoShippingViewController: UIViewController {
+final class RewardAddOnSelectionViewController: UIViewController {
   // MARK: - Properties
 
   private let dataSource = RewardAddOnSelectionDataSource()
@@ -56,13 +56,13 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
     self.continueCTAView.continueButton.addTarget(
       self,
-      action: #selector(RewardAddOnSelectionNoShippingViewController.continueButtonTapped),
+      action: #selector(RewardAddOnSelectionViewController.continueButtonTapped),
       for: .touchUpInside
     )
 
     self.refreshControl.addTarget(
       self,
-      action: #selector(RewardAddOnSelectionNoShippingViewController.beginRefresh),
+      action: #selector(RewardAddOnSelectionViewController.beginRefresh),
       for: .valueChanged
     )
 
@@ -231,7 +231,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
 // MARK: - RewardAddOnCardViewDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDelegate {
+extension RewardAddOnSelectionViewController: RewardAddOnCardViewDelegate {
   func rewardAddOnCardView(
     _: RewardAddOnCardView,
     didSelectQuantity quantity: Int,
@@ -243,7 +243,7 @@ extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDeleg
 
 // MARK: - PledgeAmountViewControllerDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControllerDelegate {
+extension RewardAddOnSelectionViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
     didUpdateWith data: PledgeAmountData
@@ -254,7 +254,7 @@ extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControll
 
 // MARK: - UITableViewDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: UITableViewDelegate {
+extension RewardAddOnSelectionViewController: UITableViewDelegate {
   func tableView(
     _: UITableView,
     willDisplay cell: UITableViewCell,

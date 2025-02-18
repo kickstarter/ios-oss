@@ -300,7 +300,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
   }
 
   private func goToNoShippingAddOnSelection(data: PledgeViewData) {
-    let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
+    let vc = RewardAddOnSelectionViewController.instantiate()
     vc.pledgeViewDelegate = self.pledgeViewDelegate
     vc.configure(with: data)
     vc.navigationItem.title = self.title
