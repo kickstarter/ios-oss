@@ -26,7 +26,7 @@ public enum RewardAddOnSelectionDataSourceItem: Equatable {
   }
 }
 
-public protocol RewardAddOnSelectionNoShippingViewModelInputs {
+public protocol RewardAddOnSelectionViewModelInputs {
   func beginRefresh()
   func configure(with data: PledgeViewData)
   func continueButtonTapped()
@@ -35,7 +35,7 @@ public protocol RewardAddOnSelectionNoShippingViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
+public protocol RewardAddOnSelectionViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var endRefreshing: Signal<(), Never> { get }
@@ -48,13 +48,13 @@ public protocol RewardAddOnSelectionNoShippingViewModelOutputs {
 }
 
 public protocol RewardAddOnSelectionNoShippingViewModelType {
-  var inputs: RewardAddOnSelectionNoShippingViewModelInputs { get }
-  var outputs: RewardAddOnSelectionNoShippingViewModelOutputs { get }
+  var inputs: RewardAddOnSelectionViewModelInputs { get }
+  var outputs: RewardAddOnSelectionViewModelOutputs { get }
 }
 
-public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelectionNoShippingViewModelType,
-  RewardAddOnSelectionNoShippingViewModelInputs,
-  RewardAddOnSelectionNoShippingViewModelOutputs {
+public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionNoShippingViewModelType,
+  RewardAddOnSelectionViewModelInputs,
+  RewardAddOnSelectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),
@@ -427,8 +427,8 @@ public final class RewardAddOnSelectionNoShippingViewModel: RewardAddOnSelection
     Signal<[RewardAddOnSelectionDataSourceItem], Never>
   public let startRefreshing: Signal<(), Never>
 
-  public var inputs: RewardAddOnSelectionNoShippingViewModelInputs { return self }
-  public var outputs: RewardAddOnSelectionNoShippingViewModelOutputs { return self }
+  public var inputs: RewardAddOnSelectionViewModelInputs { return self }
+  public var outputs: RewardAddOnSelectionViewModelOutputs { return self }
 }
 
 // MARK: - Functions
