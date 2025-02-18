@@ -386,6 +386,10 @@
 		39B8507C2C3EC52D0045CBA5 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */; };
 		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
 		39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */; };
+		39F48E212D528D5B00090D6C /* RestrictedCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */; };
+		39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E222D543A2700090D6C /* AlertBanner.swift */; };
+		39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E242D5521BE00090D6C /* AlertBannerTests.swift */; };
+		39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
@@ -2058,6 +2062,10 @@
 		39B8507B2C3EC52D0045CBA5 /* ButtonStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		39E436F42C7FA5F3009707BE /* SharedPledgeViewStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPledgeViewStyles.swift; sourceTree = "<group>"; };
+		39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedCreatorViewController.swift; sourceTree = "<group>"; };
+		39F48E222D543A2700090D6C /* AlertBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBanner.swift; sourceTree = "<group>"; };
+		39F48E242D5521BE00090D6C /* AlertBannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBannerTests.swift; sourceTree = "<group>"; };
+		39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedCreatorViewControllerTests.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
 		471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectPamphletMainCell.xib; sourceTree = "<group>"; };
@@ -4838,6 +4846,8 @@
 				77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */,
+				39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */,
+				39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 			);
 			path = Controller;
@@ -6174,6 +6184,8 @@
 			isa = PBXGroup;
 			children = (
 				19C8E56729A923F4007C3504 /* SwiftUIHelpers */,
+				39F48E222D543A2700090D6C /* AlertBanner.swift */,
+				39F48E242D5521BE00090D6C /* AlertBannerTests.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
@@ -8625,6 +8637,7 @@
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
+				39F48E212D528D5B00090D6C /* RestrictedCreatorViewController.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
@@ -8678,6 +8691,7 @@
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				E1BAA03C2C1A1CCD004F8B06 /* PPOContainerViewController.swift in Sources */,
+				39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
 				4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */,
@@ -8800,6 +8814,7 @@
 			files = (
 				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
+				39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				60E1BB552C7670F6007D723B /* NoShippingPledgeViewControllerTests.swift in Sources */,
 				47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */,
@@ -8863,6 +8878,7 @@
 				771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */,
 				061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */,
 				771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */,
+				39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */,
 				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
 				776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */,

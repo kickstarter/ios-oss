@@ -793,6 +793,7 @@
 "We_cant_process_your_pledge" = "We can't process your pledge.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
 "We_cant_process_your_pledge_for" = "We can't process your pledge for:";
+"We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate" = "We can’t process your pledge. Visit the Project Alerts dashboard to authenticate your card.";
 "We_collected_the_backers_pledge_for_this_project" = "We collected the backer’s pledge for this project.";
 "We_collected_your_pledge_for_this_project" = "We collected your pledge for this project.";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
