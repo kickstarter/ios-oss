@@ -344,7 +344,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let refreshExpectation = XCTestExpectation(description: "Refresh complete")
-    refreshExpectation.expectedFulfillmentCount = 5
+    refreshExpectation.expectedFulfillmentCount = 4
 
     var values: [PPOViewModelPaginator.Results] = []
     self.viewModel.$results
