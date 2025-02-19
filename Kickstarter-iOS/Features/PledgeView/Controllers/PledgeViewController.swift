@@ -95,8 +95,8 @@ final class PledgeViewController: UIViewController,
       aboutConversion: ""
     ))
 
-  private lazy var pledgeCTAContainerView: NoShippingPledgeViewCTAContainerView = {
-    NoShippingPledgeViewCTAContainerView(frame: .zero)
+  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
   }()
@@ -578,7 +578,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
-extension PledgeViewController: NoShippingPledgeViewCTAContainerViewDelegate {
+extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()

@@ -20,6 +20,10 @@ private enum Layout {
 final class PledgeViewCTAContainerView: UIView {
   // MARK: - Properties
 
+  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
+  private(set) lazy var titleAndAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var ctaStackView: UIStackView = {
@@ -81,22 +85,25 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    _ = self.applePayButton
-      |> applePayButtonStyle
+    PledgeViewStyles.pledgeAmountStackViewStyle(self.titleAndAmountStackView)
 
-    _ = self.ctaStackView
-      |> ctaStackViewStyle
+    PledgeViewStyles.pledgeAmountHeadingStyle(self.titleLabel)
+    self.titleLabel.text = Strings.Total_amount()
 
-    _ = self.termsTextView
-      |> termsTextViewStyle
+    PledgeViewStyles.pledgeAmountValueStyle(self.amountLabel)
+
+    applePayStyle(self.applePayButton)
+
+    ctaStackViewStyle(self.ctaStackView)
+
+    termsTextViewStyle(self.termsTextView)
 
     self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
     self.pledgeImmediatelyLabel.numberOfLines = 0
     self.pledgeImmediatelyLabel.textAlignment = .center
     self.pledgeImmediatelyLabel.textColor = UIColor.ksr_support_400
 
-    _ = self.disclaimerStackView
-      |> disclaimerStackViewStyle
+    disclaimerStackViewStyle(self.disclaimerStackView)
 
     _ = self.layer
       |> layerStyle
@@ -108,8 +115,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.submitButton
       |> greenButtonStyle
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
+    PledgeViewStyles.rootPledgeCTAStackViewStyle(self.rootStackView)
   }
 
   // MARK: - View Model
@@ -157,7 +163,19 @@ final class PledgeViewCTAContainerView: UIView {
   // MARK: - Configuration
 
   func configureWith(value: PledgeViewCTAContainerViewData) {
-    self.viewModel.inputs.configureWith(value: value)
+    let viewModelData = PledgeViewCTAContainerViewData(
+      project: value.project,
+      total: value.total,
+      isLoggedIn: value.isLoggedIn,
+      isEnabled: value.isEnabled,
+      context: value.context,
+      willRetryPaymentMethod: value.willRetryPaymentMethod
+    )
+    self.viewModel.inputs.configureWith(value: viewModelData)
+
+    if let attributedAmount = attributedCurrency(withProject: value.project, total: value.total) {
+      self.amountLabel.attributedText = attributedAmount
+    }
   }
 
   // MARK: Functions
@@ -167,13 +185,16 @@ final class PledgeViewCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = ([self.titleLabel, self.amountLabel], self.titleAndAmountStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([self.continueButton, self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.pledgeImmediatelyLabel, self.termsTextView], self.disclaimerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
+    _ = ([self.titleAndAmountStackView, self.ctaStackView, self.disclaimerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.submitButton.addTarget(
@@ -230,39 +251,31 @@ extension PledgeViewCTAContainerView: UITextViewDelegate {
 
 // MARK: - Styles
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(
-      top: Styles.grid(2),
-      left: Styles.grid(3),
-      bottom: Styles.grid(0),
-      right: Styles.grid(3)
-    )
-    |> \.spacing .~ Styles.grid(1)
+private func ctaStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .horizontal
+  stackView.distribution = .fillEqually
+  stackView.spacing = Styles.grid(2)
+  stackView.layoutMargins = UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
+  stackView.isLayoutMarginsRelativeArrangement = true
 }
 
-private let ctaStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.distribution .~ .fillEqually
-    |> \.spacing .~ Styles.grid(2)
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
+private func disclaimerStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(2)
+  stackView.layoutMargins = UIEdgeInsets.init(
+    top: Styles.grid(0),
+    left: Styles.grid(5),
+    bottom: Styles.grid(1),
+    right: Styles.grid(5)
+  )
+  stackView.isLayoutMarginsRelativeArrangement = true
 }
 
-private let disclaimerStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(2)
-    |> \.layoutMargins .~ UIEdgeInsets.init(
-      top: Styles.grid(0),
-      left: Styles.grid(5),
-      bottom: Styles.grid(1),
-      right: Styles.grid(5)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
+private func applePayStyle(_ button: UIButton) {
+  button.clipsToBounds = true
+  button.layer.masksToBounds = true
+  button.layer.cornerRadius = Styles.grid(2)
+  button.isAccessibilityElement = true
 }
 
 private let layerStyle: LayerStyle = { layer in
@@ -279,14 +292,19 @@ private let layerStyle: LayerStyle = { layer in
     ]
 }
 
-private let termsTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
-  _ = textView
-    |> tappableLinksViewStyle
-    |> \.attributedText .~ attributedTermsText()
-    |> \.accessibilityTraits .~ [.staticText]
-    |> \.textAlignment .~ .center
-
-  return textView
+private func termsTextViewStyle(_ textView: UITextView) {
+  textView.isScrollEnabled = false
+  textView.isEditable = false
+  textView.isUserInteractionEnabled = true
+  textView.adjustsFontForContentSizeCategory = true
+  textView.textContainerInset = UIEdgeInsets.zero
+  textView.textContainer.lineFragmentPadding = 0
+  textView.linkTextAttributes = [
+    .foregroundColor: UIColor.ksr_create_700
+  ]
+  textView.attributedText = attributedTermsText()
+  textView.accessibilityTraits = [.staticText]
+  textView.textAlignment = .center
 }
 
 private func attributedTermsText() -> NSAttributedString? {
