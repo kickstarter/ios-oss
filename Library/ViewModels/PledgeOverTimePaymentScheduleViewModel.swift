@@ -90,7 +90,7 @@ public struct PLOTPaymentScheduleItem: Equatable {
     let currencyCountry = projectCountry(forCurrency: increment.amount.currency) ?? project.country
     self.amountAttributedText = attributedCurrency(
       with: currencyCountry,
-      amount: increment.amount.amount,
+      amountString: increment.amount.amountStringValue,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode
     )
   }
@@ -98,15 +98,16 @@ public struct PLOTPaymentScheduleItem: Equatable {
 
 private func attributedCurrency(
   with country: Project.Country,
-  amount: Double,
+  amountString: String,
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+
   guard
     let attributedCurrency = Format.attributedCurrency(
-      amount,
+      amountString: amountString,
       country: country,
       omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,

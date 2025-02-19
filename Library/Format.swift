@@ -170,6 +170,88 @@ public enum Format {
     return formatter.attributedString(for: amount)
   }
 
+  /// Creates an attributed string for a currency amount where the currency symbol and decimal values are displayed
+  /// in a smaller font size (superscript style) while keeping the integer part in the default size.
+  /// This function is useful for enhancing the visual hierarchy of monetary values.
+  ///
+  /// - Parameters:
+  ///   - amountString: The amount as a string, formatted according to regional conventions (e.g., "2,499.75").
+  ///   - country: The country associated with the currency, used to determine the currency symbol.
+  ///   - omitCurrencyCode: A boolean flag to determine if the currency code (e.g., "US") should be omitted. Defaults to `true`.
+  ///   - defaultAttributes: Text attributes to apply to the integer part of the amount.
+  ///   - superscriptAttributes: Text attributes to apply to the currency symbol and decimal part (to make them smaller).
+  ///   - env: The environment configuration used to fetch locale-specific settings. Defaults to `AppEnvironment.current`.
+  ///
+  /// - Returns: An `NSAttributedString` where the currency symbol and decimals are displayed in a smaller font.
+  ///            If the amount cannot be parsed, it returns the amount as a plain attributed string.
+  public static func attributedCurrency(
+    amountString: String,
+    country: Project.Country,
+    omitCurrencyCode: Bool = true,
+    defaultAttributes: String.Attributes = [:],
+    superscriptAttributes: String.Attributes = [:],
+    env: Environment = AppEnvironment.current
+  ) -> NSAttributedString? {
+    let symbol = currencySymbol(forCountry: country, omitCurrencyCode: omitCurrencyCode, env: env)
+
+    let mutableAttributedString = NSMutableAttributedString(
+      string: symbol,
+      attributes: superscriptAttributes
+    )
+
+    guard let parsedAmount = parseAmountComponents(from: amountString) else {
+      mutableAttributedString.append(NSAttributedString(string: amountString, attributes: defaultAttributes))
+
+      return NSAttributedString(attributedString: mutableAttributedString)
+    }
+
+    mutableAttributedString.append(NSAttributedString(
+      string: parsedAmount.integerPart,
+      attributes: defaultAttributes
+    ))
+    mutableAttributedString.append(NSAttributedString(
+      string: parsedAmount.decimalSeparator,
+      attributes: superscriptAttributes
+    ))
+    mutableAttributedString.append(NSAttributedString(
+      string: parsedAmount.decimalPart,
+      attributes: superscriptAttributes
+    ))
+
+    return NSAttributedString(attributedString: mutableAttributedString)
+  }
+
+  /// Parses a currency-formatted string and extracts the integer part, decimal separator, and decimal part.
+  /// This function is compatible with both European (e.g., "2.499,75") and US (e.g., "2,499.75") currency formats.
+  ///
+  /// - Parameter amountString: A string representing a monetary value with thousand and decimal separators.
+  /// - Returns: A tuple containing:
+  ///   - `integerPart`: The integer portion of the amount, preserving the thousand separator.
+  ///   - `decimalSeparator`: The character used as a decimal separator (`.` or `,`).
+  ///   - `decimalPart`: The decimal portion of the amount.
+  ///   If no decimal separator is found, the function returns `nil`.
+  internal static func parseAmountComponents(from amountString: String)
+    -> (integerPart: String, decimalSeparator: String, decimalPart: String)? {
+    // Possible decimal deparators
+    let decimalSeparators: [Character] = [".", ","]
+
+    // Find the last occurrence of a decimal separator
+    guard let lastSeparatorIndex = amountString.lastIndex(where: { decimalSeparators.contains($0) }) else {
+      return nil // No valid decimal separator found
+    }
+
+    // Extract the integer part (everything before the last separator)
+    let integerPart = String(amountString[..<lastSeparatorIndex])
+
+    // Extract the decimal part (everything after the last separator)
+    let decimalPart = String(amountString[amountString.index(after: lastSeparatorIndex)...])
+
+    // Extract the actual decimal separator character
+    let decimalSeparator = String(amountString[lastSeparatorIndex])
+
+    return (integerPart, decimalSeparator, decimalPart)
+  }
+
   public static func attributedPlusSign(_ attributes: String.Attributes = [:]) -> NSAttributedString {
     return NSAttributedString(string: Strings.plus_shipping_cost(shipping_cost: ""), attributes: attributes)
   }

@@ -20,16 +20,16 @@ public struct PledgePaymentIncrement: Equatable, Decodable {
 }
 
 public struct PledgePaymentIncrementAmount: Equatable, Decodable {
-  public let amount: Double
+  public let amountStringValue: String
   public let currency: String
   public let amountFormattedInProjectNativeCurrency: String
 
   public init(
-    amount: Double,
+    amountStringValue: String,
     currency: String,
     amountFormattedInProjectNativeCurrency: String
   ) {
-    self.amount = amount
+    self.amountStringValue = amountStringValue
     self.currency = currency
     self.amountFormattedInProjectNativeCurrency = amountFormattedInProjectNativeCurrency
   }

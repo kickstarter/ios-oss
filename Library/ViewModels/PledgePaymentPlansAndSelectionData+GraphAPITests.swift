@@ -45,7 +45,7 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
     XCTAssertFalse(selectionData.ineligible)
     XCTAssertEqual(selectionData.paymentIncrements.count, 1)
     XCTAssertEqual(selectionData.paymentIncrements.first!.amount.currency, "JPY")
-    XCTAssertEqual(selectionData.paymentIncrements.first!.amount.amount, Double(974))
+    XCTAssertEqual(selectionData.paymentIncrements.first!.amount.amountStringValue, "974")
     XCTAssertEqual(selectionData.paymentIncrements.first!.scheduledCollection, 1_743_431_359.0)
     XCTAssertEqual(
       selectionData.paymentIncrements.first!.amount.amountFormattedInProjectNativeCurrency,
