@@ -79,8 +79,13 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.fixPayment(projectId: projectId, backingId: backingId)
       case let .fix3DSChallenge(clientSecret, onProgress):
         self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
-      case let .confirmAddress(backingId, addressId, address):
-        self?.confirmAddress(backingId: backingId, addressId: addressId, address: address)
+      case let .confirmAddress(backingId, addressId, address, onProgress):
+        self?.confirmAddress(
+          backingId: backingId,
+          addressId: addressId,
+          address: address,
+          onProgress: onProgress
+        )
       }
     }.store(in: &self.subscriptions)
 
@@ -170,18 +175,29 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func confirmAddress(backingId: String, addressId: String, address: String) {
+  private func confirmAddress(
+    backingId: String,
+    addressId: String,
+    address: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    onProgress(.processing)
+
     let alert = UIAlertController(
       title: Strings.Confirm_your_address(),
       message: address,
       preferredStyle: .alert
     )
-    alert.addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel))
+    alert.addAction(UIAlertAction(
+      title: Strings.Cancel(),
+      style: .cancel,
+      handler: { _ in onProgress(.cancelled) }
+    ))
     alert.addAction(UIAlertAction(
       title: Strings.Confirm(),
       style: .default,
       handler: { [weak self] _ in
-        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId)
+        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId, onProgress: onProgress)
       }
     ))
     self.present(alert, animated: true, completion: nil)

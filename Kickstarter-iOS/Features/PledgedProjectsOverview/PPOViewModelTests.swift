@@ -1,6 +1,7 @@
 import Combine
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import Library
 import XCTest
 
 class PPOViewModelTests: XCTestCase {
@@ -270,7 +271,8 @@ class PPOViewModelTests: XCTestCase {
       event: .confirmAddress(
         backingId: template.backingGraphId,
         addressId: addressId,
-        address: address
+        address: address,
+        onProgress: { _ in }
       )
     )
   }
@@ -321,6 +323,73 @@ class PPOViewModelTests: XCTestCase {
       { self.viewModel.openSurvey(from: PPOProjectCardModel.fixPaymentTemplate) },
       event: .survey(url: PPOProjectCardModel.fixPaymentTemplate.backingDetailsUrl)
     )
+  }
+
+  func testAnalyticsEvents_NotTriggeredOnRefresh() async throws {
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = false
+    appTrackingTransparency.shouldRequestAuthStatus = true
+    appTrackingTransparency.updateAdvertisingIdentifier()
+
+    let mockTrackingClient = MockTrackingClient()
+    let analytics = KSRAnalytics(
+      segmentClient: mockTrackingClient,
+      appTrackingTransparency: appTrackingTransparency
+    )
+
+    let mockService = MockService(
+      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
+    )
+
+    let reloadedMockService = MockService(
+      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 4...6))
+    )
+
+    let initialLoadExpectation = XCTestExpectation(description: "Initial load")
+    initialLoadExpectation.expectedFulfillmentCount = 3
+    let refreshExpectation = XCTestExpectation(description: "Refresh complete")
+    refreshExpectation.expectedFulfillmentCount = 5
+
+    var values: [PPOViewModelPaginator.Results] = []
+    self.viewModel.$results
+      .sink { value in
+        values.append(value)
+        initialLoadExpectation.fulfill()
+        refreshExpectation.fulfill()
+      }
+      .store(in: &self.cancellables)
+
+    await withEnvironment(
+      apiService: mockService,
+      appTrackingTransparency: appTrackingTransparency,
+      ksrAnalytics: analytics
+    ) { () async in
+      self.viewModel.viewDidAppear()
+
+      // Trigger some actions that generate analytics
+      self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate)
+      self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate)
+      self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate)
+
+      await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
+
+      // Store analytics event counts before refresh
+      let trackCountBefore = mockTrackingClient.tracks.count
+      XCTAssertEqual(trackCountBefore, 4)
+
+      await withEnvironment(
+        apiService: reloadedMockService,
+        appTrackingTransparency: appTrackingTransparency,
+        ksrAnalytics: analytics
+      ) { () async in
+        await self.viewModel.refresh()
+      }
+
+      await fulfillment(of: [refreshExpectation], timeout: 0.1)
+
+      // Verify analytics events weren't triggered again
+      XCTAssertEqual(mockTrackingClient.tracks.count, trackCountBefore)
+    }
   }
 
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
