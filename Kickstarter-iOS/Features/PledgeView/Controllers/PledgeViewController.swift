@@ -86,7 +86,7 @@ final class PledgeViewController: UIViewController,
   }()
 
   private lazy var pledgeRewardsSummaryViewController = {
-    NoShippingPledgeRewardsSummaryViewController.instantiate()
+    PledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var estimatedShippingViewContainer =

@@ -581,6 +581,8 @@
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		60E1BB272C6D230A007D723B /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB262C6D230A007D723B /* PledgeViewCTAContainerView.swift */; };
 		60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */; };
+		60E1BB292C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB282C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift */; };
+		60E1BB2B2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */; };
 		60E1BB352C74F7E4007D723B /* EstimatedShippingCheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */; };
 		60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
@@ -2268,6 +2270,8 @@
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
 		60E1BB262C6D230A007D723B /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
+		60E1BB282C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
+		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
 		60E1BB342C74F7E4007D723B /* EstimatedShippingCheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedShippingCheckoutView.swift; sourceTree = "<group>"; };
 		60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
@@ -5729,7 +5733,7 @@
 				604453232BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift */,
 				6044532B2BA08FE100B8F485 /* PledgeRewardsSummaryTotalViewController.swift */,
 				33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */,
-				60E1BB282C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift */,
+				60E1BB282C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8813,7 +8817,7 @@
 				AAE7C9A82C75948B00800E03 /* PPOProjectCard.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */,
-				60E1BB292C6E5C18007D723B /* NoShippingPledgeRewardsSummaryViewController.swift in Sources */,
+				60E1BB292C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift in Sources */,
 				4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,
 				06232D3A2795D37600A81755 /* ProjectPageViewControllerDataSource.swift in Sources */,

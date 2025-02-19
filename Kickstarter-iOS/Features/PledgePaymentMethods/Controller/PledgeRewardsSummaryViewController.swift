@@ -12,7 +12,7 @@ public enum PledgeRewardsSummaryStyles {
   }
 }
 
-final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
+final class PledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
@@ -255,7 +255,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
+extension PledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
   }
