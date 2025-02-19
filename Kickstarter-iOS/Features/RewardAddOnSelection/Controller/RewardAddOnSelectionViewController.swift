@@ -39,7 +39,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
       |> \.tableHeaderView .~ self.headerView
   }()
 
-  private let viewModel: RewardAddOnSelectionNoShippingViewModelType =
+  private let viewModel: RewardAddOnSelectionViewModelType =
     RewardAddOnSelectionViewModel()
 
   // MARK: - Lifecycle
