@@ -18,7 +18,7 @@ enum PledgeRewardsSummaryRow: Hashable {
  These types are defined above and each UITableViewCell is configured based on the row being rendered.
  */
 
-class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataSource<
+class PledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataSource<
   PledgeRewardsSummarySection,
   PledgeRewardsSummaryRow
 > {
