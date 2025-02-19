@@ -4,6 +4,7 @@ import SwiftUI
 
 struct PPOProjectCreator: View {
   let creatorName: String
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -15,14 +16,18 @@ struct PPOProjectCreator: View {
           maxWidth: Constants.labelMaxWidth,
           alignment: Constants.labelAlignment
         )
-        .lineLimit(Constants.textLineLimit)
+        .lineLimit(
+          self.sizeCategory > .extraExtraExtraLarge ?
+            Constants.largeTextLineLimit :
+            Constants.textLineLimit
+        )
 
       Text(Strings.Send_a_message())
         .font(Font(PPOStyles.subtitle.font))
         .background(Color(PPOStyles.background))
         .foregroundStyle(Color(Constants.sendMessageColor))
         .frame(alignment: Constants.buttonAlignment)
-        .lineLimit(Constants.textLineLimit)
+        .lineLimit(nil)
 
       Spacer()
         .frame(width: Constants.spacerWidth)
@@ -43,6 +48,7 @@ struct PPOProjectCreator: View {
     static let chevronOffset = CGSize(width: 0, height: 2)
     static let spacerWidth = Styles.grid(1)
     static let textLineLimit = 1
+    static let largeTextLineLimit = 3
     static let labelMaxWidth = CGFloat.infinity
     static let labelAlignment = Alignment.leading
     static let buttonAlignment = Alignment.trailing
