@@ -90,7 +90,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   func handle3DSState(_ state: PPOActionState) {
     switch state {
-    case .processing:
+    case .processing, .confirmed:
       self.buttonState = .loading
     case .succeeded:
       self.buttonState = .disabled
@@ -102,6 +102,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
 public enum PPOActionState {
   case processing
+  case confirmed
   case succeeded
   case cancelled
   case failed
