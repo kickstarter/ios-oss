@@ -834,6 +834,8 @@ extension ProjectPageViewController: ManagePledgeViewControllerDelegate {
   ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
   }
+
+  func managePledgeViewControllerDidDismiss(_: ManagePledgeViewController) {}
 }
 
 // MARK: - ProjectPageViewControllerDelegate
