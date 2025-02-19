@@ -19,6 +19,7 @@ struct PPOAddressSummary: View {
         .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
     }
     .frame(maxWidth: Constants.maxWidth)
+    .accessibilityElement(children: .combine)
   }
 
   private enum Constants {
