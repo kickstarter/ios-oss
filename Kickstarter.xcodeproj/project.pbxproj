@@ -494,7 +494,7 @@
 		6030C6D12D2D884900A3033C /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6030C6D02D2D884900A3033C /* TimeInterval.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6035AF982C46E03E007E28FC /* CreateCheckout.graphql */; };
-		6035AF9C2C51696C007E28FC /* WithShippingRewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AF9A2C5168F8007E28FC /* WithShippingRewardsCollectionViewController.swift */; };
+		6035AF9C2C51696C007E28FC /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AF9A2C5168F8007E28FC /* RewardsCollectionViewController.swift */; };
 		6035AFA22C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */; };
 		6035AFA42C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA32C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift */; };
 		6035AFA92C517EDD007E28FC /* RewardAddOnSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA82C517EDD007E28FC /* RewardAddOnSelectionViewController.swift */; };
@@ -2183,7 +2183,7 @@
 		6030C6D02D2D884900A3033C /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		6035AF982C46E03E007E28FC /* CreateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateCheckout.graphql; sourceTree = "<group>"; };
-		6035AF9A2C5168F8007E28FC /* WithShippingRewardsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithShippingRewardsCollectionViewController.swift; sourceTree = "<group>"; };
+		6035AF9A2C5168F8007E28FC /* RewardsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewController.swift; sourceTree = "<group>"; };
 		6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		6035AFA32C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithShippingRewardsCollectionViewModel.swift; sourceTree = "<group>"; };
 		6035AFA82C517EDD007E28FC /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
@@ -4207,7 +4207,7 @@
 		19450C2028C8212C00C60F97 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				6035AF9A2C5168F8007E28FC /* WithShippingRewardsCollectionViewController.swift */,
+				6035AF9A2C5168F8007E28FC /* RewardsCollectionViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8764,7 +8764,7 @@
 				47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */,
 				770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */,
 				33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */,
-				6035AF9C2C51696C007E28FC /* WithShippingRewardsCollectionViewController.swift in Sources */,
+				6035AF9C2C51696C007E28FC /* RewardsCollectionViewController.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
 				60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */,
