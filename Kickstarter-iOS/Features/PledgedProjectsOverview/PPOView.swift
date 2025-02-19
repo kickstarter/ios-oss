@@ -34,6 +34,7 @@ struct PPOView: View {
       .background(Color(PPOStyles.header.background))
       .foregroundStyle(Color(PPOStyles.header.foreground))
       .padding(PPOStyles.header.padding)
+      .accessibilityAddTraits(.isHeader)
   }
 
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {

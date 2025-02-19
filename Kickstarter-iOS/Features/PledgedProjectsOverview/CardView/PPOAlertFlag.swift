@@ -24,6 +24,8 @@ struct PPOAlertFlag: View {
       width: Constants.cornerRadius,
       height: Constants.cornerRadius
     )))
+    .accessibilityElement(children: .combine)
+    .accessibilityAddTraits(.isStaticText)
   }
 
   var image: Image {
