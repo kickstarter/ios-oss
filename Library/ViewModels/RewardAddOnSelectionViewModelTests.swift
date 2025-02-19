@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class RewardAddOnSelectionNoShippingViewModelTests: TestCase {
-  private let vm: RewardAddOnSelectionNoShippingViewModelType = RewardAddOnSelectionNoShippingViewModel()
+final class RewardAddOnSelectionViewModelTests: TestCase {
+  private let vm: RewardAddOnSelectionViewModelType = RewardAddOnSelectionViewModel()
 
   private let configureContinueCTAViewWithDataIsLoading = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataIsValid = TestObserver<Bool, Never>()

@@ -40,7 +40,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
   }()
 
   private let viewModel: RewardAddOnSelectionNoShippingViewModelType =
-    RewardAddOnSelectionNoShippingViewModel()
+    RewardAddOnSelectionViewModel()
 
   // MARK: - Lifecycle
 
