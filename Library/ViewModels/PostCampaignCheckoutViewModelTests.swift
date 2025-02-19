@@ -5,8 +5,8 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
-  private var vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
+final class PostCampaignCheckoutViewModelTests: TestCase {
+  private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
 
   private let checkoutResponse = CreateCheckoutEnvelope(
@@ -41,7 +41,7 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = NoShippingPostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
+    self.vm = PostCampaignCheckoutViewModel(stripeIntentService: self.mockStripeIntentService)
 
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
@@ -61,11 +61,11 @@ final class NoShippingPostCampaignCheckoutViewModelTests: TestCase {
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.4 }
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
-      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
-    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
-      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
+      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.4 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
 
     self.vm.outputs.configureStripeIntegration.map(first)

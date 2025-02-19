@@ -18,14 +18,14 @@ private enum Layout {
   }
 }
 
-protocol NoShippingPledgeViewControllerDelegate: AnyObject {
-  func noShippingPledgeViewControllerDidUpdatePledge(
-    _ viewController: NoShippingPledgeViewController,
+protocol PledgeViewControllerDelegate: AnyObject {
+  func pledgeViewControllerDidUpdatePledge(
+    _ viewController: PledgeViewController,
     message: String
   )
 }
 
-final class NoShippingPledgeViewController: UIViewController,
+final class PledgeViewController: UIViewController,
   MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
 
@@ -33,7 +33,7 @@ final class NoShippingPledgeViewController: UIViewController,
     [self.pledgeDisclaimerView]
   }()
 
-  public weak var delegate: NoShippingPledgeViewControllerDelegate?
+  public weak var delegate: PledgeViewControllerDelegate?
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -51,7 +51,7 @@ final class NoShippingPledgeViewController: UIViewController,
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
     UITapGestureRecognizer(
       target: self,
-      action: #selector(NoShippingPledgeViewController.dismissKeyboard)
+      action: #selector(PledgeViewController.dismissKeyboard)
     )
       |> \.cancelsTouchesInView .~ false
   }()
@@ -122,7 +122,7 @@ final class NoShippingPledgeViewController: UIViewController,
   }()
 
   private var sessionStartedObserver: Any?
-  private let viewModel: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
+  private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
 
@@ -360,7 +360,7 @@ final class NoShippingPledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] message in
         guard let self = self else { return }
-        self.delegate?.noShippingPledgeViewControllerDidUpdatePledge(self, message: message)
+        self.delegate?.pledgeViewControllerDidUpdatePledge(self, message: message)
       }
 
     self.viewModel.outputs.popToRootViewController
@@ -534,7 +534,7 @@ final class NoShippingPledgeViewController: UIViewController,
 
 // MARK: - STPAuthenticationContext
 
-extension NoShippingPledgeViewController: STPAuthenticationContext {
+extension PledgeViewController: STPAuthenticationContext {
   func authenticationPresentingViewController() -> UIViewController {
     return self
   }
@@ -542,7 +542,7 @@ extension NoShippingPledgeViewController: STPAuthenticationContext {
 
 // MARK: - PKPaymentAuthorizationViewControllerDelegate
 
-extension NoShippingPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
   func paymentAuthorizationViewController(
     _: PKPaymentAuthorizationViewController,
     didAuthorizePayment payment: PKPayment,
@@ -578,7 +578,7 @@ extension NoShippingPledgeViewController: PKPaymentAuthorizationViewControllerDe
 
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
-extension NoShippingPledgeViewController: NoShippingPledgeViewCTAContainerViewDelegate {
+extension PledgeViewController: NoShippingPledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
@@ -602,7 +602,7 @@ extension NoShippingPledgeViewController: NoShippingPledgeViewCTAContainerViewDe
 
 // MARK: - NoShippingPledgeViewControllerMessageDisplaying
 
-extension NoShippingPledgeViewController: PledgeViewControllerMessageDisplaying {
+extension PledgeViewController: PledgeViewControllerMessageDisplaying {
   func pledgeViewController(_: UIViewController, didErrorWith message: String, error _: Error?) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
@@ -614,7 +614,7 @@ extension NoShippingPledgeViewController: PledgeViewControllerMessageDisplaying 
 
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
-extension NoShippingPledgeViewController: PledgePaymentMethodsViewControllerDelegate {
+extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewController(
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
@@ -633,7 +633,7 @@ extension NoShippingPledgeViewController: PledgePaymentMethodsViewControllerDele
 
 // MARK: - PledgeDisclaimerViewDelegate
 
-extension NoShippingPledgeViewController: PledgeDisclaimerViewDelegate {
+extension PledgeViewController: PledgeDisclaimerViewDelegate {
   func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
     self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
   }
@@ -691,7 +691,7 @@ private func applySectionStackViewStyle(_ stackView: UIStackView) {
 
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
-extension NoShippingPledgeViewController: PledgePaymentPlansViewControllerDelegate {
+extension PledgeViewController: PledgePaymentPlansViewControllerDelegate {
   func pledgePaymentPlansViewController(
     _: PledgePaymentPlansViewController,
     didSelectPaymentPlan paymentPlan: PledgePaymentPlansType
