@@ -240,6 +240,7 @@ public enum FetchProjectQueryTemplate {
              "totalCount":5
           },
           "prelaunchActivated":true,
+          "projectNotice": null,
           "slug":"theaschneider/thequiet",
           "state":"LIVE",
           "stateChangedAt":1625118950,

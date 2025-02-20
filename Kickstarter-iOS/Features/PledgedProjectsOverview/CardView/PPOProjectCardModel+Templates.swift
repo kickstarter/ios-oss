@@ -102,7 +102,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.authenticateCard(clientSecret: ""), nil),
+      actions: (.authenticateCard(clientSecret: "seti_asdqwe_secret_x"), nil),
       tierType: .authenticateCard,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -156,6 +156,30 @@ import KsApi
       usdExchangeRate: nil,
       posts: nil,
       goal: nil
+    )
+
+    internal static let shortTextTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .warning, icon: .time, message: "Wait"),
+        .init(
+          type: .alert,
+          icon: .alert,
+          message: "Bad"
+        )
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Project",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "Bob",
+      address: nil,
+      actions: (.completeSurvey, nil),
+      tierType: .openSurvey,
+      backingDetailsUrl: "fakeBackingDetailsUrl",
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
     )
   }
 #endif

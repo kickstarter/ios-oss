@@ -8,6 +8,8 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
     _ viewController: ManagePledgeViewController,
     managePledgeViewControllerFinishedWithMessage message: String?
   )
+
+  func managePledgeViewControllerDidDismiss(_ viewController: ManagePledgeViewController)
 }
 
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -533,6 +535,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
+    self.delegate?.managePledgeViewControllerDidDismiss(self)
   }
 
   // MARK: - Functions
@@ -543,7 +546,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       refTag: nil,
       context: .managePledge
     )
-    vc.noShippingPledgeViewDelegate = self
+    vc.pledgeViewDelegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -557,7 +560,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func goToChangePaymentMethod(data: PledgeViewData) {
-    let vc = NoShippingPledgeViewController.instantiate()
+    let vc = PledgeViewController.instantiate()
     vc.configure(with: data)
     vc.delegate = self
 
@@ -565,7 +568,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func goToFixPaymentMethod(data: PledgeViewData) {
-    let vc = NoShippingPledgeViewController.instantiate()
+    let vc = PledgeViewController.instantiate()
     vc.configure(with: data)
     vc.delegate = self
 
@@ -603,8 +606,8 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 
 // MARK: - NoShippingPledgeViewControllerDelegate
 
-extension ManagePledgeViewController: NoShippingPledgeViewControllerDelegate {
-  func noShippingPledgeViewControllerDidUpdatePledge(_: NoShippingPledgeViewController, message: String) {
+extension ManagePledgeViewController: PledgeViewControllerDelegate {
+  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
     self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }

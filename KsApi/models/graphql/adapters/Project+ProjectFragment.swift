@@ -82,7 +82,7 @@ extension Project {
         id: projectFragment.pid,
         location: location,
         name: projectFragment.name,
-        pledgeOverTimeMinimumExplanation: "Available for pledges over $125",
+        pledgeOverTimeMinimumExplanation: projectFragment.pledgeOverTimeMinimumExplanation ?? "",
         personalization: projectPersonalization(
           isStarred: projectFragment.isWatched,
           backing: backing,
@@ -249,7 +249,8 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
     aiDisclosure: aiDisclosure,
     risks: risks,
     story: storyElements(from: projectFragment),
-    minimumPledgeAmount: minimumSingleTierPledgeAmount
+    minimumPledgeAmount: minimumSingleTierPledgeAmount,
+    projectNotice: projectFragment.projectNotice
   )
 
   return extendedProjectProperties

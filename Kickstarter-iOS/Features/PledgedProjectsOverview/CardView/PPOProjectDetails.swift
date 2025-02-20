@@ -36,6 +36,7 @@ struct PPOProjectDetails: View {
               alignment: Constants.textAlignment
             )
             .lineLimit(Constants.titleLineLimit)
+            .multilineTextAlignment(Constants.multilineTextAlignment)
         }
         Text(Strings.Pledge_amount_pledged(pledge_amount: self.pledge))
           .font(Font(PPOStyles.subtitle.font))
@@ -46,6 +47,7 @@ struct PPOProjectDetails: View {
             alignment: Constants.textAlignment
           )
           .lineLimit(Constants.subtitleLineLimit)
+          .multilineTextAlignment(Constants.multilineTextAlignment)
       }
     }
     .fixedSize(horizontal: false, vertical: true)
@@ -60,10 +62,11 @@ struct PPOProjectDetails: View {
     static let imageContentMode = ContentMode.fit
 
     static let titleLineLimit = 2
-    static let subtitleLineLimit = 1
+    static let subtitleLineLimit: Int? = nil
 
     static let textMaxWidth = CGFloat.infinity
     static let textAlignment = Alignment.leading
+    static let multilineTextAlignment = TextAlignment.leading
   }
 }
 

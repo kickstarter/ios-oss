@@ -15,6 +15,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.title = Strings.tabbar_activity()
 
     let ppoView = PPOView(
+      shouldRefresh: self.viewModel.shouldRefresh,
       onCountChange: { [weak self] count in
         self?.viewModel.projectAlertsCountChanged(count)
       },
@@ -79,8 +80,13 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.fixPayment(projectId: projectId, backingId: backingId)
       case let .fix3DSChallenge(clientSecret, onProgress):
         self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
-      case let .confirmAddress(backingId, addressId, address):
-        self?.confirmAddress(backingId: backingId, addressId: addressId, address: address)
+      case let .confirmAddress(backingId, addressId, address, onProgress):
+        self?.confirmAddress(
+          backingId: backingId,
+          addressId: addressId,
+          address: address,
+          onProgress: onProgress
+        )
       }
     }.store(in: &self.subscriptions)
 
@@ -150,38 +156,53 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
   private func fixPayment(projectId: Int, backingId: Int) {
     let data = (projectParam: Param.id(projectId), backingParam: Param.id(backingId))
-    let vc = ManagePledgeViewController.controller(with: data, delegate: nil)
-    self.present(vc, animated: true)
+    let vc = ManagePledgeViewController.controller(with: data, delegate: self)
+    vc.presentationController?.delegate = self
+    self.navigationController?.present(vc, animated: true)
   }
 
   private func openSurvey(_ url: String) {
     let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
+    nav.presentationController?.delegate = self
 
-    self.present(nav, animated: true, completion: nil)
+    self.navigationController?.present(nav, animated: true)
   }
 
   private func messageCreator(_ messageSubject: MessageSubject) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: .backerModal)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
-    vc.delegate = self
+    nav.presentationController?.delegate = self
+
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func confirmAddress(backingId: String, addressId: String, address: String) {
+  private func confirmAddress(
+    backingId: String,
+    addressId: String,
+    address: String,
+    onProgress: @escaping (PPOActionState) -> Void
+  ) {
+    onProgress(.processing)
+
     let alert = UIAlertController(
       title: Strings.Confirm_your_address(),
       message: address,
       preferredStyle: .alert
     )
-    alert.addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel))
+    alert.addAction(UIAlertAction(
+      title: Strings.Cancel(),
+      style: .cancel,
+      handler: { _ in onProgress(.cancelled) }
+    ))
     alert.addAction(UIAlertAction(
       title: Strings.Confirm(),
       style: .default,
       handler: { [weak self] _ in
-        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId)
+        self?.viewModel.confirmAddress(addressId: addressId, backingId: backingId, onProgress: onProgress)
       }
     ))
     self.present(alert, animated: true, completion: nil)
@@ -266,5 +287,34 @@ extension PPOContainerViewController: MessageDialogViewControllerDelegate {
 extension PPOContainerViewController: STPAuthenticationContext {
   public func authenticationPresentingViewController() -> UIViewController {
     return self
+  }
+
+  public func authenticationContextWillDismiss(_: UIViewController) {
+    self.viewModel.actionFinishedPerforming()
+  }
+}
+
+extension PPOContainerViewController: SurveyResponseViewControllerDelegate {
+  public func surveyResponseViewControllerDismissed() {
+    self.viewModel.actionFinishedPerforming()
+  }
+}
+
+extension PPOContainerViewController: ManagePledgeViewControllerDelegate {
+  func managePledgeViewController(
+    _: ManagePledgeViewController,
+    managePledgeViewControllerFinishedWithMessage _: String?
+  ) {
+    self.viewModel.actionFinishedPerforming()
+  }
+
+  func managePledgeViewControllerDidDismiss(_: ManagePledgeViewController) {
+    self.viewModel.actionFinishedPerforming()
+  }
+}
+
+extension PPOContainerViewController: UIAdaptivePresentationControllerDelegate {
+  public func presentationControllerDidDismiss(_: UIPresentationController) {
+    self.viewModel.actionFinishedPerforming()
   }
 }

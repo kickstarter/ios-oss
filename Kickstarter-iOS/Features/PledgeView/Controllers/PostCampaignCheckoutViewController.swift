@@ -3,11 +3,17 @@ import Library
 import PassKit
 import Prelude
 import Stripe
+import SwiftUI
 import UIKit
 
-private enum PostCampaignCheckoutLayout {
+private enum Layout {
   enum Style {
     static let cornerRadius: CGFloat = Styles.grid(2)
+  }
+
+  enum Margin {
+    static let topBottom: CGFloat = Styles.grid(3)
+    static let leftRight: CGFloat = CheckoutConstants.PledgeView.Inset.leftRight
   }
 }
 
@@ -27,6 +33,12 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.messageDisplayingDelegate .~ self
       |> \.delegate .~ self
   }()
+
+  private lazy var estimatedShippingViewContainer =
+    UIHostingController(rootView: EstimatedShippingCheckoutView(
+      estimatedCost: "",
+      aboutConversion: ""
+    ))
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
     PledgeViewCTAContainerView(frame: .zero)
@@ -61,12 +73,19 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var estimatedShippingStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private var sessionStartedObserver: Any?
+
   private let viewModel: PostCampaignCheckoutViewModelType =
     PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())
 
   // MARK: - Lifecycle
 
-  func configure(with data: PostCampaignCheckoutData) {
+  func configure(with data: PledgeViewData) {
     self.viewModel.inputs.configure(with: data)
   }
 
@@ -95,14 +114,12 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   deinit {
     self.hideProcessingView()
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-
     self.view.addSubview(self.rootScrollView)
     self.view.addSubview(self.pledgeCTAContainerView)
 
@@ -110,33 +127,41 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    // Configure root stack view.
     self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
+    let arrangedInsetSubviews = [
+      self.titleLabel,
+      self.paymentMethodsViewController.view,
+      self.pledgeDisclaimerView
+    ]
+    .compactMap { $0 }
+    .compact()
+
+    arrangedInsetSubviews.forEach { view in
+      self.rootInsetStackView.addArrangedSubview(view)
+    }
+
     self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
-    self.addChild(self.pledgeRewardsSummaryViewController)
-    self.pledgeRewardsSummaryViewController.didMove(toParent: self)
 
-    // Configure inset views.
-    self.rootInsetStackView.addArrangedSubview(self.titleLabel)
+    self.rootStackView.addArrangedSubview(self.estimatedShippingStackView)
 
-    self.rootInsetStackView.addArrangedSubview(self.paymentMethodsViewController.view)
     self.addChild(self.paymentMethodsViewController)
     self.paymentMethodsViewController.didMove(toParent: self)
 
-    self.rootInsetStackView.addArrangedSubview(self.pledgeDisclaimerView)
+    self.addChild(self.pledgeRewardsSummaryViewController)
+    self.pledgeRewardsSummaryViewController.didMove(toParent: self)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
   }
 
@@ -149,34 +174,39 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> checkoutBackgroundStyle
 
     self.titleLabel.text = Strings.Checkout()
+    self.titleLabel.numberOfLines = 1
+    self.titleLabel.textColor = UIColor.ksr_support_700
     self.titleLabel.font = UIFont.ksr_title2().bolded
-    self.titleLabel.numberOfLines = 0
+    self.titleLabel.layoutMargins = UIEdgeInsets(
+      topBottom: Layout.Margin.topBottom,
+      leftRight: Styles.grid(3)
+    )
 
     self.rootScrollView.showsVerticalScrollIndicator = false
     self.rootScrollView.alwaysBounceVertical = true
 
     self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
     self.rootStackView.spacing = Styles.grid(1)
-
-    self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
-    self.rootInsetStackView.spacing = Styles.grid(4)
-    self.rootInsetStackView.isLayoutMarginsRelativeArrangement = true
-    self.rootInsetStackView.layoutMargins = UIEdgeInsets(
-      topBottom: ConfirmDetailsLayout.Margin.topBottom,
-      leftRight: ConfirmDetailsLayout.Margin.leftRight
+    self.rootStackView.isLayoutMarginsRelativeArrangement = true
+    self.rootStackView.layoutMargins = UIEdgeInsets(
+      topBottom: Layout.Margin.topBottom,
+      leftRight: 0
     )
 
-    _ = self.paymentMethodsViewController.view
-      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
+    rootInsetStackViewStyle(self.rootInsetStackView)
+    rootInsetStackViewStyle(self.estimatedShippingStackView)
 
-    _ = self.pledgeDisclaimerView
-      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
+    roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
+
+    roundedStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
 
     self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
       .observeForUI()
@@ -207,11 +237,36 @@ final class PostCampaignCheckoutViewController: UIViewController,
         self?.paymentMethodsViewController.configure(with: value)
       }
 
+    self.viewModel.outputs.estimatedShippingViewHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.estimatedShippingViewContainer.view.isHidden = isHidden
+      }
+
+    self.viewModel.outputs.configureEstimatedShippingView
+      .observeForUI()
+      .observeValues { [weak self] estimatedShippingText, estimatedConversionText in
+        guard let shippingText = estimatedShippingText else { return }
+
+        self?.configureEstimatedShippingView(shippingText, estimatedConversionText)
+      }
+
     self.viewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionDidChange()
+      }
+
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
       }
 
     self.viewModel.outputs.validateCheckoutSuccess
@@ -257,7 +312,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
       .observeValues { [weak self] error in
 
         #if DEBUG
-          let serverError = error.errorMessages.first ?? ""
+          let serverError = error.errorMessages.first ?? "Unknown server error"
           let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
         #else
           let message = Strings.Something_went_wrong_please_try_again()
@@ -269,6 +324,17 @@ final class PostCampaignCheckoutViewController: UIViewController,
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.present(navigationController, animated: true)
+  }
 
   private func confirmPayment(with validation: PaymentSourceValidation) {
     guard validation.requiresConfirmation else {
@@ -301,6 +367,24 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
         self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: validation.paymentIntentClientSecret)
       }
+  }
+
+  private func configureEstimatedShippingView(_ estimatedCost: String, _ aboutConversion: String?) {
+    let estimatedShippingView = EstimatedShippingCheckoutView(
+      estimatedCost: estimatedCost,
+      aboutConversion: aboutConversion ?? ""
+    )
+
+    self.estimatedShippingViewContainer.rootView = estimatedShippingView
+    self.estimatedShippingViewContainer.view.translatesAutoresizingMaskIntoConstraints = false
+    self.estimatedShippingViewContainer.view.clipsToBounds = true
+    self.estimatedShippingViewContainer.view.layer.masksToBounds = true
+    self.estimatedShippingViewContainer.view.layer.cornerRadius = Layout.Style.cornerRadius
+
+    self.estimatedShippingStackView.addArrangedSubview(self.estimatedShippingViewContainer.view)
+    self.estimatedShippingViewContainer.didMove(toParent: self)
+
+    self.estimatedShippingStackView.layoutIfNeeded()
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
@@ -336,6 +420,7 @@ extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
 extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
+    self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
@@ -438,4 +523,20 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
       fatalError()
     }
   }
+}
+
+private func rootInsetStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = NSLayoutConstraint.Axis.vertical
+  stackView.spacing = Styles.grid(4)
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = UIEdgeInsets(
+    topBottom: Layout.Margin.topBottom,
+    leftRight: Layout.Margin.leftRight
+  )
+}
+
+public func roundedStyle(_ view: UIView, cornerRadius: CGFloat = Styles.cornerRadius) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = cornerRadius
 }

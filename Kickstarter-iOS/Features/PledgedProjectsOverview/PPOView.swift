@@ -1,8 +1,10 @@
+import Combine
 import Library
 import SwiftUI
 
 struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
+  var shouldRefresh: AnyPublisher<Void, Never>
   var onCountChange: ((Int?) -> Void)?
   var onNavigate: ((PPONavigationEvent) -> Void)?
 
@@ -34,6 +36,7 @@ struct PPOView: View {
       .background(Color(PPOStyles.header.background))
       .foregroundStyle(Color(PPOStyles.header.foreground))
       .padding(PPOStyles.header.padding)
+      .accessibilityAddTraits(.isHeader)
   }
 
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
@@ -58,13 +61,8 @@ struct PPOView: View {
             self.viewModel.fix3DSChallenge(
               from: model,
               clientSecret: clientSecret,
-              onProgress: { status in
-                switch status {
-                case .processing:
-                  card.setLoading(true)
-                case .succeeded, .cancelled, .failed:
-                  card.setLoading(false)
-                }
+              onProgress: { [weak card] state in
+                card?.handle3DSState(state)
               }
             )
           case .completeSurvey:
@@ -144,10 +142,19 @@ struct PPOView: View {
         .onReceive(self.viewModel.navigationEvents, perform: { event in
           self.onNavigate?(event)
         })
+        .onReceive(self.shouldRefresh.throttle(
+          for: .milliseconds(300),
+          scheduler: RunLoop.main,
+          latest: false
+        )) { () in
+          Task {
+            await self.viewModel.refresh()
+          }
+        }
     }
   }
 }
 
 #Preview {
-  PPOView()
+  PPOView(shouldRefresh: Empty().eraseToAnyPublisher())
 }

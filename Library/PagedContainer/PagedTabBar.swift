@@ -58,6 +58,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
 
       alignment: Constants.badge.alignment
     )
+    .accessibilityElement(children: .combine)
   }
 
   private func isSelected(page: Page) -> Bool {

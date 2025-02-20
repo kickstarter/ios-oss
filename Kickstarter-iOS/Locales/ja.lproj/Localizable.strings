@@ -793,6 +793,7 @@
 "We_cant_process_your_pledge" = "プレッジを処理することができません。";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "プレッジを処理できません。お支払い方法を更新してください。";
 "We_cant_process_your_pledge_for" = "以下のプレッジを処理することが出来ません:";
+"We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate" = "プレッジを処理できません。プロジェクト通知のダッシュボードにアクセスしてカードを認証してください。";
 "We_collected_the_backers_pledge_for_this_project" = "このプロジェクトへのこのバッカーからのプレッジを請求しました。";
 "We_collected_your_pledge_for_this_project" = "このプロジェクトへのあなたのプレッジを請求しました。";
 "We_couldnt_find_anything_for_search_term" = "「%{search_term}」に一致するものがありませんでした。";

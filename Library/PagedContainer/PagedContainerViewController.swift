@@ -29,6 +29,10 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     self.toggle.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
     self.toggle.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
 
+    // Prevent tab bar text from being set based on user preferences, since the UI isn't designed
+    // to handle larger font sizes.
+    self.toggle.view.maximumContentSizeCategory = .medium
+
     self.viewModel.$displayPage.receive(on: RunLoop.main)
       .compactMap { $0 }
       .sink { [weak self] _, controller in

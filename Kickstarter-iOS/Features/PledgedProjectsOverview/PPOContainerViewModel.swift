@@ -11,6 +11,7 @@ protocol PPOContainerViewModelInputs {
   func projectAlertsCountChanged(_ count: Int?)
   func handle(navigationEvent: PPONavigationEvent)
   func process3DSAuthentication(state: PPOActionState)
+  func actionFinishedPerforming()
 }
 
 protocol PPOContainerViewModelOutputs {
@@ -19,6 +20,7 @@ protocol PPOContainerViewModelOutputs {
   var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
   var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> { get }
+  var shouldRefresh: AnyPublisher<Void, Never> { get }
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
@@ -76,7 +78,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
           )
         case .failed:
           return (.error, Strings.Something_went_wrong_please_try_again())
-        case .processing, .cancelled:
+        case .processing, .cancelled, .confirmed:
           return nil
         }
       }
@@ -87,11 +89,17 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
 
     // Confirm address call with result banners.
     self.confirmAddressSubject
+      .handleEvents(receiveOutput: { data in
+        data.onProgress(.confirmed)
+      })
       .flatMap { data in
         AppEnvironment.current.apiService.confirmBackingAddress(
           backingId: data.backingId,
           addressId: data.addressId
         )
+        .handleEvents(receiveOutput: { _ in
+          data.onProgress(.succeeded)
+        })
         .catch { _ in Just(false) }
       }
       .compactMap { success -> MessageBannerConfiguration in
@@ -105,6 +113,21 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
         self?.showBannerSubject.send(configuration)
       }
       .store(in: &self.cancellables)
+
+    // Force the view to refresh
+    Publishers.Merge3(
+      self.actionFinishedPerformingSubject,
+      self.process3DSAuthenticationState
+        .filter { $0 == .succeeded }
+        .withEmptyValues(),
+      self.showBannerSubject
+        .filter { $0.type == .success }
+        .withEmptyValues()
+    )
+    .sink { [weak self] () in
+      self?.shouldRefreshSubject.send(())
+    }
+    .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
@@ -125,8 +148,12 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.process3DSAuthenticationState.send(state)
   }
 
-  func confirmAddress(addressId: String, backingId: String) {
-    self.confirmAddressSubject.send((addressId: addressId, backingId: backingId))
+  func confirmAddress(addressId: String, backingId: String, onProgress: @escaping (PPOActionState) -> Void) {
+    self.confirmAddressSubject.send((addressId: addressId, backingId: backingId, onProgress: onProgress))
+  }
+
+  func actionFinishedPerforming() {
+    self.actionFinishedPerformingSubject.send(())
   }
 
   // MARK: - Outputs
@@ -151,6 +178,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.stripeConfigurationSubject.eraseToAnyPublisher()
   }
 
+  var shouldRefresh: AnyPublisher<Void, Never> {
+    self.shouldRefreshSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - Private
 
   private var viewWillAppearSubject = PassthroughSubject<Void, Never>()
@@ -161,7 +192,12 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
-  private let confirmAddressSubject = PassthroughSubject<(addressId: String, backingId: String), Never>()
+  private let confirmAddressSubject = PassthroughSubject<
+    (addressId: String, backingId: String, onProgress: (PPOActionState) -> Void),
+    Never
+  >()
+  private let actionFinishedPerformingSubject = PassthroughSubject<Void, Never>()
+  private let shouldRefreshSubject = PassthroughSubject<Void, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 }
