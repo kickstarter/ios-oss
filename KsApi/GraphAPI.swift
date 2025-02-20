@@ -16072,7 +16072,6 @@ public enum GraphAPI {
         __typename
         amount {
           __typename
-          amountAsFloat
           amountFormattedInProjectNativeCurrency
           currency
         }
@@ -16156,7 +16155,6 @@ public enum GraphAPI {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("amountAsFloat", type: .nonNull(.scalar(String.self))),
           GraphQLField("amountFormattedInProjectNativeCurrency", type: .nonNull(.scalar(String.self))),
           GraphQLField("currency", type: .nonNull(.scalar(String.self))),
         ]
@@ -16168,8 +16166,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(amountAsFloat: String, amountFormattedInProjectNativeCurrency: String, currency: String) {
-        self.init(unsafeResultMap: ["__typename": "PaymentIncrementAmount", "amountAsFloat": amountAsFloat, "amountFormattedInProjectNativeCurrency": amountFormattedInProjectNativeCurrency, "currency": currency])
+      public init(amountFormattedInProjectNativeCurrency: String, currency: String) {
+        self.init(unsafeResultMap: ["__typename": "PaymentIncrementAmount", "amountFormattedInProjectNativeCurrency": amountFormattedInProjectNativeCurrency, "currency": currency])
       }
 
       public var __typename: String {
@@ -16178,16 +16176,6 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      /// The increment amount represented as a float, ie 37.50 for the USD currency
-      public var amountAsFloat: String {
-        get {
-          return resultMap["amountAsFloat"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "amountAsFloat")
         }
       }
 
