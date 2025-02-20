@@ -205,6 +205,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       switch item {
       case let .home(index):
         _ = self.tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
+      case let .backings(index):
+        _ = self.tabBarItem(atIndex: index) ?|> backingsTabBarItemStyle
       case let .activity(index):
         _ = self.tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
       case let .search(index):
@@ -214,8 +216,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn)
 
         self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
-      case let .backings(index):
-        _ = self.tabBarItem(atIndex: index) ?|> backingsTabBarItemStyle
       }
     }
   }

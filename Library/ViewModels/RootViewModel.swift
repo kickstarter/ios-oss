@@ -462,11 +462,11 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
   var controllers: [RootViewControllerData] = []
   controllers.append(.discovery)
 
-  if featurePledgedProjectsOverviewEnabled(), isLoggedIn {
-    controllers.append(.pledgedProjectsAndActivities)
-  } else {
-    controllers.append(.activities)
+  if featurePledgedProjectsOverviewEnabled() {
+    controllers.append(.backings)
   }
+
+  controllers.append(.activities)
 
   controllers.append(.search)
   controllers.append(.profile(isLoggedIn: isLoggedIn))
@@ -476,8 +476,11 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
   let items: [TabBarItem] = [
-    .home(index: 0), .activity(index: 1), .search(index: 2),
-    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+    .home(index: 0),
+    .backings(index: 1),
+    .activity(index: 2),
+    .search(index: 3),
+    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
   ]
 
   return TabBarItemsData(
