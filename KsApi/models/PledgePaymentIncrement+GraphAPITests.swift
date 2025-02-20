@@ -8,7 +8,6 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
         "__typename": "PaymentIncrement",
         "amount": {
           "__typename": "PaymentIncrementAmount",
-          "amountAsFloat": "99.75",
           "amountFormattedInProjectNativeCurrency": "$99.75",
           "currency": "USD"
         },
@@ -24,7 +23,6 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNotNil(increment)
     XCTAssertEqual(increment!.amount.currency, "USD")
-    XCTAssertEqual(increment!.amount.amount, Double(99.75))
     XCTAssertEqual(increment!.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
     XCTAssertEqual(increment!.state, .collected)
@@ -37,7 +35,6 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
         "__typename": "PaymentIncrement",
         "amount": {
           "__typename": "PaymentIncrementAmount",
-          "amountAsFloat": "99.75",
           "amountFormattedInProjectNativeCurrency": "$99.75",
           "currency": "USD"
         },

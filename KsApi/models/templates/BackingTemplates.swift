@@ -30,7 +30,10 @@ extension Backing {
   internal static let errored = Backing.template |> Backing.lens.status .~ .errored
   internal static let templatePlot = Backing.template
     |> Backing.lens.paymentIncrements .~ [.init(
-      amount: .init(amount: 10, currency: "USD", amountFormattedInProjectNativeCurrency: "$10.00"),
+      amount: .init(
+        currency: "USD",
+        amountFormattedInProjectNativeCurrency: "$10.00"
+      ),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
       state: .collected,
       stateReason: nil

@@ -77,8 +77,8 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     ])
   }
 
-  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
-    self.viewModel.inputs.configure(with: increments, project: project)
+  public func configure(with increments: [PledgePaymentIncrement]) {
+    self.viewModel.inputs.configure(with: increments)
   }
 
   private func setupGestureRecognizers() {
@@ -100,7 +100,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
       itemView.configure(
         with: item.dateString,
         badgeTitle: item.stateLabel,
-        amountAttributedText: item.amountAttributedText,
+        amountString: item.amountString,
         badgeStyle: item.badgeStyle
       )
       self.paymentsScheduleStackView.addArrangedSubview(itemView)

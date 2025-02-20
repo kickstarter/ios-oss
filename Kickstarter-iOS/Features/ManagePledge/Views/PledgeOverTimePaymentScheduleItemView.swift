@@ -66,11 +66,11 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
   public func configure(
     with date: String,
     badgeTitle: String,
-    amountAttributedText: NSAttributedString?,
+    amountString: String,
     badgeStyle: BadgeStyle
   ) {
     self.dateLabel.text = date
-    self.amountLabel.attributedText = amountAttributedText
+    self.amountLabel.text = amountString
     self.badgeView.configure(with: badgeTitle, style: badgeStyle)
   }
 
@@ -98,5 +98,7 @@ private func applyDateLabelStyle(_ label: UILabel) {
 
 private func applyAmountLabelStyle(_ label: UILabel) {
   label.textAlignment = .right
+  label.textColor = .ksr_support_700
+  label.font = .ksr_title1()
   label.adjustsFontForContentSizeCategory = true
 }

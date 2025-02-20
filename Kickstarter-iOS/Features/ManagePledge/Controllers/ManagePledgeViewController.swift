@@ -343,11 +343,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePlotPaymentScheduleView
       .observeForUI()
-      .observeValues { [weak self] increments, project in
-        self?.plotPaymentScheduleViewController.configure(
-          with: increments,
-          project: project
-        )
+      .observeValues { [weak self] increments in
+        self?.plotPaymentScheduleViewController.configure(with: increments)
       }
 
     self.viewModel.outputs.showWebHelp
