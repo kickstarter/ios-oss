@@ -75,7 +75,7 @@ public struct PLOTPaymentScheduleItem: Equatable {
   public var dateString: String
   public var stateLabel: String
   public var badgeStyle: BadgeStyle
-  public var amountAttributedText: NSAttributedString?
+  public var amountString: String
 
   init(with increment: PledgePaymentIncrement, project: Project) {
     self.dateString = Format.date(
@@ -84,37 +84,10 @@ public struct PLOTPaymentScheduleItem: Equatable {
       timeStyle: .none
     )
 
+    self.amountString = increment.amount.amountFormattedInProjectNativeCurrency
     self.stateLabel = getStateLabelText(from: increment)
     self.badgeStyle = getBadgeStyle(from: increment)
-
-    let currencyCountry = projectCountry(forCurrency: increment.amount.currency) ?? project.country
-    self.amountAttributedText = attributedCurrency(
-      with: currencyCountry,
-      amountString: increment.amount.amountStringValue,
-      omitUSCurrencyCode: project.stats.omitUSCurrencyCode
-    )
   }
-}
-
-private func attributedCurrency(
-  with country: Project.Country,
-  amountString: String,
-  omitUSCurrencyCode: Bool
-) -> NSAttributedString? {
-  let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
-  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-
-  guard
-    let attributedCurrency = Format.attributedCurrency(
-      amountString: amountString,
-      country: country,
-      omitCurrencyCode: omitUSCurrencyCode,
-      defaultAttributes: defaultAttributes,
-      superscriptAttributes: superscriptAttributes
-    ) else { return nil }
-
-  return attributedCurrency
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {

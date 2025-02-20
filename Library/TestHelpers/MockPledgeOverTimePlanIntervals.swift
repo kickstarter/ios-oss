@@ -3,7 +3,6 @@ import KsApi
 
 public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
   let amount = PledgePaymentIncrementAmount(
-    amountStringValue: "250.00",
     currency: "USD",
     amountFormattedInProjectNativeCurrency: "$250.00"
   )

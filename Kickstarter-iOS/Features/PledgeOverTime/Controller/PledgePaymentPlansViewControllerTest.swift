@@ -123,7 +123,6 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
     timeStamp += 30 * 24 * 60 * 60
     increments.append(PledgePaymentIncrement(
       amount: PledgePaymentIncrementAmount(
-        amountStringValue: "250.00",
         currency: "USD",
         amountFormattedInProjectNativeCurrency: "$250.00"
       ),

@@ -7,7 +7,6 @@ extension PledgePaymentIncrement {
     }
 
     self.amount = PledgePaymentIncrementAmount(
-      amountStringValue: fragment.amount.amountAsFloat,
       currency: fragment.amount.currency,
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )

@@ -6,7 +6,6 @@ import XCTest
 final class PledgePaymentIncrementFormattedTest: TestCase {
   func testIncrementFormat() {
     let amount = PledgePaymentIncrementAmount(
-      amountStringValue: "20.00",
       currency: "USD",
       amountFormattedInProjectNativeCurrency: "$20.00"
     )

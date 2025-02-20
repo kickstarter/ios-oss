@@ -31,7 +31,6 @@ extension Backing {
   internal static let templatePlot = Backing.template
     |> Backing.lens.paymentIncrements .~ [.init(
       amount: .init(
-        amountStringValue: "10.00",
         currency: "USD",
         amountFormattedInProjectNativeCurrency: "$10.00"
       ),
