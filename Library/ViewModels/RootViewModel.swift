@@ -12,6 +12,7 @@ public enum RootViewControllerData: Equatable {
   case pledgedProjectsAndActivities
   case search
   case profile(isLoggedIn: Bool)
+  case backings
 
   public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
     switch (lhs, rhs) {
@@ -21,6 +22,7 @@ public enum RootViewControllerData: Equatable {
     case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
+    case (.backings, .backings): return true
     default:
       return false
     }
@@ -39,7 +41,7 @@ public enum RootViewControllerData: Equatable {
     switch self {
     case .activities, .pledgedProjectsAndActivities:
       return true
-    case .discovery, .profile, .search:
+    default:
       return false
     }
   }
@@ -55,6 +57,7 @@ public enum TabBarItem {
   case home(index: RootViewControllerIndex)
   case profile(avatarUrl: URL?, index: RootViewControllerIndex)
   case search(index: RootViewControllerIndex)
+  case backings(index: RootViewControllerIndex)
 }
 
 public protocol RootViewModelInputs {
@@ -514,5 +517,7 @@ private func tabBarItemLabel(for tabBarItem: TabBarItem) -> KSRAnalytics.TabBarI
     return .profile
   case .search:
     return .search
+  case .backings:
+    return .backings
   }
 }

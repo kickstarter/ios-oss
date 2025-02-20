@@ -214,6 +214,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn)
 
         self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
+      case let .backings(index):
+        _ = self.tabBarItem(atIndex: index) ?|> backingsTabBarItemStyle
       }
     }
   }
@@ -283,6 +285,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       return isLoggedIn
         ? BackerDashboardViewController.instantiate()
         : LoginToutViewController.configuredWith(loginIntent: .loginTab)
+    case .backings:
+      return PPOContainerViewController.instantiate()
     }
   }
 
