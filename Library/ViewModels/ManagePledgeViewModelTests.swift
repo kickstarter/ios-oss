@@ -11,7 +11,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   private let configurePaymentMethodView = TestObserver<ManagePledgePaymentMethodViewData, Never>()
   private let configurePledgeSummaryView = TestObserver<ManagePledgeSummaryViewData, Never>()
-  private let configurePlotPaymentScheduleView = TestObserver<([PledgePaymentIncrement], Project), Never>()
+  private let configurePlotPaymentScheduleView = TestObserver<[PledgePaymentIncrement], Never>()
   private let configureRewardReceivedWithData = TestObserver<ManageViewPledgeRewardReceivedViewData, Never>()
   private let endRefreshing = TestObserver<Void, Never>()
   private let goToCancelPledge = TestObserver<CancelPledgeViewData, Never>()

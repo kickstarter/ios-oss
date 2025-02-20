@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol PledgeOverTimePaymentScheduleViewModelInputs {
-  func configure(with increments: [PledgePaymentIncrement], project: Project)
+  func configure(with increments: [PledgePaymentIncrement])
   func collapseToggle()
   func viewDidLoad()
 }
@@ -38,11 +38,9 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.collapsed = initialCollapsed
 
     self.paymentScheduleItems = configureWith
-      .map { increments, project in
-        guard let project = project else { return [] }
-
-        return increments.map { increment in
-          PLOTPaymentScheduleItem(with: increment, project: project)
+      .map { increments in
+        increments.map { increment in
+          PLOTPaymentScheduleItem(with: increment)
         }
       }
   }
@@ -52,9 +50,9 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.viewDidLoadProperty.value = ()
   }
 
-  private let configureWithProperty = MutableProperty<([PledgePaymentIncrement], Project?)>(([], nil))
-  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
-    self.configureWithProperty.value = (increments, project)
+  private let configureWithProperty = MutableProperty<[PledgePaymentIncrement]>([])
+  public func configure(with increments: [PledgePaymentIncrement]) {
+    self.configureWithProperty.value = increments
   }
 
   private let collapsedProperty = MutableProperty<Bool>(true)
@@ -75,45 +73,19 @@ public struct PLOTPaymentScheduleItem: Equatable {
   public var dateString: String
   public var stateLabel: String
   public var badgeStyle: BadgeStyle
-  public var amountAttributedText: NSAttributedString?
+  public var amountString: String
 
-  init(with increment: PledgePaymentIncrement, project: Project) {
+  init(with increment: PledgePaymentIncrement) {
     self.dateString = Format.date(
       secondsInUTC: increment.scheduledCollection,
       dateStyle: .medium,
       timeStyle: .none
     )
 
+    self.amountString = increment.amount.amountFormattedInProjectNativeCurrency
     self.stateLabel = getStateLabelText(from: increment)
     self.badgeStyle = getBadgeStyle(from: increment)
-
-    let currencyCountry = projectCountry(forCurrency: increment.amount.currency) ?? project.country
-    self.amountAttributedText = attributedCurrency(
-      with: currencyCountry,
-      amount: increment.amount.amount,
-      omitUSCurrencyCode: project.stats.omitUSCurrencyCode
-    )
   }
-}
-
-private func attributedCurrency(
-  with country: Project.Country,
-  amount: Double,
-  omitUSCurrencyCode: Bool
-) -> NSAttributedString? {
-  let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
-  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-  guard
-    let attributedCurrency = Format.attributedCurrency(
-      amount,
-      country: country,
-      omitCurrencyCode: omitUSCurrencyCode,
-      defaultAttributes: defaultAttributes,
-      superscriptAttributes: superscriptAttributes
-    ) else { return nil }
-
-  return attributedCurrency
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {

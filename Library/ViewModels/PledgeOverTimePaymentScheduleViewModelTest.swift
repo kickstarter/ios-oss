@@ -14,9 +14,8 @@ final class PledgeOverTimePaymentScheduleViewModelTest: TestCase {
   private var paymentScheduleItems = TestObserver<[PLOTPaymentScheduleItem], Never>()
 
   private lazy var increments = mockPaymentIncrements()
-  private lazy var project = Project.template
   private lazy var expectedItems = {
-    self.increments.map { PLOTPaymentScheduleItem(with: $0, project: self.project) }
+    self.increments.map { PLOTPaymentScheduleItem(with: $0) }
   }()
 
   // MARK: Lifecycle
@@ -35,7 +34,7 @@ final class PledgeOverTimePaymentScheduleViewModelTest: TestCase {
 
   func testCollapseToggle_Collapsed() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: self.increments, project: self.project)
+    self.vm.inputs.configure(with: self.increments)
     self.vm.inputs.collapseToggle()
     self.vm.inputs.collapseToggle()
 
@@ -45,7 +44,7 @@ final class PledgeOverTimePaymentScheduleViewModelTest: TestCase {
 
   func testCollapseToggle_Expanded() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: self.increments, project: self.project)
+    self.vm.inputs.configure(with: self.increments)
     self.vm.inputs.collapseToggle()
 
     self.collapsed.assertValues([false])

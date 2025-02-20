@@ -53,7 +53,7 @@ public protocol ManagePledgeViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
-  var configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never> { get }
+  var configurePlotPaymentScheduleView: Signal<[PledgePaymentIncrement], Never> { get }
   var plotPaymentScheduleViewHidden: Signal<Bool, Never> { get }
 }
 
@@ -376,12 +376,9 @@ public final class ManagePledgeViewModel:
 
     self.plotPaymentScheduleViewHidden = pledgeOverTimeEnabled.negate()
 
-    self.configurePlotPaymentScheduleView = project
-      .combineLatest(with: backing)
+    self.configurePlotPaymentScheduleView = backing
       .filterWhenLatestFrom(pledgeOverTimeEnabled, satisfies: { $0 })
-      .map { project, backing in
-        (backing.paymentIncrements, project)
-      }
+      .map { $0.paymentIncrements }
 
     self.showWebHelp = self.termsOfUseTappedSignal
   }
@@ -438,7 +435,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
-  public let configurePlotPaymentScheduleView: Signal<([PledgePaymentIncrement], Project), Never>
+  public let configurePlotPaymentScheduleView: Signal<[PledgePaymentIncrement], Never>
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
