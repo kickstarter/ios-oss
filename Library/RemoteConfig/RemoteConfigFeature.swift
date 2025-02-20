@@ -7,6 +7,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case pledgedProjectsOverviewEnabled = "pledged_projects_overview"
   case pledgedProjectsOverviewV2Enabled = "pledged_projects_overview_v2"
   case pledgeOverTime = "pledge_over_time"
+  case newDesignSystem = "new_design_system"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -18,6 +19,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .pledgedProjectsOverviewEnabled: return "Pledged Projects Overview"
     case .pledgedProjectsOverviewV2Enabled: return "Pledged Projects Overview V2"
     case .pledgeOverTime: return "Pledge Over Time"
+    case .newDesignSystem: return "New Design System"
     }
   }
 }

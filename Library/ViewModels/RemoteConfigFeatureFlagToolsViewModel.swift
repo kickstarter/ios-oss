@@ -97,6 +97,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePledgedProjectsOverviewV2Enabled()
   case .pledgeOverTime:
     return featurePledgeOverTimeEnabled()
+  case .newDesignSystem:
+    return featureNewDesignSystemEnabled()
   }
 }
 
