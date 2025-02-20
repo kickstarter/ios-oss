@@ -112,6 +112,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           return false
         }
       })
+      .removeDuplicates(by: { left, right in
+        left.values == right.values
+      })
       .receive(on: RunLoop.main)
       .sink(receiveValue: { results in
         self.results = results
@@ -120,8 +123,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     Publishers.Merge(
       self.viewDidAppearSubject
-        .withEmptyValues()
-        .first(),
+        .withEmptyValues(),
       self.pullToRefreshSubject
     )
     .sink { () in
