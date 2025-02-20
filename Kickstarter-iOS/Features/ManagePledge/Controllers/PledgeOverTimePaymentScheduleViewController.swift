@@ -77,8 +77,8 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     ])
   }
 
-  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
-    self.viewModel.inputs.configure(with: increments, project: project)
+  public func configure(with increments: [PledgePaymentIncrement]) {
+    self.viewModel.inputs.configure(with: increments)
   }
 
   private func setupGestureRecognizers() {

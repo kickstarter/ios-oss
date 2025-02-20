@@ -20,7 +20,6 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Collapsed() {
-    let project = Project.template
     let increments = mockPaymentIncrements()
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -29,7 +28,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 80
 
-        controller.configure(with: increments, project: project)
+        controller.configure(with: increments)
 
         self.scheduler.advance(by: .seconds(1))
 
@@ -39,7 +38,6 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let project = Project.template
     let increments = mockPaymentIncrements()
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -48,7 +46,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 420
 
-        controller.configure(with: increments, project: project)
+        controller.configure(with: increments)
         controller.collapseToggle()
 
         self.scheduler.advance(by: .seconds(1))

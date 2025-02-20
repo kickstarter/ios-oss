@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol PledgeOverTimePaymentScheduleViewModelInputs {
-  func configure(with increments: [PledgePaymentIncrement], project: Project)
+  func configure(with increments: [PledgePaymentIncrement])
   func collapseToggle()
   func viewDidLoad()
 }
@@ -38,11 +38,9 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.collapsed = initialCollapsed
 
     self.paymentScheduleItems = configureWith
-      .map { increments, project in
-        guard let project = project else { return [] }
-
-        return increments.map { increment in
-          PLOTPaymentScheduleItem(with: increment, project: project)
+      .map { increments in
+        increments.map { increment in
+          PLOTPaymentScheduleItem(with: increment)
         }
       }
   }
@@ -52,9 +50,9 @@ public struct PledgeOverTimePaymentScheduleViewModel: PledgeOverTimePaymentSched
     self.viewDidLoadProperty.value = ()
   }
 
-  private let configureWithProperty = MutableProperty<([PledgePaymentIncrement], Project?)>(([], nil))
-  public func configure(with increments: [PledgePaymentIncrement], project: Project) {
-    self.configureWithProperty.value = (increments, project)
+  private let configureWithProperty = MutableProperty<[PledgePaymentIncrement]>([])
+  public func configure(with increments: [PledgePaymentIncrement]) {
+    self.configureWithProperty.value = increments
   }
 
   private let collapsedProperty = MutableProperty<Bool>(true)
@@ -77,7 +75,7 @@ public struct PLOTPaymentScheduleItem: Equatable {
   public var badgeStyle: BadgeStyle
   public var amountString: String
 
-  init(with increment: PledgePaymentIncrement, project: Project) {
+  init(with increment: PledgePaymentIncrement) {
     self.dateString = Format.date(
       secondsInUTC: increment.scheduledCollection,
       dateStyle: .medium,
