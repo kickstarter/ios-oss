@@ -644,7 +644,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    let vc = WithShippingRewardsCollectionViewController.controller(with: project, refTag: refTag)
+    let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
     self.present(vc, animated: true)
   }
 

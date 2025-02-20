@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class WithShippingRewardsCollectionViewController: UICollectionViewController {
+final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
@@ -52,8 +52,8 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
     with project: Project,
     refTag: RefTag?,
     context: RewardsCollectionViewContext
-  ) -> WithShippingRewardsCollectionViewController {
-    let rewardsCollectionVC = WithShippingRewardsCollectionViewController()
+  ) -> RewardsCollectionViewController {
+    let rewardsCollectionVC = RewardsCollectionViewController()
     rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag, context: context)
 
     return rewardsCollectionVC
@@ -179,7 +179,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
     self.viewModel.outputs.goToAddOnSelection
       .observeForControllerAction()
       .observeValues { [weak self] data in
-        self?.goToNoShippingAddOnSelection(data: data)
+        self?.goToAddOnSelection(data: data)
       }
 
     self.viewModel.outputs.goToCustomizeYourReward
@@ -187,7 +187,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
       .observeValues { [weak self] data in
         guard let self else { return }
         /// Goes to screen that only has the pledge amount or bonus amount selectors
-        self.goToNoShippingAddOnSelection(data: data)
+        self.goToAddOnSelection(data: data)
       }
 
     self.viewModel.outputs.rewardsCollectionViewIsHidden
@@ -299,8 +299,8 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
       ?|> \.isActive .~ !isHidden
   }
 
-  private func goToNoShippingAddOnSelection(data: PledgeViewData) {
-    let vc = RewardAddOnSelectionNoShippingViewController.instantiate()
+  private func goToAddOnSelection(data: PledgeViewData) {
+    let vc = RewardAddOnSelectionViewController.instantiate()
     vc.pledgeViewDelegate = self.pledgeViewDelegate
     vc.configure(with: data)
     vc.navigationItem.title = self.title
@@ -334,7 +334,7 @@ final class WithShippingRewardsCollectionViewController: UICollectionViewControl
 
 // MARK: - UICollectionViewDelegate
 
-extension WithShippingRewardsCollectionViewController {
+extension RewardsCollectionViewController {
   override func collectionView(
     _: UICollectionView, willDisplay cell: UICollectionViewCell,
     forItemAt _: IndexPath
@@ -347,7 +347,7 @@ extension WithShippingRewardsCollectionViewController {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension WithShippingRewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt _: IndexPath
@@ -364,7 +364,7 @@ extension WithShippingRewardsCollectionViewController: UICollectionViewDelegateF
 
 // MARK: - RewardCellDelegate
 
-extension WithShippingRewardsCollectionViewController: RewardCellDelegate {
+extension RewardsCollectionViewController: RewardCellDelegate {
   func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
@@ -376,7 +376,7 @@ extension WithShippingRewardsCollectionViewController: RewardCellDelegate {
 
 // MARK: - PledgeShippingLocationViewControllerDelegate
 
-extension WithShippingRewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
+extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
@@ -404,19 +404,19 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
     |> \.showsHorizontalScrollIndicator .~ true
 }
 
-extension WithShippingRewardsCollectionViewController {
+extension RewardsCollectionViewController {
   public static func controller(
     with project: Project,
     refTag: RefTag?
   ) -> UINavigationController {
-    let rewardsWithShippingCollectionViewController = WithShippingRewardsCollectionViewController
+    let rewardsWithShippingCollectionViewController = RewardsCollectionViewController
       .instantiate(with: project, refTag: refTag, context: .createPledge)
 
     let closeButton = UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: rewardsWithShippingCollectionViewController,
-      action: #selector(WithShippingRewardsCollectionViewController.closeButtonTapped)
+      action: #selector(RewardsCollectionViewController.closeButtonTapped)
     )
 
     _ = closeButton
