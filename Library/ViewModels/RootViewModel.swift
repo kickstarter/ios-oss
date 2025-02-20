@@ -8,11 +8,11 @@ public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerInde
 
 public enum RootViewControllerData: Equatable {
   case discovery
-  case activities
+  case activities(isLoggedIn: Bool)
   case pledgedProjectsAndActivities
   case search
   case profile(isLoggedIn: Bool)
-  case backings
+  case backings(isLoggedIn: Bool)
 
   public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
     switch (lhs, rhs) {
@@ -463,10 +463,10 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
   controllers.append(.discovery)
 
   if featurePledgedProjectsOverviewEnabled() {
-    controllers.append(.backings)
+    controllers.append(.backings(isLoggedIn: isLoggedIn))
   }
 
-  controllers.append(.activities)
+  controllers.append(.activities(isLoggedIn: isLoggedIn))
 
   controllers.append(.search)
   controllers.append(.profile(isLoggedIn: isLoggedIn))
@@ -475,13 +475,25 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
-  let items: [TabBarItem] = [
-    .home(index: 0),
-    .backings(index: 1),
-    .activity(index: 2),
-    .search(index: 3),
-    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
-  ]
+  let items: [TabBarItem]
+
+  if featurePledgedProjectsOverviewEnabled() {
+    items = [
+      .home(index: 0),
+      .backings(index: 1),
+      .activity(index: 2),
+      .search(index: 3),
+      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
+    ]
+
+  } else {
+    items = [
+      .home(index: 0),
+      .activity(index: 1),
+      .search(index: 2),
+      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+    ]
+  }
 
   return TabBarItemsData(
     items: items,

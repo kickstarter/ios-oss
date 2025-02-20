@@ -114,7 +114,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
-      .map { $0.map { RootTabBarViewController.viewController(from: $0) }.compact() }
+      .map { [weak self] vcs in vcs.map { self?.viewController(from: $0) }.compact() }
       .map { $0.map(UINavigationController.init(rootViewController:)) }
       .observeValues { [weak self] in
         self?.setViewControllers($0, animated: false)
@@ -271,22 +271,29 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     return nil
   }
 
-  static func viewController(from data: RootViewControllerData) -> UIViewController? {
+  func viewController(from data: RootViewControllerData) -> UIViewController? {
     switch data {
     case .discovery:
       return DiscoveryViewController.instantiate()
-    case .activities:
+    case .backings(isLoggedIn: true):
+      return PPOContainerViewController.instantiate()
+    case .activities(isLoggedIn: true):
       return ActivitiesViewController.instantiate()
     case .pledgedProjectsAndActivities:
       return PPOContainerViewController.instantiate()
     case .search:
       return SearchViewController.instantiate()
-    case let .profile(isLoggedIn):
-      return isLoggedIn
-        ? BackerDashboardViewController.instantiate()
-        : LoginToutViewController.configuredWith(loginIntent: .loginTab)
-    case .backings:
-      return PPOContainerViewController.instantiate()
+    case .profile(isLoggedIn: true):
+      return BackerDashboardViewController.instantiate()
+    case .profile(isLoggedIn: false):
+      return LoginToutViewController.configuredWith(loginIntent: .loginTab)
+    case .backings(isLoggedIn: false):
+      // Backings and Activity use the same empty state
+      fallthrough
+    case .activities(isLoggedIn: false):
+      let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
+      emptyVC.delegate = self
+      return emptyVC
     }
   }
 
@@ -378,4 +385,20 @@ private func extractViewController(_ viewController: UIViewController) -> UIView
   }
 
   return nestedViewController
+}
+
+extension RootTabBarViewController: EmptyStatesViewControllerDelegate {
+  func emptyStatesViewController(
+    _: EmptyStatesViewController,
+    goToDiscoveryWithParams params: KsApi.DiscoveryParams?
+  ) {
+    self.switchToDiscovery(params: params)
+  }
+
+  func emptyStatesViewControllerGoToFriends() {
+    assert(
+      false,
+      "The empty state used for Activities and Backings should only ever go to discover, not to friends."
+    )
+  }
 }

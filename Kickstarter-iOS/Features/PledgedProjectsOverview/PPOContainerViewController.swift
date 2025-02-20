@@ -5,14 +5,13 @@ import Library
 import Stripe
 import SwiftUI
 
-public class PPOContainerViewController: PagedContainerViewController<PPOContainerViewController.Page>,
-  MessageBannerViewControllerPresenting {
+public class PPOContainerViewController: UIViewController, MessageBannerViewControllerPresenting {
   private let viewModel = PPOContainerViewModel()
 
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.title = Strings.tabbar_activity()
+    self.title = Strings.tabbar_backings()
 
     let ppoView = PPOView(
       shouldRefresh: self.viewModel.shouldRefresh,
@@ -23,41 +22,36 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         self?.viewModel.handle(navigationEvent: event)
       }
     )
+
     let ppoViewController = UIHostingController(rootView: ppoView)
-    ppoViewController.title = Page.projectAlerts(.none).name
-
-    let activitiesViewController = ActivitiesViewController.instantiate()
-    activitiesViewController.title = Page.activityFeed(.none).name
-
-    self.setPagedViewControllers([
-      (.projectAlerts(.none), ppoViewController),
-      (.activityFeed(.none), activitiesViewController)
-    ])
+    self.displayChildViewController(ppoViewController)
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
-    // Update badges in the paging tab bar at the top of the view
-    Publishers.CombineLatest(
-      self.viewModel.projectAlertsBadge,
-      self.viewModel.activityBadge
-    )
-    .map { projectAlerts, activity in
-      let projectAlerts = Page.projectAlerts(projectAlerts)
-      let activityFeed = Page.activityFeed(activity)
-      return (projectAlerts, activityFeed)
-    }
-    .sink { [weak self, weak ppoViewController, weak activitiesViewController] projectAlerts, activityFeed in
-      guard let self, let ppoViewController, let activitiesViewController else {
-        return
-      }
-      ppoViewController.title = projectAlerts.name
-      activitiesViewController.title = activityFeed.name
-      self.setPagedViewControllers([
-        (projectAlerts, ppoViewController),
-        (activityFeed, activitiesViewController)
-      ])
-    }
-    .store(in: &self.subscriptions)
+    // FIXME: MBL-2075: Badges will now be updated by RootTabBarController and displayed on the tab.
+
+    /*
+      Update badges in the paging tab bar at the top of the view
+     Publishers.CombineLatest(
+       self.viewModel.projectAlertsBadge,
+       self.viewModel.activityBadge
+     )
+     .map { projectAlerts, activity in
+       let projectAlerts = Page.projectAlerts(projectAlerts)
+       let activityFeed = Page.activityFeed(activity)
+       return (projectAlerts, activityFeed)
+     }
+     .sink { [weak self, weak ppoViewController] projectAlerts, _ in
+       guard let self, let ppoViewController else {
+         return
+       }
+       ppoViewController.title = projectAlerts.name
+       self.setPagedViewControllers([
+         (projectAlerts, ppoViewController)
+       ])
+     }
+     .store(in: &self.subscriptions)
+     */
 
     // On the first 3DS challenge, set up the Stripe SDK
     self.viewModel.stripeConfiguration
@@ -119,33 +113,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.viewWillAppear()
-  }
-
-  public enum Page: TabBarPage {
-    case projectAlerts(TabBarBadge)
-    case activityFeed(TabBarBadge)
-
-    public var name: String {
-      switch self {
-      case .projectAlerts:
-        Strings.Project_alerts()
-      case .activityFeed:
-        Strings.discovery_accessibility_toolbar_buttons_activity_label()
-      }
-    }
-
-    public var badge: TabBarBadge {
-      switch self {
-      case let .projectAlerts(badge):
-        badge
-      case let .activityFeed(badge):
-        badge
-      }
-    }
-
-    public var id: String {
-      self.name
-    }
   }
 
   public var messageBannerViewController: MessageBannerViewController?
