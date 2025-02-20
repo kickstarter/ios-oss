@@ -137,9 +137,17 @@ extension UIFont {
 }
 
 extension UIFont {
-  /// Returns a bolded version of `self`.
+  /// Returns a bolded version of the current font.
+  ///
+  /// This extension applies a bold symbolic trait to the existing font while maintaining its original size.
+  /// If the transformation fails, it returns the original font.
+  ///
+  /// - Returns: A `UIFont` instance with bold traits applied. If the transformation is unsuccessful, the original font is returned.
+  ///
+  /// - More info: [UIFont Descriptor Documentation](https://developer.apple.com/documentation/uikit/uifont/init(descriptor:size:))
   public var bolded: UIFont {
     return self.fontDescriptor.withSymbolicTraits(.traitBold)
+      // Keep the font size unchanged by setting it to 0.0
       .map { UIFont(descriptor: $0, size: 0.0) } ?? self
   }
 
