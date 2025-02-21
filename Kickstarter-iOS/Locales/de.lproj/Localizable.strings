@@ -789,10 +789,11 @@
 "We_are_unable_to_authenticate_your_payment_method_please_pull_to_refresh_and_choose_a_different_payment_method" = "Wir können deine Zahlungsmethode nicht authentifizieren. Ziehe nach unten, um die Seite zu aktualisieren und eine andere Zahlungsmethode auszuwählen.";
 "We_can_no_longer_log_you_in_through_Facebook" = "Wir können dich nicht mehr über Facebook anmelden. Bitte melde dich mit deinem Kickstarter-Passwort an oder leg für deine Facebook-E-Mail-Adresse ein neues Passwort fest.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
-"We_cant_process_your_Pledge_Over_Time_payment" = "We can’t process your Pledge Over Time payment. Please <a href=\"%{view_your_pledge_link}\">view your pledge</a> on a web browser and log in to fix your payment.";
+"We_cant_process_your_Pledge_Over_Time_payment" = "Wir können deine Ratenzahlung nicht verarbeiten. Bitte <a href=\"%{view_your_pledge_link}\">sieh dir deinen Finanzierungsbeitrag in einem Webbrowser an</a> und melde dich an, um den Fehler mit deiner Zahlung zu beheben.";
 "We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
 "We_cant_process_your_pledge_for" = "Wir können deine Zahlung aus folgendem Grund leider nicht bearbeiten:";
+"We_cant_process_your_pledge_visit_the_project_alerts_dashboard_to_authenticate" = "Wir können deinen Beitrag nicht verarbeiten. Besuche das Dashboard für Projekthinweise, um deine Karte zu authentifizieren.";
 "We_collected_the_backers_pledge_for_this_project" = "Der Finanzierungsbeitrag dieses Unterstützers wurde abgebucht.";
 "We_collected_your_pledge_for_this_project" = "Dein Finanzierungsbeitrag für dieses Projekt wurde abgebucht.";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
@@ -1715,7 +1716,7 @@
 "project.menu.explore_this_project" = "Projekt erkunden";
 "project.project_notices.header" = "Kickstarter hat diesen Projektgründer eingeschränkt";
 "project.project_notices.notice_cta" = "Weitere Info";
-"project.project_notices.notice_intro" = "Kickstarter's Trust & Safety team has investigated user reports associated with this project and/or its creator.";
+"project.project_notices.notice_intro" = "Das Kickstarter-Team für Vertrauen und Sicherheit hat Meldungen von Nutzern zu diesem Projekt und/oder dem Projektgründer untersucht.";
 "project.project_notices.notice_sheet_cta" = "Weitere Informationen zur Rechenschaftspflicht von Projektgründern";
 "project.share.twitter.message" = "%{project_title}, via @Kickstarter";
 "project.social.friend_and_friend_are_backers" = "%{friend_name} und %{second_friend_name} unterstützen dieses Projekt.";

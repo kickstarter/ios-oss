@@ -158,8 +158,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
         let topViewController = strongSelf.navigationController?.topViewController
 
         assert(
-          topViewController is NoShippingPledgeViewController ||
-            topViewController is NoShippingPostCampaignCheckoutViewController,
+          topViewController is PledgeViewController ||
+            topViewController is PostCampaignCheckoutViewController,
           "PledgePaymentMethodsViewController is only intended to be presented as part of a pledge flow."
         )
 

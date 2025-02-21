@@ -62,7 +62,7 @@ struct PPOProjectDetails: View {
     static let imageContentMode = ContentMode.fit
 
     static let titleLineLimit = 2
-    static let subtitleLineLimit = 1
+    static let subtitleLineLimit: Int? = nil
 
     static let textMaxWidth = CGFloat.infinity
     static let textAlignment = Alignment.leading

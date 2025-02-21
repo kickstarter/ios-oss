@@ -37,7 +37,7 @@ public struct PostCampaignPaymentAuthorizationData: Equatable {
   public let paymentIntent: String
 }
 
-public protocol NoShippingPostCampaignCheckoutViewModelInputs {
+public protocol PostCampaignCheckoutViewModelInputs {
   func checkoutTerminated()
   func configure(with data: PledgeViewData)
   func confirmPaymentSuccessful(clientSecret: String)
@@ -53,7 +53,7 @@ public protocol NoShippingPostCampaignCheckoutViewModelInputs {
   func applePayContextDidComplete()
 }
 
-public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
+public protocol PostCampaignCheckoutViewModelOutputs {
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
@@ -74,14 +74,14 @@ public protocol NoShippingPostCampaignCheckoutViewModelOutputs {
   var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
-public protocol NoShippingPostCampaignCheckoutViewModelType {
-  var inputs: NoShippingPostCampaignCheckoutViewModelInputs { get }
-  var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { get }
+public protocol PostCampaignCheckoutViewModelType {
+  var inputs: PostCampaignCheckoutViewModelInputs { get }
+  var outputs: PostCampaignCheckoutViewModelOutputs { get }
 }
 
-public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignCheckoutViewModelType,
-  NoShippingPostCampaignCheckoutViewModelInputs,
-  NoShippingPostCampaignCheckoutViewModelOutputs {
+public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
+  PostCampaignCheckoutViewModelInputs,
+  PostCampaignCheckoutViewModelOutputs {
   let stripeIntentService: StripeIntentServiceType
 
   public init(stripeIntentService: StripeIntentServiceType) {
@@ -556,12 +556,16 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      project,
+      pledgeTotal,
       pledgeButtonEnabled,
       context,
       self.loginSignupUseCase.dataOutputs.isLoggedIn
     )
-    .map { pledgeButtonEnabled, context, isLoggedIn in
+    .map { project, pledgeTotal, pledgeButtonEnabled, context, isLoggedIn in
       PledgeViewCTAContainerViewData(
+        project: project,
+        total: pledgeTotal,
         isLoggedIn: isLoggedIn,
         isEnabled: pledgeButtonEnabled,
         context: context,
@@ -776,8 +780,8 @@ public class NoShippingPostCampaignCheckoutViewModel: NoShippingPostCampaignChec
   public let checkoutComplete: Signal<ThanksPageData, Never>
   public let checkoutError: Signal<ErrorEnvelope, Never>
 
-  public var inputs: NoShippingPostCampaignCheckoutViewModelInputs { return self }
-  public var outputs: NoShippingPostCampaignCheckoutViewModelOutputs { return self }
+  public var inputs: PostCampaignCheckoutViewModelInputs { return self }
+  public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
 
   // MARK: - Use cases
 

@@ -43,7 +43,12 @@ enum PPONavigationEvent: Equatable {
   case survey(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
-  case confirmAddress(backingId: String, addressId: String, address: String)
+  case confirmAddress(
+    backingId: String,
+    addressId: String,
+    address: String,
+    onProgress: (PPOActionState) -> Void
+  )
   case contactCreator(messageSubject: MessageSubject)
 
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
@@ -62,8 +67,8 @@ enum PPONavigationEvent: Equatable {
     ):
       return lhsSecret == rhsSecret
     case let (
-      .confirmAddress(lhsBackingId, lhsAddressId, lhsAddress),
-      .confirmAddress(rhsBackingId, rhsAddressId, rhsAddress)
+      .confirmAddress(lhsBackingId, lhsAddressId, lhsAddress, _),
+      .confirmAddress(rhsBackingId, rhsAddressId, rhsAddress, _)
     ):
       return lhsBackingId == rhsBackingId && lhsAddressId == rhsAddressId && lhsAddress == rhsAddress
     case let (
@@ -107,6 +112,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           return false
         }
       })
+      .removeDuplicates(by: { left, right in
+        left.values == right.values
+      })
       .receive(on: RunLoop.main)
       .sink(receiveValue: { results in
         self.results = results
@@ -115,8 +123,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     Publishers.Merge(
       self.viewDidAppearSubject
-        .withEmptyValues()
-        .first(),
+        .withEmptyValues(),
       self.pullToRefreshSubject
     )
     .sink { () in
@@ -142,7 +149,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         PPONavigationEvent.confirmAddress(
           backingId: viewModel.backingGraphId,
           addressId: addressId,
-          address: address
+          address: address,
+          onProgress: { [weak self] state in
+            self?.confirmAddressProgressSubject.send((viewModel, state))
+          }
         )
       },
       self.contactCreatorSubject.map { viewModel in
@@ -171,7 +181,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: When view appears, the next time it loads, send a PPO dashboard open
     self.viewDidAppearSubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { _, properties in
         AppEnvironment.current.ksrAnalytics.trackPPODashboardOpens(properties: properties)
       }
@@ -179,7 +189,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Tap messaging creator
     self.contactCreatorSubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOMessagingCreator(
           from: card.projectAnalytics,
@@ -190,7 +200,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Fixing payment failure
     self.fixPaymentMethodSubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOFixingPaymentFailure(
           project: card.projectAnalytics,
@@ -201,7 +211,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Opening survey
     self.openSurveySubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
           project: card.projectAnalytics,
@@ -212,7 +222,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { cardProperties, overallProperties in
         let (card, _, _) = cardProperties
         AppEnvironment.current.ksrAnalytics.trackPPOInitiateConfirmingAddress(
@@ -222,9 +232,22 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
+    // Analytics: Finish confirming address
+    self.confirmAddressProgressSubject
+      .filter { $0.1 == .confirmed }
+      .map { $0.0 } // we just need the card
+      .withFirst(from: latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOSubmitAddressConfirmation(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
     // Analytics: Edit address
     self.editAddressSubject
-      .combineLatest(latestLoadedResults)
+      .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOEditAddress(
           project: card.projectAnalytics,
@@ -313,6 +336,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
+  private let confirmAddressProgressSubject = PassthroughSubject<
+    (PPOProjectCardModel, PPOActionState),
+    Never
+  >()
   private let contactCreatorSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
 
@@ -351,5 +378,18 @@ extension Sequence where Element == PPOProjectCardViewModel {
       total: total,
       page: page
     )
+  }
+}
+
+extension Publisher {
+  /// Combines this publisher with the first value emitted by another publisher.
+  /// - Warning: This is not a direct replacement for `withLatestFrom` from other ReactiveX libraries.
+  /// - Parameter other: The publisher to grab the first value from
+  /// - Returns: A publisher that emits tuples of values from this publisher paired with the first value from the other publisher
+  func withFirst<B>(from other: B) -> AnyPublisher<(Self.Output, B.Output), Self.Failure> where B: Publisher,
+    B.Failure == Self.Failure {
+    return self.flatMap { foo in
+      other.first().map { (foo, $0) }
+    }.eraseToAnyPublisher()
   }
 }

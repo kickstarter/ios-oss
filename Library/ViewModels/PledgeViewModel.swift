@@ -4,7 +4,7 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
-public typealias NoShippingPledgeViewCTAContainerViewData = (
+public typealias PledgeViewCTAContainerViewData = (
   project: Project,
   total: Double,
   isLoggedIn: Bool,
@@ -101,7 +101,7 @@ public struct PledgeViewData: Equatable {
   }
 }
 
-public protocol NoShippingPledgeViewModelInputs {
+public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
   func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
@@ -120,7 +120,7 @@ public protocol NoShippingPledgeViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol NoShippingPledgeViewModelOutputs {
+public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configureEstimatedShippingView: Signal<(String?, String?), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
@@ -130,7 +130,7 @@ public protocol NoShippingPledgeViewModelOutputs {
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   > { get }
-  var configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never> { get }
+  var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var estimatedShippingViewHidden: Signal<Bool, Never> { get }
@@ -150,13 +150,13 @@ public protocol NoShippingPledgeViewModelOutputs {
   var pledgeOverTimeConfigData: Signal<PledgePaymentPlansAndSelectionData?, Never> { get }
 }
 
-public protocol NoShippingPledgeViewModelType {
-  var inputs: NoShippingPledgeViewModelInputs { get }
-  var outputs: NoShippingPledgeViewModelOutputs { get }
+public protocol PledgeViewModelType {
+  var inputs: PledgeViewModelInputs { get }
+  var outputs: PledgeViewModelOutputs { get }
 }
 
-public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippingPledgeViewModelInputs,
-  NoShippingPledgeViewModelOutputs {
+public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
+  PledgeViewModelOutputs {
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
@@ -933,7 +933,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
       context,
       willRetryPaymentMethod
     )
-    .map { $0 as NoShippingPledgeViewCTAContainerViewData }
+    .map { $0 as PledgeViewCTAContainerViewData }
 
     self.title = context.map { $0.title }
 
@@ -1134,7 +1134,7 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   >
-  public let configurePledgeViewCTAContainerView: Signal<NoShippingPledgeViewCTAContainerViewData, Never>
+  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let estimatedShippingViewHidden: Signal<Bool, Never>
@@ -1162,8 +1162,8 @@ public class NoShippingPledgeViewModel: NoShippingPledgeViewModelType, NoShippin
     return self.pledgeOverTimeUseCase.outputs.pledgeOverTimeConfigData
   }
 
-  public var inputs: NoShippingPledgeViewModelInputs { return self }
-  public var outputs: NoShippingPledgeViewModelOutputs { return self }
+  public var inputs: PledgeViewModelInputs { return self }
+  public var outputs: PledgeViewModelOutputs { return self }
 
   // MARK: - Use cases
 

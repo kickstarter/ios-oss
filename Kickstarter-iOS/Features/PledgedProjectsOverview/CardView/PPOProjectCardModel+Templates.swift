@@ -102,7 +102,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than",
       address: nil,
-      actions: (.authenticateCard(clientSecret: ""), nil),
+      actions: (.authenticateCard(clientSecret: "seti_asdqwe_secret_x"), nil),
       tierType: .authenticateCard,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,

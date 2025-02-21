@@ -260,6 +260,30 @@ final class DesignSystemViewController: UIViewController {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
+    // New Design System Fonts
+    let newFontHeader = UILabel()
+    newFontHeader.font = .ksr_title1().bolded
+    newFontHeader.textColor = adaptiveColor(.black)
+    newFontHeader.adjustsFontForContentSizeCategory = true
+    newFontHeader.text = "New Typography"
+    self.typeStackView.addArrangedSubview(newFontHeader)
+
+    InterFont.allCases.forEach { style in
+      let label = UILabel()
+      label.text = String(describing: style).capitalized
+      label.font = style.font()
+      label.textColor = adaptiveColor(.black)
+      label.adjustsFontForContentSizeCategory = true
+      self.typeStackView.addArrangedSubview(label)
+
+      let labelBold = UILabel()
+      labelBold.text = "\(String(describing: style)) Bold".capitalized
+      labelBold.font = style.font().bolded
+      labelBold.textColor = adaptiveColor(.black)
+      labelBold.adjustsFontForContentSizeCategory = true
+      self.typeStackView.addArrangedSubview(labelBold)
+    }
+
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -4),
 

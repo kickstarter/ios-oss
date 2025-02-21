@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class RewardAddOnSelectionNoShippingViewController: UIViewController {
+final class RewardAddOnSelectionViewController: UIViewController {
   // MARK: - Properties
 
   private let dataSource = RewardAddOnSelectionDataSource()
@@ -23,7 +23,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
-  public weak var noShippingPledgeViewDelegate: NoShippingPledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -39,8 +39,8 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
       |> \.tableHeaderView .~ self.headerView
   }()
 
-  private let viewModel: RewardAddOnSelectionNoShippingViewModelType =
-    RewardAddOnSelectionNoShippingViewModel()
+  private let viewModel: RewardAddOnSelectionViewModelType =
+    RewardAddOnSelectionViewModel()
 
   // MARK: - Lifecycle
 
@@ -56,13 +56,13 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
     self.continueCTAView.continueButton.addTarget(
       self,
-      action: #selector(RewardAddOnSelectionNoShippingViewController.continueButtonTapped),
+      action: #selector(RewardAddOnSelectionViewController.continueButtonTapped),
       for: .touchUpInside
     )
 
     self.refreshControl.addTarget(
       self,
-      action: #selector(RewardAddOnSelectionNoShippingViewController.beginRefresh),
+      action: #selector(RewardAddOnSelectionViewController.beginRefresh),
       for: .valueChanged
     )
 
@@ -213,7 +213,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   // MARK: Functions
 
   private func goToLatePledge(data: PledgeViewData) {
-    let vc = NoShippingPostCampaignCheckoutViewController.instantiate()
+    let vc = PostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title
 
@@ -221,8 +221,8 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
   }
 
   private func goToPledge(data: PledgeViewData) {
-    let vc = NoShippingPledgeViewController.instantiate()
-    vc.delegate = self.noShippingPledgeViewDelegate
+    let vc = PledgeViewController.instantiate()
+    vc.delegate = self.pledgeViewDelegate
     vc.configure(with: data)
 
     self.navigationController?.pushViewController(vc, animated: true)
@@ -231,7 +231,7 @@ final class RewardAddOnSelectionNoShippingViewController: UIViewController {
 
 // MARK: - RewardAddOnCardViewDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDelegate {
+extension RewardAddOnSelectionViewController: RewardAddOnCardViewDelegate {
   func rewardAddOnCardView(
     _: RewardAddOnCardView,
     didSelectQuantity quantity: Int,
@@ -243,7 +243,7 @@ extension RewardAddOnSelectionNoShippingViewController: RewardAddOnCardViewDeleg
 
 // MARK: - PledgeAmountViewControllerDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControllerDelegate {
+extension RewardAddOnSelectionViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
     didUpdateWith data: PledgeAmountData
@@ -254,7 +254,7 @@ extension RewardAddOnSelectionNoShippingViewController: PledgeAmountViewControll
 
 // MARK: - UITableViewDelegate
 
-extension RewardAddOnSelectionNoShippingViewController: UITableViewDelegate {
+extension RewardAddOnSelectionViewController: UITableViewDelegate {
   func tableView(
     _: UITableView,
     willDisplay cell: UITableViewCell,

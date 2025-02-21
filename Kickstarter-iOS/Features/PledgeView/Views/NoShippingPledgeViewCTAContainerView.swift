@@ -162,8 +162,10 @@ final class NoShippingPledgeViewCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: NoShippingPledgeViewCTAContainerViewData) {
+  func configureWith(value: PledgeViewCTAContainerViewData) {
     let viewModelData = PledgeViewCTAContainerViewData(
+      project: value.project,
+      total: value.total,
       isLoggedIn: value.isLoggedIn,
       isEnabled: value.isEnabled,
       context: value.context,

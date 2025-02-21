@@ -338,6 +338,7 @@
             "totalCount": 0
           },
           "prelaunchActivated": false,
+          "projectNotice": null,
           "risks": "May not deliver",
           "sendMetaCapiEvents": false,
           "slug": "cainlevy/zans-late-pledge-campaign",
@@ -621,6 +622,7 @@
             "totalCount": 26
           },
           "prelaunchActivated": true,
+          "projectNotice": null,
           "risks": "Here at Tentacle Kitty, we have been producing plushies for more than a decade. We are confident in what we have designed, as they have had lots of real world hugging... errrr, “testing.”\n\nThe two main risks for this Kickstarter are unexpected delays in manufacturing or shipping. With a project of this size, customs can sometimes also cause delays in shipping. If the project is highly successful, materials could also take longer for our manufacturer to obtain, although larger orders usually mean faster production. Overseas holidays can also cause a delay in either shipping or manufacturing.\n\nAt the same time there is unforeseen issues that can delay production, or ruin entire batches of products.\n\nHowever, we have completed 6 successful Kickstarters and are working with established manufacturers with whom we have worked many times.\nWe've done everything we can to learn and adapt to changing times and even when we run into trouble, we always find a way to finish our projects.\n\nIn any case, we will always keep everyone updated with all stages of production and shipping. \n\nNo matter what, we will always ensure you get your pledge, even if it takes a bit longer.",
           "sendMetaCapiEvents": true,
           "slug": "johnmerritt/tentacle-kitty-cottagecore",
@@ -1063,6 +1065,7 @@
             "totalCount": 12
           },
           "prelaunchActivated": true,
+          "projectNotice": null,
           "risks": "FULFILLMENT TIMELINE\nWhile delays are possible, we have a track record of delivering backer rewards on time. Our average time to deliver a game after a Kickstarter campaign is ~9 months.\n\nFINAL PRODUCT\nDesign, materials, and content are subject to change.\n\nLOST SHIPMENTS\nIf your order is lost or returned due to unforeseen circumstances, we will reship 1 time for free. Reshipment fee applies if incorrect address was given. If undeliverable, a refund will be issued.\n\nLATE SURVEYS\nReshipments and late orders will be sent about 2 months after fulfillment.\n\nThis campaign will close 6 months after fulfillment. If you do not provide shipping info by then, we can't fulfill your order and your pledge will be kept as a donation.\n\nREPLACEMENT PARTS\nTo request replacements parts, email r@example.com. Box replacements are handled case by case. Minor cosmetic issues may not warrant free replacement.\n\nREFUND POLICY:\n• You can get a full refund within 2 weeks after campaign end.\n• After 2 weeks, you can get a refund minus 10% for crowdfunding/processing fees.\n• No refunds after pledge manager is locked.",
           "sendMetaCapiEvents": false,
           "slug": "roadtoinfamy/fromage",
@@ -1324,6 +1327,7 @@
             "totalCount": 1
           },
           "prelaunchActivated": false,
+          "projectNotice": null,
           "risks": "We understand that there is always a risk with donating to a project like ours, but rest assured that we have signed a three-year lease at this location and we will be open for business Fall 2023 regardless of challenges.",
           "sendMetaCapiEvents": false,
           "slug": "614480152/moonrise-cafe-home-of-heart-cakes",

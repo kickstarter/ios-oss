@@ -4,13 +4,6 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias PledgeViewCTAContainerViewData = (
-  isLoggedIn: Bool,
-  isEnabled: Bool,
-  context: PledgeViewContext,
-  willRetryPaymentMethod: Bool
-)
-
 public protocol PledgeViewCTAContainerViewModelInputs {
   func applePayButtonTapped()
   func configureWith(value: PledgeViewCTAContainerViewData)

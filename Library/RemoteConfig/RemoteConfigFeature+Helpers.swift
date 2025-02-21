@@ -31,6 +31,18 @@ public func featurePledgedProjectsOverviewEnabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewEnabled)
 }
 
+public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
+  featureEnabled(feature: .pledgedProjectsOverviewV2Enabled)
+}
+
 public func featurePledgeOverTimeEnabled() -> Bool {
   featureEnabled(feature: .pledgeOverTime)
+}
+
+public func featureNewDesignSystemEnabled() -> Bool {
+  #if DESIGN_SYSTEM_ENABLED
+    featureEnabled(feature: .newDesignSystem)
+  #else
+    false
+  #endif
 }

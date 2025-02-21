@@ -6,6 +6,16 @@ extension UIColor {
     return .hex(0xA12027)
   }
 
+  /// 0x73140D, a color from the new design system, added here temporarily.
+  public static var ksr_alert_foreground: UIColor {
+    return .hex(0x73140D)
+  }
+
+  /// 0xFEF2F1, a color from the new design system, added here temporarily.
+  public static var ksr_alert_background: UIColor {
+    return .hex(0xFEF2F1)
+  }
+
   /// 0x000000
   public static var ksr_black: UIColor {
     return .hex(0x000000)

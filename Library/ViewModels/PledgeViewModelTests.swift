@@ -12,8 +12,8 @@ private struct MockStripePaymentHandlerActionStatus: StripePaymentHandlerActionS
   let status: StripePaymentHandlerActionStatus
 }
 
-final class NoShippingPledgeViewModelTests: TestCase {
-  private let vm: NoShippingPledgeViewModelType = NoShippingPledgeViewModel()
+final class PledgeViewModelTests: TestCase {
+  private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let beginSCAFlowWithClientSecret = TestObserver<String, Never>()
 

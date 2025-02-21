@@ -7056,6 +7056,18 @@
             "deprecationReason": null
           },
           {
+            "name": "projectNotice",
+            "description": "The text of the currently applied project notice, empty if there is no notice",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectOfTheDayAt",
             "description": "When this project was Project of the Day.",
             "args": [],
@@ -14222,12 +14234,6 @@
             "deprecationReason": null
           },
           {
-            "name": "disable_shipping_at_pledge",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "pledge_projects_overview_2024",
             "description": null,
             "isDeprecated": false,
@@ -14241,18 +14247,6 @@
           },
           {
             "name": "copy_rewards",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pledge_redemption_v1",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pledge_redemption_vat",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -14330,18 +14324,6 @@
             "deprecationReason": null
           },
           {
-            "name": "multiple_shipfrom_locations_2024",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pledge_redemption_unified_creator_ui",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "react_backed_projects",
             "description": null,
             "isDeprecated": false,
@@ -14361,6 +14343,24 @@
           },
           {
             "name": "pledge_management_refunds",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "discover_ui_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_management_beta",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "creator_experience_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16887,6 +16887,12 @@
           },
           {
             "name": "phone",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunch_early",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -20708,6 +20714,12 @@
           {
             "name": "PROTOTYPE_MISREPRESENTATION",
             "description": "prototype-misrepresentation",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UNDISCLOSED_AI_USE",
+            "description": "undisclosed-ai-use",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -29053,7 +29065,110 @@
         "fields": [
           {
             "name": "originalTotal",
-            "description": "original total for reward",
+            "description": "original total amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundItemId",
+            "description": "uuid for the refund item",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedTotal",
+            "description": "amount that has been refunded after all adjustments are applied",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingTotal",
+            "description": "amount remaining after all adjustments are applied",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removed",
+            "description": "whether the reward has been removed from the backing",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rewardId",
+            "description": " graphql id of reward to be refunded",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AdjustmentAmount",
+        "description": "A hash containing the original, refunded, and remaining amounts.",
+        "fields": [
+          {
+            "name": "originalTotal",
+            "description": "original total amount",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -29100,76 +29215,13 @@
             "deprecationReason": null
           },
           {
-            "name": "rewardId",
-            "description": " graphql id of reward to be refunded",
+            "name": "removed",
+            "description": "whether the reward has been removed from the backing",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AdjustmentAmount",
-        "description": "A hash containing the original, refunded, and remaining amounts.",
-        "fields": [
-          {
-            "name": "originalTotal",
-            "description": "the original total amount",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "refundedTotal",
-            "description": "the refunded total amount",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "remainingTotal",
-            "description": "the remaining total amount",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -43071,14 +43123,28 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
-            "description": "id of object to be removed",
+            "name": "rewardId",
+            "description": "id of the reward associated with the removal",
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "refundItemId",
+            "description": "id of object to be removed",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
                 "ofType": null
               }
             },
@@ -43110,11 +43176,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "refundItemId",
             "description": "id of object to be refunded",
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "ID",
               "ofType": null
             },
             "defaultValue": null
@@ -44919,6 +44985,12 @@
           {
             "name": "PROTOTYPE_MISREPRESENTATION",
             "description": "prototype-misrepresentation",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UNDISCLOSED_AI_USE",
+            "description": "undisclosed-ai-use",
             "isDeprecated": false,
             "deprecationReason": null
           },

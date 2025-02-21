@@ -1,6 +1,5 @@
 fragment PaymentIncrementFragment on PaymentIncrement {
   amount {
-    amountAsFloat
     amountFormattedInProjectNativeCurrency
     currency
   }

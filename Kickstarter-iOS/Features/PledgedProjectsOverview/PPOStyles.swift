@@ -29,8 +29,8 @@ enum PPOStyles {
   )
 
   static let alertColor = (
-    foreground: UIColor.hex(0x73140D),
-    background: UIColor.hex(0xFEF2F1)
+    foreground: UIColor.ksr_alert_foreground,
+    background: UIColor.ksr_alert_background
   )
 
   static let title = (
