@@ -15,8 +15,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
     return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
-  private lazy var headerView: RewardsWithShippingCollectionViewHeaderView = {
-    RewardsWithShippingCollectionViewHeaderView(frame: .zero)
+  private lazy var headerView: RewardsCollectionViewHeaderView = {
+    RewardsCollectionViewHeaderView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -46,7 +46,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: WithShippingRewardsCollectionViewModelType = WithShippingRewardsCollectionViewModel()
+  private let viewModel: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
   static func instantiate(
     with project: Project,
