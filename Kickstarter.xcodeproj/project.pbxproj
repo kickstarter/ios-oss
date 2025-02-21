@@ -1591,13 +1591,13 @@
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
 		E135005C2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E135005B2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift */; };
-		E13D767D2D42C36900FB58CE /* LoginSignupUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */; };
-		E13D76802D42C55C00FB58CE /* PLOTPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PLOTPledgeViewModelTests.swift */; };
-		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
 		E13D76712D4011BF00FB58CE /* PaymentMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76702D4011BF00FB58CE /* PaymentMethodsUseCase.swift */; };
 		E13D76742D404F1600FB58CE /* PaymentMethodsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */; };
 		E13D76762D41698500FB58CE /* ApplePayTokenUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76752D41698000FB58CE /* ApplePayTokenUseCase.swift */; };
 		E13D76792D419A5900FB58CE /* ApplePayTokenUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76772D4195E700FB58CE /* ApplePayTokenUseCaseTests.swift */; };
+		E13D767D2D42C36900FB58CE /* LoginSignupUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */; };
+		E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
+		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
@@ -1613,6 +1613,7 @@
 		E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E18D4D3B2D68E8250031C31A /* UIViewController+Children.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18D4D3A2D68E81F0031C31A /* UIViewController+Children.swift */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
 		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
@@ -1621,7 +1622,6 @@
 		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
-		E1A310262D28406F0062646C /* PLOTPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PLOTPledgeViewModel.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
@@ -3305,12 +3305,12 @@
 		E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateOrUpdateBackingAddressMutation.graphql; sourceTree = "<group>"; };
 		E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBackingAddressMutationTests.swift; sourceTree = "<group>"; };
 		E135005B2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsAndSelectionData.swift; sourceTree = "<group>"; };
-		E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCase.swift; sourceTree = "<group>"; };
-		E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		E13D76702D4011BF00FB58CE /* PaymentMethodsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsUseCase.swift; sourceTree = "<group>"; };
 		E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsUseCaseTests.swift; sourceTree = "<group>"; };
 		E13D76752D41698000FB58CE /* ApplePayTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayTokenUseCase.swift; sourceTree = "<group>"; };
 		E13D76772D4195E700FB58CE /* ApplePayTokenUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayTokenUseCaseTests.swift; sourceTree = "<group>"; };
+		E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCase.swift; sourceTree = "<group>"; };
+		E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
@@ -3325,6 +3325,7 @@
 		E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceSelected.swift; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
+		E18D4D3A2D68E81F0031C31A /* UIViewController+Children.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Children.swift"; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
 		E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProjectsEnvelope.swift; sourceTree = "<group>"; };
 		E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift"; sourceTree = "<group>"; };
@@ -6441,6 +6442,7 @@
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				37BB45C82243031100E7392A /* UIView+AutoLayout.swift */,
 				778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */,
+				E18D4D3A2D68E81F0031C31A /* UIViewController+Children.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				370BE71522541C8100B44DB2 /* UIViewController+URL.swift */,
 				370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */,
@@ -8233,6 +8235,7 @@
 				6035AFB12C5947D2007E28FC /* PledgeViewModel.swift in Sources */,
 				778215E820F6922100F3D09F /* HelpType.swift in Sources */,
 				E16ECA722C245A51002A1D25 /* PagedContainerViewModel.swift in Sources */,
+				E18D4D3B2D68E8250031C31A /* UIViewController+Children.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				6035AFAB2C518222007E28FC /* RewardAddOnSelectionViewModel.swift in Sources */,
@@ -8525,7 +8528,7 @@
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
 				E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */,
-				E13D76802D42C55C00FB58CE /* PLOTPledgeViewModelTests.swift in Sources */,
+				E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */,
 				1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */,
 				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
 				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,
