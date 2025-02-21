@@ -493,6 +493,7 @@ private func pledgeViewData(
   return PledgeViewData(
     project: project,
     rewards: rewards,
+    bonusSupport: nil,
     selectedShippingRule: nil,
     selectedQuantities: selectedRewardQuantities(in: backing),
     selectedLocationId: backing.locationId,

@@ -600,7 +600,7 @@ extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   }
 }
 
-// MARK: - NoShippingPledgeViewControllerMessageDisplaying
+// MARK: - PledgeViewControllerMessageDisplaying
 
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
   func pledgeViewController(_: UIViewController, didErrorWith message: String, error _: Error?) {
