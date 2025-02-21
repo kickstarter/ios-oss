@@ -10,7 +10,7 @@ extension UIViewController {
   ///   - leftAnchor: The child view controller's left anchor will be constrained to this anchor
   ///   - rightAnchor: The child view controller's right anchor will be constrained to this anchor
   ///   - bottomAnchor: The child view controller's bottom anchor will be constrained to this anchor
-  func displayChildViewController(
+  public func displayChildViewController(
     _ controller: UIViewController,
     constrainedToTopAnchor topLayoutAnchor: NSLayoutYAxisAnchor?,
     leftAnchor: NSLayoutXAxisAnchor?,
@@ -54,7 +54,7 @@ extension UIViewController {
   /// The child's view will be constrained to the `safeAreaLayoutGuide` of the parent.
   /// - Parameters:
   ///   - controller: the child view controller
-  func displayChildViewController(_ controller: UIViewController) {
+  public func displayChildViewController(_ controller: UIViewController) {
     self.displayChildViewController(
       controller,
       constrainedToTopAnchor: self.view.safeAreaLayoutGuide.topAnchor,
@@ -68,7 +68,7 @@ extension UIViewController {
   /// - Parameters:
   ///   - controller: the child view controller
 
-  func stopDisplayingChildViewController(_ controller: UIViewController) {
+  public func stopDisplayingChildViewController(_ controller: UIViewController) {
     guard let parent = controller.parent,
           parent == self else {
       return
