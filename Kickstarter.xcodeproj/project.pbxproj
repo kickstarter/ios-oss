@@ -508,8 +508,8 @@
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		6035AF992C46E03E007E28FC /* CreateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6035AF982C46E03E007E28FC /* CreateCheckout.graphql */; };
 		6035AF9C2C51696C007E28FC /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AF9A2C5168F8007E28FC /* RewardsCollectionViewController.swift */; };
-		6035AFA22C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */; };
 		6035AFA42C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA32C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift */; };
+		6035AFA22C516A67007E28FC /* RewardsCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA12C516A67007E28FC /* RewardsCollectionViewHeaderView.swift */; };
 		6035AFA92C517EDD007E28FC /* RewardAddOnSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFA82C517EDD007E28FC /* RewardAddOnSelectionViewController.swift */; };
 		6035AFAB2C518222007E28FC /* RewardAddOnSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAA2C518222007E28FC /* RewardAddOnSelectionViewModel.swift */; };
 		6035AFAD2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAC2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift */; };
@@ -563,7 +563,6 @@
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
-		60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F542BE003A60052A829 /* StripeIntentService.swift */; };
 		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
@@ -2203,8 +2202,8 @@
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		6035AF982C46E03E007E28FC /* CreateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateCheckout.graphql; sourceTree = "<group>"; };
 		6035AF9A2C5168F8007E28FC /* RewardsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewController.swift; sourceTree = "<group>"; };
-		6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsWithShippingCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		6035AFA32C516B75007E28FC /* WithShippingRewardsCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithShippingRewardsCollectionViewModel.swift; sourceTree = "<group>"; };
+		6035AFA12C516A67007E28FC /* RewardsCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		6035AFA82C517EDD007E28FC /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
 		6035AFAA2C518222007E28FC /* RewardAddOnSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewModel.swift; sourceTree = "<group>"; };
 		6035AFAC2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -2255,7 +2254,6 @@
 		609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInput.swift; sourceTree = "<group>"; };
 		609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInputTests.swift; sourceTree = "<group>"; };
 		609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerThirdPartyEvent.graphql; sourceTree = "<group>"; };
-		60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewHeaderView.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		60A80F542BE003A60052A829 /* StripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentService.swift; sourceTree = "<group>"; };
 		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
@@ -5987,8 +5985,8 @@
 			isa = PBXGroup;
 			children = (
 				77D19FFC24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift */,
-				60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */,
 				6035AFA12C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift */,
+				6035AFA12C516A67007E28FC /* RewardsCollectionViewHeaderView.swift */,
 				77320F8924411459004C631E /* SettingsAccountHeaderView.swift */,
 			);
 			path = HeaderFooterViews;
@@ -8727,7 +8725,7 @@
 				770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */,
 				06232D392795D26600A81755 /* TextViewElementCell.swift in Sources */,
 				D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */,
-				6035AFA22C516A67007E28FC /* RewardsWithShippingCollectionViewHeaderView.swift in Sources */,
+				6035AFA22C516A67007E28FC /* RewardsCollectionViewHeaderView.swift in Sources */,
 				37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
 				77D19FFD24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift in Sources */,
@@ -8829,7 +8827,6 @@
 				6035AF9C2C51696C007E28FC /* RewardsCollectionViewController.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
-				60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */,
 				AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
