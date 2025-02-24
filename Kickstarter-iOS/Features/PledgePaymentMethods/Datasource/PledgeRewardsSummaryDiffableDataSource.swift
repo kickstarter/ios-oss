@@ -18,7 +18,7 @@ enum PledgeRewardsSummaryRow: Hashable {
  These types are defined above and each UITableViewCell is configured based on the row being rendered.
  */
 
-class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataSource<
+class PledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataSource<
   PledgeRewardsSummarySection,
   PledgeRewardsSummaryRow
 > {
@@ -54,7 +54,7 @@ class NoShippingPledgeRewardsSummaryDiffableDataSource: UITableViewDiffableDataS
  - parameter headerData: The `PledgeExpandableHeaderRewardCellData`that represents the table's custom header `UITableViewCell`.
  - parameter rewards: The `[PledgeExpandableHeaderRewardCellData]`that represents the tables reward data (baseReward, addOns, and bonusSupport).
 
- - returns: A `NSDiffableDataSourceSnapshot` that will be applied to the UITableView's Diffable Data Source `NoShippingPledgeRewardsSummaryDiffableDataSource`.
+ - returns: A `NSDiffableDataSourceSnapshot` that will be applied to the UITableView's Diffable Data Source `PledgeRewardsSummaryDiffableDataSource`.
  */
 
 func diffableDataSourceSnapshot(

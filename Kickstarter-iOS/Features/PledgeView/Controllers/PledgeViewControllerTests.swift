@@ -44,6 +44,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: .template,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
@@ -96,6 +97,7 @@ final class PledgeViewControllerTests: TestCase {
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [reward.id: 1],
           selectedLocationId: nil,
@@ -130,6 +132,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward, .noReward],
+            bonusSupport: nil,
             selectedShippingRule: .template,
             selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
@@ -168,6 +171,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: .template,
             rewards: [reward],
+            bonusSupport: nil,
             selectedShippingRule: shippingRule,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
@@ -209,6 +213,7 @@ final class PledgeViewControllerTests: TestCase {
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
+      bonusSupport: nil,
       selectedShippingRule: shippingRule,
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
       selectedLocationId: ShippingRule.template.id,
@@ -303,6 +308,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
+            bonusSupport: nil,
             selectedShippingRule: .template,
             selectedQuantities: [reward.id: 15], // To pass the threshold validation
             selectedLocationId: nil,
@@ -357,6 +363,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
+            bonusSupport: nil,
             selectedShippingRule: .template,
             selectedQuantities: [reward.id: 1],
             selectedLocationId: nil,
@@ -411,6 +418,7 @@ final class PledgeViewControllerTests: TestCase {
           let data = PledgeViewData(
             project: project,
             rewards: [reward],
+            bonusSupport: nil,
             selectedShippingRule: .template,
             selectedQuantities: [reward.id: 15], // To pass the threshold validation
             selectedLocationId: nil,

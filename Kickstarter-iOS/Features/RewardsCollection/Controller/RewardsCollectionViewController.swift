@@ -15,8 +15,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
     return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
-  private lazy var headerView: RewardsWithShippingCollectionViewHeaderView = {
-    RewardsWithShippingCollectionViewHeaderView(frame: .zero)
+  private lazy var headerView: RewardsCollectionViewHeaderView = {
+    RewardsCollectionViewHeaderView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -46,7 +46,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: WithShippingRewardsCollectionViewModelType = WithShippingRewardsCollectionViewModel()
+  private let viewModel: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
   static func instantiate(
     with project: Project,
@@ -409,13 +409,13 @@ extension RewardsCollectionViewController {
     with project: Project,
     refTag: RefTag?
   ) -> UINavigationController {
-    let rewardsWithShippingCollectionViewController = RewardsCollectionViewController
+    let rewardsCollectionViewController = RewardsCollectionViewController
       .instantiate(with: project, refTag: refTag, context: .createPledge)
 
     let closeButton = UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
       style: .plain,
-      target: rewardsWithShippingCollectionViewController,
+      target: rewardsCollectionViewController,
       action: #selector(RewardsCollectionViewController.closeButtonTapped)
     )
 
@@ -423,10 +423,10 @@ extension RewardsCollectionViewController {
       |> \.width .~ Styles.minTouchSize.width
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
 
-    rewardsWithShippingCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
+    rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
 
     let navigationController = RewardPledgeNavigationController(
-      rootViewController: rewardsWithShippingCollectionViewController
+      rootViewController: rewardsCollectionViewController
     )
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
