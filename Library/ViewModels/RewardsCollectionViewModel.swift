@@ -8,7 +8,7 @@ public enum RewardsCollectionViewContext {
   case managePledge
 }
 
-public protocol WithShippingRewardsCollectionViewModelInputs {
+public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func confirmedEditReward()
   func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool)
@@ -23,7 +23,7 @@ public protocol WithShippingRewardsCollectionViewModelInputs {
   func viewWillAppear()
 }
 
-public protocol WithShippingRewardsCollectionViewModelOutputs {
+public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
@@ -41,14 +41,14 @@ public protocol WithShippingRewardsCollectionViewModelOutputs {
   func selectedReward() -> Reward?
 }
 
-public protocol WithShippingRewardsCollectionViewModelType {
-  var inputs: WithShippingRewardsCollectionViewModelInputs { get }
-  var outputs: WithShippingRewardsCollectionViewModelOutputs { get }
+public protocol RewardsCollectionViewModelType {
+  var inputs: RewardsCollectionViewModelInputs { get }
+  var outputs: RewardsCollectionViewModelOutputs { get }
 }
 
-public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCollectionViewModelType,
-  WithShippingRewardsCollectionViewModelInputs,
-  WithShippingRewardsCollectionViewModelOutputs {
+public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
+  RewardsCollectionViewModelInputs,
+  RewardsCollectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
@@ -151,6 +151,7 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        bonusSupport: nil,
         selectedShippingRule: selectedShippingRule,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
@@ -415,8 +416,8 @@ public final class WithShippingRewardsCollectionViewModel: WithShippingRewardsCo
     return self.selectedRewardProperty.value
   }
 
-  public var inputs: WithShippingRewardsCollectionViewModelInputs { return self }
-  public var outputs: WithShippingRewardsCollectionViewModelOutputs { return self }
+  public var inputs: RewardsCollectionViewModelInputs { return self }
+  public var outputs: RewardsCollectionViewModelOutputs { return self }
 }
 
 // MARK: - Functions
