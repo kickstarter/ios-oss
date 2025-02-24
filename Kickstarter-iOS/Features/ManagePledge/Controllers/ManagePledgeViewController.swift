@@ -601,7 +601,7 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
   }
 }
 
-// MARK: - NoShippingPledgeViewControllerDelegate
+// MARK: - PledgeViewControllerDelegate
 
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
   func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
