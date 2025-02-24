@@ -16,7 +16,7 @@ struct LoadingBarButtonItem: View {
           self.showLoading = true
           self.action()
         }
-        .font(Font(UIFont.systemFont(ofSize: 17)))
+        .font(Font(UIFont.ksr_body()))
         .foregroundColor(buttonColor)
         .disabled(!self.$saveEnabled.wrappedValue)
       } else {

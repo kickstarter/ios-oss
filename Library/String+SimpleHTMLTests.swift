@@ -3,7 +3,7 @@ import XCTest
 
 final class StringSimpleHTMLTests: XCTestCase {
   func testHtmlParsing() {
-    let font = UIFont.systemFont(ofSize: 12.0)
+    let font = UIFont.ksr_caption1()
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
     let stripped = "Hello Brandon, how are you?"
 
@@ -16,9 +16,9 @@ final class StringSimpleHTMLTests: XCTestCase {
   }
 
   func testHtmlWithAllFontsSpecified() {
-    let font = UIFont.systemFont(ofSize: 12.0)
-    let bold = UIFont.boldSystemFont(ofSize: 14.0)
-    let italic = UIFont.italicSystemFont(ofSize: 16.0)
+    let font = UIFont.ksr_caption1()
+    let bold = UIFont.ksr_caption1(size: 14.0).bolded
+    let italic = UIFont.ksr_caption1(size: 16.0).italicized
 
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
 
@@ -55,7 +55,7 @@ final class StringSimpleHTMLTests: XCTestCase {
   }
 
   func testHtmlWithFallbackFonts() {
-    let font = UIFont.systemFont(ofSize: 12.0)
+    let font = UIFont.ksr_caption1()
 
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
 

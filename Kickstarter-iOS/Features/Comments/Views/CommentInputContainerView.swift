@@ -88,7 +88,7 @@ final class CommentInputContainerView: UIView {
       |> placeholderLabelStyle
 
     _ = self.postButton
-      |> UIButton.lens.titleLabel.font .~ .systemFont(ofSize: 15, weight: .semibold)
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.titleLabel.numberOfLines .~ 0
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }

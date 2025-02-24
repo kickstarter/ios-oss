@@ -352,7 +352,7 @@ private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
 private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
   button
     |> baseButtonStyle
-    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 16)
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart")
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
