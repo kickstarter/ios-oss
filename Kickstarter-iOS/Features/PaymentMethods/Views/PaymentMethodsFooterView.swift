@@ -23,6 +23,7 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
       |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_create_700
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
+      |> UIButton.lens.titleLabel.font .~ .ksr_subhead()
 
     _ = self.addCardButton.imageView
       ?|> \.tintColor .~ .ksr_create_700

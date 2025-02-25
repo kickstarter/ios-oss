@@ -104,7 +104,7 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
 
 private let addButtonStyle: ButtonStyle = { button in
   button
-    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.New_payment_method() }
     |> UIButton.lens.isUserInteractionEnabled .~ false

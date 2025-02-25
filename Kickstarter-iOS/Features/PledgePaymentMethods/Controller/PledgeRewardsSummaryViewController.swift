@@ -12,7 +12,7 @@ public enum PledgeRewardsSummaryStyles {
   }
 }
 
-final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
+final class PledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
@@ -29,8 +29,8 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
     ContentSizeTableView(frame: .zero, style: .plain)
   }()
 
-  private lazy var dataSource: NoShippingPledgeRewardsSummaryDiffableDataSource =
-    NoShippingPledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
+  private lazy var dataSource: PledgeRewardsSummaryDiffableDataSource =
+    PledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 
@@ -255,7 +255,7 @@ final class NoShippingPledgeRewardsSummaryViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension NoShippingPledgeRewardsSummaryViewController: UITableViewDelegate {
+extension PledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
   }

@@ -859,6 +859,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       let data = PledgeViewData(
         project: Project.template,
         rewards: [Reward.template],
+        bonusSupport: nil,
         selectedShippingRule: nil,
         selectedQuantities: [Reward.template.id: 1],
         selectedLocationId: nil,
