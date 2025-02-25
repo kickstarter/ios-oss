@@ -392,6 +392,40 @@ class PPOViewModelTests: XCTestCase {
     }
   }
 
+  func testInitialLoading_Empty() throws {
+    let expectation = XCTestExpectation(description: "Initial loading empty")
+    expectation.expectedFulfillmentCount = 3
+
+    var values: [PPOViewModelPaginator.Results] = []
+    self.viewModel.$results
+      .sink { value in
+        values.append(value)
+        expectation.fulfill()
+      }
+      .store(in: &self.cancellables)
+
+    withEnvironment(apiService: MockService(
+      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(
+        cursors: nil,
+        hasNextPage: false
+      ))
+    )) {
+      self.viewModel.viewDidAppear()
+    }
+
+    wait(for: [expectation], timeout: 0.1)
+
+    XCTAssertEqual(values.count, 3)
+
+    guard
+      case .unloaded = values[0],
+      case .loading = values[1],
+      case .empty = values[2]
+    else {
+      return XCTFail()
+    }
+  }
+
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
   private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
     let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
@@ -422,10 +456,10 @@ class PPOViewModelTests: XCTestCase {
   }
 
   private func pledgedProjectsData(
-    cursors: ClosedRange<Int> = 1...3,
+    cursors: ClosedRange<Int>? = 1...3,
     hasNextPage: Bool = false
   ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors.map { index in self.projectEdgeJSON(cursor: "\(index)") }
+    let edges = cursors?.map { index in self.projectEdgeJSON(cursor: "\(index)") } ?? []
     let edgesJson = "[\(edges.joined(separator: ", "))]"
     return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
     {
@@ -433,12 +467,12 @@ class PPOViewModelTests: XCTestCase {
         "__typename": "PledgeProjectsOverview",
         "pledges": {
           "__typename": "PledgedProjectsOverviewPledgesConnection",
-          "totalCount": \(cursors.count),
+          "totalCount": \(edges.count),
           "edges": \(edgesJson),
           "pageInfo": {
             "__typename": "PageInfo",
             "hasNextPage": \(String(hasNextPage)),
-            "endCursor": \(hasNextPage ? "\"\(cursors.upperBound)\"" : "null"),
+            "endCursor": \(hasNextPage ? "\"\(cursors?.upperBound ?? 0)\"" : "null"),
             "hasPreviousPage": false,
             "startCursor": "1"
           }
