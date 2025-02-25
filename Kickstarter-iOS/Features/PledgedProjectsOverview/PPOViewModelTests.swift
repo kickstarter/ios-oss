@@ -53,7 +53,7 @@ class PPOViewModelTests: XCTestCase {
 
   func testInitialLoading_Twice() throws {
     let expectation = XCTestExpectation(description: "Initial loading twice")
-    expectation.expectedFulfillmentCount = 3
+    expectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
     self.viewModel.$results
@@ -72,12 +72,12 @@ class PPOViewModelTests: XCTestCase {
 
     wait(for: [expectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 3)
+    XCTAssertEqual(values.count, 5)
 
     guard
       case .unloaded = values[0],
       case .loading = values[1],
-      case let .allLoaded(data, _) = values[2]
+      case let .allLoaded(data, _) = values[4]
     else {
       return XCTFail()
     }
@@ -88,7 +88,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh")
-    fullyLoadedExpectation.expectedFulfillmentCount = 4
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -116,7 +116,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 4)
+    XCTAssertEqual(values.count, 5)
 
     guard
       case .unloaded = values[0],
@@ -128,7 +128,8 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(firstData.count, 3)
 
     guard
-      case let .allLoaded(secondData, _) = values[3]
+      case .loading = values[3],
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -139,7 +140,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Pull to refresh twice")
-    fullyLoadedExpectation.expectedFulfillmentCount = 5
+    fullyLoadedExpectation.expectedFulfillmentCount = 7
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -173,7 +174,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 5)
+    XCTAssertEqual(values.count, 7)
 
     guard
       case .unloaded = values[0],
@@ -185,14 +186,16 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(firstData.count, 3)
 
     guard
-      case let .allLoaded(secondData, _) = values[3]
+      case .loading = values[3],
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
     XCTAssertEqual(secondData.count, 2)
 
     guard
-      case let .allLoaded(thirdData, _) = values[4]
+      case .loading = values[5],
+      case let .allLoaded(thirdData, _) = values[6]
     else {
       return XCTFail()
     }
@@ -203,7 +206,7 @@ class PPOViewModelTests: XCTestCase {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
     let fullyLoadedExpectation = XCTestExpectation(description: "Load more")
-    fullyLoadedExpectation.expectedFulfillmentCount = 4
+    fullyLoadedExpectation.expectedFulfillmentCount = 5
 
     var values: [PPOViewModelPaginator.Results] = []
 
@@ -234,7 +237,7 @@ class PPOViewModelTests: XCTestCase {
 
     await fulfillment(of: [fullyLoadedExpectation], timeout: 0.1)
 
-    XCTAssertEqual(values.count, 4)
+    XCTAssertEqual(values.count, 5)
 
     guard
       case .unloaded = values[0],
@@ -247,7 +250,8 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(cursor, "4")
 
     guard
-      case let .allLoaded(secondData, _) = values[3]
+      case .loading = values[3],
+      case let .allLoaded(secondData, _) = values[4]
     else {
       return XCTFail()
     }
@@ -388,6 +392,40 @@ class PPOViewModelTests: XCTestCase {
     }
   }
 
+  func testInitialLoading_Empty() throws {
+    let expectation = XCTestExpectation(description: "Initial loading empty")
+    expectation.expectedFulfillmentCount = 3
+
+    var values: [PPOViewModelPaginator.Results] = []
+    self.viewModel.$results
+      .sink { value in
+        values.append(value)
+        expectation.fulfill()
+      }
+      .store(in: &self.cancellables)
+
+    withEnvironment(apiService: MockService(
+      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(
+        cursors: nil,
+        hasNextPage: false
+      ))
+    )) {
+      self.viewModel.viewDidAppear()
+    }
+
+    wait(for: [expectation], timeout: 0.1)
+
+    XCTAssertEqual(values.count, 3)
+
+    guard
+      case .unloaded = values[0],
+      case .loading = values[1],
+      case .empty = values[2]
+    else {
+      return XCTFail()
+    }
+  }
+
   // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
   private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
     let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
@@ -418,10 +456,10 @@ class PPOViewModelTests: XCTestCase {
   }
 
   private func pledgedProjectsData(
-    cursors: ClosedRange<Int> = 1...3,
+    cursors: ClosedRange<Int>? = 1...3,
     hasNextPage: Bool = false
   ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors.map { index in self.projectEdgeJSON(cursor: "\(index)") }
+    let edges = cursors?.map { index in self.projectEdgeJSON(cursor: "\(index)") } ?? []
     let edgesJson = "[\(edges.joined(separator: ", "))]"
     return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
     {
@@ -429,12 +467,12 @@ class PPOViewModelTests: XCTestCase {
         "__typename": "PledgeProjectsOverview",
         "pledges": {
           "__typename": "PledgedProjectsOverviewPledgesConnection",
-          "totalCount": \(cursors.count),
+          "totalCount": \(edges.count),
           "edges": \(edgesJson),
           "pageInfo": {
             "__typename": "PageInfo",
             "hasNextPage": \(String(hasNextPage)),
-            "endCursor": \(hasNextPage ? "\"\(cursors.upperBound)\"" : "null"),
+            "endCursor": \(hasNextPage ? "\"\(cursors?.upperBound ?? 0)\"" : "null"),
             "hasPreviousPage": false,
             "startCursor": "1"
           }

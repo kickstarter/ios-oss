@@ -20,8 +20,8 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     ContentSizeTableView(frame: .zero, style: .plain)
   }()
 
-  private lazy var dataSource: NoShippingPledgeRewardsSummaryDiffableDataSource =
-    NoShippingPledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
+  private lazy var dataSource: PledgeRewardsSummaryDiffableDataSource =
+    PledgeRewardsSummaryDiffableDataSource(tableView: self.tableView)
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
 

@@ -26,7 +26,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     super.bindStyles()
 
     _ = self.titleButton
-      |> UIButton.lens.titleLabel.font .~ UIFont.systemFont(ofSize: 17)
+      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
       |> UIButton.lens.titleColor(for: .disabled) .~ .ksr_support_300
 

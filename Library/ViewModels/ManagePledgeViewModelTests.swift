@@ -579,6 +579,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        bonusSupport: nil,
         selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,
@@ -1412,6 +1413,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
+        bonusSupport: nil,
         selectedShippingRule: nil,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil,

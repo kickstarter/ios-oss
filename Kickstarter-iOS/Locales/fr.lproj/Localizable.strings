@@ -1875,6 +1875,7 @@
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
 "tabbar.activity" = "Activité";
+"tabbar.backings" = "Backings";
 "tabbar.dashboard" = "Tableau de bord";
 "tabbar.discover" = "Découvrir";
 "tabbar.login" = "Connexion";

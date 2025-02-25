@@ -112,8 +112,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           return false
         }
       })
+      // SwiftUI List jumps around if reloading frequently. This code path prevents
+      // unnecessary reloads if the data has loaded. If the values are the same and
+      // both states have been loaded, then we can drop this change.
       .removeDuplicates(by: { left, right in
-        left.values == right.values
+        left.hasLoaded && right.hasLoaded && left.values == right.values
       })
       .receive(on: RunLoop.main)
       .sink(receiveValue: { results in

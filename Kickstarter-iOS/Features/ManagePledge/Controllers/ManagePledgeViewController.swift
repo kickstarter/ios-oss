@@ -538,7 +538,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    let vc = WithShippingRewardsCollectionViewController.instantiate(
+    let vc = RewardsCollectionViewController.instantiate(
       with: project,
       refTag: nil,
       context: .managePledge
@@ -601,7 +601,7 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
   }
 }
 
-// MARK: - NoShippingPledgeViewControllerDelegate
+// MARK: - PledgeViewControllerDelegate
 
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
   func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {

@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
+final class RewardAddOnSelectionViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
@@ -44,11 +44,12 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
@@ -86,11 +87,12 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
@@ -125,11 +127,12 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
@@ -228,10 +231,11 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
@@ -269,11 +273,12 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
@@ -320,11 +325,12 @@ final class RewardAddOnSelectionNoShippingViewControllerTests: TestCase {
         apiService: mockService,
         language: language
       ) {
-        let controller = RewardAddOnSelectionNoShippingViewController.instantiate()
+        let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
           project: project,
           rewards: [reward],
+          bonusSupport: nil,
           selectedShippingRule: nil,
           selectedQuantities: [:],
           selectedLocationId: nil,
