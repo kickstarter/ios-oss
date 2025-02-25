@@ -13447,8 +13447,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(email: String? = nil, enabledFeatures: [Feature], ppoHasAction: Bool? = nil) {
-          self.init(unsafeResultMap: ["__typename": "User", "email": email, "enabledFeatures": enabledFeatures, "ppoHasAction": ppoHasAction])
+        public init(email: String? = nil, enabledFeatures: [Feature], ppoHasAction: Bool? = nil, backingActionCount: Int? = nil) {
+          self.init(unsafeResultMap: ["__typename": "User", "email": email, "enabledFeatures": enabledFeatures, "ppoHasAction": ppoHasAction, "backingActionCount": backingActionCount])
         }
 
         public var __typename: String {
@@ -16991,6 +16991,7 @@ public enum GraphAPI {
       fragment PPOUserSetupFragment on User {
         __typename
         ppoHasAction
+        backingActionCount
       }
       """
 
@@ -17000,6 +17001,7 @@ public enum GraphAPI {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("ppoHasAction", type: .scalar(Bool.self)),
+        GraphQLField("backingActionCount", type: .scalar(Int.self)),
       ]
     }
 
@@ -17009,8 +17011,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(ppoHasAction: Bool? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "ppoHasAction": ppoHasAction])
+    public init(ppoHasAction: Bool? = nil, backingActionCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "ppoHasAction": ppoHasAction, "backingActionCount": backingActionCount])
     }
 
     public var __typename: String {
@@ -17029,6 +17031,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "ppoHasAction")
+      }
+    }
+
+    /// Count of pledges with pending action
+    public var backingActionCount: Int? {
+      get {
+        return resultMap["backingActionCount"] as? Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "backingActionCount")
       }
     }
   }
