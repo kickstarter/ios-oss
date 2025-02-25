@@ -113,7 +113,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         }
       })
       .removeDuplicates(by: { left, right in
-        left.values == right.values
+        left.hasLoaded && right.hasLoaded && left.values == right.values
       })
       .receive(on: RunLoop.main)
       .sink(receiveValue: { results in
