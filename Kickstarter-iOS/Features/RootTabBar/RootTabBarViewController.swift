@@ -271,7 +271,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     return nil
   }
 
-  func viewController(from data: RootViewControllerData) -> UIViewController? {
+  static func viewController(from data: RootViewControllerData) -> UIViewController? {
     switch data {
     case .discovery:
       return DiscoveryViewController.instantiate()
@@ -279,8 +279,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       return PPOContainerViewController.instantiate()
     case .activities(isLoggedIn: true):
       return ActivitiesViewController.instantiate()
-    case .pledgedProjectsAndActivities:
-      return PPOContainerViewController.instantiate()
     case .search:
       return SearchViewController.instantiate()
     case .profile(isLoggedIn: true):
@@ -291,10 +289,16 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       // Backings and Activity use the same empty state
       fallthrough
     case .activities(isLoggedIn: false):
-      let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
-      emptyVC.delegate = self
-      return emptyVC
+      return EmptyStatesViewController.configuredWith(emptyState: .activity)
     }
+  }
+
+  private func viewController(from data: RootViewControllerData) -> UIViewController? {
+    let vc = Self.viewController(from: data)
+    if let emptyVC = vc as? EmptyStatesViewController {
+      emptyVC.delegate = self
+    }
+    return vc
   }
 
   // MARK: - Accessors

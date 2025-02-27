@@ -9,7 +9,6 @@ public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerInde
 public enum RootViewControllerData: Equatable {
   case discovery
   case activities(isLoggedIn: Bool)
-  case pledgedProjectsAndActivities
   case search
   case profile(isLoggedIn: Bool)
   case backings(isLoggedIn: Bool)
@@ -18,7 +17,6 @@ public enum RootViewControllerData: Equatable {
     switch (lhs, rhs) {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
-    case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
     case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
@@ -39,7 +37,16 @@ public enum RootViewControllerData: Equatable {
 
   var isActivity: Bool {
     switch self {
-    case .activities, .pledgedProjectsAndActivities:
+    case .activities:
+      return true
+    default:
+      return false
+    }
+  }
+
+  var isBackings: Bool {
+    switch self {
+    case .backings:
       return true
     default:
       return false
@@ -279,8 +286,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
     )
     .map { value, index in
-      let hasPPOAction = AppEnvironment.current.currentUserPPOSettings?.hasAction ?? false
-      return (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
+      (activitiesBadgeValue(with: value), index)
     }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
@@ -504,12 +510,7 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
 extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
-private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
-  guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
-    // an empty string will show a dot as badge
-    return ""
-  }
-
+private func activitiesBadgeValue(with value: Int?) -> String? {
   let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
   let badgeValue = value ?? 0
   let maxBadgeValue = !isVoiceOverRunning ? 99 : badgeValue

@@ -368,7 +368,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -378,7 +378,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "EmptyStates", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "BackerDashboard"]
       ],
       "Show the logged in tabs."
@@ -389,7 +389,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "EmptyStates", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
@@ -400,9 +400,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "EmptyStates", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -489,8 +489,10 @@ final class RootViewModelTests: TestCase {
         "Turning on PPO and returning the app to foreground should refresh the tab bar data."
       )
 
-      self.setBadgeValueAtIndexIndex.assertLastValue(1, "Turning on PPO should activate badge")
-      self.setBadgeValueAtIndexValue.assertLastValue("", "Turning on PPO should show empty badge icon")
+      self.setBadgeValueAtIndexValue.assertLastValue(
+        nil,
+        "Turning on PPO should show a badge, eventually, but that is coming in a follow-up PR."
+      )
 
       self.vm.inputs.applicationWillEnterForeground()
       self.viewControllerNames.assertValueCount(
@@ -678,61 +680,64 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
-    let user = User.template
-      |> \.unseenActivityCount .~ 50
-      |> \.erroredBackingsCount .~ 4
+  /*
+   // TODO: Implement PPO badging using backingActionsCount
+     func testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
+       let user = User.template
+         |> \.unseenActivityCount .~ 50
+         |> \.erroredBackingsCount .~ 4
 
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
+       let remoteConfig = MockRemoteConfigClient()
+       remoteConfig.features = [
+         RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+       ]
 
-    self.setBadgeValueAtIndexValue.assertValues([])
-    self.setBadgeValueAtIndexIndex.assertValues([])
+       self.setBadgeValueAtIndexValue.assertValues([])
+       self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(
-      currentUserPPOSettings: nil,
-      remoteConfigClient: remoteConfig
-    ) {
-      self.vm.inputs.viewDidLoad()
+       withEnvironment(
+         currentUserPPOSettings: nil,
+         remoteConfigClient: remoteConfig
+       ) {
+         self.vm.inputs.viewDidLoad()
 
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
-        self.vm.inputs.currentUserUpdated()
-      }
+         AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+         withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
+           self.vm.inputs.currentUserUpdated()
+         }
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-    }
-  }
+         self.setBadgeValueAtIndexValue.assertValues([nil, ""])
+         self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+       }
+     }
 
-  func testPPOTabBarBadging_FeatureFlagEnabledWithPersistence() {
-    let user = User.template
-      |> \.unseenActivityCount .~ 50
-      |> \.erroredBackingsCount .~ 4
+     func testPPOTabBarBadging_FeatureFlagEnabledWithPersistence() {
+       let user = User.template
+         |> \.unseenActivityCount .~ 50
+         |> \.erroredBackingsCount .~ 4
 
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
+       let remoteConfig = MockRemoteConfigClient()
+       remoteConfig.features = [
+         RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
+       ]
 
-    self.setBadgeValueAtIndexValue.assertValues([])
-    self.setBadgeValueAtIndexIndex.assertValues([])
+       self.setBadgeValueAtIndexValue.assertValues([])
+       self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(
-      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
-      remoteConfigClient: remoteConfig
-    ) {
-      self.vm.inputs.viewDidLoad()
+       withEnvironment(
+         currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
+         remoteConfigClient: remoteConfig
+       ) {
+         self.vm.inputs.viewDidLoad()
 
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      self.vm.inputs.currentUserUpdated()
+         AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+         self.vm.inputs.currentUserUpdated()
 
-      self.setBadgeValueAtIndexValue.assertValues(["", ""])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-    }
-  }
+         self.setBadgeValueAtIndexValue.assertValues(["", ""])
+         self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+       }
+     }
+      */
 
   func testPPOTabBarBadging_FeatureFlagDisabled() {
     let user = User.template
@@ -775,9 +780,9 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
         ],
-        "Shows regular Activities tab initially"
+        "Shows empty Activities tab initially"
       )
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
@@ -785,8 +790,8 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
         ],
         "Shows PPO tab when logged in with feature flag enabled"
       )
@@ -796,9 +801,9 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab when logged out again"
       )
@@ -821,7 +826,7 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "EmptyStates", "Search", "LoginTout"],
           ["Discovery", "Activities", "Search", "BackerDashboard"]
         ],
         "Shows regular Activities tab when feature flag disabled, even when logged in"
