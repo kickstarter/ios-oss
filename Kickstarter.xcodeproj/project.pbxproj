@@ -267,7 +267,7 @@
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
 		3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */; };
 		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
-		338E60252D6FE377008D42F9 /* AdaptativeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60242D6FE372008D42F9 /* AdaptativeColors.swift */; };
+		338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60242D6FE372008D42F9 /* AdaptiveColors.swift */; };
 		338E60272D70B7EA008D42F9 /* NewDesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */; };
 		33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */; };
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
@@ -1959,7 +1959,7 @@
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
 		3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModel.swift; sourceTree = "<group>"; };
 		338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
-		338E60242D6FE372008D42F9 /* AdaptativeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptativeColors.swift; sourceTree = "<group>"; };
+		338E60242D6FE372008D42F9 /* AdaptiveColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveColors.swift; sourceTree = "<group>"; };
 		338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSystemColors.swift; sourceTree = "<group>"; };
 		33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
@@ -5776,7 +5776,7 @@
 		338E601D2D6FE303008D42F9 /* Colors */ = {
 			isa = PBXGroup;
 			children = (
-				338E60242D6FE372008D42F9 /* AdaptativeColors.swift */,
+				338E60242D6FE372008D42F9 /* AdaptiveColors.swift */,
 				338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */,
 			);
 			path = Colors;
@@ -8132,7 +8132,7 @@
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */,
-				338E60252D6FE377008D42F9 /* AdaptativeColors.swift in Sources */,
+				338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,

@@ -2,14 +2,14 @@ import UIKit
 
 /// A protocol for handling adaptive colors using a `RawRepresentable` enum.
 /// It dynamically constructs the color name based on its namespace and retrieves it from the asset catalog.
-protocol AdaptativeColors: RawRepresentable where RawValue == String {
+protocol AdaptiveColors: RawRepresentable where RawValue == String {
   /// Retrieves the adaptive color from the asset catalog.
   /// - Returns: A `UIColor` object from the asset catalog, or default white if not found.
-  func adaptative() -> UIColor
+  func adaptive() -> UIColor
 }
 
-extension AdaptativeColors {
-  public func adaptative() -> UIColor {
+extension AdaptiveColors {
+  public func adaptive() -> UIColor {
     // Determines the appropriate namespace based on the enum type.
     let namespace: String
 
