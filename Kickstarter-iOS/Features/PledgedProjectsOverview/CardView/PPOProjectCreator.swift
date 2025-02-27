@@ -7,7 +7,7 @@ struct PPOProjectCreator: View {
   @SwiftUI.Environment(\.sizeCategory) var sizeCategory
 
   var body: some View {
-    HStack(alignment: .firstTextBaseline) {
+    HStack(alignment: .center) {
       Text("\(Strings.project_menu_created_by()) **\(self.creatorName)**")
         .font(Font(PPOStyles.subtitle.font))
         .background(Color(PPOStyles.background))
@@ -22,21 +22,10 @@ struct PPOProjectCreator: View {
             Constants.textLineLimit
         )
 
-      Text(Strings.Send_a_message())
-        .font(Font(PPOStyles.subtitle.font))
-        .background(Color(PPOStyles.background))
-        .foregroundStyle(Color(Constants.sendMessageColor))
-        .frame(alignment: Constants.buttonAlignment)
-        .lineLimit(nil)
-
-      Spacer()
-        .frame(width: Constants.spacerWidth)
-
-      Image("chevron-right")
+      Image(PPOStyles.sendMessageImage)
         .resizable()
         .scaledToFit()
-        .frame(width: Constants.chevronSize, height: Constants.chevronSize)
-        .offset(Constants.chevronOffset)
+        .frame(width: Constants.messageIconSize, height: Constants.messageIconSize)
         .background(Color(PPOStyles.background))
         .foregroundStyle(Color(Constants.sendMessageColor))
     }
@@ -44,8 +33,7 @@ struct PPOProjectCreator: View {
   }
 
   private enum Constants {
-    static let chevronSize: CGFloat = 10
-    static let chevronOffset = CGSize(width: 0, height: 2)
+    static let messageIconSize: CGFloat = 24
     static let spacerWidth = Styles.grid(1)
     static let textLineLimit = 1
     static let largeTextLineLimit = 3
