@@ -6,16 +6,10 @@ extension UIViewController {
   /// A convenient helper method for adding a child view controller to a container, then adding its view to the parent's view hierarchy.
   /// - Parameters:
   ///   - controller: the child view controller
-  ///   - topLayoutAnchor: The child view controller's top anchor will be constrained to this anchor
-  ///   - leftAnchor: The child view controller's left anchor will be constrained to this anchor
-  ///   - rightAnchor: The child view controller's right anchor will be constrained to this anchor
-  ///   - bottomAnchor: The child view controller's bottom anchor will be constrained to this anchor
+  ///   - constraints: (Inactive) constraints which attach the child view controller to its parent view controller. Will be activated by calling this method.
   public func displayChildViewController(
     _ controller: UIViewController,
-    constrainedToTopAnchor topLayoutAnchor: NSLayoutYAxisAnchor?,
-    leftAnchor: NSLayoutXAxisAnchor?,
-    rightAnchor: NSLayoutXAxisAnchor?,
-    bottomAnchor: NSLayoutYAxisAnchor?
+    withConstraints constraints: [NSLayoutConstraint]
   ) {
     guard let childView = controller.view else {
       return
@@ -29,20 +23,8 @@ extension UIViewController {
 
     childView.translatesAutoresizingMaskIntoConstraints = false
 
-    if let topLayoutAnchor {
-      childView.topAnchor.constraint(equalTo: topLayoutAnchor).isActive = true
-    }
-
-    if let leftAnchor {
-      childView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-    }
-
-    if let rightAnchor {
-      childView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    }
-
-    if let bottomAnchor {
-      childView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    constraints.forEach { constraint in
+      constraint.isActive = true
     }
 
     controller.didMove(toParent: self)
@@ -57,10 +39,12 @@ extension UIViewController {
   public func displayChildViewController(_ controller: UIViewController) {
     self.displayChildViewController(
       controller,
-      constrainedToTopAnchor: self.view.safeAreaLayoutGuide.topAnchor,
-      leftAnchor: self.view.safeAreaLayoutGuide.leftAnchor,
-      rightAnchor: self.view.safeAreaLayoutGuide.rightAnchor,
-      bottomAnchor: self.view.safeAreaLayoutGuide.bottomAnchor
+      withConstraints: [
+        self.view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: controller.view.topAnchor),
+        self.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
+        self.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
+        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+      ]
     )
   }
 
