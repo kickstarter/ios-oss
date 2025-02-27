@@ -100,46 +100,20 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
       self.stopDisplayingChildViewController(activeController)
     }
 
-    self.displayChildViewController(controller)
+    self.displayChildViewController(
+      controller,
+      withConstraints: [
+        self.toggle.view.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
+        self.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
+        self.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
+        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+      ]
+    )
+
     self.activeController = controller
   }
 
   private func renderTabBar() {
     self.toggle.rootView = PagedTabBar(viewModel: self.viewModel)
-  }
-
-  func displayChildViewController(_ controller: UIViewController) {
-    guard let childView = controller.view else {
-      return
-    }
-
-    controller.beginAppearanceTransition(true, animated: true)
-
-    addChild(controller)
-
-    self.view.addSubview(childView)
-
-    childView.translatesAutoresizingMaskIntoConstraints = false
-    childView.topAnchor.constraint(equalTo: self.toggle.view.bottomAnchor).isActive = true
-    childView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor).isActive = true
-    childView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor).isActive = true
-    childView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-    controller.didMove(toParent: self)
-
-    controller.endAppearanceTransition()
-  }
-
-  func stopDisplayingChildViewController(_ controller: UIViewController) {
-    controller.beginAppearanceTransition(false, animated: true)
-
-    controller.willMove(toParent: nil)
-    for constraint in controller.view.constraints {
-      constraint.isActive = false
-    }
-    controller.view.removeFromSuperview()
-    controller.removeFromParent()
-
-    controller.endAppearanceTransition()
   }
 }
