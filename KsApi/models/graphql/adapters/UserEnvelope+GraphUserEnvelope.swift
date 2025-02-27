@@ -66,7 +66,8 @@ extension UserEnvelope {
     let graphUser = GraphUserSetup(
       email: userFragment.email,
       enabledFeatures: Set(featuresFragment.enabledFeatures),
-      ppoHasAction: ppoUserFragment.ppoHasAction
+      ppoHasAction: ppoUserFragment.ppoHasAction,
+      backingActionCount: ppoUserFragment.backingActionCount
     )
 
     return UserEnvelope<GraphUserSetup>(me: graphUser)

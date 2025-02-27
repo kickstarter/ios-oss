@@ -475,7 +475,7 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: .template,
-      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
       remoteConfigClient: configClientPPO_On
     ) {
       self.vm.inputs.applicationWillEnterForeground()
@@ -698,7 +698,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true)) {
+      withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
         self.vm.inputs.currentUserUpdated()
       }
 
@@ -721,7 +721,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
-      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -748,7 +748,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
-      currentUserPPOSettings: PPOUserSettings(hasAction: true),
+      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
