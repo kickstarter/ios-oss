@@ -134,6 +134,11 @@ extension UIFont {
   public static func ksr_bodyXXS(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyXXS.font(size: size)
   }
+
+  /// regular, 10pt size, TextStyle.caption1**
+  public static func ksr_ButtonLabel(size: CGFloat? = nil) -> UIFont {
+    return InterFont.buttonLabel.font(size: size)
+  }
 }
 
 extension UIFont {
