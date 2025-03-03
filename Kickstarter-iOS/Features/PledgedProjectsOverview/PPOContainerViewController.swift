@@ -28,7 +28,7 @@ public class PPOContainerViewController: UIViewController, MessageBannerViewCont
 
     let tabBarController = self.tabBarController as? RootTabBarViewController
 
-    // FIXME: MBL-2075: Badges will now be updated by RootTabBarController and displayed on the tab.
+    // FIXME: MBL-2151: Badges will now be updated by RootTabBarController and displayed on the tab.
     // The PPO container will need to tell the root tab bar to refresh when a PPO action has occured.
 
     /*

@@ -681,7 +681,7 @@ final class RootViewModelTests: TestCase {
   }
 
   /*
-   // TODO: Implement PPO badging using backingActionsCount
+   // FIXME: MBL-2151 Implement PPO badging using backingActionsCount
      func testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
        let user = User.template
          |> \.unseenActivityCount .~ 50
