@@ -62,6 +62,10 @@ internal final class ActivitiesViewController: UITableViewController {
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
+    // Because the ActivitiesViewController is a UITableViewController, it wasn't automatically accounting
+    // for the root tab bar height in this child VC. Adding the additional height makes this layout correctly.
+    emptyVC.additionalSafeAreaInsets = UIEdgeInsets(bottom: 50)
+
     self.addChild(emptyVC)
     self.view.addSubview(emptyVC.view)
     emptyVC.didMove(toParent: self)
