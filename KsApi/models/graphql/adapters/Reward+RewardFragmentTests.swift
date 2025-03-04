@@ -57,7 +57,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.isLimitedTime, false)
 
       XCTAssertNotNil(v1Reward.image)
-      XCTAssertEqual(v1Reward.image?.altText, "Some text")
+      XCTAssertEqual(v1Reward.image?.altText, "Some image")
       XCTAssertEqual(v1Reward.image?.url, "https://www.ksr.com/image.jpg")
     } catch {
       XCTFail(error.localizedDescription)
