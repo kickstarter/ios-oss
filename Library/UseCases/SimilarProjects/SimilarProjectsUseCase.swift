@@ -7,15 +7,29 @@ public protocol SimilarProjectsUseCaseType {
 }
 
 public protocol SimilarProjectsUseCaseInputs {
+  /// Call when a user taps on a similar project.
+  /// Triggers navigation to the selected project's details.
+  ///
+  /// - Parameter project: The project that was tapped.
   func projectTapped(project: any SimilarProject)
+
+  /// Call when a project ID is loaded or becomes available.
+  /// Initiates fetching of similar projects for the given project ID.
+  ///
+  /// - Parameter projectID: The ID of the project to find similar projects for.
   func projectIDLoaded(projectID: String)
 }
 
 public protocol SimilarProjectsUseCaseOutputs {
+  /// The current state of similar projects.
   var similarProjects: Property<SimilarProjectsState> { get }
+
+  /// Signal that emits when a user has tapped on a similar project.
+  /// Use this to navigate to the selected project's details.
   var navigateToProject: Signal<any SimilarProject, Never> { get }
 }
 
+/// A Use Case for fetching similar projects and navigating to them when the user taps them.
 public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarProjectsUseCaseInputs,
   SimilarProjectsUseCaseOutputs {
   // MARK: - Initialization
@@ -34,7 +48,7 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
   // MARK: - Data loading
 
   private func fetchProjects(projectID: String) -> SignalProducer<SimilarProjectsState, Never> {
-    // TODO: MBL-2165
+    // TODO: Implement this stub in MBL-2165
     SignalProducer(value: projectID)
       .delay(1.0, on: AppEnvironment.current.scheduler)
       .map { _ in

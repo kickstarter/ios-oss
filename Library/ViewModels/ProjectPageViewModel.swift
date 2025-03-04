@@ -76,6 +76,7 @@ public protocol ProjectPageViewModelInputs {
   /// Call when right before orientation change on view
   func viewWillTransition()
 
+  /// Call when a similar project is tapped.
   func similarProjectTapped(project: any SimilarProject)
 }
 
@@ -164,8 +165,10 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits when a block user request fails.
   var didBlockUserError: Signal<(), Never> { get }
 
+  /// The current state of similar projects.
   var similarProjects: Property<SimilarProjectsState> { get }
 
+  /// Signal that emits when a user taps on a similar project.
   var navigateToSimilarProject: Signal<any SimilarProject, Never> { get }
 }
 
