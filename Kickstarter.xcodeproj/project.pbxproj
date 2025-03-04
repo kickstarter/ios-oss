@@ -280,6 +280,7 @@
 		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
 		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
+		33D633182D779C6400AF242E /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D633172D779C5F00AF242E /* Image.swift */; };
 		33F04B262D28A8090078AED1 /* PledgeOverTimeBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */; };
 		33F55B3A2D4143940007E50E /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B392D41438E0007E50E /* BadgeView.swift */; };
 		33F55B3C2D499CDB0007E50E /* PledgeOverTimeIncrementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B3B2D499CCA0007E50E /* PledgeOverTimeIncrementView.swift */; };
@@ -1969,6 +1970,7 @@
 		33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
 		33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewControllerTest.swift; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
+		33D633172D779C5F00AF242E /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeBadgeView.swift; sourceTree = "<group>"; };
 		33F55B392D41438E0007E50E /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		33F55B3B2D499CCA0007E50E /* PledgeOverTimeIncrementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeIncrementView.swift; sourceTree = "<group>"; };
@@ -7081,6 +7083,7 @@
 				D01587E01EEB2ED7006E7684 /* ProjectTests.swift */,
 				D01587E11EEB2ED7006E7684 /* PushEnvelope.swift */,
 				D01587E21EEB2ED7006E7684 /* PushEnvelopeTests.swift */,
+				33D633172D779C5F00AF242E /* Image.swift */,
 				D01587E31EEB2ED7006E7684 /* Reward.swift */,
 				D01587E41EEB2ED7006E7684 /* RewardsItem.swift */,
 				D01587E51EEB2ED7006E7684 /* RewardsItemTests.swift */,
@@ -9297,6 +9300,7 @@
 				D67B6CD8221F46D700B63A6B /* Project.Country+Encode.swift in Sources */,
 				8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
+				33D633182D779C6400AF242E /* Image.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,

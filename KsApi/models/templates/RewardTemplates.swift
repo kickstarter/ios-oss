@@ -32,7 +32,8 @@ extension Reward {
     startsAt: nil,
     title: "My Reward",
     localPickup: nil,
-    isAvailable: nil
+    isAvailable: nil,
+    image: Photo(altText: "Some image", url: "https://www.ksr.com/image.jpg")
   )
 
   public static let noReward = Reward(
@@ -63,7 +64,8 @@ extension Reward {
     startsAt: nil,
     title: nil,
     localPickup: nil,
-    isAvailable: nil
+    isAvailable: nil,
+    image: nil
   )
 
   public static let otherReward = Reward(
@@ -94,7 +96,8 @@ extension Reward {
     startsAt: nil,
     title: nil,
     localPickup: nil,
-    isAvailable: nil
+    isAvailable: nil,
+    image: nil
   )
 
   public static let postcards = Reward.template
