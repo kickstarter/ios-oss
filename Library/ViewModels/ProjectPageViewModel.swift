@@ -75,6 +75,8 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when right before orientation change on view
   func viewWillTransition()
+
+  func similarProjectTapped(project: any SimilarProject)
 }
 
 public protocol ProjectPageViewModelOutputs {
@@ -161,6 +163,10 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits when a block user request fails.
   var didBlockUserError: Signal<(), Never> { get }
+
+  var similarProjects: Property<SimilarProjectsState> { get }
+
+  var navigateToSimilarProject: Signal<any SimilarProject, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -743,6 +749,22 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }
+
+  // MARK: - Similar Projects
+
+  private let similarProjectsUseCase = SimilarProjectsUseCase()
+
+  public func similarProjectTapped(project: any SimilarProject) {
+    self.similarProjectsUseCase.projectTapped(project: project)
+  }
+
+  public var similarProjects: Property<SimilarProjectsState> {
+    self.similarProjectsUseCase.similarProjects
+  }
+
+  public var navigateToSimilarProject: Signal<any SimilarProject, Never> {
+    self.similarProjectsUseCase.navigateToProject
+  }
 }
 
 private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
