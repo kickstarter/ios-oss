@@ -1,4 +1,5 @@
 #if DEBUG
+  import Apollo
   import Combine
   import Foundation
   import Prelude
@@ -61,6 +62,8 @@
 
     fileprivate let facebookConnectResponse: User?
     fileprivate let facebookConnectError: ErrorEnvelope?
+
+    fileprivate let fetchGraphQLResponses: [(any GraphQLQuery.Type, GraphQLSelectionSet)]?
 
     fileprivate let fetchActivitiesResponse: [Activity]?
     fileprivate let fetchActivitiesError: ErrorEnvelope?
@@ -259,6 +262,7 @@
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
+      fetchGraphQLResponses: [(any GraphQLQuery.Type, GraphQLSelectionSet)]? = nil,
       fetchActivitiesResponse: [Activity]? = nil,
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
@@ -398,6 +402,8 @@
 
       self.facebookConnectResponse = facebookConnectResponse
       self.facebookConnectError = facebookConnectError
+
+      self.fetchGraphQLResponses = fetchGraphQLResponses
 
       self.fetchActivitiesResponse = fetchActivitiesResponse ?? [
         .template,
@@ -908,6 +914,15 @@
           |> \.id .~ id
           |> \.isFriend .~ true
       )
+    }
+
+    internal func fetch<Q: GraphQLQuery>(query _: Q) -> SignalProducer<Q.Data, ErrorEnvelope> {
+      for (queryType, result) in self.fetchGraphQLResponses ?? [] {
+        if queryType == Q.self, let response = result as? Q.Data {
+          return SignalProducer(value: response)
+        }
+      }
+      return SignalProducer(error: ErrorEnvelope.graphError("Unimplemented mock"))
     }
 
     internal func fetchGraphCategories()
