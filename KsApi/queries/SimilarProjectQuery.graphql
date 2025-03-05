@@ -1,0 +1,12 @@
+query FetchSimilarProjects($projectID: String!) {
+ projects(
+    recommended: true
+    first: 4
+    similarToPid: $projectID
+    state: LIVE
+  ) {
+    nodes {
+      ...ProjectCardFragment
+    }
+  }
+}
