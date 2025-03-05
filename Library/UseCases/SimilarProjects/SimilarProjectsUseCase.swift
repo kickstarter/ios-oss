@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import ReactiveSwift
 
 public protocol SimilarProjectsUseCaseType {
@@ -48,11 +49,11 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
   // MARK: - Data loading
 
   private func fetchProjects(projectID: String) -> SignalProducer<SimilarProjectsState, Never> {
-    // TODO: Implement this stub in MBL-2165
-    SignalProducer(value: projectID)
-      .delay(1.0, on: AppEnvironment.current.scheduler)
-      .map { _ in
-        .loaded(projects: [FakeProject(), FakeProject(), FakeProject(), FakeProject()])
+    AppEnvironment.current.apiService.fetch(query: GraphAPI.FetchSimilarProjectsQuery(projectID: projectID))
+      .map { $0.projects?.nodes?.compactMap { $0?.fragments.projectCardFragment } ?? [] }
+      .map { projects in .loaded(projects: projects) }
+      .flatMapError { error in
+        SignalProducer(value: SimilarProjectsState.error(error: error))
       }
   }
 
@@ -85,9 +86,8 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 
 // MARK: - Supporting Types
 
-private struct FakeProject: SimilarProject {
-  let pid: String
-  init() {
-    self.pid = UUID().uuidString
+extension GraphAPI.ProjectCardFragment: SimilarProject {
+  public var projectID: String {
+    return "\(self.pid)"
   }
 }
