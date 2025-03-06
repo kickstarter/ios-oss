@@ -22,7 +22,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var separateView: UIView!
   @IBOutlet fileprivate var statsStackView: UIStackView!
 
-  internal func configureWith(value: Project) {
+  internal func configureWith(value: any BackerDashboardCellProject) {
     self.viewModel.inputs.configureWith(project: value)
   }
 

@@ -11,8 +11,8 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var searchTermNotFoundLabel: UILabel!
   @IBOutlet fileprivate var rootStackView: UIStackView!
 
-  internal func configureWith(value param: DiscoveryParams) {
-    self.viewModel.inputs.configureWith(param: param)
+  internal func configureWith(value query: String) {
+    self.viewModel.inputs.configureWith(queryString: query)
   }
 
   internal override func bindStyles() {

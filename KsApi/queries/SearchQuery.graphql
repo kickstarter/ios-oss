@@ -1,9 +1,14 @@
-query SearchQuery($term: String) {
-  projects(term: $term) {
+query SearchQuery($term: String, $cursor: String) {
+  projects(term: $term, after: $cursor) {
     nodes {
       ...SearchCellProjectFragment
+      ...ProjectAnalyticsFragment
     }
     totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 }
 

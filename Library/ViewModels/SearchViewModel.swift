@@ -52,7 +52,7 @@ public protocol SearchViewModelOutputs {
   var popularLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits an array of projects when they should be shown on the screen.
-  var projects: Signal<[Project], Never> { get }
+  var projects: Signal<[SearchProject], Never> { get }
 
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), Never> { get }
@@ -87,7 +87,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
-          .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
+          .fetchSearch(searchTerm: "")
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projects }
           .materialize()
@@ -95,7 +95,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let popular = popularEvent.values()
 
-    let clears = query.mapConst([Project]())
+    let clears = query.mapConst([SearchProject]())
 
     self.isPopularTitleVisible = Signal.combineLatest(query, popular)
       .map { query, _ in query.isEmpty }
@@ -114,10 +114,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .ignoreValues()
 
     let requestFromParamsWithDebounce: (DiscoveryParams)
-      -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> = { params in
+      -> SignalProducer<SearchEnvelope, ErrorEnvelope> = { params in
         SignalProducer<(), ErrorEnvelope>(value: ())
           .switchMap {
-            AppEnvironment.current.apiService.fetchDiscovery(params: params)
+            AppEnvironment.current.apiService.fetchSearch(searchTerm: params.query ?? "")
               .ksr_debounce(
                 AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler
               )
@@ -131,13 +131,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { [statsProperty] result -> [Project] in
-        statsProperty.value = result.stats.count
+      valuesFromEnvelope: { [statsProperty] result -> [SearchProject] in
+        statsProperty.value = result.count
         return result.projects
       },
-      cursorFromEnvelope: { $0.urls.api.moreProjects },
+      cursorFromEnvelope: { $0.moreProjectsCursor },
       requestFromParams: requestFromParamsWithDebounce,
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+      requestFromCursor: { AppEnvironment.current.apiService.fetchSearch(cursor: $0) }
     )
 
     let stats = statsProperty.signal
@@ -181,14 +181,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       popularEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    self.goToProject = Signal.combineLatest(self.projects, query)
-      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projectsAndQuery, tappedProject in
-        let (projects, query) = projectsAndQuery
+    /* self.goToProject = Signal.combineLatest(self.projects, query)
+     .takePairWhen(self.tappedProjectProperty.signal.skipNil())
+     .map { projectsAndQuery, tappedProject in
+       let (projects, query) = projectsAndQuery
 
-        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
-      }
-
+       return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+     }
+     */
     // Tracking
 
     // This represents search results count whenever the search page is viewed.
@@ -244,6 +244,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           params: params
         )
       }
+
+    self.goToProject = Signal.never
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -295,7 +297,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let goToProject: Signal<(Project, [Project], RefTag), Never>
   public let isPopularTitleVisible: Signal<Bool, Never>
   public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
-  public let projects: Signal<[Project], Never>
+  public let projects: Signal<[SearchProject], Never>
   public let resignFirstResponder: Signal<(), Never>
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>

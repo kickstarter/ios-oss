@@ -393,6 +393,20 @@ public struct Service: ServiceType {
     return request(.discover(params))
   }
 
+  public func fetchSearch(searchTerm: String)
+    -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.SearchQueryQuery(term: searchTerm))
+      .flatMap(SearchEnvelope.envelopeProducer(from:))
+  }
+
+  public func fetchSearch(cursor: String?)
+    -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.SearchQueryQuery(cursor: cursor))
+      .flatMap(SearchEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchDiscovery_combine(paginationUrl: String)
     -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
     return requestPaginationDecodable(paginationUrl)

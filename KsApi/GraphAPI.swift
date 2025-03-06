@@ -13779,14 +13779,20 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query SearchQuery($term: String) {
-        projects(term: $term) {
+      query SearchQuery($term: String, $cursor: String) {
+        projects(term: $term, after: $cursor) {
           __typename
           nodes {
             __typename
             ...SearchCellProjectFragment
+            ...ProjectAnalyticsFragment
           }
           totalCount
+          pageInfo {
+            __typename
+            endCursor
+            hasNextPage
+          }
         }
       }
       """
@@ -13802,13 +13808,15 @@ public enum GraphAPI {
     }
 
     public var term: String?
+    public var cursor: String?
 
-    public init(term: String? = nil) {
+    public init(term: String? = nil, cursor: String? = nil) {
       self.term = term
+      self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term]
+      return ["term": term, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -13816,7 +13824,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "after": GraphQLVariable("cursor")], type: .object(Project.selections)),
         ]
       }
 
@@ -13848,6 +13856,7 @@ public enum GraphAPI {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("nodes", type: .list(.object(Node.selections))),
             GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+            GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
           ]
         }
 
@@ -13857,8 +13866,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(nodes: [Node?]? = nil, totalCount: Int) {
-          self.init(unsafeResultMap: ["__typename": "ProjectsConnectionWithTotalCount", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount])
+        public init(nodes: [Node?]? = nil, totalCount: Int, pageInfo: PageInfo) {
+          self.init(unsafeResultMap: ["__typename": "ProjectsConnectionWithTotalCount", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount, "pageInfo": pageInfo.resultMap])
         }
 
         public var __typename: String {
@@ -13889,6 +13898,16 @@ public enum GraphAPI {
           }
         }
 
+        /// Information to aid in pagination.
+        public var pageInfo: PageInfo {
+          get {
+            return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+          }
+        }
+
         public struct Node: GraphQLSelectionSet {
           public static let possibleTypes: [String] = ["Project"]
 
@@ -13896,6 +13915,7 @@ public enum GraphAPI {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLFragmentSpread(SearchCellProjectFragment.self),
+              GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
             ]
           }
 
@@ -13937,6 +13957,66 @@ public enum GraphAPI {
               set {
                 resultMap += newValue.resultMap
               }
+            }
+
+            public var projectAnalyticsFragment: ProjectAnalyticsFragment {
+              get {
+                return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+          }
+        }
+
+        public struct PageInfo: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["PageInfo"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("endCursor", type: .scalar(String.self)),
+              GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(endCursor: String? = nil, hasNextPage: Bool) {
+            self.init(unsafeResultMap: ["__typename": "PageInfo", "endCursor": endCursor, "hasNextPage": hasNextPage])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// When paginating forwards, the cursor to continue.
+          public var endCursor: String? {
+            get {
+              return resultMap["endCursor"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "endCursor")
+            }
+          }
+
+          /// When paginating forwards, are there more items?
+          public var hasNextPage: Bool {
+            get {
+              return resultMap["hasNextPage"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "hasNextPage")
             }
           }
         }
@@ -20735,7 +20815,7 @@ public enum GraphAPI {
       """
       fragment SearchCellProjectFragment on Project {
         __typename
-        id
+        projectId: id
         name
         projectState: state
         image {
@@ -20756,7 +20836,6 @@ public enum GraphAPI {
         deadlineAt
         projectLaunchedAt: launchedAt
         isWatched
-        ...ProjectAnalyticsFragment
       }
       """
 
@@ -20765,7 +20844,7 @@ public enum GraphAPI {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("id", alias: "projectId", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("state", alias: "projectState", type: .nonNull(.scalar(ProjectState.self))),
         GraphQLField("image", type: .object(Image.selections)),
@@ -20776,7 +20855,6 @@ public enum GraphAPI {
         GraphQLField("deadlineAt", type: .scalar(String.self)),
         GraphQLField("launchedAt", alias: "projectLaunchedAt", type: .scalar(String.self)),
         GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
-        GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
       ]
     }
 
@@ -20784,6 +20862,10 @@ public enum GraphAPI {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
+    }
+
+    public init(projectId: GraphQLID, name: String, projectState: ProjectState, image: Image? = nil, goal: Goal? = nil, pledged: Pledged, isLaunched: Bool, projectPrelaunchActivated: Bool, deadlineAt: String? = nil, projectLaunchedAt: String? = nil, isWatched: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Project", "projectId": projectId, "name": name, "projectState": projectState, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "pledged": pledged.resultMap, "isLaunched": isLaunched, "projectPrelaunchActivated": projectPrelaunchActivated, "deadlineAt": deadlineAt, "projectLaunchedAt": projectLaunchedAt, "isWatched": isWatched])
     }
 
     public var __typename: String {
@@ -20795,12 +20877,12 @@ public enum GraphAPI {
       }
     }
 
-    public var id: GraphQLID {
+    public var projectId: GraphQLID {
       get {
-        return resultMap["id"]! as! GraphQLID
+        return resultMap["projectId"]! as! GraphQLID
       }
       set {
-        resultMap.updateValue(newValue, forKey: "id")
+        resultMap.updateValue(newValue, forKey: "projectId")
       }
     }
 
@@ -20901,32 +20983,6 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "isWatched")
-      }
-    }
-
-    public var fragments: Fragments {
-      get {
-        return Fragments(unsafeResultMap: resultMap)
-      }
-      set {
-        resultMap += newValue.resultMap
-      }
-    }
-
-    public struct Fragments {
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public var projectAnalyticsFragment: ProjectAnalyticsFragment {
-        get {
-          return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
-        }
-        set {
-          resultMap += newValue.resultMap
-        }
       }
     }
 

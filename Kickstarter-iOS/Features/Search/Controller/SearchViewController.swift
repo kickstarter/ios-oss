@@ -115,7 +115,7 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.projects
       .observeForUI()
       .observeValues { [weak self] projects in
-        self?.dataSource.load(projects: projects)
+        self?.dataSource.load(projects: projects.map { $0.cell })
         self?.tableView.reloadData()
       }
 

@@ -18,14 +18,16 @@ internal final class SearchDataSource: ValueCellDataSource {
   }
 
   internal func load(params: DiscoveryParams, visible: Bool) {
+    let query = params.query ?? ""
+
     self.set(
-      values: visible ? [params] : [],
+      values: visible ? [query] : [],
       cellClass: SearchEmptyStateCell.self,
       inSection: Section.noResults.rawValue
     )
   }
 
-  internal func load(projects: [Project]) {
+  internal func load(projects: [any BackerDashboardCellProject]) {
     self.clearValues(section: Section.projects.rawValue)
 
     if let mostPopular = projects.first {
@@ -53,13 +55,13 @@ internal final class SearchDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as BackerDashboardProjectCell, value as Project):
+    case let (cell as BackerDashboardProjectCell, value as BackerDashboardCellProject):
       cell.configureWith(value: value)
-    case let (cell as MostPopularSearchProjectCell, value as Project):
+    case let (cell as MostPopularSearchProjectCell, value as BackerDashboardCellProject):
       cell.configureWith(value: value)
     case let (cell as MostPopularCell, value as Void):
       cell.configureWith(value: value)
-    case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
+    case let (cell as SearchEmptyStateCell, value as String):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

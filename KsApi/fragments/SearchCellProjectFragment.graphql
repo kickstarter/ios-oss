@@ -1,5 +1,5 @@
 fragment SearchCellProjectFragment on Project {
-  id
+  projectId: id
   name
   projectState: state
   image {
@@ -17,5 +17,4 @@ fragment SearchCellProjectFragment on Project {
   deadlineAt
   projectLaunchedAt: launchedAt
   isWatched
-  ...ProjectAnalyticsFragment
 }

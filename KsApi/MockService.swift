@@ -1093,6 +1093,14 @@
       return SignalProducer(value: envelope)
     }
 
+    internal func fetchSearch(searchTerm _: String) -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
+      return SignalProducer.never
+    }
+
+    internal func fetchSearch(cursor _: String?) -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
+      return SignalProducer.never
+    }
+
     // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
     func fetchBacking(id _: Int, withStoredCards _: Bool)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
