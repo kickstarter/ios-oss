@@ -375,6 +375,11 @@
 		392BB12A2C3BEB5600A5591B /* PPOEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */; };
 		392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */; };
 		392E1CC32C7678AD0065016B /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392E1CC12C7678970065016B /* RewardAddOnSelectionViewControllerTests.swift */; };
+		393E41F12D7A4A3E001A197A /* SearchLegacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E41F02D7A4A3E001A197A /* SearchLegacyViewModel.swift */; };
+		393E41F32D7A4A64001A197A /* SearchLegacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E41F22D7A4A64001A197A /* SearchLegacyViewModelTests.swift */; };
+		393E41F52D7A4A9B001A197A /* SearchLegacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E41F42D7A4A9B001A197A /* SearchLegacyViewController.swift */; };
+		393E41F72D7A4ABE001A197A /* SearchLegacyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E41F62D7A4ABE001A197A /* SearchLegacyViewControllerTests.swift */; };
+		393E41F92D7A4D7A001A197A /* SearchLegacy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 393E41F82D7A4D7A001A197A /* SearchLegacy.storyboard */; };
 		393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */; };
 		393E8DA32C5BE08500AEA968 /* PPOCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */; };
 		393E8DA52C5BE08B00AEA968 /* PPOProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */; };
@@ -2061,6 +2066,11 @@
 		392BB1292C3BEB5500A5591B /* PPOEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOEmptyStateView.swift; sourceTree = "<group>"; };
 		392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOEmptyStateViewTests.swift; sourceTree = "<group>"; };
 		392E1CC12C7678970065016B /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
+		393E41F02D7A4A3E001A197A /* SearchLegacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyViewModel.swift; sourceTree = "<group>"; };
+		393E41F22D7A4A64001A197A /* SearchLegacyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyViewModelTests.swift; sourceTree = "<group>"; };
+		393E41F42D7A4A9B001A197A /* SearchLegacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyViewController.swift; sourceTree = "<group>"; };
+		393E41F62D7A4ABE001A197A /* SearchLegacyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyViewControllerTests.swift; sourceTree = "<group>"; };
+		393E41F82D7A4D7A001A197A /* SearchLegacy.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchLegacy.storyboard; sourceTree = "<group>"; };
 		393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOBackingFragment.graphql; sourceTree = "<group>"; };
 		393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOCardFragment.graphql; sourceTree = "<group>"; };
 		393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PPOProjectFragment.graphql; sourceTree = "<group>"; };
@@ -4293,6 +4303,7 @@
 			isa = PBXGroup;
 			children = (
 				A73923B81D272242004524C3 /* Search.storyboard */,
+				393E41F82D7A4D7A001A197A /* SearchLegacy.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -4310,6 +4321,8 @@
 			children = (
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
+				393E41F42D7A4A9B001A197A /* SearchLegacyViewController.swift */,
+				393E41F62D7A4ABE001A197A /* SearchLegacyViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -6861,6 +6874,8 @@
 				A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
+				393E41F02D7A4A3E001A197A /* SearchLegacyViewModel.swift */,
+				393E41F22D7A4A64001A197A /* SearchLegacyViewModelTests.swift */,
 				D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */,
 				D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */,
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
@@ -7761,6 +7776,7 @@
 				D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
+				393E41F92D7A4D7A001A197A /* SearchLegacy.storyboard in Resources */,
 				770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */,
 				A73923C91D272242004524C3 /* Search.storyboard in Resources */,
 				D6AE3F9120EA975300DB212F /* SettingsNotifications.storyboard in Resources */,
@@ -8270,6 +8286,7 @@
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				77AA2B3B233C0A1B008BBCB8 /* CreateBackingInput+Constructor.swift in Sources */,
 				6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */,
+				393E41F12D7A4A3E001A197A /* SearchLegacyViewModel.swift in Sources */,
 				77C26957240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift in Sources */,
 				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
@@ -8377,6 +8394,7 @@
 				771E630E23426B74005967E8 /* CancelPledgeViewModelTests.swift in Sources */,
 				E171A57F2D14991100AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift in Sources */,
 				8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */,
+				393E41F32D7A4A64001A197A /* SearchLegacyViewModelTests.swift in Sources */,
 				D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */,
@@ -8704,6 +8722,7 @@
 				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,
+				393E41F52D7A4A9B001A197A /* SearchLegacyViewController.swift in Sources */,
 				01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */,
 				8A29790C234EA7A70039396D /* PledgeAmountSummaryViewController.swift in Sources */,
 				8A13D169249817BF007E2C0B /* PledgeExpandableHeaderRewardCell.swift in Sources */,
@@ -8945,6 +8964,7 @@
 				392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
+				393E41F72D7A4ABE001A197A /* SearchLegacyViewControllerTests.swift in Sources */,
 				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
 				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,

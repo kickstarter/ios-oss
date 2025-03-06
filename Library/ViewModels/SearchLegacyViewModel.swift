@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol SearchViewModelInputs {
+public protocol SearchLegacyViewModelInputs {
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
 
@@ -37,7 +37,7 @@ public protocol SearchViewModelInputs {
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
-public protocol SearchViewModelOutputs {
+public protocol SearchLegacyViewModelOutputs {
   /// Emits booleans that determines if the search field should be focused or not, and whether that focus
   /// should be animated.
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
@@ -67,12 +67,13 @@ public protocol SearchViewModelOutputs {
   var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 }
 
-public protocol SearchViewModelType {
-  var inputs: SearchViewModelInputs { get }
-  var outputs: SearchViewModelOutputs { get }
+public protocol SearchLegacyViewModelType {
+  var inputs: SearchLegacyViewModelInputs { get }
+  var outputs: SearchLegacyViewModelOutputs { get }
 }
 
-public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
+public final class SearchLegacyViewModel: SearchLegacyViewModelType, SearchLegacyViewModelInputs,
+  SearchLegacyViewModelOutputs {
   public init() {
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
 
@@ -301,8 +302,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
 
-  public var inputs: SearchViewModelInputs { return self }
-  public var outputs: SearchViewModelOutputs { return self }
+  public var inputs: SearchLegacyViewModelInputs { return self }
+  public var outputs: SearchLegacyViewModelOutputs { return self }
 }
 
 /// Calculates a ref tag from the search query, the list of displayed projects, and the project

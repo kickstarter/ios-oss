@@ -3,8 +3,8 @@ import Library
 import Prelude
 import UIKit
 
-internal final class SearchViewController: UITableViewController {
-  internal let viewModel: SearchViewModelType = SearchViewModel()
+internal final class SearchLegacyViewController: UITableViewController {
+  internal let viewModel: SearchLegacyViewModelType = SearchLegacyViewModel()
   fileprivate let dataSource = SearchDataSource()
 
   @IBOutlet fileprivate var cancelButton: UIButton!
@@ -21,8 +21,8 @@ internal final class SearchViewController: UITableViewController {
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
 
-  internal static func instantiate() -> SearchViewController {
-    return Storyboard.Search.instantiate(SearchViewController.self)
+  internal static func instantiate() -> SearchLegacyViewController {
+    return Storyboard.SearchLegacy.instantiate(SearchLegacyViewController.self)
   }
 
   internal override func viewDidLoad() {
@@ -40,24 +40,27 @@ internal final class SearchViewController: UITableViewController {
 
     self.cancelButton.addTarget(
       self,
-      action: #selector(SearchViewController.cancelButtonPressed),
+      action: #selector(SearchLegacyViewController.cancelButtonPressed),
       for: .touchUpInside
     )
 
     self.searchTextField.addTarget(
       self,
-      action: #selector(SearchViewController.searchTextChanged(_:)),
+      action: #selector(SearchLegacyViewController.searchTextChanged(_:)),
       for: .editingChanged
     )
 
     self.searchTextField.addTarget(
       self,
-      action: #selector(SearchViewController.searchTextEditingDidEnd),
+      action: #selector(SearchLegacyViewController.searchTextEditingDidEnd),
       for: .editingDidEndOnExit
     )
 
     self.searchBarContainerView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(SearchViewController.searchBarContainerTapped))
+      UITapGestureRecognizer(
+        target: self,
+        action: #selector(SearchLegacyViewController.searchBarContainerTapped)
+      )
     )
 
     self.searchTextField.delegate = self
@@ -251,7 +254,7 @@ internal final class SearchViewController: UITableViewController {
   }
 }
 
-extension SearchViewController: UITextFieldDelegate {
+extension SearchLegacyViewController: UITextFieldDelegate {
   internal func textFieldDidBeginEditing(_: UITextField) {
     self.viewModel.inputs.searchFieldDidBeginEditing()
   }
@@ -262,4 +265,4 @@ extension SearchViewController: UITextFieldDelegate {
   }
 }
 
-extension SearchViewController: TabBarControllerScrollable {}
+extension SearchLegacyViewController: TabBarControllerScrollable {}
