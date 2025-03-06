@@ -25,6 +25,9 @@ public struct Reward {
   public let localPickup: Location?
   /// isAvailable is provided by GraphQL but not by API V1.
   public let isAvailable: Bool?
+  /// The URL of the reward image retrieved from GraphQL.
+  /// - Source: `Reward.image.url`
+  public let image: Image?
 
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
@@ -101,6 +104,13 @@ public struct Reward {
       case singleLocation = "single_location"
     }
   }
+
+  public struct Image {
+    /// Alt text on the image
+    public let altText: String
+    /// URL of the image
+    public let url: String?
+  }
 }
 
 extension Reward: Equatable {}
@@ -172,6 +182,7 @@ extension Reward: Decodable {
     // NOTE: `v1` is deprecated and doesn't contain any location pickup information.
     self.localPickup = nil
     self.isAvailable = nil
+    self.image = nil
   }
 }
 

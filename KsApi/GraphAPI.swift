@@ -19653,6 +19653,11 @@ public enum GraphAPI {
           ...ShippingRuleFragment
         }
         startsAt
+        image {
+          __typename
+          altText
+          url(width: 1024)
+        }
       }
       """
 
@@ -19690,6 +19695,7 @@ public enum GraphAPI {
           GraphQLField("shippingRules", type: .nonNull(.list(.object(ShippingRule.selections)))),
         ]),
         GraphQLField("startsAt", type: .scalar(String.self)),
+        GraphQLField("image", type: .object(Image.selections)),
       ]
     }
 
@@ -19699,8 +19705,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, available: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, pledgeAmount: PledgeAmount, latePledgeAmount: LatePledgeAmount, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "available": available, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "pledgeAmount": pledgeAmount.resultMap, "latePledgeAmount": latePledgeAmount.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
+    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, available: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, pledgeAmount: PledgeAmount, latePledgeAmount: LatePledgeAmount, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil, image: Image? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "available": available, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "pledgeAmount": pledgeAmount.resultMap, "latePledgeAmount": latePledgeAmount.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -19964,6 +19970,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "startsAt")
+      }
+    }
+
+    /// The reward image.
+    public var image: Image? {
+      get {
+        return (resultMap["image"] as? ResultMap).flatMap { Image(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "image")
       }
     }
 
@@ -20555,6 +20571,57 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct Image: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Photo"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("altText", type: .nonNull(.scalar(String.self))),
+          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(altText: String, url: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Photo", "altText": altText, "url": url])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Alt text on the image
+      public var altText: String {
+        get {
+          return resultMap["altText"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "altText")
+        }
+      }
+
+      /// URL of the photo
+      public var url: String? {
+        get {
+          return resultMap["url"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "url")
         }
       }
     }

@@ -27,7 +27,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -55,7 +56,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $0,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -83,7 +85,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -111,7 +114,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -139,7 +143,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -167,7 +172,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -195,7 +201,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -223,7 +230,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -251,7 +259,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -279,7 +288,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -307,7 +317,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -335,7 +346,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -363,7 +375,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -391,7 +404,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -419,7 +433,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -447,7 +462,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -475,7 +491,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -503,7 +520,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -531,7 +549,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -559,7 +578,8 @@ extension Reward {
         startsAt: $0,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -587,7 +607,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $0,
         localPickup: $1.localPickup,
-        isAvailable: $1.isAvailable
+        isAvailable: $1.isAvailable,
+        image: $1.image
       ) }
     )
 
@@ -615,7 +636,8 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: $0
+        isAvailable: $0,
+        image: $1.image
       ) }
     )
   }

@@ -55,6 +55,10 @@ final class Reward_RewardFragmentTests: XCTestCase {
 
       XCTAssertEqual(v1Reward.isLimitedQuantity, false)
       XCTAssertEqual(v1Reward.isLimitedTime, false)
+
+      XCTAssertNotNil(v1Reward.image)
+      XCTAssertEqual(v1Reward.image?.altText, "Some image")
+      XCTAssertEqual(v1Reward.image?.url, "https://www.ksr.com/image.jpg")
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -207,7 +211,12 @@ private func rewardDictionary() -> [String: Any] {
         },
       }
     ],
-    "startsAt": null
+    "startsAt": null,
+    "image": {
+      "__typename": "Photo",
+      "altText": "Some image",
+      "url": "https://www.ksr.com/image.jpg"
+    }
   }
   """
 
