@@ -1586,6 +1586,8 @@
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E11DE11A2D70C02200DD2ECA /* UIViewController+Children.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */; };
+		E11DE11C2D793ADD00DD2ECA /* SearchQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E11DE11B2D793AD600DD2ECA /* SearchQuery.graphql */; };
+		E11DE11E2D79F33500DD2ECA /* SearchCellProjectFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */; };
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
@@ -3299,6 +3301,8 @@
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
 		E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Children.swift"; sourceTree = "<group>"; };
+		E11DE11B2D793AD600DD2ECA /* SearchQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchQuery.graphql; sourceTree = "<group>"; };
+		E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchCellProjectFragment.graphql; sourceTree = "<group>"; };
 		E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CompleteOnSessionCheckoutMutation.graphql; sourceTree = "<group>"; };
 		E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateOrUpdateBackingAddressMutation.graphql; sourceTree = "<group>"; };
 		E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBackingAddressMutationTests.swift; sourceTree = "<group>"; };
@@ -5952,6 +5956,7 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				E11DE11B2D793AD600DD2ECA /* SearchQuery.graphql */,
 				604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */,
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
 				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
@@ -6066,6 +6071,7 @@
 		8ADCCDAA2656BC020079D308 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
+				E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */,
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
@@ -7825,6 +7831,7 @@
 				061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */,
 				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
+				E11DE11C2D793ADD00DD2ECA /* SearchQuery.graphql in Resources */,
 				6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */,
 				39B5E1122B89120F00FFB720 /* CreateAttributionEvent.graphql in Resources */,
 				AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */,
@@ -9235,6 +9242,7 @@
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
+				E11DE11E2D79F33500DD2ECA /* SearchCellProjectFragment.graphql in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,

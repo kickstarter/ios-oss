@@ -1,0 +1,21 @@
+fragment SearchCellProjectFragment on Project {
+  id
+  name
+  projectState: state
+  image {
+    id
+    url(width: 1024)
+  }
+  goal {
+    ...MoneyFragment
+  }
+  pledged {
+    ...MoneyFragment
+  }
+  isLaunched
+  projectPrelaunchActivated: prelaunchActivated
+  deadlineAt
+  projectLaunchedAt: launchedAt
+  isWatched
+  ...ProjectAnalyticsFragment
+}

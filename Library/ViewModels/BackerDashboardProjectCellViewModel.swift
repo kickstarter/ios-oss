@@ -3,9 +3,22 @@ import KsApi
 import ReactiveSwift
 import UIKit
 
+public protocol BackerDashboardCellProject {
+  var name: String { get }
+  var state: Project.State { get }
+  var imageURL: String { get }
+  var fundingProgress: Float { get }
+  var percentFunded: Int { get }
+  var displayPrelaunch: Bool? { get }
+  var prelaunchActivated: Bool? { get }
+  var launchedAt: TimeInterval? { get }
+  var deadline: TimeInterval? { get }
+  var isStarred: Bool? { get }
+}
+
 public protocol BackerDashboardProjectCellViewModelInputs {
   /// Call to configure with a backed project.
-  func configureWith(project: Project)
+  func configureWith(project: any BackerDashboardCellProject)
 }
 
 public protocol BackerDashboardProjectCellViewModelOutputs {
@@ -52,9 +65,9 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.projectTitleText = project.map(titleString(for:))
 
-    self.photoURL = project.map { URL(string: $0.photo.full) }
+    self.photoURL = project.map { URL(string: $0.imageURL) }
 
-    self.progress = project.map { $0.stats.fundingProgress }
+    self.progress = project.map { $0.fundingProgress }
 
     self.metadataBackgroundColor = project.map(metadataBackgroundColorForProject)
 
@@ -70,13 +83,13 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progressBarColor = project.map(progressBarColorForProject)
 
-    self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) }
+    self.savedIconIsHidden = project.map { $0.isStarred != .some(true) }
 
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty = MutableProperty<(any BackerDashboardCellProject)?>(nil)
+  public func configureWith(project: any BackerDashboardCellProject) {
     self.projectProperty.value = project
   }
 
@@ -95,12 +108,12 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
   public var outputs: BackerDashboardProjectCellViewModelOutputs { return self }
 }
 
-private func metadataString(for project: Project) -> String {
+private func metadataString(for project: any BackerDashboardCellProject) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
 
   switch project.state {
   case .live:
-    guard let deadline = project.dates.deadline else {
+    guard let deadline = project.deadline else {
       return ""
     }
 
@@ -111,8 +124,8 @@ private func metadataString(for project: Project) -> String {
   }
 }
 
-private func percentFundedString(for project: Project) -> NSAttributedString {
-  let percentage = Format.percentage(project.stats.percentFunded)
+private func percentFundedString(for project: any BackerDashboardCellProject) -> NSAttributedString {
+  let percentage = Format.percentage(project.percentFunded)
 
   switch project.state {
   case .live, .successful:
@@ -128,7 +141,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
   }
 }
 
-private func progressBarColorForProject(_ project: Project) -> UIColor {
+private func progressBarColorForProject(_ project: any BackerDashboardCellProject) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_create_700
@@ -137,7 +150,7 @@ private func progressBarColorForProject(_ project: Project) -> UIColor {
   }
 }
 
-private func metadataBackgroundColorForProject(_ project: Project) -> UIColor {
+private func metadataBackgroundColorForProject(_ project: any BackerDashboardCellProject) -> UIColor {
   guard !isProjectPrelaunch(project) else {
     return .ksr_create_700
   }
@@ -150,7 +163,7 @@ private func metadataBackgroundColorForProject(_ project: Project) -> UIColor {
   }
 }
 
-private func titleString(for project: Project) -> NSAttributedString {
+private func titleString(for project: any BackerDashboardCellProject) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
@@ -165,7 +178,7 @@ private func titleString(for project: Project) -> NSAttributedString {
   }
 }
 
-private func stateString(for project: Project) -> String {
+private func stateString(for project: any BackerDashboardCellProject) -> String {
   switch project.state {
   case .canceled:
     return Strings.profile_projects_status_canceled()
@@ -180,8 +193,8 @@ private func stateString(for project: Project) -> String {
   }
 }
 
-private func isProjectPrelaunch(_ project: Project) -> Bool {
-  switch (project.displayPrelaunch, project.prelaunchActivated, project.dates.launchedAt) {
+private func isProjectPrelaunch(_ project: any BackerDashboardCellProject) -> Bool {
+  switch (project.displayPrelaunch, project.prelaunchActivated, project.launchedAt) {
   // GraphQL requests using ProjectFragment will populate displayPrelaunch and prelaunchActivated
   case (.some(true), .some(true), _):
     return true
@@ -192,5 +205,73 @@ private func isProjectPrelaunch(_ project: Project) -> Bool {
     return timeValue <= 0
   default:
     return false
+  }
+}
+
+extension Project: BackerDashboardCellProject {
+  public var fundingProgress: Float {
+    return self.stats.fundingProgress
+  }
+
+  public var percentFunded: Int {
+    return self.stats.percentFunded
+  }
+
+  public var imageURL: String {
+    return self.photo.full
+  }
+
+  public var launchedAt: TimeInterval? {
+    return self.dates.launchedAt
+  }
+
+  public var deadline: TimeInterval? {
+    return self.dates.deadline
+  }
+
+  public var isStarred: Bool? {
+    self.personalization.isStarred
+  }
+}
+
+extension GraphAPI.SearchCellProjectFragment: BackerDashboardCellProject {
+  public var prelaunchActivated: Bool? {
+    return Optional.some(self.projectPrelaunchActivated)
+  }
+
+  public var state: KsApi.Project.State {
+    return Project.State(rawValue: self.projectState.rawValue.lowercased()) ?? Project.State.live
+  }
+
+  public var imageURL: String {
+    self.image?.url ?? ""
+  }
+
+  public var fundingProgress: Float {
+    let pledged = self.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
+
+    let goal = self.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0
+
+    return goal == 0 ? 0.0 : Float(pledged) / Float(goal)
+  }
+
+  public var percentFunded: Int {
+    return Int(floor(self.fundingProgress * 100.0))
+  }
+
+  public var displayPrelaunch: Bool? {
+    return !self.isLaunched
+  }
+
+  public var launchedAt: TimeInterval? {
+    return self.projectLaunchedAt.flatMap(TimeInterval.init)
+  }
+
+  public var deadline: TimeInterval? {
+    return self.deadlineAt.flatMap(TimeInterval.init)
+  }
+
+  public var isStarred: Bool? {
+    return self.isWatched
   }
 }

@@ -1,0 +1,10 @@
+query SearchQuery($term: String) {
+  projects(term: $term) {
+    nodes {
+      ...SearchCellProjectFragment
+    }
+    totalCount
+  }
+}
+
+
