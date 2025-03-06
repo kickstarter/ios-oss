@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-internal final class SearchViewContollerTests: TestCase {
+internal final class SearchLegacyViewContollerTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -36,7 +36,7 @@ internal final class SearchViewContollerTests: TestCase {
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
         ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          let controller = Storyboard.SearchLegacy.instantiate(SearchLegacyViewController.self)
           controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -60,7 +60,7 @@ internal final class SearchViewContollerTests: TestCase {
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
         ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          let controller = Storyboard.SearchLegacy.instantiate(SearchLegacyViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           controller.viewModel.inputs.searchTextChanged("abcdefgh")
@@ -90,7 +90,7 @@ internal final class SearchViewContollerTests: TestCase {
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
         ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          let controller = Storyboard.SearchLegacy.instantiate(SearchLegacyViewController.self)
           controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -125,7 +125,7 @@ internal final class SearchViewContollerTests: TestCase {
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
         ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          let controller = Storyboard.SearchLegacy.instantiate(SearchLegacyViewController.self)
           controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

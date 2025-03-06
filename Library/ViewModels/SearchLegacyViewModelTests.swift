@@ -7,8 +7,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class SearchViewModelTests: TestCase {
-  fileprivate let vm: SearchViewModelType! = SearchViewModel()
+internal final class SearchLegacyViewModelTests: TestCase {
+  fileprivate let vm: SearchLegacyViewModelType! = SearchLegacyViewModel()
 
   fileprivate let changeSearchFieldFocusFocused = TestObserver<Bool, Never>()
   fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, Never>()

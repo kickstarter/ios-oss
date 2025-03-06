@@ -20,6 +20,7 @@ public enum Storyboard: String {
   case ProjectActivity
   case ProjectPamphlet
   case Search
+  case SearchLegacy
   case Settings
   case SettingsNewsletters
   case SettingsNotifications
