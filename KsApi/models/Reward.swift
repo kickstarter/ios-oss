@@ -104,7 +104,7 @@ public struct Reward {
       case singleLocation = "single_location"
     }
   }
-  
+
   public struct Image {
     /// Alt text on the image
     public let altText: String
