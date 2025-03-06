@@ -138,8 +138,8 @@ private func shippingRulesData(
 /// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
 /// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
 /// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
-private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Photo? {
+private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
   guard let image = image else { return nil }
 
-  return Photo(altText: image.altText, url: image.url)
+  return Reward.Image(altText: image.altText, url: image.url)
 }

@@ -27,7 +27,7 @@ public struct Reward {
   public let isAvailable: Bool?
   /// The URL of the reward image retrieved from GraphQL.
   /// - Source: `Reward.image.url`
-  public let image: Photo?
+  public let image: Image?
 
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
@@ -103,6 +103,13 @@ public struct Reward {
       case noShipping = "no_shipping"
       case singleLocation = "single_location"
     }
+  }
+  
+  public struct Image {
+    /// Alt text on the image
+    public let altText: String
+    /// URL of the image
+    public let url: String?
   }
 }
 
