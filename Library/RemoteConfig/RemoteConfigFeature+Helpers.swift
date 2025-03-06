@@ -46,3 +46,7 @@ public func featureNewDesignSystemEnabled() -> Bool {
     false
   #endif
 }
+
+public func featureSearchFiltersEnabled() -> Bool {
+  featureEnabled(feature: .searchFilters)
+}

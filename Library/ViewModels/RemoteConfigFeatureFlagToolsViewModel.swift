@@ -99,6 +99,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePledgeOverTimeEnabled()
   case .newDesignSystem:
     return featureNewDesignSystemEnabled()
+  case .searchFilters:
+    return featureSearchFiltersEnabled()
   }
 }
 
