@@ -52,7 +52,11 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
     SignalProducer(value: projectID)
       .delay(1.0, on: AppEnvironment.current.scheduler)
       .map { _ in
-        .loaded(projects: [FakeProject(), FakeProject(), FakeProject(), FakeProject()])
+        #if DEBUG
+          .loaded(projects: [FakeProject(), FakeProject(), FakeProject(), FakeProject()])
+        #else
+          .hidden
+        #endif
       }
   }
 
