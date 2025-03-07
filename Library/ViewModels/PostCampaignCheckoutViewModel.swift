@@ -109,7 +109,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       withLoginIntent: .backProject,
       initialData: initialData.ignoreValues()
     )
-    
+
     self.paymentMethodsUseCase = PaymentMethodsUseCase(
       initialData: initialData,
       isLoggedIn: self.loginSignupUseCase.dataOutputs.isLoggedIn
@@ -749,6 +749,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> {
     return self.paymentMethodsUseCase.configurePaymentMethodsViewControllerWithValue
   }
+
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     Double?,
@@ -767,6 +768,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public var paymentMethodsViewHidden: Signal<Bool, Never> {
     return self.paymentMethodsUseCase.paymentMethodsViewHidden
   }
+
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
   public let checkoutComplete: Signal<ThanksPageData, Never>
