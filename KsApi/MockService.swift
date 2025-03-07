@@ -1093,11 +1093,8 @@
       return SignalProducer(value: envelope)
     }
 
-    internal func fetchSearch(searchTerm _: String) -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
-      return SignalProducer.never
-    }
-
-    internal func fetchSearch(cursor _: String?) -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
+    internal func fetchSearch(searchTerm _: String?, cursor _: String?)
+      -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
       return SignalProducer.never
     }
 

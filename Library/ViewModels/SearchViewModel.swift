@@ -137,7 +137,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       },
       cursorFromEnvelope: { $0.moreProjectsCursor },
       requestFromParams: requestFromParamsWithDebounce,
-      requestFromCursor: { AppEnvironment.current.apiService.fetchSearch(cursor: $0) }
+      requestFromCursor: { AppEnvironment.current.apiService.fetchSearch(searchTerm: nil, cursor: $0) }
     )
 
     let stats = statsProperty.signal

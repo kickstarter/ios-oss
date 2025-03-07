@@ -166,10 +166,7 @@ public protocol ServiceType {
   /// Fetch the full discovery envelope with specified discovery params.
   func fetchDiscovery(params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 
-  func fetchSearch(searchTerm: String)
-    -> SignalProducer<SearchEnvelope, ErrorEnvelope>
-
-  func fetchSearch(cursor: String?)
+  func fetchSearch(searchTerm: String?, cursor: String?)
     -> SignalProducer<SearchEnvelope, ErrorEnvelope>
 
   /// Fetch friends for a user.

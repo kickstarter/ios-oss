@@ -393,17 +393,10 @@ public struct Service: ServiceType {
     return request(.discover(params))
   }
 
-  public func fetchSearch(searchTerm: String)
+  public func fetchSearch(searchTerm: String, cursor: String?)
     -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.SearchQueryQuery(term: searchTerm))
-      .flatMap(SearchEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchSearch(cursor: String?)
-    -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .fetch(query: GraphAPI.SearchQueryQuery(cursor: cursor))
+      .fetch(query: GraphAPI.SearchQueryQuery(term: searchTerm, cursor: cursor))
       .flatMap(SearchEnvelope.envelopeProducer(from:))
   }
 
