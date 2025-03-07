@@ -141,7 +141,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       withLoginIntent: .backProject,
       initialData: initialData.ignoreValues()
     )
-    
+
     self.paymentMethodsUseCase = PaymentMethodsUseCase(
       initialData: initialData,
       isLoggedIn: self.loginSignupUseCase.dataOutputs.isLoggedIn
@@ -1051,6 +1051,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
   public var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> {
     self.paymentMethodsUseCase.configurePaymentMethodsViewControllerWithValue
   }
+
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -1071,6 +1072,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
   public var paymentMethodsViewHidden: Signal<Bool, Never> {
     self.paymentMethodsUseCase.paymentMethodsViewHidden
   }
+
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
