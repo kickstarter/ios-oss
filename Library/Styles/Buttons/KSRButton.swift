@@ -38,7 +38,7 @@ public final class KSRButton: UIButton {
     ])
   }
 
-  public func starLoading() {
+  public func startLoading() {
     self.activityIndicator.startAnimating()
     self.isEnabled = false
     self.setNeedsUpdateConfiguration()

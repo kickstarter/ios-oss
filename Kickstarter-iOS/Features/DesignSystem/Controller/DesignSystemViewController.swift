@@ -184,7 +184,8 @@ final class DesignSystemViewController: UIViewController {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
-    // New Design System Fonts
+    // MARK: - New Design System Buttons
+
     let newButtons = UILabel()
     newButtons.font = .ksr_title1().bolded
     newButtons.textColor = adaptiveColor(.black)
@@ -207,7 +208,7 @@ final class DesignSystemViewController: UIViewController {
       let buttonFocused = KSRButton(style: buttonStyle)
       buttonFocused.setTitle("Button - \(String(describing: buttonStyle)) - Loading", for: .normal)
       buttonFocused.configuration?.image = image(named: "icon-eye")
-      buttonFocused.starLoading()
+      buttonFocused.startLoading()
       self.buttonsStackView.addArrangedSubview(buttonFocused)
 
       NSLayoutConstraint.activate([
