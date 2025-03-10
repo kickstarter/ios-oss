@@ -26,12 +26,12 @@ extension AdaptiveColors {
 
     // Constructs the full color name for asset lookup.
     let colorName = "\(namespace)\(self.rawValue)"
-    
+
     // Retrieves the color from the asset catalog, defaulting to white if unavailable.
     if let color = UIColor(named: colorName) {
       return color
     }
-    
+
     assertionFailure("⚠️ Color not found in asset catalog: \(colorName)")
     return .white
   }
