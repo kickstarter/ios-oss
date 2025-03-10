@@ -18,12 +18,10 @@ public final class RewardAddOnCardView: UIView {
   weak var delegate: RewardAddOnCardViewDelegate?
   private let viewModel: RewardAddOnCardViewModelType = RewardAddOnCardViewModel()
 
-  private let rootStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-  }()
+  private let rootStackView = UIStackView(frame: .zero)
+  private let detailsStackView = UIStackView(frame: .zero)
 
+  private let rewardImageView = UIImageView(frame: .zero)
   private let addButton = UIButton(type: .custom)
   private let amountConversionLabel = UILabel(frame: .zero)
   private let amountLabel = UILabel(frame: .zero)
@@ -90,7 +88,7 @@ public final class RewardAddOnCardView: UIView {
       |> blackButtonStyle
 
     var stackViews = [
-      self.rootStackView,
+      self.detailsStackView,
       self.titleAmountStackView,
       self.includedItemsStackView,
       self.rewardLocationStackView
@@ -104,8 +102,10 @@ public final class RewardAddOnCardView: UIView {
           |> sectionStackViewStyle
       }
 
-    _ = self.rootStackView
-      |> baseStackViewStyle
+    applyRootStackViewStyle(self.rootStackView)
+
+    _ = self.detailsStackView
+      |> detailsStackViewStyle
 
     _ = self.titleAmountStackView
       |> titleAmountStackViewStyle
@@ -219,6 +219,7 @@ public final class RewardAddOnCardView: UIView {
     self.stepperStackView.rac.hidden = self.viewModel.outputs.stepperStackViewHidden
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
+    self.rewardImageView.rac.hidden = self.viewModel.outputs.rewardImageHidden
 
     self.viewModel.outputs.notifiyDelegateDidSelectQuantity
       .observeForUI()
@@ -248,16 +249,30 @@ public final class RewardAddOnCardView: UIView {
 
         self?.estimatedShippingLabel.text = labelText
       }
+
+    self.viewModel.outputs.rewardImage
+      .observeForUI()
+      .on(event: { [weak rewardImageView] _ in
+        rewardImageView?.af.cancelImageRequest()
+        rewardImageView?.image = nil
+      })
+      .observeValues { [weak rewardImageView] image in
+        rewardImageView?.accessibilityLabel = image.altText
+
+        guard let url = image.url, let imageURL = URL(string: url) else { return }
+        rewardImageView?.ksr_setImageWithURL(imageURL)
+      }
   }
 
   // MARK: - Private Helpers
 
   private func configureViews() {
-    _ = (self.rootStackView, self)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+    self.addSubview(self.rootStackView)
+    self.rootStackView.constrainViewToEdges(in: self)
+    self.rootStackView.addArrangedSubviews(self.rewardImageView, self.detailsStackView)
 
-    var rootSubviews = [
+    self.rewardImageView.isHidden = true
+    var detailsSubviews = [
       self.rewardTitleLabel,
       self.titleAmountStackView,
       self.descriptionLabel,
@@ -268,9 +283,9 @@ public final class RewardAddOnCardView: UIView {
       self.stepperStackView
     ]
 
-    rootSubviews.insert(self.estimatedShippingStackView, at: 4)
+    detailsSubviews.insert(self.estimatedShippingStackView, at: 4)
 
-    _ = (rootSubviews, self.rootStackView)
+    _ = (detailsSubviews, self.detailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let titleAmountViews = [self.rewardTitleLabel, self.amountLabel, self.amountConversionLabel]
@@ -316,6 +331,14 @@ public final class RewardAddOnCardView: UIView {
     ]
 
     NSLayoutConstraint.activate(pillCollectionViewConstraints)
+
+    let aspectRatio: CGFloat = 1.5
+    let rewardImageViewConstraint = self.rewardImageView.heightAnchor.constraint(
+      equalTo: self.rewardImageView.widthAnchor,
+      multiplier: 1.0 / aspectRatio
+    )
+    rewardImageViewConstraint.priority = UILayoutPriority(rawValue: 999)
+    rewardImageViewConstraint.isActive = true
   }
 
   private func configurePillsView(_ pills: [String]) {
@@ -368,8 +391,10 @@ private let baseRewardLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
 }
 
-private let baseStackViewStyle: StackViewStyle = { stackView in
+private let detailsStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.spacing .~ Styles.grid(3)
 }
 
@@ -422,4 +447,8 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
 private let sectionTitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_headline()
+}
+
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
 }

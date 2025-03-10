@@ -65,7 +65,7 @@ private let containerViewStyle: ViewStyle = { (view: UIView) in
   view
     |> checkoutWhiteBackgroundStyle
     |> roundedStyle(cornerRadius: Styles.grid(3))
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.layoutMargins .~ .zero
 }
 
 private let contentViewStyle: ViewStyle = { (view: UIView) in

@@ -14,11 +14,11 @@ public final class RewardCardView: UIView {
   weak var delegate: RewardCardViewDelegate?
   private let viewModel: RewardCardViewModelType = RewardCardViewModel()
 
-  private let baseStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private let rootStackView: UIStackView = UIStackView(frame: .zero)
 
+  private let detailsStackView: UIStackView = UIStackView(frame: .zero)
+
+  private let rewardImageView = UIImageView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let estimatedDeliveryStackView = UIStackView(frame: .zero)
@@ -67,7 +67,7 @@ public final class RewardCardView: UIView {
       |> checkoutWhiteBackgroundStyle
 
     var stackViews = [
-      self.baseStackView,
+      self.detailsStackView,
       self.priceStackView,
       self.descriptionStackView,
       self.includedItemsStackView,
@@ -83,8 +83,10 @@ public final class RewardCardView: UIView {
           |> sectionStackViewStyle
       }
 
-    _ = self.baseStackView
-      |> baseStackViewStyle
+    applyRootStackViewStyle(self.rootStackView)
+
+    _ = self.detailsStackView
+      |> detailsStackViewStyle
 
     _ = self.priceStackView
       |> priceStackViewStyle
@@ -205,6 +207,7 @@ public final class RewardCardView: UIView {
     self.pillsView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.attributedText = self.viewModel.outputs.rewardTitleLabelAttributedText
+    self.rewardImageView.rac.hidden = self.viewModel.outputs.rewardImageHidden
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -238,16 +241,31 @@ public final class RewardCardView: UIView {
 
         self?.estimatedShippingLabel.text = labelText
       }
+
+    self.viewModel.outputs.rewardImage
+      .observeForUI()
+      .on(event: { [weak rewardImageView] _ in
+        rewardImageView?.af.cancelImageRequest()
+        rewardImageView?.image = nil
+      })
+      .observeValues { [weak rewardImageView] image in
+        rewardImageView?.accessibilityLabel = image.altText
+
+        guard let url = image.url, let imageURL = URL(string: url) else { return }
+        rewardImageView?.ksr_setImageWithURL(imageURL)
+      }
   }
 
   // MARK: - Private Helpers
 
   private func configureViews() {
-    _ = (self.baseStackView, self)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+    self.addSubview(self.rootStackView)
+    self.rootStackView.constrainViewToEdges(in: self)
+    self.rootStackView.addArrangedSubviews(self.rewardImageView, self.detailsStackView)
 
-    var baseSubviews = [
+    self.rewardImageView.isHidden = true
+
+    var detailsSubviews = [
       self.titleStackView,
       self.rewardTitleLabel,
       self.descriptionStackView,
@@ -257,9 +275,9 @@ public final class RewardCardView: UIView {
       self.pillsView
     ]
 
-    baseSubviews.insert(self.estimatedShippingStackView, at: 4)
+    detailsSubviews.insert(self.estimatedShippingStackView, at: 4)
 
-    _ = (baseSubviews, self.baseStackView)
+    _ = (detailsSubviews, self.detailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.minimumPriceLabel, self.minimumPriceConversionLabel], self.priceStackView)
@@ -292,6 +310,14 @@ public final class RewardCardView: UIView {
     self.pillsViewHeightConstraint = pillsViewHeightConstraint
 
     NSLayoutConstraint.activate([pillsViewHeightConstraint])
+
+    let aspectRatio: CGFloat = 1.5
+    let constratint = self.rewardImageView.heightAnchor.constraint(
+      equalTo: self.rewardImageView.widthAnchor,
+      multiplier: 1.0 / aspectRatio
+    )
+    constratint.priority = UILayoutPriority(rawValue: 999)
+    constratint.isActive = true
   }
 
   private func configurePillsView(_ pills: [RewardCardPillData]) {
@@ -368,9 +394,11 @@ private let baseRewardLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
 }
 
-private let baseStackViewStyle: StackViewStyle = { stackView in
+private let detailsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(3)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
 
 private let includedItemsStackViewStyle: StackViewStyle = { stackView in
@@ -430,4 +458,8 @@ extension RewardCardView: UICollectionViewDelegate {
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
+}
+
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
 }
