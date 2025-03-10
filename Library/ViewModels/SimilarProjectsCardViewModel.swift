@@ -72,7 +72,7 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
   public var outputs: ProjectsCardViewModelOutputs { return self }
 }
 
-// TODO: Update hardcoded strings
+// TODO: Update hardcoded strings [mbl-2192](https://kickstarter.atlassian.net/browse/MBL-2192?atlOrigin=eyJpIjoiOGVlNzQ2MTQ3OTZjNDMzYTg0YTBjZWQ4OGM2ZDZjZDAiLCJwIjoiamlyYS1zbGFjay1pbnQifQ)
 private func projectStatus(for project: Project) -> String {
   guard !isProjectPrelaunch(project) else { return "Launching Soon" }
 

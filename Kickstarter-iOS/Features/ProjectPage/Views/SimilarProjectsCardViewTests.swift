@@ -141,7 +141,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)", record: true)
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
