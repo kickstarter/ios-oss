@@ -58,7 +58,8 @@ extension Reward {
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
       localPickup: location,
-      isAvailable: rewardFragment.available
+      isAvailable: rewardFragment.available,
+      image: rewardPhoto(from: rewardFragment.image)
     )
   }
 }
@@ -132,4 +133,13 @@ private func shippingRulesData(
     .flatMap { $0 }
 
   return shippingRules
+}
+
+/// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
+/// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
+/// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
+private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
+  guard let image = image else { return nil }
+
+  return Reward.Image(altText: image.altText, url: image.url)
 }

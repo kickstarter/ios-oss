@@ -41,6 +41,9 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertNotNil(backing.reward?.isAvailable)
       XCTAssertNotNil(backing.reward?.latePledgeAmount)
       XCTAssertNotNil(backing.reward?.pledgeAmount)
+      XCTAssertNotNil(backing.reward?.image)
+      XCTAssertEqual(backing.reward?.image?.altText, "Some image")
+      XCTAssertEqual(backing.reward?.image?.url, "https://www.ksr.com/image.jpg")
       XCTAssertEqual(backing.rewardsAmount, 75)
       XCTAssertEqual(backing.sequence, 148)
       XCTAssertEqual(backing.shippingAmount, 10.0)
@@ -213,7 +216,12 @@ private func backingDictionary() -> [String: Any] {
               }
             }
           ],
-          "startsAt": null
+          "startsAt": null,
+          "image": {
+            "__typename": "Photo",
+            "altText": "Some image",
+            "url": "https://www.ksr.com/image.jpg"
+          }
         },
         {
           "__typename": "Reward",
@@ -329,7 +337,12 @@ private func backingDictionary() -> [String: Any] {
               }
             }
           ],
-          "startsAt": null
+          "startsAt": null,
+          "image": {
+            "__typename": "Photo",
+            "altText": "Some image",
+            "url": "https://www.ksr.com/image.jpg"
+          }
         },
         {
           "__typename": "Reward",
@@ -445,7 +458,12 @@ private func backingDictionary() -> [String: Any] {
               }
             }
           ],
-          "startsAt": null
+          "startsAt": null,
+          "image": {
+            "__typename": "Photo",
+            "altText": "Some image",
+            "url": "https://www.ksr.com/image.jpg"
+          }
         },
         {
           "__typename": "Reward",
@@ -561,7 +579,12 @@ private func backingDictionary() -> [String: Any] {
               }
             }
           ],
-          "startsAt": null
+          "startsAt": null,
+          "image": {
+            "__typename": "Photo",
+            "altText": "Some image",
+            "url": "https://www.ksr.com/image.jpg"
+          }
         }
       ]
     },
@@ -1079,7 +1102,12 @@ private func backingDictionary() -> [String: Any] {
           }
         }
       ],
-      "startsAt": null
+      "startsAt": null,
+      "image": {
+        "__typename": "Photo",
+        "altText": "Some image",
+        "url": "https://www.ksr.com/image.jpg"
+      }
     },
     "rewardsAmount": {
       "__typename": "Money",
