@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -3354,6 +3354,27 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AA5480D72D76B8B600EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SimilarProjects/SimilarProjectsUseCaseTests.swift,
+			);
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+		};
+		AA5480D92D76B8B900EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SimilarProjects/SimilarProjectsUseCaseTests.swift,
+			);
+			target = A75511441C8642B3005355CF /* Library-iOSTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AA5480D22D76B8A400EC2849 /* UseCases */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (AA5480D72D76B8B600EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, AA5480D92D76B8B900EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = UseCases; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -6460,6 +6481,7 @@
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 				1611EF6623B2752A0051CDCC /* UUIDType.swift */,
 				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
+				AA5480D22D76B8A400EC2849 /* UseCases */,
 				A7C725851C85D36D005A016B /* DataSource */,
 				778F891A22D3E35600D095C5 /* Extensions */,
 				A73378F91D0AE33B00C91445 /* Styles */,
@@ -7398,6 +7420,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AA5480D22D76B8A400EC2849 /* UseCases */,
 			);
 			name = "Library-iOS";
 			packageProductDependencies = (
