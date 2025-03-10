@@ -31,7 +31,7 @@ internal final class SearchViewContollerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ project
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
@@ -55,7 +55,7 @@ internal final class SearchViewContollerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ []
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
@@ -85,7 +85,7 @@ internal final class SearchViewContollerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ project
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
@@ -120,7 +120,7 @@ internal final class SearchViewContollerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ project
 
-    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
