@@ -5,7 +5,7 @@ import UIKit
 
 internal final class SearchLegacyViewController: UITableViewController {
   internal let viewModel: SearchLegacyViewModelType = SearchLegacyViewModel()
-  fileprivate let dataSource = SearchDataSource()
+  fileprivate let dataSource = SearchLegacyDataSource()
 
   @IBOutlet fileprivate var cancelButton: UIButton!
   @IBOutlet fileprivate var centeringStackView: UIStackView!
