@@ -4,7 +4,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol MostPopularSearchProjectCellViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(project: any BackerDashboardProjectCellViewModel.ProjectCellModel)
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
@@ -40,11 +40,11 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
+    self.projectImageUrl = project.map { URL(string: $0.imageURL) }
 
     self.projectName = project.map(titleString(for:))
 
-    self.progress = project.map { $0.stats.fundingProgress }
+    self.progress = project.map { $0.fundingProgress }
 
     self.progressBarColor = project.map(progressBarColorForProject)
 
@@ -55,8 +55,9 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty =
+    MutableProperty<(any BackerDashboardProjectCellViewModel.ProjectCellModel)?>(nil)
+  public func configureWith(project: any BackerDashboardProjectCellViewModel.ProjectCellModel) {
     self.projectProperty.value = project
   }
 
@@ -70,91 +71,4 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 
   public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }
   public var outputs: MostPopularSearchProjectCellViewModelOutputs { return self }
-}
-
-private func isProjectPrelaunch(_ project: Project) -> Bool {
-  switch (project.displayPrelaunch, project.dates.launchedAt, project.prelaunchActivated) {
-  case (.some(true), _, _),
-       (_, _, .some(true)):
-    return true
-  case let (_, .some(timeValue), _):
-    return timeValue <= 0
-  default:
-    return false
-  }
-}
-
-private func metadataString(for project: Project) -> String {
-  guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
-
-  switch project.state {
-  case .live:
-    guard let deadline = project.dates.deadline else {
-      return ""
-    }
-
-    let duration = Format.duration(secondsInUTC: deadline, abbreviate: true, useToGo: false)
-
-    return "\(duration.time) \(duration.unit)"
-  default:
-    return stateString(for: project)
-  }
-}
-
-private func percentFundedString(for project: Project) -> NSAttributedString {
-  let percentage = Format.percentage(project.stats.percentFunded)
-
-  switch project.state {
-  case .live, .successful:
-    return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
-    ])
-  default:
-    return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
-    ])
-  }
-}
-
-private func progressBarColorForProject(_ project: Project) -> UIColor {
-  guard !isProjectPrelaunch(project) else { return .ksr_create_700 }
-
-  switch project.state {
-  case .live, .successful:
-    return .ksr_create_700
-  default:
-    return .ksr_support_400
-  }
-}
-
-private func titleString(for project: Project) -> NSAttributedString {
-  switch project.state {
-  case .live, .successful:
-    return NSAttributedString(string: project.name, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
-    ])
-  default:
-    return NSAttributedString(string: project.name, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
-    ])
-  }
-}
-
-private func stateString(for project: Project) -> String {
-  switch project.state {
-  case .canceled:
-    return Strings.profile_projects_status_canceled()
-  case .successful:
-    return Strings.profile_projects_status_successful()
-  case .suspended:
-    return Strings.profile_projects_status_suspended()
-  case .failed:
-    return Strings.profile_projects_status_unsuccessful()
-  default:
-    return ""
-  }
 }

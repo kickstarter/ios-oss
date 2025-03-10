@@ -1184,7 +1184,6 @@
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
 		AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */; };
 		AAD759F42D2FA1F200A4E003 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */; };
-		AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AADDA7152CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql */; };
 		AAE7C9A22C75142A00800E03 /* PPOStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A12C75142A00800E03 /* PPOStyles.swift */; };
 		AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A32C7527E000800E03 /* PagedTabBar.swift */; };
@@ -1591,6 +1590,8 @@
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E11DE11A2D70C02200DD2ECA /* UIViewController+Children.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */; };
+		E11DE11E2D79F33500DD2ECA /* BackerDashboardProjectCellFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */; };
+		E11DE1212D7A041600DD2ECA /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
@@ -1603,6 +1604,9 @@
 		E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
 		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
 		E15802442D7F72390000BAB3 /* SearchLegacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */; };
+		E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */; };
+		E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */; };
+		E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
@@ -3310,6 +3314,7 @@
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
 		E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Children.swift"; sourceTree = "<group>"; };
+		E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CompleteOnSessionCheckoutMutation.graphql; sourceTree = "<group>"; };
 		E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateOrUpdateBackingAddressMutation.graphql; sourceTree = "<group>"; };
 		E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBackingAddressMutationTests.swift; sourceTree = "<group>"; };
@@ -3321,6 +3326,9 @@
 		E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCase.swift; sourceTree = "<group>"; };
 		E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyDataSource.swift; sourceTree = "<group>"; };
+		E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+ProjectCellModel.swift"; sourceTree = "<group>"; };
+		E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackerDashboardProjectCellFragment+ProjectCellModel.swift"; sourceTree = "<group>"; };
+		E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackerDashboardProjectCellViewModel+Utilities.swift"; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
@@ -6103,6 +6111,7 @@
 		8ADCCDAA2656BC020079D308 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
+				E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */,
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
@@ -6643,7 +6652,10 @@
 				E13D76752D41698000FB58CE /* ApplePayTokenUseCase.swift */,
 				E13D76772D4195E700FB58CE /* ApplePayTokenUseCaseTests.swift */,
 				015572721E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift */,
+				E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */,
 				A7A627161E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift */,
+				E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */,
+				E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */,
 				014D629A1E6E31790033D2BD /* BackerDashboardProjectsViewModel.swift */,
 				A7A626181E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift */,
 				015706541E64BFC80087DD68 /* BackerDashboardViewModel.swift */,
@@ -8044,6 +8056,7 @@
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				D79A01A52242E91E004BC6A8 /* PushNotificationDialogType.swift in Sources */,
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
+				E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */,
@@ -8057,7 +8070,6 @@
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
 				4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */,
-				AADDA7142CB6043D00E7112E /* ProjectAnalyticsProperties.swift in Sources */,
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
@@ -8162,6 +8174,7 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
+				E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */,
 				064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
@@ -8188,6 +8201,7 @@
 				D04AAC24218BB70D00CF713E /* DiscoveryProjectCategoryViewModel.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
 				8A417DF025AE37D200A2C406 /* Segment.swift in Sources */,
+				E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */,
 				D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */,
@@ -9226,6 +9240,7 @@
 				AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */,
 				19047FC92889BD8100BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.Data.swift in Sources */,
 				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
+				E11DE1212D7A041600DD2ECA /* ProjectAnalyticsProperties.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
@@ -9284,6 +9299,7 @@
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
+				E11DE11E2D79F33500DD2ECA /* BackerDashboardProjectCellFragment.graphql in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
