@@ -569,6 +569,7 @@
 		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
 		60ABF0282CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
+		60C119332D7F254900318486 /* SimilarProjectsCardViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C119312D7F254900318486 /* SimilarProjectsCardViewTests.swift */; };
 		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
 		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
 		60C996E82AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E72AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift */; };
@@ -2261,6 +2262,7 @@
 		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
 		60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummarySection.swift; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
+		60C119312D7F254900318486 /* SimilarProjectsCardViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCardViewTests.swift; sourceTree = "<group>"; };
 		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
 		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
 		60C996E72AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift"; sourceTree = "<group>"; };
@@ -4818,6 +4820,7 @@
 				477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */,
 				60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */,
 				60E5FF0B2D78C80600BE9942 /* SimilarProjectsCardView.swift */,
+				60C119312D7F254900318486 /* SimilarProjectsCardViewTests.swift */,
 				1965437928C814D300457EC6 /* Cells */,
 			);
 			path = Views;
@@ -8980,6 +8983,7 @@
 				AAE7C9AB2C75949600800E03 /* PPOProjectCardViewModelTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
 				77C9122C23C5082800F3D2C9 /* MockApplePayCapable.swift in Sources */,
+				60C119332D7F254900318486 /* SimilarProjectsCardViewTests.swift in Sources */,
 				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
 				776B1A132419407700B03098 /* CategorySelectionDataSourceTests.swift in Sources */,
 				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
