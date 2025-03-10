@@ -1,4 +1,3 @@
-import Prelude
 import UIKit
 
 public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
