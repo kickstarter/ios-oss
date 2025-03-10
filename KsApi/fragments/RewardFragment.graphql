@@ -49,5 +49,9 @@ fragment RewardFragment on Reward {
   shippingRules @include(if: $includeShippingRules) {
     ...ShippingRuleFragment
   }
-  startsAt
+  startsAt,
+  image {
+    altText
+    url(width: 1024)
+  }
 }
