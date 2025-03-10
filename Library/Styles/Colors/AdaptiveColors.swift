@@ -21,6 +21,8 @@ extension AdaptiveColors {
     case is Colors.Text.Type:
       namespace = "text/"
     default:
+      // Adding an assertion failure to catch any new color categories that aren't defined within a namespace.
+      assertionFailure("⚠️ Unexpected enum type for AdaptiveColors: \(Self.self)")
       namespace = ""
     }
 
