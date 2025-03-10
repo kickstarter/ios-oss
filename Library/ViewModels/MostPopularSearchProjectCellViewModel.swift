@@ -4,7 +4,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol MostPopularSearchProjectCellViewModelInputs {
-  func configureWith(project: any BackerDashboardCellProject)
+  func configureWith(project: any BackerDashboardProjectCellProject)
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
@@ -55,8 +55,8 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<(any BackerDashboardCellProject)?>(nil)
-  public func configureWith(project: any BackerDashboardCellProject) {
+  fileprivate let projectProperty = MutableProperty<(any BackerDashboardProjectCellProject)?>(nil)
+  public func configureWith(project: any BackerDashboardProjectCellProject) {
     self.projectProperty.value = project
   }
 
@@ -72,7 +72,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
   public var outputs: MostPopularSearchProjectCellViewModelOutputs { return self }
 }
 
-private func isProjectPrelaunch(_ project: any BackerDashboardCellProject) -> Bool {
+private func isProjectPrelaunch(_ project: any BackerDashboardProjectCellProject) -> Bool {
   switch (project.displayPrelaunch, project.launchedAt, project.prelaunchActivated) {
   case (.some(true), _, _),
        (_, _, .some(true)):
@@ -84,7 +84,7 @@ private func isProjectPrelaunch(_ project: any BackerDashboardCellProject) -> Bo
   }
 }
 
-private func metadataString(for project: any BackerDashboardCellProject) -> String {
+private func metadataString(for project: any BackerDashboardProjectCellProject) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
 
   switch project.state {
@@ -101,7 +101,7 @@ private func metadataString(for project: any BackerDashboardCellProject) -> Stri
   }
 }
 
-private func percentFundedString(for project: any BackerDashboardCellProject) -> NSAttributedString {
+private func percentFundedString(for project: any BackerDashboardProjectCellProject) -> NSAttributedString {
   let percentage = Format.percentage(project.percentFunded)
 
   switch project.state {
@@ -118,7 +118,7 @@ private func percentFundedString(for project: any BackerDashboardCellProject) ->
   }
 }
 
-private func progressBarColorForProject(_ project: any BackerDashboardCellProject) -> UIColor {
+private func progressBarColorForProject(_ project: any BackerDashboardProjectCellProject) -> UIColor {
   guard !isProjectPrelaunch(project) else { return .ksr_create_700 }
 
   switch project.state {
@@ -129,7 +129,7 @@ private func progressBarColorForProject(_ project: any BackerDashboardCellProjec
   }
 }
 
-private func titleString(for project: any BackerDashboardCellProject) -> NSAttributedString {
+private func titleString(for project: any BackerDashboardProjectCellProject) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
@@ -144,7 +144,7 @@ private func titleString(for project: any BackerDashboardCellProject) -> NSAttri
   }
 }
 
-private func stateString(for project: any BackerDashboardCellProject) -> String {
+private func stateString(for project: any BackerDashboardProjectCellProject) -> String {
   switch project.state {
   case .canceled:
     return Strings.profile_projects_status_canceled()

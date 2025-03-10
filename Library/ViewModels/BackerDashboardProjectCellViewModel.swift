@@ -5,7 +5,7 @@ import UIKit
 
 public protocol BackerDashboardProjectCellViewModelInputs {
   /// Call to configure with a backed project.
-  func configureWith(project: any BackerDashboardCellProject)
+  func configureWith(project: any BackerDashboardProjectCellViewModel.ProjectModel)
 }
 
 public protocol BackerDashboardProjectCellViewModelOutputs {
@@ -47,6 +47,20 @@ public protocol BackerDashboardProjectCellViewModelType {
 
 public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCellViewModelType,
   BackerDashboardProjectCellViewModelInputs, BackerDashboardProjectCellViewModelOutputs {
+  public protocol ProjectModel {
+    var id: Int { get }
+    var name: String { get }
+    var state: Project.State { get }
+    var imageURL: String { get }
+    var fundingProgress: Float { get }
+    var percentFunded: Int { get }
+    var displayPrelaunch: Bool? { get }
+    var prelaunchActivated: Bool? { get }
+    var launchedAt: TimeInterval? { get }
+    var deadline: TimeInterval? { get }
+    var isStarred: Bool? { get }
+  }
+
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -75,8 +89,8 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<(any BackerDashboardCellProject)?>(nil)
-  public func configureWith(project: any BackerDashboardCellProject) {
+  fileprivate let projectProperty = MutableProperty<(any ProjectModel)?>(nil)
+  public func configureWith(project: any ProjectModel) {
     self.projectProperty.value = project
   }
 
@@ -95,7 +109,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
   public var outputs: BackerDashboardProjectCellViewModelOutputs { return self }
 }
 
-private func metadataString(for project: any BackerDashboardCellProject) -> String {
+private func metadataString(for project: any BackerDashboardProjectCellViewModel.ProjectModel) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
 
   switch project.state {
@@ -111,7 +125,10 @@ private func metadataString(for project: any BackerDashboardCellProject) -> Stri
   }
 }
 
-private func percentFundedString(for project: any BackerDashboardCellProject) -> NSAttributedString {
+private func percentFundedString(
+  for project: any BackerDashboardProjectCellViewModel
+    .ProjectModel
+) -> NSAttributedString {
   let percentage = Format.percentage(project.percentFunded)
 
   switch project.state {
@@ -128,7 +145,10 @@ private func percentFundedString(for project: any BackerDashboardCellProject) ->
   }
 }
 
-private func progressBarColorForProject(_ project: any BackerDashboardCellProject) -> UIColor {
+private func progressBarColorForProject(
+  _ project: any BackerDashboardProjectCellViewModel
+    .ProjectModel
+) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_create_700
@@ -137,7 +157,10 @@ private func progressBarColorForProject(_ project: any BackerDashboardCellProjec
   }
 }
 
-private func metadataBackgroundColorForProject(_ project: any BackerDashboardCellProject) -> UIColor {
+private func metadataBackgroundColorForProject(
+  _ project: any BackerDashboardProjectCellViewModel
+    .ProjectModel
+) -> UIColor {
   guard !isProjectPrelaunch(project) else {
     return .ksr_create_700
   }
@@ -150,7 +173,10 @@ private func metadataBackgroundColorForProject(_ project: any BackerDashboardCel
   }
 }
 
-private func titleString(for project: any BackerDashboardCellProject) -> NSAttributedString {
+private func titleString(
+  for project: any BackerDashboardProjectCellViewModel
+    .ProjectModel
+) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
@@ -165,7 +191,7 @@ private func titleString(for project: any BackerDashboardCellProject) -> NSAttri
   }
 }
 
-private func stateString(for project: any BackerDashboardCellProject) -> String {
+private func stateString(for project: any BackerDashboardProjectCellViewModel.ProjectModel) -> String {
   switch project.state {
   case .canceled:
     return Strings.profile_projects_status_canceled()
@@ -180,7 +206,7 @@ private func stateString(for project: any BackerDashboardCellProject) -> String 
   }
 }
 
-private func isProjectPrelaunch(_ project: any BackerDashboardCellProject) -> Bool {
+private func isProjectPrelaunch(_ project: any BackerDashboardProjectCellViewModel.ProjectModel) -> Bool {
   switch (project.displayPrelaunch, project.prelaunchActivated, project.launchedAt) {
   // GraphQL requests using ProjectFragment will populate displayPrelaunch and prelaunchActivated
   case (.some(true), .some(true), _):
@@ -192,31 +218,5 @@ private func isProjectPrelaunch(_ project: any BackerDashboardCellProject) -> Bo
     return timeValue <= 0
   default:
     return false
-  }
-}
-
-extension Project: BackerDashboardCellProject {
-  public var fundingProgress: Float {
-    return self.stats.fundingProgress
-  }
-
-  public var percentFunded: Int {
-    return self.stats.percentFunded
-  }
-
-  public var imageURL: String {
-    return self.photo.full
-  }
-
-  public var launchedAt: TimeInterval? {
-    return self.dates.launchedAt
-  }
-
-  public var deadline: TimeInterval? {
-    return self.dates.deadline
-  }
-
-  public var isStarred: Bool? {
-    self.personalization.isStarred
   }
 }

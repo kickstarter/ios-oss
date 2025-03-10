@@ -27,7 +27,7 @@ internal final class SearchDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(projects: [any BackerDashboardCellProject]) {
+  internal func load(projects: [any BackerDashboardProjectCellProject]) {
     self.clearValues(section: Section.projects.rawValue)
 
     if let mostPopular = projects.first {
@@ -55,9 +55,9 @@ internal final class SearchDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as BackerDashboardProjectCell, value as BackerDashboardCellProject):
+    case let (cell as BackerDashboardProjectCell, value as BackerDashboardProjectCellProject):
       cell.configureWith(value: value)
-    case let (cell as MostPopularSearchProjectCell, value as BackerDashboardCellProject):
+    case let (cell as MostPopularSearchProjectCell, value as BackerDashboardProjectCellProject):
       cell.configureWith(value: value)
     case let (cell as MostPopularCell, value as Void):
       cell.configureWith(value: value)
