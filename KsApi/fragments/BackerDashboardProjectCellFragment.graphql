@@ -1,4 +1,4 @@
-fragment SearchCellProjectFragment on Project {
+fragment BackerDashboardProjectCellFragment on Project {
   projectId: id
   name
   projectState: state

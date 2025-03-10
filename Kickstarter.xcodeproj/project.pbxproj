@@ -1586,7 +1586,7 @@
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E11DE11A2D70C02200DD2ECA /* UIViewController+Children.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */; };
 		E11DE11C2D793ADD00DD2ECA /* SearchQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E11DE11B2D793AD600DD2ECA /* SearchQuery.graphql */; };
-		E11DE11E2D79F33500DD2ECA /* SearchCellProjectFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */; };
+		E11DE11E2D79F33500DD2ECA /* BackerDashboardProjectCellFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */; };
 		E11DE1202D7A037900DD2ECA /* SearchEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11F2D7A037400DD2ECA /* SearchEnvelope.swift */; };
 		E11DE1212D7A041600DD2ECA /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
@@ -3305,7 +3305,7 @@
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
 		E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Children.swift"; sourceTree = "<group>"; };
 		E11DE11B2D793AD600DD2ECA /* SearchQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchQuery.graphql; sourceTree = "<group>"; };
-		E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchCellProjectFragment.graphql; sourceTree = "<group>"; };
+		E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E11DE11F2D7A037400DD2ECA /* SearchEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEnvelope.swift; sourceTree = "<group>"; };
 		E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CompleteOnSessionCheckoutMutation.graphql; sourceTree = "<group>"; };
 		E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateOrUpdateBackingAddressMutation.graphql; sourceTree = "<group>"; };
@@ -6077,7 +6077,7 @@
 		8ADCCDAA2656BC020079D308 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
-				E11DE11D2D79F32900DD2ECA /* SearchCellProjectFragment.graphql */,
+				E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */,
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
@@ -9254,7 +9254,7 @@
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
-				E11DE11E2D79F33500DD2ECA /* SearchCellProjectFragment.graphql in Sources */,
+				E11DE11E2D79F33500DD2ECA /* BackerDashboardProjectCellFragment.graphql in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
