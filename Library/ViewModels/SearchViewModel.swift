@@ -87,7 +87,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
-          .fetchSearch(searchTerm: "")
+          .fetchSearch(searchTerm: nil, cursor: nil)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projects }
           .materialize()
@@ -117,7 +117,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       -> SignalProducer<SearchEnvelope, ErrorEnvelope> = { params in
         SignalProducer<(), ErrorEnvelope>(value: ())
           .switchMap {
-            AppEnvironment.current.apiService.fetchSearch(searchTerm: params.query ?? "")
+            AppEnvironment.current.apiService.fetchSearch(searchTerm: params.query, cursor: nil)
               .ksr_debounce(
                 AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler
               )

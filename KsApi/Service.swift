@@ -393,7 +393,7 @@ public struct Service: ServiceType {
     return request(.discover(params))
   }
 
-  public func fetchSearch(searchTerm: String, cursor: String?)
+  public func fetchSearch(searchTerm: String?, cursor: String?)
     -> SignalProducer<SearchEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.SearchQueryQuery(term: searchTerm, cursor: cursor))
