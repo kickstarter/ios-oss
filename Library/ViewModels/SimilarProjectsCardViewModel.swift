@@ -76,9 +76,12 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
 private func projectStatus(for project: Project) -> String {
   guard !isProjectPrelaunch(project) else { return "Launching Soon" }
 
-  guard !project.isInPostCampaignPledgingPhase else { return "Late pledges active" }
-
   let percentage = Format.percentage(project.stats.percentFunded)
+
+  guard !(project.isInPostCampaignPledgingPhase && project.postCampaignPledgingEnabled)
+  else { return "Late pledges active" + " • " + Strings
+    .percentage_funded(percentage: percentage)
+  }
 
   switch project.state {
   case .live:
@@ -99,7 +102,8 @@ private func projectStatus(for project: Project) -> String {
 }
 
 private func projectStatusImage(for project: Project) -> UIImage? {
-  guard !project.isInPostCampaignPledgingPhase else { return UIImage(named: "icon-late-pledge-timer") }
+  guard !(project.isInPostCampaignPledgingPhase && project.postCampaignPledgingEnabled)
+  else { return UIImage(named: "icon-late-pledge-timer") }
 
   guard !isProjectPrelaunch(project) else { return UIImage(named: "icon-launching-soon") }
 
