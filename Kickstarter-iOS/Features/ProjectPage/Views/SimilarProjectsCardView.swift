@@ -3,6 +3,7 @@ import Library
 import UIKit
 
 private enum Constants {
+  static let imageAspectRatio = CGFloat(9.0 / 16.0)
   static let cornerRadius = 12.0
   static let projectImageViewHeight = 198.0
   static let projectStatusStackViewSpacing = 8.0
@@ -10,6 +11,7 @@ private enum Constants {
   static let daysLeftImageViewWidth = 16.0
   static let daysLeftLabelLeadingSpacing = 8.0
   static let progressBarHeight = 9.0
+  static let viewSpacing = Styles.grid(3)
 }
 
 final class SimilarProjectsCardView: UIView {
@@ -66,29 +68,27 @@ final class SimilarProjectsCardView: UIView {
   }
 
   private func setupConstraints() {
-    let imageAspectRatio = CGFloat(9.0 / 16.0)
-
     NSLayoutConstraint.activate([
       // projectImageView
       self.projectImageView.topAnchor.constraint(equalTo: self.topAnchor),
       self.projectImageView.widthAnchor.constraint(equalTo: self.widthAnchor),
       self.projectImageView.heightAnchor.constraint(
         equalTo: self.widthAnchor,
-        multiplier: imageAspectRatio
+        multiplier: Constants.imageAspectRatio
       ),
 
       // projectTitleLabel
       self.projectTitleLabel.topAnchor.constraint(
         equalTo: self.projectImageView.bottomAnchor,
-        constant: Styles.grid(3)
+        constant: Constants.viewSpacing
       ),
       self.projectTitleLabel.leadingAnchor.constraint(
         equalTo: self.leadingAnchor,
-        constant: Styles.grid(3)
+        constant: Constants.viewSpacing
       ),
       self.projectTitleLabel.trailingAnchor.constraint(
         equalTo: self.trailingAnchor,
-        constant: -Styles.grid(3)
+        constant: -Constants.viewSpacing
       ),
 
       // projectStatusStackView
@@ -98,12 +98,12 @@ final class SimilarProjectsCardView: UIView {
       ),
       self.projectStatusStackView.leadingAnchor.constraint(
         equalTo: self.leadingAnchor,
-        constant: Styles.grid(3)
+        constant: Constants.viewSpacing
       ),
 
       self.projectStatusStackView.bottomAnchor.constraint(
         equalTo: self.progressBarContainerView.topAnchor,
-        constant: -Styles.grid(3)
+        constant: -Constants.viewSpacing
       ),
 
       // projectStatusImageView
@@ -135,7 +135,7 @@ final class SimilarProjectsCardView: UIView {
 
     applyBaseStyle(self)
     applyProjectImageViewStyle(self.projectImageView)
-    applyprojectTitleLabelStyle(self.projectTitleLabel)
+    applyProjectTitleLabelStyle(self.projectTitleLabel)
     applyProjectStatusStackViewStyle(self.projectStatusStackView)
     applyProjectStatusImageViewStyle(self.projectStatusImageView)
     applyProjectStatusLabelStyle(self.projectStatusLabel)
@@ -224,7 +224,7 @@ private func applyProjectImageViewStyle(_ imageView: UIImageView) {
   imageView.translatesAutoresizingMaskIntoConstraints = false
 }
 
-private func applyprojectTitleLabelStyle(_ label: UILabel) {
+private func applyProjectTitleLabelStyle(_ label: UILabel) {
   label.font = .ksr_title2()
   label.textColor = .ksr_black
   label.numberOfLines = 2
