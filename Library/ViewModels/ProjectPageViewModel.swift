@@ -603,7 +603,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // MARK: Similar Projects
 
     freshProjectAndRefTag
-      .map { "\($0.0.id)" }
+      .map { project, _ in "\(project.id)" }
       .skipRepeats()
       .observeForControllerAction()
       .observeValues { [weak self] projectID in
