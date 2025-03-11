@@ -320,6 +320,8 @@ public final class RewardAddOnCardView: UIView {
   }
 
   private func setupConstraints() {
+    self.detailsStackView.translatesAutoresizingMaskIntoConstraints = false
+
     let pillsViewHeightConstraint = self.pillsView.heightAnchor.constraint(equalToConstant: 0)
     self.pillsViewHeightConstraint = pillsViewHeightConstraint
 
