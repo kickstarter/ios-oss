@@ -1192,8 +1192,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -3754,6 +3753,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Ended"
+
+   - **en**: "Ended"
+   - **de**: "Ended"
+   - **es**: "Ended"
+   - **fr**: "Ended"
+   - **ja**: "Ended"
+  */
+  public static func Ended() -> String {
+    return localizedString(
+      key: "Ended",
+      defaultValue: "Ended",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ending in %{last_four}"
 
    - **en**: "Ending in %{last_four}"
@@ -6205,6 +6221,40 @@ with friends."
     )
   }
   /**
+   "Late pledges active"
+
+   - **en**: "Late pledges active"
+   - **de**: "Late pledges active"
+   - **es**: "Late pledges active"
+   - **fr**: "Late pledges active"
+   - **ja**: "Late pledges active"
+  */
+  public static func Late_pledges_active() -> String {
+    return localizedString(
+      key: "Late_pledges_active",
+      defaultValue: "Late pledges active",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Launching soon"
+
+   - **en**: "Launching soon"
+   - **de**: "Launching soon"
+   - **es**: "Launching soon"
+   - **fr**: "Launching soon"
+   - **ja**: "Launching soon"
+  */
+  public static func Launching_soon() -> String {
+    return localizedString(
+      key: "Launching_soon",
+      defaultValue: "Launching soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Learn about AI policy on Kickstarter"
 
    - **en**: "Learn about AI policy on Kickstarter"
@@ -8133,7 +8183,7 @@ n'ont rien soutenu."
 
    - **en**: "Pledge"
    - **de**: "Beitrag leisten"
-   - **es**: "Contribución:"
+   - **es**: "Contribuir"
    - **fr**: "Je m'engage"
    - **ja**: "プレッジする"
   */
@@ -10779,6 +10829,23 @@ daring ideas."
     return localizedString(
       key: "Signs_up_with_Email",
       defaultValue: "Signs up with Email.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Similar projects"
+
+   - **en**: "Similar projects"
+   - **de**: "Similar projects"
+   - **es**: "Similar projects"
+   - **fr**: "Similar projects"
+   - **ja**: "Similar projects"
+  */
+  public static func Similar_projects() -> String {
+    return localizedString(
+      key: "Similar_projects",
+      defaultValue: "Similar projects",
       count: nil,
       substitutions: [:]
     )
@@ -20194,7 +20261,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -23606,7 +23673,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -26785,7 +26852,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -27737,7 +27804,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -28170,10 +28237,10 @@ projets enregistrés"
    "Backings"
 
    - **en**: "Backings"
-   - **de**: "Backings"
-   - **es**: "Backings"
-   - **fr**: "Backings"
-   - **ja**: "Backings"
+   - **de**: "Unterstützte Projekte"
+   - **es**: "Contribuciones"
+   - **fr**: "Engagements"
+   - **ja**: "バック済み"
   */
   public static func tabbar_backings() -> String {
     return localizedString(
