@@ -6,4 +6,16 @@ fragment ProjectCardFragment on Project {
   }
   name
   pid
+  state
+  isLaunched
+  deadlineAt
+  percentFunded
+  prelaunchActivated
+  launchedAt
+  goal {
+    ...MoneyFragment
+  }
+  pledged {
+    ...MoneyFragment
+  }
 }
