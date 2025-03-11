@@ -10,7 +10,7 @@ public enum RootViewControllerData: Equatable {
   case discovery
   case activities
   case pledgedProjectsAndActivities
-  case search
+  case search(filtersEnabled: Bool)
   case profile(isLoggedIn: Bool)
 
   public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
@@ -18,7 +18,8 @@ public enum RootViewControllerData: Equatable {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
     case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
-    case (.search, .search): return true
+    case let (.search(lhsFiltersEnabled), .search(rhsFiltersEnabled)):
+      return lhsFiltersEnabled == rhsFiltersEnabled
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
     default:
@@ -164,10 +165,15 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     // that the remote config loaded - but that might change the tab bar at a strange time.
     // Updating this just on app foreground keeps the change invisible to the user.
     // Conveniently, the activity badge is also updated on app foreground.
-    let ppoEnabledChanged = self.applicationWillEnterForegroundSignal.signal
-      .map { _ in
-        featurePledgedProjectsOverviewEnabled()
-      }.skipRepeats()
+    let featuredFlagChanged =
+      Signal.merge(
+        self.viewDidLoadProperty.signal,
+        self.applicationWillEnterForegroundSignal.signal
+      ).map { _ in
+        (featurePledgedProjectsOverviewEnabled(), featureSearchFiltersEnabled())
+      }
+      .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
+      .skip(first: 1) // Only fire if applicationWillEnterForeground changes the original values in viewDidLoadProperty.
 
     self.setViewControllers = Signal.merge(
       standardViewControllers,
@@ -176,7 +182,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       loginState.takeWhen(
         Signal.merge(
           self.userLocalePreferencesChangedProperty.signal,
-          ppoEnabledChanged.ignoreValues()
+          featuredFlagChanged.ignoreValues()
         )
       )
       .map { isLoggedIn in
@@ -304,7 +310,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       currentUser, .merge(
         self.viewDidLoadProperty.signal,
         self.userLocalePreferencesChangedProperty.signal,
-        ppoEnabledChanged.ignoreValues()
+        featuredFlagChanged.ignoreValues()
       )
     )
     .map(first)
@@ -465,7 +471,7 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
     controllers.append(.activities)
   }
 
-  controllers.append(.search)
+  controllers.append(.search(filtersEnabled: featureSearchFiltersEnabled()))
   controllers.append(.profile(isLoggedIn: isLoggedIn))
 
   return controllers
