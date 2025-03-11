@@ -2,10 +2,6 @@ import Foundation
 import KsApi
 
 extension GraphAPI.BackerDashboardProjectCellFragment: BackerDashboardProjectCellViewModel.ProjectCellModel {
-  public var id: Int {
-    return Int(self.projectId) ?? -1
-  }
-
   public var prelaunchActivated: Bool? {
     return Optional.some(self.projectPrelaunchActivated)
   }

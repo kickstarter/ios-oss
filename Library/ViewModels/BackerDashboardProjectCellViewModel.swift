@@ -48,7 +48,6 @@ public protocol BackerDashboardProjectCellViewModelType {
 public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCellViewModelType,
   BackerDashboardProjectCellViewModelInputs, BackerDashboardProjectCellViewModelOutputs {
   public protocol ProjectCellModel {
-    var id: Int { get }
     var name: String { get }
     var state: Project.State { get }
     var imageURL: String { get }
