@@ -10,7 +10,7 @@ extension Project: BackerDashboardProjectCellViewModel.ProjectCellModel {
     return self.stats.percentFunded
   }
 
-  public var imageURL: String {
+  public var imageURL: String? {
     return self.photo.full
   }
 

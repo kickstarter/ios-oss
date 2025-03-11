@@ -10,8 +10,8 @@ extension GraphAPI.BackerDashboardProjectCellFragment: BackerDashboardProjectCel
     return Project.State(rawValue: self.projectState.rawValue.lowercased()) ?? Project.State.live
   }
 
-  public var imageURL: String {
-    self.image?.url ?? ""
+  public var imageURL: String? {
+    self.image?.url
   }
 
   public var fundingProgress: Float {

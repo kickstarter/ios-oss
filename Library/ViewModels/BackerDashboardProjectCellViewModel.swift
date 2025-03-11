@@ -50,7 +50,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
   public protocol ProjectCellModel {
     var name: String { get }
     var state: Project.State { get }
-    var imageURL: String { get }
+    var imageURL: String? { get }
     var fundingProgress: Float { get }
     var percentFunded: Int { get }
     var displayPrelaunch: Bool? { get }
@@ -65,7 +65,13 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.projectTitleText = project.map(titleString(for:))
 
-    self.photoURL = project.map { URL(string: $0.imageURL) }
+    self.photoURL = project.map { project in
+      guard let urlString = project.imageURL else {
+        return nil
+      }
+
+      return URL(string: urlString)
+    }
 
     self.progress = project.map { $0.fundingProgress }
 

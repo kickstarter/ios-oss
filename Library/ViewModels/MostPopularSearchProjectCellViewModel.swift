@@ -40,7 +40,13 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    self.projectImageUrl = project.map { URL(string: $0.imageURL) }
+    self.projectImageUrl = project.map { project in
+      guard let urlString = project.imageURL else {
+        return nil
+      }
+
+      return URL(string: urlString)
+    }
 
     self.projectName = project.map(titleString(for:))
 
