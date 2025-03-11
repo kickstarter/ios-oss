@@ -368,7 +368,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -378,8 +378,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+        ["Discovery", "Activities", "SearchLegacy", "BackerDashboard"]
       ],
       "Show the logged in tabs."
     )
@@ -389,8 +389,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+        ["Discovery", "Activities", "SearchLegacy", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
     )
@@ -400,9 +400,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+        ["Discovery", "Activities", "SearchLegacy", "BackerDashboard"],
+        ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -775,7 +775,7 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
         ],
         "Shows regular Activities tab initially"
       )
@@ -785,8 +785,8 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+          ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+          ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"]
         ],
         "Shows PPO tab when logged in with feature flag enabled"
       )
@@ -796,9 +796,9 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+          ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"],
+          ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
         ],
         "Shows regular Activities tab when logged out again"
       )
@@ -821,10 +821,34 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
+          ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
+          ["Discovery", "Activities", "SearchLegacy", "BackerDashboard"]
+        ],
+        "Shows regular Activities tab when feature flag disabled, even when logged in"
+      )
+    }
+  }
+
+  func testSetViewControllers_SearchFilters_FeatureFlagEnabled() {
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.searchFilters.rawValue: true
+    ]
+
+    withEnvironment(
+      remoteConfigClient: remoteConfig
+    ) {
+      self.vm.inputs.viewDidLoad()
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+
+      self.viewControllerNames.assertValues(
+        [
           ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "Activities", "Search", "BackerDashboard"]
         ],
-        "Shows regular Activities tab when feature flag disabled, even when logged in"
+        "Shows most up-to-date version of Search when flag is enabled."
       )
     }
   }
