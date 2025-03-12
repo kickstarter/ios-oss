@@ -267,6 +267,8 @@
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
 		3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */; };
 		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
+		338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60242D6FE372008D42F9 /* AdaptiveColors.swift */; };
+		338E60272D70B7EA008D42F9 /* NewDesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */; };
 		33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */; };
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
@@ -1967,6 +1969,8 @@
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
 		3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModel.swift; sourceTree = "<group>"; };
 		338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
+		338E60242D6FE372008D42F9 /* AdaptiveColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveColors.swift; sourceTree = "<group>"; };
+		338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSystemColors.swift; sourceTree = "<group>"; };
 		33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
@@ -5815,6 +5819,15 @@
 			path = PledgeOverTime;
 			sourceTree = "<group>";
 		};
+		338E601D2D6FE303008D42F9 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				338E60242D6FE372008D42F9 /* AdaptiveColors.swift */,
+				338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
 		33F55B472D4C70D40007E50E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -6243,6 +6256,7 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				338E601D2D6FE303008D42F9 /* Colors */,
 				33F55B552D552BEF0007E50E /* Fonts */,
 				33F55B422D4AA9E50007E50E /* BadgeViewStyles.swift */,
 				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
@@ -8050,6 +8064,7 @@
 				601342F12C8141F000B851FA /* PostCampaignCheckoutViewModel.swift in Sources */,
 				D660078C2416D66C00AC1EDB /* CuratedProjectsViewModel.swift in Sources */,
 				77C93C2522C27443005D3195 /* DebugData.swift in Sources */,
+				338E60272D70B7EA008D42F9 /* NewDesignSystemColors.swift in Sources */,
 				D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */,
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
@@ -8176,6 +8191,7 @@
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */,
 				064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */,
+				338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,
