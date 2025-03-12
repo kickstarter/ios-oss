@@ -54,7 +54,11 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 
   private func fetchProjects(projectID: String) -> SignalProducer<SimilarProjectsState, Never> {
     AppEnvironment.current.apiService.fetch(query: GraphAPI.FetchSimilarProjectsQuery(projectID: projectID))
-      .map { $0.projects?.nodes?.compactMap { $0?.fragments.projectCardFragment } ?? [] }
+      .map { response in response.projects?.nodes ?? [] }
+      .map { nodes in nodes
+        .compactMap { node in node?.fragments.projectCardFragment }
+        .compactMap { fragment in SimilarProjectFragment(fragment) }
+      }
       .map { projects in .loaded(projects: projects) }
       .flatMapError { error in
         SignalProducer(value: SimilarProjectsState.error(error: error))
@@ -86,12 +90,4 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 
   public var inputs: any SimilarProjectsUseCaseInputs { return self }
   public var outputs: any SimilarProjectsUseCaseOutputs { return self }
-}
-
-// MARK: - Supporting Types
-
-extension GraphAPI.ProjectCardFragment: SimilarProject {
-  public var projectID: String {
-    return "\(self.pid)"
-  }
 }
