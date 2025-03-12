@@ -116,7 +116,7 @@ public protocol SearchViewModelOutputs {
   var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
-  var showEmptyState: Signal<(String?, Bool), Never> { get }
+  var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -243,7 +243,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     .skip(first: 1)
 
     self.showEmptyState = requestFirstPageWith
-      .map { $0.query }
       .takePairWhen(shouldShowEmptyState)
 
     self.changeSearchFieldFocus = Signal.merge(
@@ -317,30 +316,31 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       viewWillAppearSearchResultsCount.filter { $0 == 0 },
       viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
     )
-    /*
 
-     Signal.combineLatest(query, requestFirstPageWith)
-       .takePairWhen(newQuerySearchResultsCount)
-       .map(unpack)
-       .filter { query, _, _ in !query.isEmpty }
-       .observeValues { _, params, stats in
-         AppEnvironment.current.ksrAnalytics
-           .trackProjectSearchView(params: params, results: stats)
-       }
+    Signal.combineLatest(query, requestFirstPageWith)
+      .takePairWhen(newQuerySearchResultsCount)
+      .map(unpack)
+      .filter { query, _, _ in !query.isEmpty }
+      .observeValues { _, params, stats in
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: stats)
+      }
 
-     Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
-       .observeValues { project, params in
-         guard let project = project elsfe { return }
+    Signal.combineLatest(requestFirstPageWith, searchResults)
+      .takePairWhen(self.tappedProjectIndexSignal)
+      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
+      .observeValues { params, results, index in
 
-         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
-           page: .search,
-           project: project,
-           typeContext: .results,
-           location: .searchResults,
-           params: params
-         )
-       }
-      */
+        let projectAnalytics = results[index].fragments.projectAnalyticsFragment
+
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .search,
+          project: projectAnalytics,
+          typeContext: .results,
+          location: .searchResults,
+          params: params
+        )
+      }
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -396,7 +396,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let resignFirstResponder: Signal<(), Never>
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
-  public let showEmptyState: Signal<(String?, Bool), Never>
+  public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }

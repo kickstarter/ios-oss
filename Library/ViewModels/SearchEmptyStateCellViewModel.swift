@@ -2,7 +2,7 @@ import KsApi
 import ReactiveSwift
 
 public protocol SearchEmptyStateCellViewModelInputs {
-  func configureWith(queryString: String?)
+  func configureWith(param: DiscoveryParams)
 }
 
 public protocol SearchEmptyStateCellViewModelOutputs {
@@ -19,12 +19,12 @@ public final class SearchEmptyStateCellViewModel: SearchEmptyStateCellViewModelT
   public init() {
     self.searchTermNotFoundLabelText = self.paramProperty.signal
       .skipNil()
-      .map { param in Strings.We_couldnt_find_anything_for_search_term(search_term: param) }
+      .map { param in Strings.We_couldnt_find_anything_for_search_term(search_term: param.query ?? "") }
   }
 
-  fileprivate let paramProperty = MutableProperty<String?>(nil)
-  public func configureWith(queryString: String?) {
-    self.paramProperty.value = queryString
+  fileprivate let paramProperty = MutableProperty<DiscoveryParams?>(nil)
+  public func configureWith(param: DiscoveryParams) {
+    self.paramProperty.value = param
   }
 
   public let searchTermNotFoundLabelText: Signal<String, Never>
