@@ -70,7 +70,7 @@ public protocol SearchViewModelInputs {
   func viewWillAppear(animated: Bool)
 
   /// Call when a project is tapped.
-  func tapped(project: Project)
+  func tapped(projectAtIndex index: Int)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -87,7 +87,7 @@ public protocol SearchViewModelOutputs {
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
 
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
-//  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
+  var goToProject: Signal<(Int, RefTag), Never> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, Never> { get }
@@ -212,18 +212,20 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.searchLoaderIndicatorIsAnimating = isLoading
 
-    self.projects = Signal.combineLatest(
+    let searchResults: Signal<[SearchResult], Never> = Signal.combineLatest(
       self.isPopularTitleVisible,
       popular,
       .merge(clears, paginatedProjects)
     )
     .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
     .skipRepeats(==)
-    .map { (nodes: [
-      SearchResult
-    ]) -> [GraphAPI.BackerDashboardProjectCellFragment] in
-      nodes.map { $0.fragments.backerDashboardProjectCellFragment }
-    }
+
+    self.projects = searchResults
+      .map { (nodes: [
+        SearchResult
+      ]) -> [GraphAPI.BackerDashboardProjectCellFragment] in
+        nodes.map { $0.fragments.backerDashboardProjectCellFragment }
+      }
 
     let shouldShowEmptyState = Signal.merge(
       query.mapConst(false),
@@ -255,15 +257,24 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       popularEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    /*
-     self.goToProject = Signal.combineLatest(self.projects, query)
-       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-       .map { projectsAndQuery, tappedProject in
-         let (projects, query) = projectsAndQuery
+    self.goToProject = Signal.combineLatest(searchResults, query)
+      .takePairWhen(self.tappedProjectIndexSignal)
+      .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
+      .map { projects, query, index in
 
-         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
-       }
-      */
+        let project = projects[index]
+        let graphQLID = project.fragments.backerDashboardProjectCellFragment.projectId
+
+        guard let projectId = decompose(id: graphQLID) else {
+          let emptyResult: (Int, RefTag)? = nil
+          return emptyResult
+        }
+
+        let refTag = refTag(query: query, projects: projects, project: project)
+
+        return (projectId, refTag)
+      }
+      .skipNil()
 
     // Tracking
 
@@ -349,9 +360,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextEditingDidEndProperty.value = ()
   }
 
-  fileprivate let tappedProjectProperty = MutableProperty<Project?>(nil)
-  public func tapped(project: Project) {
-    self.tappedProjectProperty.value = project
+  fileprivate let (tappedProjectIndexSignal, tappedProjectIndexObserver) = Signal<Int, Never>.pipe()
+  public func tapped(projectAtIndex index: Int) {
+    self.tappedProjectIndexObserver.send(value: index)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -370,7 +381,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   }
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
-//  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let goToProject: Signal<(Int, RefTag), Never>
   public let isPopularTitleVisible: Signal<Bool, Never>
   public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let projects: Signal<[SearchResultCard], Never>
@@ -385,7 +396,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
 /// Calculates a ref tag from the search query, the list of displayed projects, and the project
 /// tapped.
-private func refTag(query: String, projects: [Project], project: Project) -> RefTag {
+private func refTag(query: String, projects: [SearchResult], project: SearchResult) -> RefTag {
   if project == projects.first, query.isEmpty {
     return RefTag.searchPopularFeatured
   } else if project == projects.first, !query.isEmpty {
