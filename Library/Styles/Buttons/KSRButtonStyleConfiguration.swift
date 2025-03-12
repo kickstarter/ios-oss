@@ -36,60 +36,72 @@ public protocol KSRButtonStyleConfiguration {
 
 extension UIButton {
   public func applyStyleConfiguration(_ styleConfig: KSRButtonStyleConfiguration) {
-    self.configuration = styleConfig.buttonConfiguration
+    var buttonConfiguration = styleConfig.buttonConfiguration
 
-    self.configuration?.contentInsets = buttonContentInsets
+    buttonConfiguration.contentInsets = buttonContentInsets
 
-    self.configuration?.background.cornerRadius = styleConfig.cornerRadius
+    buttonConfiguration.background.cornerRadius = styleConfig.cornerRadius
 
-    self.configuration?.imagePadding = Styles.grid(1)
-    self.configuration?.imagePlacement = .leading
+    buttonConfiguration.imagePadding = Styles.grid(1)
+    buttonConfiguration.imagePlacement = .leading
 
-    self.configuration?.titleLineBreakMode = .byTruncatingMiddle
-    self.configuration?.titleAlignment = .center
+    buttonConfiguration.titleLineBreakMode = .byTruncatingMiddle
+    buttonConfiguration.titleAlignment = .center
 
     self.tintColor = styleConfig.titleColor
 
-    self.configurationUpdateHandler = { [unowned self] _ in
+    self.configurationUpdateHandler = { [weak self] _ in
+      guard let self = self else { return }
+
       self.updateColors(with: styleConfig)
       self.updateContentInsets()
     }
 
-    self.configuration?.titleTextAttributesTransformer =
-      UIConfigurationTextAttributesTransformer { [unowned self] config in
+    buttonConfiguration.titleTextAttributesTransformer =
+      UIConfigurationTextAttributesTransformer { [weak self] config in
+        guard let self = self else { return config }
+
         var newConfig = config
         newConfig.font = styleConfig.font
         newConfig.foregroundColor = self.tintColor
         return newConfig
       }
 
-    self.configuration?.imageColorTransformer = UIConfigurationColorTransformer { [unowned self] _ in
-      self.tintColor
+    buttonConfiguration.imageColorTransformer = UIConfigurationColorTransformer { [weak self] _ in
+      self?.tintColor ?? .white
     }
+
+    self.configuration = buttonConfiguration
   }
 
   private func updateContentInsets() {
-    self.configuration?.contentInsets = self.configuration?
+    guard var buttonConfiguration = self.configuration else { return }
+
+    buttonConfiguration.contentInsets = buttonConfiguration
       .image == nil ? buttonContentInsets : buttonWithImageContentInsets
   }
 
   private func updateColors(with styleConfig: KSRButtonStyleConfiguration) {
+    guard var buttonConfiguration = self.configuration else { return }
+
     switch self.state {
     case .disabled:
-      self.configuration?.background.backgroundColor = styleConfig.disabledBackgroundColor
+      buttonConfiguration.background.backgroundColor = styleConfig.disabledBackgroundColor
       self.tintColor = styleConfig.disabledTitleColor
-      self.configuration?.background.strokeColor = styleConfig.disabledBorderColor
-      self.configuration?.background.strokeWidth = styleConfig.borderWidth
+      buttonConfiguration.background.strokeColor = styleConfig.disabledBorderColor
+      buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     case .highlighted:
-      self.configuration?.background.backgroundColor = styleConfig.highlightedBackgroundColor
+      buttonConfiguration.background.backgroundColor = styleConfig.highlightedBackgroundColor
       self.tintColor = styleConfig.highlightedTitleColor
-      self.configuration?.background.strokeColor = styleConfig.highlightedBorderColor
-      self.configuration?.background.strokeWidth = styleConfig.borderWidth
+      buttonConfiguration.background.strokeColor = styleConfig.highlightedBorderColor
+      buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     default:
-      self.configuration?.background.backgroundColor = styleConfig.backgroundColor
+      buttonConfiguration.background.backgroundColor = styleConfig.backgroundColor
       self.tintColor = styleConfig.titleColor
-      self.configuration?.background.strokeColor = styleConfig.borderColor
-      self.configuration?.background.strokeWidth = styleConfig.borderWidth
+      buttonConfiguration.background.strokeColor = styleConfig.borderColor
+      buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     }
+
+    self.configuration = buttonConfiguration
   }
 }
