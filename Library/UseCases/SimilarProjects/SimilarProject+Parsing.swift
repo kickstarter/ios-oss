@@ -3,7 +3,7 @@ import Kingfisher
 import KsApi
 
 internal struct SimilarProjectFragment: SimilarProject {
-  let projectID: String
+  let projectID: Int
   let image: Kingfisher.Source
   let name: String
   let isLaunched: Bool
@@ -34,7 +34,7 @@ internal struct SimilarProjectFragment: SimilarProject {
     let launchedAt = timestamp(from: fragment.launchedAt)
     let deadlineAt = timestamp(from: fragment.deadlineAt)
 
-    self.projectID = "\(fragment.pid)"
+    self.projectID = fragment.pid
     self.image = .network(imageURL)
     self.name = fragment.name
     self.isLaunched = fragment.isLaunched
