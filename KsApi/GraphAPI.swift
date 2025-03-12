@@ -13845,8 +13845,8 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort!, $cursor: String) {
-        projects(term: $term, sort: $sort, after: $cursor) {
+      query Search($term: String, $sort: ProjectSort, $first: Int, $cursor: String) {
+        projects(term: $term, sort: $sort, after: $cursor, first: $first) {
           __typename
           nodes {
             __typename
@@ -13874,17 +13874,19 @@ public enum GraphAPI {
     }
 
     public var term: String?
-    public var sort: ProjectSort
+    public var sort: ProjectSort?
+    public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
+      self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "cursor": cursor]
+      return ["term": term, "sort": sort, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -13892,7 +13894,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "after": GraphQLVariable("cursor")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 
