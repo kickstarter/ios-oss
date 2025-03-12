@@ -3,6 +3,25 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public struct SearchOptions {
+  public enum Sort: String {
+    case magic = "MAGIC"
+    case popularity = "POPULARITY"
+    case newest = "NEWEST"
+    case endDate = "END_DATE"
+    case mostFunded = "MOST_FUNDED"
+    case mostBacked = "MOST_BACKED"
+    // case distance = "DISTANCE"
+  }
+
+  let sort: Sort
+  let query: String?
+
+  static var popular: SearchOptions {
+    SearchOptions(sort: Sort.popularity, query: nil)
+  }
+}
+
 public protocol SearchViewModelInputs {
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
