@@ -17,9 +17,9 @@ internal final class SearchLegacyDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(params: DiscoveryParams, visible: Bool) {
+  internal func load(params _: DiscoveryParams, visible: Bool) {
     self.set(
-      values: visible ? [params] : [],
+      values: visible ? ["foob"] : [],
       cellClass: SearchEmptyStateCell.self,
       inSection: Section.noResults.rawValue
     )
@@ -59,8 +59,8 @@ internal final class SearchLegacyDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as MostPopularCell, value as Void):
       cell.configureWith(value: value)
-    case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
-      cell.configureWith(value: value)
+    /* case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
+     cell.configureWith(value: value) */
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
