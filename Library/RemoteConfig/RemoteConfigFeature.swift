@@ -9,6 +9,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case pledgeOverTime = "pledge_over_time"
   case newDesignSystem = "new_design_system"
   case searchFilters = "search_filters"
+  case similarProjectsCarousel = "similar_projects_carousel"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -22,6 +23,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .pledgeOverTime: return "Pledge Over Time"
     case .newDesignSystem: return "New Design System"
     case .searchFilters: return "Search: Sort and Filters"
+    case .similarProjectsCarousel: return "Similar Projects Carousel"
     }
   }
 }
