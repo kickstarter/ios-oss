@@ -91,3 +91,12 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
   public var inputs: any SimilarProjectsUseCaseInputs { return self }
   public var outputs: any SimilarProjectsUseCaseOutputs { return self }
 }
+
+// MARK: - Supporting Types
+
+private struct FakeProject: SimilarProject {
+  let projectID: Int
+  init() {
+    self.projectID = Int.random(in: 0...Int.max)
+  }
+}

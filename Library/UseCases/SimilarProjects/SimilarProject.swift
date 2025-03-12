@@ -5,7 +5,7 @@ import KsApi
 /// Represents a project that is similar to the currently viewed project.
 public protocol SimilarProject {
   /// The identifier for the project.
-  var projectID: String { get }
+  var projectID: Int { get }
 
   var image: Kingfisher.Source { get }
 
