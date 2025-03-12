@@ -40,7 +40,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
   func testProjectIDLoaded_emitsLoadedState() {
     // When loading a project ID
-    self.useCase.projectIDLoaded(projectID: "project-123")
+    self.useCase.projectIDLoaded(projectID: "123")
 
     // Verify we're in loading state
     XCTAssertEqual(1, self.similarProjectsObserver.values.count)
@@ -65,18 +65,18 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
   func testProjectTapped_emitsNavigateToProject() {
     // Create a fake project
-    let project = TestSimilarProject(pid: "project-456")
+    let project = TestSimilarProject(projectID: 456)
 
     // Send project tapped event
     self.useCase.projectTapped(project: project)
 
     // Verify navigate signal fired
     XCTAssertEqual(1, self.projectTappedObserver.values.count)
-    XCTAssertEqual("project-456", self.projectTappedObserver.values[0].pid)
+    XCTAssertEqual(456, self.projectTappedObserver.values[0].projectID)
   }
 }
 
 // Test helper
 private struct TestSimilarProject: SimilarProject {
-  let pid: String
+  let projectID: Int
 }
