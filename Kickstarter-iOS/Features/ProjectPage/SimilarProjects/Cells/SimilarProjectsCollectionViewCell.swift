@@ -1,12 +1,18 @@
 import KsApi
 import Library
-import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {}
+protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {
+  func projectTapped(
+    _ cell: SimilarProjectsCollectionViewCell,
+    atIndex index: IndexPath
+  )
+}
 
 final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
+  weak var delegate: SimilarProjectsCollectionViewCellDelegate?
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -14,6 +20,9 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
     self.configureConstraints()
     self.bindStyles()
     self.bindViewModel()
+
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.projectTapped))
+    self.contentView.addGestureRecognizer(tapRecognizer)
   }
 
   @available(*, unavailable)
@@ -23,6 +32,12 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
+  }
+
+  // MARK: - Accessors
+
+  @objc func projectTapped(indexPath: IndexPath) {
+    self.delegate?.projectTapped(self, atIndex: indexPath)
   }
 
   // MARK: - Functions

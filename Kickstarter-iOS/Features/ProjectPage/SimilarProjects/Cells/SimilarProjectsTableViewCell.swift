@@ -19,6 +19,7 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.collectionView.dataSource = self.dataSource
+    self.collectionView.delegate = self
     self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
 
     self.configureSubviews()
@@ -84,6 +85,26 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     self.dataSource.load(value)
     self.collectionView.reloadData()
     self.layoutIfNeeded()
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SimilarProjectsTableViewCell: UICollectionViewDelegate {
+  public func collectionView(
+    _: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let cell = cell as? SimilarProjectsCollectionViewCell else { return }
+
+    cell.delegate = self
+  }
+}
+
+extension SimilarProjectsTableViewCell: SimilarProjectsCollectionViewCellDelegate {
+  func projectTapped(_: SimilarProjectsCollectionViewCell, atIndex index: IndexPath) {
+    print("Handle project tapped at index \(index)")
   }
 }
 
