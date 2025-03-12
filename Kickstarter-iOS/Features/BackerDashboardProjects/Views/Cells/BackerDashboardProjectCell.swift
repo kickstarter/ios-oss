@@ -20,7 +20,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var progressBarView: UIView!
   @IBOutlet fileprivate var savedIconImageView: UIImageView!
 
-  internal func configureWith(value: Project) {
+  internal func configureWith(value: any BackerDashboardProjectCellViewModel.ProjectCellModel) {
     self.viewModel.inputs.configureWith(project: value)
   }
 
