@@ -269,6 +269,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
       .map { projects, query, index in
 
+        guard index < projects.count else {
+          let emptyResult: (Int, RefTag)? = nil
+          assert(false, "Tapped card out of bounds.")
+          return emptyResult
+        }
+        
         let project = projects[index]
         let graphQLID = project.fragments.backerDashboardProjectCellFragment.projectId
 
@@ -331,6 +337,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
       .observeValues { params, results, index in
 
+        guard index < results.count else {
+          assert(false, "Tapped card out of bounds.")
+          return
+        }
+        
         let projectAnalytics = results[index].fragments.projectAnalyticsFragment
 
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
