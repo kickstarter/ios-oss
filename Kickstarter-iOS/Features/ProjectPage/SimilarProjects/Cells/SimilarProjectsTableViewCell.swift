@@ -80,8 +80,8 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.updateConstraints()
   }
 
-  func configureWith(value: Project) {
-    self.dataSource.load([value, value, value, value])
+  func configureWith(value: [Project]) {
+    self.dataSource.load(value)
     self.collectionView.reloadData()
     self.layoutIfNeeded()
   }

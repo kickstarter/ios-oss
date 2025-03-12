@@ -156,6 +156,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
 
+  /// Emits a list of `Project`  for the Similar Projects Carousel.
+  var updateSimilarProjectsInDataSource: Signal<(Project, [Project]), Never> { get }
+
   /// Emits a prelaunch save state that updates the navigation bar's watch project state.
   var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
 
@@ -538,6 +541,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return (project, refTag, updatedValues)
       }
 
+    // TODO: SPC - Call new Similar Projects GraphAPI service method when ready
+    self.updateSimilarProjectsInDataSource = freshProjectAndRefTag
+      .map { projectAndRefTag in
+        let (project, _) = projectAndRefTag
+
+        return (project, [project, project, project, project])
+      }
+
     self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
     self.reloadCampaignData = self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
       .takeWhen(self.viewWillTransitionProperty.signal)
@@ -746,6 +757,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
+  public let updateSimilarProjectsInDataSource: Signal<(Project, [Project]), Never>
   public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
   public let didBlockUser: Signal<(), Never>
   public let didBlockUserError: Signal<(), Never>
