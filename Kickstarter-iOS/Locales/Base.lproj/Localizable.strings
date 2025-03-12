@@ -225,6 +225,7 @@
 "Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Email notifications";
 "Email_unverified" = "This email address is unverified.";
+"Ended" = "Ended";
 "Ending_in_last_four" = "Ending in %{last_four}";
 "Ending_soon" = "Ending Soon";
 "Enter_an_amount_less_than_max_pledge" = "Enter an amount less than %{max_pledge}.";
@@ -373,6 +374,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed.";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
+"Late_pledges_active" = "Late pledges active";
+"Launching_soon" = "Launching soon";
 "Learn_about_AI_policy_on_Kickstarter" = "Learn about AI policy on Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Learn about accountability on Kickstarter";
 "Learn_more_about_accountability" = "Learn more about accountability";
@@ -658,6 +661,7 @@
 "Sign_up" = "Sign up";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
 "Signs_up_with_Email" = "Signs up with Email.";
+"Similar_projects" = "Similar projects";
 "Skip_add_ons" = "Skip add-ons";
 "Social_friend_is_backer.few" = "%{friend_name} and %{remaining_count} others";
 "Social_friend_is_backer.many" = "%{friend_name} and %{remaining_count} others";
