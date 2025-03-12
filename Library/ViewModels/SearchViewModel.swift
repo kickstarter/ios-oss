@@ -6,34 +6,42 @@ import ReactiveSwift
 public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
-public struct SearchOptions {
-  public enum Sort: String {
-    case magic = "MAGIC"
-    case popularity = "POPULARITY"
-    case newest = "NEWEST"
-    case endDate = "END_DATE"
-    case mostFunded = "MOST_FUNDED"
-    case mostBacked = "MOST_BACKED"
-  }
-
-  let sort: Sort
-  let query: String?
-  let perPage: Int = 15
-
-  static var popular: SearchOptions {
-    SearchOptions(sort: Sort.popularity, query: nil)
+extension GraphAPI.ProjectSort {
+  static func from(discovery sort: DiscoveryParams.Sort) -> GraphAPI.ProjectSort {
+    switch sort {
+    case .endingSoon:
+      return .endDate
+    case .magic:
+      return .magic
+    case .newest:
+      return .newest
+    case .popular:
+      return .popularity
+    }
   }
 }
 
 extension GraphAPI.SearchQuery {
-  static func from(searchOptions options: SearchOptions, withCursor cursor: String? = nil) -> GraphAPI
+  static func from(discoveryParams params: DiscoveryParams, withCursor cursor: String? = nil) -> GraphAPI
     .SearchQuery {
-    guard let sort = GraphAPI.ProjectSort(rawValue: options.sort.rawValue) else {
-      assert(false, "Invalid sort option \(options.sort.rawValue). Using POPULARITY instead.")
-      return GraphAPI.SearchQuery(term: options.query, sort: GraphAPI.ProjectSort.popularity)
-    }
+    let sort = GraphAPI.ProjectSort.from(discovery: params.sort ?? .magic)
+    return GraphAPI.SearchQuery(term: params.query, sort: sort, first: params.perPage, cursor: cursor)
+  }
+}
 
-    return GraphAPI.SearchQuery(term: options.query, sort: sort, first: options.perPage, cursor: cursor)
+extension DiscoveryParams {
+  static var popular: DiscoveryParams {
+    var params = DiscoveryParams.defaults
+    params.sort = .popular
+    params.perPage = 15
+    return params
+  }
+
+  static func withQuery(_ query: String) -> DiscoveryParams {
+    var params = DiscoveryParams.defaults
+    params.query = query
+    params.perPage = 15
+    return params
   }
 }
 
@@ -128,7 +136,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-    let popularQuery = GraphAPI.SearchQuery.from(searchOptions: SearchOptions.popular)
+    let popularQuery = GraphAPI.SearchQuery.from(discoveryParams: DiscoveryParams.popular)
 
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
@@ -147,10 +155,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-    let requestFirstPageWith: Signal<SearchOptions, Never> = query
+    let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
       .filter { !$0.isEmpty }
       .map { query in
-        SearchOptions(sort: .magic, query: query)
+        DiscoveryParams.withQuery(query)
       }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -161,11 +169,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter(isTrue)
       .ignoreValues()
 
-    let requestFromOptionsWithDebounce: (SearchOptions)
-      -> SignalProducer<GraphAPI.SearchQuery.Data, ErrorEnvelope> = { options in
+    let requestFromOptionsWithDebounce: (DiscoveryParams)
+      -> SignalProducer<GraphAPI.SearchQuery.Data, ErrorEnvelope> = { params in
         SignalProducer<(), ErrorEnvelope>(value: ())
           .switchMap {
-            AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery.from(searchOptions: options))
+            AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery.from(discoveryParams: params))
               .ksr_debounce(
                 AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler
               )
@@ -173,7 +181,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
 
     let statsProperty = MutableProperty<Int>(0)
-    let optionsProperty = MutableProperty<SearchOptions?>(nil)
+    let optionsProperty = MutableProperty<DiscoveryParams?>(nil)
     optionsProperty <~ requestFirstPageWith // Bound to the SearchOptions for the current query
 
     let (paginatedProjects, isLoading, page, _) = paginate(
@@ -203,7 +211,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           return SignalProducer.empty
         }
 
-        let query = GraphAPI.SearchQuery.from(searchOptions: options, withCursor: cursor)
+        let query = GraphAPI.SearchQuery.from(discoveryParams: options, withCursor: cursor)
         return AppEnvironment.current.apiService.fetch(query: query)
       }
     )
@@ -309,8 +317,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       viewWillAppearSearchResultsCount.filter { $0 == 0 },
       viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
     )
-
     /*
+
      Signal.combineLatest(query, requestFirstPageWith)
        .takePairWhen(newQuerySearchResultsCount)
        .map(unpack)
@@ -322,7 +330,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
      Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
        .observeValues { project, params in
-         guard let project = project else { return }
+         guard let project = project elsfe { return }
 
          AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
            page: .search,
