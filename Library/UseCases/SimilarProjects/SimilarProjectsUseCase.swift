@@ -37,12 +37,16 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
   init() {
     self.navigateToProject = self.projectTappedSignal
 
-    self.projectIDLoadedSignal
-      .flatMap(.latest, self.fetchProjects(projectID:))
-      .observeForUI()
-      .observeValues { [weak self] state in
-        self?.similarProjectsProperty.value = state
-      }
+    if featureSimilarProjectsCarouselEnabled() {
+      self.projectIDLoadedSignal
+        .flatMap(.latest, self.fetchProjects(projectID:))
+        .observeForUI()
+        .observeValues { [weak self] state in
+          self?.similarProjectsProperty.value = state
+        }
+    } else {
+      self.similarProjectsProperty.value = .hidden
+    }
   }
 
   // MARK: - Data loading
