@@ -94,8 +94,8 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 // MARK: - Supporting Types
 
 private struct FakeProject: SimilarProject {
-  let pid: String
+  let projectID: Int
   init() {
-    self.pid = UUID().uuidString
+    self.projectID = Int.random(in: 0...Int.max)
   }
 }
