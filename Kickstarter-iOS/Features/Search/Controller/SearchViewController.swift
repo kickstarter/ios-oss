@@ -159,16 +159,17 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] params, visible in
-        self?.dataSource.load(params: params, visible: visible)
+        self?.dataSource.load(emptyQueryString: params ?? "", visible: visible)
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToProject
-      .observeForControllerAction()
-      .observeValues { [weak self] project, projects, refTag in
-        self?.goTo(project: project, projects: projects, refTag: refTag)
-      }
-
+    /*
+     self.viewModel.outputs.goToProject
+       .observeForControllerAction()
+       .observeValues { [weak self] project, projects, refTag in
+         self?.goTo(project: project, projects: projects, refTag: refTag)
+       }
+     */
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 

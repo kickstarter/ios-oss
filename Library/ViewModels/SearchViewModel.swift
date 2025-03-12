@@ -3,6 +3,9 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
+public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
+
 public struct SearchOptions {
   public enum Sort: String {
     case magic = "MAGIC"
@@ -11,7 +14,6 @@ public struct SearchOptions {
     case endDate = "END_DATE"
     case mostFunded = "MOST_FUNDED"
     case mostBacked = "MOST_BACKED"
-    // case distance = "DISTANCE"
   }
 
   let sort: Sort
@@ -20,6 +22,27 @@ public struct SearchOptions {
   static var popular: SearchOptions {
     SearchOptions(sort: Sort.popularity, query: nil)
   }
+}
+
+extension GraphAPI.SearchQuery {
+  static func from(searchOptions options: SearchOptions) -> GraphAPI.SearchQuery {
+    guard let sort = GraphAPI.ProjectSort(rawValue: options.sort.rawValue) else {
+      assert(false, "Invalid sort option \(options.sort.rawValue). Using MAGIC instead.")
+      return GraphAPI.SearchQuery(term: options.query, sort: GraphAPI.ProjectSort.popularity)
+    }
+
+    return GraphAPI.SearchQuery(term: options.query, sort: sort)
+  }
+}
+
+extension GraphAPI.SearchQuery.Data.Project.Node: Equatable {}
+
+public func == (
+  lhs: GraphAPI.SearchQuery.Data.Project.Node,
+  rhs: GraphAPI.SearchQuery.Data.Project.Node
+) -> Bool {
+  return lhs.fragments.backerDashboardProjectCellFragment.projectId == rhs.fragments
+    .backerDashboardProjectCellFragment.projectId
 }
 
 public protocol SearchViewModelInputs {
@@ -62,7 +85,7 @@ public protocol SearchViewModelOutputs {
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
 
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
-  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
+//  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, Never> { get }
@@ -71,7 +94,7 @@ public protocol SearchViewModelOutputs {
   var popularLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits an array of projects when they should be shown on the screen.
-  var projects: Signal<[Project], Never> { get }
+  var projects: Signal<[SearchResultCard], Never> { get }
 
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), Never> { get }
@@ -83,7 +106,7 @@ public protocol SearchViewModelOutputs {
   var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
-  var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
+  var showEmptyState: Signal<(String?, Bool), Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -103,26 +126,28 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
+    let popularQuery = GraphAPI.SearchQuery.from(searchOptions: SearchOptions.popular)
+
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
-          .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
+          .fetch(query: popularQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.projects }
+          .map { $0.projects?.nodes?.compact() ?? [] }
           .materialize()
       }
 
     let popular = popularEvent.values()
 
-    let clears = query.mapConst([Project]())
+    let clears = query.mapConst([SearchResult]())
 
     self.isPopularTitleVisible = Signal.combineLatest(query, popular)
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-    let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
+    let requestFirstPageWith: Signal<SearchOptions, Never> = query
       .filter { !$0.isEmpty }
-      .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
+      .map { SearchOptions(sort: .popularity, query: $0) }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in
@@ -132,11 +157,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter(isTrue)
       .ignoreValues()
 
-    let requestFromParamsWithDebounce: (DiscoveryParams)
-      -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> = { params in
+    let requestFromOptionsWithDebounce: (SearchOptions)
+      -> SignalProducer<GraphAPI.SearchQuery.Data, ErrorEnvelope> = { options in
         SignalProducer<(), ErrorEnvelope>(value: ())
           .switchMap {
-            AppEnvironment.current.apiService.fetchDiscovery(params: params)
+            AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery.from(searchOptions: options))
               .ksr_debounce(
                 AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler
               )
@@ -150,13 +175,18 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { [statsProperty] result -> [Project] in
-        statsProperty.value = result.stats.count
-        return result.projects
+      valuesFromEnvelope: { [statsProperty] (data: GraphAPI.SearchQuery.Data) -> [
+        SearchResult
+      ] in
+        statsProperty.value = data.projects?.totalCount ?? 0
+        return data.projects?.nodes?.compact() ?? []
       },
-      cursorFromEnvelope: { $0.urls.api.moreProjects },
-      requestFromParams: requestFromParamsWithDebounce,
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+      cursorFromEnvelope: { $0.projects?.pageInfo.endCursor },
+      requestFromParams: requestFromOptionsWithDebounce,
+      requestFromCursor: { AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery(
+        sort: .popularity,
+        cursor: $0
+      )) }
     )
 
     let stats = statsProperty.signal
@@ -170,6 +200,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     )
     .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
     .skipRepeats(==)
+    .map { (nodes: [
+      SearchResult
+    ]) -> [GraphAPI.BackerDashboardProjectCellFragment] in
+      nodes.map { $0.fragments.backerDashboardProjectCellFragment }
+    }
 
     let shouldShowEmptyState = Signal.merge(
       query.mapConst(false),
@@ -179,6 +214,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     .skip(first: 1)
 
     self.showEmptyState = requestFirstPageWith
+      .map { $0.query }
       .takePairWhen(shouldShowEmptyState)
 
     self.changeSearchFieldFocus = Signal.merge(
@@ -200,13 +236,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       popularEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    self.goToProject = Signal.combineLatest(self.projects, query)
-      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projectsAndQuery, tappedProject in
-        let (projects, query) = projectsAndQuery
+    /*
+     self.goToProject = Signal.combineLatest(self.projects, query)
+       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
+       .map { projectsAndQuery, tappedProject in
+         let (projects, query) = projectsAndQuery
 
-        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
-      }
+         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+       }
+      */
 
     // Tracking
 
@@ -242,27 +280,29 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
     )
 
-    Signal.combineLatest(query, requestFirstPageWith)
-      .takePairWhen(newQuerySearchResultsCount)
-      .map(unpack)
-      .filter { query, _, _ in !query.isEmpty }
-      .observeValues { _, params, stats in
-        AppEnvironment.current.ksrAnalytics
-          .trackProjectSearchView(params: params, results: stats)
-      }
+    /*
+     Signal.combineLatest(query, requestFirstPageWith)
+       .takePairWhen(newQuerySearchResultsCount)
+       .map(unpack)
+       .filter { query, _, _ in !query.isEmpty }
+       .observeValues { _, params, stats in
+         AppEnvironment.current.ksrAnalytics
+           .trackProjectSearchView(params: params, results: stats)
+       }
 
-    Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
-      .observeValues { project, params in
-        guard let project = project else { return }
+     Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
+       .observeValues { project, params in
+         guard let project = project else { return }
 
-        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
-          page: .search,
-          project: project,
-          typeContext: .results,
-          location: .searchResults,
-          params: params
-        )
-      }
+         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+           page: .search,
+           project: project,
+           typeContext: .results,
+           location: .searchResults,
+           params: params
+         )
+       }
+      */
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -311,14 +351,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   }
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
-  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+//  public let goToProject: Signal<(Project, [Project], RefTag), Never>
   public let isPopularTitleVisible: Signal<Bool, Never>
   public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
-  public let projects: Signal<[Project], Never>
+  public let projects: Signal<[SearchResultCard], Never>
   public let resignFirstResponder: Signal<(), Never>
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
-  public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
+  public let showEmptyState: Signal<(String?, Bool), Never>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }
