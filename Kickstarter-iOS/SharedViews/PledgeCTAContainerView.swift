@@ -27,37 +27,48 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    indicator.translatesAutoresizingMaskIntoConstraints = false
     indicator.startAnimating()
     return indicator
   }()
 
   private lazy var activityIndicatorContainerView: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let view = UIView(frame: .zero)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
   }()
 
   private(set) lazy var pledgeCTAButton: UIButton = {
-    UIButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.isHidden = true // Default to hidden until data is ready.
+    return button
   }()
 
   private(set) lazy var retryButton: UIButton = {
-    UIButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
   }()
 
   private lazy var retryDescriptionLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var retryStackView: UIStackView = { UIStackView(frame: .zero) }()
+
+  private lazy var retryStackView: UIStackView = {
+    let stackView = UIStackView(frame: .zero)
+    stackView.isHidden = true // Default to hidden until data is ready.
+    return stackView
+  }()
 
   private lazy var rootStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let stackView = UIStackView(frame: .zero)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
   }()
 
   private lazy var spacer: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let view = UIView(frame: .zero)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
   }()
 
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -65,13 +76,15 @@ final class PledgeCTAContainerView: UIView {
   private lazy var watchesLabel: UILabel = { UILabel(frame: .zero) }()
 
   private lazy var titleAndSubtitleStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let stackView = UIStackView(frame: .zero)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
   }()
 
   private lazy var pledgeButtonAndWatchesStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let stackView = UIStackView(frame: .zero)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
   }()
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()

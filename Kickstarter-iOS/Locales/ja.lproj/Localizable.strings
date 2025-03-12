@@ -225,6 +225,7 @@
 "Email_must_be_a_valid_email_address" = "有効なメールアドレスを入力してください。";
 "Email_notifications" = "メール通知設定";
 "Email_unverified" = "このメールアドレスは認証されていません。";
+"Ended" = "Ended";
 "Ending_in_last_four" = "下の桁が%{last_four} の番号";
 "Ending_soon" = "まもなく終了";
 "Enter_an_amount_less_than_max_pledge" = "%{max_pledge} 以下の額を入力してください。";
@@ -373,6 +374,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarterは、知的財産権侵害の報告をすべて真剣に受け止めています。違反行為の報告手順についてのさらなる情報は、著作権ポリシーおよび商標ポリシーをご参照ください。著作権者または商標権者によって提出された申し立てのみ手続きを進めることができます。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
+"Late_pledges_active" = "Late pledges active";
+"Launching_soon" = "Launching soon";
 "Learn_about_AI_policy_on_Kickstarter" = "Kickstarter の AI ポリシーについて詳しく見る";
 "Learn_about_accountability_on_Kickstarter" = "Kickstarter上の説明責任について詳しく知る";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
@@ -658,6 +661,7 @@
 "Sign_up" = "サインアップ。";
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
+"Similar_projects" = "Similar projects";
 "Skip_add_ons" = "アドオンをスキップする";
 "Social_friend_is_backer.few" = "%{friend_name} さんと他%{remaining_count} 人";
 "Social_friend_is_backer.many" = "%{friend_name} さんと他%{remaining_count} 人";
@@ -1875,6 +1879,7 @@
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
 "tabbar.activity" = "アクティビティ";
+"tabbar.backings" = "バック済み";
 "tabbar.dashboard" = "ダッシュボード";
 "tabbar.discover" = "さがす";
 "tabbar.login" = "ログイン";

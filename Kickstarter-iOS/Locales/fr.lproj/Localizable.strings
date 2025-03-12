@@ -225,6 +225,7 @@
 "Email_must_be_a_valid_email_address" = "L'adresse e-mail doit être valide.";
 "Email_notifications" = "Notifications par e-mail";
 "Email_unverified" = "Adresse e-mail non vérifiée.";
+"Ended" = "Ended";
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Enter_an_amount_less_than_max_pledge" = "Veuillez saisir un montant inférieur à %{max_pledge}.";
@@ -373,6 +374,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarter prend les atteintes au droit à la propriété intellectuelle très au sérieux. Pour plus d'information et pour des instructions sur le signalement d'utilisations abusives, veuillez consulter nos pages {{copyrightPolicyLink}} et {{trademarkPolicyLink}}. Seules les demandes formulées par le titulaire du droit d'auteur ou de la marque déposée seront traitées.";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
+"Late_pledges_active" = "Late pledges active";
+"Launching_soon" = "Launching soon";
 "Learn_about_AI_policy_on_Kickstarter" = "Comprendre la politique sur l'IA de Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "En savoir plus sur la notion de responsabilité sur Kickstarter";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
@@ -658,6 +661,7 @@
 "Sign_up" = "Inscription";
 "Sign_up_newsletter" = "Inscrivez-vous à Coups de cœur pour recevoir une sélection hebdomadaire de projets marquants qui nous ont plu.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
+"Similar_projects" = "Similar projects";
 "Skip_add_ons" = "Passer les compléments";
 "Social_friend_is_backer.few" = "%{friend_name} et %{remaining_count} autre(s)";
 "Social_friend_is_backer.many" = "%{friend_name} et %{remaining_count} autre(s)";
@@ -1875,6 +1879,7 @@
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
 "tabbar.activity" = "Activité";
+"tabbar.backings" = "Engagements";
 "tabbar.dashboard" = "Tableau de bord";
 "tabbar.discover" = "Découvrir";
 "tabbar.login" = "Connexion";

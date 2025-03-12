@@ -225,6 +225,7 @@
 "Email_must_be_a_valid_email_address" = "El correo electrónico debe tener una dirección de correo electrónico válida.";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Email_unverified" = "Esta dirección de correo electrónico no está verificada.";
+"Ended" = "Ended";
 "Ending_in_last_four" = "Número que termina en %{last_four}";
 "Ending_soon" = "Finaliza pronto";
 "Enter_an_amount_less_than_max_pledge" = "Ingresa una cantidad inferior a %{max_pledge}.";
@@ -373,6 +374,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarter presta suma atención a las denuncias de infracción de derecho intelectual. Para encontrar más información e instrucciones sobre cómo denunciar una infracción, visita nuestra Política de copyright y nuestra Política de marca registrada. Solo se pueden procesar las denuncias presentadas por el propietario del copyright o marca registrada.";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
+"Late_pledges_active" = "Late pledges active";
+"Launching_soon" = "Launching soon";
 "Learn_about_AI_policy_on_Kickstarter" = "Información sobre la política de IA en Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Más información sobre el concepto de responsabilidad en Kickstarter";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
@@ -490,7 +493,7 @@
 "Please_log_in_or_sign_up_to_message_this_creator" = "Por favor inicia sesión o regístrate para mandarle un mensaje a este creador.";
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Por favor inicia sesión o regístrate para participar en este Live Stream.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Por favor inicia sesión o regístrate para suscribirte a este Live Stream.";
-"Pledge" = "Contribución:";
+"Pledge" = "Contribuir";
 "Pledge_Over_Time" = "Contribución en cuotas";
 "Pledge_activity" = "Actividad de contribución";
 "Pledge_amount" = "Monto de contribución";
@@ -658,6 +661,7 @@
 "Sign_up" = "Registrarse";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
+"Similar_projects" = "Similar projects";
 "Skip_add_ons" = "Omitir complementos";
 "Social_friend_is_backer.few" = "%{friend_name} y %{remaining_count} otros";
 "Social_friend_is_backer.many" = "%{friend_name} y %{remaining_count} otros";
@@ -1875,6 +1879,7 @@
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
 "tabbar.activity" = "Actividad";
+"tabbar.backings" = "Contribuciones";
 "tabbar.dashboard" = "Panel de control";
 "tabbar.discover" = "Descubrir";
 "tabbar.login" = "Iniciar sesión";

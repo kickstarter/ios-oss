@@ -225,6 +225,7 @@
 "Email_must_be_a_valid_email_address" = "E-Mail-Adresse muss gültig sein.";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
+"Ended" = "Ended";
 "Ending_in_last_four" = "Endet auf %{last_four}";
 "Ending_soon" = "Endet bald";
 "Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
@@ -373,6 +374,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Meldungen zu möglichen Verletzungen von Urheberrechten werden bei Kickstarter sehr ernst genommen. Weitere Informationen zum Melden von solchen Urheberrechtsverletzungen findest du in unserer Richtlinie zu Urheberrechten und unserer Richtlinie zu Markenrechten. Es können nur Meldungen bearbeitet werden, die vom Eigentümer des Urheberrechts oder Markenzeichens gemacht wurden.";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
+"Late_pledges_active" = "Late pledges active";
+"Launching_soon" = "Launching soon";
 "Learn_about_AI_policy_on_Kickstarter" = "Weitere Informationen zur KI-Richtlinie von Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Näheres zur Rechenschaftspflicht auf Kickstarter";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
@@ -658,6 +661,7 @@
 "Sign_up" = "Registrieren";
 "Sign_up_newsletter" = "Abonniere unsere \"Team Favoriten\" und wir schicken dir einmal pro Woche eine Auswahl von bemerkenswerten Projekten, handverlesen von unserem Team.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
+"Similar_projects" = "Similar projects";
 "Skip_add_ons" = "Keine Add-ons";
 "Social_friend_is_backer.few" = "%{friend_name} und %{remaining_count} weitere";
 "Social_friend_is_backer.many" = "%{friend_name} und %{remaining_count} weitere";
@@ -1875,6 +1879,7 @@
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
 "tabbar.activity" = "Aktivität";
+"tabbar.backings" = "Unterstützte Projekte";
 "tabbar.dashboard" = "Dashboard";
 "tabbar.discover" = "Entdecken";
 "tabbar.login" = "Anmelden";
