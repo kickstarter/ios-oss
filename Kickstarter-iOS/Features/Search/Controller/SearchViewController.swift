@@ -159,7 +159,7 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] params, visible in
-        self?.dataSource.load(emptyQueryString: params ?? "", visible: visible)
+        self?.dataSource.load(params: params, visible: visible)
         self?.tableView.reloadData()
       }
 
