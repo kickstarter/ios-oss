@@ -19,33 +19,22 @@ func metadataString(for project: any BackerDashboardProjectCellViewModel.Project
 
 func percentFundedString(
   for project: any BackerDashboardProjectCellViewModel
-    .ProjectCellModel
+    .ProjectCellModel,
+  fontSize: CGFloat? = nil
 ) -> NSAttributedString {
   let percentage = Format.percentage(project.percentFunded)
 
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
+      NSAttributedString.Key.font: UIFont.ksr_caption1(size: fontSize),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
     ])
   default:
     return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
+      NSAttributedString.Key.font: UIFont.ksr_caption1(size: fontSize),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
     ])
-  }
-}
-
-func progressBarColorForProject(
-  _ project: any BackerDashboardProjectCellViewModel
-    .ProjectCellModel
-) -> UIColor {
-  switch project.state {
-  case .live, .successful:
-    return .ksr_create_700
-  default:
-    return .ksr_support_300
   }
 }
 

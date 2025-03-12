@@ -85,7 +85,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
       return project.state != .live
     }
 
-    self.percentFundedText = project.map(percentFundedString(for:))
+    self.percentFundedText = project.map { percentFundedString(for: $0, fontSize: 10.0) }
 
     self.progressBarColor = project.map(progressBarColorForProject)
 
@@ -112,4 +112,16 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
   public var inputs: BackerDashboardProjectCellViewModelInputs { return self }
   public var outputs: BackerDashboardProjectCellViewModelOutputs { return self }
+}
+
+private func progressBarColorForProject(
+  _ project: any BackerDashboardProjectCellViewModel
+    .ProjectCellModel
+) -> UIColor {
+  switch project.state {
+  case .live, .successful:
+    return .ksr_create_700
+  default:
+    return .ksr_support_300
+  }
 }

@@ -54,7 +54,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 
     self.progressBarColor = project.map(progressBarColorForProject)
 
-    self.percentFundedText = project.map(percentFundedString(for:))
+    self.percentFundedText = project.map { percentFundedString(for: $0) }
 
     self.metadataText = project.map(metadataString(for:))
 
@@ -77,4 +77,18 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 
   public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }
   public var outputs: MostPopularSearchProjectCellViewModelOutputs { return self }
+}
+
+private func progressBarColorForProject(
+  _ project: any BackerDashboardProjectCellViewModel
+    .ProjectCellModel
+) -> UIColor {
+  guard !isProjectPrelaunch(project) else { return .ksr_create_700 }
+
+  switch project.state {
+  case .live, .successful:
+    return .ksr_create_700
+  default:
+    return .ksr_support_400
+  }
 }
