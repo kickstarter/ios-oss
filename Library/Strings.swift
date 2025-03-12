@@ -3753,6 +3753,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Ended"
+
+   - **en**: "Ended"
+   - **de**: "Ended"
+   - **es**: "Ended"
+   - **fr**: "Ended"
+   - **ja**: "Ended"
+  */
+  public static func Ended() -> String {
+    return localizedString(
+      key: "Ended",
+      defaultValue: "Ended",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ending in %{last_four}"
 
    - **en**: "Ending in %{last_four}"
@@ -6204,6 +6221,40 @@ with friends."
     )
   }
   /**
+   "Late pledges active"
+
+   - **en**: "Late pledges active"
+   - **de**: "Late pledges active"
+   - **es**: "Late pledges active"
+   - **fr**: "Late pledges active"
+   - **ja**: "Late pledges active"
+  */
+  public static func Late_pledges_active() -> String {
+    return localizedString(
+      key: "Late_pledges_active",
+      defaultValue: "Late pledges active",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Launching soon"
+
+   - **en**: "Launching soon"
+   - **de**: "Launching soon"
+   - **es**: "Launching soon"
+   - **fr**: "Launching soon"
+   - **ja**: "Launching soon"
+  */
+  public static func Launching_soon() -> String {
+    return localizedString(
+      key: "Launching_soon",
+      defaultValue: "Launching soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Learn about AI policy on Kickstarter"
 
    - **en**: "Learn about AI policy on Kickstarter"
@@ -8132,7 +8183,7 @@ n'ont rien soutenu."
 
    - **en**: "Pledge"
    - **de**: "Beitrag leisten"
-   - **es**: "Contribución:"
+   - **es**: "Contribuir"
    - **fr**: "Je m'engage"
    - **ja**: "プレッジする"
   */
@@ -10778,6 +10829,23 @@ daring ideas."
     return localizedString(
       key: "Signs_up_with_Email",
       defaultValue: "Signs up with Email.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Similar projects"
+
+   - **en**: "Similar projects"
+   - **de**: "Similar projects"
+   - **es**: "Similar projects"
+   - **fr**: "Similar projects"
+   - **ja**: "Similar projects"
+  */
+  public static func Similar_projects() -> String {
+    return localizedString(
+      key: "Similar_projects",
+      defaultValue: "Similar projects",
       count: nil,
       substitutions: [:]
     )
@@ -28161,6 +28229,23 @@ projets enregistrés"
     return localizedString(
       key: "tabbar.activity",
       defaultValue: "Activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Backings"
+
+   - **en**: "Backings"
+   - **de**: "Unterstützte Projekte"
+   - **es**: "Contribuciones"
+   - **fr**: "Engagements"
+   - **ja**: "バック済み"
+  */
+  public static func tabbar_backings() -> String {
+    return localizedString(
+      key: "tabbar.backings",
+      defaultValue: "Backings",
       count: nil,
       substitutions: [:]
     )

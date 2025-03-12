@@ -79,7 +79,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .ignoreValues()
 
     self.bottomLayoutConstraintConstant = emptyState
-      .map { Styles.grid(5) + ($0 == .activity ? 50.0 : 0) }
+      .map { _ in Styles.grid(5) }
 
     // Tracking
 
