@@ -18,6 +18,7 @@ public struct SearchOptions {
 
   let sort: Sort
   let query: String?
+  let perPage: Int = 15
 
   static var popular: SearchOptions {
     SearchOptions(sort: Sort.popularity, query: nil)
@@ -25,13 +26,14 @@ public struct SearchOptions {
 }
 
 extension GraphAPI.SearchQuery {
-  static func from(searchOptions options: SearchOptions) -> GraphAPI.SearchQuery {
+  static func from(searchOptions options: SearchOptions, withCursor cursor: String? = nil) -> GraphAPI
+    .SearchQuery {
     guard let sort = GraphAPI.ProjectSort(rawValue: options.sort.rawValue) else {
-      assert(false, "Invalid sort option \(options.sort.rawValue). Using MAGIC instead.")
+      assert(false, "Invalid sort option \(options.sort.rawValue). Using POPULARITY instead.")
       return GraphAPI.SearchQuery(term: options.query, sort: GraphAPI.ProjectSort.popularity)
     }
 
-    return GraphAPI.SearchQuery(term: options.query, sort: sort)
+    return GraphAPI.SearchQuery(term: options.query, sort: sort, first: options.perPage, cursor: cursor)
   }
 }
 
@@ -147,7 +149,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let requestFirstPageWith: Signal<SearchOptions, Never> = query
       .filter { !$0.isEmpty }
-      .map { SearchOptions(sort: .popularity, query: $0) }
+      .map { query in
+        SearchOptions(sort: .magic, query: query)
+      }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in
@@ -169,6 +173,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
 
     let statsProperty = MutableProperty<Int>(0)
+    let optionsProperty = MutableProperty<SearchOptions?>(nil)
+    optionsProperty <~ requestFirstPageWith // Bound to the SearchOptions for the current query
 
     let (paginatedProjects, isLoading, page, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
@@ -181,12 +187,25 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         statsProperty.value = data.projects?.totalCount ?? 0
         return data.projects?.nodes?.compact() ?? []
       },
-      cursorFromEnvelope: { $0.projects?.pageInfo.endCursor },
+      cursorFromEnvelope: { data in
+        guard let pageInfo = data.projects?.pageInfo else {
+          return nil
+        }
+
+        return pageInfo.hasNextPage ? pageInfo.endCursor : nil
+      },
       requestFromParams: requestFromOptionsWithDebounce,
-      requestFromCursor: { AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery(
-        sort: .popularity,
-        cursor: $0
-      )) }
+      requestFromCursor: { [optionsProperty] (maybeCursor: String?) -> SignalProducer<
+        GraphAPI.SearchQuery.Data,
+        ErrorEnvelope
+      > in
+        guard let options = optionsProperty.value, let cursor = maybeCursor else {
+          return SignalProducer.empty
+        }
+
+        let query = GraphAPI.SearchQuery.from(searchOptions: options, withCursor: cursor)
+        return AppEnvironment.current.apiService.fetch(query: query)
+      }
     )
 
     let stats = statsProperty.signal
