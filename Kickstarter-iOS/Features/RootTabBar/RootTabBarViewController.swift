@@ -277,8 +277,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       return ActivitiesViewController.instantiate()
     case .pledgedProjectsAndActivities:
       return PPOContainerViewController.instantiate()
-    case .search:
-      return featureSearchFiltersEnabled()
+    case let .search(filtersEnabled):
+      return filtersEnabled
         ? SearchViewController.instantiate()
         : SearchLegacyViewController.instantiate()
     case let .profile(isLoggedIn):

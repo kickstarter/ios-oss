@@ -471,6 +471,17 @@ final class RootViewModelTests: TestCase {
         nil,
         "Current user should have a cleared badge on activity"
       )
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.viewControllerNames.assertValueCount(
+        1,
+        "PPO hasn't changed, so no new view controllers should be set."
+      )
+      self.tabBarItemsData.assertValueCount(
+        1,
+        "PPO hasn't changed, so no new tab bar data should be set."
+      )
     }
 
     withEnvironment(
@@ -597,6 +608,16 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([])
     self.vm.inputs.switchToDiscovery(params: params)
     self.filterDiscovery.assertValues([params])
+  }
+
+  func testSwitchToSearch() {
+    self.selectedIndex.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.selectedIndex.assertLastValue(0)
+    self.vm.inputs.switchToSearch()
+    self.selectedIndex.assertLastValue(2)
   }
 
   func testTabBarItemStyles() {
@@ -849,6 +870,75 @@ final class RootViewModelTests: TestCase {
           ["Discovery", "Activities", "Search", "BackerDashboard"]
         ],
         "Shows most up-to-date version of Search when flag is enabled."
+      )
+    }
+  }
+
+  func testAppToForeground_ChangesSearchTabIfNecessary() {
+    let viewControllerNames = TestObserver<[String], Never>()
+    self.vm.outputs.setViewControllers.map(extractRootNames)
+      .observe(viewControllerNames.observer)
+
+    let configClientFilters_Off = MockRemoteConfigClient()
+    configClientFilters_Off.features = [
+      RemoteConfigFeature.searchFilters.rawValue: false
+    ]
+
+    let configClientFilters_On = MockRemoteConfigClient()
+    configClientFilters_On.features = [
+      RemoteConfigFeature.searchFilters.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: configClientFilters_Off) {
+      self.vm.inputs.viewDidLoad()
+
+      self.viewControllerNames.assertValueCount(1)
+      self.tabBarItemsData.assertValueCount(1)
+
+      XCTAssertNotNil(
+        self.viewControllerNames.lastValue?.firstIndex(of: "SearchLegacy"),
+        "Search should use legacy controller when filters is off"
+      )
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.viewControllerNames.assertValueCount(
+        1,
+        "Filters hasn't changed, so no new view controllers should be set."
+      )
+      self.tabBarItemsData.assertValueCount(
+        1,
+        "Filters hasn't changed, so no new tab bar data should be set."
+      )
+    }
+
+    withEnvironment(
+      remoteConfigClient: configClientFilters_On
+    ) {
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.viewControllerNames.assertValueCount(
+        2,
+        "Turning on filters and returning the app to foreground should change the view controller tabs."
+      )
+      self.tabBarItemsData.assertValueCount(
+        2,
+        "Turning on filters and returning the app to foreground should refresh the tab bar data."
+      )
+
+      XCTAssertNotNil(
+        self.viewControllerNames.lastValue?.firstIndex(of: "Search"),
+        "Search should use new controller when filters is on"
+      )
+
+      self.vm.inputs.applicationWillEnterForeground()
+      self.viewControllerNames.assertValueCount(
+        2,
+        "Filters hasn't changed, so no new view controllers should be set."
+      )
+      self.tabBarItemsData.assertValueCount(
+        2,
+        "Filters hasn't changed, so no new tab bar data should be set."
       )
     }
   }
