@@ -12,6 +12,8 @@ fragment ProjectCardFragment on Project {
   percentFunded
   prelaunchActivated
   launchedAt
+  isInPostCampaignPledgingPhase
+  postCampaignPledgingEnabled
   goal {
     ...MoneyFragment
   }

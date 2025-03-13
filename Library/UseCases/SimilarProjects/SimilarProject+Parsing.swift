@@ -8,6 +8,8 @@ internal struct SimilarProjectFragment: SimilarProject {
   let name: String
   let isLaunched: Bool
   let isPrelaunchActivated: Bool
+  let isInPostCampaignPledgingPhase: Bool
+  let isPostCampaignPledgingEnabled: Bool
   let launchedAt: Date?
   let deadlineAt: Date?
   let percentFunded: Int
@@ -37,6 +39,8 @@ internal struct SimilarProjectFragment: SimilarProject {
     self.name = fragment.name
     self.isLaunched = fragment.isLaunched
     self.isPrelaunchActivated = fragment.prelaunchActivated
+    self.isInPostCampaignPledgingPhase = fragment.isInPostCampaignPledgingPhase
+    self.isPostCampaignPledgingEnabled = fragment.postCampaignPledgingEnabled
     self.launchedAt = launchedAt
     self.deadlineAt = deadlineAt
     self.percentFunded = fragment.percentFunded

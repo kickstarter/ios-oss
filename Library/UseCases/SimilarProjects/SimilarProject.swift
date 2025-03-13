@@ -13,6 +13,8 @@ public protocol SimilarProject {
 
   var isLaunched: Bool { get }
   var isPrelaunchActivated: Bool { get }
+  var isInPostCampaignPledgingPhase: Bool { get }
+  var isPostCampaignPledgingEnabled: Bool { get }
 
   var launchedAt: Date? { get }
   var deadlineAt: Date? { get }
@@ -21,4 +23,10 @@ public protocol SimilarProject {
   var state: Project.State { get }
   var goal: Money? { get }
   var pledged: Money? { get }
+}
+
+extension SimilarProject {
+  var shouldDisplayPrelaunch: Bool {
+    self.isPrelaunchActivated && self.state == .submitted
+  }
 }

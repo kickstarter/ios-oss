@@ -18497,6 +18497,8 @@ public enum GraphAPI {
         percentFunded
         prelaunchActivated
         launchedAt
+        isInPostCampaignPledgingPhase
+        postCampaignPledgingEnabled
         goal {
           __typename
           ...MoneyFragment
@@ -18522,6 +18524,8 @@ public enum GraphAPI {
         GraphQLField("percentFunded", type: .nonNull(.scalar(Int.self))),
         GraphQLField("prelaunchActivated", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("launchedAt", type: .scalar(String.self)),
+        GraphQLField("isInPostCampaignPledgingPhase", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("goal", type: .object(Goal.selections)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
       ]
@@ -18533,8 +18537,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(image: Image? = nil, name: String, pid: Int, state: ProjectState, isLaunched: Bool, deadlineAt: String? = nil, percentFunded: Int, prelaunchActivated: Bool, launchedAt: String? = nil, goal: Goal? = nil, pledged: Pledged) {
-      self.init(unsafeResultMap: ["__typename": "Project", "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "state": state, "isLaunched": isLaunched, "deadlineAt": deadlineAt, "percentFunded": percentFunded, "prelaunchActivated": prelaunchActivated, "launchedAt": launchedAt, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "pledged": pledged.resultMap])
+    public init(image: Image? = nil, name: String, pid: Int, state: ProjectState, isLaunched: Bool, deadlineAt: String? = nil, percentFunded: Int, prelaunchActivated: Bool, launchedAt: String? = nil, isInPostCampaignPledgingPhase: Bool, postCampaignPledgingEnabled: Bool, goal: Goal? = nil, pledged: Pledged) {
+      self.init(unsafeResultMap: ["__typename": "Project", "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "state": state, "isLaunched": isLaunched, "deadlineAt": deadlineAt, "percentFunded": percentFunded, "prelaunchActivated": prelaunchActivated, "launchedAt": launchedAt, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "pledged": pledged.resultMap])
     }
 
     public var __typename: String {
@@ -18633,6 +18637,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "launchedAt")
+      }
+    }
+
+    /// Is this project currently accepting post-campaign pledges?
+    public var isInPostCampaignPledgingPhase: Bool {
+      get {
+        return resultMap["isInPostCampaignPledgingPhase"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isInPostCampaignPledgingPhase")
+      }
+    }
+
+    /// Is this project configured for post-campaign pledges?
+    public var postCampaignPledgingEnabled: Bool {
+      get {
+        return resultMap["postCampaignPledgingEnabled"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "postCampaignPledgingEnabled")
       }
     }
 
