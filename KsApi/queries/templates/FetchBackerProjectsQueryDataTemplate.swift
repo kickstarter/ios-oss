@@ -2,6 +2,12 @@ import Apollo
 import Foundation
 @testable import KsApi
 
+private extension Bundle {
+  static var ksr_apiTestBundle: Bundle? {
+    Bundle(identifier: "com.kickstarter.KsApiTests")
+  }
+}
+
 public enum FetchBackerProjectsQueryDataTemplate {
   case valid
 

@@ -6,12 +6,6 @@ public enum GraphQLSelectionSetStringError: Error {
   case fileNotFoundError
 }
 
-public extension Bundle {
-  static var ksr_apiTestBundle: Bundle? {
-    Bundle(identifier: "com.kickstarter.KsApiTests")
-  }
-}
-
 public extension GraphQLSelectionSet {
   init(jsonString: String, variables: GraphQLMap? = nil) throws {
     guard let data = jsonString.data(using: .utf8) else {

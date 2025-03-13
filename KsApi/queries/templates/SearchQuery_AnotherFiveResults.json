@@ -1,0 +1,407 @@
+{
+  "data": {
+    "projects": {
+      "__typename": "ProjectsConnectionWithTotalCount",
+      "nodes": [
+        {
+          "__typename": "Project",
+          "projectId": "UHJvamVjdC00NzYyOTE4MjU=",
+          "name": "Test Project",
+          "projectState": "LIVE",
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDMyMDc4OTk=",
+            "url": "https://www.kickstarter.com/test/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "500000.0",
+            "currency": "HKD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "40.0",
+            "currency": "HKD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": false,
+          "deadlineAt": 1708238721,
+          "projectLaunchedAt": 1703054721,
+          "isWatched": false,
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 0
+          },
+          "backersCount": 2,
+          "backing": null,
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "Product Design",
+            "parentCategory": {
+              "__typename": "Category",
+              "analyticsName": "Design",
+              "id": "Q2F0ZWdvcnktNw=="
+            }
+          },
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "HK"
+          },
+          "creator": {
+            "__typename": "User",
+            "id": "VXNlci0xMDIzNzc4MjEx",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            }
+          },
+          "currency": "HKD",
+          "launchedAt": 1703054721,
+          "pid": 476291825,
+          "isInPostCampaignPledgingPhase": false,
+          "percentFunded": 0,
+          "isPrelaunchActivated": false,
+          "projectTags": [],
+          "postCampaignPledgingEnabled": false,
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 1
+          },
+          "state": "LIVE",
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTI2MTkxMw=="
+          },
+          "fxRate": 0.12867125,
+          "usdExchangeRate": 0.12867125,
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 2
+          }
+        },
+        {
+          "__typename": "Project",
+          "projectId": "UHJvamVjdC0xOTk2MzE2ODE3",
+          "name": "Test Project",
+          "projectState": "LIVE",
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDM4MDQ1NTU=",
+            "url": "https://www.kickstarter.com/test/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "50000.0",
+            "currency": "EUR",
+            "symbol": "€"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "101.0",
+            "currency": "EUR",
+            "symbol": "€"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": false,
+          "deadlineAt": 1708937364,
+          "projectLaunchedAt": 1706345364,
+          "isWatched": false,
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 0
+          },
+          "backersCount": 2,
+          "backing": null,
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "Apps",
+            "parentCategory": {
+              "__typename": "Category",
+              "analyticsName": "Technology",
+              "id": "Q2F0ZWdvcnktMTY="
+            }
+          },
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "IT"
+          },
+          "creator": {
+            "__typename": "User",
+            "id": "VXNlci0yMTE4MjIyMjAx",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            }
+          },
+          "currency": "EUR",
+          "launchedAt": 1706345364,
+          "pid": 1996316817,
+          "isInPostCampaignPledgingPhase": false,
+          "percentFunded": 0,
+          "isPrelaunchActivated": false,
+          "projectTags": [],
+          "postCampaignPledgingEnabled": false,
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 3
+          },
+          "state": "LIVE",
+          "video": null,
+          "fxRate": 1.0884875,
+          "usdExchangeRate": 1.0884875,
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 0
+          }
+        },
+        {
+          "__typename": "Project",
+          "projectId": "UHJvamVjdC0xOTIxNzkxOTU0",
+          "name": "Test Project",
+          "projectState": "LIVE",
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDU4MDg0ODk=",
+            "url": "https://www.kickstarter.com/test/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "5000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "28179.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": true,
+          "deadlineAt": 1725001200,
+          "projectLaunchedAt": 1722340768,
+          "isWatched": false,
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 5
+          },
+          "backersCount": 618,
+          "backing": null,
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "Tabletop Games",
+            "parentCategory": {
+              "__typename": "Category",
+              "analyticsName": "Games",
+              "id": "Q2F0ZWdvcnktMTI="
+            }
+          },
+          "commentsCount": 104,
+          "country": {
+            "__typename": "Country",
+            "code": "US"
+          },
+          "creator": {
+            "__typename": "User",
+            "id": "VXNlci0xNDAyMzU5ODIw",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            }
+          },
+          "currency": "USD",
+          "launchedAt": 1722340768,
+          "pid": 1921791954,
+          "isInPostCampaignPledgingPhase": false,
+          "percentFunded": 563,
+          "isPrelaunchActivated": true,
+          "projectTags": [],
+          "postCampaignPledgingEnabled": false,
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 4
+          },
+          "state": "LIVE",
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTMwNDUxOQ=="
+          },
+          "fxRate": 1,
+          "usdExchangeRate": 1,
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 0
+          }
+        },
+        {
+          "__typename": "Project",
+          "projectId": "UHJvamVjdC0xMjk0NzE4NjYy",
+          "name": "Test Project",
+          "projectState": "LIVE",
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDM2MzIwMzg=",
+            "url": "https://www.kickstarter.com/test/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "6000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "1.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": false,
+          "deadlineAt": 1708144534,
+          "projectLaunchedAt": 1705552534,
+          "isWatched": false,
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 0
+          },
+          "backersCount": 1,
+          "backing": null,
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "Graphic Design",
+            "parentCategory": {
+              "__typename": "Category",
+              "analyticsName": "Design",
+              "id": "Q2F0ZWdvcnktNw=="
+            }
+          },
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "US"
+          },
+          "creator": {
+            "__typename": "User",
+            "id": "VXNlci0xODQxOTc0NTA2",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 16
+            }
+          },
+          "currency": "USD",
+          "launchedAt": 1705552534,
+          "pid": 1294718662,
+          "isInPostCampaignPledgingPhase": false,
+          "percentFunded": 0,
+          "isPrelaunchActivated": false,
+          "projectTags": [],
+          "postCampaignPledgingEnabled": false,
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 2
+          },
+          "state": "LIVE",
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTI2ODM1NQ=="
+          },
+          "fxRate": 1,
+          "usdExchangeRate": 1,
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 1
+          }
+        },
+        {
+          "__typename": "Project",
+          "projectId": "UHJvamVjdC0xMzg1ODI5MzEw",
+          "name": "Test Project",
+          "projectState": "LIVE",
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDM3NDc5ODY=",
+            "url": "https://www.kickstarter.com/test/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "5000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "7491.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": true,
+          "deadlineAt": 1708606331,
+          "projectLaunchedAt": 1706014331,
+          "isWatched": false,
+          "addOns": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 1
+          },
+          "backersCount": 160,
+          "backing": null,
+          "category": {
+            "__typename": "Category",
+            "analyticsName": "Toys",
+            "parentCategory": {
+              "__typename": "Category",
+              "analyticsName": "Design",
+              "id": "Q2F0ZWdvcnktNw=="
+            }
+          },
+          "commentsCount": 10,
+          "country": {
+            "__typename": "Country",
+            "code": "US"
+          },
+          "creator": {
+            "__typename": "User",
+            "id": "VXNlci0yMTEwNDEzNjQ3",
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            }
+          },
+          "currency": "USD",
+          "launchedAt": 1706014331,
+          "pid": 1385829310,
+          "isInPostCampaignPledgingPhase": false,
+          "percentFunded": 149,
+          "isPrelaunchActivated": true,
+          "projectTags": [],
+          "postCampaignPledgingEnabled": false,
+          "rewards": {
+            "__typename": "ProjectRewardConnection",
+            "totalCount": 5
+          },
+          "state": "LIVE",
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTI1MDA5Ng=="
+          },
+          "fxRate": 1,
+          "usdExchangeRate": 1,
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 1
+          }
+        }
+      ],
+      "totalCount": 200,
+      "pageInfo": {
+        "__typename": "PageInfo",
+        "endCursor": "eyJpbmRleCI6NCwic2VlZCI6MjkwMzE1NH0=",
+        "hasNextPage": true
+      }
+    }
+  }
+}
