@@ -124,7 +124,7 @@ final class SimilarProjectsCardView: UIView {
     ])
   }
 
-  internal func configureWith(value: Project) {
+  internal func configureWith(value: any SimilarProject) {
     self.viewModel.inputs.configureWith(project: value)
 
     self.layoutIfNeeded()
@@ -148,7 +148,8 @@ final class SimilarProjectsCardView: UIView {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.projectImageUrl
+    self.viewModel.outputs.projectImageSource
+      .compactMap { $0?.url }
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.projectImageView.af.cancelImageRequest()
