@@ -1,40 +1,54 @@
 import UIKit
+import SwiftUI
 
 /// A protocol for handling adaptive colors using a `RawRepresentable` enum.
 /// It dynamically constructs the color name based on its namespace and retrieves it from the asset catalog.
-protocol AdaptiveColors: RawRepresentable where RawValue == String {
-  /// Retrieves the adaptive color from the asset catalog.
-  /// - Returns: A `UIColor` object from the asset catalog, or default white if not found.
+/// This allows consistent color definitions across both UIKit and SwiftUI.
+public protocol AdaptiveColors: RawRepresentable where RawValue == String {
+  /// Retrieves the adaptive color for UIKit.
+  /// - Returns: A `UIColor` object from the asset catalog, or a default fallback color (`ksr_create_700`) if not found.
   func adaptive() -> UIColor
+  /// Retrieves the adaptive color for SwiftUI.
+  /// - Returns: A `Color` object from the asset catalog, or a default fallback color (`ksr_create_700`) if not found.
+  func swiftUIColor() -> Color
 }
 
 extension AdaptiveColors {
-  public func adaptive() -> UIColor {
-    // Determines the appropriate namespace based on the enum type.
-    let namespace: String
-
+  /// Defines the namespace for each color type to prevent conflicts and improve organization.
+  /// - Returns: A string representing the namespace prefix.
+  private var namespace: String {
     switch Self.self {
     case is Colors.Background.Type:
-      namespace = "background/"
+      return "background/"
     case is Colors.Border.Type:
-      namespace = "border/"
+      return "border/"
     case is Colors.Text.Type:
-      namespace = "text/"
+      return "text/"
     default:
       // Adding an assertion failure to catch any new color categories that aren't defined within a namespace.
       assertionFailure("⚠️ Unexpected enum type for AdaptiveColors: \(Self.self)")
-      namespace = ""
+      return ""
     }
-
+  }
+  
+  /// Retrieves the adaptive color for UIKit.
+  /// - Returns: A `UIColor` object from the asset catalog, or a default fallback color (`ksr_create_700`) if not found.
+  public func adaptive() -> UIColor {
     // Constructs the full color name for asset lookup.
-    let colorName = "\(namespace)\(self.rawValue)"
-
-    // Retrieves the color from the asset catalog, defaulting to white if unavailable.
-    if let color = UIColor(named: colorName) {
-      return color
+    let colorName = "\(self.namespace)\(self.rawValue)"
+    
+    // Retrieves the color from the asset catalog, defaulting to KSR green (ksr_create_700) if unavailable.
+    guard let color = UIColor(named: colorName) else {
+      assertionFailure("⚠️ Color not found in asset catalog: \(colorName)")
+      return .ksr_create_700
     }
-
-    assertionFailure("⚠️ Color not found in asset catalog: \(colorName)")
-    return .white
+    
+    return color
+  }
+  
+  /// Retrieves the adaptive color for SwiftUI.
+  /// - Returns: A `Color` object from the asset catalog, or a default fallback color (`ksr_create_700`) if not found.
+  public func swiftUIColor() -> Color {
+    Color(uiColor: adaptive())
   }
 }
