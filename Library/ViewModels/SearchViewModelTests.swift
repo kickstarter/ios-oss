@@ -28,7 +28,7 @@ internal final class SearchViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
-    self.vm.outputs.goToProject.map { _, _, refTag in refTag }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.popularLoaderIndicatorIsAnimating.observe(self.popularLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
@@ -53,7 +53,7 @@ internal final class SearchViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
-      self.vm.inputs.tapped(project: projects[0])
+      self.vm.inputs.tapped(projectAtIndex: 0)
 
       self.goToRefTag.assertValues([RefTag.searchPopularFeatured])
     }
@@ -66,7 +66,7 @@ internal final class SearchViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
-      self.vm.inputs.tapped(project: projects[8])
+      self.vm.inputs.tapped(projectAtIndex: 8)
 
       self.goToRefTag.assertValues([RefTag.searchPopular])
     }
@@ -86,7 +86,7 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[0])
+        self.vm.inputs.tapped(projectAtIndex: 0)
 
         self.goToRefTag.assertValues([RefTag.searchFeatured])
       }
@@ -107,7 +107,7 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[2])
+        self.vm.inputs.tapped(projectAtIndex: 2)
 
         self.goToRefTag.assertValues([RefTag.search])
       }
@@ -128,7 +128,7 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[0])
+        self.vm.inputs.tapped(projectAtIndex: 0)
 
         XCTAssertEqual(
           self.segmentTrackingClient.events.last,
@@ -425,14 +425,17 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = TestCase.interval
 
     withEnvironment(debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], Never>()
-      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
+      let projects = TestObserver<[String], Never>()
+      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
-      let popularProjects = projects.values.last!
+      guard let popularProjects = projects.values.last else {
+        XCTFail("Expected popular project")
+        return
+      }
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
@@ -466,8 +469,8 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = DispatchTimeInterval.seconds(1)
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], Never>()
-      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
+      let projects = TestObserver<[String], Never>()
+      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)

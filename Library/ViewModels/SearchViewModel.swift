@@ -274,7 +274,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           assert(false, "Tapped card out of bounds.")
           return emptyResult
         }
-        
+
         let project = projects[index]
         let graphQLID = project.fragments.backerDashboardProjectCellFragment.projectId
 
@@ -341,7 +341,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           assert(false, "Tapped card out of bounds.")
           return
         }
-        
+
         let projectAnalytics = results[index].fragments.projectAnalyticsFragment
 
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
