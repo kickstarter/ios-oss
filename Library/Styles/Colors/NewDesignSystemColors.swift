@@ -1,8 +1,8 @@
 import UIKit
 
-struct Colors {
+public struct Colors {
   /// Background colors, mapped to `background/` namespace in Assets.
-  enum Background: String, AdaptiveColors {
+  public enum Background: String, AdaptiveColors {
     case accentGreenBold
     case accentGreenBoldPressed
     case accentGreenDisabled
@@ -20,14 +20,14 @@ struct Colors {
   }
 
   /// Border colors, mapped to `border/` namespace in Assets.
-  enum Border: String, AdaptiveColors {
+  public enum Border: String, AdaptiveColors {
     case bold
     case dangerBold
     case subtle
   }
 
   /// Text colors, mapped to `text/` namespace in Assets.
-  enum Text: String, AdaptiveColors {
+  public enum Text: String, AdaptiveColors {
     case accentRed
     case accentRedBolder
     case accentRedDisabled
