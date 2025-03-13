@@ -1620,6 +1620,10 @@
 		E15802442D7F72390000BAB3 /* SearchLegacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */; };
 		E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */; };
 		E15802DE2D81D8420000BAB3 /* SearchQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E15802DD2D81D8420000BAB3 /* SearchQuery.graphql */; };
+		E15803072D8365520000BAB3 /* SearchQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */; };
+		E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */; };
+		E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */; };
+		E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
@@ -3355,6 +3359,10 @@
 		E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyDataSource.swift; sourceTree = "<group>"; };
 		E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackerDashboardProjectCellViewModel+Utilities.swift"; sourceTree = "<group>"; };
 		E15802DD2D81D8420000BAB3 /* SearchQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchQuery.graphql; sourceTree = "<group>"; };
+		E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQueryDataTemplate.swift; sourceTree = "<group>"; };
+		E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
+		E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
+		E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
@@ -7419,6 +7427,10 @@
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */,
+				E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */,
+				E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */,
+				E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */,
 				E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */,
 				E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */,
 				E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */,
@@ -7821,7 +7833,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				33F55B5A2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
+				E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */,
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
+				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
+				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8518,6 +8533,7 @@
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
+				E15803072D8365520000BAB3 /* SearchQueryDataTemplate.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
