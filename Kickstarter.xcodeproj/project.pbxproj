@@ -1605,6 +1605,7 @@
 		E11DE11E2D79F33500DD2ECA /* BackerDashboardProjectCellFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */; };
 		E11DE1212D7A041600DD2ECA /* ProjectAnalyticsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */; };
 		E11E06A52D83713A002E81B9 /* SearchViewModel+GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E06A42D83713A002E81B9 /* SearchViewModel+GraphQL.swift */; };
+		E11E06A62D837F10002E81B9 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
@@ -1621,7 +1622,6 @@
 		E15802442D7F72390000BAB3 /* SearchLegacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */; };
 		E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */; };
 		E15802DE2D81D8420000BAB3 /* SearchQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E15802DD2D81D8420000BAB3 /* SearchQuery.graphql */; };
-		E15803072D8365520000BAB3 /* SearchQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */; };
 		E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */; };
 		E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */; };
 		E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
@@ -3361,7 +3361,6 @@
 		E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyDataSource.swift; sourceTree = "<group>"; };
 		E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackerDashboardProjectCellViewModel+Utilities.swift"; sourceTree = "<group>"; };
 		E15802DD2D81D8420000BAB3 /* SearchQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SearchQuery.graphql; sourceTree = "<group>"; };
-		E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQueryDataTemplate.swift; sourceTree = "<group>"; };
 		E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
 		E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
@@ -7430,7 +7429,6 @@
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
-				E15802FF2D8362BE0000BAB3 /* SearchQueryDataTemplate.swift */,
 				E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */,
 				E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */,
 				E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */,
@@ -7917,6 +7915,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E11E06A62D837F10002E81B9 /* SearchQuery_EmptyResults.json in Resources */,
 				33F55B5B2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				33F55B592D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 			);
@@ -8537,7 +8536,6 @@
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
-				E15803072D8365520000BAB3 /* SearchQueryDataTemplate.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,

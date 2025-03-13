@@ -52,13 +52,15 @@ internal final class SearchViewContollerTests: TestCase {
   }
 
   func testView_EmptyState() {
-    let discoveryResponse = .template
-      |> DiscoveryEnvelope.lens.projects .~ []
+    let emptyResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.emptyResults
+    )]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+          apiService: MockService(fetchGraphQLResponses: emptyResponse), language: language
         ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -146,5 +148,21 @@ internal final class SearchViewContollerTests: TestCase {
     let controller = ActivitiesViewController.instantiate()
 
     XCTAssertNotNil(controller.view as? UIScrollView)
+  }
+}
+
+private extension Bundle {
+  static var ksr_frameworkTestBundle: Bundle? {
+    Bundle(identifier: "com.KickstarterTests")
+  }
+}
+
+internal extension GraphAPI.SearchQuery.Data {
+  static var emptyResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle.ksr_frameworkTestBundle?.url(
+      forResource: "SearchQuery_EmptyResults",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
   }
 }
