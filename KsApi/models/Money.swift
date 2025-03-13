@@ -46,3 +46,18 @@ extension Money {
     self.symbol = try values.decodeIfPresent(String.self, forKey: .symbol)
   }
 }
+
+extension Money {
+  public init?(_ fragment: GraphAPI.MoneyFragment) {
+    guard
+      let amount = fragment.amount.flatMap(Double.init),
+      let currencyCode = fragment.currency.flatMap({ Money.CurrencyCode(rawValue: $0.rawValue) })
+    else {
+      return nil
+    }
+
+    self.amount = amount
+    self.currency = currencyCode
+    self.symbol = fragment.symbol
+  }
+}

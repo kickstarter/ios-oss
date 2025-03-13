@@ -599,6 +599,16 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
             targetUserId: "\(blockedUserId)"
           )
       }
+
+    // MARK: Similar Projects
+
+    freshProjectAndRefTag
+      .map { project, _ in "\(project.id)" }
+      .skipRepeats()
+      .observeForControllerAction()
+      .observeValues { [weak self] projectID in
+        self?.similarProjectsUseCase.inputs.projectIDLoaded(projectID: projectID)
+      }
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
