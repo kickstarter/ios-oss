@@ -11,6 +11,11 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features["similar_projects_carousel"] = true
+    AppEnvironment.pushEnvironment(remoteConfigClient: remoteConfig)
+
     self.useCase = SimilarProjectsUseCase()
     self.useCase.navigateToProject.observe(self.projectTappedObserver.observer)
     self.useCase.similarProjects.producer.start(self.similarProjectsObserver.observer)
@@ -18,6 +23,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
   override func tearDown() {
     self.useCase = nil
+    AppEnvironment.popEnvironment()
     super.tearDown()
   }
 
