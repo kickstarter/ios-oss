@@ -46,6 +46,41 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
+  func testLive_BackedProject_RewardImage() {
+    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let reward = Reward.postcards
+          |> Reward.lens.isAvailable .~ true
+          |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
+
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .live
+          |> Project.lens.personalization.isBacking .~ true
+          |> Project.lens.personalization.backing .~ (
+            .template
+              |> Backing.lens.reward .~ reward
+              |> Backing.lens.rewardId .~ reward.id
+              |> Backing.lens.shippingAmount .~ 10
+              |> Backing.lens.amount .~ 700.0
+          )
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        vc.view.frame.size.height = 900
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testLive_BackedProject_BackedReward_LoggedIn() {
     let user = User.template
 
@@ -464,7 +499,6 @@ let allRewards: [(String, Reward)] = {
         |> Reward.Shipping.lens.type .~ .anywhere
         |> Reward.Shipping.lens.summary .~ "Ships worldwide"
     )
-
   let unavailableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
