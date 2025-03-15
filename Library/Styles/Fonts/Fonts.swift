@@ -76,63 +76,81 @@ extension UIFont {
   // MARK: - New Design System fonts
 
   /// medium, 24pt size, TextStyle.largeTitle
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_heading2XL(size: CGFloat? = nil) -> UIFont {
     return InterFont.heading2XL.font(size: size)
   }
 
   /// medium, 20pt size, TextStyle.title1
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_headingXL(size: CGFloat? = nil) -> UIFont {
     return InterFont.headingXL.font(size: size)
   }
 
   /// medium, 16pt size, TextStyle.title2
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_headingLG(size: CGFloat? = nil) -> UIFont {
     return InterFont.headingLG.font(size: size)
   }
 
   /// medium, 14pt size, TextStyle.title3
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_headingMD(size: CGFloat? = nil) -> UIFont {
     return InterFont.headingMD.font(size: size)
   }
 
   /// medium, 12pt size, TextStyle.headline
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_headingSM(size: CGFloat? = nil) -> UIFont {
     return InterFont.headingSM.font(size: size)
   }
 
   /// medium, 11pt size, TextStyle.subheadline
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_headingXS(size: CGFloat? = nil) -> UIFont {
     return InterFont.headingXS.font(size: size)
   }
 
   /// regular, 20pt size, TextStyle.body
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodyXL(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyXL.font(size: size)
   }
 
   /// regular, 16pt size, TextStyle.callout
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodyLG(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyLG.font(size: size)
   }
 
   /// regular, 14pt size, TextStyle.footnote
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodyMD(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyMD.font(size: size)
   }
 
   /// regular, 12pt size, TextStyle.caption1
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodySM(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodySM.font(size: size)
   }
 
   /// regular, 11pt size, TextStyle.caption1
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodyXS(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyXS.font(size: size)
   }
 
-  /// regular, 10pt size, TextStyle.caption1**
+  /// regular, 10pt size, TextStyle.caption1
+  /// This font adjusts based on Dynamic Type settings.
   public static func ksr_bodyXXS(size: CGFloat? = nil) -> UIFont {
     return InterFont.bodyXXS.font(size: size)
+  }
+
+  /// regular, 10pt size, TextStyle.caption1
+  /// This font adjusts based on Dynamic Type settings.
+  public static func ksr_ButtonLabel(size: CGFloat? = nil) -> UIFont {
+    return InterFont.buttonLabel.font(size: size)
   }
 }
 

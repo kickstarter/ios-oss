@@ -5,6 +5,8 @@ import UIKit
 // See `Kickstarter-iOS/SharedViews/ViewModifiers/ButtonModifiers.swift` for the SwiftUI version of
 // these styles. These files should be kept in sync.
 
+// TODO: replace this button styles using the new button KSRButton.swift. [MBL-2188](https://kickstarter.atlassian.net/browse/MBL-2188)
+
 // MARK: - Apple Pay
 
 public let applePayButtonStyle: ButtonStyle = { button in

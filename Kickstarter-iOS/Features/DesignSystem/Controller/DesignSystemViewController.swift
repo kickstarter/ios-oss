@@ -184,6 +184,40 @@ final class DesignSystemViewController: UIViewController {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
+    // MARK: - New Design System Buttons
+
+    let newButtons = UILabel()
+    newButtons.font = .ksr_title1().bolded
+    newButtons.textColor = adaptiveColor(.black)
+    newButtons.adjustsFontForContentSizeCategory = true
+    newButtons.text = "New Buttons"
+    self.buttonsStackView.addArrangedSubview(newButtons)
+
+    KSRButtonStyle.allCases.forEach { buttonStyle in
+      let button = KSRButton(style: buttonStyle)
+      button.setTitle("Button - \(String(describing: buttonStyle))", for: .normal)
+      button.configuration?.image = image(named: "icon-eye")
+      self.buttonsStackView.addArrangedSubview(button)
+
+      let buttonDisabled = KSRButton(style: buttonStyle)
+      buttonDisabled.setTitle("Button - \(String(describing: buttonStyle)) - Disabled", for: .normal)
+      buttonDisabled.configuration?.image = image(named: "icon-eye")
+      buttonDisabled.isEnabled = false
+      self.buttonsStackView.addArrangedSubview(buttonDisabled)
+
+      let buttonFocused = KSRButton(style: buttonStyle)
+      buttonFocused.setTitle("Button - \(String(describing: buttonStyle)) - Loading", for: .normal)
+      buttonFocused.configuration?.image = image(named: "icon-eye")
+      buttonFocused.startLoading()
+      self.buttonsStackView.addArrangedSubview(buttonFocused)
+
+      NSLayoutConstraint.activate([
+        button.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+        buttonDisabled.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+        buttonFocused.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor)
+      ])
+    }
+
     // MARK: - Icons Stack
 
     _ = (
