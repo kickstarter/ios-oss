@@ -2,16 +2,24 @@ import KsApi
 import Library
 import UIKit
 
+enum SimilarProjectsCellConstants {
+  static let spacing: CGFloat = Styles.grid(3)
+  static let collectionViewInteritemSpacing: CGFloat = 8.0
+  static let collectionViewItemSize = CGSize(width: 327, height: 279)
+  static let collectionViewBottomSpacing: CGFloat = -Styles.grid(6)
+  static let collectionViewHeight: CGFloat = 350.0
+}
+
 class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
+  private let dataSource: SimilarProjectsCollectionViewDataSource = SimilarProjectsCollectionViewDataSource()
+  private let layout = UICollectionViewFlowLayout()
 
   private lazy var collectionView: UICollectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: layout
   )
-  private let layout = UICollectionViewFlowLayout()
-
-  private let dataSource: SimilarProjectsCollectionViewDataSource = SimilarProjectsCollectionViewDataSource()
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -58,21 +66,25 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
 
   override func updateConstraints() {
     NSLayoutConstraint.activate([
-      self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+      self.titleLabel.topAnchor.constraint(
+        equalTo: self.contentView.topAnchor,
+        constant: SimilarProjectsCellConstants.spacing
+      ),
       self.titleLabel.leadingAnchor.constraint(
         equalTo: self.contentView.leadingAnchor,
-        constant: Styles.grid(3)
+        constant: SimilarProjectsCellConstants.spacing
       ),
       self.collectionView.topAnchor.constraint(
-        equalTo: self.titleLabel.bottomAnchor
+        equalTo: self.titleLabel.bottomAnchor,
+        constant: SimilarProjectsCellConstants.spacing
       ),
       self.collectionView.leadingAnchor.constraint(
         equalTo: self.contentView.leadingAnchor,
-        constant: Styles.grid(3)
+        constant: SimilarProjectsCellConstants.spacing
       ),
       self.collectionView.trailingAnchor.constraint(
         equalTo: self.contentView.trailingAnchor,
-        constant: -Styles.grid(3)
+        constant: -SimilarProjectsCellConstants.spacing
       ),
       self.collectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
     ])
@@ -90,7 +102,6 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
 // MARK: - Styles
 
 private func applyBaseCellStyle(_ cell: UITableViewCell) {
-  cell.contentView.layoutMargins = .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
   cell.contentView.preservesSuperviewLayoutMargins = false
   cell.backgroundColor = .ksr_white
   cell.preservesSuperviewLayoutMargins = false
@@ -99,19 +110,18 @@ private func applyBaseCellStyle(_ cell: UITableViewCell) {
 
 private func applyCollectionViewStyle(_ collectionView: UICollectionView) {
   collectionView.backgroundColor = .clear
-  collectionView.contentInset = .init(all: 0)
   collectionView.showsHorizontalScrollIndicator = false
   collectionView.translatesAutoresizingMaskIntoConstraints = false
 }
 
 private func applyCollectionViewLayoutStyle(_ layout: UICollectionViewFlowLayout) {
   layout.scrollDirection = .horizontal
-  layout.minimumInteritemSpacing = 10
-  layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+  layout.minimumInteritemSpacing = SimilarProjectsCellConstants.collectionViewInteritemSpacing
+  layout.itemSize = SimilarProjectsCellConstants.collectionViewItemSize
 }
 
 private func applyTitleLabelStyle(_ label: UILabel) {
-  label.text = "Similar projects"
+  label.text = Strings.Similar_projects()
   label.font = .ksr_title3()
   label.translatesAutoresizingMaskIntoConstraints = false
 }

@@ -934,6 +934,16 @@ extension ProjectPageViewController: UITableViewDelegate {
     self.tableView.layoutIfNeeded()
   }
 
+  public func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    let cell = self.dataSource.items(in: indexPath.section)[indexPath.row]
+
+    if cell.reusableId == SimilarProjectsTableViewCell.defaultReusableId {
+      return SimilarProjectsCellConstants.collectionViewHeight
+    }
+
+    return UITableView.automaticDimension
+  }
+
   public func tableView(
     _: UITableView,
     didEndDisplaying cell: UITableViewCell,

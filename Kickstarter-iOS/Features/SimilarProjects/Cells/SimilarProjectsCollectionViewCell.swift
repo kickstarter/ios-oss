@@ -55,9 +55,7 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 }
 
 private func applyBaseCellStyle(_ cell: UICollectionViewCell) {
-  cell.contentView.layoutMargins = .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
   cell.contentView.preservesSuperviewLayoutMargins = false
   cell.backgroundColor = .ksr_white
-  cell.layoutMargins = .init(all: 0.0)
   cell.preservesSuperviewLayoutMargins = false
 }
