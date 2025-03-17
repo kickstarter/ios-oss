@@ -33,6 +33,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperStackViewHidden = TestObserver<Bool, Never>()
   private let stepperValue = TestObserver<Double, Never>()
+  private let rewardImageURL = TestObserver<String, Never>()
+  private let rewardImageHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -64,6 +66,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.stepperStackViewHidden.observe(self.stepperStackViewHidden.observer)
     self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
+    self.vm.outputs.rewardImage.map { $0.url }.skipNil().observe(self.rewardImageURL.observer)
+    self.vm.outputs.rewardImageHidden.observe(self.rewardImageHidden.observer)
   }
 
   // MARK: - Reward Title
@@ -83,6 +87,42 @@ final class RewardAddOnCardViewModelTests: TestCase {
       ))
 
     self.rewardTitleLabelText.assertValues(["The thing"])
+  }
+
+  func testRewardWithImage() {
+    let imageURL = "https://ksr.com/image.jpg"
+
+    let reward = .template
+      |> Reward.lens.image .~ Reward.Image(altText: "The image", url: imageURL)
+
+    self.vm.inputs
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
+
+    self.rewardImageURL.assertValue(imageURL)
+    self.rewardImageHidden.assertValue(false)
+  }
+
+  func testRewardNotImage() {
+    let reward = .template
+      |> Reward.lens.image .~ nil
+
+    self.vm.inputs
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
+
+    self.rewardImageURL.assertDidNotEmitValue()
+    self.rewardImageHidden.assertValue(true)
   }
 
   func testTitleLabel_NoTitle() {
