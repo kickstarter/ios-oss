@@ -56,7 +56,7 @@ public final class RewardCardContainerView: UIView {
 
     _ = self.rewardCardMaskView
       |> checkoutWhiteBackgroundStyle
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> \.layoutMargins .~ .zero
       |> roundedStyle(cornerRadius: Styles.grid(3))
   }
 
@@ -159,12 +159,13 @@ public final class RewardCardContainerView: UIView {
     self.addBottomViewsMarginConstraints(with: self.rewardCardMaskView.layoutMarginsGuide)
 
     let pledgeButtonLayoutGuideConstraints = [
-      self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      self.pledgeButtonLayoutGuide.bottomAnchor.constraint(
+        equalTo: containerMargins.bottomAnchor,
+        constant: -Styles.grid(3)
+      ),
       self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.pledgeButtonLayoutGuide.topAnchor.constraint(
-        equalTo: self.rewardCardView.bottomAnchor, constant: Styles.grid(3)
-      ),
+      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.rewardCardView.bottomAnchor),
       self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: self.pledgeButton.heightAnchor)
     ]
 
@@ -183,8 +184,14 @@ public final class RewardCardContainerView: UIView {
     let minTouchSize = Styles.minTouchSize.height
 
     let pledgeButtonMarginConstraints = [
-      self.pledgeButton.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
-      self.pledgeButton.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
+      self.pledgeButton.leftAnchor.constraint(
+        equalTo: self.rewardCardMaskView.leftAnchor,
+        constant: Styles.grid(3)
+      ),
+      self.pledgeButton.rightAnchor.constraint(
+        equalTo: self.rewardCardMaskView.rightAnchor,
+        constant: -Styles.grid(3)
+      ),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
       self.pledgeButton.heightAnchor.constraint(
         greaterThanOrEqualToConstant: minTouchSize

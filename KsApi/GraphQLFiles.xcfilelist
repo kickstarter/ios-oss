@@ -12,6 +12,8 @@ $(PROJECT_DIR)/KsApi/fragments/UserStoredCardsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserEmailFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/MoneyFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ProjectFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/ProjectCardFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/BackerDashboardProjectCellFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CountryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CategoryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ShippingRuleFragment.graphql
@@ -53,6 +55,7 @@ $(PROJECT_DIR)/KsApi/queries/BuildPaymentPlanQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/ValidateCheckout.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCommentReplies.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUpdateComments.graphql
+$(PROJECT_DIR)/KsApi/queries/SimilarProjectQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserBackings.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsById.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectComments.graphql

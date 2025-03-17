@@ -32,7 +32,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   }
 
   func testProjectData_Live() {
-    let endingInDays = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
+    let endingInDays = self.endingIn(days: 14)
 
     let project = .template
       |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
@@ -167,5 +167,277 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.prelaunchProject.assertValues([true])
     self.metadataText.assertValues(["Coming soon"])
+  }
+
+  func testProjectData_GraphQL_Live() {
+    let endingInDays = self.endingIn(days: 10)
+
+    let jsonString = """
+      {
+              "__typename": "Project",
+              "projectId": "pid",
+              "name": "Test Project Data Live",
+              "projectState": "LIVE",
+              "image": {
+                "__typename": "Image",
+                "id": "placeholder",
+                "url": "https://www.kickerstart.com/image.png"
+              },
+              "goal": {
+                "__typename": "Money",
+                "amount": "500.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "pledged": {
+                "__typename": "Money",
+                "amount": "250.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "isLaunched": true,
+              "projectPrelaunchActivated": false,
+              "deadlineAt": \(endingInDays),
+              "projectLaunchedAt": 1706727593,
+              "isWatched": false
+    }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.metadataIconIsHidden.assertValues([false])
+    self.metadataText.assertValues(["10 days"])
+    self.percentFundedText.assertValues(["50%"])
+    self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
+    self.progress.assertValues([0.5])
+    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.projectTitleText.assertValues(["Test Project Data Live"])
+    self.savedIconIsHidden.assertValues([true])
+  }
+
+  func testProjectData_GraphQL_Successful() {
+    let jsonString = """
+        {
+          "__typename": "Project",
+          "projectId": "pid",
+          "name": "Test Project Data Successful",
+          "projectState": "SUCCESSFUL",
+          "image": {
+            "__typename": "Image",
+            "id": "id",
+            "url": "https://www.kickerstart.com/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "500.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "2000.00",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": false,
+          "deadlineAt": 1625071247,
+          "projectLaunchedAt": 1622479247,
+          "isWatched": false
+        }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.metadataIconIsHidden.assertValues([true])
+    self.metadataText.assertValues(["Successful"])
+    self.percentFundedText.assertValues(["400%"])
+    self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
+    self.progress.assertValues([4.0])
+    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.projectTitleText.assertValues(["Test Project Data Successful"])
+    self.savedIconIsHidden.assertValues([true])
+  }
+
+  func testProjectData_GraphQL_Failed() {
+    let jsonString = """
+        {
+          "__typename": "Project",
+          "projectId": "pid",
+          "name": "Test Project Data Failed",
+          "projectState": "FAILED",
+          "image": {
+            "__typename": "Image",
+            "id": "id",
+            "url": "https://www.kickerstart.com/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "500.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "50.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": false,
+          "deadlineAt": 1625071247,
+          "projectLaunchedAt": 1622479247,
+          "isWatched": false
+        }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.metadataIconIsHidden.assertValues([true])
+    self.metadataText.assertValues(["Unsuccessful"])
+    self.percentFundedText.assertValues(["10%"])
+    self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
+    self.progress.assertValues([0.1])
+    self.progressBarColor.assertValues([UIColor.ksr_support_300])
+    self.projectTitleText.assertValues(["Test Project Data Failed"])
+    self.savedIconIsHidden.assertValues([true])
+  }
+
+  func testProjectData_GraphQL_Saved() {
+    let endingInDays = self.endingIn(days: 94)
+
+    let jsonString = """
+      {
+              "__typename": "Project",
+              "projectId": "pid",
+              "name": "Test Project Data Live",
+              "projectState": "LIVE",
+              "image": {
+                "__typename": "Image",
+                "id": "placeholder",
+                "url": "https://www.kickerstart.com/image.png"
+              },
+              "goal": {
+                "__typename": "Money",
+                "amount": "500.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "pledged": {
+                "__typename": "Money",
+                "amount": "250.0",
+                "currency": "USD",
+                "symbol": "$"
+              },
+              "isLaunched": true,
+              "projectPrelaunchActivated": false,
+              "deadlineAt": \(endingInDays),
+              "projectLaunchedAt": 1706727593,
+              "isWatched": true
+    }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.metadataIconIsHidden.assertValues([false])
+    self.metadataText.assertValues(["94 days"])
+    self.percentFundedText.assertValues(["50%"])
+    self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
+    self.progress.assertValues([0.5])
+    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.projectTitleText.assertValues(["Test Project Data Live"])
+    self.savedIconIsHidden.assertValues([false])
+  }
+
+  func testProjectData_GraphQL_Prelaunch_Displayed() {
+    let jsonString = """
+        {
+          "__typename": "Project",
+          "projectId": "pid",
+          "name": "Test Project Data Prelaunch",
+          "projectState": "SUBMITTED",
+          "image": {
+            "__typename": "Photo",
+            "id": "imageid",
+            "url": "https://www.kickstarter.com/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "100000.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "0.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "isLaunched": false,
+          "projectPrelaunchActivated": true,
+          "deadlineAt": null,
+          "projectLaunchedAt": null,
+          "isWatched": false
+        }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.prelaunchProject.assertValues([true])
+    self.metadataText.assertValues(["Coming soon"])
+  }
+
+  func testProjectData_GraphQL_Prelaunch_ActivatedButNotDisplayed() {
+    let jsonString = """
+        {
+          "__typename": "Project",
+          "projectId": "pid",
+          "name": "Test Project Data Successful",
+          "projectState": "SUCCESSFUL",
+          "image": {
+            "__typename": "Image",
+            "id": "id",
+            "url": "https://www.kickerstart.com/image.png"
+          },
+          "goal": {
+            "__typename": "Money",
+            "amount": "500.0",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "pledged": {
+            "__typename": "Money",
+            "amount": "2000.00",
+            "currency": "CAD",
+            "symbol": "$"
+          },
+          "isLaunched": true,
+          "projectPrelaunchActivated": true,
+          "deadlineAt": 1625071247,
+          "projectLaunchedAt": 1622479247,
+          "isWatched": false
+        }
+    """
+
+    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+
+    self.vm.inputs.configureWith(project: fragment)
+
+    self.prelaunchProject.assertValues([false])
+    self.metadataText.assertValues(["Successful"])
+  }
+
+  private func endingIn(days: Int) -> TimeInterval {
+    self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * Double(days)
   }
 }

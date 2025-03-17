@@ -1,14 +1,15 @@
+import Kingfisher
 import KsApi
 import ReactiveSwift
 import UIKit
 
 public protocol ProjectsCardViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(project: any SimilarProject)
 }
 
 public protocol ProjectsCardViewModelOutputs {
   /// Emits the project's photo URL to be displayed.
-  var projectImageUrl: Signal<URL?, Never> { get }
+  var projectImageSource: Signal<Kingfisher.Source?, Never> { get }
 
   /// Emits text for the project status label. (days left, ended, launching soon, late pledges active)
   var projectStatus: Signal<String, Never> { get }
@@ -40,7 +41,7 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
+    self.projectImageSource = project.map { $0.image }
 
     self.projectStatus = project.map(projectStatus(for:))
 
@@ -48,19 +49,19 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
 
     self.projectTitle = project.map { $0.name }
 
-    self.progress = project.map { $0.stats.fundingProgress }
+    self.progress = project.map { Float($0.percentFunded) / 100 }
 
     self.progressBarColor = project.map(progressBarColorForProject)
 
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty = MutableProperty<(any SimilarProject)?>(nil)
+  public func configureWith(project: any SimilarProject) {
     self.projectProperty.value = project
   }
 
-  public let projectImageUrl: Signal<URL?, Never>
+  public let projectImageSource: Signal<Kingfisher.Source?, Never>
   public let projectStatus: Signal<String, Never>
   public let projectStatusImage: Signal<UIImage?, Never>
   public let projectTitle: Signal<String, Never>
@@ -73,19 +74,19 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
 }
 
 // TODO: Update hardcoded strings [mbl-2192](https://kickstarter.atlassian.net/browse/MBL-2192?atlOrigin=eyJpIjoiOGVlNzQ2MTQ3OTZjNDMzYTg0YTBjZWQ4OGM2ZDZjZDAiLCJwIjoiamlyYS1zbGFjay1pbnQifQ)
-private func projectStatus(for project: Project) -> String {
+private func projectStatus(for project: any SimilarProject) -> String {
   guard !isProjectPrelaunch(project) else { return "Launching Soon" }
 
-  let percentage = Format.percentage(project.stats.percentFunded)
+  let percentage = Format.percentage(project.percentFunded)
 
-  guard !(project.isInPostCampaignPledgingPhase && project.postCampaignPledgingEnabled)
+  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
   else { return "Late pledges active" + " • " + Strings
     .percentage_funded(percentage: percentage)
   }
 
   switch project.state {
   case .live:
-    guard let deadline = project.dates.deadline else {
+    guard let deadline = project.deadlineAt?.timeIntervalSince1970 else {
       return ""
     }
 
@@ -101,8 +102,8 @@ private func projectStatus(for project: Project) -> String {
   }
 }
 
-private func projectStatusImage(for project: Project) -> UIImage? {
-  guard !(project.isInPostCampaignPledgingPhase && project.postCampaignPledgingEnabled)
+private func projectStatusImage(for project: any SimilarProject) -> UIImage? {
+  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
   else { return UIImage(named: "icon-late-pledge-timer") }
 
   guard !isProjectPrelaunch(project) else { return UIImage(named: "icon-launching-soon") }
@@ -117,22 +118,11 @@ private func projectStatusImage(for project: Project) -> UIImage? {
   }
 }
 
-private func isProjectPrelaunch(_ project: Project) -> Bool {
-  switch (project.displayPrelaunch, project.prelaunchActivated, project.dates.launchedAt) {
-  // GraphQL requests using ProjectFragment will populate displayPrelaunch and prelaunchActivated
-  case (.some(true), .some(true), _):
-    return true
-
-  // V1 requests may not return displayPrelaunch and prelaunchActivated.
-  // But if no launch date is set, we can assume this is a prelaunch project.
-  case let (.none, _, .some(timeValue)):
-    return timeValue <= 0
-  default:
-    return false
-  }
+private func isProjectPrelaunch(_ project: any SimilarProject) -> Bool {
+  project.shouldDisplayPrelaunch && project.isPrelaunchActivated
 }
 
-private func progressBarColorForProject(_ project: Project) -> UIColor {
+private func progressBarColorForProject(_ project: any SimilarProject) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_create_500

@@ -1,0 +1,20 @@
+fragment BackerDashboardProjectCellFragment on Project {
+  projectId: id
+  name
+  projectState: state
+  image {
+    id
+    url(width: 1024)
+  }
+  goal {
+    ...MoneyFragment
+  }
+  pledged {
+    ...MoneyFragment
+  }
+  isLaunched
+  projectPrelaunchActivated: prelaunchActivated
+  deadlineAt
+  projectLaunchedAt: launchedAt
+  isWatched
+}

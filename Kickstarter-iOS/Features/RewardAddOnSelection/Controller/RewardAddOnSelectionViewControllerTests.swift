@@ -351,4 +351,56 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       }
     }
   }
+
+  func testView_Addon_Image() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.hasAddOns .~ true
+
+    let noShippingAddOn = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [noShippingAddOn]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        language: language
+      ) {
+        let controller = RewardAddOnSelectionViewController.instantiate()
+
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          bonusSupport: nil,
+          selectedShippingRule: nil,
+          selectedQuantities: [:],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 950
+
+        self.scheduler.advance()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
 }

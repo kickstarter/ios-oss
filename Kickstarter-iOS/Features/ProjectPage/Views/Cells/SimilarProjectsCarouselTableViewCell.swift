@@ -42,7 +42,7 @@ final class SimilarProjectsCarouselTableViewCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: Project) {
+  func configureWith(value: any SimilarProject) {
     self.projectCardView.configureWith(value: value)
 
     self.layoutIfNeeded()

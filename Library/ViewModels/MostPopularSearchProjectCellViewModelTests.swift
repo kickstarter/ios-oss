@@ -95,6 +95,7 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
       |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.displayPrelaunch .~ true
+      |> Project.lens.prelaunchActivated .~ true
       |> Project.lens.personalization.isStarred .~ true
 
     self.prelaunchProject.assertDidNotEmitValue()
