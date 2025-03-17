@@ -19,22 +19,15 @@ internal final class SearchViewContollerTests: TestCase {
   }
 
   func testView_defaultState() {
-    let project = (1...10).map {
-      .cosmicSurgery
-        |> Project.lens.id .~ $0
-        |> Project.lens.photo.full .~ ""
-        |> Project.lens.photo.med .~ ""
-        |> Project.lens.stats.goal .~ ($0 * 20)
-        |> Project.lens.stats.pledged .~ ($0 * $0 * 4)
-    }
-
-    let discoveryResponse = .template
-      |> DiscoveryEnvelope.lens.projects .~ project
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.activeResults
+    )]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+          apiService: MockService(fetchGraphQLResponses: searchResponse), language: language
         ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           controller.viewWillAppear(true)
@@ -75,22 +68,15 @@ internal final class SearchViewContollerTests: TestCase {
   }
 
   func testView_SearchState() {
-    let project = (1...10).map {
-      .cosmicSurgery
-        |> Project.lens.id .~ $0
-        |> Project.lens.photo.full .~ ""
-        |> Project.lens.photo.med .~ ""
-        |> Project.lens.stats.goal .~ ($0 * 20)
-        |> Project.lens.stats.pledged .~ ($0 * $0 * 4)
-    }
-
-    let discoveryResponse = .template
-      |> DiscoveryEnvelope.lens.projects .~ project
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.activeResults
+    )]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+          apiService: MockService(fetchGraphQLResponses: searchResponse), language: language
         ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           controller.viewWillAppear(true)
@@ -110,22 +96,15 @@ internal final class SearchViewContollerTests: TestCase {
   }
 
   func testView_PrelaunchProject_InSearch_Success() {
-    let project = (1...10).map {
-      .cosmicSurgery
-        |> Project.lens.id .~ $0
-        |> Project.lens.photo.full .~ ""
-        |> Project.lens.photo.med .~ ""
-        |> Project.lens.displayPrelaunch .~ true
-        |> Project.lens.prelaunchActivated .~ true
-    }
-
-    let discoveryResponse = .template
-      |> DiscoveryEnvelope.lens.projects .~ project
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.prelaunchResults
+    )]
 
     orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+          apiService: MockService(fetchGraphQLResponses: searchResponse), language: language
         ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           controller.viewWillAppear(true)
@@ -161,6 +140,22 @@ internal extension GraphAPI.SearchQuery.Data {
   static var emptyResults: GraphAPI.SearchQuery.Data {
     let url = Bundle.ksr_frameworkTestBundle?.url(
       forResource: "SearchQuery_EmptyResults",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
+  }
+
+  static var activeResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle.ksr_frameworkTestBundle?.url(
+      forResource: "SearchQuery_SearchViewControllerTests_Active",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
+  }
+
+  static var prelaunchResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle.ksr_frameworkTestBundle?.url(
+      forResource: "SearchQuery_SearchViewControllerTests_Prelaunch",
       withExtension: "json"
     )
     return try! Self(fromResource: url!)
