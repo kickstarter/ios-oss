@@ -50,3 +50,7 @@ public func featureNewDesignSystemEnabled() -> Bool {
 public func featureSearchFiltersEnabled() -> Bool {
   featureEnabled(feature: .searchFilters)
 }
+
+public func featureSimilarProjectsCarouselEnabled() -> Bool {
+  featureEnabled(feature: .similarProjectsCarousel)
+}

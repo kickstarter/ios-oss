@@ -1,3 +1,4 @@
+import Apollo
 import Combine
 import Prelude
 import ReactiveSwift
@@ -32,6 +33,9 @@ public protocol ServiceType {
     deviceIdentifier: String,
     apolloClient: ApolloClientType?
   )
+
+  /// Fetches a GraphQL query and returns the data.
+  func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope>
 
   /// Returns a new service with the oauth token replaced.
   func login(_ oauthToken: OauthTokenAuthType) -> Self
