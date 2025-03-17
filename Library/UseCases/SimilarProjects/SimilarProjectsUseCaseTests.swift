@@ -177,7 +177,9 @@ final class SimilarProjectsUseCaseTests: TestCase {
     deadlineAt: String? = "1742737648",
     percentFunded: Int = 75,
     goal: Double? = 10_000,
-    pledged: Double = 7_500
+    pledged: Double = 7_500,
+    isInPostCampaignPledgingPhase: Bool = false,
+    isPostCampaignPledgingEnabled: Bool = false
   ) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
     var resultMap: [String: Any] = [
       "__typename": "Project",
@@ -192,7 +194,9 @@ final class SimilarProjectsUseCaseTests: TestCase {
         "amount": String(pledged),
         "currency": GraphAPI.CurrencyCode.usd,
         "symbol": "$"
-      ]
+      ],
+      "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+      "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled
     ]
 
     // Add optional fields
