@@ -553,7 +553,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           nil
         ) }
 
-        return (project, [similarProject, similarProject, similarProject, similarProject])
+        // Return 'nil' for now until the feature flagging code is available.
+        return (project, nil)
+//        return (project, [similarProject, similarProject, similarProject, similarProject])
       }
 
     self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
