@@ -2,13 +2,13 @@ import KsApi
 import ReactiveSwift
 
 public struct SearchFilterCategoriesSheet {
-  let categoryNames: [String]
-  let selectedIndex: Int?
+  public let categoryNames: [String]
+  public let selectedIndex: Int?
 }
 
 public struct SearchSortSheet {
-  let sortNames: [String]
-  let selectedIndex: Int
+  public let sortNames: [String]
+  public let selectedIndex: Int
 }
 
 public protocol SearchFiltersUseCaseType {
@@ -20,6 +20,8 @@ public protocol SearchFiltersUseCaseType {
 public protocol SearchFiltersUseCaseInputs {
   func tappedSort()
   func tappedCategoryFilter()
+
+  func selectedSortOption(atIndex: Int)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
@@ -41,31 +43,23 @@ private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
   }
 }
 
-public protocol SearchFiltersUseCaseDataOutputs {}
+public protocol SearchFiltersUseCaseDataOutputs {
+  var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
+}
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
   public init(initialSignal: Signal<Void, Never>) {
-    self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
-
     let sortOptions: [DiscoveryParams.Sort] = [
+      DiscoveryParams.Sort.popular,
       DiscoveryParams.Sort.endingSoon,
       DiscoveryParams.Sort.magic,
-      DiscoveryParams.Sort.popular,
       DiscoveryParams.Sort.newest
     ]
 
-    let sortNames = sortOptions.map(sortOptionName(from:))
+    self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
 
-    self.showSort = self.selectedSortProperty.signal
-      .takeWhen(self.tappedSortSignal)
-      .map { sort -> SearchSortSheet? in
-        guard let selectedIndex = sortOptions.firstIndex(of: sort) else {
-          return nil
-        }
-        return SearchSortSheet(sortNames: sortNames, selectedIndex: selectedIndex)
-      }
-      .skipNil()
+    let sortNames = sortOptions.map(sortOptionName(from:))
 
     self.showCategoryFilters = self.selectedCategoryFilterProperty.signal
       .takeWhen(self.tappedCategoryFilterSignal)
@@ -80,7 +74,26 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
         )
       }
       .skipNil()
+
+    // TODO: Signal problems here. Really want to compose this better.
+
+    self.showSort = self.selectedSortProperty.producer
+      .takeWhen(self.tappedSortSignal)
+      .map { sort -> SearchSortSheet? in
+        guard let selectedIndex = sortOptions.firstIndex(of: sort) else {
+          return nil
+        }
+        return SearchSortSheet(sortNames: sortNames, selectedIndex: selectedIndex)
+      }
+      .skipNil()
   }
+
+  fileprivate let sortOptions: [DiscoveryParams.Sort] = [
+    DiscoveryParams.Sort.popular,
+    DiscoveryParams.Sort.endingSoon,
+    DiscoveryParams.Sort.magic,
+    DiscoveryParams.Sort.newest
+  ]
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
   public func tappedSort() {
@@ -94,11 +107,20 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   fileprivate let categoriesUseCase: FetchCategoriesUseCase
 
-  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
+  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.popular)
   fileprivate let selectedCategoryFilterProperty = MutableProperty<Int?>(nil)
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
+
+  public var selectedSort: Signal<DiscoveryParams.Sort, Never> {
+    return self.selectedSortProperty.signal
+  }
+
+  public func selectedSortOption(atIndex index: Int) {
+    let newSort = self.sortOptions[index]
+    self.selectedSortProperty.value = newSort
+  }
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }

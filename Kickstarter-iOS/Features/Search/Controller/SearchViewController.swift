@@ -17,6 +17,15 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchTextField: UITextField!
   @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
+  lazy var sortButton: UIButton = {
+    let button = UIButton()
+    button.setTitle("Sort", for: .normal)
+    button.addTarget(self, action: #selector(SearchViewController.sortButtonTapped), for: .touchUpInside)
+    button.setTitleColor(.ksr_alert, for: .normal)
+    button.setBackgroundColor(.ksr_alert_background, for: .normal)
+    return button
+  }()
+
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
@@ -29,10 +38,21 @@ internal final class SearchViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
 
     self.tableView.register(nib: .BackerDashboardProjectCell)
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.tableView.addSubview(self.sortButton)
+  }
+
+  override func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+    return self.sortButton
+  }
+
+  override func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
+    return 25
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -180,6 +200,24 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
       }
+
+    self.viewModel.outputs.showSort
+      .observeForControllerAction()
+      .observeValues { [weak self] sheet in
+        self?.showSort(sheet)
+      }
+  }
+
+  fileprivate func showSort(_ sheet: SearchSortSheet) {
+    let controller = UIAlertController(title: "Pick a sort", message: nil, preferredStyle: .actionSheet)
+
+    for (idx, name) in sheet.sortNames.enumerated() {
+      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
+        self.viewModel.inputs.selectedSortOption(atIndex: idx)
+      }))
+    }
+
+    present(controller, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
@@ -244,6 +282,10 @@ internal final class SearchViewController: UITableViewController {
 
   @objc fileprivate func searchBarContainerTapped() {
     self.viewModel.inputs.searchFieldDidBeginEditing()
+  }
+
+  @objc fileprivate func sortButtonTapped() {
+    self.viewModel.inputs.tappedSort()
   }
 }
 

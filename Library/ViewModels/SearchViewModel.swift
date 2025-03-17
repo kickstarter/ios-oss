@@ -35,6 +35,8 @@ public protocol SearchViewModelInputs {
 
   func tappedCategoryFilter()
 
+  func selectedSortOption(atIndex index: Int)
+
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
 
@@ -84,6 +86,8 @@ public protocol SearchViewModelType {
 
 public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
   public init() {
+    self.searchFiltersUseCase = SearchFiltersUseCase(initialSignal: self.viewDidLoadProperty.signal)
+
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
 
     let query = Signal
@@ -115,8 +119,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
       .filter { !$0.isEmpty }
-      .map { query in
-        DiscoveryParams.withQuery(query)
+      .combineLatest(with: self.searchFiltersUseCase.selectedSort)
+      .map { query, sort in
+        DiscoveryParams.withQuery(query, sort: sort)
       }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -310,8 +315,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           params: params
         )
       }
-
-    self.searchFiltersUseCase = SearchFiltersUseCase(initialSignal: self.viewDidLoadProperty.signal)
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -365,6 +368,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func tappedCategoryFilter() {
     self.searchFiltersUseCase.tappedCategoryFilter()
+  }
+
+  public func selectedSortOption(atIndex index: Int) {
+    self.searchFiltersUseCase.selectedSortOption(atIndex: index)
   }
 
   private let searchFiltersUseCase: SearchFiltersUseCase
