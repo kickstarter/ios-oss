@@ -3,95 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct SearchFilterCategoriesSheet {
-  let categoryNames: [String]
-  let selectedIndex: Int?
-}
-
-public struct SearchSortSheet {
-  let sortNames: [String]
-  let selectedIndex: Int
-}
-
-public protocol SearchFiltersUseCaseType {
-  var inputs: SearchFiltersUseCaseInputs { get }
-  var uiOutputs: SearchFiltersUseCaseUIOutputs { get }
-  var dataOuputs: SearchFiltersUseCaseDataOutputs { get }
-}
-
-public protocol SearchFiltersUseCaseInputs {
-  func tappedSort()
-  func tappedCategoryFilter()
-}
-
-public protocol SearchFiltersUseCaseUIOutputs {
-  var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
-  var showSort: Signal<SearchSortSheet, Never> { get }
-}
-
-public protocol SearchFiltersUseCaseDataOutputs {}
-
-public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
-  SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
-  private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
-    // TODO: translations
-    switch sort {
-    case .endingSoon:
-      return "Ending Soon"
-    case .magic:
-      return "Magic"
-    case .newest:
-      return "Newest"
-    case .popular:
-      return "Popular"
-    }
-  }
-
-  public init() {
-    let sortOptions: [DiscoveryParams.Sort] = [
-      DiscoveryParams.Sort.endingSoon,
-      DiscoveryParams.Sort.magic,
-      DiscoveryParams.Sort.popular,
-      DiscoveryParams.Sort.newest
-    ]
-
-    let sortNames = sortOptions.map(self.sortOptionName(from:))
-
-    self.showSort = self.selectedSortProperty.signal
-      .takeWhen(self.tappedSortSignal)
-      .map { sort -> SearchSortSheet? in
-        guard let selectedIndex = sortOptions.firstIndex(of: sort) else {
-          return nil
-        }
-        return SearchSortSheet(sortNames: sortNames, selectedIndex: selectedIndex)
-      }
-      .skipNil()
-
-    self.showCategoryFilters = self.selectedCategoryFilterProperty.signal
-      .takeWhen(self.tappedCategoryFilterSignal)
-  }
-
-  fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
-  public func tappedSort() {
-    self.tappedSortObserver.send(value: ())
-  }
-
-  fileprivate let (tappedCategoryFilterSignal, tappedCategoryFilterObserver) = Signal<Void, Never>.pipe()
-  public func tappedCategoryFilter() {
-    self.tappedCategoryFilterObserver.send(value: ())
-  }
-
-  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
-  fileprivate let selectedCategoryFilterProperty = MutableProperty<Int?>(nil)
-
-  public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
-  public let showSort: Signal<SearchSortSheet, Never>
-
-  public var inputs: SearchFiltersUseCaseInputs { return self }
-  public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
-  public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
-}
-
 public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
@@ -400,7 +311,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.searchFiltersUseCase = SearchFiltersUseCase()
+    self.searchFiltersUseCase = SearchFiltersUseCase(initialSignal: self.viewDidLoadProperty.signal)
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -467,6 +378,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
+
+  public var showSort: Signal<SearchSortSheet, Never> {
+    return self.searchFiltersUseCase.showSort
+  }
+
+  public var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> {
+    return self.searchFiltersUseCase.showCategoryFilters
+  }
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }
