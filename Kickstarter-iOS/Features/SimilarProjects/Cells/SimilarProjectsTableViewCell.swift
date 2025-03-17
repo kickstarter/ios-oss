@@ -27,6 +27,7 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.collectionView.dataSource = self.dataSource
+    self.collectionView.delegate = self
     self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
 
     self.configureSubviews()
@@ -124,4 +125,10 @@ private func applyTitleLabelStyle(_ label: UILabel) {
   label.text = Strings.Similar_projects()
   label.font = .ksr_title3()
   label.translatesAutoresizingMaskIntoConstraints = false
+}
+
+extension SimilarProjectsTableViewCell: UICollectionViewDelegate {
+  func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    print("Handle project tapped at index \(indexPath)")
+  }
 }
