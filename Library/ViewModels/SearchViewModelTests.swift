@@ -715,20 +715,17 @@ internal final class SearchViewModelTests: TestCase {
   }
 }
 
-private extension Bundle {
-  static var ksr_libraryTestBundle: Bundle? {
-    Bundle(identifier: "com.Library-iOSTests")
-  }
-}
-
 internal extension GraphAPI.SearchQuery.Data {
   static var fiveResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_libraryTestBundle?.url(forResource: "SearchQuery_FiveResults", withExtension: "json")
+    let url = Bundle(for: SearchViewModelTests.self).url(
+      forResource: "SearchQuery_FiveResults",
+      withExtension: "json"
+    )
     return try! Self(fromResource: url!)
   }
 
   static var differentFiveResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_libraryTestBundle?.url(
+    let url = Bundle(for: SearchViewModelTests.self).url(
       forResource: "SearchQuery_AnotherFiveResults",
       withExtension: "json"
     )
@@ -736,7 +733,7 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var emptyResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_libraryTestBundle?.url(
+    let url = Bundle(for: SearchViewModelTests.self).url(
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )

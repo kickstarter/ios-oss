@@ -130,15 +130,9 @@ internal final class SearchViewContollerTests: TestCase {
   }
 }
 
-private extension Bundle {
-  static var ksr_frameworkTestBundle: Bundle? {
-    Bundle(identifier: "com.KickstarterTests")
-  }
-}
-
 internal extension GraphAPI.SearchQuery.Data {
   static var emptyResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_frameworkTestBundle?.url(
+    let url = Bundle(for: SearchViewContollerTests.self).url(
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )
@@ -146,7 +140,7 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var activeResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_frameworkTestBundle?.url(
+    let url = Bundle(for: SearchViewContollerTests.self).url(
       forResource: "SearchQuery_SearchViewControllerTests_Active",
       withExtension: "json"
     )
@@ -154,7 +148,7 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var prelaunchResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.ksr_frameworkTestBundle?.url(
+    let url = Bundle(for: SearchViewContollerTests.self).url(
       forResource: "SearchQuery_SearchViewControllerTests_Prelaunch",
       withExtension: "json"
     )
