@@ -85,6 +85,10 @@ public struct Service: ServiceType {
     return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope> {
+    GraphQL.shared.client.fetch(query: query)
+  }
+
   public func addNewCreditCard(input: CreatePaymentSourceInput)
     -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
