@@ -4872,8 +4872,6 @@
 				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */,
 				60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */,
-				60E5FF0B2D78C80600BE9942 /* SimilarProjectsCardView.swift */,
-				60C119312D7F254900318486 /* SimilarProjectsCardViewTests.swift */,
 				1965437928C814D300457EC6 /* Cells */,
 			);
 			path = Views;
@@ -4900,7 +4898,6 @@
 				191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */,
 				473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */,
 				473DE00F273C4BA90033331D /* ProjectRisksCell.swift */,
-				604E57212D7C8A4000133A91 /* SimilarProjectsCarouselTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5003,6 +5000,7 @@
 				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
 				1937A70F28C93CD800DD732D /* SheetOverlay */,
 				19450C5228C82CEF00C60F97 /* ShippingRules */,
+				60224DA82D887A580092A09A /* SimilarProjects */,
 				1937A70D28C93C9B00DD732D /* SortPager */,
 				1937A71528C93D9B00DD732D /* SurveyResponse */,
 				19450C5728C82D9800C60F97 /* ThanksProjects */,
@@ -5877,6 +5875,40 @@
 				3742036C22DD41BA007AA86E /* PillLayout.swift */,
 			);
 			path = Layouts;
+			sourceTree = "<group>";
+		};
+		60224DA82D887A580092A09A /* SimilarProjects */ = {
+			isa = PBXGroup;
+			children = (
+				60224DA92D887A7D0092A09A /* Views */,
+				60224DAA2D887A840092A09A /* Cells */,
+				60224DAB2D887A900092A09A /* Datasource */,
+			);
+			path = SimilarProjects;
+			sourceTree = "<group>";
+		};
+		60224DA92D887A7D0092A09A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				60E5FF0B2D78C80600BE9942 /* SimilarProjectsCardView.swift */,
+				60C119312D7F254900318486 /* SimilarProjectsCardViewTests.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		60224DAA2D887A840092A09A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				604E57212D7C8A4000133A91 /* SimilarProjectsCarouselTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		60224DAB2D887A900092A09A /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Datasource;
 			sourceTree = "<group>";
 		};
 		6031A8442AB247D900F8184D /* ReportProject */ = {
