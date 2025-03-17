@@ -3,6 +3,95 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public struct SearchFilterCategoriesSheet {
+  let categoryNames: [String]
+  let selectedIndex: Int?
+}
+
+public struct SearchSortSheet {
+  let sortNames: [String]
+  let selectedIndex: Int
+}
+
+public protocol SearchFiltersUseCaseType {
+  var inputs: SearchFiltersUseCaseInputs { get }
+  var uiOutputs: SearchFiltersUseCaseUIOutputs { get }
+  var dataOuputs: SearchFiltersUseCaseDataOutputs { get }
+}
+
+public protocol SearchFiltersUseCaseInputs {
+  func tappedSort()
+  func tappedCategoryFilter()
+}
+
+public protocol SearchFiltersUseCaseUIOutputs {
+  var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
+  var showSort: Signal<SearchSortSheet, Never> { get }
+}
+
+public protocol SearchFiltersUseCaseDataOutputs {}
+
+public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
+  SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
+  private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
+    // TODO: translations
+    switch sort {
+    case .endingSoon:
+      return "Ending Soon"
+    case .magic:
+      return "Magic"
+    case .newest:
+      return "Newest"
+    case .popular:
+      return "Popular"
+    }
+  }
+
+  public init() {
+    let sortOptions: [DiscoveryParams.Sort] = [
+      DiscoveryParams.Sort.endingSoon,
+      DiscoveryParams.Sort.magic,
+      DiscoveryParams.Sort.popular,
+      DiscoveryParams.Sort.newest
+    ]
+
+    let sortNames = sortOptions.map(self.sortOptionName(from:))
+
+    self.showSort = self.selectedSortProperty.signal
+      .takeWhen(self.tappedSortSignal)
+      .map { sort -> SearchSortSheet? in
+        guard let selectedIndex = sortOptions.firstIndex(of: sort) else {
+          return nil
+        }
+        return SearchSortSheet(sortNames: sortNames, selectedIndex: selectedIndex)
+      }
+      .skipNil()
+
+    self.showCategoryFilters = self.selectedCategoryFilterProperty.signal
+      .takeWhen(self.tappedCategoryFilterSignal)
+  }
+
+  fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
+  public func tappedSort() {
+    self.tappedSortObserver.send(value: ())
+  }
+
+  fileprivate let (tappedCategoryFilterSignal, tappedCategoryFilterObserver) = Signal<Void, Never>.pipe()
+  public func tappedCategoryFilter() {
+    self.tappedCategoryFilterObserver.send(value: ())
+  }
+
+  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
+  fileprivate let selectedCategoryFilterProperty = MutableProperty<Int?>(nil)
+
+  public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
+  public let showSort: Signal<SearchSortSheet, Never>
+
+  public var inputs: SearchFiltersUseCaseInputs { return self }
+  public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
+  public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
+}
+
 public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
@@ -30,6 +119,10 @@ public protocol SearchViewModelInputs {
 
   /// Call when a project is tapped.
   func tapped(projectAtIndex index: Int)
+
+  func tappedSort()
+
+  func tappedCategoryFilter()
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -68,6 +161,9 @@ public protocol SearchViewModelOutputs {
 
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
+
+  var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
+  var showSort: Signal<SearchSortSheet, Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -303,6 +399,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           params: params
         )
       }
+
+    self.searchFiltersUseCase = SearchFiltersUseCase()
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -349,6 +447,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
+
+  public func tappedSort() {
+    self.searchFiltersUseCase.tappedSort()
+  }
+
+  public func tappedCategoryFilter() {
+    self.searchFiltersUseCase.tappedCategoryFilter()
+  }
+
+  private let searchFiltersUseCase: SearchFiltersUseCase
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
   public let goToProject: Signal<(Int, RefTag), Never>
