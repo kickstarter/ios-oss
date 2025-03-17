@@ -73,14 +73,13 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
   public var outputs: ProjectsCardViewModelOutputs { return self }
 }
 
-// TODO: Update hardcoded strings [mbl-2192](https://kickstarter.atlassian.net/browse/MBL-2192?atlOrigin=eyJpIjoiOGVlNzQ2MTQ3OTZjNDMzYTg0YTBjZWQ4OGM2ZDZjZDAiLCJwIjoiamlyYS1zbGFjay1pbnQifQ)
 private func projectStatus(for project: any SimilarProject) -> String {
-  guard !isProjectPrelaunch(project) else { return "Launching Soon" }
+  guard !isProjectPrelaunch(project) else { return Strings.Launching_soon() }
 
   let percentage = Format.percentage(project.percentFunded)
 
   guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
-  else { return "Late pledges active" + " • " + Strings
+  else { return Strings.Late_pledges_active() + " • " + Strings
     .percentage_funded(percentage: percentage)
   }
 
@@ -95,7 +94,7 @@ private func projectStatus(for project: any SimilarProject) -> String {
     return Strings.Time_left_left(time_left: "\(duration.time) \(duration.unit)") + " • " + Strings
       .percentage_funded(percentage: percentage)
   case .successful, .failed:
-    return "Ended" + " • " + Strings
+    return Strings.Ended() + " • " + Strings
       .percentage_funded(percentage: percentage)
   default:
     return ""
@@ -103,8 +102,8 @@ private func projectStatus(for project: any SimilarProject) -> String {
 }
 
 private func projectStatusImage(for project: any SimilarProject) -> UIImage? {
-  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
-  else { return UIImage(named: "icon-late-pledge-timer") }
+//  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
+//  else { return UIImage(named: "icon-late-pledge-timer") }
 
   guard !isProjectPrelaunch(project) else { return UIImage(named: "icon-launching-soon") }
 
