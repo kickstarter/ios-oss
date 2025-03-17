@@ -45,7 +45,7 @@ public protocol SearchViewModelOutputs {
   /// should be animated.
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
 
-  /// Emits a project, playlist and ref tag when the projet navigator should be opened.
+  /// Emits a project ID  and ref tag when the project page should be opened.
   var goToProject: Signal<(Int, RefTag), Never> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
