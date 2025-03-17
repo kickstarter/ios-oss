@@ -156,6 +156,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
 
+  /// Emits a list of `SimilarProject`  for the Similar Projects Carousel.
+  var updateSimilarProjectsInDataSource: Signal<(Project, [any SimilarProject]?), Never> { get }
+
   /// Emits a prelaunch save state that updates the navigation bar's watch project state.
   var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
 
@@ -538,6 +541,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return (project, refTag, updatedValues)
       }
 
+    // TODO: SPC - Call new Similar Projects GraphAPI service method when ready
+    self.updateSimilarProjectsInDataSource = freshProjectAndRefTag
+      .map { freshProjectAndRefTag in
+        let (project, _) = freshProjectAndRefTag
+        let validProjectFragment = createMockProjectNode()
+
+        guard let similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+        else { return (
+          project,
+          nil
+        ) }
+
+        return (project, [similarProject, similarProject, similarProject, similarProject])
+      }
+
     self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
     self.reloadCampaignData = self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
       .takeWhen(self.viewWillTransitionProperty.signal)
@@ -756,6 +774,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
+  public let updateSimilarProjectsInDataSource: Signal<(Project, [any SimilarProject]?), Never>
   public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
   public let didBlockUser: Signal<(), Never>
   public let didBlockUserError: Signal<(), Never>
@@ -857,4 +876,67 @@ private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
   default:
     return false
   }
+}
+
+// TODO: Remove this when Similar Projects GraphAPI Call is hooked up.
+// Helper method to create mock project nodes for testing
+private func createMockProjectNode(
+  id: Int = 123,
+  name: String = "Test Project",
+  imageURL: String? = "https://example.com/image.jpg",
+  state: String = "live",
+  isLaunched: Bool = true,
+  prelaunchActivated: Bool = false,
+  launchedAt: String? = "1741737648",
+  deadlineAt: String? = "1742737648",
+  percentFunded: Int = 75,
+  goal: Double? = 10_000,
+  pledged: Double = 7_500,
+  isInPostCampaignPledgingPhase: Bool = false,
+  isPostCampaignPledgingEnabled: Bool = false
+) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
+  var resultMap: [String: Any] = [
+    "__typename": "Project",
+    "pid": id,
+    "name": name,
+    "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
+    "isLaunched": isLaunched,
+    "prelaunchActivated": prelaunchActivated,
+    "percentFunded": percentFunded,
+    "pledged": [
+      "__typename": "Money",
+      "amount": String(pledged),
+      "currency": GraphAPI.CurrencyCode.usd,
+      "symbol": "$"
+    ],
+    "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+    "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled
+  ]
+
+  // Add optional fields
+  if let imageURL {
+    resultMap["image"] = [
+      "__typename": "Photo",
+      "url": imageURL
+    ]
+  }
+
+  if let launchedAt {
+    resultMap["launchedAt"] = launchedAt
+  }
+
+  if let deadlineAt {
+    resultMap["deadlineAt"] = deadlineAt
+  }
+
+  if let goal {
+    resultMap["goal"] = [
+      "__typename": "Money",
+      "amount": String(goal),
+      "currency": GraphAPI.CurrencyCode.usd,
+      "symbol": "$"
+    ]
+  }
+
+  return GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node(unsafeResultMap: resultMap)
 }

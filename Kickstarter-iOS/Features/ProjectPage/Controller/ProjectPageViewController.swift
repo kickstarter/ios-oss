@@ -97,6 +97,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
     self.tableView.registerCellClass(ReportProjectCell.self)
+    self.tableView.registerCellClass(SimilarProjectsTableViewCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -505,6 +506,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           refTag: refTag,
           isExpandedStates: isExpandedValues
         )
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.updateSimilarProjectsInDataSource
+      .observeForUI()
+      .observeValues { [weak self] project, similarProjects in
+        self?.dataSource.load(
+          navigationSection: .overview,
+          project: project,
+          refTag: nil,
+          isExpandedStates: nil,
+          similarProjects: similarProjects
+        )
+
         self?.tableView.reloadData()
       }
 
