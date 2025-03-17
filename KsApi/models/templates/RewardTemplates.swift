@@ -33,7 +33,7 @@ extension Reward {
     title: "My Reward",
     localPickup: nil,
     isAvailable: nil,
-    image: Image(altText: "Some image", url: "https://www.ksr.com/image.jpg")
+    image: nil
   )
 
   public static let noReward = Reward(

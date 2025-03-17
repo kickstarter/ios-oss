@@ -426,3 +426,12 @@ private func extendedProjectAIDisclosure(
 
   return aiDisclosure
 }
+
+extension Project.State {
+  public init?(_ fragment: GraphAPI.ProjectState) {
+    guard let state = projectState(from: fragment) else {
+      return nil
+    }
+    self = state
+  }
+}
