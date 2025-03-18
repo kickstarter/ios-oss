@@ -567,7 +567,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard let self else { return }
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: Either<Project, Param>.right(.id(project.projectID)),
-          refInfo: RefInfo(.projectPage)
+          refInfo: RefInfo(.projectPage) // TODO: Check if this is right in MBL-2169
         )
         if let nav = self.navigationController {
           nav.pushViewController(vc, animated: true)
