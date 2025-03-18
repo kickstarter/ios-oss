@@ -560,6 +560,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
         messageBanner.showBanner(with: .error, message: Strings.Block_user_fail())
       }
+
+    self.viewModel.outputs.navigateToSimilarProject
+      .observeForUI()
+      .observeValues { [weak self] project in
+        guard let self else { return }
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: Either<Project, Param>.right(.id(project.projectID)),
+          refInfo: RefInfo(.projectPage) // TODO: Check if this is right in MBL-2169
+        )
+        if let nav = self.navigationController {
+          nav.pushViewController(vc, animated: true)
+        } else {
+          assertionFailure("We expect a navigation controller to be here")
+          let nav = UINavigationController(rootViewController: vc)
+          self.present(nav, animated: true)
+        }
+      }
   }
 
   private func prepareToPlayAudioVideoURL(

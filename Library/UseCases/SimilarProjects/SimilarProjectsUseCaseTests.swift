@@ -90,7 +90,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
   func testProjectTapped_emitsNavigateToProject() {
     withEnvironment(apiService: self.mockService) {
       // When loading a project ID
-      self.useCase.projectIDLoaded(projectID: "123")
+      self.useCase.projectIDLoaded(projectID: "1")
       guard
         case let .loaded(projects) = similarProjectsObserver.values[1],
         let project = projects.first
@@ -121,7 +121,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
     XCTAssertNotNil(similarProject, "Parsing should succeed with valid data")
 
     // Verify the parsed data is correct
-    XCTAssertEqual(similarProject.projectID, "123")
+    XCTAssertEqual(similarProject.projectID, 123)
     XCTAssertEqual(similarProject.name, "Test Project")
     XCTAssertEqual(similarProject.isLaunched, true)
     XCTAssertEqual(similarProject.isPrelaunchActivated, false)
