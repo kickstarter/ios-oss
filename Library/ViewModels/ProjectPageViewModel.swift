@@ -530,10 +530,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skip(first: 1)
 
-    let similarProjectsState = self.similarProjectsUseCase.similarProjects.signal
-      .map { similarProjectsState in similarProjectsState }
-
-    self.updateDataSource = Signal.combineLatest(dataSourceUpdate, similarProjectsState)
+    self.updateDataSource = Signal.combineLatest(dataSourceUpdate,  self.similarProjectsUseCase.similarProjects.signal)
 
     self.updateFAQsInDataSource = freshProjectAndRefTag
       .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
