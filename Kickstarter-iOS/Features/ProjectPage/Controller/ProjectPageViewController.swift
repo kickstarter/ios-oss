@@ -480,7 +480,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, _ in
+      .observeValues { [weak self] data, similarProjectsState in
+        let (navSection, project, refTag, initialIsExpandedArray, _) = data
+
         self?.pausePlayingMainCellVideo(navSection: navSection)
 
         let initialDatasourceLoad = {
@@ -488,7 +490,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
             navigationSection: navSection,
             project: project,
             refTag: refTag,
-            isExpandedStates: initialIsExpandedArray
+            isExpandedStates: initialIsExpandedArray,
+            similarProjectsState: similarProjectsState
           )
 
           self?.tableView.reloadData()
