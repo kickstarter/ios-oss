@@ -51,8 +51,6 @@ public protocol SearchFiltersUseCaseDataOutputs {
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
   public init(initialSignal: Signal<Void, Never>) {
-    self.initialSignal = initialSignal
-
     self.sortOptions = [
       DiscoveryParams.Sort.popular,
       DiscoveryParams.Sort.endingSoon,
@@ -85,7 +83,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       .skipNil()
 
     self.selectedSort = Signal.merge(
-      self.selectedSortIndexProperty.producer.takeWhen(self.initialSignal),
+      self.selectedSortIndexProperty.producer.takeWhen(initialSignal),
       self.selectedSortIndexProperty.signal
     )
     .map { [sortOptions] idx in
@@ -93,7 +91,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     }
 
     self.selectedCategory = Signal.merge(
-      self.selectedCategoryIndexProperty.producer.takeWhen(self.initialSignal),
+      self.selectedCategoryIndexProperty.producer.takeWhen(initialSignal),
       self.selectedCategoryIndexProperty.signal
     )
     .combineLatest(with: self.categoriesUseCase.categories)
@@ -107,7 +105,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   }
 
   fileprivate let sortOptions: [DiscoveryParams.Sort]
-  fileprivate let initialSignal: Signal<Void, Never>
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
   public func tappedSort() {

@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import ReactiveSwift
 import UIKit
 
 internal final class SearchViewController: UITableViewController {
@@ -56,14 +57,26 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.addSubview(self.sortButton)
   }
 
-  override func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+  private let showFilters = MutableProperty<Bool>(false)
+
+  override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showFilters.value == true else {
+      return nil
+    }
+
     let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
     return stackView
   }
 
-  override func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
+  override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showFilters.value == true else {
+      return 0
+    }
+
     return 25
   }
 
@@ -224,6 +237,8 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] sheet in
         self?.showCategories(sheet)
       }
+
+    self.showFilters <~ self.viewModel.outputs.showFilters
   }
 
   fileprivate func showSort(_ sheet: SearchSortSheet) {
@@ -234,6 +249,8 @@ internal final class SearchViewController: UITableViewController {
         self.viewModel.inputs.selectedSortOption(atIndex: idx)
       }))
     }
+
+    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
     present(controller, animated: true)
   }
@@ -246,6 +263,8 @@ internal final class SearchViewController: UITableViewController {
         self.viewModel.inputs.selectedCategory(atIndex: idx)
       }))
     }
+
+    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
     present(controller, animated: true)
   }
