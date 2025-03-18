@@ -3409,6 +3409,7 @@
 		AA5480D72D76B8B600EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				FetchCategoriesUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
@@ -3416,6 +3417,7 @@
 		AA5480D92D76B8B900EC2849 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				FetchCategoriesUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A75511441C8642B3005355CF /* Library-iOSTests */;

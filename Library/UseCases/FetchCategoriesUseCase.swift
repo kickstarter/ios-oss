@@ -7,10 +7,12 @@ public protocol FetchCategoriesUseCaseType {
 }
 
 public protocol FetchCategoriesUseCaseUIOutputs {
+  /// Emits whether the categories are loading for the activity indicator view.
   var loadingIndicatorIsVisible: Signal<Bool, Never> { get }
 }
 
 public protocol FetchCategoriesUseCaseDataOutputs {
+  /// Emits the list of categories, either from cache or from the network
   var categories: Signal<[Category], Never> { get }
 }
 
@@ -39,7 +41,8 @@ public final class FetchCategoriesUseCase: FetchCategoriesUseCaseType, FetchCate
 
     self.loadingIndicatorIsVisible = Signal.merge(
       loaderIsVisible.signal,
-      categoriesEvent.values().mapConst(false)
+      categoriesEvent.values().mapConst(false),
+      categoriesEvent.errors().mapConst(false)
     )
 
     self.categories = Signal.merge(
@@ -48,10 +51,7 @@ public final class FetchCategoriesUseCase: FetchCategoriesUseCaseType, FetchCate
     ).on(value: { cache(categories:) }())
   }
 
-  /// Emits whether the categories are loading for the activity indicator view.
   public let loadingIndicatorIsVisible: Signal<Bool, Never>
-
-  /// Emits the list of categories, either from cache or from the network
   public let categories: Signal<[Category], Never>
 }
 
