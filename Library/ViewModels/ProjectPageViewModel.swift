@@ -530,7 +530,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skip(first: 1)
 
-    self.updateDataSource = Signal.combineLatest(dataSourceUpdate,  self.similarProjectsUseCase.similarProjects.signal)
+    self.updateDataSource = Signal.combineLatest(
+      dataSourceUpdate,
+      self.similarProjectsUseCase.similarProjects.signal
+    )
 
     self.updateFAQsInDataSource = freshProjectAndRefTag
       .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
