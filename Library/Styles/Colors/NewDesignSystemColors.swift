@@ -28,6 +28,7 @@ public struct Colors {
   }
 
   public enum Icon: String, AdaptiveColors {
+    case green
     case primary
   }
 
