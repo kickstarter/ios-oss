@@ -149,7 +149,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(10, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(11, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -206,7 +206,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(10, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -252,7 +252,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(10, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(11, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -308,7 +308,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -352,7 +352,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(13, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(14, self.dataSource.numberOfSections(in: self.tableView))
 
       // risksHeader
       XCTAssertEqual(
@@ -406,7 +406,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(18, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(19, self.dataSource.numberOfSections(in: self.tableView))
 
       XCTAssertEqual(
         1,
@@ -488,7 +488,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(18, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(19, self.dataSource.numberOfSections(in: self.tableView))
 
       XCTAssertEqual(
         1,
@@ -563,7 +563,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(21, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(22, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -620,7 +620,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(21, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(22, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -673,7 +673,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
 
       // campaign header section
       XCTAssertEqual(
@@ -730,7 +730,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
 
       // overviewCreatorHeader
       XCTAssertEqual(

@@ -23,6 +23,8 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private let viewModel: SimilarProjectsTableViewCellViewModelType = SimilarProjectsTableViewCellViewModel()
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -32,6 +34,7 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     self.configureSubviews()
     self.bindStyles()
     self.updateConstraints()
+    self.bindViewModel()
   }
 
   @available(*, unavailable)
@@ -46,6 +49,20 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     applyTitleLabelStyle(self.titleLabel)
     applyCollectionViewStyle(self.collectionView)
     applyCollectionViewLayoutStyle(self.layout)
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.similarProjects
+      .observeForUI()
+      .observeValues { data in
+        let projects = data.projects
+
+        self.dataSource.load(projects)
+        self.collectionView.reloadData()
+        self.layoutIfNeeded()
+      }
   }
 
   override func systemLayoutSizeFitting(
@@ -92,10 +109,8 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.updateConstraints()
   }
 
-  func configureWith(value: [any SimilarProject]) {
-    self.dataSource.load(value)
-    self.collectionView.reloadData()
-    self.layoutIfNeeded()
+  func configureWith(value _: Void) {
+    self.viewModel.inputs.fetchSimilarProjects()
   }
 }
 

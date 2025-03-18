@@ -79,7 +79,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     project: Project,
     refTag: RefTag?,
     isExpandedStates: [Bool]? = nil,
-    similarProjects: [any SimilarProject]? = nil
+    similarProjects _: [any SimilarProject]? = nil
   ) {
     self.prepareImagesInCampaignSection()
     self.prepareAudioVideosInCampaignSection()
@@ -124,13 +124,11 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         )
       }
 
-      if let projects = similarProjects {
-        self.set(
-          values: [projects],
-          cellClass: SimilarProjectsTableViewCell.self,
-          inSection: Section.overviewSimilarProjects.rawValue
-        )
-      }
+      self.set(
+        values: [()],
+        cellClass: SimilarProjectsTableViewCell.self,
+        inSection: Section.overviewSimilarProjects.rawValue
+      )
     case .campaign:
       self.set(
         values: [HeaderValue.campaign.description],
@@ -359,8 +357,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ReportProjectCell, value as Bool):
       cell.configureWith(value: value)
-    case let (cell as SimilarProjectsTableViewCell, value as [any SimilarProject]):
-      cell.configureWith(value: value)
+    case let (cell as SimilarProjectsTableViewCell, _ as Void):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }

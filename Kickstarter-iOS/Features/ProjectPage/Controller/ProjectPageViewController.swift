@@ -509,20 +509,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.updateSimilarProjectsInDataSource
-      .observeForUI()
-      .observeValues { [weak self] project, similarProjects in
-        self?.dataSource.load(
-          navigationSection: .overview,
-          project: project,
-          refTag: nil,
-          isExpandedStates: nil,
-          similarProjects: similarProjects
-        )
-
-        self?.tableView.reloadData()
-      }
-
     self.viewModel.outputs.popToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
