@@ -83,6 +83,27 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
         return SearchSortSheet(sortNames: names, selectedIndex: selectedIdx)
       }
       .skipNil()
+
+    self.selectedSort = Signal.merge(
+      self.selectedSortIndexProperty.producer.takeWhen(self.initialSignal),
+      self.selectedSortIndexProperty.signal
+    )
+    .map { [sortOptions] idx in
+      sortOptions[idx]
+    }
+
+    self.selectedCategory = Signal.merge(
+      self.selectedCategoryIndexProperty.producer.takeWhen(self.initialSignal),
+      self.selectedCategoryIndexProperty.signal
+    )
+    .combineLatest(with: self.categoriesUseCase.categories)
+    .map { idx, categories in
+      guard let idx = idx else {
+        return nil
+      }
+
+      return categories[idx]
+    }
   }
 
   fileprivate let sortOptions: [DiscoveryParams.Sort]
@@ -106,29 +127,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
 
-  public var selectedSort: Signal<DiscoveryParams.Sort, Never> {
-    Signal.merge(
-      self.selectedSortIndexProperty.producer.take(first: 1)
-        .takeWhen(self.initialSignal),
-      self.selectedSortIndexProperty.signal
-    )
-    .map { [sortOptions] idx in
-      sortOptions[idx]
-    }
-  }
-
-  public var selectedCategory: Signal<Category?, Never> {
-    Signal.merge(
-      self.selectedCategoryIndexProperty.producer.take(first: 1)
-        .takeWhen(self.initialSignal),
-      self.selectedCategoryIndexProperty.signal
-    )
-    .skipNil()
-    .combineLatest(with: self.categoriesUseCase.categories)
-    .map { idx, categories in
-      categories[idx]
-    }
-  }
+  public var selectedSort: Signal<DiscoveryParams.Sort, Never>
+  public var selectedCategory: Signal<Category?, Never>
 
   public func selectedSortOption(atIndex index: Int) {
     self.selectedSortIndexProperty.value = index
