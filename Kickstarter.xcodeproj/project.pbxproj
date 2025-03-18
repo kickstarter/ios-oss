@@ -263,6 +263,7 @@
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
 		3361942F2D8370CE00BED4BD /* Fonts+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */; };
+		3361948B2D88E9D900BED4BD /* KSRButtonStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361948A2D88E9CE00BED4BD /* KSRButtonStyleModifier.swift */; };
 		336D378B2CDAF81200FA99F5 /* PledgePaymentPlansViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */; };
 		33785F752CD9B0C2004B148E /* PledgePaymentPlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */; };
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
@@ -1975,6 +1976,7 @@
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
 		3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Fonts+SwiftUI.swift"; sourceTree = "<group>"; };
+		3361948A2D88E9CE00BED4BD /* KSRButtonStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyleModifier.swift; sourceTree = "<group>"; };
 		336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModel.swift; sourceTree = "<group>"; };
 		33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewController.swift; sourceTree = "<group>"; };
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
@@ -5856,6 +5858,7 @@
 			children = (
 				338E60292D70CB1D008D42F9 /* KSRButton.swift */,
 				33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */,
+				3361948A2D88E9CE00BED4BD /* KSRButtonStyleModifier.swift */,
 				33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */,
 			);
 			path = Buttons;
@@ -8380,6 +8383,7 @@
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
 				8A32FE0624D233F000F79C72 /* EmptyStateViewModel.swift in Sources */,
+				3361948B2D88E9D900BED4BD /* KSRButtonStyleModifier.swift in Sources */,
 				37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
 				1950DBC02A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift in Sources */,

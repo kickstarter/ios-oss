@@ -17,6 +17,7 @@ public struct Colors {
     case inverseDisabled
     case inversePressed
     case surfacePrimary
+    case selected
   }
 
   /// Border colors, mapped to `border/` namespace in Assets.
@@ -24,6 +25,10 @@ public struct Colors {
     case bold
     case dangerBold
     case subtle
+  }
+
+  public enum Icon: String, AdaptiveColors {
+    case primary
   }
 
   /// Text colors, mapped to `text/` namespace in Assets.

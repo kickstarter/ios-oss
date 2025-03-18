@@ -22,6 +22,8 @@ extension AdaptiveColors {
       return "background/"
     case is Colors.Border.Type:
       return "border/"
+    case is Colors.Icon.Type:
+      return "icon/"
     case is Colors.Text.Type:
       return "text/"
     default:
