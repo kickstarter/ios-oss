@@ -26,6 +26,15 @@ internal final class SearchViewController: UITableViewController {
     return button
   }()
 
+  lazy var categoryButton: UIButton = {
+    let button = UIButton()
+    button.setTitle("Category", for: .normal)
+    button.addTarget(self, action: #selector(SearchViewController.categoryButtonTapped), for: .touchUpInside)
+    button.setTitleColor(.ksr_alert, for: .normal)
+    button.setBackgroundColor(.ksr_alert_background, for: .normal)
+    return button
+  }()
+
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
@@ -48,7 +57,10 @@ internal final class SearchViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-    return self.sortButton
+    let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
+    return stackView
   }
 
   override func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
@@ -206,6 +218,12 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] sheet in
         self?.showSort(sheet)
       }
+
+    self.viewModel.outputs.showCategoryFilters
+      .observeForControllerAction()
+      .observeValues { [weak self] sheet in
+        self?.showCategories(sheet)
+      }
   }
 
   fileprivate func showSort(_ sheet: SearchSortSheet) {
@@ -214,6 +232,18 @@ internal final class SearchViewController: UITableViewController {
     for (idx, name) in sheet.sortNames.enumerated() {
       controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
         self.viewModel.inputs.selectedSortOption(atIndex: idx)
+      }))
+    }
+
+    present(controller, animated: true)
+  }
+
+  fileprivate func showCategories(_ sheet: SearchFilterCategoriesSheet) {
+    let controller = UIAlertController(title: "Pick a category", message: nil, preferredStyle: .actionSheet)
+
+    for (idx, name) in sheet.categoryNames.enumerated() {
+      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
+        self.viewModel.inputs.selectedCategory(atIndex: idx)
       }))
     }
 
@@ -286,6 +316,10 @@ internal final class SearchViewController: UITableViewController {
 
   @objc fileprivate func sortButtonTapped() {
     self.viewModel.inputs.tappedSort()
+  }
+
+  @objc fileprivate func categoryButtonTapped() {
+    self.viewModel.inputs.tappedCategoryFilter()
   }
 }
 

@@ -37,6 +37,8 @@ public protocol SearchViewModelInputs {
 
   func selectedSortOption(atIndex index: Int)
 
+  func selectedCategory(atIndex index: Int)
+
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
 
@@ -120,8 +122,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
       .filter { !$0.isEmpty }
       .combineLatest(with: self.searchFiltersUseCase.selectedSort)
-      .map { query, sort in
-        DiscoveryParams.withQuery(query, sort: sort)
+      .combineLatest(with: self.searchFiltersUseCase.selectedCategory)
+      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
+      .map { query, sort, category in
+        DiscoveryParams.withQuery(query, sort: sort, categoryID: category?.id)
       }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -372,6 +376,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func selectedSortOption(atIndex index: Int) {
     self.searchFiltersUseCase.selectedSortOption(atIndex: index)
+  }
+
+  public func selectedCategory(atIndex index: Int) {
+    self.searchFiltersUseCase.selectedCategory(atIndex: index)
   }
 
   private let searchFiltersUseCase: SearchFiltersUseCase

@@ -45,12 +45,15 @@ private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
 
 public protocol SearchFiltersUseCaseDataOutputs {
   var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
+  var selectedCategory: Signal<Category?, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
   public init(initialSignal: Signal<Void, Never>) {
-    let sortOptions: [DiscoveryParams.Sort] = [
+    self.initialSignal = initialSignal
+
+    self.sortOptions = [
       DiscoveryParams.Sort.popular,
       DiscoveryParams.Sort.endingSoon,
       DiscoveryParams.Sort.magic,
@@ -59,14 +62,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
 
-    let sortNames = sortOptions.map(sortOptionName(from:))
-
-    self.showCategoryFilters = self.selectedCategoryFilterProperty.signal
+    self.showCategoryFilters = self.selectedCategoryIndexProperty.producer
       .takeWhen(self.tappedCategoryFilterSignal)
       .combineLatest(with: self.categoriesUseCase.categories)
-      .map { categoryId, categories -> SearchFilterCategoriesSheet? in
+      .map { selectedIdx, categories -> SearchFilterCategoriesSheet? in
         let names = categories.map { $0.name }
-        let selectedIdx = categories.firstIndex(where: { $0.intID == categoryId })
 
         return SearchFilterCategoriesSheet(
           categoryNames: names,
@@ -75,25 +75,18 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       }
       .skipNil()
 
-    // TODO: Signal problems here. Really want to compose this better.
-
-    self.showSort = self.selectedSortProperty.producer
+    self.showSort = self.selectedSortIndexProperty.producer
       .takeWhen(self.tappedSortSignal)
-      .map { sort -> SearchSortSheet? in
-        guard let selectedIndex = sortOptions.firstIndex(of: sort) else {
-          return nil
-        }
-        return SearchSortSheet(sortNames: sortNames, selectedIndex: selectedIndex)
+      .map { [sortOptions] selectedIdx -> SearchSortSheet? in
+        let names = sortOptions.map(sortOptionName(from:))
+
+        return SearchSortSheet(sortNames: names, selectedIndex: selectedIdx)
       }
       .skipNil()
   }
 
-  fileprivate let sortOptions: [DiscoveryParams.Sort] = [
-    DiscoveryParams.Sort.popular,
-    DiscoveryParams.Sort.endingSoon,
-    DiscoveryParams.Sort.magic,
-    DiscoveryParams.Sort.newest
-  ]
+  fileprivate let sortOptions: [DiscoveryParams.Sort]
+  fileprivate let initialSignal: Signal<Void, Never>
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
   public func tappedSort() {
@@ -107,19 +100,42 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   fileprivate let categoriesUseCase: FetchCategoriesUseCase
 
-  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.popular)
-  fileprivate let selectedCategoryFilterProperty = MutableProperty<Int?>(nil)
+  fileprivate let selectedSortIndexProperty = MutableProperty<Int>(0)
+  fileprivate let selectedCategoryIndexProperty = MutableProperty<Int?>(nil)
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never> {
-    return self.selectedSortProperty.signal
+    Signal.merge(
+      self.selectedSortIndexProperty.producer.take(first: 1)
+        .takeWhen(self.initialSignal),
+      self.selectedSortIndexProperty.signal
+    )
+    .map { [sortOptions] idx in
+      sortOptions[idx]
+    }
+  }
+
+  public var selectedCategory: Signal<Category?, Never> {
+    Signal.merge(
+      self.selectedCategoryIndexProperty.producer.take(first: 1)
+        .takeWhen(self.initialSignal),
+      self.selectedCategoryIndexProperty.signal
+    )
+    .skipNil()
+    .combineLatest(with: self.categoriesUseCase.categories)
+    .map { idx, categories in
+      categories[idx]
+    }
   }
 
   public func selectedSortOption(atIndex index: Int) {
-    let newSort = self.sortOptions[index]
-    self.selectedSortProperty.value = newSort
+    self.selectedSortIndexProperty.value = index
+  }
+
+  public func selectedCategory(atIndex index: Int) {
+    self.selectedCategoryIndexProperty.value = index
   }
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
