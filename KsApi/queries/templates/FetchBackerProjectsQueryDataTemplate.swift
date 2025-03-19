@@ -18,7 +18,10 @@ public enum FetchBackerProjectsQueryDataTemplate {
   var savedProjectsData: GraphAPI.FetchMySavedProjectsQuery.Data {
     switch self {
     case .valid:
-      let url = Bundle.ksr_apiTestBundle?.url(forResource: "FetchMySavedProjectsQuery", withExtension: "json")
+      let url = Bundle(for: FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests.self).url(
+        forResource: "FetchMySavedProjectsQuery",
+        withExtension: "json"
+      )
       return try! GraphAPI.FetchMySavedProjectsQuery.Data(
         fromResource: url!,
         variables: ["withStoredCards": false]
@@ -29,7 +32,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
   var backedProjectsData: GraphAPI.FetchMyBackedProjectsQuery.Data {
     switch self {
     case .valid:
-      let url = Bundle.ksr_apiTestBundle?.url(
+      let url = Bundle(for: FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests.self).url(
         forResource: "FetchMyBackedProjectsQuery",
         withExtension: "json"
       )

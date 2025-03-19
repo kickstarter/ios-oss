@@ -28,7 +28,7 @@ internal final class SearchViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
-    self.vm.outputs.goToProject.map { _, _, refTag in refTag }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.popularLoaderIndicatorIsAnimating.observe(self.popularLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
@@ -47,46 +47,55 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPopularFeatured_RefTag() {
-    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let response = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
-      self.vm.inputs.tapped(project: projects[0])
+      self.vm.inputs.tapped(projectAtIndex: 0)
 
       self.goToRefTag.assertValues([RefTag.searchPopularFeatured])
     }
   }
 
   func testSearchPopular_RefTag() {
-    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let response = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
-      self.vm.inputs.tapped(project: projects[8])
+      self.vm.inputs.tapped(projectAtIndex: 4)
 
       self.goToRefTag.assertValues([RefTag.searchPopular])
     }
   }
 
   func testSearchFeatured_RefTag() {
-    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+      withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[0])
+        self.vm.inputs.tapped(projectAtIndex: 0)
 
         self.goToRefTag.assertValues([RefTag.searchFeatured])
       }
@@ -94,20 +103,25 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearch_RefTag() {
-    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+      withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[2])
+        self.vm.inputs.tapped(projectAtIndex: 2)
 
         self.goToRefTag.assertValues([RefTag.search])
       }
@@ -115,20 +129,25 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testProjectCardClicked() {
-    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+      withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
-        self.vm.inputs.tapped(project: searchProjects[0])
+        self.vm.inputs.tapped(projectAtIndex: 0)
 
         XCTAssertEqual(
           self.segmentTrackingClient.events.last,
@@ -230,108 +249,117 @@ internal final class SearchViewModelTests: TestCase {
 
   // Tests a standard flow of searching for projects.
   func testFlow() {
-    self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
-    self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
-    XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    self.vm.inputs.viewWillAppear(animated: true)
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
 
-    self.isPopularTitleVisible.assertValues([])
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
+      self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
+      XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.isPopularTitleVisible.assertValues([])
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-    self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
 
-    XCTAssertEqual(
-      ["Page Viewed"], self.segmentTrackingClient.events,
-      "The search view event tracked upon view appearing."
-    )
+      XCTAssertEqual(
+        ["Page Viewed"], self.segmentTrackingClient.events,
+        "The search view event tracked upon view appearing."
+      )
 
-    self.vm.inputs.searchTextChanged("skull graphic tee")
+      self.vm.inputs.searchTextChanged("skull graphic tee")
 
-    self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
-    self.isPopularTitleVisible.assertValues(
-      [true, false],
-      "Popular title hide immediately upon entering search."
-    )
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.isPopularTitleVisible.assertValues(
+        [true, false],
+        "Popular title hide immediately upon entering search."
+      )
+    }
 
-    self.scheduler.advance()
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.scheduler.advance()
 
-    self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
-    self.isPopularTitleVisible.assertValues(
-      [true, false],
-      "Popular title visibility still not emit after time has passed."
-    )
+      self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
+      self.isPopularTitleVisible.assertValues(
+        [true, false],
+        "Popular title visibility still not emit after time has passed."
+      )
 
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.segmentTrackingClient.events,
-      "An event is tracked for the search results."
-    )
-    XCTAssertEqual(
-      "skull graphic tee",
-      self.segmentTrackingClient.properties.last?["discover_search_term"] as? String
-    )
+      XCTAssertEqual(
+        ["Page Viewed", "Page Viewed"],
+        self.segmentTrackingClient.events,
+        "An event is tracked for the search results."
+      )
+      XCTAssertEqual(
+        "skull graphic tee",
+        self.segmentTrackingClient.properties.last?["discover_search_term"] as? String
+      )
 
-    self.vm.inputs.willDisplayRow(7, outOf: 10)
-    self.scheduler.advance()
+      self.vm.inputs.willDisplayRow(7, outOf: 10)
+      self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.segmentTrackingClient.events,
-      "An event is tracked for the search results."
-    )
-    XCTAssertEqual(
-      ["", "skull graphic tee"],
-      self.segmentTrackingClient.properties(forKey: "discover_search_term")
-    )
+      XCTAssertEqual(
+        ["Page Viewed", "Page Viewed"],
+        self.segmentTrackingClient.events,
+        "An event is tracked for the search results."
+      )
+      XCTAssertEqual(
+        ["", "skull graphic tee"],
+        self.segmentTrackingClient.properties(forKey: "discover_search_term")
+      )
 
-    self.vm.inputs.searchTextChanged("")
-    self.scheduler.advance()
+      self.vm.inputs.searchTextChanged("")
+      self.scheduler.advance()
 
-    self.hasProjects.assertValues(
-      [true, false, true, false, true],
-      "Clearing search clears projects and brings back popular projects."
-    )
-    self.isPopularTitleVisible.assertValues(
-      [true, false, true],
-      "Clearing search brings back popular title."
-    )
+      self.hasProjects.assertValues(
+        [true, false, true, false, true],
+        "Clearing search clears projects and brings back popular projects."
+      )
+      self.isPopularTitleVisible.assertValues(
+        [true, false, true],
+        "Clearing search brings back popular title."
+      )
 
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.segmentTrackingClient.events,
-      "Doesn't track empty queries"
-    )
+      XCTAssertEqual(
+        ["Page Viewed", "Page Viewed"],
+        self.segmentTrackingClient.events,
+        "Doesn't track empty queries"
+      )
 
-    self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: true)
 
-    self.hasProjects.assertValues(
-      [true, false, true, false, true],
-      "Leaving view and coming back doesn't load more projects."
-    )
-    self.isPopularTitleVisible.assertValues(
-      [true, false, true],
-      "Leaving view and coming back doesn't change popular title"
-    )
+      self.hasProjects.assertValues(
+        [true, false, true, false, true],
+        "Leaving view and coming back doesn't load more projects."
+      )
+      self.isPopularTitleVisible.assertValues(
+        [true, false, true],
+        "Leaving view and coming back doesn't change popular title"
+      )
 
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed", "Page Viewed"],
-      self.segmentTrackingClient.events
-    )
+      XCTAssertEqual(
+        ["Page Viewed", "Page Viewed", "Page Viewed"],
+        self.segmentTrackingClient.events
+      )
+    }
   }
 
   func testShowNoSearchResults() {
-    let projects = [
-      .template |> Project.lens.id .~ 1,
-      .template |> Project.lens.id .~ 3,
-      .template |> Project.lens.id .~ 4,
-      .template |> Project.lens.id .~ 5
-    ]
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
@@ -381,9 +409,12 @@ internal final class SearchViewModelTests: TestCase {
         self.segmentTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
       )
 
-      let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
+      let emptyResponse = [(
+        GraphAPI.SearchQuery.self,
+        GraphAPI.SearchQuery.Data.emptyResults
+      )]
 
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+      withEnvironment(apiService: MockService(fetchGraphQLResponses: emptyResponse)) {
         self.hasProjects.assertValues([true, false, true], "No projects before view is visible.")
 
         self.vm.inputs.searchTextChanged("abcdefgh")
@@ -423,16 +454,26 @@ internal final class SearchViewModelTests: TestCase {
   func testOrderingOfPopularAndDelayedSearches() {
     let apiDelay = TestCase.interval
     let debounceDelay = TestCase.interval
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
 
-    withEnvironment(debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], Never>()
-      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
+    withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: popularResponse),
+      debounceInterval: debounceDelay
+    ) {
+      let projects = TestObserver<[String], Never>()
+      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
-      let popularProjects = projects.values.last!
+      guard let popularProjects = projects.values.last else {
+        XCTFail("Expected popular project")
+        return
+      }
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
@@ -464,10 +505,18 @@ internal final class SearchViewModelTests: TestCase {
   func testCancelingOfSearchResultsWhenEnteringNewSearchTerms() {
     let apiDelay = DispatchTimeInterval.seconds(2)
     let debounceDelay = DispatchTimeInterval.seconds(1)
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
 
-    withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], Never>()
-      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
+    withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: popularResponse),
+      apiDelayInterval: apiDelay,
+      debounceInterval: debounceDelay
+    ) {
+      let projects = TestObserver<[String], Never>()
+      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
@@ -563,8 +612,16 @@ internal final class SearchViewModelTests: TestCase {
   func testSlowTyping() {
     let apiDelay = DispatchTimeInterval.seconds(2)
     let debounceDelay = DispatchTimeInterval.seconds(1)
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
 
-    withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
+    withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: popularResponse),
+      apiDelayInterval: apiDelay,
+      debounceInterval: debounceDelay
+    ) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -636,9 +693,12 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPageViewed_ReturningAfterSearching() {
-    let searchResponse = DiscoveryEnvelope.template
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -652,5 +712,31 @@ internal final class SearchViewModelTests: TestCase {
       XCTAssertEqual("maverick", segmentClientProps?["discover_search_term"] as? String)
       XCTAssertEqual(200, segmentClientProps?["discover_search_results_count"] as? Int)
     }
+  }
+}
+
+internal extension GraphAPI.SearchQuery.Data {
+  static var fiveResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle(for: SearchViewModelTests.self).url(
+      forResource: "SearchQuery_FiveResults",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
+  }
+
+  static var differentFiveResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle(for: SearchViewModelTests.self).url(
+      forResource: "SearchQuery_AnotherFiveResults",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
+  }
+
+  static var emptyResults: GraphAPI.SearchQuery.Data {
+    let url = Bundle(for: SearchViewModelTests.self).url(
+      forResource: "SearchQuery_EmptyResults",
+      withExtension: "json"
+    )
+    return try! Self(fromResource: url!)
   }
 }
