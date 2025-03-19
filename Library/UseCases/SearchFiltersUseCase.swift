@@ -35,7 +35,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       DiscoveryParams.Sort.newest
     ]
 
+    // Would it make more sense to just move this out? And then the dependencies are a little more explicit.
     self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
+
+    self.categoriesProperty <~ self.categoriesUseCase.categories
 
     self.showCategoryFilters = self.selectedCategoryIndexProperty.producer
       .takeWhen(self.tappedCategoryFilterSignal)
@@ -67,18 +70,37 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       sortOptions[idx]
     }
 
-    self.selectedCategory = Signal.merge(
+    let selectedCategoryIndex = Signal.merge(
       self.selectedCategoryIndexProperty.producer.takeWhen(initialSignal),
       self.selectedCategoryIndexProperty.signal
     )
-    .combineLatest(with: self.categoriesUseCase.categories)
-    .map { idx, categories in
-      guard let idx = idx else {
-        return nil
+
+    let categoryIsNilIfIndexIsNil: Signal<Category?, Never> = selectedCategoryIndex
+      .filter { $0 == nil }
+      .map { _ in
+        nil
       }
 
-      return categories[idx]
-    }
+    let categoryIfIndexIsNotNil: Signal<Category?, Never> = selectedCategoryIndex
+      .skipNil()
+      .combineLatest(with: self.categoriesUseCase.categories)
+      .map { idx, categories -> Category? in
+
+        guard idx < categories.count else {
+          assert(false, "Selected category is out of bounds. This shouldn't be possible.")
+          return nil
+        }
+
+        return categories[idx]
+      }
+
+    // This bit of complication is here because we want this use case to emit a
+    // selectedCategory of nil on the initial signal - even if no categories have been downloaded yet.
+
+    self.selectedCategory = Signal.merge(
+      categoryIsNilIfIndexIsNil,
+      categoryIfIndexIsNotNil
+    )
   }
 
   fileprivate let sortOptions: [DiscoveryParams.Sort]
@@ -90,6 +112,9 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   fileprivate let (tappedCategoryFilterSignal, tappedCategoryFilterObserver) = Signal<Void, Never>.pipe()
   public func tappedCategoryFilter() {
+    if self.categoriesProperty.value.isEmpty {
+      assert(false, "Tried to show category filter before categories have downloaded.")
+    }
     self.tappedCategoryFilterObserver.send(value: ())
   }
 
@@ -97,6 +122,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   fileprivate let selectedSortIndexProperty = MutableProperty<Int>(0)
   fileprivate let selectedCategoryIndexProperty = MutableProperty<Int?>(nil)
+  fileprivate let categoriesProperty = MutableProperty<[Category]>([])
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
@@ -109,6 +135,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   }
 
   public func selectedCategory(atIndex index: Int) {
+    if self.categoriesProperty.value.isEmpty {
+      assert(false, "Tried to select a category before categories have downloaded.")
+    }
+
     self.selectedCategoryIndexProperty.value = index
   }
 

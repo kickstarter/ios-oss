@@ -47,7 +47,6 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedCategory.assertDidNotEmitValue()
 
     self.initialObserver.send(value: ())
-    self.waitForCategoriesToLoad()
 
     self.selectedCategory.assertLastValue(nil)
   }
