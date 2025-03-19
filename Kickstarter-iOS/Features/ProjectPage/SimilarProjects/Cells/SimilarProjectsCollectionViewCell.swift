@@ -15,11 +15,11 @@ protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {
 
 final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
-  
+
   private lazy var projectCardView: SimilarProjectsCardView = { SimilarProjectsCardView(frame: .zero) }()
-  
+
   internal var project: SimilarProject?
-  
+
   weak var delegate: SimilarProjectsCollectionViewCellDelegate?
 
   // MARK: - Lifecycle
@@ -29,8 +29,8 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
     self.configureViews()
     self.bindStyles()
-    
-    let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
     self.contentView.isUserInteractionEnabled = true
     self.contentView.addGestureRecognizer(gesture)
   }
@@ -67,11 +67,12 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
   override func bindStyles() {
     applyBaseCellStyle(self)
   }
-  
+
   // MARK: - Accessors
-  @objc func handleTap(_ sender: UITapGestureRecognizer) {
+
+  @objc func handleTap(_: UITapGestureRecognizer) {
     guard let project = project else { return }
-    
+
     self.delegate?.didSelectProject(project)
   }
 }

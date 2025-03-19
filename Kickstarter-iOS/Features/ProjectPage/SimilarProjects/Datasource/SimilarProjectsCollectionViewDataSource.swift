@@ -9,7 +9,7 @@ protocol SimilarProjectsCollectionViewDataSourceDelegate: AnyObject {
 
 final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
   weak var delegate: SimilarProjectsCollectionViewDataSourceDelegate?
-  
+
   func load(_ values: [any SimilarProject], isLoading: Bool = false) {
     guard isLoading == false else {
       /// Sets `[(), ()]` in values so that two cells display to indicate that a collection is loading.
