@@ -2545,6 +2545,72 @@ public enum GraphAPI {
     }
   }
 
+  /// What order to sort projects in
+  public enum ProjectSort: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case magic
+    case popularity
+    case newest
+    case endDate
+    case mostFunded
+    case mostBacked
+    case distance
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "MAGIC": self = .magic
+        case "POPULARITY": self = .popularity
+        case "NEWEST": self = .newest
+        case "END_DATE": self = .endDate
+        case "MOST_FUNDED": self = .mostFunded
+        case "MOST_BACKED": self = .mostBacked
+        case "DISTANCE": self = .distance
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .magic: return "MAGIC"
+        case .popularity: return "POPULARITY"
+        case .newest: return "NEWEST"
+        case .endDate: return "END_DATE"
+        case .mostFunded: return "MOST_FUNDED"
+        case .mostBacked: return "MOST_BACKED"
+        case .distance: return "DISTANCE"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: ProjectSort, rhs: ProjectSort) -> Bool {
+      switch (lhs, rhs) {
+        case (.magic, .magic): return true
+        case (.popularity, .popularity): return true
+        case (.newest, .newest): return true
+        case (.endDate, .endDate): return true
+        case (.mostFunded, .mostFunded): return true
+        case (.mostBacked, .mostBacked): return true
+        case (.distance, .distance): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [ProjectSort] {
+      return [
+        .magic,
+        .popularity,
+        .newest,
+        .endDate,
+        .mostFunded,
+        .mostBacked,
+        .distance,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -13768,6 +13834,259 @@ public enum GraphAPI {
               set {
                 resultMap.updateValue(newValue, forKey: "type")
               }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public final class SearchQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query Search($term: String, $sort: ProjectSort, $first: Int, $cursor: String) {
+        projects(term: $term, sort: $sort, after: $cursor, first: $first) {
+          __typename
+          nodes {
+            __typename
+            ...BackerDashboardProjectCellFragment
+            ...ProjectAnalyticsFragment
+          }
+          totalCount
+          pageInfo {
+            __typename
+            endCursor
+            hasNextPage
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "Search"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + BackerDashboardProjectCellFragment.fragmentDefinition)
+      document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
+      return document
+    }
+
+    public var term: String?
+    public var sort: ProjectSort?
+    public var first: Int?
+    public var cursor: String?
+
+    public init(term: String? = nil, sort: ProjectSort? = nil, first: Int? = nil, cursor: String? = nil) {
+      self.term = term
+      self.sort = sort
+      self.first = first
+      self.cursor = cursor
+    }
+
+    public var variables: GraphQLMap? {
+      return ["term": term, "sort": sort, "first": first, "cursor": cursor]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(projects: Project? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "projects": projects.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+      }
+
+      /// Get some projects
+      public var projects: Project? {
+        get {
+          return (resultMap["projects"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "projects")
+        }
+      }
+
+      public struct Project: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["ProjectsConnectionWithTotalCount"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("nodes", type: .list(.object(Node.selections))),
+            GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+            GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(nodes: [Node?]? = nil, totalCount: Int, pageInfo: PageInfo) {
+          self.init(unsafeResultMap: ["__typename": "ProjectsConnectionWithTotalCount", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount, "pageInfo": pageInfo.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// A list of nodes.
+        public var nodes: [Node?]? {
+          get {
+            return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+          }
+          set {
+            resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+          }
+        }
+
+        public var totalCount: Int {
+          get {
+            return resultMap["totalCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "totalCount")
+          }
+        }
+
+        /// Information to aid in pagination.
+        public var pageInfo: PageInfo {
+          get {
+            return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Project"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLFragmentSpread(BackerDashboardProjectCellFragment.self),
+              GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var fragments: Fragments {
+            get {
+              return Fragments(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public struct Fragments {
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var backerDashboardProjectCellFragment: BackerDashboardProjectCellFragment {
+              get {
+                return BackerDashboardProjectCellFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+
+            public var projectAnalyticsFragment: ProjectAnalyticsFragment {
+              get {
+                return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+          }
+        }
+
+        public struct PageInfo: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["PageInfo"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("endCursor", type: .scalar(String.self)),
+              GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(endCursor: String? = nil, hasNextPage: Bool) {
+            self.init(unsafeResultMap: ["__typename": "PageInfo", "endCursor": endCursor, "hasNextPage": hasNextPage])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// When paginating forwards, the cursor to continue.
+          public var endCursor: String? {
+            get {
+              return resultMap["endCursor"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "endCursor")
+            }
+          }
+
+          /// When paginating forwards, are there more items?
+          public var hasNextPage: Bool {
+            get {
+              return resultMap["hasNextPage"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "hasNextPage")
             }
           }
         }

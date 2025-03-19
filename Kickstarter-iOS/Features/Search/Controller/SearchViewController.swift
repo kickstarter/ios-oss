@@ -165,8 +165,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeValues { [weak self] project, projects, refTag in
-        self?.goTo(project: project, projects: projects, refTag: refTag)
+      .observeValues { [weak self] projectId, refTag in
+        self?.goTo(projectId: projectId, refTag: refTag)
       }
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
@@ -182,8 +182,8 @@ internal final class SearchViewController: UITableViewController {
       }
   }
 
-  fileprivate func goTo(project: Project, projects _: [Project], refTag: RefTag) {
-    let projectParam = Either<Project, Param>(left: project)
+  fileprivate func goTo(projectId: Int, refTag: RefTag) {
+    let projectParam = Either<Project, Param>(right: Param.id(projectId))
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: RefInfo(refTag)
@@ -216,11 +216,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let project = self.dataSource[indexPath] as? Project else {
-      return
-    }
-
-    self.viewModel.inputs.tapped(project: project)
+    self.viewModel.inputs.tapped(projectAtIndex: indexPath.row)
   }
 
   internal override func tableView(
