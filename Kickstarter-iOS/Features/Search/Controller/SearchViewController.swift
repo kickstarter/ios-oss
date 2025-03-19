@@ -18,27 +18,10 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchTextField: UITextField!
   @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
-  lazy var sortButton: UIButton = {
-    let button = UIButton()
-    button.setTitle("Sort", for: .normal)
-    button.addTarget(self, action: #selector(SearchViewController.sortButtonTapped), for: .touchUpInside)
-    button.setTitleColor(.ksr_create_500, for: .normal)
-    button.setBackgroundColor(.ksr_white, for: .normal)
-    return button
-  }()
-
-  lazy var categoryButton: UIButton = {
-    let button = UIButton()
-    button.setTitle("Category", for: .normal)
-    button.addTarget(self, action: #selector(SearchViewController.categoryButtonTapped), for: .touchUpInside)
-    button.setTitleColor(.ksr_create_500, for: .normal)
-    button.setBackgroundColor(.ksr_create_500, for: .normal)
-    return button
-  }()
-
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
+  private let showFilters = MutableProperty<Bool>(false) // Bound to the view model property
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -52,32 +35,6 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.register(nib: .BackerDashboardProjectCell)
 
     self.viewModel.inputs.viewDidLoad()
-
-    self.tableView.addSubview(self.sortButton)
-  }
-
-  private let showFilters = MutableProperty<Bool>(false)
-
-  override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard section == SearchDataSource.Section.projects.rawValue,
-          self.showFilters.value == true else {
-      return nil
-    }
-
-    let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
-    stackView.axis = .horizontal
-    stackView.distribution = .fillEqually
-    stackView.spacing = Styles.grid(1)
-    return stackView
-  }
-
-  override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard section == SearchDataSource.Section.projects.rawValue,
-          self.showFilters.value == true else {
-      return 0
-    }
-
-    return 25
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -317,6 +274,35 @@ internal final class SearchViewController: UITableViewController {
     )
   }
 
+  override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showFilters.value == true else {
+      return nil
+    }
+
+    let header = PlaceholderSortFilterView()
+    header.sortButton.addTarget(
+      self,
+      action: #selector(SearchViewController.sortButtonTapped),
+      for: .touchUpInside
+    )
+    header.categoryButton.addTarget(
+      self,
+      action: #selector(SearchViewController.categoryButtonTapped),
+      for: .touchUpInside
+    )
+    return header
+  }
+
+  override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showFilters.value == true else {
+      return 0
+    }
+
+    return PlaceholderSortFilterView.headerHeight
+  }
+
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -354,3 +340,43 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: TabBarControllerScrollable {}
+
+// FIXME: MBL-2175. This will be a much nicer view. For now, a placeholder!
+private class PlaceholderSortFilterView: UIView {
+  static let headerHeight: CGFloat = 30.0
+  internal var sortButton = UIButton()
+  internal var categoryButton = UIButton()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    self.backgroundColor = .ksr_white
+
+    self.sortButton.setTitle("Sort", for: .normal)
+    self.sortButton.setTitleColor(.ksr_create_500, for: .normal)
+    self.sortButton.setBackgroundColor(.ksr_white, for: .normal)
+    self.sortButton.layer.borderColor = UIColor.ksr_create_100.cgColor
+    self.sortButton.layer.borderWidth = 1.0
+    self.sortButton.layer.cornerRadius = Self.headerHeight / 2
+
+    self.categoryButton.setTitle("Category", for: .normal)
+    self.categoryButton.setTitleColor(.ksr_create_500, for: .normal)
+    self.categoryButton.setBackgroundColor(.ksr_white, for: .normal)
+    self.categoryButton.layer.borderColor = UIColor.ksr_create_100.cgColor
+    self.categoryButton.layer.borderWidth = 1.0
+    self.categoryButton.layer.cornerRadius = Self.headerHeight / 2
+
+    let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
+    stackView.spacing = Styles.grid(1)
+
+    self.addSubview(stackView)
+    let _ = ksr_constrainViewToEdgesInParent()(stackView, self)
+  }
+
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    assert(false, "Unimplemented")
+  }
+}
