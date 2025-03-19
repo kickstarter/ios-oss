@@ -75,40 +75,18 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       params.map { p in SelectableRow(isSelected: p == selectedRow.params, params: p) }
     }
 
+    self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: self.viewDidLoadProperty.signal)
+
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
       .map { $0.params.category?.rootId }
-
-    let loaderIsVisible = MutableProperty(false)
-
-    let cachedCats = self.viewDidLoadProperty.signal
-      .map(cachedCategories)
-
-    let categoriesEvent = cachedCats
-      .filter { $0?.isEmpty != .some(false) }
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphCategories()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: {
-            loaderIsVisible.value = true
-          })
-          .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
-          .materialize()
-      }
-
-    self.loadingIndicatorIsVisible = Signal.merge(
-      loaderIsVisible.signal,
-      categoriesEvent.values().mapConst(false)
-    )
-
-    let cachedOrLoadedCategories = Signal.merge(
-      cachedCats.skipNil(),
-      categoriesEvent.values()
-    ).on(value: { cache(categories:) }())
 
     self.loadTopRows = Signal.combineLatest(topRows, categoryId)
       .map { (rows: $0, categoryId: $1) }
 
-    let selectedRowWithCategories = Signal.combineLatest(initialSelectedRow, cachedOrLoadedCategories)
+    let selectedRowWithCategories = Signal.combineLatest(
+      initialSelectedRow,
+      self.categoriesUseCase.categories
+    )
 
     let favoriteRows = selectedRowWithCategories
       .map(favorites(selectedRow:categories:))
@@ -196,7 +174,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   }
 
   public let animateInView: Signal<(), Never>
-  public let loadingIndicatorIsVisible: Signal<Bool, Never>
+  public var loadingIndicatorIsVisible: Signal<Bool, Never> {
+    self.categoriesUseCase.loadingIndicatorIsVisible
+  }
+
   public let loadCategoryRows: Signal<
     (rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
     Never
@@ -204,6 +185,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never>
   public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never>
   public let notifyDelegateOfSelectedRow: Signal<SelectableRow, Never>
+
+  private let categoriesUseCase: FetchCategoriesUseCase
 
   public var inputs: DiscoveryFiltersViewModelInputs { return self }
   public var outputs: DiscoveryFiltersViewModelOutputs { return self }
@@ -333,15 +316,6 @@ private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
       }
     }
   return faves.isEmpty ? nil : faves
-}
-
-private func cachedCategories() -> [KsApi.Category]? {
-  return AppEnvironment.current
-    .cache[KSCache.ksr_discoveryFiltersCategories] as? [KsApi.Category]
-}
-
-private func cache(categories: [KsApi.Category]) {
-  AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 
 private func typeContext(
