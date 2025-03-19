@@ -108,6 +108,6 @@ private func applyLabelViewStyle(_ view: UIView) {
 
 extension SimilarProjectsLoadingCollectionViewCell: ShimmerLoading {
   func shimmerViews() -> [UIView] {
-    return [self.imagePlaceholder]
+    return [self.imagePlaceholder, self.titleLabelPlaceholder, self.subtitleLabelPlaceholder]
   }
 }
