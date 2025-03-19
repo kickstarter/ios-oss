@@ -2,6 +2,10 @@ import KsApi
 import Library
 import UIKit
 
+protocol SimilarProjectsTableViewCellDelegate: AnyObject {
+  func didSelectProject(_ cell: SimilarProjectsTableViewCell)
+}
+
 enum SimilarProjectsCellConstants {
   static let spacing: CGFloat = Styles.grid(3)
   static let collectionViewInteritemSpacing: CGFloat = 8.0
@@ -17,6 +21,8 @@ enum SimilarProjectsCellConstants {
 class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  weak var delegate: SimilarProjectsTableViewCellDelegate?
+
   private let dataSource: SimilarProjectsCollectionViewDataSource = SimilarProjectsCollectionViewDataSource()
   private let layout = UICollectionViewFlowLayout()
 
@@ -31,6 +37,7 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.collectionView.dataSource = self.dataSource
+    self.collectionView.delegate = self
     self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
 
     self.configureSubviews()
@@ -130,4 +137,12 @@ private func applyTitleLabelStyle(_ label: UILabel) {
   label.text = Strings.Similar_projects()
   label.font = .ksr_title3()
   label.translatesAutoresizingMaskIntoConstraints = false
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SimilarProjectsTableViewCell: UICollectionViewDelegate {
+  func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
+    self.delegate?.didSelectProject(self)
+  }
 }

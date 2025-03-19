@@ -927,6 +927,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       self.playbackDelegate = cell
     } else if let cell = cell as? ImageViewElementCell {
       cell.pinchToZoomDelegate = self
+    } else if let cell = cell as? SimilarProjectsTableViewCell {
+      cell.delegate = self
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
@@ -1058,6 +1060,12 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       )
 
     self.present(actionSheet, animated: true)
+  }
+}
+
+extension ProjectPageViewController: SimilarProjectsTableViewCellDelegate {
+  func didSelectProject(_ cell: SimilarProjectsTableViewCell) {
+    print("did select similar project cell \(cell)")
   }
 }
 
