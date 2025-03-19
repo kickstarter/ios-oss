@@ -1078,8 +1078,8 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 }
 
 extension ProjectPageViewController: SimilarProjectsTableViewCellDelegate {
-  func didSelectProject(_ cell: SimilarProjectsTableViewCell) {
-    print("did select similar project cell \(cell)")
+  func didSelectProject(_ project: SimilarProject) {
+    self.viewModel.inputs.similarProjectTapped(project: project)
   }
 }
 

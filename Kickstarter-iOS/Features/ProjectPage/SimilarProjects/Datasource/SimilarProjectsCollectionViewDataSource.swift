@@ -3,7 +3,13 @@ import KsApi
 import Library
 import UIKit
 
+protocol SimilarProjectsCollectionViewDataSourceDelegate: AnyObject {
+  func didSelectProject(_ project: SimilarProject)
+}
+
 final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
+  weak var delegate: SimilarProjectsCollectionViewDataSourceDelegate?
+  
   func load(_ values: [any SimilarProject], isLoading: Bool = false) {
     guard isLoading == false else {
       /// Sets `[(), ()]` in values so that two cells display to indicate that a collection is loading.
@@ -27,8 +33,15 @@ final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as SimilarProjectsCollectionViewCell, value as any SimilarProject):
       cell.configureWith(value: value)
+      cell.delegate = self
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
     }
+  }
+}
+
+extension SimilarProjectsCollectionViewDataSource: SimilarProjectsCollectionViewCellDelegate {
+  func didSelectProject(_ project: any SimilarProject) {
+    self.delegate?.didSelectProject(project)
   }
 }

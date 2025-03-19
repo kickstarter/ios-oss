@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 protocol SimilarProjectsTableViewCellDelegate: AnyObject {
-  func didSelectProject(_ cell: SimilarProjectsTableViewCell)
+  func didSelectProject(_ project: SimilarProject)
 }
 
 enum SimilarProjectsCellConstants {
@@ -20,7 +20,7 @@ enum SimilarProjectsCellConstants {
 
 final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   // MARK: - Properties
-
+  
   weak var delegate: SimilarProjectsTableViewCellDelegate?
 
   private let dataSource: SimilarProjectsCollectionViewDataSource = SimilarProjectsCollectionViewDataSource()
@@ -37,7 +37,7 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.collectionView.dataSource = self.dataSource
-    self.collectionView.delegate = self
+    self.dataSource.delegate = self
     self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
     self.collectionView.registerCellClass(SimilarProjectsLoadingCollectionViewCell.self)
 
@@ -154,10 +154,8 @@ private func applyTitleLabelStyle(_ label: UILabel) {
   label.translatesAutoresizingMaskIntoConstraints = false
 }
 
-// MARK: - UICollectionViewDelegate
-
-extension SimilarProjectsTableViewCell: UICollectionViewDelegate {
-  func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
-    self.delegate?.didSelectProject(self)
+extension SimilarProjectsTableViewCell: SimilarProjectsCollectionViewDataSourceDelegate {
+  func didSelectProject(_ project: any SimilarProject) {
+    self.delegate?.didSelectProject(project)
   }
 }
