@@ -606,6 +606,73 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // Tests that ref tags for similar projects and referral credit cookies are tracked and saved like we expect.
+  func testTracksRefTag_SimilarProjects() {
+    let project = Project.template
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([
+        Reward.noReward,
+        Reward.template
+      ])
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.similarProjects))
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        ["Page Viewed"],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
+
+      XCTAssertEqual(
+        [RefTag.similarProjects.stringTag],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The ref tag is tracked in the event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie is set"
+      )
+      XCTAssertEqual(
+        "ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
+        "A referral cookie is set for the project."
+      )
+
+      // Start up another view model with the same project
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewDidAppear(animated: true)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        [
+          "Page Viewed", "Page Viewed"
+        ],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
+
+      XCTAssertEqual(
+        [
+          RefTag.similarProjects.stringTag,
+          RefTag.recommended.stringTag
+        ],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The new ref tag is tracked in an event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie has been set."
+      )
+    }
+  }
+
   func testProjectPageViewed_Tracking_OnError() {
     let service = MockService(fetchProjectPamphletResult: .failure(.couldNotParseJSON))
 
