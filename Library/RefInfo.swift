@@ -35,6 +35,7 @@ public enum RefTag {
   case searchFeatured
   case searchPopular
   case searchPopularFeatured
+  case similarProjects
   case social
   case socialWithSort(DiscoveryParams.Sort)
   case starredWithSort(DiscoveryParams.Sort)
@@ -88,6 +89,7 @@ public enum RefTag {
     case "search_featured": self = .searchFeatured
     case "search_popular": self = .searchPopular
     case "search_popular_featured": self = .searchPopularFeatured
+    case "similar_projects": self = .similarProjects
     case "social": self = .social
     case "social_ending_soon": self = .socialWithSort(.endingSoon)
     case "social_home": self = .socialWithSort(.magic)
@@ -154,6 +156,8 @@ public enum RefTag {
       return "search_popular"
     case .searchPopularFeatured:
       return "search_popular_featured"
+    case .similarProjects:
+      return "similar_projects"
     case .social:
       return "social"
     case let .socialWithSort(sort):
