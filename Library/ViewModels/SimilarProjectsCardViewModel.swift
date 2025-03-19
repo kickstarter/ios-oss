@@ -43,9 +43,9 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
 
     self.projectImageSource = project.map { $0.image }
 
-    self.projectStatus = project.map(projectStatus(for:))
+    self.projectStatus = project.map(getProjectStatus(for:))
 
-    self.projectStatusImage = project.map(projectStatusImage(for:))
+    self.projectStatusImage = project.map(getProjectStatusImage(for:))
 
     self.projectTitle = project.map { $0.name }
 
@@ -73,7 +73,7 @@ public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelTyp
   public var outputs: ProjectsCardViewModelOutputs { return self }
 }
 
-private func projectStatus(for project: any SimilarProject) -> String {
+private func getProjectStatus(for project: any SimilarProject) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Launching_soon() }
 
   let percentage = Format.percentage(project.percentFunded)
@@ -101,7 +101,7 @@ private func projectStatus(for project: any SimilarProject) -> String {
   }
 }
 
-private func projectStatusImage(for project: any SimilarProject) -> UIImage? {
+private func getProjectStatusImage(for project: any SimilarProject) -> UIImage? {
 //  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
 //  else { return UIImage(named: "icon-late-pledge-timer") }
 

@@ -63,6 +63,7 @@ $(PROJECT_DIR)/KsApi/queries/FetchUserSetup.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserStoredCards.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchMyBackedProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsBySlug.graphql
+$(PROJECT_DIR)/KsApi/queries/SearchQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectRewardsByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchAddOnsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchPPOQuery.graphql
