@@ -106,8 +106,22 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     super.updateConstraints()
   }
 
-  // TODO: Will use the state object to load the collectionview appropriately.
-  func configureWith(value _: SimilarProjectsState) {
+  func configureWith(value: SimilarProjectsState?) {
+    guard let state = value else { return }
+
+    switch state {
+    case .hidden:
+      self.dataSource.load([], isLoading: false)
+    case .loading:
+      self.dataSource.load([], isLoading: true)
+      self.collectionView.isScrollEnabled = false
+    case let .loaded(projects):
+      self.dataSource.load(projects, isLoading: false)
+      self.collectionView.isScrollEnabled = true
+    case let .error(error):
+      self.dataSource.load([], isLoading: false)
+    }
+
     self.collectionView.reloadData()
     self.layoutIfNeeded()
   }
