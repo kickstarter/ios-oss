@@ -16,8 +16,10 @@ extension GraphAPI.ProjectSort {
 }
 
 extension GraphAPI.SearchQuery {
-  static func from(discoveryParams params: DiscoveryParams, withCursor cursor: String? = nil) -> GraphAPI
-    .SearchQuery {
+  static func from(
+    discoveryParams params: DiscoveryParams,
+    withCursor cursor: String? = nil
+  ) -> GraphAPI.SearchQuery {
     let sort = GraphAPI.ProjectSort.from(discovery: params.sort ?? .magic)
     return GraphAPI.SearchQuery(term: params.query, sort: sort, first: params.perPage, cursor: cursor)
   }
