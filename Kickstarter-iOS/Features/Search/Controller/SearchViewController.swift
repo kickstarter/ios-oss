@@ -22,8 +22,8 @@ internal final class SearchViewController: UITableViewController {
     let button = UIButton()
     button.setTitle("Sort", for: .normal)
     button.addTarget(self, action: #selector(SearchViewController.sortButtonTapped), for: .touchUpInside)
-    button.setTitleColor(.ksr_alert, for: .normal)
-    button.setBackgroundColor(.ksr_alert_background, for: .normal)
+    button.setTitleColor(.ksr_create_500, for: .normal)
+    button.setBackgroundColor(.ksr_white, for: .normal)
     return button
   }()
 
@@ -31,8 +31,8 @@ internal final class SearchViewController: UITableViewController {
     let button = UIButton()
     button.setTitle("Category", for: .normal)
     button.addTarget(self, action: #selector(SearchViewController.categoryButtonTapped), for: .touchUpInside)
-    button.setTitleColor(.ksr_alert, for: .normal)
-    button.setBackgroundColor(.ksr_alert_background, for: .normal)
+    button.setTitleColor(.ksr_create_500, for: .normal)
+    button.setBackgroundColor(.ksr_create_500, for: .normal)
     return button
   }()
 
@@ -48,7 +48,6 @@ internal final class SearchViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-    self.tableView.delegate = self
 
     self.tableView.register(nib: .BackerDashboardProjectCell)
 
@@ -68,6 +67,7 @@ internal final class SearchViewController: UITableViewController {
     let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
+    stackView.spacing = Styles.grid(1)
     return stackView
   }
 
