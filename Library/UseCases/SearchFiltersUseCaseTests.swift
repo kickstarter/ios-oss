@@ -1,0 +1,143 @@
+@testable import KsApi
+@testable import Library
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
+
+final class SearchFiltersUseCaseTests: TestCase {
+  private var useCase: SearchFiltersUseCase!
+
+  private let selectedSort = TestObserver<DiscoveryParams.Sort, Never>()
+  private let selectedCategory = TestObserver<KsApi.Category?, Never>()
+  private let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
+  private let showSort = TestObserver<SearchSortSheet, Never>()
+
+  private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
+
+  private let categories: [KsApi.Category] = [
+    .art,
+    .filmAndVideo,
+    .illustration,
+    .documentary
+  ]
+
+  override func setUp() {
+    super.setUp()
+
+    let response = RootCategoriesEnvelope(rootCategories: self.categories)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(response))
+
+    AppEnvironment.pushEnvironment(apiService: mockService, cache: KSCache())
+
+    self.useCase = SearchFiltersUseCase(initialSignal: self.initialSignal)
+
+    self.useCase.dataOuputs.selectedCategory.observe(self.selectedCategory.observer)
+    self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
+    self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
+    self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+
+    super.tearDown()
+  }
+
+  func test_category_onInitialSignal_isNil() {
+    self.selectedCategory.assertDidNotEmitValue()
+
+    self.initialObserver.send(value: ())
+    self.waitForCategoriesToLoad()
+
+    self.selectedCategory.assertLastValue(nil)
+  }
+
+  func test_sort_onInitialSignal_isPopular() {
+    self.selectedSort.assertDidNotEmitValue()
+
+    self.initialObserver.send(value: ())
+
+    self.selectedSort.assertLastValue(.popular)
+  }
+
+  func test_tappedSort_showsSortOptions() {
+    self.initialObserver.send(value: ())
+
+    self.showSort.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedSort()
+
+    self.showSort.assertDidEmitValue()
+
+    if let sortOptions = self.showSort.lastValue {
+      XCTAssertEqual(sortOptions.selectedIndex, 0, "First option should be selected by default")
+      XCTAssertGreaterThan(sortOptions.sortNames.count, 0, "There should be multiple sort options")
+    }
+  }
+
+  func test_tappedCategories_showsCategoryFilters() {
+    self.initialObserver.send(value: ())
+    self.waitForCategoriesToLoad()
+
+    self.showCategoryFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedCategoryFilter()
+
+    self.showCategoryFilters.assertDidEmitValue()
+
+    if let categoryOptions = self.showCategoryFilters.lastValue {
+      XCTAssertEqual(categoryOptions.selectedIndex, nil, "No category should be selected by default")
+      XCTAssertEqual(
+        categoryOptions.categoryNames.count,
+        self.categories.count,
+        "The sheet should show categories returned from the API"
+      )
+    }
+  }
+
+  func test_selectingCategory_updatesCategory() {
+    self.initialObserver.send(value: ())
+    self.waitForCategoriesToLoad()
+
+    self.showCategoryFilters.assertDidNotEmitValue()
+    self.selectedCategory.assertLastValue(nil)
+
+    self.useCase.inputs.tappedCategoryFilter()
+    self.showCategoryFilters.assertDidEmitValue()
+
+    self.useCase.inputs.selectedCategory(atIndex: 0)
+
+    guard let newCategory = self.selectedCategory.lastValue else {
+      XCTFail("There should be a new selected category")
+      return
+    }
+
+    XCTAssertEqual(newCategory, self.categories[0], "Should have selected the first category in the list")
+  }
+
+  func test_selectingSort_updatesSort() {
+    self.initialObserver.send(value: ())
+
+    self.showSort.assertDidNotEmitValue()
+    self.selectedSort.assertLastValue(.popular)
+
+    self.useCase.inputs.tappedSort()
+    self.showSort.assertDidEmitValue()
+
+    self.useCase.inputs.selectedSortOption(atIndex: 1)
+
+    guard let newSelectedSort = self.selectedSort.lastValue else {
+      XCTFail("There should be a new selected sort option")
+      return
+    }
+
+    XCTAssertNotEqual(newSelectedSort, .popular, "Sort value should change when new sort is selected")
+  }
+
+  private func waitForCategoriesToLoad() {
+    // Categories are loaded asynchronously - either from KSCache or from the API.
+    // Jiggle the scheduler to make all these tests work.
+
+    self.scheduler.advance()
+  }
+}

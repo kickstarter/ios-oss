@@ -1627,7 +1627,6 @@
 		E13D767D2D42C36900FB58CE /* LoginSignupUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */; };
 		E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
 		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
-		E1573C272D888A0700826E18 /* SearchFiltersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1573C262D888A0700826E18 /* SearchFiltersUseCase.swift */; };
 		E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */; };
 		E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */; };
 		E15802442D7F72390000BAB3 /* SearchLegacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */; };
@@ -3377,7 +3376,6 @@
 		E13D76772D4195E700FB58CE /* ApplePayTokenUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayTokenUseCaseTests.swift; sourceTree = "<group>"; };
 		E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCase.swift; sourceTree = "<group>"; };
 		E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
-		E1573C262D888A0700826E18 /* SearchFiltersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersUseCase.swift; sourceTree = "<group>"; };
 		E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+ProjectCellModel.swift"; sourceTree = "<group>"; };
 		E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackerDashboardProjectCellFragment+ProjectCellModel.swift"; sourceTree = "<group>"; };
 		E15802432D7F72390000BAB3 /* SearchLegacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLegacyDataSource.swift; sourceTree = "<group>"; };
@@ -3428,6 +3426,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				FetchCategoriesUseCaseTests.swift,
+				SearchFiltersUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
@@ -3436,6 +3435,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				FetchCategoriesUseCaseTests.swift,
+				SearchFiltersUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A75511441C8642B3005355CF /* Library-iOSTests */;
@@ -7034,7 +7034,6 @@
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				E11E06A42D83713A002E81B9 /* SearchViewModel+GraphQL.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
-				E1573C262D888A0700826E18 /* SearchFiltersUseCase.swift */,
 				393E41F02D7A4A3E001A197A /* SearchLegacyViewModel.swift */,
 				393E41F22D7A4A64001A197A /* SearchLegacyViewModelTests.swift */,
 				D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */,
@@ -8464,7 +8463,6 @@
 				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
 				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
-				E1573C272D888A0700826E18 /* SearchFiltersUseCase.swift in Sources */,
 				33F55B3E2D4A6D030007E50E /* PledgePaymentIncrementFormatted.swift in Sources */,
 				33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,

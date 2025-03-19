@@ -1,16 +1,6 @@
 import KsApi
 import ReactiveSwift
 
-public struct SearchFilterCategoriesSheet {
-  public let categoryNames: [String]
-  public let selectedIndex: Int?
-}
-
-public struct SearchSortSheet {
-  public let sortNames: [String]
-  public let selectedIndex: Int
-}
-
 public protocol SearchFiltersUseCaseType {
   var inputs: SearchFiltersUseCaseInputs { get }
   var uiOutputs: SearchFiltersUseCaseUIOutputs { get }
@@ -22,25 +12,12 @@ public protocol SearchFiltersUseCaseInputs {
   func tappedCategoryFilter()
 
   func selectedSortOption(atIndex: Int)
+  func selectedCategory(atIndex index: Int)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
   var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
   var showSort: Signal<SearchSortSheet, Never> { get }
-}
-
-private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
-  // TODO: translations
-  switch sort {
-  case .endingSoon:
-    return "Ending Soon"
-  case .magic:
-    return "Magic"
-  case .newest:
-    return "Newest"
-  case .popular:
-    return "Popular"
-  }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
@@ -138,4 +115,28 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
   public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
+}
+
+public struct SearchFilterCategoriesSheet {
+  public let categoryNames: [String]
+  public let selectedIndex: Int?
+}
+
+public struct SearchSortSheet {
+  public let sortNames: [String]
+  public let selectedIndex: Int
+}
+
+private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
+  // TODO: translations
+  switch sort {
+  case .endingSoon:
+    return "Ending Soon"
+  case .magic:
+    return "Magic"
+  case .newest:
+    return "Newest"
+  case .popular:
+    return "Popular"
+  }
 }
