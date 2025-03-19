@@ -39,6 +39,7 @@ class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     self.collectionView.dataSource = self.dataSource
     self.collectionView.delegate = self
     self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
+    self.collectionView.registerCellClass(SimilarProjectsLoadingCollectionViewCell.self)
 
     self.configureSubviews()
     self.bindStyles()
