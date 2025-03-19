@@ -18,7 +18,7 @@ enum SimilarProjectsCellConstants {
  Contains the SimilarProjectsCarousel Title and UICollectionView.
  */
 
-class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
+final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   weak var delegate: SimilarProjectsTableViewCellDelegate?
