@@ -108,6 +108,7 @@
 "Card_ending_in_last_four" = "Card ending in %{last_four}";
 "Card_number" = "Card number";
 "Cardholder_name" = "Cardholder name";
+"Category" = "Category";
 "Change_currency" = "Change currency?";
 "Change_email" = "Change email";
 "Change_password" = "Change password";
@@ -225,6 +226,7 @@
 "Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Email notifications";
 "Email_unverified" = "This email address is unverified.";
+"End_date" = "End date";
 "Ended" = "Ended";
 "Ending_in_last_four" = "Ending in %{last_four}";
 "Ending_soon" = "Ending Soon";
@@ -422,14 +424,18 @@
 "Messages" = "Messages";
 "Million_plus" = "%{total_amount} million+";
 "More_than_number_of_items_items" = "More than %{number_of_items} items";
+"Most_backed" = "Most backed";
+"Most_funded" = "Most funded";
 "My_project_seeks_funding_for_AI_technology" = "My project seeks funding for AI technology.";
 "Name" = "Name";
+"Near_me" = "Near me";
 "Never" = "Never";
 "New_email" = "New email";
 "New_password" = "New password";
 "New_payment_method" = "New payment method";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
+"Newest" = "Newest";
 "News_and_projects" = "News and projects";
 "News_events" = "Big news and events happening near you, delivered just a few times a year.";
 "Newsletters" = "Newsletters";
@@ -509,6 +515,7 @@
 "Pledged_on_date" = "<b>Pledged</b> on %{pledge_date}";
 "Popular" = "Popular";
 "Popular_Projects" = "Popular Projects";
+"Popularity" = "Popularity";
 "Post" = "Post";
 "Postal_code" = "Postal code";
 "Postcode" = "Postcode";
@@ -574,6 +581,7 @@
 "Request_my_personal_data" = "Request my personal data";
 "Resend_email" = "Resend email";
 "Resend_verification_email" = "Re-send verification email";
+"Reset_filters" = "Reset";
 "Reset_your_password" = "Reset your password";
 "Retry" = "Retry";
 "Retry_or_select_another_method" = "Retry or select another method.";
@@ -618,6 +626,7 @@
 "See_all_category_name_projects" = "See all %{category_name} projects";
 "See_our_suggestions" = "See our suggestions ▸";
 "See_our_terms_of_use" = "See our Terms of Use";
+"See_results" = "See results";
 "See_rewards" = "See rewards";
 "See_the_rewards" = "See the rewards";
 "Select" = "Select";
@@ -675,6 +684,7 @@
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Something_went_wrong_pull_to_refresh" = "Something went wrong—pull to refresh.";
 "Something_went_wrong_pull_to_refresh_no_period" = "Something went wrong - Pull to refresh";
+"Sort_by" = "Sort by";
 "Spam" = "Spam";
 "Start_the_request" = "Start the request";
 "Starting_soon" = "Starting soon";

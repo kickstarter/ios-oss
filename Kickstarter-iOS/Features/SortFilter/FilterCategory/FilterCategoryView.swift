@@ -26,7 +26,6 @@ struct FilterCategoryView: View {
         .padding()
     }
     .background(Colors.Background.surfacePrimary.swiftUIColor())
-    .cornerRadius(Styles.cornerRadius)
 
     // Handle actions
     .onReceive(self.viewModel.selectedCategory) { category in
@@ -43,7 +42,7 @@ struct FilterCategoryView: View {
   @ViewBuilder
   private var headerView: some View {
     HStack {
-      Text("Category") // TODO: strings translations. [MLB-2204](https://kickstarter.atlassian.net/browse/MBL-2204)
+      Text(Strings.Category())
         .font(Font.ksr_headingXL())
         .foregroundStyle(Colors.Text.primary.swiftUIColor())
       Spacer()
@@ -97,16 +96,14 @@ struct FilterCategoryView: View {
   @ViewBuilder
   private var footerView: some View {
     HStack(spacing: Styles.grid(2)) {
-      Button("Reset") { [weak viewModel] () in
-        // TODO: strings translations. [MLB-2204](https://kickstarter.atlassian.net/browse/MBL-2204)
+      Button(Strings.Reset_filters()) { [weak viewModel] () in
         viewModel?.resetSelection()
       }
       .buttonStyle(KSRButtonStyleModifier(style: .outlined))
       .frame(maxWidth: Constants.resetButtonMaxWidth)
       .disabled(!self.viewModel.canReset)
 
-      Button("See Results") { [weak viewModel] () in
-        // TODO: strings translations. [MLB-2204](https://kickstarter.atlassian.net/browse/MBL-2204)
+      Button(Strings.See_results()) { [weak viewModel] () in
         viewModel?.seeResults()
       }
       .buttonStyle(KSRButtonStyleModifier(style: .filled))

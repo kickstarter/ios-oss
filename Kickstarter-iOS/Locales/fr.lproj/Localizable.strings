@@ -108,6 +108,7 @@
 "Card_ending_in_last_four" = "Numéro de carte se terminant par : %{last_four}";
 "Card_number" = "N° de carte";
 "Cardholder_name" = "Nom du titulaire";
+"Category" = "Category";
 "Change_currency" = "Changer de devise";
 "Change_email" = "Changer d'adresse e-mail";
 "Change_password" = "Changer de mot de passe";
@@ -225,7 +226,8 @@
 "Email_must_be_a_valid_email_address" = "L'adresse e-mail doit être valide.";
 "Email_notifications" = "Notifications par e-mail";
 "Email_unverified" = "Adresse e-mail non vérifiée.";
-"Ended" = "Ended";
+"End_date" = "End date";
+"Ended" = "Terminé";
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Enter_an_amount_less_than_max_pledge" = "Veuillez saisir un montant inférieur à %{max_pledge}.";
@@ -374,8 +376,8 @@
 "Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarter prend les atteintes au droit à la propriété intellectuelle très au sérieux. Pour plus d'information et pour des instructions sur le signalement d'utilisations abusives, veuillez consulter nos pages {{copyrightPolicyLink}} et {{trademarkPolicyLink}}. Seules les demandes formulées par le titulaire du droit d'auteur ou de la marque déposée seront traitées.";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
-"Late_pledges_active" = "Late pledges active";
-"Launching_soon" = "Launching soon";
+"Late_pledges_active" = "Contributions tardives activées";
+"Launching_soon" = "Bientôt en ligne";
 "Learn_about_AI_policy_on_Kickstarter" = "Comprendre la politique sur l'IA de Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "En savoir plus sur la notion de responsabilité sur Kickstarter";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
@@ -422,14 +424,18 @@
 "Messages" = "Messages";
 "Million_plus" = "Plus de %{total_amount} millions";
 "More_than_number_of_items_items" = "Plus de %{number_of_items} éléments";
+"Most_backed" = "Most backed";
+"Most_funded" = "Most funded";
 "My_project_seeks_funding_for_AI_technology" = "Le but de mon projet est de financer une technologie d'IA.";
 "Name" = "Nom";
+"Near_me" = "Near me";
 "Never" = "Jamais";
 "New_email" = "Nouvelle adresse e-mail";
 "New_password" = "Nouveau mot de passe";
 "New_payment_method" = "Nouveau moyen de paiement";
 "New_pledge_activity" = "Nouveaux engagements";
 "New_work_and_big_ideas_from_established_and" = "Grandes idées et nouveaux travaux signés par des artistes établis et émergents.";
+"Newest" = "Newest";
 "News_and_projects" = "Actualités et projets";
 "News_events" = "Les grandes nouvelles et événements près de chez vous, quelques fois par an.";
 "Newsletters" = "Lettres d'information";
@@ -509,6 +515,7 @@
 "Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
+"Popularity" = "Popularity";
 "Post" = "Publier";
 "Postal_code" = "Code postal";
 "Postcode" = "Code postal";
@@ -574,6 +581,7 @@
 "Request_my_personal_data" = "Demander mes données personnelles";
 "Resend_email" = "Renvoyer";
 "Resend_verification_email" = "Renvoyer l'e-mail de vérification";
+"Reset_filters" = "Reset";
 "Reset_your_password" = "Réinitialiser votre mot de passe";
 "Retry" = "Réessayer";
 "Retry_or_select_another_method" = "Veuillez réessayer ou choisir un autre moyen de paiement.";
@@ -618,6 +626,7 @@
 "See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
 "See_our_suggestions" = "Voir nos suggestions ▸";
 "See_our_terms_of_use" = "Consulter nos Conditions d'utilisation";
+"See_results" = "See results";
 "See_rewards" = "Afficher les récompenses";
 "See_the_rewards" = "Afficher les récompenses";
 "Select" = "Sélectionner";
@@ -661,7 +670,7 @@
 "Sign_up" = "Inscription";
 "Sign_up_newsletter" = "Inscrivez-vous à Coups de cœur pour recevoir une sélection hebdomadaire de projets marquants qui nous ont plu.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
-"Similar_projects" = "Similar projects";
+"Similar_projects" = "Projets similaires";
 "Skip_add_ons" = "Passer les compléments";
 "Social_friend_is_backer.few" = "%{friend_name} et %{remaining_count} autre(s)";
 "Social_friend_is_backer.many" = "%{friend_name} et %{remaining_count} autre(s)";
@@ -675,6 +684,7 @@
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
 "Something_went_wrong_pull_to_refresh" = "Une erreur s'est produite, faites glisser l'écran vers le bas pour l'actualiser.";
 "Something_went_wrong_pull_to_refresh_no_period" = "Une erreur s'est produite. Tirez l'écran vers le bas pour l'actualiser.";
+"Sort_by" = "Sort by";
 "Spam" = "Spam";
 "Start_the_request" = "Commencer la préparation";
 "Starting_soon" = "Bientôt en direct";
