@@ -3,18 +3,19 @@ import Library
 import UIKit
 
 /*
- A container for the Similar Projects Carousel.
+ A Collection View Cell for the Similar Projects Carousel.
 
- Right now this just contains the projects card, but will eventualy contain the UICollectionView carousel that displays multiple similar project cards.
+ Contains a Similar Projects Card UIView that can then be registered and used in a UICollectionView
+
  */
 
-final class SimilarProjectsCarouselTableViewCell: UITableViewCell, ValueCell {
+final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
   private lazy var projectCardView: SimilarProjectsCardView = { SimilarProjectsCardView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     self.configureViews()
     self.bindStyles()
@@ -53,11 +54,8 @@ final class SimilarProjectsCarouselTableViewCell: UITableViewCell, ValueCell {
   }
 }
 
-private func applyBaseCellStyle(_ cell: UITableViewCell) {
-  cell.contentView.layoutMargins = .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
+private func applyBaseCellStyle(_ cell: UICollectionViewCell) {
   cell.contentView.preservesSuperviewLayoutMargins = false
   cell.backgroundColor = .ksr_white
-  cell.layoutMargins = .init(all: 0.0)
   cell.preservesSuperviewLayoutMargins = false
-  cell.selectionStyle = .none
 }
