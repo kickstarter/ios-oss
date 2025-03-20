@@ -54,7 +54,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.showCategoryFilters = self.selectedCategoryIndexProperty.producer
       .takeWhen(self.tappedCategoryFilterSignal)
       .combineLatest(with: categories)
-      .map { selectedIdx, categories -> SearchFilterCategoriesSheet? in
+      .map { selectedIdx, categories -> SearchFilterCategoriesSheet in
         let names = categories.map { $0.name }
 
         return SearchFilterCategoriesSheet(
@@ -62,16 +62,14 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
           selectedIndex: selectedIdx
         )
       }
-      .skipNil()
 
     self.showSort = self.selectedSortIndexProperty.producer
       .takeWhen(self.tappedSortSignal)
-      .map { [sortOptions] selectedIdx -> SearchSortSheet? in
+      .map { [sortOptions] selectedIdx -> SearchSortSheet in
         let names = sortOptions.map(sortOptionName(from:))
 
         return SearchSortSheet(sortNames: names, selectedIndex: selectedIdx)
       }
-      .skipNil()
 
     self.selectedSort = Signal.merge(
       self.selectedSortIndexProperty.producer.takeWhen(initialSignal),
