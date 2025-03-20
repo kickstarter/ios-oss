@@ -3426,6 +3426,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				FetchCategoriesUseCaseTests.swift,
+				SearchFiltersUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
@@ -3434,6 +3435,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				FetchCategoriesUseCaseTests.swift,
+				SearchFiltersUseCaseTests.swift,
 				SimilarProjects/SimilarProjectsUseCaseTests.swift,
 			);
 			target = A75511441C8642B3005355CF /* Library-iOSTests */;
