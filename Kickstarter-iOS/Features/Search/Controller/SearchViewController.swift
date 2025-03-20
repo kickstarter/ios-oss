@@ -21,7 +21,7 @@ internal final class SearchViewController: UITableViewController {
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
-  private let showFilters = MutableProperty<Bool>(false) // Bound to the view model property
+  private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -195,7 +195,7 @@ internal final class SearchViewController: UITableViewController {
         self?.showCategories(sheet)
       }
 
-    self.showFilters <~ self.viewModel.outputs.showFilters
+    self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
   }
 
   fileprivate func showSort(_ sheet: SearchSortSheet) {
@@ -276,7 +276,7 @@ internal final class SearchViewController: UITableViewController {
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     guard section == SearchDataSource.Section.projects.rawValue,
-          self.showFilters.value == true else {
+          self.showSortAndFilterHeader.value == true else {
       return nil
     }
 
@@ -296,7 +296,7 @@ internal final class SearchViewController: UITableViewController {
 
   override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard section == SearchDataSource.Section.projects.rawValue,
-          self.showFilters.value == true else {
+          self.showSortAndFilterHeader.value == true else {
       return 0
     }
 

@@ -28,13 +28,6 @@ public protocol SearchFiltersUseCaseDataOutputs {
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
   public init(initialSignal: Signal<Void, Never>) {
-    self.sortOptions = [
-      DiscoveryParams.Sort.popular,
-      DiscoveryParams.Sort.endingSoon,
-      DiscoveryParams.Sort.magic,
-      DiscoveryParams.Sort.newest
-    ]
-
     // Would it make more sense to just move this out? And then the dependencies are a little more explicit.
     self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
 
@@ -104,8 +97,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     )
   }
 
-  fileprivate let sortOptions: [DiscoveryParams.Sort]
-
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
   public func tappedSort() {
     self.tappedSortObserver.send(value: ())
@@ -127,6 +118,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   // Used for some extra assertions to make sure categories have loaded.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
+  fileprivate let sortOptions = [
+    DiscoveryParams.Sort.popular,
+    DiscoveryParams.Sort.endingSoon,
+    DiscoveryParams.Sort.magic,
+    DiscoveryParams.Sort.newest
+  ]
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>

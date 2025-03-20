@@ -77,7 +77,7 @@ public protocol SearchViewModelOutputs {
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 
-  var showFilters: Signal<Bool, Never> { get }
+  var showSortAndFilterHeader: Signal<Bool, Never> { get }
   var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
   var showSort: Signal<SearchSortSheet, Never> { get }
 }
@@ -334,7 +334,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.showFilters = Signal.combineLatest(
+    self.showSortAndFilterHeader = Signal.combineLatest(
       self.isPopularTitleVisible,
       queryText,
       self.projects
@@ -415,7 +415,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
-  public let showFilters: Signal<Bool, Never>
+  public let showSortAndFilterHeader: Signal<Bool, Never>
 
   public var showSort: Signal<SearchSortSheet, Never> {
     return self.searchFiltersUseCase.showSort
