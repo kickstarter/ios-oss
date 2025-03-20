@@ -123,11 +123,11 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.projectFlagged.observe(self.projectFlagged.observer)
     self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
-    self.vm.outputs.updateDataSource.map { $0.0 }
+    self.vm.outputs.updateDataSource.map { $0.0.0 }
       .observe(self.updateDataSourceNavigationSection.observer)
-    self.vm.outputs.updateDataSource.map { $0.1 }
+    self.vm.outputs.updateDataSource.map { $0.0.1 }
       .observe(self.updateDataSourceProject.observer)
-    self.vm.outputs.updateDataSource.map { $0.4 }
+    self.vm.outputs.updateDataSource.map { $0.0.4 }
       .observe(self.updateDataSourceImageURLS.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.0 }
       .observe(self.updateFAQsInDataSourceProject.observer)
