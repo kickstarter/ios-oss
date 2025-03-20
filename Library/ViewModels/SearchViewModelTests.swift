@@ -44,6 +44,8 @@ internal final class SearchViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
+
+    self.vm.inputs.viewDidLoad()
   }
 
   func testSearchPopularFeatured_RefTag() {
