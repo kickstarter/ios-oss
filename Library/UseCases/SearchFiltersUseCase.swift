@@ -8,46 +8,35 @@ public protocol SearchFiltersUseCaseType {
 }
 
 public protocol SearchFiltersUseCaseInputs {
+  /// Call this when the user taps on a button to show the sort options.
   func tappedSort()
+  /// Call this when the user taps on a button to show the category filters.
   func tappedCategoryFilter()
-
+  /// Call this when the user selects a new sort option.
   func selectedSortOption(atIndex: Int)
+  /// Call this when the user selects a new category.
   func selectedCategory(atIndex index: Int)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
+  /// Sends a model object which can be used to display category filter options. Only sends if `categories` have also been sent.
   var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
+  /// Sends a model object which can be used to display sort options.
   var showSort: Signal<SearchSortSheet, Never> { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
+  /// The currently selected sort option. Defaults to `.popular`. Default value only sent after `initialSignal` occurs.
   var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
+  /// The currently selected category. Defaults to nil. Default value only sent after `initialSignal` occurs.
   var selectedCategory: Signal<Category?, Never> { get }
 }
 
-/** A use case for showing sorting and filtering options in our search flow.
-
- Data Inputs:
-  * `initialSignal` - An initial signal pulse. Must be sent once for default values of `selectedSort` and `selectedCategory` to emit.
-  * `categories` - A list of possible filter categories. Must be sent for `showCategoryFilters` and `selectedSortOption` to work.
-
- UI Inputs:
-  * `tappedSort()` - Call this when the user taps on a button to show the sort options.
-  * `tappedCategoryFilter()` - Call this when the user taps on a button to show the category filters.
-  * `selectedSortOption(atIndex:)` - Call this when the user selects a new sort option.
-  * `selectedCategory(atIndex:)` - Call this when the user selects a new category.
-
- Data Outputs:
-  * `selectedSort` - The currently selected sort option. Defaults to `.popular`. Default value only sent after `initialSignal` occurs.
-  * `selectedCategory` - The currently selected category. Defaults to nil. Default value only sent after `initialSignal` occurs.
-
- UI Outputs:
-  * `showSort` - Sends a model object which can be used to display sort options.
-  * `showCategoryFilters` - Sends a model object which can be used to display category filter options. Only sends if `categories` have also been sent.
- */
-
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
+  /// @param initialSignal - An initial signal pulse. Must be sent once for default values of `selectedSort` and `selectedCategory` to emit.
+  /// @param categories - A list of possible filter categories. Must be sent for `showCategoryFilters` and `selectedSortOption` to work.
+
   public init(initialSignal: Signal<Void, Never>, categories: Signal<[KsApi.Category], Never>) {
     self.categoriesProperty <~ categories
 
