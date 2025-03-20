@@ -8,11 +8,11 @@ struct SortView: View {
 
   var body: some View {
     VStack(spacing: 0) {
+      Spacer()
       self.headerView
 
       self.sortOptionList
-
-      Spacer()
+        .frame(height: self.dynamicHeight())
     }
     .background(Colors.Background.surfacePrimary.swiftUIColor())
 
@@ -28,15 +28,17 @@ struct SortView: View {
   @ViewBuilder
   private var headerView: some View {
     HStack {
-      Text("Sort by") // TODO: strings translations. [MLB-2204](https://kickstarter.atlassian.net/browse/MBL-2204)
+      Text(Strings.Sort_by())
         .font(Font.ksr_headingXL())
         .foregroundStyle(Colors.Text.primary.swiftUIColor())
       Spacer()
-      Button(action: { [weak viewModel] () in
-        viewModel?.close()
+      Button(action: { () in
+        self.viewModel.close()
       }) {
         Image(ImageResource.iconCross)
           .foregroundStyle(Colors.Icon.primary.swiftUIColor())
+          .accessibilityLabel(Strings.accessibility_discovery_buttons_close())
+          .accessibilityAddTraits(.isButton)
       }
     }
     .padding(Constants.headerPadding)
@@ -88,12 +90,20 @@ struct SortView: View {
   }
 
   private enum Constants {
-    static let headerPadding: CGFloat = 24.0
-    static let radioButtonSize: CGFloat = 24.0
+    static let headerPadding: CGFloat = Styles.grid(4)
+    static let radioButtonSize: CGFloat = Styles.grid(4)
     static let radioButtonOuterBorder: CGFloat = 1.0
     static let radioButtonInnerBorder: CGFloat = 8.0
-    static let rowPaddingHorizontal: CGFloat = 24.0
+    static let rowPaddingHorizontal: CGFloat = Styles.grid(4)
     static let rowPaddingVertical: CGFloat = 9.0
+    static let extraDynamicHeight: CGFloat = 30.0
+  }
+
+  private func dynamicHeight() -> CGFloat {
+    let itemHeight = Constants.rowPaddingVertical * 2 + Constants.radioButtonSize
+    let maxHeight = UIScreen.main.bounds.height
+    let totalHeight = CGFloat(self.viewModel.sortOptions.count) * itemHeight + Constants.extraDynamicHeight
+    return min(totalHeight, maxHeight)
   }
 }
 

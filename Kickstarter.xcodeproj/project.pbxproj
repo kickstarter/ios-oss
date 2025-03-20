@@ -272,6 +272,7 @@
 		336194FD2D8A9DA100BED4BD /* SortViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336194FC2D8A9DA100BED4BD /* SortViewModel.swift */; };
 		336195002D8AB5E100BED4BD /* SortViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336194FE2D8AB5AC00BED4BD /* SortViewTest.swift */; };
 		336195032D8AB96000BED4BD /* SortViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336195012D8AB7F200BED4BD /* SortViewModelTest.swift */; };
+		336195112D8B441500BED4BD /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336195102D8B440F00BED4BD /* BottomSheetPresenter.swift */; };
 		336D378B2CDAF81200FA99F5 /* PledgePaymentPlansViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */; };
 		33785F752CD9B0C2004B148E /* PledgePaymentPlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */; };
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
@@ -2004,6 +2005,7 @@
 		336194FC2D8A9DA100BED4BD /* SortViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewModel.swift; sourceTree = "<group>"; };
 		336194FE2D8AB5AC00BED4BD /* SortViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewTest.swift; sourceTree = "<group>"; };
 		336195012D8AB7F200BED4BD /* SortViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewModelTest.swift; sourceTree = "<group>"; };
+		336195102D8B440F00BED4BD /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
 		336D378A2CDAF80300FA99F5 /* PledgePaymentPlansViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModel.swift; sourceTree = "<group>"; };
 		33785F742CD9B0C2004B148E /* PledgePaymentPlansViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewController.swift; sourceTree = "<group>"; };
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
@@ -4395,6 +4397,7 @@
 		19450C2928C822C800C60F97 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				336195102D8B440F00BED4BD /* BottomSheetPresenter.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
 				393E41F42D7A4A9B001A197A /* SearchLegacyViewController.swift */,
@@ -8948,6 +8951,7 @@
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */,
 				60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */,
+				336195112D8B441500BED4BD /* BottomSheetPresenter.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,

@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Library
 
 protocol SortViewModelInputs {
   func selectSortOption(_ option: SortOption)
@@ -69,13 +70,12 @@ enum SortOption: Int, Identifiable, CaseIterable {
     self.rawValue
   }
 
-  // TODO: strings translations. [MLB-2204](https://kickstarter.atlassian.net/browse/MBL-2204)
   var name: String {
     switch self {
-    case .recommended: "Recommended"
-    case .popularity: "Popularity"
-    case .newest: "Newest"
-    case .endDate: "End date"
+    case .recommended: Strings.Recommended()
+    case .popularity: Strings.Popularity()
+    case .newest: Strings.Newest()
+    case .endDate: Strings.End_date()
     }
   }
 }
