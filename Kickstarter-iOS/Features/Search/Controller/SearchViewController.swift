@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import ReactiveSwift
 import UIKit
 
 internal final class SearchViewController: UITableViewController {
@@ -20,6 +21,7 @@ internal final class SearchViewController: UITableViewController {
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
+  private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -180,6 +182,48 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
       }
+
+    self.viewModel.outputs.showSort
+      .observeForControllerAction()
+      .observeValues { [weak self] sheet in
+        self?.showSort(sheet)
+      }
+
+    self.viewModel.outputs.showCategoryFilters
+      .observeForControllerAction()
+      .observeValues { [weak self] sheet in
+        self?.showCategories(sheet)
+      }
+
+    self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
+  }
+
+  fileprivate func showSort(_ sheet: SearchSortSheet) {
+    let controller = UIAlertController(title: "Pick a sort", message: nil, preferredStyle: .actionSheet)
+
+    for (idx, name) in sheet.sortNames.enumerated() {
+      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
+        self.viewModel.inputs.selectedSortOption(atIndex: idx)
+      }))
+    }
+
+    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+    present(controller, animated: true)
+  }
+
+  fileprivate func showCategories(_ sheet: SearchFilterCategoriesSheet) {
+    let controller = UIAlertController(title: "Pick a category", message: nil, preferredStyle: .actionSheet)
+
+    for (idx, name) in sheet.categoryNames.enumerated() {
+      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
+        self.viewModel.inputs.selectedCategory(atIndex: idx)
+      }))
+    }
+
+    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+    present(controller, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
@@ -230,6 +274,35 @@ internal final class SearchViewController: UITableViewController {
     )
   }
 
+  override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showSortAndFilterHeader.value == true else {
+      return nil
+    }
+
+    let header = PlaceholderSortFilterView()
+    header.sortButton.addTarget(
+      self,
+      action: #selector(SearchViewController.sortButtonTapped),
+      for: .touchUpInside
+    )
+    header.categoryButton.addTarget(
+      self,
+      action: #selector(SearchViewController.categoryButtonTapped),
+      for: .touchUpInside
+    )
+    return header
+  }
+
+  override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    guard section == SearchDataSource.Section.projects.rawValue,
+          self.showSortAndFilterHeader.value == true else {
+      return 0
+    }
+
+    return PlaceholderSortFilterView.headerHeight
+  }
+
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -245,6 +318,14 @@ internal final class SearchViewController: UITableViewController {
   @objc fileprivate func searchBarContainerTapped() {
     self.viewModel.inputs.searchFieldDidBeginEditing()
   }
+
+  @objc fileprivate func sortButtonTapped() {
+    self.viewModel.inputs.tappedSort()
+  }
+
+  @objc fileprivate func categoryButtonTapped() {
+    self.viewModel.inputs.tappedCategoryFilter()
+  }
 }
 
 extension SearchViewController: UITextFieldDelegate {
@@ -259,3 +340,43 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: TabBarControllerScrollable {}
+
+// FIXME: MBL-2175. This will be a much nicer view. For now, a placeholder!
+private class PlaceholderSortFilterView: UIView {
+  static let headerHeight: CGFloat = 30.0
+  internal var sortButton = UIButton()
+  internal var categoryButton = UIButton()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    self.backgroundColor = .ksr_white
+
+    self.sortButton.setTitle("Sort", for: .normal)
+    self.sortButton.setTitleColor(.ksr_create_500, for: .normal)
+    self.sortButton.setBackgroundColor(.ksr_white, for: .normal)
+    self.sortButton.layer.borderColor = UIColor.ksr_create_100.cgColor
+    self.sortButton.layer.borderWidth = 1.0
+    self.sortButton.layer.cornerRadius = Self.headerHeight / 2
+
+    self.categoryButton.setTitle("Category", for: .normal)
+    self.categoryButton.setTitleColor(.ksr_create_500, for: .normal)
+    self.categoryButton.setBackgroundColor(.ksr_white, for: .normal)
+    self.categoryButton.layer.borderColor = UIColor.ksr_create_100.cgColor
+    self.categoryButton.layer.borderWidth = 1.0
+    self.categoryButton.layer.cornerRadius = Self.headerHeight / 2
+
+    let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
+    stackView.spacing = Styles.grid(1)
+
+    self.addSubview(stackView)
+    let _ = ksr_constrainViewToEdgesInParent()(stackView, self)
+  }
+
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    assert(false, "Unimplemented")
+  }
+}

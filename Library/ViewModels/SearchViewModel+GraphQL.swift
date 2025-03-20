@@ -46,10 +46,11 @@ extension DiscoveryParams {
     return params
   }
 
-  static func withQuery(_ query: String) -> DiscoveryParams {
+  static func withQuery(_ query: String, sort: DiscoveryParams.Sort, category: Category?) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
-    params.sort = .popular
+    params.sort = sort
     params.query = query
+    params.category = category
     params.perPage = 15
     return params
   }
