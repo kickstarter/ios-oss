@@ -93,13 +93,23 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
 
-    let query = Signal
+    // What the user has typed in the search bar (or empty, if they've cleared their search).
+    let queryText = Signal
       .merge(
         self.searchTextChangedProperty.signal,
         viewWillAppearNotAnimated.mapConst("").take(first: 1),
         self.cancelButtonPressedProperty.signal.mapConst(""),
         self.clearSearchTextProperty.signal.mapConst("")
       )
+
+    // DiscoveryParams using the users currently selected query text, sort and filters.
+    let queryParams: Signal<DiscoveryParams, Never> = queryText
+      .combineLatest(with: self.searchFiltersUseCase.selectedSort)
+      .combineLatest(with: self.searchFiltersUseCase.selectedCategory)
+      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
+      .map { query, sort, category in
+        DiscoveryParams.withQuery(query, sort: sort, category: category)
+      }
 
     let popularQuery = GraphAPI.SearchQuery.from(discoveryParams: DiscoveryParams.popular)
 
@@ -114,19 +124,23 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let popular = popularEvent.values()
 
-    let clears = query.mapConst([SearchResult]())
+    // Every time the user changes their query, sort or filters, we set an empty
+    // results set to clear out the page. The user will just see the spinner.
+    let clears = queryParams.mapConst([SearchResult]())
 
-    self.isPopularTitleVisible = Signal.combineLatest(query, popular)
+    self.isPopularTitleVisible = Signal.combineLatest(queryText, popular)
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-    let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
-      .filter { !$0.isEmpty }
-      .combineLatest(with: self.searchFiltersUseCase.selectedSort)
-      .combineLatest(with: self.searchFiltersUseCase.selectedCategory)
-      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
-      .map { query, sort, category in
-        DiscoveryParams.withQuery(query, sort: sort, categoryID: category?.id)
+    let requestFirstPageWith: Signal<DiscoveryParams, Never> = queryParams
+      // Only request a new search page if the query is not empty.
+      // We'll show most popular if the query is empty.
+      .filter { params in
+        guard let query = params.query else {
+          return false
+        }
+
+        return !query.isEmpty
       }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -204,7 +218,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
 
     let shouldShowEmptyState = Signal.merge(
-      query.mapConst(false),
+      queryText.mapConst(false),
       paginatedProjects.map { $0.isEmpty }
     )
     .skipRepeats()
@@ -232,7 +246,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       popularEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    self.goToProject = Signal.combineLatest(searchResults, query)
+    self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
       .map { projects, query, index in
@@ -266,11 +280,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       viewWillAppearNotAnimated.mapConst(0).take(first: 1)
     )
 
-    Signal.combineLatest(query, viewWillAppearSearchResultsCount)
+    Signal.combineLatest(queryText, queryParams, viewWillAppearSearchResultsCount)
       .takeWhen(viewWillAppearNotAnimated)
-      .observeValues { query, searchResults in
+      .observeValues { query, params, searchResults in
         let results = query.isEmpty ? 0 : searchResults
-        let params = .defaults |> DiscoveryParams.lens.query .~ query
         AppEnvironment.current.ksrAnalytics
           .trackProjectSearchView(params: params, results: results)
       }
@@ -291,7 +304,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
     )
 
-    Signal.combineLatest(query, requestFirstPageWith)
+    Signal.combineLatest(queryText, requestFirstPageWith)
       .takePairWhen(newQuerySearchResultsCount)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
@@ -323,7 +336,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.showFilters = Signal.combineLatest(
       self.isPopularTitleVisible,
-      query,
+      queryText,
       self.projects
     ).map { isPopularTitleVisible, query, results in
       !isPopularTitleVisible && !query.isEmpty && results.count > 0

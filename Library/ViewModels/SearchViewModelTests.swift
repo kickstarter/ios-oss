@@ -44,8 +44,6 @@ internal final class SearchViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
-
-    self.vm.inputs.viewDidLoad()
   }
 
   func testSearchPopularFeatured_RefTag() {
@@ -55,6 +53,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(projectAtIndex: 0)
@@ -70,6 +69,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(projectAtIndex: 4)
@@ -90,6 +90,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -116,6 +117,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -142,6 +144,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -167,6 +170,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events, "Impression tracked")
@@ -183,6 +187,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testChangeSearchFieldFocus() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     self.changeSearchFieldFocusFocused.assertValues([false])
@@ -202,6 +207,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testClearSearchText() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("b")
@@ -215,24 +221,29 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testPopularLoaderIndicatorIsAnimating() {
+    self.popularLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+
     self.vm.inputs.viewDidLoad()
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
+
     self.vm.inputs.viewWillAppear(animated: true)
-    self.popularLoaderIndicatorIsAnimating.assertValues([true])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
 
     self.scheduler.advance()
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
 
     self.vm.inputs.searchTextChanged("b")
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
 
     self.scheduler.advance()
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
   }
 
   func testSearchLoaderIndicatorIsAnimating() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
 
@@ -262,6 +273,8 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
@@ -362,6 +375,8 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
@@ -468,6 +483,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[String], Never>()
       self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -520,6 +536,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[String], Never>()
       self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -584,6 +601,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldText() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
@@ -601,6 +619,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldEditingDidEnd() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
@@ -624,6 +643,7 @@ internal final class SearchViewModelTests: TestCase {
       apiDelayInterval: apiDelay,
       debounceInterval: debounceDelay
     ) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -683,6 +703,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPageViewed_BeforeSearching() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
@@ -701,6 +722,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
