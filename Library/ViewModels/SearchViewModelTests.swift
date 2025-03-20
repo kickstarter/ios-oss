@@ -376,7 +376,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
-  // Tests a flow of searching and updating the filters
+  // Tests a flow of searching and updating the sort
   func test_flow_sort() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -396,6 +396,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
       self.showFilters.assertLastValue(false, "Filter header should be hidden for popular results.")
 
       self.vm.inputs.searchTextChanged("dogs")
@@ -411,6 +412,16 @@ internal final class SearchViewModelTests: TestCase {
       self.showFilters.assertLastValue(
         true,
         "Filter header should appear when there are search results to filter."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        2,
+        "A second event after the search results load."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "discover_sort").last,
+        "popular",
+        "Selected sort should be in tracking properties"
       )
 
       self.showSort.assertDidNotEmitValue()
@@ -430,7 +441,7 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.selectedSortOption(atIndex: 1)
 
       self.hasProjects.assertLastValue(false, "Projects clear when new sort option is chosen")
-      self.popularLoaderIndicatorIsAnimating.assertLastValue(
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(
         true,
         "Loading spinner should show after new sort option is chosen"
       )
@@ -444,17 +455,136 @@ internal final class SearchViewModelTests: TestCase {
         "Filter header should appear when there are search results to filter."
       )
 
-      self.vm.inputs.willDisplayRow(7, outOf: 10)
-      self.scheduler.advance()
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        3,
+        "A third event after the sort updates and results reload."
+      )
 
       XCTAssertEqual(
-        ["Page Viewed", "Page Viewed"],
-        self.segmentTrackingClient.events,
+        "Page Viewed",
+        self.segmentTrackingClient.events.last,
         "An event is tracked for the search results."
       )
+
       XCTAssertEqual(
-        ["", "skull graphic tee"],
-        self.segmentTrackingClient.properties(forKey: "discover_search_term")
+        self.segmentTrackingClient.properties(forKey: "discover_sort").last,
+        "ending_soon",
+        "Selected sort should be in tracking properties"
+      )
+    }
+  }
+
+  // Tests a flow of searching and updating the sort
+  func test_flow_filterByCategory() {
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
+
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    let categoriesResponse = RootCategoriesEnvelope(rootCategories: [
+      .art,
+      .filmAndVideo,
+      .illustration,
+      .documentary
+    ])
+
+    let mockService = MockService(
+      fetchGraphQLResponses: popularResponse,
+      fetchGraphCategoriesResult: .success(categoriesResponse)
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
+      self.showFilters.assertLastValue(false, "Filter header should be hidden for popular results.")
+
+      self.vm.inputs.searchTextChanged("dogs")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.showFilters.assertLastValue(false, "Filter header should be hidden when a search is loading.")
+    }
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.showFilters.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        2,
+        "A second event after the search results load."
+      )
+
+      XCTAssertNil(
+        self.segmentTrackingClient.properties(forKey: "discover_category_name").last.flatMap { $0 },
+        "Selected category should be in tracking properties, but it should be nil because no category was selected yet"
+      )
+
+      self.showSort.assertDidNotEmitValue()
+      self.showCategoryFilters.assertDidNotEmitValue()
+
+      self.vm.inputs.tappedCategoryFilter()
+      self.showCategoryFilters.assertDidEmitValue()
+
+      guard let categorySheet = self.showCategoryFilters.lastValue else {
+        XCTFail("Category sheet should have been shown after tappedCategoryFilters was called")
+        return
+      }
+
+      XCTAssertTrue(categorySheet.categoryNames.count == 4, "Category sheet should have 4 options")
+      XCTAssertTrue(
+        categorySheet.selectedIndex.isNil,
+        "Category sheet should have empty option selected by default"
+      )
+
+      self.vm.inputs.selectedCategory(atIndex: 0)
+
+      self.hasProjects.assertLastValue(false, "Projects clear when new category filter is chosen")
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(
+        true,
+        "Loading spinner should show after new category filter is chosen"
+      )
+      self.showFilters.assertLastValue(false, "Filter header should hide while the page is loading")
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "New projects with new category filter should load")
+      self.showFilters.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        3,
+        "A third event after the sort updates and results reload."
+      )
+
+      XCTAssertEqual(
+        "Page Viewed",
+        self.segmentTrackingClient.events.last,
+        "An event is tracked for the search results."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "discover_category_name").last,
+        "Art",
+        "Selected category should be in tracking properties"
       )
     }
   }
