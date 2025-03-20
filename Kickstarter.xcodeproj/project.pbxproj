@@ -4397,7 +4397,6 @@
 		19450C2928C822C800C60F97 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				336195102D8B440F00BED4BD /* BottomSheetPresenter.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
 				393E41F42D7A4A9B001A197A /* SearchLegacyViewController.swift */,
@@ -5965,6 +5964,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		33F85BD72D8BAB7900CD1834 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				336195102D8B440F00BED4BD /* BottomSheetPresenter.swift */,
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -6433,6 +6440,7 @@
 		A751A51B1C85EAD8009C5DEA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
+				33F85BD72D8BAB7900CD1834 /* Presenters */,
 				19C8E56729A923F4007C3504 /* SwiftUIHelpers */,
 				39F48E222D543A2700090D6C /* AlertBanner.swift */,
 				39F48E242D5521BE00090D6C /* AlertBannerTests.swift */,
