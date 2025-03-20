@@ -27,15 +27,12 @@ public protocol SearchFiltersUseCaseDataOutputs {
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
-  public init(initialSignal: Signal<Void, Never>) {
-    // Would it make more sense to just move this out? And then the dependencies are a little more explicit.
-    self.categoriesUseCase = FetchCategoriesUseCase(initialSignal: initialSignal)
-
-    self.categoriesProperty <~ self.categoriesUseCase.categories
+  public init(initialSignal: Signal<Void, Never>, categories: Signal<[KsApi.Category], Never>) {
+    self.categoriesProperty <~ categories
 
     self.showCategoryFilters = self.selectedCategoryIndexProperty.producer
       .takeWhen(self.tappedCategoryFilterSignal)
-      .combineLatest(with: self.categoriesUseCase.categories)
+      .combineLatest(with: categories)
       .map { selectedIdx, categories -> SearchFilterCategoriesSheet? in
         let names = categories.map { $0.name }
 
@@ -80,7 +77,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     let categoryIfIndexIsNotNil: Signal<Category?, Never> = selectedCategoryIndex
       .skipNil()
-      .combineLatest(with: self.categoriesUseCase.categories)
+      .combineLatest(with: categories)
       .map { idx, categories -> Category? in
 
         guard idx < categories.count else {
@@ -111,8 +108,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.tappedCategoryFilterObserver.send(value: ())
   }
 
-  fileprivate let categoriesUseCase: FetchCategoriesUseCase
-
   fileprivate let selectedSortIndexProperty = MutableProperty<Int>(0)
   fileprivate let selectedCategoryIndexProperty = MutableProperty<Int?>(nil)
 
@@ -138,6 +133,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public func selectedCategory(atIndex index: Int) {
     if self.categoriesProperty.value.isEmpty {
       assert(false, "Tried to select a category before categories have downloaded.")
+      return
     }
 
     self.selectedCategoryIndexProperty.value = index
@@ -148,6 +144,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
 }
 
+// FIXME: These will be the data models used by the actual sort + filter models.
+// For now, here's a couple simple structs that can be used to show a UIAlertController.
 public struct SearchFilterCategoriesSheet {
   public let categoryNames: [String]
   public let selectedIndex: Int?

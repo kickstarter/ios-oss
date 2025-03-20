@@ -89,7 +89,14 @@ public protocol SearchViewModelType {
 
 public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
   public init() {
-    self.searchFiltersUseCase = SearchFiltersUseCase(initialSignal: self.viewDidLoadProperty.signal)
+    self.categoriesUseCase = FetchCategoriesUseCase(
+      initialSignal: self.viewDidLoadProperty.signal
+    )
+
+    self.searchFiltersUseCase = SearchFiltersUseCase(
+      initialSignal: self.viewDidLoadProperty.signal,
+      categories: self.categoriesUseCase.categories
+    )
 
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
 
@@ -404,6 +411,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchFiltersUseCase.selectedCategory(atIndex: index)
   }
 
+  private let categoriesUseCase: FetchCategoriesUseCase
   private let searchFiltersUseCase: SearchFiltersUseCase
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>

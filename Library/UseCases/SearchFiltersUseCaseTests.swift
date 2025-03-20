@@ -13,34 +13,20 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let showSort = TestObserver<SearchSortSheet, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
-
-  private let categories: [KsApi.Category] = [
-    .art,
-    .filmAndVideo,
-    .illustration,
-    .documentary
-  ]
+  private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
 
   override func setUp() {
     super.setUp()
 
-    let response = RootCategoriesEnvelope(rootCategories: self.categories)
-    let mockService = MockService(fetchGraphCategoriesResult: .success(response))
-
-    AppEnvironment.pushEnvironment(apiService: mockService, cache: KSCache())
-
-    self.useCase = SearchFiltersUseCase(initialSignal: self.initialSignal)
+    self.useCase = SearchFiltersUseCase(
+      initialSignal: self.initialSignal,
+      categories: self.categoriesSignal
+    )
 
     self.useCase.dataOuputs.selectedCategory.observe(self.selectedCategory.observer)
     self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
     self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-
-    super.tearDown()
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -76,7 +62,12 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   func test_tappedCategories_showsCategoryFilters() {
     self.initialObserver.send(value: ())
-    self.waitForCategoriesToLoad()
+    self.categoriesObserver.send(value: [
+      .art,
+      .illustration,
+      .documentary,
+      .tabletopGames
+    ])
 
     self.showCategoryFilters.assertDidNotEmitValue()
 
@@ -88,15 +79,23 @@ final class SearchFiltersUseCaseTests: TestCase {
       XCTAssertEqual(categoryOptions.selectedIndex, nil, "No category should be selected by default")
       XCTAssertEqual(
         categoryOptions.categoryNames.count,
-        self.categories.count,
-        "The sheet should show categories returned from the API"
+        4,
+        "The sheet should show categories that were loaded"
       )
     }
   }
 
   func test_selectingCategory_updatesCategory() {
     self.initialObserver.send(value: ())
-    self.waitForCategoriesToLoad()
+
+    let categories: [KsApi.Category] = [
+      .art,
+      .illustration,
+      .documentary,
+      .tabletopGames
+    ]
+
+    self.categoriesObserver.send(value: categories)
 
     self.showCategoryFilters.assertDidNotEmitValue()
     self.selectedCategory.assertLastValue(nil)
@@ -111,7 +110,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       return
     }
 
-    XCTAssertEqual(newCategory, self.categories[0], "Should have selected the first category in the list")
+    XCTAssertEqual(newCategory, categories[0], "Should have selected the first category in the list")
   }
 
   func test_selectingSort_updatesSort() {
@@ -131,12 +130,5 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertNotEqual(newSelectedSort, .popular, "Sort value should change when new sort is selected")
-  }
-
-  private func waitForCategoriesToLoad() {
-    // Categories are loaded asynchronously - either from KSCache or from the API.
-    // Jiggle the scheduler to make all these tests work.
-
-    self.scheduler.advance()
   }
 }
