@@ -23,9 +23,13 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
+  fileprivate let showSort = TestObserver<SearchSortSheet, Never>()
+  fileprivate let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
+  fileprivate let showFilters = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
+
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
@@ -44,6 +48,10 @@ internal final class SearchViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
+
+    self.vm.outputs.showFilters.observe(self.showFilters.observer)
+    self.vm.outputs.showSort.observe(self.showSort.observer)
+    self.vm.outputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
   }
 
   func testSearchPopularFeatured_RefTag() {
@@ -364,6 +372,89 @@ internal final class SearchViewModelTests: TestCase {
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
+      )
+    }
+  }
+
+  // Tests a flow of searching and updating the filters
+  func test_flow_sort() {
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
+
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.showFilters.assertLastValue(false, "Filter header should be hidden for popular results.")
+
+      self.vm.inputs.searchTextChanged("dogs")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.showFilters.assertLastValue(false, "Filter header should be hidden when a search is loading.")
+    }
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.showFilters.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+
+      self.showSort.assertDidNotEmitValue()
+      self.showCategoryFilters.assertDidNotEmitValue()
+
+      self.vm.inputs.tappedSort()
+      self.showSort.assertDidEmitValue()
+
+      guard let sortSheet = self.showSort.lastValue else {
+        XCTFail("Sort sheet should have been shown after tappedSort was called")
+        return
+      }
+
+      XCTAssertTrue(sortSheet.sortNames.count > 1, "Sort sheet should have multiple sort options")
+      XCTAssertTrue(sortSheet.selectedIndex == 0, "Sort sheet should have first option selected by default")
+
+      self.vm.inputs.selectedSortOption(atIndex: 1)
+
+      self.hasProjects.assertLastValue(false, "Projects clear when new sort option is chosen")
+      self.popularLoaderIndicatorIsAnimating.assertLastValue(
+        true,
+        "Loading spinner should show after new sort option is chosen"
+      )
+      self.showFilters.assertLastValue(false, "Filter header should hide while the page is loading")
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "New projects with new sort option should load")
+      self.showFilters.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+
+      self.vm.inputs.willDisplayRow(7, outOf: 10)
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        ["Page Viewed", "Page Viewed"],
+        self.segmentTrackingClient.events,
+        "An event is tracked for the search results."
+      )
+      XCTAssertEqual(
+        ["", "skull graphic tee"],
+        self.segmentTrackingClient.properties(forKey: "discover_search_term")
       )
     }
   }
