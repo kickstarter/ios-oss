@@ -13,9 +13,9 @@ public protocol SearchFiltersUseCaseInputs {
   /// Call this when the user taps on a button to show the category filters.
   func tappedCategoryFilter()
   /// Call this when the user selects a new sort option.
-  func selectedSortOption(atIndex: Int)
+  func selectedSortOption(_ sort: DiscoveryParams.Sort)
   /// Call this when the user selects a new category.
-  func selectedCategory(atIndex index: Int)
+  func selectedCategory(_ category: KsApi.Category?)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
@@ -40,65 +40,31 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public init(initialSignal: Signal<Void, Never>, categories: Signal<[KsApi.Category], Never>) {
     self.categoriesProperty <~ categories
 
-    self.showCategoryFilters = self.selectedCategoryIndexProperty.producer
+    self.showCategoryFilters = self.selectedCategoryProperty.producer
       .takeWhen(self.tappedCategoryFilterSignal)
       .combineLatest(with: categories)
-      .map { selectedIdx, categories -> SearchFilterCategoriesSheet in
-        let names = categories.map { $0.name }
+      .map { selectedCategory, categories -> SearchFilterCategoriesSheet in
 
-        return SearchFilterCategoriesSheet(
-          categoryNames: names,
-          selectedIndex: selectedIdx
+        SearchFilterCategoriesSheet(
+          categories: categories,
+          selectedCategory: selectedCategory
         )
       }
 
-    self.showSort = self.selectedSortIndexProperty.producer
+    self.showSort = self.selectedSortProperty.producer
       .takeWhen(self.tappedSortSignal)
-      .map { [sortOptions] selectedIdx -> SearchSortSheet in
-        let names = sortOptions.map(sortOptionName(from:))
-
-        return SearchSortSheet(sortNames: names, selectedIndex: selectedIdx)
+      .map { [sortOptions] sort -> SearchSortSheet in
+        SearchSortSheet(sortOptions: sortOptions, selectedOption: sort)
       }
 
     self.selectedSort = Signal.merge(
-      self.selectedSortIndexProperty.producer.takeWhen(initialSignal),
-      self.selectedSortIndexProperty.signal
+      self.selectedSortProperty.producer.takeWhen(initialSignal),
+      self.selectedSortProperty.signal
     )
-    .map { [sortOptions] idx in
-      sortOptions[idx]
-    }
-
-    // This bit of complication is here because we want this use case to emit a
-    // selectedCategory of nil on the initial signal - even if no categories have been downloaded yet.
-    // So if the index is nil, just immediately emit nil.
-
-    let selectedCategoryIndex = Signal.merge(
-      self.selectedCategoryIndexProperty.producer.takeWhen(initialSignal),
-      self.selectedCategoryIndexProperty.signal
-    )
-
-    let categoryIsNilIfIndexIsNil: Signal<Category?, Never> = selectedCategoryIndex
-      .filter { $0 == nil }
-      .map { _ in
-        nil
-      }
-
-    let categoryIfIndexIsNotNil: Signal<Category?, Never> = selectedCategoryIndex
-      .skipNil()
-      .combineLatest(with: categories)
-      .map { idx, categories -> Category? in
-
-        guard idx < categories.count else {
-          assert(false, "Selected category is out of bounds. This shouldn't be possible.")
-          return nil
-        }
-
-        return categories[idx]
-      }
 
     self.selectedCategory = Signal.merge(
-      categoryIsNilIfIndexIsNil,
-      categoryIfIndexIsNotNil
+      self.selectedCategoryProperty.producer.takeWhen(initialSignal),
+      self.selectedCategoryProperty.signal
     )
   }
 
@@ -116,11 +82,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.tappedCategoryFilterObserver.send(value: ())
   }
 
-  fileprivate let selectedSortIndexProperty = MutableProperty<Int>(0)
-  fileprivate let selectedCategoryIndexProperty = MutableProperty<Int?>(nil)
+  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.popular)
+  fileprivate let selectedCategoryProperty = MutableProperty<Category?>(nil)
 
-  // Used for some extra assertions to make sure categories have loaded.
+  // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
+
   fileprivate let sortOptions = [
     DiscoveryParams.Sort.popular,
     DiscoveryParams.Sort.endingSoon,
@@ -134,17 +101,27 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<Category?, Never>
 
-  public func selectedSortOption(atIndex index: Int) {
-    self.selectedSortIndexProperty.value = index
+  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
+    assert(
+      self.sortOptions.contains(sort),
+      "Selected a sort option that isn't actually available in SearchFiltersUseCase."
+    )
+
+    self.selectedSortProperty.value = sort
   }
 
-  public func selectedCategory(atIndex index: Int) {
-    if self.categoriesProperty.value.isEmpty {
-      assert(false, "Tried to select a category before categories have downloaded.")
+  public func selectedCategory(_ maybeCategory: Category?) {
+    guard let category = maybeCategory else {
+      self.selectedCategoryProperty.value = nil
       return
     }
 
-    self.selectedCategoryIndexProperty.value = index
+    let index = self.categoriesProperty.value.firstIndex(of: category)
+    guard index != nil else {
+      assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
+    }
+
+    self.selectedCategoryProperty.value = category
   }
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
@@ -152,27 +129,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
 }
 
-// FIXME: These will be the data models used by the actual sort + filter models.
-// For now, here's a couple simple structs that can be used to show a UIAlertController.
 public struct SearchFilterCategoriesSheet {
-  public let categoryNames: [String]
-  public let selectedIndex: Int?
+  public let categories: [KsApi.Category]
+  public let selectedCategory: Category?
 }
 
 public struct SearchSortSheet {
-  public let sortNames: [String]
-  public let selectedIndex: Int
-}
-
-private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
-  switch sort {
-  case .endingSoon:
-    return Strings.discovery_sort_types_end_date()
-  case .magic:
-    return Strings.discovery_sort_types_magic()
-  case .newest:
-    return Strings.discovery_sort_types_newest()
-  case .popular:
-    return Strings.discovery_sort_types_popularity()
-  }
+  public let sortOptions: [DiscoveryParams.Sort]
+  public let selectedOption: DiscoveryParams.Sort
 }
