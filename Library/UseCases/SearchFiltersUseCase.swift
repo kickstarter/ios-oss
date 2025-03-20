@@ -70,6 +70,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       sortOptions[idx]
     }
 
+    // This bit of complication is here because we want this use case to emit a
+    // selectedCategory of nil on the initial signal - even if no categories have been downloaded yet.
+    // So if the index is nil, just immediately emit nil.
+
     let selectedCategoryIndex = Signal.merge(
       self.selectedCategoryIndexProperty.producer.takeWhen(initialSignal),
       self.selectedCategoryIndexProperty.signal
@@ -94,9 +98,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
         return categories[idx]
       }
 
-    // This bit of complication is here because we want this use case to emit a
-    // selectedCategory of nil on the initial signal - even if no categories have been downloaded yet.
-
     self.selectedCategory = Signal.merge(
       categoryIsNilIfIndexIsNil,
       categoryIfIndexIsNotNil
@@ -114,6 +115,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public func tappedCategoryFilter() {
     if self.categoriesProperty.value.isEmpty {
       assert(false, "Tried to show category filter before categories have downloaded.")
+      return
     }
     self.tappedCategoryFilterObserver.send(value: ())
   }
@@ -122,6 +124,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   fileprivate let selectedSortIndexProperty = MutableProperty<Int>(0)
   fileprivate let selectedCategoryIndexProperty = MutableProperty<Int?>(nil)
+
+  // Used for some extra assertions to make sure categories have loaded.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
@@ -158,15 +162,14 @@ public struct SearchSortSheet {
 }
 
 private func sortOptionName(from sort: DiscoveryParams.Sort) -> String {
-  // TODO: translations
   switch sort {
   case .endingSoon:
-    return "Ending Soon"
+    return Strings.discovery_sort_types_end_date()
   case .magic:
-    return "Magic"
+    return Strings.discovery_sort_types_magic()
   case .newest:
-    return "Newest"
+    return Strings.discovery_sort_types_newest()
   case .popular:
-    return "Popular"
+    return Strings.discovery_sort_types_popularity()
   }
 }
