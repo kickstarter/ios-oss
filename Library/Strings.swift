@@ -1192,7 +1192,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1815,6 +1816,23 @@ contributeurs"
     return localizedString(
       key: "Cardholder_name",
       defaultValue: "Cardholder name",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Category"
+
+   - **en**: "Category"
+   - **de**: "Category"
+   - **es**: "Category"
+   - **fr**: "Category"
+   - **ja**: "Category"
+  */
+  public static func Category() -> String {
+    return localizedString(
+      key: "Category",
+      defaultValue: "Category",
       count: nil,
       substitutions: [:]
     )
@@ -3753,13 +3771,30 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "End date"
+
+   - **en**: "End date"
+   - **de**: "End date"
+   - **es**: "End date"
+   - **fr**: "End date"
+   - **ja**: "End date"
+  */
+  public static func End_date() -> String {
+    return localizedString(
+      key: "End_date",
+      defaultValue: "End date",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ended"
 
    - **en**: "Ended"
-   - **de**: "Ended"
-   - **es**: "Ended"
-   - **fr**: "Ended"
-   - **ja**: "Ended"
+   - **de**: "Beendet"
+   - **es**: "Finalizado"
+   - **fr**: "Terminé"
+   - **ja**: "終了"
   */
   public static func Ended() -> String {
     return localizedString(
@@ -6224,10 +6259,10 @@ with friends."
    "Late pledges active"
 
    - **en**: "Late pledges active"
-   - **de**: "Late pledges active"
-   - **es**: "Late pledges active"
-   - **fr**: "Late pledges active"
-   - **ja**: "Late pledges active"
+   - **de**: "Nachträgliche Beiträge sind aktiv"
+   - **es**: "Contribuciones tardías activas"
+   - **fr**: "Contributions tardives activées"
+   - **ja**: "遅延プレッジが有効"
   */
   public static func Late_pledges_active() -> String {
     return localizedString(
@@ -6241,10 +6276,10 @@ with friends."
    "Launching soon"
 
    - **en**: "Launching soon"
-   - **de**: "Launching soon"
-   - **es**: "Launching soon"
-   - **fr**: "Launching soon"
-   - **ja**: "Launching soon"
+   - **de**: "Wird in Kürze veröffentlicht"
+   - **es**: "Lanzamiento en breve"
+   - **fr**: "Bientôt en ligne"
+   - **ja**: "ローンチ間近"
   */
   public static func Launching_soon() -> String {
     return localizedString(
@@ -6969,6 +7004,40 @@ with friends."
     )
   }
   /**
+   "Most backed"
+
+   - **en**: "Most backed"
+   - **de**: "Most backed"
+   - **es**: "Most backed"
+   - **fr**: "Most backed"
+   - **ja**: "Most backed"
+  */
+  public static func Most_backed() -> String {
+    return localizedString(
+      key: "Most_backed",
+      defaultValue: "Most backed",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Most funded"
+
+   - **en**: "Most funded"
+   - **de**: "Most funded"
+   - **es**: "Most funded"
+   - **fr**: "Most funded"
+   - **ja**: "Most funded"
+  */
+  public static func Most_funded() -> String {
+    return localizedString(
+      key: "Most_funded",
+      defaultValue: "Most funded",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "My project seeks funding for AI technology."
 
    - **en**: "My project seeks funding for AI technology."
@@ -6998,6 +7067,23 @@ with friends."
     return localizedString(
       key: "Name",
       defaultValue: "Name",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Near me"
+
+   - **en**: "Near me"
+   - **de**: "Near me"
+   - **es**: "Near me"
+   - **fr**: "Near me"
+   - **ja**: "Near me"
+  */
+  public static func Near_me() -> String {
+    return localizedString(
+      key: "Near_me",
+      defaultValue: "Near me",
       count: nil,
       substitutions: [:]
     )
@@ -7100,6 +7186,23 @@ with friends."
     return localizedString(
       key: "New_work_and_big_ideas_from_established_and",
       defaultValue: "New work and big ideas from established and emerging artists.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Newest"
+
+   - **en**: "Newest"
+   - **de**: "Newest"
+   - **es**: "Newest"
+   - **fr**: "Newest"
+   - **ja**: "Newest"
+  */
+  public static func Newest() -> String {
+    return localizedString(
+      key: "Newest",
+      defaultValue: "Newest",
       count: nil,
       substitutions: [:]
     )
@@ -8451,6 +8554,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Popularity"
+
+   - **en**: "Popularity"
+   - **de**: "Popularity"
+   - **es**: "Popularity"
+   - **fr**: "Popularity"
+   - **ja**: "Popularity"
+  */
+  public static func Popularity() -> String {
+    return localizedString(
+      key: "Popularity",
+      defaultValue: "Popularity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Post"
 
    - **en**: "Post"
@@ -9559,6 +9679,23 @@ daring ideas."
     )
   }
   /**
+   "Reset"
+
+   - **en**: "Reset"
+   - **de**: "Reset"
+   - **es**: "Reset"
+   - **fr**: "Reset"
+   - **ja**: "Reset"
+  */
+  public static func Reset_filters() -> String {
+    return localizedString(
+      key: "Reset_filters",
+      defaultValue: "Reset",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Reset your password"
 
    - **en**: "Reset your password"
@@ -10098,6 +10235,23 @@ daring ideas."
     return localizedString(
       key: "See_our_terms_of_use",
       defaultValue: "See our Terms of Use",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "See results"
+
+   - **en**: "See results"
+   - **de**: "See results"
+   - **es**: "See results"
+   - **fr**: "See results"
+   - **ja**: "See results"
+  */
+  public static func See_results() -> String {
+    return localizedString(
+      key: "See_results",
+      defaultValue: "See results",
       count: nil,
       substitutions: [:]
     )
@@ -10837,10 +10991,10 @@ daring ideas."
    "Similar projects"
 
    - **en**: "Similar projects"
-   - **de**: "Similar projects"
-   - **es**: "Similar projects"
-   - **fr**: "Similar projects"
-   - **ja**: "Similar projects"
+   - **de**: "Ähnliche Projekte"
+   - **es**: "Proyectos similares"
+   - **fr**: "Projets similaires"
+   - **ja**: "よく似たプロジェクト"
   */
   public static func Similar_projects() -> String {
     return localizedString(
@@ -11001,6 +11155,23 @@ catch your eye?"
     return localizedString(
       key: "Something_went_wrong_pull_to_refresh_no_period",
       defaultValue: "Something went wrong - Pull to refresh",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sort by"
+
+   - **en**: "Sort by"
+   - **de**: "Sort by"
+   - **es**: "Sort by"
+   - **fr**: "Sort by"
+   - **ja**: "Sort by"
+  */
+  public static func Sort_by() -> String {
+    return localizedString(
+      key: "Sort_by",
+      defaultValue: "Sort by",
       count: nil,
       substitutions: [:]
     )

@@ -22,6 +22,8 @@ extension AdaptiveColors {
       return "background/"
     case is Colors.Border.Type:
       return "border/"
+    case is Colors.Icon.Type:
+      return "icon/"
     case is Colors.Text.Type:
       return "text/"
     default:
@@ -38,7 +40,11 @@ extension AdaptiveColors {
     let colorName = "\(self.namespace)\(self.rawValue)"
 
     // Retrieves the color from the asset catalog, defaulting to KSR green (ksr_create_700) if unavailable.
-    guard let color = UIColor(named: colorName) else {
+    guard let color = UIColor(
+      named: colorName,
+      in: Bundle(identifier: AppEnvironment.current.mainBundle.identifier),
+      compatibleWith: nil
+    ) else {
       assertionFailure("⚠️ Color not found in asset catalog: \(colorName)")
       return .ksr_create_700
     }
