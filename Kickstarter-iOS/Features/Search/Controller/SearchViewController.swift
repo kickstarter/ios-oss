@@ -22,6 +22,7 @@ internal final class SearchViewController: UITableViewController {
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
+  private var currentSortAndFilterHeader: PlaceholderSortFilterView? = nil
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -209,6 +210,8 @@ internal final class SearchViewController: UITableViewController {
 
     controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
+    controller.popoverPresentationController?.sourceView = self.currentSortAndFilterHeader
+
     present(controller, animated: true)
   }
 
@@ -222,6 +225,8 @@ internal final class SearchViewController: UITableViewController {
     }
 
     controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+    controller.popoverPresentationController?.sourceView = self.currentSortAndFilterHeader
 
     present(controller, animated: true)
   }
@@ -275,6 +280,8 @@ internal final class SearchViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    self.currentSortAndFilterHeader = nil
+
     guard section == SearchDataSource.Section.projects.rawValue,
           self.showSortAndFilterHeader.value == true else {
       return nil
@@ -291,6 +298,9 @@ internal final class SearchViewController: UITableViewController {
       action: #selector(SearchViewController.categoryButtonTapped),
       for: .touchUpInside
     )
+
+    self.currentSortAndFilterHeader = header
+
     return header
   }
 
