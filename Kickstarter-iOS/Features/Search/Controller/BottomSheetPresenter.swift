@@ -2,9 +2,28 @@ import Library
 import SwiftUI
 import UIKit
 
+/// A presenter that allows displaying any SwiftUI or UIKit view as a bottom sheet with dynamic height adjustment.
+///
+/// This presenter handles:
+/// - Dynamic height adjustment using `systemLayoutSizeFitting`
+/// - Corner radius for a modern appearance
+/// - Background dimming to highlight the presented content
+///
+/// ## Usage:
+/// ```swift
+/// let view = SortView(viewModel: viewModel)
+/// let hostingController = UIHostingController(rootView: view)
+/// let presenter = BottomSheetPresenter()
+/// presenter.present(viewController: hostingController, from: self)
+/// ```
 final class BottomSheetPresenter {
   private let transitioningDelegate = BottomSheetTransitioningDelegate()
 
+  /// Presents a view controller as a bottom sheet from a parent view controller.
+  ///
+  /// - Parameters:
+  ///   - viewController: The view controller to present.
+  ///   - parentViewController: The view controller that presents the bottom sheet.
   func present(viewController: UIViewController, from parentViewController: UIViewController) {
     viewController.modalPresentationStyle = .custom
     viewController.transitioningDelegate = self.transitioningDelegate
@@ -12,7 +31,9 @@ final class BottomSheetPresenter {
   }
 }
 
+/// Handles the custom transition for presenting the bottom sheet.
 final class BottomSheetTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
+  /// Creates a presentation controller to manage the bottom sheet transition.
   func presentationController(
     forPresented presented: UIViewController,
     presenting: UIViewController?,
@@ -25,11 +46,13 @@ final class BottomSheetTransitioningDelegate: NSObject, UIViewControllerTransiti
   }
 }
 
+/// Custom presentation controller that handles the layout and appearance of the bottom sheet.
 final class BottomSheetPresentationController: UIPresentationController {
   private let maxHeightRatio: CGFloat = 0.8
   private let cornerRadius: CGFloat = Styles.grid(2)
   private let dimmingView = UIView()
 
+  // Defines the frame for the presented view, adjusting height dynamically.
   override var frameOfPresentedViewInContainerView: CGRect {
     guard let containerView = containerView else { return .zero }
 
@@ -47,6 +70,7 @@ final class BottomSheetPresentationController: UIPresentationController {
     )
   }
 
+  // Sets up the dimming view and rounded corners when the presentation begins.
   override func presentationTransitionWillBegin() {
     guard let containerView = containerView else { return }
 
