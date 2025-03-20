@@ -441,10 +441,13 @@ internal final class SearchViewModelTests: TestCase {
         return
       }
 
-      XCTAssertTrue(sortSheet.sortNames.count > 1, "Sort sheet should have multiple sort options")
-      XCTAssertTrue(sortSheet.selectedIndex == 0, "Sort sheet should have first option selected by default")
+      XCTAssertTrue(sortSheet.sortOptions.count > 1, "Sort sheet should have multiple sort options")
+      XCTAssertTrue(
+        sortSheet.selectedOption == .popular,
+        "Sort sheet should have first option selected by default"
+      )
 
-      self.vm.inputs.selectedSortOption(atIndex: 1)
+      self.vm.inputs.selectedSortOption(.newest)
 
       self.hasProjects.assertLastValue(false, "Projects clear when new sort option is chosen")
       self.searchLoaderIndicatorIsAnimating.assertLastValue(
@@ -561,13 +564,13 @@ internal final class SearchViewModelTests: TestCase {
         return
       }
 
-      XCTAssertTrue(categorySheet.categoryNames.count == 4, "Category sheet should have 4 options")
+      XCTAssertTrue(categorySheet.categories.count == 4, "Category sheet should have 4 options")
       XCTAssertTrue(
-        categorySheet.selectedIndex.isNil,
+        categorySheet.selectedCategory.isNil,
         "Category sheet should have empty option selected by default"
       )
 
-      self.vm.inputs.selectedCategory(atIndex: 0)
+      self.vm.inputs.selectedCategory(.filmAndVideo)
 
       self.hasProjects.assertLastValue(false, "Projects clear when new category filter is chosen")
       self.searchLoaderIndicatorIsAnimating.assertLastValue(
