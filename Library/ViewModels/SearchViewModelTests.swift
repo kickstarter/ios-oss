@@ -23,9 +23,13 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
+  fileprivate let showSort = TestObserver<SearchSortSheet, Never>()
+  fileprivate let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
+  fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
+
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
@@ -44,6 +48,10 @@ internal final class SearchViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
+
+    self.vm.outputs.showSortAndFilterHeader.observe(self.showSortAndFilterHeader.observer)
+    self.vm.outputs.showSort.observe(self.showSort.observer)
+    self.vm.outputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
   }
 
   func testSearchPopularFeatured_RefTag() {
@@ -53,6 +61,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(projectAtIndex: 0)
@@ -68,6 +77,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: response)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(projectAtIndex: 4)
@@ -88,6 +98,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -114,6 +125,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -140,6 +152,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
@@ -165,6 +178,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events, "Impression tracked")
@@ -181,6 +195,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testChangeSearchFieldFocus() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     self.changeSearchFieldFocusFocused.assertValues([false])
@@ -200,6 +215,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testClearSearchText() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("b")
@@ -213,24 +229,29 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testPopularLoaderIndicatorIsAnimating() {
+    self.popularLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+
     self.vm.inputs.viewDidLoad()
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
+
     self.vm.inputs.viewWillAppear(animated: true)
-    self.popularLoaderIndicatorIsAnimating.assertValues([true])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
 
     self.scheduler.advance()
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
 
     self.vm.inputs.searchTextChanged("b")
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
 
     self.scheduler.advance()
 
-    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
   }
 
   func testSearchLoaderIndicatorIsAnimating() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
 
@@ -260,6 +281,8 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
@@ -353,6 +376,237 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // Tests a flow of searching and updating the sort
+  func test_flow_sort() {
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
+
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should be hidden for popular results."
+      )
+
+      self.vm.inputs.searchTextChanged("dogs")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should be hidden when a search is loading."
+      )
+    }
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.showSortAndFilterHeader.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        2,
+        "A second event after the search results load."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "discover_sort").last,
+        "popular",
+        "Selected sort should be in tracking properties"
+      )
+
+      self.showSort.assertDidNotEmitValue()
+      self.showCategoryFilters.assertDidNotEmitValue()
+
+      self.vm.inputs.tappedSort()
+      self.showSort.assertDidEmitValue()
+
+      guard let sortSheet = self.showSort.lastValue else {
+        XCTFail("Sort sheet should have been shown after tappedSort was called")
+        return
+      }
+
+      XCTAssertTrue(sortSheet.sortNames.count > 1, "Sort sheet should have multiple sort options")
+      XCTAssertTrue(sortSheet.selectedIndex == 0, "Sort sheet should have first option selected by default")
+
+      self.vm.inputs.selectedSortOption(atIndex: 1)
+
+      self.hasProjects.assertLastValue(false, "Projects clear when new sort option is chosen")
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(
+        true,
+        "Loading spinner should show after new sort option is chosen"
+      )
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should hide while the page is loading"
+      )
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "New projects with new sort option should load")
+      self.showSortAndFilterHeader.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        3,
+        "A third event after the sort updates and results reload."
+      )
+
+      XCTAssertEqual(
+        "Page Viewed",
+        self.segmentTrackingClient.events.last,
+        "An event is tracked for the search results."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "discover_sort").last,
+        "ending_soon",
+        "Selected sort should be in tracking properties"
+      )
+    }
+  }
+
+  // Tests a flow of searching and updating the sort
+  func test_flow_filterByCategory() {
+    let popularResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.fiveResults
+    )]
+
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.differentFiveResults
+    )]
+
+    let categoriesResponse = RootCategoriesEnvelope(rootCategories: [
+      .art,
+      .filmAndVideo,
+      .illustration,
+      .documentary
+    ])
+
+    let mockService = MockService(
+      fetchGraphQLResponses: popularResponse,
+      fetchGraphCategoriesResult: .success(categoriesResponse)
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should be hidden for popular results."
+      )
+
+      self.vm.inputs.searchTextChanged("dogs")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should be hidden when a search is loading."
+      )
+    }
+
+    withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.showSortAndFilterHeader.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        2,
+        "A second event after the search results load."
+      )
+
+      XCTAssertNil(
+        self.segmentTrackingClient.properties(forKey: "discover_category_name").last.flatMap { $0 },
+        "Selected category should be in tracking properties, but it should be nil because no category was selected yet"
+      )
+
+      self.showSort.assertDidNotEmitValue()
+      self.showCategoryFilters.assertDidNotEmitValue()
+
+      self.vm.inputs.tappedCategoryFilter()
+      self.showCategoryFilters.assertDidEmitValue()
+
+      guard let categorySheet = self.showCategoryFilters.lastValue else {
+        XCTFail("Category sheet should have been shown after tappedCategoryFilters was called")
+        return
+      }
+
+      XCTAssertTrue(categorySheet.categoryNames.count == 4, "Category sheet should have 4 options")
+      XCTAssertTrue(
+        categorySheet.selectedIndex.isNil,
+        "Category sheet should have empty option selected by default"
+      )
+
+      self.vm.inputs.selectedCategory(atIndex: 0)
+
+      self.hasProjects.assertLastValue(false, "Projects clear when new category filter is chosen")
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(
+        true,
+        "Loading spinner should show after new category filter is chosen"
+      )
+      self.showSortAndFilterHeader.assertLastValue(
+        false,
+        "Filter header should hide while the page is loading"
+      )
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertLastValue(true, "New projects with new category filter should load")
+      self.showSortAndFilterHeader.assertLastValue(
+        true,
+        "Filter header should appear when there are search results to filter."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.events.count,
+        3,
+        "A third event after the sort updates and results reload."
+      )
+
+      XCTAssertEqual(
+        "Page Viewed",
+        self.segmentTrackingClient.events.last,
+        "An event is tracked for the search results."
+      )
+
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "discover_category_name").last,
+        "Art",
+        "Selected category should be in tracking properties"
+      )
+    }
+  }
+
   func testShowNoSearchResults() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -360,6 +614,8 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+      self.vm.inputs.viewDidLoad()
+
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
@@ -466,6 +722,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[String], Never>()
       self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -518,6 +775,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[String], Never>()
       self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -582,6 +840,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldText() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
@@ -599,6 +858,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldEditingDidEnd() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
@@ -622,6 +882,7 @@ internal final class SearchViewModelTests: TestCase {
       apiDelayInterval: apiDelay,
       debounceInterval: debounceDelay
     ) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
@@ -681,6 +942,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPageViewed_BeforeSearching() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
@@ -699,6 +961,7 @@ internal final class SearchViewModelTests: TestCase {
     )]
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
