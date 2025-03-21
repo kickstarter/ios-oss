@@ -97,6 +97,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
     self.tableView.registerCellClass(ReportProjectCell.self)
+    self.tableView.registerCellClass(SimilarProjectsTableViewCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -479,7 +480,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, _ in
+      .observeValues { [weak self] data in
+        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState) = data
+
         self?.pausePlayingMainCellVideo(navSection: navSection)
 
         let initialDatasourceLoad = {
@@ -487,7 +490,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
             navigationSection: navSection,
             project: project,
             refTag: refTag,
-            isExpandedStates: initialIsExpandedArray
+            isExpandedStates: initialIsExpandedArray,
+            similarProjectsState: similarProjectsState
           )
 
           self?.tableView.reloadData()
@@ -938,6 +942,16 @@ extension ProjectPageViewController: UITableViewDelegate {
     self.tableView.layoutIfNeeded()
   }
 
+  public func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    let cell = self.dataSource.items(in: indexPath.section)[indexPath.row]
+
+    if cell.reusableId == SimilarProjectsTableViewCell.defaultReusableId {
+      return SimilarProjectsCellConstants.collectionViewHeight
+    }
+
+    return UITableView.automaticDimension
+  }
+
   public func tableView(
     _: UITableView,
     didEndDisplaying cell: UITableViewCell,
@@ -1064,8 +1078,8 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 }
 
 extension ProjectPageViewController: SimilarProjectsTableViewCellDelegate {
-  func didSelectProject(_ cell: SimilarProjectsTableViewCell) {
-    print("did select similar project cell \(cell)")
+  func didSelectProject(_ project: SimilarProject) {
+    self.viewModel.inputs.similarProjectTapped(project: project)
   }
 }
 

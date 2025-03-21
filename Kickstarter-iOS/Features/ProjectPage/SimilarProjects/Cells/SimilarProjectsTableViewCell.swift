@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 protocol SimilarProjectsTableViewCellDelegate: AnyObject {
-  func didSelectProject(_ cell: SimilarProjectsTableViewCell)
+  func didSelectProject(_ project: SimilarProject)
 }
 
 enum SimilarProjectsCellConstants {
@@ -33,17 +33,15 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private let pageControl: UIPageControl = { UIPageControl(frame: .zero) }()
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    self.collectionView.dataSource = self.dataSource
-    self.collectionView.delegate = self
-    self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
-    self.collectionView.registerCellClass(SimilarProjectsLoadingCollectionViewCell.self)
 
     self.configureSubviews()
     self.bindStyles()
     self.updateConstraints()
+    self.setupCollectionView()
   }
 
   @available(*, unavailable)
@@ -58,6 +56,7 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
     applyTitleLabelStyle(self.titleLabel)
     applyCollectionViewStyle(self.collectionView)
     applyCollectionViewLayoutStyle(self.layout)
+    applyPageControlStyle(self.pageControl)
   }
 
   /// UITableViewCells have a hard time adjusting to a nested UICollectionView's contentSize.
@@ -74,6 +73,7 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
+    self.contentView.addSubview(self.pageControl)
     self.contentView.addSubview(self.collectionView)
     self.contentView.addSubview(self.titleLabel)
   }
@@ -100,16 +100,44 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
         equalTo: self.contentView.trailingAnchor,
         constant: -SimilarProjectsCellConstants.spacing
       ),
-      self.collectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+      self.collectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+      self.pageControl.topAnchor.constraint(
+        equalTo: self.contentView.topAnchor,
+        constant: SimilarProjectsCellConstants.spacing
+      ),
+      self.pageControl.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+      self.pageControl.heightAnchor.constraint(equalToConstant: 30)
     ])
 
     super.updateConstraints()
   }
 
-  // TODO: Will use the state object to load the collectionview appropriately.
-  func configureWith(value _: SimilarProjectsState) {
+  func configureWith(value: SimilarProjectsState?) {
+    self.collectionView.isScrollEnabled = false
+
+    guard let state = value else { return }
+
+    switch state {
+    case .hidden, .error:
+      self.dataSource.load([], isLoading: false)
+    case .loading:
+      self.dataSource.load([], isLoading: true)
+    case let .loaded(projects):
+      self.pageControl.numberOfPages = projects.count
+      self.dataSource.load(projects, isLoading: false)
+      self.collectionView.isScrollEnabled = true
+    }
+
     self.collectionView.reloadData()
     self.layoutIfNeeded()
+  }
+
+  private func setupCollectionView() {
+    self.collectionView.dataSource = self.dataSource
+    self.collectionView.delegate = self
+    self.dataSource.delegate = self
+    self.collectionView.registerCellClass(SimilarProjectsCollectionViewCell.self)
+    self.collectionView.registerCellClass(SimilarProjectsLoadingCollectionViewCell.self)
   }
 }
 
@@ -134,16 +162,30 @@ private func applyCollectionViewLayoutStyle(_ layout: UICollectionViewFlowLayout
   layout.itemSize = SimilarProjectsCellConstants.collectionViewItemSize
 }
 
+private func applyPageControlStyle(_ pageControl: UIPageControl) {
+  pageControl.currentPage = 0
+  pageControl.currentPageIndicatorTintColor = .ksr_support_700
+  pageControl.pageIndicatorTintColor = .ksr_support_300
+  pageControl.hidesForSinglePage = true
+  pageControl.isUserInteractionEnabled = false
+  pageControl.translatesAutoresizingMaskIntoConstraints = false
+}
+
 private func applyTitleLabelStyle(_ label: UILabel) {
   label.text = Strings.Similar_projects()
-  label.font = .ksr_title3()
+  label.font = .ksr_title3().bolded
   label.translatesAutoresizingMaskIntoConstraints = false
 }
 
-// MARK: - UICollectionViewDelegate
+extension SimilarProjectsTableViewCell: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+    self.pageControl.currentPage = Int(pageIndex)
+  }
+}
 
-extension SimilarProjectsTableViewCell: UICollectionViewDelegate {
-  func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
-    self.delegate?.didSelectProject(self)
+extension SimilarProjectsTableViewCell: SimilarProjectsCollectionViewDataSourceDelegate {
+  func didSelectProject(_ project: any SimilarProject) {
+    self.delegate?.didSelectProject(project)
   }
 }
