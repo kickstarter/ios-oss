@@ -480,8 +480,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] data, similarProjectsState in
-        let (navSection, project, refTag, initialIsExpandedArray, _) = data
+      .observeValues { [weak self] data in
+        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState) = data
 
         self?.pausePlayingMainCellVideo(navSection: navSection)
 
