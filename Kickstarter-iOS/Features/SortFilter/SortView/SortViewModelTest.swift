@@ -3,41 +3,50 @@ import Combine
 import XCTest
 
 final class SortViewModelTest: XCTestCase {
+  private let sortOptions = ConcreteSortOption.allCases
+  private var viewModel: SortViewModel<ConcreteSortOption>!
+
+  override func setUp() {
+    super.setUp()
+
+    self.viewModel = SortViewModel(
+      sortOptions: self.sortOptions,
+      selectedSortOption: ConcreteSortOption.sortOne
+    )
+  }
+
   func testSortOptions() throws {
-    let viewModel = SortViewModel()
-    XCTAssertEqual(viewModel.sortOptions, SortOption.allCases)
+    XCTAssertEqual(self.viewModel.sortOptions, self.sortOptions)
   }
 
   func testSortOptionSelected() throws {
     var cancellables: [AnyCancellable] = []
 
-    let viewModel = SortViewModel()
-    var optionSelected: SortOption? = nil
+    var optionSelected: ConcreteSortOption? = nil
     let expectation = expectation(description: "Waiting for a sort option selected")
-    viewModel.selectedSortOption.sink { option in
+    self.viewModel.selectedSortOption.sink { option in
       optionSelected = option
       expectation.fulfill()
     }
     .store(in: &cancellables)
 
-    viewModel.selectSortOption(.popularity)
+    self.viewModel.selectSortOption(.sortThree)
     waitForExpectations(timeout: 0.1)
-    XCTAssertEqual(optionSelected, .popularity)
+    XCTAssertEqual(optionSelected, .sortThree)
   }
 
   func testCloseTapped() throws {
     var cancellables: [AnyCancellable] = []
 
-    let viewModel = SortViewModel()
     var didCloseTapped = false
     let expectation = expectation(description: "Waiting for close to be tapped")
-    viewModel.closeTapped.sink { _ in
+    self.viewModel.closeTapped.sink { _ in
       didCloseTapped = true
       expectation.fulfill()
     }
     .store(in: &cancellables)
 
-    viewModel.close()
+    self.viewModel.close()
     waitForExpectations(timeout: 0.1)
     XCTAssertEqual(didCloseTapped, true)
   }

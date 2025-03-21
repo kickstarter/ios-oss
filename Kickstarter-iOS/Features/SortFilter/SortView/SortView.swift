@@ -1,9 +1,9 @@
 import Library
 import SwiftUI
 
-struct SortView: View {
-  @StateObject var viewModel: SortViewModel
-  var onSelectedSort: ((SortOption) -> Void)? = nil
+struct SortView<T: SortOption>: View {
+  @StateObject var viewModel: SortViewModel<T>
+  var onSelectedSort: ((T) -> Void)? = nil
   var onClosed: (() -> Void)? = nil
 
   var body: some View {
@@ -88,17 +88,7 @@ struct SortView: View {
     .frame(width: Constants.radioButtonSize, height: Constants.radioButtonSize)
   }
 
-  private enum Constants {
-    static let headerPadding: CGFloat = Styles.grid(4)
-    static let radioButtonSize: CGFloat = Styles.grid(4)
-    static let radioButtonOuterBorder: CGFloat = 1.0
-    static let radioButtonInnerBorder: CGFloat = 8.0
-    static let rowPaddingHorizontal: CGFloat = Styles.grid(4)
-    static let rowPaddingVertical: CGFloat = 9.0
-    static let extraDynamicHeight: CGFloat = 10.0
-  }
-
-  private func dynamicHeight() -> CGFloat {
+  internal func dynamicHeight() -> CGFloat {
     let itemHeight = Constants.rowPaddingVertical * 2 + Constants.radioButtonSize
     let maxHeight = UIScreen.main.bounds.height
     let totalHeight = CGFloat(self.viewModel.sortOptions.count) * itemHeight + Constants.extraDynamicHeight
@@ -106,10 +96,24 @@ struct SortView: View {
   }
 }
 
+private enum Constants {
+  static let headerPadding: CGFloat = Styles.grid(4)
+  static let radioButtonSize: CGFloat = Styles.grid(4)
+  static let radioButtonOuterBorder: CGFloat = 1.0
+  static let radioButtonInnerBorder: CGFloat = 8.0
+  static let rowPaddingHorizontal: CGFloat = Styles.grid(4)
+  static let rowPaddingVertical: CGFloat = 9.0
+  static let extraDynamicHeight: CGFloat = 30.0
+}
+
 #if targetEnvironment(simulator)
   #Preview("Sort Options") {
+    let options = ConcreteSortOption.allCases
     SortView(
-      viewModel: SortViewModel(),
+      viewModel: SortViewModel(
+        sortOptions: options,
+        selectedSortOption: .sortOne
+      ),
       onSelectedSort: { option in
         print("Selected sort option: \(option.name)")
       },
