@@ -1,9 +1,9 @@
 import Library
 import SwiftUI
 
-struct FilterCategoryView: View {
-  @StateObject var viewModel: FilterCategoryViewModel
-  var onSelectedCategory: ((FilterCategory?) -> Void)? = nil
+struct FilterCategoryView<T: FilterCategory>: View {
+  @StateObject var viewModel: FilterCategoryViewModel<T>
+  var onSelectedCategory: ((T?) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
@@ -51,6 +51,8 @@ struct FilterCategoryView: View {
       }) {
         Image(ImageResource.iconCross)
           .foregroundStyle(Colors.Icon.primary.swiftUIColor())
+          .accessibilityLabel(Strings.accessibility_discovery_buttons_close())
+          .accessibilityAddTraits(.isButton)
       }
     }
     .padding(Constants.headerPadding)
@@ -131,24 +133,24 @@ struct FilterCategoryView: View {
     }
     .frame(width: Constants.radioButtonSize, height: Constants.radioButtonSize)
   }
+}
 
-  private enum Constants {
-    static let headerPadding: CGFloat = 24.0
-    static let progressViewPadding: CGFloat = 24.0
-    static let radioButtonSize: CGFloat = 24.0
-    static let radioButtonOuterBorder: CGFloat = 1.0
-    static let radioButtonInnerBorder: CGFloat = 8.0
-    static let resetButtonMaxWidth: CGFloat = 130.0
-    static let rowPaddingHorizontal: CGFloat = 24.0
-    static let rowPaddingVertical: CGFloat = 20.0
-    static let separatorHeight: CGFloat = 1.0
-  }
+private enum Constants {
+  static let headerPadding: CGFloat = 24.0
+  static let progressViewPadding: CGFloat = 24.0
+  static let radioButtonSize: CGFloat = 24.0
+  static let radioButtonOuterBorder: CGFloat = 1.0
+  static let radioButtonInnerBorder: CGFloat = 8.0
+  static let resetButtonMaxWidth: CGFloat = 130.0
+  static let rowPaddingHorizontal: CGFloat = 24.0
+  static let rowPaddingVertical: CGFloat = 20.0
+  static let separatorHeight: CGFloat = 1.0
 }
 
 #if targetEnvironment(simulator)
   #Preview("Filter Categories") {
     FilterCategoryView(
-      viewModel: FilterCategoryViewModel(),
+      viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
       onSelectedCategory: { category in
         print("Selected Category: \(category?.name ?? "None")")
       },

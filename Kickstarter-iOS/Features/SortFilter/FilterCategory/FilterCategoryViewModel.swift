@@ -1,37 +1,43 @@
 import Combine
 import Foundation
 
+protocol FilterCategory: Identifiable, Equatable {
+  var name: String { get }
+}
+
 protocol FilterCategoryViewModelInputs {
-  func selectCategory(_ category: FilterCategory)
+  associatedtype T: FilterCategory
+  func selectCategory(_ category: T)
   func seeResults()
   func close()
   func resetSelection()
 }
 
 protocol FilterCategoryViewModelOutputs {
-  var selectedCategory: AnyPublisher<FilterCategory?, Never> { get }
+  associatedtype T: FilterCategory
+  var selectedCategory: AnyPublisher<T?, Never> { get }
   var seeResultsTapped: AnyPublisher<Void, Never> { get }
   var closeTapped: AnyPublisher<Void, Never> { get }
-  var categories: [FilterCategory] { get }
+  var categories: [T] { get }
   var canReset: Bool { get }
   var isLoading: Bool { get }
-  func isCategorySelected(_ category: FilterCategory) -> Bool
+  func isCategorySelected(_ category: T) -> Bool
 }
 
 typealias FilterCategoryViewModelType =
   FilterCategoryViewModelInputs &
   FilterCategoryViewModelOutputs & ObservableObject
 
-class FilterCategoryViewModel: FilterCategoryViewModelType {
-  @Published private(set) var categories: [FilterCategory] = []
+class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
+  @Published private(set) var categories: [T] = []
   @Published private(set) var canReset: Bool = false
-  @Published private var currentCategory: FilterCategory? = nil
+  @Published private var currentCategory: T? = nil
 
   var isLoading: Bool {
     self.categories.isEmpty
   }
 
-  init(with categories: [FilterCategory] = []) {
+  init(with categories: [T]) {
     self.categories = categories
 
     self.selectedCategorySubject
@@ -46,7 +52,7 @@ class FilterCategoryViewModel: FilterCategoryViewModelType {
 
   // MARK: - Inputs
 
-  func selectCategory(_ category: FilterCategory) {
+  func selectCategory(_ category: T) {
     self.selectedCategorySubject.send(category)
   }
 
@@ -64,7 +70,7 @@ class FilterCategoryViewModel: FilterCategoryViewModelType {
 
   // MARK: - Outputs
 
-  var selectedCategory: AnyPublisher<FilterCategory?, Never> {
+  var selectedCategory: AnyPublisher<T?, Never> {
     self.selectedCategorySubject.eraseToAnyPublisher()
   }
 
@@ -76,20 +82,27 @@ class FilterCategoryViewModel: FilterCategoryViewModelType {
     self.closeTappedSubject.eraseToAnyPublisher()
   }
 
-  private let selectedCategorySubject = PassthroughSubject<FilterCategory?, Never>()
+  private let selectedCategorySubject = PassthroughSubject<T?, Never>()
   private let seeResultsTappedSubject = PassthroughSubject<Void, Never>()
   private let closeTappedSubject = PassthroughSubject<Void, Never>()
 
-  func isCategorySelected(_ category: FilterCategory) -> Bool {
+  func isCategorySelected(_ category: T) -> Bool {
     return self.currentCategory?.id == category.id
   }
 }
 
-struct FilterCategory: Identifiable, Equatable {
-  let id: String
-  let name: String
+internal enum ConcreteFilterCategory: String, FilterCategory, CaseIterable {
+  case categoryOne = "Category One"
+  case categoryTwo = "Category Two"
+  case categoryThree = "Category Three"
+  case categoryFour = "Category Four"
+  case categoryFive = "Category Five"
 
-  static func == (lhs: FilterCategory, rhs: FilterCategory) -> Bool {
-    lhs.id == rhs.id
+  var id: Int {
+    return self.rawValue.hashValue
+  }
+
+  var name: String {
+    return self.rawValue
   }
 }
