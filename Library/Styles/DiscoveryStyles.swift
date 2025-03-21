@@ -172,5 +172,17 @@ private func string(forSort sort: DiscoveryParams.Sort) -> String {
     return Strings.discovery_sort_types_newest()
   case .popular:
     return Strings.Popular()
+  case .most_backed:
+    assert(
+      false,
+      "most_backed was added for GraphQL compatibililty. It shouldn't actually be used in V1 Discover."
+    )
+    return Strings.discovery_sort_types_most_backed()
+  case .most_funded:
+    assert(
+      false,
+      "most_funded was added for GraphQL compatibililty. It shouldn't actually be used in V1 Discover."
+    )
+    return Strings.discovery_sort_types_most_funded()
   }
 }
