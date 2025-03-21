@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import SwiftUI
 import UIKit
 
 internal final class SearchViewController: UITableViewController {
@@ -199,36 +200,69 @@ internal final class SearchViewController: UITableViewController {
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
   }
 
-  fileprivate func showSort(_ sheet: SearchSortSheet) {
-    let controller = UIAlertController(title: "Pick a sort", message: nil, preferredStyle: .actionSheet)
-
-    for (idx, name) in sheet.sortNames.enumerated() {
-      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
-        self.viewModel.inputs.selectedSortOption(atIndex: idx)
-      }))
+  fileprivate func present(sheet viewController: UIViewController, withHeight height: CGFloat) {
+    guard #available(iOS 16.0, *), let presentationController = viewController.sheetPresentationController
+    else {
+      let presenter = BottomSheetPresenter()
+      presenter.present(viewController: viewController, from: self)
+      return
     }
 
-    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    let dynamicHeightDentId = UISheetPresentationController.Detent.Identifier("dynamicHeightDent")
+    let dynamicHeightDent = UISheetPresentationController.Detent
+      .custom(identifier: dynamicHeightDentId) { _ in
+        height
+      }
+    presentationController.detents = [dynamicHeightDent]
 
-    controller.popoverPresentationController?.sourceView = self.currentSortAndFilterHeader
+    presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+    presentationController.prefersEdgeAttachedInCompactHeight = true
+    presentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
 
-    present(controller, animated: true)
+    self.present(viewController, animated: true, completion: nil)
+  }
+
+  fileprivate func showSort(_ sheet: SearchSortSheet) {
+    let sortViewModel = SortViewModel(
+      sortOptions: sheet.sortOptions,
+      selectedSortOption: sheet.selectedOption
+    )
+
+    let sortView = SortView(
+      viewModel: sortViewModel,
+      onSelectedSort: { [weak self] sortOption in
+        self?.viewModel.inputs.selectedSortOption(sortOption)
+      },
+      onClosed: { [weak self] in
+        self?.dismiss(animated: true)
+      }
+    )
+
+    let hostingController = UIHostingController(rootView: sortView)
+    self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
   fileprivate func showCategories(_ sheet: SearchFilterCategoriesSheet) {
-    let controller = UIAlertController(title: "Pick a category", message: nil, preferredStyle: .actionSheet)
-
-    for (idx, name) in sheet.categoryNames.enumerated() {
-      controller.addAction(UIAlertAction(title: name, style: .default, handler: { _ in
-        self.viewModel.inputs.selectedCategory(atIndex: idx)
-      }))
+    let viewModel = FilterCategoryViewModel(with: sheet.categories)
+    if let selectedCategory = sheet.selectedCategory {
+      viewModel.selectCategory(selectedCategory)
     }
 
-    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    let filterView = FilterCategoryView(
+      viewModel: viewModel,
+      onSelectedCategory: { [weak self] category in
+        self?.viewModel.inputs.selectedCategory(category)
+      },
+      onResults: { [weak self] in
+        self?.dismiss(animated: true)
+      },
+      onClose: { [weak self] in
+        self?.dismiss(animated: true)
+      }
+    )
 
-    controller.popoverPresentationController?.sourceView = self.currentSortAndFilterHeader
-
-    present(controller, animated: true)
+    let hostingController = UIHostingController(rootView: filterView)
+    self.present(hostingController, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {

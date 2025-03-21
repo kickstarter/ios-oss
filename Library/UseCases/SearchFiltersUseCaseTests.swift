@@ -37,12 +37,12 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedCategory.assertLastValue(nil)
   }
 
-  func test_sort_onInitialSignal_isPopular() {
+  func test_sort_onInitialSignal_isRecommended() {
     self.selectedSort.assertDidNotEmitValue()
 
     self.initialObserver.send(value: ())
 
-    self.selectedSort.assertLastValue(.popular)
+    self.selectedSort.assertLastValue(.magic)
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -55,8 +55,12 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.showSort.assertDidEmitValue()
 
     if let sortOptions = self.showSort.lastValue {
-      XCTAssertEqual(sortOptions.selectedIndex, 0, "First option should be selected by default")
-      XCTAssertGreaterThan(sortOptions.sortNames.count, 0, "There should be multiple sort options")
+      XCTAssertEqual(
+        sortOptions.selectedOption,
+        .magic,
+        "First option, magic, should be selected by default"
+      )
+      XCTAssertGreaterThan(sortOptions.sortOptions.count, 0, "There should be multiple sort options")
     }
   }
 
@@ -76,9 +80,9 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.showCategoryFilters.assertDidEmitValue()
 
     if let categoryOptions = self.showCategoryFilters.lastValue {
-      XCTAssertEqual(categoryOptions.selectedIndex, nil, "No category should be selected by default")
+      XCTAssertEqual(categoryOptions.selectedCategory, nil, "No category should be selected by default")
       XCTAssertEqual(
-        categoryOptions.categoryNames.count,
+        categoryOptions.categories.count,
         4,
         "The sheet should show categories that were loaded"
       )
@@ -103,7 +107,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.tappedCategoryFilter()
     self.showCategoryFilters.assertDidEmitValue()
 
-    self.useCase.inputs.selectedCategory(atIndex: 0)
+    self.useCase.inputs.selectedCategory(.art)
 
     guard let newCategory = self.selectedCategory.lastValue else {
       XCTFail("There should be a new selected category")
@@ -117,18 +121,18 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.showSort.assertDidNotEmitValue()
-    self.selectedSort.assertLastValue(.popular)
+    self.selectedSort.assertLastValue(.magic)
 
     self.useCase.inputs.tappedSort()
     self.showSort.assertDidEmitValue()
 
-    self.useCase.inputs.selectedSortOption(atIndex: 1)
+    self.useCase.inputs.selectedSortOption(.endingSoon)
 
     guard let newSelectedSort = self.selectedSort.lastValue else {
       XCTFail("There should be a new selected sort option")
       return
     }
 
-    XCTAssertNotEqual(newSelectedSort, .popular, "Sort value should change when new sort is selected")
+    XCTAssertEqual(newSelectedSort, .endingSoon, "Sort value should change when new sort is selected")
   }
 }

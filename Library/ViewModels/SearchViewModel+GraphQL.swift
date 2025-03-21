@@ -11,6 +11,10 @@ extension GraphAPI.ProjectSort {
       return .newest
     case .popular:
       return .popularity
+    case .most_funded:
+      return .mostFunded
+    case .most_backed:
+      return .mostBacked
     }
   }
 }
