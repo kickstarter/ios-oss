@@ -31,6 +31,8 @@ public struct DiscoveryParams {
     case magic
     case newest
     case popular = "popularity"
+    case most_funded
+    case most_backed
 
     public var trackingString: String {
       switch self {
@@ -38,6 +40,8 @@ public struct DiscoveryParams {
       case .magic: return "magic"
       case .newest: return "newest"
       case .popular: return "popular"
+      case .most_funded: return "most_funded"
+      case .most_backed: return "most_backed"
       }
     }
   }

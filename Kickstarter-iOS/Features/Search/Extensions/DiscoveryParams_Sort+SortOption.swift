@@ -13,11 +13,15 @@ extension DiscoveryParams.Sort: SortOption {
     case .endingSoon:
       return Strings.discovery_sort_types_end_date()
     case .magic:
-      return Strings.discovery_sort_types_magic()
+      return Strings.Recommended()
     case .newest:
       return Strings.discovery_sort_types_newest()
     case .popular:
       return Strings.discovery_sort_types_popularity()
+    case .most_funded:
+      return Strings.discovery_sort_types_most_funded()
+    case .most_backed:
+      return Strings.discovery_sort_types_most_backed()
     }
   }
 }

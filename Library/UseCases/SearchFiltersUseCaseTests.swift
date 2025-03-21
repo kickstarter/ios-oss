@@ -37,12 +37,12 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedCategory.assertLastValue(nil)
   }
 
-  func test_sort_onInitialSignal_isPopular() {
+  func test_sort_onInitialSignal_isRecommended() {
     self.selectedSort.assertDidNotEmitValue()
 
     self.initialObserver.send(value: ())
 
-    self.selectedSort.assertLastValue(.popular)
+    self.selectedSort.assertLastValue(.magic)
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -57,8 +57,8 @@ final class SearchFiltersUseCaseTests: TestCase {
     if let sortOptions = self.showSort.lastValue {
       XCTAssertEqual(
         sortOptions.selectedOption,
-        .popular,
-        "First option, popular, should be selected by default"
+        .magic,
+        "First option, magic, should be selected by default"
       )
       XCTAssertGreaterThan(sortOptions.sortOptions.count, 0, "There should be multiple sort options")
     }
@@ -121,7 +121,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.showSort.assertDidNotEmitValue()
-    self.selectedSort.assertLastValue(.popular)
+    self.selectedSort.assertLastValue(.magic)
 
     self.useCase.inputs.tappedSort()
     self.showSort.assertDidEmitValue()
