@@ -100,6 +100,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let overviewSubpagesSection = ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue
   private let overviewReportProject = ProjectPageViewControllerDataSource.Section.overviewReportProject
     .rawValue
+  private let overviewSimilarProjects = ProjectPageViewControllerDataSource.Section.overviewSimilarProjects
+    .rawValue
   private let faqsHeaderSection = ProjectPageViewControllerDataSource.Section.faqsHeader.rawValue
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
   private let faqsSection = ProjectPageViewControllerDataSource.Section.faqs.rawValue
@@ -761,6 +763,79 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  func testSimilarProjectsInOverviewSection_WhenSimilarProjectsAreLoading() {
+    let project = Project.template
+      |> \.displayPrelaunch .~ false
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: self.faqs,
+        aiDisclosure: nil,
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .overview,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil,
+        similarProjectsState: .loading
+      )
+      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overview
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      XCTAssertEqual(
+        "SimilarProjectsTableViewCell",
+        self.dataSource.reusableId(item: 0, section: self.overviewSimilarProjects)
+      )
+    }
+  }
+
+  func testSimilarProjectsInOverviewSection_WhenSimilarProjectsAreLoaded() {
+    let project = Project.template
+      |> \.displayPrelaunch .~ false
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: self.faqs,
+        aiDisclosure: nil,
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .overview,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil,
+        similarProjectsState: .loaded(projects: [])
+      )
+
+      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overview
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      XCTAssertEqual(
+        "SimilarProjectsTableViewCell",
+        self.dataSource.reusableId(item: 0, section: self.overviewSimilarProjects)
+      )
+    }
+  }
+
   func testIsExpandedValuesForFAQsSection() {
     let isExpandedStates = [false, true, false, true]
     let project = Project.template
@@ -1292,4 +1367,66 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
     }
   }
+}
+
+// Helper method to create mock project nodes for testing
+private func createMockSimilarProjectNode(
+  id: Int = 123,
+  name: String = "Test Project",
+  imageURL: String? = "https://example.com/image.jpg",
+  state: String = "live",
+  isLaunched: Bool = true,
+  prelaunchActivated: Bool = false,
+  launchedAt: String? = "1741737648",
+  deadlineAt: String? = "1742737648",
+  percentFunded: Int = 75,
+  goal: Double? = 10_000,
+  pledged: Double = 7_500,
+  isInPostCampaignPledgingPhase: Bool = false,
+  isPostCampaignPledgingEnabled: Bool = false
+) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
+  var resultMap: [String: Any] = [
+    "__typename": "Project",
+    "pid": id,
+    "name": name,
+    "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
+    "isLaunched": isLaunched,
+    "prelaunchActivated": prelaunchActivated,
+    "percentFunded": percentFunded,
+    "pledged": [
+      "__typename": "Money",
+      "amount": String(pledged),
+      "currency": GraphAPI.CurrencyCode.usd,
+      "symbol": "$"
+    ],
+    "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+    "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled
+  ]
+
+  // Add optional fields
+  if let imageURL {
+    resultMap["image"] = [
+      "__typename": "Photo",
+      "url": imageURL
+    ]
+  }
+
+  if let launchedAt {
+    resultMap["launchedAt"] = launchedAt
+  }
+
+  if let deadlineAt {
+    resultMap["deadlineAt"] = deadlineAt
+  }
+
+  if let goal {
+    resultMap["goal"] = [
+      "__typename": "Money",
+      "amount": String(goal),
+      "currency": GraphAPI.CurrencyCode.usd,
+      "symbol": "$"
+    ]
+  }
+
+  return GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node(unsafeResultMap: resultMap)
 }

@@ -107,6 +107,8 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   }
 
   func configureWith(value: SimilarProjectsState?) {
+    self.collectionView.isScrollEnabled = false
+
     guard let state = value else { return }
 
     switch state {
@@ -114,7 +116,6 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
       self.dataSource.load([], isLoading: false)
     case .loading:
       self.dataSource.load([], isLoading: true)
-      self.collectionView.isScrollEnabled = false
     case let .loaded(projects):
       self.dataSource.load(projects, isLoading: false)
       self.collectionView.isScrollEnabled = true
