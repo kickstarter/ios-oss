@@ -21,7 +21,20 @@ extension GraphAPI.SearchQuery {
     withCursor cursor: String? = nil
   ) -> GraphAPI.SearchQuery {
     let sort = GraphAPI.ProjectSort.from(discovery: params.sort ?? .magic)
-    return GraphAPI.SearchQuery(term: params.query, sort: sort, first: params.perPage, cursor: cursor)
+    let categoryId: String?
+    if let categoryIntId = params.category?.intID {
+      categoryId = "\(categoryIntId)"
+    } else {
+      categoryId = nil
+    }
+
+    return GraphAPI.SearchQuery(
+      term: params.query,
+      sort: sort,
+      categoryId: categoryId,
+      first: params.perPage,
+      cursor: cursor
+    )
   }
 }
 
