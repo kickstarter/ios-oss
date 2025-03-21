@@ -38,10 +38,10 @@ public protocol SearchViewModelInputs {
   func tappedCategoryFilter()
 
   /// Call when a new sort option has been selected.
-  func selectedSortOption(atIndex index: Int)
+  func selectedSortOption(_ sort: DiscoveryParams.Sort)
 
   /// Call when a new category is selected.
-  func selectedCategory(atIndex index: Int)
+  func selectedCategory(_ category: KsApi.Category?)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -412,12 +412,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchFiltersUseCase.tappedCategoryFilter()
   }
 
-  public func selectedSortOption(atIndex index: Int) {
-    self.searchFiltersUseCase.selectedSortOption(atIndex: index)
+  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
+    self.searchFiltersUseCase.inputs.selectedSortOption(sort)
   }
 
-  public func selectedCategory(atIndex index: Int) {
-    self.searchFiltersUseCase.selectedCategory(atIndex: index)
+  public func selectedCategory(_ category: KsApi.Category?) {
+    self.searchFiltersUseCase.inputs.selectedCategory(category)
   }
 
   private let categoriesUseCase: FetchCategoriesUseCase
