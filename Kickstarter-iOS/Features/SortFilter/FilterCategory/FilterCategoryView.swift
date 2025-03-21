@@ -51,6 +51,8 @@ struct FilterCategoryView: View {
       }) {
         Image(ImageResource.iconCross)
           .foregroundStyle(Colors.Icon.primary.swiftUIColor())
+          .accessibilityLabel(Strings.accessibility_discovery_buttons_close())
+          .accessibilityAddTraits(.isButton)
       }
     }
     .padding(Constants.headerPadding)
