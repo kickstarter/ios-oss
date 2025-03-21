@@ -16,10 +16,13 @@ final class SortViewTest: TestCase {
     await withEnvironment(mainBundle: self.mockBundle) {
       let view =
         VStack {
-          SortView(viewModel: SortViewModel())
-            .frame(width: self.size.width)
-            .frame(maxHeight: .infinity)
-            .padding()
+          SortView(viewModel: SortViewModel(
+            sortOptions: ConcreteSortOption.allCases,
+            selectedSortOption: ConcreteSortOption.sortOne
+          ))
+          .frame(width: self.size.width)
+          .frame(maxHeight: .infinity)
+          .padding()
         }.frame(height: self.size.height)
       try? await Task.sleep(nanoseconds: 10_000_000)
       assertSnapshot(matching: view, as: .image)
@@ -29,7 +32,10 @@ final class SortViewTest: TestCase {
   @MainActor
   func testSortView_SelectedOption() async {
     await withEnvironment(mainBundle: self.mockBundle) {
-      let viewModel = SortViewModel()
+      let viewModel = SortViewModel(
+        sortOptions: ConcreteSortOption.allCases,
+        selectedSortOption: ConcreteSortOption.sortTwo
+      )
       let view =
         VStack {
           SortView(viewModel: viewModel)
@@ -37,7 +43,6 @@ final class SortViewTest: TestCase {
             .frame(maxHeight: .infinity)
             .padding()
         }.frame(height: self.size.height)
-      viewModel.selectSortOption(.popularity)
       try? await Task.sleep(nanoseconds: 10_000_000)
       assertSnapshot(matching: view, as: .image)
     }
