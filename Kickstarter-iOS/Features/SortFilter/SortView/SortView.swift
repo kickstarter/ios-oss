@@ -8,11 +8,10 @@ struct SortView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      Spacer()
       self.headerView
-
       self.sortOptionList
         .frame(height: self.dynamicHeight())
+      Spacer()
     }
     .background(Colors.Background.surfacePrimary.swiftUIColor())
 
@@ -96,7 +95,7 @@ struct SortView: View {
     static let radioButtonInnerBorder: CGFloat = 8.0
     static let rowPaddingHorizontal: CGFloat = Styles.grid(4)
     static let rowPaddingVertical: CGFloat = 9.0
-    static let extraDynamicHeight: CGFloat = 30.0
+    static let extraDynamicHeight: CGFloat = 10.0
   }
 
   private func dynamicHeight() -> CGFloat {

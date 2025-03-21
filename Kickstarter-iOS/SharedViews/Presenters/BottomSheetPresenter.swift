@@ -8,6 +8,7 @@ import UIKit
 /// - Dynamic height adjustment using `systemLayoutSizeFitting`
 /// - Corner radius for a modern appearance
 /// - Background dimming to highlight the presented content
+/// - Uses `UISheetPresentationController` for iOS 16+
 ///
 /// ## Usage:
 /// ```swift
@@ -21,13 +22,41 @@ final class BottomSheetPresenter {
 
   /// Presents a view controller as a bottom sheet from a parent view controller.
   ///
+  /// - For iOS 16+, it uses `UISheetPresentationController` to support dynamic height detents.
+  /// - For earlier versions, it falls back to a custom `UIPresentationController`.
+  ///
   /// - Parameters:
   ///   - viewController: The view controller to present.
   ///   - parentViewController: The view controller that presents the bottom sheet.
   func present(viewController: UIViewController, from parentViewController: UIViewController) {
+    // If running on iOS 16+, use UISheetPresentationController for a modern sheet presentation.
+    if #available(iOS 16.0, *), viewController.sheetPresentationController != nil {
+      self.sheetPrensent(viewController: viewController, from: parentViewController)
+      return
+    }
+
+    // Fallback for iOS 15 and earlier using a custom presenter.
     viewController.modalPresentationStyle = .custom
     viewController.transitioningDelegate = self.transitioningDelegate
     parentViewController.present(viewController, animated: true)
+  }
+
+  @available(iOS 16.0, *)
+  private func sheetPrensent(viewController: UIViewController, from parentViewController: UIViewController) {
+    guard let sheet = viewController.sheetPresentationController else { return }
+
+    let dynamicHeightDentId = UISheetPresentationController.Detent.Identifier("dynamicHeightDent")
+    let dynamicHeightDent = UISheetPresentationController.Detent
+      .custom(identifier: dynamicHeightDentId) { _ in
+        calculateFittingHeight(of: viewController.view, targetView: parentViewController.view)
+      }
+
+    sheet.detents = [dynamicHeightDent]
+    sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+    sheet.prefersEdgeAttachedInCompactHeight = true
+    sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+
+    parentViewController.present(viewController, animated: true, completion: nil)
   }
 }
 
@@ -48,19 +77,14 @@ final class BottomSheetTransitioningDelegate: NSObject, UIViewControllerTransiti
 
 /// Custom presentation controller that handles the layout and appearance of the bottom sheet.
 final class BottomSheetPresentationController: UIPresentationController {
-  private let maxHeightRatio: CGFloat = 0.8
   private let cornerRadius: CGFloat = Styles.grid(2)
   private let dimmingView = UIView()
 
   // Defines the frame for the presented view, adjusting height dynamically.
   override var frameOfPresentedViewInContainerView: CGRect {
-    guard let containerView = containerView else { return .zero }
+    guard let containerView = self.containerView, let presentedView = self.presentedView else { return .zero }
 
-    let targetHeight = presentedView?.systemLayoutSizeFitting(
-      CGSize(width: containerView.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-    ).height ?? 0
-
-    let height = min(targetHeight, containerView.bounds.height * self.maxHeightRatio)
+    let height = calculateFittingHeight(of: presentedView, targetView: containerView)
 
     return CGRect(
       x: 0,
@@ -79,6 +103,9 @@ final class BottomSheetPresentationController: UIPresentationController {
     self.dimmingView.alpha = 0
 
     containerView.insertSubview(self.dimmingView, at: 0)
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapOutside))
+    self.dimmingView.addGestureRecognizer(tapGesture)
 
     presentedView?.layer.cornerRadius = self.cornerRadius
     presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -107,4 +134,20 @@ final class BottomSheetPresentationController: UIPresentationController {
     super.containerViewDidLayoutSubviews()
     self.dimmingView.frame = containerView?.bounds ?? .zero
   }
+
+  @objc private func didTapOutside() {
+    presentingViewController.dismiss(animated: true)
+  }
+}
+
+private func calculateFittingHeight(of view: UIView, targetView: UIView) -> CGFloat {
+  let targetHeight = view.systemLayoutSizeFitting(
+    CGSize(width: targetView.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+  ).height
+
+  return min(targetHeight, targetView.bounds.height * Constants.maxHeightRatio)
+}
+
+private enum Constants {
+  static let maxHeightRatio: CGFloat = 0.8
 }
