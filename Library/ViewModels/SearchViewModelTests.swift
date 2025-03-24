@@ -481,7 +481,7 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertEqual(
         self.segmentTrackingClient.properties(forKey: "discover_sort").last,
-        "ending_soon",
+        "newest",
         "Selected sort should be in tracking properties"
       )
     }
@@ -604,7 +604,7 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertEqual(
         self.segmentTrackingClient.properties(forKey: "discover_category_name").last,
-        "Art",
+        "Film & Video",
         "Selected category should be in tracking properties"
       )
     }
