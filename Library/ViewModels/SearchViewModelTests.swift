@@ -426,7 +426,7 @@ internal final class SearchViewModelTests: TestCase {
       )
       XCTAssertEqual(
         self.segmentTrackingClient.properties(forKey: "discover_sort").last,
-        "popular",
+        "magic",
         "Selected sort should be in tracking properties"
       )
 
@@ -443,7 +443,7 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertTrue(sortSheet.sortOptions.count > 1, "Sort sheet should have multiple sort options")
       XCTAssertTrue(
-        sortSheet.selectedOption == .popular,
+        sortSheet.selectedOption == .magic,
         "Sort sheet should have first option selected by default"
       )
 
