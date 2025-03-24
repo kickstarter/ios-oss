@@ -190,6 +190,12 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     case .magic: return .magic
     case .newest: return .newest
     case .popular: return .popular
+    default:
+      assert(
+        false,
+        "The other sort types were added for GraphQL compatibility, and should never come up in V1 Discover."
+      )
+      return .magic
     }
   }
 

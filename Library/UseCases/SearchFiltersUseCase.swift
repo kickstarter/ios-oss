@@ -82,17 +82,19 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.tappedCategoryFilterObserver.send(value: ())
   }
 
-  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.popular)
+  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
   fileprivate let selectedCategoryProperty = MutableProperty<Category?>(nil)
 
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
 
   fileprivate let sortOptions = [
+    DiscoveryParams.Sort.magic, // aka Recommended
     DiscoveryParams.Sort.popular,
+    DiscoveryParams.Sort.newest,
     DiscoveryParams.Sort.endingSoon,
-    DiscoveryParams.Sort.magic,
-    DiscoveryParams.Sort.newest
+    DiscoveryParams.Sort.most_funded,
+    DiscoveryParams.Sort.most_backed
   ]
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
