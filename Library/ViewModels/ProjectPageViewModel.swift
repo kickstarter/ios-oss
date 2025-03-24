@@ -150,8 +150,12 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
-  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading.
-  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never> { get }
+  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading. Also a
+  /// `SimilarProjectsState` for loading the Similar Projects Carousel.
+  var updateDataSource: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+    Never
+  > { get }
 
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
@@ -493,7 +497,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         .skipNil()
 
     // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
-    self.updateDataSource = self.projectNavigationSelectorViewDidSelectProperty.signal
+    let dataSourceUpdate = self.projectNavigationSelectorViewDidSelectProperty.signal
       .skipNil()
       .skipRepeats()
       .map { index in NavigationSection(rawValue: index) }
@@ -526,6 +530,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return dataSourceUpdate
       }
       .skip(first: 1)
+
+    let similarProjectsState = self.similarProjectsUseCase.similarProjects.signal
+      .merge(
+        with: self.similarProjectsUseCase.similarProjects.producer
+          .takeWhen(self.viewDidLoadProperty.signal)
+      )
+
+    self.updateDataSource = Signal.combineLatest(
+      dataSourceUpdate,
+      similarProjectsState
+    )
+    .map { dataSource, similarProjects in
+      let (navSection, project, refTag, initialIsExpandedArray, urls) = dataSource
+      return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects)
+    }
 
     self.updateFAQsInDataSource = freshProjectAndRefTag
       .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
@@ -754,7 +773,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let projectFlagged: Signal<Bool, Never>
   public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
+  public let updateDataSource: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+    Never
+  >
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
   public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
   public let didBlockUser: Signal<(), Never>

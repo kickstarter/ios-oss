@@ -2,6 +2,10 @@ import KsApi
 import Library
 import UIKit
 
+protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {
+  func didSelectProject(_ project: SimilarProject)
+}
+
 /*
  A Collection View Cell for the Similar Projects Carousel.
 
@@ -10,7 +14,13 @@ import UIKit
  */
 
 final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
+  // MARK: - Properties
+
   private lazy var projectCardView: SimilarProjectsCardView = { SimilarProjectsCardView(frame: .zero) }()
+
+  internal var project: SimilarProject?
+
+  weak var delegate: SimilarProjectsCollectionViewCellDelegate?
 
   // MARK: - Lifecycle
 
@@ -19,6 +29,10 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
     self.configureViews()
     self.bindStyles()
+
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+    self.contentView.isUserInteractionEnabled = true
+    self.contentView.addGestureRecognizer(gesture)
   }
 
   @available(*, unavailable)
@@ -45,12 +59,21 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value: any SimilarProject) {
     self.projectCardView.configureWith(value: value)
+    self.project = value
 
     self.layoutIfNeeded()
   }
 
   override func bindStyles() {
     applyBaseCellStyle(self)
+  }
+
+  // MARK: - Accessors
+
+  @objc func handleTap(_: UITapGestureRecognizer) {
+    guard let project = project else { return }
+
+    self.delegate?.didSelectProject(project)
   }
 }
 
@@ -59,3 +82,5 @@ private func applyBaseCellStyle(_ cell: UICollectionViewCell) {
   cell.backgroundColor = .ksr_white
   cell.preservesSuperviewLayoutMargins = false
 }
+
+extension SimilarProjectsCollectionViewCell: UIGestureRecognizerDelegate {}

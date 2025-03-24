@@ -10,6 +10,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case overview
     case overviewSubpages
     case overviewReportProject
+    case overviewSimilarProjects
     case campaignHeader
     case campaign
     case faqsHeader
@@ -77,7 +78,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     navigationSection: NavigationSection,
     project: Project,
     refTag: RefTag?,
-    isExpandedStates: [Bool]? = nil
+    isExpandedStates: [Bool]? = nil,
+    similarProjectsState: SimilarProjectsState? = nil
   ) {
     self.prepareImagesInCampaignSection()
     self.prepareAudioVideosInCampaignSection()
@@ -120,6 +122,20 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           cellClass: ReportProjectCell.self,
           inSection: Section.overviewReportProject.rawValue
         )
+      }
+
+      if let state = similarProjectsState {
+        /// Do not show this cell if there's an error. Proper error handling UI will be designed in SPC V2.
+        switch state {
+        case .error, .hidden:
+          return
+        default:
+          self.set(
+            values: [state],
+            cellClass: SimilarProjectsTableViewCell.self,
+            inSection: Section.overviewSimilarProjects.rawValue
+          )
+        }
       }
     case .campaign:
       self.set(
@@ -348,6 +364,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case let (cell as ExternalSourceViewElementCell, value as ExternalSourceViewElement):
       cell.configureWith(value: value)
     case let (cell as ReportProjectCell, value as Bool):
+      cell.configureWith(value: value)
+    case let (cell as SimilarProjectsTableViewCell, value as SimilarProjectsState):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
