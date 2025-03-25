@@ -64,12 +64,12 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
     let carat = UIImage(named: "arrow-down")?
       .withRenderingMode(.alwaysTemplate)
 
-    var sortConfig = UIButton.Configuration.plain()
+    var sortConfig = self.sortButton.configuration ?? UIButton.Configuration.plain()
     sortConfig.image = filter
     self.sortButton.configuration = sortConfig
     self.sortButton.tintColor = Colors.Text.primary.adaptive()
 
-    var categoryConfig = UIButton.Configuration.plain()
+    var categoryConfig = self.categoryButton.configuration ?? UIButton.Configuration.plain()
     categoryConfig.imagePlacement = .trailing
     categoryConfig.image = carat
     categoryConfig.imagePadding = Styles.grid(1)
