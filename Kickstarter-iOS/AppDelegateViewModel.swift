@@ -5,12 +5,6 @@ import Prelude
 import ReactiveSwift
 import UserNotifications
 
-public struct AppCenterConfigData: Equatable {
-  public let appSecret: String
-  public let userId: String
-  public let userName: String
-}
-
 public enum NotificationAuthorizationStatus {
   case authorized
   case denied
@@ -98,9 +92,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits the application icon badge number
   var applicationIconBadgeNumber: Signal<Int, Never> { get }
-
-  /// Emits an app secret that should be used to configure AppCenter.
-  var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
 
   /// Emits when the application should configure Firebase
   var configureFirebase: Signal<(), Never> { get }
@@ -717,23 +708,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
-    self.configureAppCenterWithData = Signal.merge(
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal,
-      self.userSessionEndedProperty.signal
-    )
-    .filter { !AppEnvironment.current.mainBundle.isDebug && !AppEnvironment.current.mainBundle.isRelease }
-    .map { _ -> AppCenterConfigData? in
-      guard let appCenterAppSecret = AppEnvironment.current.mainBundle.appCenterAppSecret else { return nil }
-
-      return AppCenterConfigData(
-        appSecret: appCenterAppSecret,
-        userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
-        userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
-      )
-    }
-    .skipNil()
-
     self.setApplicationShortcutItems = currentUserEvent
       .values()
       .switchMap(shortcutItems(forUser:))
@@ -937,7 +911,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
-  public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)

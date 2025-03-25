@@ -1,6 +1,4 @@
 import AppboyKit
-import AppCenter
-import AppCenterDistribute
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -153,20 +151,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
-    self.viewModel.outputs.configureAppCenterWithData
-      .observeForUI()
-      .observeValues { data in
-        AppCenter.userId = data.userId
-
-        AppCenter.start(
-          withAppSecret: data.appSecret,
-          services: [
-            Distribute.self
-          ]
-        )
-      }
-
-    #if RELEASE || APPCENTER
+    #if RELEASE || TEST_BUILD
       self.viewModel.outputs.configureFirebase
         .observeForUI()
         .observeValues { [weak self] in

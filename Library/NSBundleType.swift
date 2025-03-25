@@ -17,21 +17,6 @@ public protocol NSBundleType {
 }
 
 extension NSBundleType {
-  public var appCenterAppSecret: String? {
-    guard let bundleId = kickstarterBundleId else {
-      return nil
-    }
-
-    switch bundleId {
-    case .beta:
-      return KsApi.Secrets.AppCenter.beta
-    case .alpha:
-      return KsApi.Secrets.AppCenter.alpha
-    default:
-      return nil
-    }
-  }
-
   public var identifier: String {
     return self.infoDictionary?["CFBundleIdentifier"] as? String ?? "Unknown"
   }
