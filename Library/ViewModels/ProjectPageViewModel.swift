@@ -496,7 +496,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         .map(HelpType.helpType)
         .skipNil()
 
-    // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
     let dataSourceUpdate = self.projectNavigationSelectorViewDidSelectProperty.signal
       .skipNil()
       .skipRepeats()
@@ -529,7 +528,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         return dataSourceUpdate
       }
-      .skip(first: 1)
 
     let similarProjectsState = self.similarProjectsUseCase.similarProjects.signal
       .merge(

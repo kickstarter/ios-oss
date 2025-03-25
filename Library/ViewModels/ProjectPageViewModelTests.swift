@@ -1517,12 +1517,11 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    // The view model skips the first emission
-    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+    self.updateDataSourceNavigationSection.assertValueCount(1)
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-    self.updateDataSourceNavigationSection.assertValues([.environmentalCommitments])
+    self.updateDataSourceNavigationSection.assertValues([.overview, .environmentalCommitments])
   }
 
   func testOutput_UpdateDataSourceProject() {
@@ -1539,8 +1538,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.updateDataSourceProject.assertDidNotEmitValue()
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    // The view model skips the first emission
-    self.updateDataSourceProject.assertDidNotEmitValue()
+    self.updateDataSourceNavigationSection.assertValueCount(1)
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
@@ -1563,8 +1561,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-      // The view model skips the first emission
-      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.updateDataSourceNavigationSection.assertValueCount(1)
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
@@ -1592,8 +1589,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.updateDataSourceImageURLS.assertDidNotEmitValue()
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    // The view model skips the first emission
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+    self.updateDataSourceNavigationSection.assertValueCount(1)
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
@@ -1633,8 +1629,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.updateDataSourceImageURLS.assertDidNotEmitValue()
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    // The view model skips the first emission
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+    self.updateDataSourceNavigationSection.assertValueCount(1)
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
