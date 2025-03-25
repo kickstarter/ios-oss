@@ -284,6 +284,7 @@
 		33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */; };
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
+		33A4392E2D93488800817A0E /* KSRButtonLegacyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
 		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
 		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
@@ -2029,6 +2030,7 @@
 		33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
+		33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonLegacyStyle.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
 		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
@@ -5930,6 +5932,7 @@
 		338E60282D70CACB008D42F9 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */,
 				338E60292D70CB1D008D42F9 /* KSRButton.swift */,
 				33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */,
 				3361948A2D88E9CE00BED4BD /* KSRButtonStyleModifier.swift */,
@@ -8323,6 +8326,7 @@
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */,
+				33A4392E2D93488800817A0E /* KSRButtonLegacyStyle.swift in Sources */,
 				606C45F129FACD49001BA067 /* RemoteConfigClientType.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
 				7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */,

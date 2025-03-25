@@ -81,7 +81,19 @@ public let _blackButtonStyle = baseButtonStyle
 
 // MARK: - Blue
 
-public let blueButtonStyle = baseButtonStyle
+/// Applies the new `KSRButtonLegacyStyle.blue` style when `featureNewDesignSystemEnabled()` is enabled.
+/// If the feature flag is disabled, it falls back to the legacy `_blueButtonStyle`.
+public let blueButtonStyle: ButtonStyle = { button in
+  if featureNewDesignSystemEnabled() {
+    button.applyStyleConfiguration(KSRButtonLegacyStyle.blue)
+
+    return button
+  }
+
+  return _blueButtonStyle(button)
+}
+
+public let _blueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_trust_500
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
@@ -111,7 +123,19 @@ private let _greenButtonStyle = baseButtonStyle
 
 // MARK: - Grey
 
-public let greyButtonStyle = baseButtonStyle
+/// Applies the new `KSRButtonLegacyStyle.grey` style when `featureNewDesignSystemEnabled()` is enabled.
+/// If the feature flag is disabled, it falls back to the legacy `_greyButtonStyle`.
+public let greyButtonStyle: ButtonStyle = { button in
+  if featureNewDesignSystemEnabled() {
+    button.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
+
+    return button
+  }
+
+  return _greyButtonStyle(button)
+}
+
+public let _greyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_700
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_support_300
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_700
