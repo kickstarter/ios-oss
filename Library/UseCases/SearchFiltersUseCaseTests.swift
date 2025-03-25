@@ -11,6 +11,9 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
   private let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
   private let showSort = TestObserver<SearchSortSheet, Never>()
+  private let isSortPillHighlighted = TestObserver<Bool, Never>()
+  private let categoryPillTitle = TestObserver<String, Never>()
+  private let isCategoryPillHighlighted = TestObserver<Bool, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -27,6 +30,9 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
     self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
+    self.useCase.uiOutputs.categoryPillTitle.observe(self.categoryPillTitle.observer)
+    self.useCase.uiOutputs.isCategoryPillHighlighted.observe(self.isCategoryPillHighlighted.observer)
+    self.useCase.uiOutputs.isSortPillHighlighted.observe(self.isSortPillHighlighted.observer)
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -134,5 +140,51 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(newSelectedSort, .endingSoon, "Sort value should change when new sort is selected")
+  }
+
+  func test_selectingSort_updatesSortPill() {
+    self.initialObserver.send(value: ())
+
+    self.selectedSort.assertLastValue(.magic)
+    self.isSortPillHighlighted.assertLastValue(
+      false,
+      "Sort pill should not be  highlighted when default sort is selected"
+    )
+
+    self.useCase.inputs.selectedSortOption(.endingSoon)
+    self.isSortPillHighlighted.assertLastValue(
+      true,
+      "Sort pill should be highlighted when default sort is selected"
+    )
+  }
+
+  func test_selectingCategory_updatesCategoryPill() {
+    self.initialObserver.send(value: ())
+    self.categoriesObserver.send(value: [
+      .art,
+      .illustration,
+      .documentary,
+      .tabletopGames
+    ])
+
+    self.selectedCategory.assertLastValue(nil)
+    self.isCategoryPillHighlighted.assertLastValue(
+      false,
+      "Category pill should not be highlighted when no category is selected"
+    )
+    self.categoryPillTitle.assertLastValue(
+      "Category",
+      "Category pill should have placeholder text when no category is selected"
+    )
+
+    self.useCase.inputs.selectedCategory(.illustration)
+    self.isCategoryPillHighlighted.assertLastValue(
+      true,
+      "Category pill should be highlighted category is selected"
+    )
+    self.categoryPillTitle.assertLastValue(
+      "Illustration",
+      "Category pill should have selected category title when category is selected"
+    )
   }
 }
