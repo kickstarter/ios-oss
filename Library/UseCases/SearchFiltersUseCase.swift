@@ -119,7 +119,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     }
 
     let index = self.categoriesProperty.value.firstIndex(of: category)
-    guard index != nil else {
+    if index == nil {
       assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
     }
 
