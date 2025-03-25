@@ -857,6 +857,8 @@ final class RootViewModelTests: TestCase {
     ]
 
     withEnvironment(
+      mainBundle: MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS"),
+
       remoteConfigClient: remoteConfig
     ) {
       self.vm.inputs.viewDidLoad()
@@ -913,7 +915,9 @@ final class RootViewModelTests: TestCase {
     }
 
     withEnvironment(
+      mainBundle: MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS"),
       remoteConfigClient: configClientFilters_On
+
     ) {
       self.vm.inputs.applicationWillEnterForeground()
 
