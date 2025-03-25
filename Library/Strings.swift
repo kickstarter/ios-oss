@@ -1824,10 +1824,10 @@ contributeurs"
    "Category"
 
    - **en**: "Category"
-   - **de**: "Category"
-   - **es**: "Category"
-   - **fr**: "Category"
-   - **ja**: "Category"
+   - **de**: "Kategorie"
+   - **es**: "Categoría"
+   - **fr**: "Catégorie"
+   - **ja**: "カテゴリー選択"
   */
   public static func Category() -> String {
     return localizedString(
@@ -3774,10 +3774,10 @@ Cliquez pour réessayer."
    "End date"
 
    - **en**: "End date"
-   - **de**: "End date"
-   - **es**: "End date"
-   - **fr**: "End date"
-   - **ja**: "End date"
+   - **de**: "Enddatum"
+   - **es**: "Fecha de finalización"
+   - **fr**: "Date de fin"
+   - **ja**: "終了日"
   */
   public static func End_date() -> String {
     return localizedString(
@@ -7007,10 +7007,10 @@ with friends."
    "Most backed"
 
    - **en**: "Most backed"
-   - **de**: "Most backed"
-   - **es**: "Most backed"
-   - **fr**: "Most backed"
-   - **ja**: "Most backed"
+   - **de**: "Meist unterstüzt"
+   - **es**: "Más patrocinadores"
+   - **fr**: "Nombre d'engagements"
+   - **ja**: "バッカー数"
   */
   public static func Most_backed() -> String {
     return localizedString(
@@ -7024,10 +7024,10 @@ with friends."
    "Most funded"
 
    - **en**: "Most funded"
-   - **de**: "Most funded"
-   - **es**: "Most funded"
-   - **fr**: "Most funded"
-   - **ja**: "Most funded"
+   - **de**: "Meist finanziert"
+   - **es**: "Más financiados"
+   - **fr**: "Financement"
+   - **ja**: "達成額"
   */
   public static func Most_funded() -> String {
     return localizedString(
@@ -7075,10 +7075,10 @@ with friends."
    "Near me"
 
    - **en**: "Near me"
-   - **de**: "Near me"
-   - **es**: "Near me"
-   - **fr**: "Near me"
-   - **ja**: "Near me"
+   - **de**: "In meiner Nähe"
+   - **es**: "Cerca de mí"
+   - **fr**: "Près de moi"
+   - **ja**: "近辺"
   */
   public static func Near_me() -> String {
     return localizedString(
@@ -7194,10 +7194,10 @@ with friends."
    "Newest"
 
    - **en**: "Newest"
-   - **de**: "Newest"
-   - **es**: "Newest"
-   - **fr**: "Newest"
-   - **ja**: "Newest"
+   - **de**: "Neueste"
+   - **es**: "Más recientes"
+   - **fr**: "Les plus récents"
+   - **ja**: "最新"
   */
   public static func Newest() -> String {
     return localizedString(
@@ -8557,10 +8557,10 @@ n'ont rien soutenu."
    "Popularity"
 
    - **en**: "Popularity"
-   - **de**: "Popularity"
-   - **es**: "Popularity"
-   - **fr**: "Popularity"
-   - **ja**: "Popularity"
+   - **de**: "Nach Beliebtheit"
+   - **es**: "Popularidad"
+   - **fr**: "Tendances"
+   - **ja**: "人気"
   */
   public static func Popularity() -> String {
     return localizedString(
@@ -9682,10 +9682,10 @@ daring ideas."
    "Reset"
 
    - **en**: "Reset"
-   - **de**: "Reset"
-   - **es**: "Reset"
-   - **fr**: "Reset"
-   - **ja**: "Reset"
+   - **de**: "Zurücksetzen"
+   - **es**: "Restablecer"
+   - **fr**: "Réinitialiser"
+   - **ja**: "リセット"
   */
   public static func Reset_filters() -> String {
     return localizedString(
@@ -10243,10 +10243,10 @@ daring ideas."
    "See results"
 
    - **en**: "See results"
-   - **de**: "See results"
-   - **es**: "See results"
-   - **fr**: "See results"
-   - **ja**: "See results"
+   - **de**: "Ergebnisse ansehen"
+   - **es**: "Ver resultados"
+   - **fr**: "Afficher les résultats"
+   - **ja**: "結果を表示"
   */
   public static func See_results() -> String {
     return localizedString(
@@ -11163,10 +11163,10 @@ catch your eye?"
    "Sort by"
 
    - **en**: "Sort by"
-   - **de**: "Sort by"
-   - **es**: "Sort by"
-   - **fr**: "Sort by"
-   - **ja**: "Sort by"
+   - **de**: "Sortieren nach"
+   - **es**: "Ordenar por"
+   - **fr**: "Trier par"
+   - **ja**: "並べ替える"
   */
   public static func Sort_by() -> String {
     return localizedString(
@@ -14267,6 +14267,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "You_wont_be_charged_for_backing_a_project",
       defaultValue: "You won't be charged for backing a project unless it reaches its funding goal.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You’ll be the first to receive project launch and creator update emails."
+
+   - **en**: "You’ll be the first to receive project launch and creator update emails."
+   - **de**: "Du gehörst dann zu den Ersten, die E-Mails zur Projektveröffentlichung und Updates des Projektgründers erhalten."
+   - **es**: "Serás el primero en recibir correos electrónicos sobre el lanzamiento del proyecto y actualizaciones del creador."
+   - **fr**: "Vous serez le premier à recevoir les e-mails annonçant un lancement ou une actu de ce créateur."
+   - **ja**: "プロジェクトのローンチやクリエイターからの最新情報に関するメールがまっさきに届きます。"
+  */
+  public static func Youll_be_the_first_to_receive_project_launch() -> String {
+    return localizedString(
+      key: "Youll_be_the_first_to_receive_project_launch",
+      defaultValue: "You’ll be the first to receive project launch and creator update emails.",
       count: nil,
       substitutions: [:]
     )
@@ -20432,7 +20449,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -23844,7 +23861,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -27023,7 +27040,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -27975,7 +27992,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
