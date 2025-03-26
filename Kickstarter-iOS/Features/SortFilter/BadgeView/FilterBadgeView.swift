@@ -95,7 +95,7 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
   }
 
   internal func setCategoryTitle(_ title: String) {
-    let attributes = [NSAttributedString.Key.font: UIFont.ksr_headingMD(size: 14.0)]
+    let attributes = [NSAttributedString.Key.font: UIFont.ksr_headingMD()]
     let attributedString = NSAttributedString(string: title, attributes: attributes)
     self.categoryButton.setAttributedTitle(attributedString, for: .normal)
   }
