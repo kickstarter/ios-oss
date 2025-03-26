@@ -6,8 +6,8 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
   // Wait! Before you add more pills, refactor this.
   // This should be more dynamically generated and have its own view model.
   // I just kept it simple for now, because it only has two buttons.
-  public private(set) var sortButton = UIButton()
-  public private(set) var categoryButton = UIButton()
+  public let sortButton = UIButton()
+  public let categoryButton = UIButton()
   private let stackView = UIStackView()
 
   override init(frame: CGRect) {
