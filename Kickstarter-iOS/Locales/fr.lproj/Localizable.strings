@@ -108,7 +108,7 @@
 "Card_ending_in_last_four" = "Numéro de carte se terminant par : %{last_four}";
 "Card_number" = "N° de carte";
 "Cardholder_name" = "Nom du titulaire";
-"Category" = "Category";
+"Category" = "Catégorie";
 "Change_currency" = "Changer de devise";
 "Change_email" = "Changer d'adresse e-mail";
 "Change_password" = "Changer de mot de passe";
@@ -226,7 +226,7 @@
 "Email_must_be_a_valid_email_address" = "L'adresse e-mail doit être valide.";
 "Email_notifications" = "Notifications par e-mail";
 "Email_unverified" = "Adresse e-mail non vérifiée.";
-"End_date" = "End date";
+"End_date" = "Date de fin";
 "Ended" = "Terminé";
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
@@ -424,18 +424,18 @@
 "Messages" = "Messages";
 "Million_plus" = "Plus de %{total_amount} millions";
 "More_than_number_of_items_items" = "Plus de %{number_of_items} éléments";
-"Most_backed" = "Most backed";
-"Most_funded" = "Most funded";
+"Most_backed" = "Nombre d'engagements";
+"Most_funded" = "Financement";
 "My_project_seeks_funding_for_AI_technology" = "Le but de mon projet est de financer une technologie d'IA.";
 "Name" = "Nom";
-"Near_me" = "Near me";
+"Near_me" = "Près de moi";
 "Never" = "Jamais";
 "New_email" = "Nouvelle adresse e-mail";
 "New_password" = "Nouveau mot de passe";
 "New_payment_method" = "Nouveau moyen de paiement";
 "New_pledge_activity" = "Nouveaux engagements";
 "New_work_and_big_ideas_from_established_and" = "Grandes idées et nouveaux travaux signés par des artistes établis et émergents.";
-"Newest" = "Newest";
+"Newest" = "Les plus récents";
 "News_and_projects" = "Actualités et projets";
 "News_events" = "Les grandes nouvelles et événements près de chez vous, quelques fois par an.";
 "Newsletters" = "Lettres d'information";
@@ -515,7 +515,7 @@
 "Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
-"Popularity" = "Popularity";
+"Popularity" = "Tendances";
 "Post" = "Publier";
 "Postal_code" = "Code postal";
 "Postcode" = "Code postal";
@@ -581,7 +581,7 @@
 "Request_my_personal_data" = "Demander mes données personnelles";
 "Resend_email" = "Renvoyer";
 "Resend_verification_email" = "Renvoyer l'e-mail de vérification";
-"Reset_filters" = "Reset";
+"Reset_filters" = "Réinitialiser";
 "Reset_your_password" = "Réinitialiser votre mot de passe";
 "Retry" = "Réessayer";
 "Retry_or_select_another_method" = "Veuillez réessayer ou choisir un autre moyen de paiement.";
@@ -626,7 +626,7 @@
 "See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
 "See_our_suggestions" = "Voir nos suggestions ▸";
 "See_our_terms_of_use" = "Consulter nos Conditions d'utilisation";
-"See_results" = "See results";
+"See_results" = "Afficher les résultats";
 "See_rewards" = "Afficher les récompenses";
 "See_the_rewards" = "Afficher les récompenses";
 "Select" = "Sélectionner";
@@ -684,7 +684,7 @@
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
 "Something_went_wrong_pull_to_refresh" = "Une erreur s'est produite, faites glisser l'écran vers le bas pour l'actualiser.";
 "Something_went_wrong_pull_to_refresh_no_period" = "Une erreur s'est produite. Tirez l'écran vers le bas pour l'actualiser.";
-"Sort_by" = "Sort by";
+"Sort_by" = "Trier par";
 "Spam" = "Spam";
 "Start_the_request" = "Commencer la préparation";
 "Starting_soon" = "Bientôt en direct";
@@ -866,6 +866,7 @@
 "You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "Le premier prélèvement interviendra 24 heures après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable.";
 "You_will_lose_the_comment_if_you_leave_this_page" = "Si vous quittez cette page, votre commentaire sera perdu.";
 "You_wont_be_charged_for_backing_a_project" = "Vous ne serez débité que si le créateur atteint son objectif de financement.";
+"Youll_be_the_first_to_receive_project_launch" = "Vous serez le premier à recevoir les e-mails annonçant un lancement ou une actu de ce créateur.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "Dès que votre téléchargement sera prêt, vous recevrez un e-mail à l'adresse %{email}.";
 "Your_chat_message_wasnt_sent_successfully" = "Votre message n'a pas été envoyé.";
 "Your_comment_wasnt_posted" = "Votre commentaire n'a pas été publié.";

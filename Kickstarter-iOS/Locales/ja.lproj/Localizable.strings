@@ -108,7 +108,7 @@
 "Card_ending_in_last_four" = "下4桁が %{last_four} のカード";
 "Card_number" = "カード番号";
 "Cardholder_name" = "カード名義";
-"Category" = "Category";
+"Category" = "カテゴリー選択";
 "Change_currency" = "通貨の変更";
 "Change_email" = "メールアドレスを変更";
 "Change_password" = "パスワードを変更";
@@ -226,7 +226,7 @@
 "Email_must_be_a_valid_email_address" = "有効なメールアドレスを入力してください。";
 "Email_notifications" = "メール通知設定";
 "Email_unverified" = "このメールアドレスは認証されていません。";
-"End_date" = "End date";
+"End_date" = "終了日";
 "Ended" = "終了";
 "Ending_in_last_four" = "下の桁が%{last_four} の番号";
 "Ending_soon" = "まもなく終了";
@@ -424,18 +424,18 @@
 "Messages" = "メッセージ";
 "Million_plus" = "%{total_amount},000,000 以上";
 "More_than_number_of_items_items" = "%{number_of_items} 件以上のアイテム";
-"Most_backed" = "Most backed";
-"Most_funded" = "Most funded";
+"Most_backed" = "バッカー数";
+"Most_funded" = "達成額";
 "My_project_seeks_funding_for_AI_technology" = "私のプロジェクトの目的は、AI テクノロジーのための資金調達です。";
 "Name" = "名前";
-"Near_me" = "Near me";
+"Near_me" = "近辺";
 "Never" = "通知を受けない";
 "New_email" = "新しいメールアドレス";
 "New_password" = "新しいパスワード";
 "New_payment_method" = "新しいお支払い方法";
 "New_pledge_activity" = "新しいプレッジ";
 "New_work_and_big_ideas_from_established_and" = "新進アーティストや著名アーティストの最新プロジェクトやアイデアをご紹介。";
-"Newest" = "Newest";
+"Newest" = "最新";
 "News_and_projects" = "ニュースとプロジェクト";
 "News_events" = "1年に数回だけ、お近くのニュースやイベント情報をお届け。";
 "Newsletters" = "ニュースレター";
@@ -515,7 +515,7 @@
 "Pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
-"Popularity" = "Popularity";
+"Popularity" = "人気";
 "Post" = "投稿する";
 "Postal_code" = "郵便番号";
 "Postcode" = "郵便番号";
@@ -581,7 +581,7 @@
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_email" = "メールを再送";
 "Resend_verification_email" = "認証メールをもう一度送信";
-"Reset_filters" = "Reset";
+"Reset_filters" = "リセット";
 "Reset_your_password" = "パスワードをリセット";
 "Retry" = "もう一度試す";
 "Retry_or_select_another_method" = "再試行するか別のお支払い方法を選択してください。";
@@ -626,7 +626,7 @@
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
 "See_our_suggestions" = "おすすめを見る ▸";
 "See_our_terms_of_use" = "利用規約を見る";
-"See_results" = "See results";
+"See_results" = "結果を表示";
 "See_rewards" = "リワードを見る";
 "See_the_rewards" = "リワードを保存";
 "Select" = "選択";
@@ -684,7 +684,7 @@
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
 "Something_went_wrong_pull_to_refresh" = "何らかのエラーが発生しました。リフレッシュするにはプルダウンしてください。";
 "Something_went_wrong_pull_to_refresh_no_period" = "何らかのエラーが発生しました。プルダウンして画面を更新してください。";
-"Sort_by" = "Sort by";
+"Sort_by" = "並べ替える";
 "Spam" = "迷惑メール";
 "Start_the_request" = "データの収集を開始する";
 "Starting_soon" = "もう少しで始まります。";
@@ -866,6 +866,7 @@
 "You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "最初の請求はプロジェクトが成功に終わってから24時間後に行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。";
 "You_will_lose_the_comment_if_you_leave_this_page" = "このページから移動するとコメントは破棄されます。";
 "You_wont_be_charged_for_backing_a_project" = "プロジェクトをバックした場合、プロジェクトがファンディングゴールに到達しない限り、課金されることはありません。";
+"Youll_be_the_first_to_receive_project_launch" = "プロジェクトのローンチやクリエイターからの最新情報に関するメールがまっさきに届きます。";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "ダウンロードの準備が整い次第、%{email} にメールが届きます。";
 "Your_chat_message_wasnt_sent_successfully" = "メッセージの送信に失敗。";
 "Your_comment_wasnt_posted" = "コメントは投稿されませんでした";

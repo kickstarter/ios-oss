@@ -866,6 +866,7 @@
 "You_will_be_charged_for_your_pledge_over_four_payments_expanded_description" = "The first charge will be 24 hours after the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.";
 "You_will_lose_the_comment_if_you_leave_this_page" = "You’ll lose the comment if you leave this page.";
 "You_wont_be_charged_for_backing_a_project" = "You won't be charged for backing a project unless it reaches its funding goal.";
+"Youll_be_the_first_to_receive_project_launch" = "You’ll be the first to receive project launch and creator update emails.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
 "Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_comment_wasnt_posted" = "Your comment wasn't posted";
