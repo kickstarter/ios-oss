@@ -24,7 +24,8 @@ public protocol SearchFiltersUseCaseUIOutputs {
   /// Sends a model object which can be used to display sort options.
   var showSort: Signal<SearchSortSheet, Never> { get }
 
-  // FIXME: Wait! Before you add more pill configurations, refactor this.
+  // FIXME: MBL-2250
+  // Wait! Before you add more pill configurations, refactor this.
   // The pills should be a more dynamic piece of UI, but I hard-coded the
   // two pills we needed to start.
 

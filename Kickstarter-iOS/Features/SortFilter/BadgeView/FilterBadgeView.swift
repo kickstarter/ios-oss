@@ -2,7 +2,8 @@ import Library
 import UIKit
 
 class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
-  // FIXME: Wait! Before you add more pills, refactor this.
+  // FIXME: MBL-2250
+  // Wait! Before you add more pills, refactor this.
   // This should be more dynamically generated and have its own view model.
   // I just kept it simple for now, because it only has two buttons.
   public private(set) var sortButton = UIButton()
