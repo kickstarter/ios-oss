@@ -187,4 +187,25 @@ final class SearchFiltersUseCaseTests: TestCase {
       "Category pill should have selected category title when category is selected"
     )
   }
+
+  func test_clearOptions_resetsSort_andClearsCategory() {
+    self.initialObserver.send(value: ())
+    self.categoriesObserver.send(value: [
+      .art
+    ])
+
+    self.selectedSort.assertLastValue(.magic)
+    self.selectedCategory.assertLastValue(nil)
+
+    self.useCase.inputs.selectedSortOption(.popular)
+    self.useCase.inputs.selectedCategory(.art)
+
+    self.selectedSort.assertLastValue(.popular)
+    self.selectedCategory.assertLastValue(.art)
+
+    self.useCase.inputs.clearOptions()
+
+    self.selectedSort.assertLastValue(.magic, "Sort should revert to default sort when options are cleared")
+    self.selectedCategory.assertLastValue(nil, "Category should revert to nil when options are cleared")
+  }
 }
