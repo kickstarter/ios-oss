@@ -92,7 +92,7 @@ final class PledgeViewCTAContainerView: UIView {
 
     PledgeViewStyles.pledgeAmountValueStyle(self.amountLabel)
 
-    applePayStyle(self.applePayButton)
+    _ = applePayButtonStyle(self.applePayButton)
 
     ctaStackViewStyle(self.ctaStackView)
 
@@ -269,13 +269,6 @@ private func disclaimerStackViewStyle(_ stackView: UIStackView) {
     right: Styles.grid(5)
   )
   stackView.isLayoutMarginsRelativeArrangement = true
-}
-
-private func applePayStyle(_ button: UIButton) {
-  button.clipsToBounds = true
-  button.layer.masksToBounds = true
-  button.layer.cornerRadius = Styles.grid(2)
-  button.isAccessibilityElement = true
 }
 
 private let layerStyle: LayerStyle = { layer in

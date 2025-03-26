@@ -1,12 +1,23 @@
 @testable import Kickstarter_Framework
 import Kingfisher
 @testable import KsApi
+import Library
 import SnapshotTesting
 import SwiftUI
 import XCTest
 
 final class PPOProjectCardTests: TestCase {
   let size = CGSize(width: 375, height: 700)
+
+  override func setUp() {
+    super.setUp()
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    super.tearDown()
+  }
 
   @MainActor
   func testAddressLocks() async {
