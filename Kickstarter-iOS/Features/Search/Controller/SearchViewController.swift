@@ -23,7 +23,7 @@ internal final class SearchViewController: UITableViewController {
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
-  private var currentSortAndFilterHeader: PlaceholderSortFilterView? = nil
+  private var sortAndFilterHeader = FilterBadgeView<DiscoveryParams.Sort, KsApi.Category>(frame: .zero)
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -65,6 +65,18 @@ internal final class SearchViewController: UITableViewController {
     )
 
     self.searchTextField.delegate = self
+
+    self.sortAndFilterHeader.sortButton.addTarget(
+      self,
+      action: #selector(SearchViewController.sortButtonTapped),
+      for: .touchUpInside
+    )
+
+    self.sortAndFilterHeader.categoryButton.addTarget(
+      self,
+      action: #selector(SearchViewController.categoryButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
@@ -198,6 +210,24 @@ internal final class SearchViewController: UITableViewController {
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
+
+    self.viewModel.outputs.categoryPillTitle
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.sortAndFilterHeader.setCategoryTitle(title)
+      }
+
+    self.viewModel.outputs.isSortPillHighlighted
+      .observeForUI()
+      .observeValues { [weak self] highlighted in
+        self?.sortAndFilterHeader.highlightSortButton(highlighted)
+      }
+
+    self.viewModel.outputs.isCategoryPillHighlighted
+      .observeForUI()
+      .observeValues { [weak self] highlighted in
+        self?.sortAndFilterHeader.highlightCategoryButton(highlighted)
+      }
   }
 
   fileprivate func present(sheet viewController: UIViewController, withHeight _: CGFloat) {
@@ -297,37 +327,27 @@ internal final class SearchViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    self.currentSortAndFilterHeader = nil
-
     guard section == SearchDataSource.Section.projects.rawValue,
           self.showSortAndFilterHeader.value == true else {
       return nil
     }
 
-    let header = PlaceholderSortFilterView()
-    header.sortButton.addTarget(
-      self,
-      action: #selector(SearchViewController.sortButtonTapped),
-      for: .touchUpInside
-    )
-    header.categoryButton.addTarget(
-      self,
-      action: #selector(SearchViewController.categoryButtonTapped),
-      for: .touchUpInside
-    )
-
-    self.currentSortAndFilterHeader = header
-
-    return header
+    return self.sortAndFilterHeader
   }
 
+  private var headerHeight: CGFloat? = nil
   override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard section == SearchDataSource.Section.projects.rawValue,
           self.showSortAndFilterHeader.value == true else {
       return 0
     }
 
-    return PlaceholderSortFilterView.headerHeight
+    if self.headerHeight == nil {
+      let fittingSize = self.sortAndFilterHeader.systemLayoutSizeFitting(self.view.bounds.size)
+      self.headerHeight = fittingSize.height
+    }
+
+    return self.headerHeight ?? 0
   }
 
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
@@ -367,43 +387,3 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: TabBarControllerScrollable {}
-
-// FIXME: MBL-2175. This will be a much nicer view. For now, a placeholder!
-private class PlaceholderSortFilterView: UIView {
-  static let headerHeight: CGFloat = 30.0
-  internal var sortButton = UIButton()
-  internal var categoryButton = UIButton()
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    self.backgroundColor = .ksr_white
-
-    self.sortButton.setTitle("Sort", for: .normal)
-    self.sortButton.setTitleColor(.ksr_create_500, for: .normal)
-    self.sortButton.setBackgroundColor(.ksr_white, for: .normal)
-    self.sortButton.layer.borderColor = UIColor.ksr_create_100.cgColor
-    self.sortButton.layer.borderWidth = 1.0
-    self.sortButton.layer.cornerRadius = Self.headerHeight / 2
-
-    self.categoryButton.setTitle("Category", for: .normal)
-    self.categoryButton.setTitleColor(.ksr_create_500, for: .normal)
-    self.categoryButton.setBackgroundColor(.ksr_white, for: .normal)
-    self.categoryButton.layer.borderColor = UIColor.ksr_create_100.cgColor
-    self.categoryButton.layer.borderWidth = 1.0
-    self.categoryButton.layer.cornerRadius = Self.headerHeight / 2
-
-    let stackView = UIStackView(arrangedSubviews: [self.sortButton, self.categoryButton])
-    stackView.axis = .horizontal
-    stackView.distribution = .fillEqually
-    stackView.spacing = Styles.grid(1)
-
-    self.addSubview(stackView)
-    let _ = ksr_constrainViewToEdgesInParent()(stackView, self)
-  }
-
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    assert(false, "Unimplemented")
-  }
-}

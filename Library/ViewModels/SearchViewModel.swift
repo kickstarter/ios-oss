@@ -89,6 +89,15 @@ public protocol SearchViewModelOutputs {
 
   /// Emits a model object with possible sort options when the sort button is tapped.
   var showSort: Signal<SearchSortSheet, Never> { get }
+
+  /// Whether or not to highlight the Sort option.
+  var isSortPillHighlighted: Signal<Bool, Never> { get }
+
+  /// The title for the category pill.
+  var categoryPillTitle: Signal<String, Never> { get }
+
+  /// Whether or not to highlight the Category option.
+  var isCategoryPillHighlighted: Signal<Bool, Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -440,6 +449,18 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> {
     return self.searchFiltersUseCase.showCategoryFilters
+  }
+
+  public var isSortPillHighlighted: Signal<Bool, Never> {
+    return self.searchFiltersUseCase.isSortPillHighlighted
+  }
+
+  public var categoryPillTitle: Signal<String, Never> {
+    return self.searchFiltersUseCase.categoryPillTitle
+  }
+
+  public var isCategoryPillHighlighted: Signal<Bool, Never> {
+    return self.searchFiltersUseCase.isCategoryPillHighlighted
   }
 
   public var inputs: SearchViewModelInputs { return self }

@@ -23,6 +23,20 @@ public protocol SearchFiltersUseCaseUIOutputs {
   var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
   /// Sends a model object which can be used to display sort options.
   var showSort: Signal<SearchSortSheet, Never> { get }
+
+  // FIXME: MBL-2250
+  // Wait! Before you add more pill configurations, refactor this.
+  // The pills should be a more dynamic piece of UI, but I hard-coded the
+  // two pills we needed to start.
+
+  /// Whether or not to highlight the Sort option.
+  var isSortPillHighlighted: Signal<Bool, Never> { get }
+
+  /// The title for the category pill.
+  var categoryPillTitle: Signal<String, Never> { get }
+
+  /// Whether or not to highlight the Category option.
+  var isCategoryPillHighlighted: Signal<Bool, Never> { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
@@ -66,6 +80,18 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedCategoryProperty.producer.takeWhen(initialSignal),
       self.selectedCategoryProperty.signal
     )
+
+    self.isSortPillHighlighted = self.selectedSort.map { [sortOptions] sort in sort != sortOptions.first }
+
+    self.categoryPillTitle = self.selectedCategory.map { category in
+      if let name = category?.name {
+        return name
+      }
+
+      return Strings.Category()
+    }
+
+    self.isCategoryPillHighlighted = self.selectedCategory.map { $0 != nil }
   }
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
@@ -99,6 +125,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
+
+  public let isSortPillHighlighted: Signal<Bool, Never>
+  public let categoryPillTitle: Signal<String, Never>
+  public let isCategoryPillHighlighted: Signal<Bool, Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<Category?, Never>

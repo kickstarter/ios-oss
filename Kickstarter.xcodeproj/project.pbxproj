@@ -1686,6 +1686,7 @@
 		E1C880AF2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1CFB5972D8E0107004AB0D6 /* Category+FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5962D8E0107004AB0D6 /* Category+FilterCategory.swift */; };
+		E1CFB6B82D91E9B0004AB0D6 /* FilterBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB6B72D91E9AE004AB0D6 /* FilterBadgeView.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
 /* End PBXBuildFile section */
@@ -3447,6 +3448,7 @@
 		E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphQLSelectionSet+String.swift"; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1CFB5962D8E0107004AB0D6 /* Category+FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+FilterCategory.swift"; sourceTree = "<group>"; };
+		E1CFB6B72D91E9AE004AB0D6 /* FilterBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBadgeView.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
@@ -5860,6 +5862,7 @@
 		336193ED2D825C4F00BED4BD /* SortFilter */ = {
 			isa = PBXGroup;
 			children = (
+				E1CFB6B62D91E99F004AB0D6 /* BadgeView */,
 				336194E12D8A95BB00BED4BD /* SortView */,
 				336193EE2D825C6500BED4BD /* FilterCategory */,
 			);
@@ -7611,6 +7614,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E1CFB6B62D91E99F004AB0D6 /* BadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				E1CFB6B72D91E9AE004AB0D6 /* FilterBadgeView.swift */,
+			);
+			path = BadgeView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -9107,6 +9118,7 @@
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				33F55B3A2D4143940007E50E /* BadgeView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
+				E1CFB6B82D91E9B0004AB0D6 /* FilterBadgeView.swift in Sources */,
 				8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
