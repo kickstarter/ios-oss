@@ -50,7 +50,7 @@ public let redButtonStyle: ButtonStyle = { button in
   return _redButtonStyle(button)
 }
 
-public let _redButtonStyle = baseButtonStyle
+private let _redButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_alert
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
@@ -70,7 +70,7 @@ public let blackButtonStyle: ButtonStyle = { button in
   return _blackButtonStyle(button)
 }
 
-public let _blackButtonStyle = baseButtonStyle
+private let _blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_support_100
@@ -93,7 +93,7 @@ public let blueButtonStyle: ButtonStyle = { button in
   return _blueButtonStyle(button)
 }
 
-public let _blueButtonStyle = baseButtonStyle
+private let _blueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_trust_500
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
@@ -135,7 +135,7 @@ public let greyButtonStyle: ButtonStyle = { button in
   return _greyButtonStyle(button)
 }
 
-public let _greyButtonStyle = baseButtonStyle
+private let _greyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_700
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_support_300
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_700
@@ -165,7 +165,7 @@ public let facebookButtonStyle: ButtonStyle = { button in
   return _facebookButtonStyle(button)
 }
 
-public let _facebookButtonStyle = baseButtonStyle
+private let _facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
