@@ -371,11 +371,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
+    self.searchFiltersUseCase.inputs.clearOptions()
   }
 
   fileprivate let clearSearchTextProperty = MutableProperty(())
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
+    self.searchFiltersUseCase.inputs.clearOptions()
   }
 
   fileprivate let searchFieldDidBeginEditingProperty = MutableProperty(())
@@ -386,6 +388,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   fileprivate let searchTextChangedProperty = MutableProperty("")
   public func searchTextChanged(_ searchText: String) {
     self.searchTextChangedProperty.value = searchText
+
+    if searchText.isEmpty {
+      self.searchFiltersUseCase.inputs.clearOptions()
+    }
   }
 
   fileprivate let searchTextEditingDidEndProperty = MutableProperty(())

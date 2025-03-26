@@ -16,6 +16,8 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
   /// Call this when the user selects a new category.
   func selectedCategory(_ category: KsApi.Category?)
+  /// Call this when the clears their query and the sort options should reset.
+  func clearOptions()
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
@@ -81,7 +83,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedCategoryProperty.signal
     )
 
-    self.isSortPillHighlighted = self.selectedSort.map { [sortOptions] sort in sort != sortOptions.first }
+    self.isSortPillHighlighted = self.selectedSort
+      .map { sort in sort != SearchFiltersUseCase.defaultSortOption }
 
     self.categoryPillTitle = self.selectedCategory.map { category in
       if let name = category?.name {
@@ -108,11 +111,16 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.tappedCategoryFilterObserver.send(value: ())
   }
 
-  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
+  fileprivate let selectedSortProperty = MutableProperty<DiscoveryParams.Sort>(
+    SearchFiltersUseCase
+      .defaultSortOption
+  )
   fileprivate let selectedCategoryProperty = MutableProperty<Category?>(nil)
 
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
+
+  fileprivate static let defaultSortOption = DiscoveryParams.Sort.magic
 
   fileprivate let sortOptions = [
     DiscoveryParams.Sort.magic, // aka Recommended
@@ -132,6 +140,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<Category?, Never>
+
+  public func clearOptions() {
+    self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
+    self.selectedCategoryProperty.value = nil
+  }
 
   public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
     assert(
