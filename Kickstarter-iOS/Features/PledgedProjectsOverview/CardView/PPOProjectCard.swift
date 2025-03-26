@@ -129,13 +129,13 @@ struct PPOProjectCard: View {
       switch action.style {
       case .green:
         self.baseButton(for: action)
-          .buttonStyle(GreenButtonStyle())
+          .buttonStyle(KSRButtonStyleModifier(style: .green))
       case .red:
         self.baseButton(for: action)
-          .buttonStyle(RedButtonStyle())
+          .buttonStyle(KSRButtonStyleModifier(style: .filledDestructive))
       case .black:
         self.baseButton(for: action)
-          .buttonStyle(BlackButtonStyle())
+          .buttonStyle(KSRButtonStyleModifier(style: .filled))
       }
 
       if self.viewModel.buttonState == .loading {
