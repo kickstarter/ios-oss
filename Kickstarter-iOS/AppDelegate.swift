@@ -151,7 +151,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
-    #if RELEASE || TEST_BUILD
+    #if RELEASE || INTERNAL_BUILD
       self.viewModel.outputs.configureFirebase
         .observeForUI()
         .observeValues { [weak self] in
