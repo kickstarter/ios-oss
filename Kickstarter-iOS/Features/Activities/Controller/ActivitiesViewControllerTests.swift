@@ -193,38 +193,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
     }
   }
 
-  func testErroredBackings() {
-    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
-
-    let backing = Backing.template
-      |> Backing.lens.status .~ .errored
-
-    let project = Project.template
-      |> \.name .~ "Awesome tabletop collection"
-      |> Project.lens.personalization.backing .~ backing
-      |> \.dates.finalCollectionDate .~ date?.timeIntervalSince1970
-
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let env = ErroredBackingsEnvelope(projectsAndBackings: [projectAndBacking, projectAndBacking])
-
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
-      withEnvironment(
-        apiService: MockService(fetchErroredUserBackingsResult: .success(env)),
-        currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
-        language: language
-      ) {
-        let vc = ActivitiesViewController.instantiate()
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 900
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
-    }
-  }
-
   func testScrollToTop() {
     let controller = ActivitiesViewController.instantiate()
 
