@@ -53,9 +53,10 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
     self.stackView.layoutMargins =
       UIEdgeInsets(
         top: Styles.grid(1),
-        left: Styles.grid(4),
+        left: self.traitCollection.horizontalSizeClass == .compact ? Constants
+          .pillLeftInsetForIPhone : Constants.pillLeftInsetForIPad,
         bottom: Styles.grid(1),
-        right: 0
+        right: 0 // Align to the left, no padding on the right.
       )
     self.stackView.isLayoutMarginsRelativeArrangement = true
 
@@ -124,4 +125,8 @@ private enum Constants {
   // Setting a sensible default for the purposes of rendering an initial nice corner radius -
   // which will be updated on subsequent layout calls.
   static let defaultButtonHeight: CGFloat = 40.0
+
+  // These match the card insets in BackerDashboardProjectCell
+  static let pillLeftInsetForIPad: CGFloat = Styles.grid(20)
+  static let pillLeftInsetForIPhone: CGFloat = Styles.grid(2)
 }
