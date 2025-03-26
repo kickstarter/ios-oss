@@ -88,7 +88,7 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
 
   func updatePillRadius() {
     let buttonHeight = self.sortButton.bounds.size.height > 0 ?
-      self.sortButton.bounds.size.height : 40
+      self.sortButton.bounds.size.height : Constants.defaultButtonHeight
 
     self.sortButton.layer.cornerRadius = buttonHeight / 2
     self.categoryButton.layer.cornerRadius = buttonHeight / 2
@@ -117,4 +117,11 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
       button.layer.borderColor = Colors.Border.bold.adaptive().cgColor
     }
   }
+}
+
+private enum Constants {
+  // This is the height the button will render at with size 14.0 font.
+  // Setting a sensible default for the purposes of rendering an initial nice corner radius -
+  // which will be updated on subsequent layout calls.
+  static let defaultButtonHeight: CGFloat = 40.0
 }
