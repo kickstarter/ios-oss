@@ -40,11 +40,7 @@ public func featurePledgeOverTimeEnabled() -> Bool {
 }
 
 public func featureNewDesignSystemEnabled() -> Bool {
-  #if DESIGN_SYSTEM_ENABLED
-    featureEnabled(feature: .newDesignSystem)
-  #else
-    false
-  #endif
+  featureEnabled(feature: .newDesignSystem)
 }
 
 public func featureSearchFiltersEnabled() -> Bool {

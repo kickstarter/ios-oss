@@ -92,8 +92,7 @@ final class PledgeViewCTAContainerView: UIView {
 
     PledgeViewStyles.pledgeAmountValueStyle(self.amountLabel)
 
-    _ = self.applePayButton
-      |> applePayButtonStyle
+    _ = applePayButtonStyle(self.applePayButton)
 
     ctaStackViewStyle(self.ctaStackView)
 
