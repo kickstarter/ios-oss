@@ -378,7 +378,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToManagePledgeBackingParam.assertValues([.id(env.backing.id)])
   }
 
-  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUserAndErroredBackings() {
+  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUser() {
     let user = User.template
 
     let env = ErroredBackingsEnvelope(projectsAndBackings: [
@@ -403,7 +403,7 @@ final class ActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateUserInEnvironment.assertValues([user])
-      self.erroredBackings.assertValues([env.projectsAndBackings])
+      self.erroredBackings.assertValues([])
     }
   }
 
