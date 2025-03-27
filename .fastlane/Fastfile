@@ -72,11 +72,10 @@ platform :ios do
 
   ### BETA
 
-  lane :beta_match_gym_appcenter_s3 do
+  lane :beta_match_gym_s3 do
     setup_match_enterprise
     xcode_check
     beta_gym
-    beta_appcenter
     beta_s3
   end
 
@@ -85,26 +84,7 @@ platform :ios do
     build_the_app(
       output_name: "KickBeta",
       export_method: "enterprise",
-      configuration: "AppCenter Beta"
-    )
-  end
-
-  desc "Upload Beta to AppCenter"
-  lane :beta_appcenter do
-    upload_appcenter(
-      app_name: "KickBeta",
-      ipa: "#{gym_dir}/KickBeta.ipa",
-      dsym: "#{gym_dir}/KickBeta.app.dSYM.zip"
-    )
-
-    slack(
-      slack_url: ENV["SLACK_WEBHOOK"],
-      message: slack_message(
-        "beta",
-        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
-        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "AppCenter"
-      )
+      configuration: "Internal Beta"
     )
   end
 
@@ -172,11 +152,10 @@ platform :ios do
   end
 
   ### ALPHA
-  lane :alpha_match_gym_appcenter do
+  lane :alpha_match_gym do
     setup_match_enterprise
     xcode_check
     alpha_gym
-    alpha_appcenter
   end
 
   desc "Build Alpha"
@@ -184,31 +163,7 @@ platform :ios do
     build_the_app(
       output_name: "KickAlpha",
       export_method: "enterprise",
-      configuration: "AppCenter Alpha"
-    )
-  end
-
-  desc "Upload Alpha to AppCenter"
-  lane :alpha_appcenter do
-    notes = "Branch: #{git_branch}, Recent changes: #{changelog}"
-      .sub("alpha-dist-", "") # strip branch prefix and trailing hyphen
-      .sub("-#{last_git_commit[:commit_hash]}", "") # strip last hyphen and commit hash
-
-    upload_appcenter(
-      app_name: "KickAlpha",
-      ipa: "#{gym_dir}/KickAlpha.ipa",
-      dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip",
-      notes: notes
-    )
-
-    slack(
-      slack_url: ENV["SLACK_WEBHOOK"],
-      message: slack_message(
-        "alpha",
-        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
-        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "AppCenter"
-      )
+      configuration: "Internal Alpha"
     )
   end
 
@@ -253,19 +208,6 @@ platform :ios do
       scheme: "Kickstarter-iOS",
       configuration: options[:configuration],
       export_options: export_options
-    )
-  end
-
-  private_lane :upload_appcenter do |options|
-    notes = (options[:notes] || changelog)
-    appcenter_upload(
-      api_token: ENV["APPCENTER_API_TOKEN"],
-      owner_name: ENV["APPCENTER_OWNER_NAME"],
-      app_name: options[:app_name],
-      ipa: options[:ipa],
-      dsym: options[:dsym],
-      notify_testers: true,
-      release_notes: notes
     )
   end
 

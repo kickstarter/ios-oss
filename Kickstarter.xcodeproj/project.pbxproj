@@ -606,7 +606,6 @@
 		60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */; };
 		60E5FF0C2D78C80600BE9942 /* SimilarProjectsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E5FF0B2D78C80600BE9942 /* SimilarProjectsCardView.swift */; };
 		60E5FF112D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E5FF0F2D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift */; };
-		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		60F03AC12D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */; };
 		60F03AC42D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */; };
 		60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */; };
@@ -3499,7 +3498,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
@@ -7746,7 +7744,6 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19821C84299D392400EF312F /* AppboySegment */,
 			);
 			productName = Kickstarter;
@@ -7944,7 +7941,6 @@
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
@@ -9868,7 +9864,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		A745D1D41CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D41CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
@@ -9925,7 +9921,7 @@
 				MARKETING_VERSION = 5.23.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				OTHER_SWIFT_FLAGS = "-D APPCENTER";
+				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
@@ -9935,13 +9931,12 @@
 				VALIDATE_PRODUCT = YES;
 				VALIDATE_WORKSPACE = NO;
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		A745D1D51CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D51CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APPCENTER_SCHEME_NAME = BETA;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
@@ -9970,9 +9965,9 @@
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		A745D1D61CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D61CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -9993,9 +9988,9 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		A745D1D71CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D71CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -10026,9 +10021,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		A745D1D81CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D81CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -10049,9 +10044,9 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		A745D1D91CAAD0A400C12802 /* AppCenter Beta */ = {
+		A745D1D91CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -10087,7 +10082,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
 		A755114D1C8642B3005355CF /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -10277,7 +10272,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APPCENTER_SCHEME_NAME = DEBUG;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
@@ -10310,7 +10304,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APPCENTER_SCHEME_NAME = RELEASE;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Release.entitlements";
@@ -10600,7 +10593,7 @@
 			};
 			name = Release;
 		};
-		D01587641EEB2DE4006E7684 /* AppCenter Beta */ = {
+		D01587641EEB2DE4006E7684 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -10638,7 +10631,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
 		D01587661EEB2DE4006E7684 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -10692,7 +10685,7 @@
 			};
 			name = Release;
 		};
-		D01587681EEB2DE4006E7684 /* AppCenter Beta */ = {
+		D01587681EEB2DE4006E7684 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -10717,9 +10710,9 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		D083B1031F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1031F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
@@ -10776,7 +10769,7 @@
 				MARKETING_VERSION = 5.23.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				OTHER_SWIFT_FLAGS = "-D APPCENTER";
+				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
@@ -10786,13 +10779,12 @@
 				VALIDATE_PRODUCT = YES;
 				VALIDATE_WORKSPACE = NO;
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1041F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1041F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APPCENTER_SCHEME_NAME = ALPHA;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-alpha";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Alpha.entitlements";
@@ -10818,9 +10810,9 @@
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1051F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1051F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -10851,9 +10843,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1061F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1061F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -10874,9 +10866,9 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1071F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1071F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -10912,9 +10904,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1081F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1081F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -10935,9 +10927,9 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B1091F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B1091F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -10975,9 +10967,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
-		D083B10A1F27EF0400BEC742 /* AppCenter Alpha */ = {
+		D083B10A1F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -11002,7 +10994,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
 		E10BE8D62B02975C00F73DC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -11091,7 +11083,7 @@
 			};
 			name = Release;
 		};
-		E10BE8D82B02975C00F73DC9 /* AppCenter Beta */ = {
+		E10BE8D82B02975C00F73DC9 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -11133,9 +11125,9 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		E10BE8D92B02975C00F73DC9 /* AppCenter Alpha */ = {
+		E10BE8D92B02975C00F73DC9 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -11176,7 +11168,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
 		E113BD882B7D255000D3A809 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -11238,7 +11230,7 @@
 			};
 			name = Release;
 		};
-		E113BD8A2B7D255000D3A809 /* AppCenter Beta */ = {
+		E113BD8A2B7D255000D3A809 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -11266,9 +11258,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
-			name = "AppCenter Beta";
+			name = "Internal Beta";
 		};
-		E113BD8B2B7D255000D3A809 /* AppCenter Alpha */ = {
+		E113BD8B2B7D255000D3A809 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -11296,7 +11288,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
-			name = "AppCenter Alpha";
+			name = "Internal Alpha";
 		};
 /* End XCBuildConfiguration section */
 
@@ -11306,8 +11298,8 @@
 			buildConfigurations = (
 				A755114D1C8642B3005355CF /* Debug */,
 				A755114E1C8642B3005355CF /* Release */,
-				A745D1D71CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1051F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D71CAAD0A400C12802 /* Internal Beta */,
+				D083B1051F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11317,8 +11309,8 @@
 			buildConfigurations = (
 				A755114F1C8642B3005355CF /* Debug */,
 				A75511501C8642B3005355CF /* Release */,
-				A745D1D81CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1061F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D81CAAD0A400C12802 /* Internal Beta */,
+				D083B1061F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11328,8 +11320,8 @@
 			buildConfigurations = (
 				A7C795A71C873A870081977F /* Debug */,
 				A7C795A81C873A870081977F /* Release */,
-				A745D1D91CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1071F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D91CAAD0A400C12802 /* Internal Beta */,
+				D083B1071F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11339,8 +11331,8 @@
 			buildConfigurations = (
 				A7D1F9621C850B7C000D41D5 /* Debug */,
 				A7D1F9631C850B7C000D41D5 /* Release */,
-				A745D1D51CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1041F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D51CAAD0A400C12802 /* Internal Beta */,
+				D083B1041F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11350,8 +11342,8 @@
 			buildConfigurations = (
 				A7D1F9651C850B7C000D41D5 /* Debug */,
 				A7D1F9661C850B7C000D41D5 /* Release */,
-				A745D1D61CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1081F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D61CAAD0A400C12802 /* Internal Beta */,
+				D083B1081F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11361,8 +11353,8 @@
 			buildConfigurations = (
 				A7E06C9C1C5A6EB300EBDCC2 /* Debug */,
 				A7E06C9D1C5A6EB300EBDCC2 /* Release */,
-				A745D1D41CAAD0A400C12802 /* AppCenter Beta */,
-				D083B1031F27EF0400BEC742 /* AppCenter Alpha */,
+				A745D1D41CAAD0A400C12802 /* Internal Beta */,
+				D083B1031F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11372,8 +11364,8 @@
 			buildConfigurations = (
 				D01587621EEB2DE4006E7684 /* Debug */,
 				D01587631EEB2DE4006E7684 /* Release */,
-				D01587641EEB2DE4006E7684 /* AppCenter Beta */,
-				D083B1091F27EF0400BEC742 /* AppCenter Alpha */,
+				D01587641EEB2DE4006E7684 /* Internal Beta */,
+				D083B1091F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11383,8 +11375,8 @@
 			buildConfigurations = (
 				D01587661EEB2DE4006E7684 /* Debug */,
 				D01587671EEB2DE4006E7684 /* Release */,
-				D01587681EEB2DE4006E7684 /* AppCenter Beta */,
-				D083B10A1F27EF0400BEC742 /* AppCenter Alpha */,
+				D01587681EEB2DE4006E7684 /* Internal Beta */,
+				D083B10A1F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11394,8 +11386,8 @@
 			buildConfigurations = (
 				E10BE8D62B02975C00F73DC9 /* Debug */,
 				E10BE8D72B02975C00F73DC9 /* Release */,
-				E10BE8D82B02975C00F73DC9 /* AppCenter Beta */,
-				E10BE8D92B02975C00F73DC9 /* AppCenter Alpha */,
+				E10BE8D82B02975C00F73DC9 /* Internal Beta */,
+				E10BE8D92B02975C00F73DC9 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11405,8 +11397,8 @@
 			buildConfigurations = (
 				E113BD882B7D255000D3A809 /* Debug */,
 				E113BD892B7D255000D3A809 /* Release */,
-				E113BD8A2B7D255000D3A809 /* AppCenter Beta */,
-				E113BD8B2B7D255000D3A809 /* AppCenter Alpha */,
+				E113BD8A2B7D255000D3A809 /* Internal Beta */,
+				E113BD8B2B7D255000D3A809 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -11492,14 +11484,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.4.3;
-			};
-		};
-		60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.5;
 			};
 		};
 		7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
@@ -11630,11 +11614,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
-		};
-		60EAD1C628D25A36009F9474 /* AppCenterDistribute */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
-			productName = AppCenterDistribute;
 		};
 		7049568F299D53ED00B273DF /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -169,10 +169,8 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       Signal.merge(
         self.viewDidLoadProperty.signal,
         self.applicationWillEnterForegroundSignal.signal
-      ).map { _ in
-        (featurePledgedProjectsOverviewEnabled(), featureSearchFiltersEnabled())
-      }
-      .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
+      ).map { _ in featureSearchFiltersEnabled() }
+      .skipRepeats()
       .skip(first: 1) // Only fire if applicationWillEnterForeground changes the original values in viewDidLoadProperty.
 
     self.setViewControllers = Signal.merge(
@@ -454,18 +452,14 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 }
 
 private func currentUserActivitiesAndErroredPledgeCount() -> Int {
-  // Do not include errored pledges if PPO is enabled.
-  let errorCount = featurePledgedProjectsOverviewEnabled()
-    ? 0
-    : AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0
-  return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) + errorCount
+  return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0)
 }
 
 private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerData] {
   var controllers: [RootViewControllerData] = []
   controllers.append(.discovery)
 
-  if featurePledgedProjectsOverviewEnabled(), isLoggedIn {
+  if isLoggedIn {
     controllers.append(.pledgedProjectsAndActivities)
   } else {
     controllers.append(.activities)
@@ -493,7 +487,7 @@ extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
-  guard !(hasPPOAction && featurePledgedProjectsOverviewEnabled()) else {
+  guard !hasPPOAction else {
     // an empty string will show a dot as badge
     return ""
   }
