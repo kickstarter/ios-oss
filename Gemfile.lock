@@ -139,7 +139,6 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
-    fastlane-plugin-appcenter (2.1.2)
     fastlane-plugin-aws_s3 (2.1.0)
       apktools (~> 0.7)
       aws-sdk-s3 (~> 1)
@@ -276,7 +275,6 @@ DEPENDENCIES
   danger-swiftformat
   danger-swiftlint
   fastlane
-  fastlane-plugin-appcenter
   fastlane-plugin-aws_s3
   json
   plist

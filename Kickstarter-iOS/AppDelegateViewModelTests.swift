@@ -12,7 +12,6 @@ final class AppDelegateViewModelTests: TestCase {
   var vm: AppDelegateViewModelType!
 
   private let applicationIconBadgeNumber = TestObserver<Int, Never>()
-  private let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configureSegmentWithBraze = TestObserver<String, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
@@ -57,7 +56,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm = AppDelegateViewModel()
 
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
-    self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
     self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
@@ -142,151 +140,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
     self.configureFirebase.assertValueCount(1)
-  }
-
-  // MARK: - AppCenter
-
-  func testConfigureAppCenter_AlphaApp_LoggedOut() {
-    let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
-
-    withEnvironment(mainBundle: alphaBundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.alpha,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
-    }
-  }
-
-  func testConfigureAppCenter_AlphaApp_LoggedIn() {
-    let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
-    let currentUser = User.template
-
-    withEnvironment(
-      currentUser: .template,
-      mainBundle: alphaBundle
-    ) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.alpha,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
-    }
-  }
-
-  func testConfigureAppCenter_DebugApp() {
-    let debugBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue, lang: "en")
-
-    withEnvironment(mainBundle: debugBundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertDidNotEmitValue()
-    }
-  }
-
-  func testConfigureAppCenter_BetaApp_LoggedOut() {
-    let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
-
-    withEnvironment(mainBundle: betaBundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.beta,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
-    }
-  }
-
-  func testConfigureAppCenter_BetaApp_LoggedIn() {
-    let currentUser = User.template
-    withEnvironment(
-      currentUser: .template,
-      mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
-    ) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.beta,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
-    }
-  }
-
-  func testConfigureAppCenter_ProductionApp_LoggedOut() {
-    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-    withEnvironment(mainBundle: bundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([])
-    }
-  }
-
-  func testConfigureAppCenter_ProductionApp_LoggedIn() {
-    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-
-    withEnvironment(currentUser: .template, mainBundle: bundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([])
-    }
-  }
-
-  func testConfigureAppCenter_SessionChanges() {
-    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-
-    withEnvironment(mainBundle: bundle) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.configureAppCenterWithData.assertValues([])
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-      self.vm.inputs.userSessionStarted()
-
-      self.configureAppCenterWithData.assertValues([])
-
-      AppEnvironment.logout()
-      self.vm.inputs.userSessionStarted()
-
-      self.configureAppCenterWithData.assertValues([])
-    }
   }
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {

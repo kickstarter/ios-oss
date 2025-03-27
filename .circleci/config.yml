@@ -178,23 +178,23 @@ jobs:
           name: Deploy Beta
           command: make beta
 
-  # AppCenter and S3 bucket beta
+  # S3 bucket beta
   beta:
     <<: *base_job
     <<: *distribute_job
     environment:
       - *default_environment
-      - LANE=beta_match_gym_appcenter_s3
+      - LANE=beta_match_gym_s3
       - FIREBASE_DIR=Firebase-Beta
       - DSYMS_FILE=KickBeta.app.dSYM.zip
 
-  # AppCenter Alpha
+  # Alpha
   alpha:
     <<: *base_job
     <<: *distribute_job
     environment:
       - *default_environment
-      - LANE=alpha_match_gym_appcenter
+      - LANE=alpha_match_gym
       - FIREBASE_DIR=Firebase-Alpha
       - DSYMS_FILE=KickAlpha.app.dSYM.zip
 
