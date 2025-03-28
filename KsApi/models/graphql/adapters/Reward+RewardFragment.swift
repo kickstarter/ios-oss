@@ -73,8 +73,7 @@ private func rewardItemsData(
       let quantity = edge?.quantity,
       let item = edge?.node,
       let id = decompose(id: item.id),
-      let rewardId = decompose(id: rewardFragment.id),
-      let name = item.name
+      let rewardId = decompose(id: rewardFragment.id)
     else { return nil }
 
     return RewardsItem(
@@ -82,7 +81,7 @@ private func rewardItemsData(
       item: Item(
         description: nil, // not returned
         id: id,
-        name: name,
+        name: item.name,
         projectId: projectId
       ),
       quantity: quantity,

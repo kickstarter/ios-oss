@@ -4430,7 +4430,6 @@ public enum GraphAPI {
     case pledgeProjectsOverviewIos_2024
     case copyRewards
     case surveyRewardQuestions_2024
-    case addressCollectionForDigitalRewards_2024
     case prelaunchStoryEditor
     case prelaunchStoryException
     case creatorNavRefresh
@@ -4444,10 +4443,23 @@ public enum GraphAPI {
     case reactBackedProjects
     case copyAddons
     case kdsMessagesApp
+    case kdsMessagesAppBackerFilter
     case pledgeManagementRefunds
     case discoverUi_2025
     case pledgeManagementBeta
     case creatorExperience_2025
+    case backingsDashV2_2025
+    case secretRewards_2025
+    case featuredRewards_2025
+    case creatorTab_2025
+    case weightBasedShipping_2025
+    case showCreativeDownload_2024ReportInNav
+    case recentSearches_2025
+    case pledgeManagementSelfLaunch_2025
+    case projectClassifiers_2025
+    case pledgeManagementBackerReport
+    case improvedTaxCodeCollection_2025
+    case pledgeUpgrade_2025
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4543,7 +4555,6 @@ public enum GraphAPI {
         case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
         case "copy_rewards": self = .copyRewards
         case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
-        case "address_collection_for_digital_rewards_2024": self = .addressCollectionForDigitalRewards_2024
         case "prelaunch_story_editor": self = .prelaunchStoryEditor
         case "prelaunch_story_exception": self = .prelaunchStoryException
         case "creator_nav_refresh": self = .creatorNavRefresh
@@ -4557,10 +4568,23 @@ public enum GraphAPI {
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
         case "KDS_messages_app": self = .kdsMessagesApp
+        case "KDS_messages_app_backer_filter": self = .kdsMessagesAppBackerFilter
         case "pledge_management_refunds": self = .pledgeManagementRefunds
         case "discover_ui_2025": self = .discoverUi_2025
         case "pledge_management_beta": self = .pledgeManagementBeta
         case "creator_experience_2025": self = .creatorExperience_2025
+        case "backings_dash_v2_2025": self = .backingsDashV2_2025
+        case "secret_rewards_2025": self = .secretRewards_2025
+        case "featured_rewards_2025": self = .featuredRewards_2025
+        case "creator_tab_2025": self = .creatorTab_2025
+        case "weight_based_shipping_2025": self = .weightBasedShipping_2025
+        case "show_creative_download_2024_report_in_nav": self = .showCreativeDownload_2024ReportInNav
+        case "recent_searches_2025": self = .recentSearches_2025
+        case "pledge_management_self_launch_2025": self = .pledgeManagementSelfLaunch_2025
+        case "project_classifiers_2025": self = .projectClassifiers_2025
+        case "pledge_management_backer_report": self = .pledgeManagementBackerReport
+        case "improved_tax_code_collection_2025": self = .improvedTaxCodeCollection_2025
+        case "pledge_upgrade_2025": self = .pledgeUpgrade_2025
         default: self = .__unknown(rawValue)
       }
     }
@@ -4657,7 +4681,6 @@ public enum GraphAPI {
         case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
         case .copyRewards: return "copy_rewards"
         case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
-        case .addressCollectionForDigitalRewards_2024: return "address_collection_for_digital_rewards_2024"
         case .prelaunchStoryEditor: return "prelaunch_story_editor"
         case .prelaunchStoryException: return "prelaunch_story_exception"
         case .creatorNavRefresh: return "creator_nav_refresh"
@@ -4671,10 +4694,23 @@ public enum GraphAPI {
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
         case .kdsMessagesApp: return "KDS_messages_app"
+        case .kdsMessagesAppBackerFilter: return "KDS_messages_app_backer_filter"
         case .pledgeManagementRefunds: return "pledge_management_refunds"
         case .discoverUi_2025: return "discover_ui_2025"
         case .pledgeManagementBeta: return "pledge_management_beta"
         case .creatorExperience_2025: return "creator_experience_2025"
+        case .backingsDashV2_2025: return "backings_dash_v2_2025"
+        case .secretRewards_2025: return "secret_rewards_2025"
+        case .featuredRewards_2025: return "featured_rewards_2025"
+        case .creatorTab_2025: return "creator_tab_2025"
+        case .weightBasedShipping_2025: return "weight_based_shipping_2025"
+        case .showCreativeDownload_2024ReportInNav: return "show_creative_download_2024_report_in_nav"
+        case .recentSearches_2025: return "recent_searches_2025"
+        case .pledgeManagementSelfLaunch_2025: return "pledge_management_self_launch_2025"
+        case .projectClassifiers_2025: return "project_classifiers_2025"
+        case .pledgeManagementBackerReport: return "pledge_management_backer_report"
+        case .improvedTaxCodeCollection_2025: return "improved_tax_code_collection_2025"
+        case .pledgeUpgrade_2025: return "pledge_upgrade_2025"
         case .__unknown(let value): return value
       }
     }
@@ -4771,7 +4807,6 @@ public enum GraphAPI {
         case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
         case (.copyRewards, .copyRewards): return true
         case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
-        case (.addressCollectionForDigitalRewards_2024, .addressCollectionForDigitalRewards_2024): return true
         case (.prelaunchStoryEditor, .prelaunchStoryEditor): return true
         case (.prelaunchStoryException, .prelaunchStoryException): return true
         case (.creatorNavRefresh, .creatorNavRefresh): return true
@@ -4785,10 +4820,23 @@ public enum GraphAPI {
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
         case (.kdsMessagesApp, .kdsMessagesApp): return true
+        case (.kdsMessagesAppBackerFilter, .kdsMessagesAppBackerFilter): return true
         case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
         case (.discoverUi_2025, .discoverUi_2025): return true
         case (.pledgeManagementBeta, .pledgeManagementBeta): return true
         case (.creatorExperience_2025, .creatorExperience_2025): return true
+        case (.backingsDashV2_2025, .backingsDashV2_2025): return true
+        case (.secretRewards_2025, .secretRewards_2025): return true
+        case (.featuredRewards_2025, .featuredRewards_2025): return true
+        case (.creatorTab_2025, .creatorTab_2025): return true
+        case (.weightBasedShipping_2025, .weightBasedShipping_2025): return true
+        case (.showCreativeDownload_2024ReportInNav, .showCreativeDownload_2024ReportInNav): return true
+        case (.recentSearches_2025, .recentSearches_2025): return true
+        case (.pledgeManagementSelfLaunch_2025, .pledgeManagementSelfLaunch_2025): return true
+        case (.projectClassifiers_2025, .projectClassifiers_2025): return true
+        case (.pledgeManagementBackerReport, .pledgeManagementBackerReport): return true
+        case (.improvedTaxCodeCollection_2025, .improvedTaxCodeCollection_2025): return true
+        case (.pledgeUpgrade_2025, .pledgeUpgrade_2025): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4886,7 +4934,6 @@ public enum GraphAPI {
         .pledgeProjectsOverviewIos_2024,
         .copyRewards,
         .surveyRewardQuestions_2024,
-        .addressCollectionForDigitalRewards_2024,
         .prelaunchStoryEditor,
         .prelaunchStoryException,
         .creatorNavRefresh,
@@ -4900,10 +4947,23 @@ public enum GraphAPI {
         .reactBackedProjects,
         .copyAddons,
         .kdsMessagesApp,
+        .kdsMessagesAppBackerFilter,
         .pledgeManagementRefunds,
         .discoverUi_2025,
         .pledgeManagementBeta,
         .creatorExperience_2025,
+        .backingsDashV2_2025,
+        .secretRewards_2025,
+        .featuredRewards_2025,
+        .creatorTab_2025,
+        .weightBasedShipping_2025,
+        .showCreativeDownload_2024ReportInNav,
+        .recentSearches_2025,
+        .pledgeManagementSelfLaunch_2025,
+        .projectClassifiers_2025,
+        .pledgeManagementBackerReport,
+        .improvedTaxCodeCollection_2025,
+        .pledgeUpgrade_2025,
       ]
     }
   }
@@ -8935,7 +8995,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9072,6 +9132,10 @@ public enum GraphAPI {
 
         public static func makeAdjustmentSummary() -> Node {
           return Node(unsafeResultMap: ["__typename": "AdjustmentSummary"])
+        }
+
+        public static func makeRefund() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Refund"])
         }
 
         public static func makeOrder() -> Node {
@@ -9388,7 +9452,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9521,6 +9585,10 @@ public enum GraphAPI {
 
         public static func makeAdjustmentSummary() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "AdjustmentSummary"])
+        }
+
+        public static func makeRefund() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Refund"])
         }
 
         public static func makeOrder() -> Comment {
@@ -14600,7 +14668,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+          GraphQLField("url", arguments: ["width": 1024], type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -14610,7 +14678,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, url: String? = nil) {
+      public init(id: GraphQLID, url: String) {
         self.init(unsafeResultMap: ["__typename": "Photo", "id": id, "url": url])
       }
 
@@ -14633,9 +14701,9 @@ public enum GraphAPI {
       }
 
       /// URL of the photo
-      public var url: String? {
+      public var url: String {
         get {
-          return resultMap["url"] as? String
+          return resultMap["url"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
@@ -17764,7 +17832,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+          GraphQLField("url", arguments: ["width": 1024], type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -17774,7 +17842,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, url: String? = nil) {
+      public init(id: GraphQLID, url: String) {
         self.init(unsafeResultMap: ["__typename": "Photo", "id": id, "url": url])
       }
 
@@ -17797,9 +17865,9 @@ public enum GraphAPI {
       }
 
       /// URL of the photo
-      public var url: String? {
+      public var url: String {
         get {
-          return resultMap["url"] as? String
+          return resultMap["url"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
@@ -19014,7 +19082,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+          GraphQLField("url", arguments: ["width": 1024], type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -19024,7 +19092,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, url: String? = nil) {
+      public init(id: GraphQLID, url: String) {
         self.init(unsafeResultMap: ["__typename": "Photo", "id": id, "url": url])
       }
 
@@ -19047,9 +19115,9 @@ public enum GraphAPI {
       }
 
       /// URL of the photo
-      public var url: String? {
+      public var url: String {
         get {
-          return resultMap["url"] as? String
+          return resultMap["url"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
@@ -20361,7 +20429,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+          GraphQLField("url", arguments: ["width": 1024], type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -20371,7 +20439,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, url: String? = nil) {
+      public init(id: GraphQLID, url: String) {
         self.init(unsafeResultMap: ["__typename": "Photo", "id": id, "url": url])
       }
 
@@ -20394,9 +20462,9 @@ public enum GraphAPI {
       }
 
       /// URL of the photo
-      public var url: String? {
+      public var url: String {
         get {
-          return resultMap["url"] as? String
+          return resultMap["url"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
@@ -21460,7 +21528,7 @@ public enum GraphAPI {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-              GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("name", type: .nonNull(.scalar(String.self))),
             ]
           }
 
@@ -21470,7 +21538,7 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, name: String? = nil) {
+          public init(id: GraphQLID, name: String) {
             self.init(unsafeResultMap: ["__typename": "RewardItem", "id": id, "name": name])
           }
 
@@ -21493,9 +21561,9 @@ public enum GraphAPI {
           }
 
           /// An item name.
-          public var name: String? {
+          public var name: String {
             get {
-              return resultMap["name"] as? String
+              return resultMap["name"]! as! String
             }
             set {
               resultMap.updateValue(newValue, forKey: "name")
@@ -21771,7 +21839,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("altText", type: .nonNull(.scalar(String.self))),
-          GraphQLField("url", arguments: ["width": 1024], type: .scalar(String.self)),
+          GraphQLField("url", arguments: ["width": 1024], type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -21781,7 +21849,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(altText: String, url: String? = nil) {
+      public init(altText: String, url: String) {
         self.init(unsafeResultMap: ["__typename": "Photo", "altText": altText, "url": url])
       }
 
@@ -21805,9 +21873,9 @@ public enum GraphAPI {
       }
 
       /// URL of the photo
-      public var url: String? {
+      public var url: String {
         get {
-          return resultMap["url"] as? String
+          return resultMap["url"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
