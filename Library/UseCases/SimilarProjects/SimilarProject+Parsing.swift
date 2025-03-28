@@ -19,7 +19,7 @@ internal struct SimilarProjectFragment: SimilarProject {
 
   init?(_ fragment: GraphAPI.ProjectCardFragment) {
     guard
-      let imageURL = fragment.image?.url.flatMap(URL.init),
+      let imageURL = fragment.image.flatMap({ URL(string: $0.url) }),
       let state = Project.State(fragment.state)
     else {
       return nil
