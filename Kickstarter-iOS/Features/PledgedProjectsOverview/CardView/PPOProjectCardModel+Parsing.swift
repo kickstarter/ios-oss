@@ -22,8 +22,8 @@ extension PPOProjectCardModel {
     let backing = card.backing?.fragments.ppoBackingFragment
     let ppoProject = backing?.project?.fragments.ppoProjectFragment
 
-    let image = ppoProject?.image?.url
-      .flatMap { URL(string: $0) }
+    let image = ppoProject?.image
+      .flatMap { URL(string: $0.url) }
       .map { Kingfisher.Source.network($0) }
 
     let projectName = ppoProject?.name
