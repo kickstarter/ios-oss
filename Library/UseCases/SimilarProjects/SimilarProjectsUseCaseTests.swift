@@ -46,7 +46,6 @@ final class SimilarProjectsUseCaseTests: TestCase {
   override func tearDown() {
     self.useCase = nil
     self.mockService = nil
-    AppEnvironment.popEnvironment()
     super.tearDown()
   }
 

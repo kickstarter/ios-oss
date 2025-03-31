@@ -61,8 +61,7 @@ internal final class MessageThreadViewControllerTests: TestCase {
       apiService: MockService(
         fetchMessageThreadsResponse: messageThreads
       ),
-      currentUser: backer,
-      mainBundle: Bundle.framework
+      currentUser: backer
     )
 
     [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in

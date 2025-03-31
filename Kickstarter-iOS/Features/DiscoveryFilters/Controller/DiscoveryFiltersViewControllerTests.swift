@@ -63,13 +63,11 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     self.cache[KSCache.ksr_discoveryFiltersCategories] = self.categories
     UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }

@@ -15,7 +15,7 @@ internal class TestCase: XCTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let coreTelephonyNetworkInfo = MockCoreTelephonyNetworkInfo()
   internal let dateType = MockDate.self
-  internal let mainBundle = MockBundle()
+  internal let mainBundle = MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS")
   internal let remoteConfigClient = MockRemoteConfigClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)

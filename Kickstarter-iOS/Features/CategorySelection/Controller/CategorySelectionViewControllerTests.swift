@@ -5,18 +5,6 @@ import SnapshotTesting
 import XCTest
 
 internal final class CategorySelectionViewControllerTests: TestCase {
-  override func setUp() {
-    super.setUp()
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-
-    super.tearDown()
-  }
-
   func testCategorySelectionViewController() {
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
       .art,
