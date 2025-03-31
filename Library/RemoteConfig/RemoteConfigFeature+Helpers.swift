@@ -39,6 +39,10 @@ public func featureNewDesignSystemEnabled() -> Bool {
   featureEnabled(feature: .newDesignSystem)
 }
 
+public func featureRewardShipmentTrackingEnabled() -> Bool {
+  featureEnabled(feature: .rewardShipmentTracking)
+}
+
 public func featureSearchFiltersEnabled() -> Bool {
   featureEnabled(feature: .searchFilters)
 }
