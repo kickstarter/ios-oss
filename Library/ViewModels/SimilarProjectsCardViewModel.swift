@@ -105,13 +105,13 @@ private func getProjectStatusImage(for project: any SimilarProject) -> UIImage? 
 //  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
 //  else { return UIImage(named: "icon-late-pledge-timer") }
 
-  guard !isProjectPrelaunch(project) else { return UIImage(named: "icon-launching-soon") }
+  guard !isProjectPrelaunch(project) else { return image(named: "icon-launching-soon") }
 
   switch project.state {
   case .successful, .failed:
-    return UIImage(named: "icon-project-ended-flag")
+    return image(named: "icon-project-ended-flag")
   case .live:
-    return UIImage(named: "icon-timer")
+    return image(named: "icon-timer")
   default:
     return nil
   }
