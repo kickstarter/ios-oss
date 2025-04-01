@@ -1538,7 +1538,7 @@
       return producer(for: self.fetchUserResult)
     }
 
-    internal func incrementVideoCompletion(forProject _: Project) ->
+    internal func incrementVideoCompletion(forProject _: any HasServiceProjectWebURL) ->
       SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoCompletionError {
         return .init(error: error)
@@ -1547,7 +1547,7 @@
       }
     }
 
-    internal func incrementVideoStart(forProject _: Project) ->
+    internal func incrementVideoStart(forProject _: any HasServiceProjectWebURL) ->
       SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoStartError {
         return .init(error: error)
