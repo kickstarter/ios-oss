@@ -799,7 +799,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(alert, animated: true)
   }
 
-  private func goToCreatorProfile(forProject project: Project) {
+  private func goToCreatorProfile(forProject project: any ProjectCreatorConfiguration) {
     let vc = ProjectCreatorViewController.configuredWith(project: project)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
@@ -1052,12 +1052,12 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 
   internal func projectPamphletMainCell(
     _ cell: ProjectPamphletMainCell,
-    goToCreatorForProject project: Project
+    goToCreatorForProject project: any ProjectPamphletMainCellConfiguration
   ) {
     guard
       let currentUser = AppEnvironment.current.currentUser,
-      currentUser != project.creator,
-      !project.creator.isBlocked
+      currentUser.id != project.projectPamphletMainCellProperties.creatorId,
+      !project.projectPamphletMainCellProperties.isCreatorBlocked
     else {
       self.goToCreatorProfile(forProject: project)
       return
@@ -1066,7 +1066,10 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     let actionSheet = UIAlertController
       .blockUserActionSheet(
         blockUserHandler: { _ in
-          self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
+          self.presentBlockUserAlert(
+            username: project.projectPamphletMainCellProperties.creatorName,
+            userId: project.projectPamphletMainCellProperties.creatorId
+          )
         },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         sourceView: cell.creatorButton,
