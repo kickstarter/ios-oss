@@ -538,7 +538,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewIsLoggedIn.assertLastValue(true)
       self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
-      self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
+      self.configurePledgeViewCTAContainerViewContext.assertLastValue(.changePaymentMethod)
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
@@ -1804,13 +1804,13 @@ final class PledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
         "Got it! Your changes have been saved."
@@ -1869,13 +1869,13 @@ final class PledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(false)
       self.processingViewIsHidden.assertLastValue(false)
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([true, false, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertLastValue(true)
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()

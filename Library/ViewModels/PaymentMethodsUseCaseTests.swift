@@ -1,6 +1,7 @@
 import Foundation
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
@@ -12,10 +13,11 @@ final class PaymentMethodsUseCaseTests: TestCase {
   private var paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private var configureWithValue = TestObserver<PledgePaymentMethodsValue, Never>()
   private var selectedPaymentSource = TestObserver<PaymentSourceSelected?, Never>()
+  private var paymentMethodChangedAndValid = TestObserver<Bool, Never>()
 
   private let (initialDataSignal, initialDataObserver) = Signal<PledgeViewData, Never>
     .pipe()
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>
+  private let (isLoggedInSignal, isLoggedInObserver) = Signal<Bool, Never>
     .pipe()
 
   override func setUp() {
@@ -23,13 +25,14 @@ final class PaymentMethodsUseCaseTests: TestCase {
 
     self.useCase = PaymentMethodsUseCase(
       initialData: self.initialDataSignal,
-      userSessionStarted: self.userSessionStartedSignal
+      isLoggedIn: self.isLoggedInSignal
     )
 
-    self.useCase.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
-    self.useCase.outputs.configurePaymentMethodsViewControllerWithValue
+    self.useCase.uiOutputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+    self.useCase.uiOutputs.configurePaymentMethodsViewControllerWithValue
       .observe(self.configureWithValue.observer)
-    self.useCase.outputs.selectedPaymentSource.observe(self.selectedPaymentSource.observer)
+    self.useCase.dataOutputs.selectedPaymentSource.observe(self.selectedPaymentSource.observer)
+    self.useCase.dataOutputs.paymentMethodChangedAndValid.observe(self.paymentMethodChangedAndValid.observer)
   }
 
   func test_LoggedInUser_SendsConfigValue_AndShowsPaymentMethods() {
@@ -59,7 +62,7 @@ final class PaymentMethodsUseCaseTests: TestCase {
     )
 
     withEnvironment(currentUser: User.template) {
-      self.initialDataObserver.send(value: data)
+      self.isLoggedInObserver.send(value: true)
 
       self.configureWithValue
         .assertDidEmitValue("A user is logged in, so a configuration event should be sent.")
@@ -122,9 +125,111 @@ final class PaymentMethodsUseCaseTests: TestCase {
 
       let card = PaymentSourceSelected.savedCreditCard("123", "pm_fake")
 
-      self.useCase.inputs.creditCardSelected(with: card)
+      self.useCase.uiInputs.creditCardSelected(with: card)
       self.selectedPaymentSource.assertDidEmitValue()
       XCTAssertEqual(self.selectedPaymentSource.lastValue!, card)
+    }
+  }
+
+  func test_PaymentMethodIsValid_ForPledgeContext_WithAnySelectedCard() {
+    let project = Project.template
+    let reward = Reward.template
+
+    let updateData = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 10.0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    withEnvironment(currentUser: User.template) {
+      self.paymentMethodChangedAndValid.assertDidNotEmitValue()
+
+      self.initialDataObserver.send(value: updateData)
+
+      self.paymentMethodChangedAndValid.assertLastValue(false)
+
+      self.useCase.creditCardSelected(with: .savedCreditCard("123", "pm_fake"))
+
+      self.paymentMethodChangedAndValid.assertLastValue(true)
+    }
+  }
+
+  func test_PaymentMethodIsValid_ForUpdateRewardContext_WithNoSelectedCard() {
+    let project = Project.template
+    let reward = Reward.template
+
+    let updateData = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 10.0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .updateReward
+    )
+
+    withEnvironment(currentUser: User.template) {
+      self.paymentMethodChangedAndValid.assertDidNotEmitValue()
+
+      self.initialDataObserver.send(value: updateData)
+
+      self.paymentMethodsViewHidden.assertLastValue(true)
+      self.paymentMethodChangedAndValid.assertLastValue(
+        true,
+        "The payment method should automatically be valid for updating the reward, because updating the reward hides the payment method selector."
+      )
+    }
+  }
+
+  func test_PaymentMethodIsInvalid_ForFixPaymentMethodContext_UntilNewCardIsSelected() {
+    let backing = Backing.template
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ backing
+    let reward = Reward.template
+
+    let updateData = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      bonusSupport: 10.0,
+      selectedShippingRule: nil,
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .fixPaymentMethod
+    )
+
+    withEnvironment(currentUser: User.template) {
+      self.paymentMethodChangedAndValid.assertDidNotEmitValue()
+
+      self.initialDataObserver.send(value: updateData)
+
+      self.paymentMethodsViewHidden.assertLastValue(false)
+      self.paymentMethodChangedAndValid.assertLastValue(false)
+
+      self.useCase.creditCardSelected(with: .savedCreditCard(backing.paymentSource!.id!, "pm_fake"))
+      self.paymentMethodChangedAndValid.assertLastValue(
+        false,
+        "Selecting the same credit card should not fix the payment method"
+      )
+
+      self.useCase.creditCardSelected(with: .savedCreditCard("123456", "pm_fake"))
+      self.paymentMethodChangedAndValid.assertLastValue(
+        true,
+        "Selecting a new credit card should fix the payment method"
+      )
+
+      self.useCase.creditCardSelected(with: .savedCreditCard(backing.paymentSource!.id!, "pm_fake"))
+      self.paymentMethodChangedAndValid.assertLastValue(
+        false,
+        "Selecting the same credit card again should not fix the payment method"
+      )
     }
   }
 }
