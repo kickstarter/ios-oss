@@ -9,7 +9,7 @@ private let pauseRate = 0.0
 
 public protocol VideoViewModelInputs {
   /// Call to configure cell with project value.
-  func configureWith(project: Project)
+  func configureWith(project: any VideoViewConfiguration)
 
   /// Call when the video playback crosses the completion threshold.
   func crossedCompletionThreshold()
@@ -117,6 +117,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, preferredTimescale: 1) }
 
     self.configurePlayerWithURL = project
+      .map { $0.videoViewProperties }
       .filter { $0.video != nil }
       .takeWhen(self.playButtonTappedProperty.signal)
       .map { URL(string: $0.video?.hls ?? $0.video?.high ?? "") }
@@ -138,12 +139,12 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .skipRepeats()
 
     self.playButtonHidden = Signal.merge(
-      project.map { $0.video == nil },
+      project.map { $0.videoViewProperties.video == nil },
       elementsHiddenOnPlayback
     )
     .skipRepeats()
 
-    self.projectImageURL = project.map { URL(string: $0.photo.full) }.skipRepeats(==)
+    self.projectImageURL = project.map { URL(string: $0.videoViewProperties.photoFull) }.skipRepeats(==)
 
     self.seekToBeginning = reachedEndOfVideo.ignoreValues()
 
@@ -209,8 +210,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.playButtonTappedProperty.value = ()
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty = MutableProperty<(any VideoViewConfiguration)?>(nil)
+  public func configureWith(project: any VideoViewConfiguration) {
     self.projectProperty.value = project
   }
 
@@ -256,4 +257,34 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
   public var inputs: VideoViewModelInputs { return self }
   public var outputs: VideoViewModelOutputs { return self }
+}
+
+public protocol VideoViewProperties {
+  var video: (hls: String?, high: String)? { get }
+  var photoFull: String { get }
+}
+
+public protocol HasVideoViewProperties {
+  var videoViewProperties: VideoViewProperties { get }
+}
+
+public typealias VideoViewConfiguration = HasServiceProjectWebURL & HasVideoViewProperties & ProjectAnalyticsProperties
+
+public struct VideoViewPropertiesBox: VideoViewProperties {
+  public let video: (hls: String?, high: String)?
+  public let photoFull: String
+
+  public init(video: (hls: String?, high: String)?, photoFull: String) {
+    self.video = video
+    self.photoFull = photoFull
+  }
+}
+
+extension Project: HasVideoViewProperties {
+  public var videoViewProperties: VideoViewProperties {
+    VideoViewPropertiesBox(
+      video: self.video.map { ($0.hls, $0.high) },
+      photoFull: self.photo.full
+    )
+  }
 }
