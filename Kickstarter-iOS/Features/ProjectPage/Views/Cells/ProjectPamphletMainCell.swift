@@ -131,7 +131,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.categoryIconImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_support_400
-      |> UIImageView.lens.image .~ UIImage(named: "category-icon")
+      |> UIImageView.lens.image .~ Library.image(named: "category-icon")
       |> UIImageView.lens.backgroundColor .~ .ksr_white
 
     _ = self.categoryNameLabel
@@ -198,7 +198,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.locationImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_support_400
-      |> UIImageView.lens.image .~ UIImage(named: "location-icon")
+      |> UIImageView.lens.image .~ Library.image(named: "location-icon")
       |> UIImageView.lens.backgroundColor .~ .ksr_white
 
     _ = self.locationNameLabel

@@ -413,7 +413,7 @@ extension RewardsCollectionViewController {
       .instantiate(with: project, refTag: refTag, context: .createPledge)
 
     let closeButton = UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
+      image: image(named: "icon--cross"),
       style: .plain,
       target: rewardsCollectionViewController,
       action: #selector(RewardsCollectionViewController.closeButtonTapped)

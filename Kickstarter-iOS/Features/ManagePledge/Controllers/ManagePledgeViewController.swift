@@ -30,7 +30,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var closeButton: UIBarButtonItem = {
     UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
+      image: image(named: "icon--cross"),
       style: .plain,
       target: self,
       action: #selector(ManagePledgeViewController.closeButtonTapped)
@@ -44,7 +44,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var menuButton: UIBarButtonItem = {
     UIBarButtonItem(
-      image: UIImage(named: "icon--more-menu"),
+      image: image(named: "icon--more-menu"),
       style: .plain,
       target: self,
       action: #selector(ManagePledgeViewController.menuButtonTapped)
@@ -640,7 +640,7 @@ extension ManagePledgeViewController {
     managePledgeViewController.delegate = delegate
 
     let closeButton = UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
+      image: image(named: "icon--cross"),
       style: .plain,
       target: managePledgeViewController,
       action: #selector(ManagePledgeViewController.closeButtonTapped)
