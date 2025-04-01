@@ -142,6 +142,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       initialData: initialData.ignoreValues()
     )
 
+    self.paymentMethodsUseCase = PaymentMethodsUseCase(
+      initialData: initialData,
+      isLoggedIn: self.loginSignupUseCase.dataOutputs.isLoggedIn
+    )
+
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
@@ -352,23 +357,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       initialDataUnpacked.takeWhen(self.loginSignupUseCase.dataOutputs.userSessionChanged)
     )
 
-    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
-      .filter { !$3.paymentMethodsViewHidden }
-      .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
-        guard let user = AppEnvironment.current.currentUser else { return nil }
-
-        // This second to last value - pledgeTotal - is only needed when the payment methods controller
-        // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
-        // we don't accidentally propagate this nan downstream.
-        return (user, project, "", reward, context, refTag)
-      }
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(
-      self.loginSignupUseCase.dataOutputs.isLoggedIn,
-      context
-    )
-    .map { !$0 || $1.paymentMethodsViewHidden }
-
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
       context
@@ -381,12 +369,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
-
-    /// The `selectedPaymentSource` will take the payment source id (A) or the setup intent client secret (B) and map only to `createBackingData` or `updateBackingData`
-    let selectedPaymentSource = Signal.merge(
-      initialData.mapConst(nil),
-      self.creditCardSelectedSignal.wrapInOptional()
-    )
 
     self.showWebHelp = Signal.merge(
       self.termsOfUseTappedSignal,
@@ -528,7 +510,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSource,
+      self.paymentMethodsUseCase.dataOutputs.selectedPaymentSource,
       applePayParamsData,
       selectedPaymentPlan,
       refTag
@@ -605,7 +587,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSource,
+      self.paymentMethodsUseCase.dataOutputs.selectedPaymentSource,
       applePayParamsData,
       context
     )
@@ -679,25 +661,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
 
     // MARK: - Form Validation
 
-    let notChangingPaymentMethod = context.map { context in
-      context.isUpdating && context != .changePaymentMethod
-    }
-    .filter(isTrue)
-
-    /// The `paymentMethodChangedAndValid` will do as it before taking the payment source id (A) or the setup intent client secret (B), one or the other for comparison against the existing backing payment source id. It does not care which of two payment sources the id refers to.
-    let paymentMethodChangedAndValid = Signal.merge(
-      notChangingPaymentMethod.mapConst(false),
-      Signal.combineLatest(
-        project,
-        baseReward,
-        self.creditCardSelectedSignal,
-        context
-      )
-      .map(paymentMethodValid)
-    )
-
     let valuesChangedAndValid = Signal.combineLatest(
-      paymentMethodChangedAndValid,
+      self.paymentMethodsUseCase.dataOutputs.paymentMethodChangedAndValid,
       self.pledgeOverTimeUseCase.pledgeOverTimeIsLoading,
       context
     )
@@ -873,7 +838,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
     let willRetryPaymentMethod = Signal.combineLatest(
       context,
       project,
-      selectedPaymentSource
+      self.paymentMethodsUseCase.selectedPaymentSource
     )
     .map { context, project, selectedPaymentSource -> Bool in
 
@@ -1005,10 +970,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
     self.configureWithDataProperty.value = data
   }
 
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
-    .pipe()
   public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
-    self.creditCardSelectedObserver.send(value: paymentSourceData)
+    self.paymentMethodsUseCase.creditCardSelected(with: paymentSourceData)
   }
 
   private let (pkPaymentSignal, pkPaymentObserver) = Signal<(
@@ -1085,7 +1048,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configureEstimatedShippingView: Signal<(String?, String?), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> {
+    self.paymentMethodsUseCase.configurePaymentMethodsViewControllerWithValue
+  }
+
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
@@ -1103,7 +1069,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
 
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
-  public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public var paymentMethodsViewHidden: Signal<Bool, Never> {
+    self.paymentMethodsUseCase.paymentMethodsViewHidden
+  }
+
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
@@ -1126,6 +1095,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
 
   private let pledgeOverTimeUseCase: PledgeOverTimeUseCase
   private let loginSignupUseCase: LoginSignupUseCase
+  private let paymentMethodsUseCase: PaymentMethodsUseCase
 }
 
 // MARK: - Functions
@@ -1157,39 +1127,12 @@ private func shippingRuleValid(
   return backing.locationId != shippingRule.location.id
 }
 
-private func paymentMethodValid(
-  project: Project,
-  reward: Reward,
-  paymentSource: PaymentSourceSelected,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return true
-  }
-
-  if project.personalization.backing?.status == .errored {
-    return true
-  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
-    return true
-  }
-
-  return false
-}
-
 private func allValuesChangedAndValid(
   paymentSourceValid: Bool,
   pledgeOverTimeIsLoading: Bool,
-  context: PledgeViewContext
+  context _: PledgeViewContext
 ) -> Bool {
-  if context.isUpdating, context != .updateReward {
-    return paymentSourceValid
-  }
-
-  return !pledgeOverTimeIsLoading
+  return paymentSourceValid && !pledgeOverTimeIsLoading
 }
 
 // MARK: - Helper Functions
