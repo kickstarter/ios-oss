@@ -24,7 +24,7 @@ public final class VideoViewController: UIViewController {
   @IBOutlet fileprivate var projectImageView: UIImageView!
   @IBOutlet fileprivate var videoContainerView: UIView!
 
-  internal static func configuredWith(project: Project) -> VideoViewController {
+  internal static func configuredWith(project: any VideoViewConfiguration) -> VideoViewController {
     let vc = Storyboard.Video.instantiate(VideoViewController.self)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
