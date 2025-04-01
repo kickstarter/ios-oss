@@ -7,7 +7,7 @@ public protocol HasProjectCreatorProperties {
   var projectCreatorProperties: ProjectCreatorProperties { get }
 }
 
-public struct ProjectCreatorProperties: ServiceProjectWebURL {
+public struct ProjectCreatorProperties {
   public let id: Int
   public let name: String
   public let projectWebURL: String
@@ -16,12 +16,6 @@ public struct ProjectCreatorProperties: ServiceProjectWebURL {
     self.id = id
     self.name = name
     self.projectWebURL = projectWebURL
-  }
-}
-
-extension ProjectCreatorProperties: HasServiceProjectWebURL {
-  public var serviceProjectWebURL: any ServiceProjectWebURL {
-    self
   }
 }
 
@@ -100,7 +94,7 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
       .map { $0.request }
 
     self.loadWebViewRequest = properties.map {
-      URL(string: $0.serviceProjectWebURL.projectWebURL)?.appendingPathComponent("creator_bio")
+      URL(string: $0.projectWebURL)?.appendingPathComponent("creator_bio")
     }
     .skipNil()
     .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
@@ -120,7 +114,7 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
     self.goBackToProject = Signal.combineLatest(properties, navigationAction)
       .filter { $1.navigationType == .linkActivated }
       .filter { properties, navigation in
-        properties.serviceProjectWebURL.projectWebURL == navigation.request.url?.absoluteString
+        properties.projectWebURL == navigation.request.url?.absoluteString
       }
       .ignoreValues()
 
@@ -128,7 +122,7 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
       .filter { $1.navigationType == .linkActivated }
       .filter { !isMessageCreator(request: $1.request) }
       .filter { properties, navigation in
-        properties.serviceProjectWebURL.projectWebURL != navigation.request.url?.absoluteString
+        properties.projectWebURL != navigation.request.url?.absoluteString
       }
       .map { $1.request.url }
       .skipNil()
