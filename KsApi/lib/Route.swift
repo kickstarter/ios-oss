@@ -120,7 +120,7 @@ internal enum Route {
         return (.POST, "v1/users/self/friends", ["followed_id": userId], nil)
 
       case let .incrementVideoCompletion(project):
-        let statsURL = URL(string: project.serviceProjectWebURL)?
+        let statsURL = URL(string: project.projectWebURL)?
           .appendingPathComponent("video/plays")
         return (
           .POST,
@@ -130,7 +130,7 @@ internal enum Route {
         )
 
       case let .incrementVideoStart(project):
-        let statsURL = URL(string: project.serviceProjectWebURL)?
+        let statsURL = URL(string: project.projectWebURL)?
           .appendingPathComponent("video/plays")
         return (.POST, statsURL?.absoluteString ?? "", ["event_type": "start", "location": "internal"], nil)
 

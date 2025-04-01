@@ -643,3 +643,27 @@ extension ServiceType {
     return components
   }
 }
+
+public struct ServiceProjectWebURL {
+  public let projectWebURL: String
+
+  public init(projectWebURL: String) {
+    self.projectWebURL = projectWebURL
+  }
+}
+
+public protocol HasServiceProjectWebURL {
+  var serviceProjectWebURL: ServiceProjectWebURL { get }
+}
+
+extension Project: HasServiceProjectWebURL {
+  public var serviceProjectWebURL: ServiceProjectWebURL {
+    ServiceProjectWebURL(projectWebURL: self.urls.web.project)
+  }
+}
+
+extension GraphAPI.ProjectFragment: HasServiceProjectWebURL {
+  public var serviceProjectWebURL: ServiceProjectWebURL {
+    ServiceProjectWebURL(projectWebURL: self.url)
+  }
+}
