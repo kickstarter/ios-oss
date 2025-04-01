@@ -7,7 +7,8 @@ import WebKit
 internal final class ProjectCreatorViewController: WebViewController {
   fileprivate let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
-  internal static func configuredWith(project: Project) -> ProjectCreatorViewController {
+  internal static func configuredWith(project: any ProjectCreatorConfiguration)
+    -> ProjectCreatorViewController {
     let vc = ProjectCreatorViewController()
     vc.viewModel.inputs.configureWith(project: project)
     return vc
