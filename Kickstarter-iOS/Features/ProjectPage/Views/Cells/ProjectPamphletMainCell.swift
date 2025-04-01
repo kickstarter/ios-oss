@@ -5,7 +5,10 @@ import UIKit
 
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
-  func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
+  func projectPamphletMainCell(
+    _ cell: ProjectPamphletMainCell,
+    goToCreatorForProject project: any ProjectPamphletMainCellConfiguration
+  )
   func projectPamphletMainCellGoToProjectNotice(_ cell: ProjectPamphletMainCell)
 }
 
@@ -338,7 +341,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
   }
 
-  fileprivate func configureVideoPlayerController(forProject project: Project) {
+  fileprivate func configureVideoPlayerController(
+    forProject project: any ProjectPamphletMainCellConfiguration
+  ) {
     let vc = VideoViewController.configuredWith(project: project)
     vc.delegate = self
     vc.view.translatesAutoresizingMaskIntoConstraints = false
