@@ -3,9 +3,57 @@ import Prelude
 import ReactiveSwift
 import WebKit
 
+public protocol HasProjectCreatorProperties {
+  var projectCreatorProperties: ProjectCreatorProperties { get }
+}
+
+public struct ProjectCreatorProperties: ServiceProjectWebURL {
+  public let id: Int
+  public let name: String
+  public let projectWebURL: String
+
+  public init(id: Int, name: String, projectWebURL: String) {
+    self.id = id
+    self.name = name
+    self.projectWebURL = projectWebURL
+  }
+}
+
+extension ProjectCreatorProperties: HasServiceProjectWebURL {
+  public var serviceProjectWebURL: any ServiceProjectWebURL {
+    self
+  }
+}
+
+extension ProjectCreatorProperties: VideoViewProperties, HasVideoViewProperties {
+  public var photoFull: String {
+    return "" // Not needed for ProjectCreator view
+  }
+
+  public var video: (hls: String?, high: String)? {
+    return nil // Not needed for ProjectCreator view
+  }
+
+  public var videoViewProperties: VideoViewProperties {
+    return self
+  }
+}
+
+extension Project: HasProjectCreatorProperties {
+  public var projectCreatorProperties: ProjectCreatorProperties {
+    return ProjectCreatorProperties(
+      id: self.id,
+      name: self.name,
+      projectWebURL: self.urls.web.project
+    )
+  }
+}
+
+public typealias ProjectCreatorConfiguration = HasProjectCreatorProperties & HasServiceProjectWebURL
+
 public protocol ProjectCreatorViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(project: Project)
+  func configureWith(project: any ProjectCreatorConfiguration)
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
@@ -44,13 +92,15 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
+    let properties = project.map { $0.projectCreatorProperties }
+
     let messageCreatorRequest = navigationAction
       .filter { $0.navigationType == .linkActivated }
       .filter { isMessageCreator(request: $0.request) }
       .map { $0.request }
 
-    self.loadWebViewRequest = project.map {
-      URL(string: $0.urls.web.project)?.appendingPathComponent("creator_bio")
+    self.loadWebViewRequest = properties.map {
+      URL(string: $0.serviceProjectWebURL.projectWebURL)?.appendingPathComponent("creator_bio")
     }
     .skipNil()
     .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
@@ -62,30 +112,30 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
       .filter { AppEnvironment.current.currentUser == nil }
       .map { .messageCreator }
 
-    self.goToMessageDialog = project
+    self.goToMessageDialog = properties
       .takeWhen(messageCreatorRequest)
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .map { (MessageSubject.project(id: $0.id, name: $0.name), .projectPage) }
 
-    self.goBackToProject = Signal.combineLatest(project, navigationAction)
+    self.goBackToProject = Signal.combineLatest(properties, navigationAction)
       .filter { $1.navigationType == .linkActivated }
-      .filter { project, navigation in
-        project.urls.web.project == navigation.request.url?.absoluteString
+      .filter { properties, navigation in
+        properties.serviceProjectWebURL.projectWebURL == navigation.request.url?.absoluteString
       }
       .ignoreValues()
 
-    self.goToSafariBrowser = Signal.combineLatest(project, navigationAction)
+    self.goToSafariBrowser = Signal.combineLatest(properties, navigationAction)
       .filter { $1.navigationType == .linkActivated }
       .filter { !isMessageCreator(request: $1.request) }
-      .filter { project, navigation in
-        project.urls.web.project != navigation.request.url?.absoluteString
+      .filter { properties, navigation in
+        properties.serviceProjectWebURL.projectWebURL != navigation.request.url?.absoluteString
       }
       .map { $1.request.url }
       .skipNil()
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty = MutableProperty<(any ProjectCreatorConfiguration)?>(nil)
+  public func configureWith(project: any ProjectCreatorConfiguration) {
     self.projectProperty.value = project
   }
 
