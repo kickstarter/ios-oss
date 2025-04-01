@@ -4,11 +4,6 @@ import Library
 import SnapshotTesting
 
 internal final class FacebookConfirmationViewControllerTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
   func testView() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
@@ -26,10 +21,5 @@ internal final class FacebookConfirmationViewControllerTests: TestCase {
         )
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }

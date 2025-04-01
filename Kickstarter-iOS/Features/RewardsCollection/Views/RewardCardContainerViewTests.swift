@@ -8,12 +8,6 @@ import UIKit
 import XCTest
 
 final class RewardCardContainerViewTests: TestCase {
-  override func setUp() {
-    super.setUp()
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
   func testLive_BackedProject_BackedReward() {
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
@@ -425,11 +419,6 @@ final class RewardCardContainerViewTests: TestCase {
         )
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }
 

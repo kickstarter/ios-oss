@@ -4,11 +4,6 @@ import Library
 import SnapshotTesting
 
 internal final class LoginViewControllerTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
   func testView() {
     orthogonalCombos(Language.allLanguages, [Device.pad, Device.phone4_7inch, Device.phone5_8inch]).forEach {
       language, device in
@@ -25,10 +20,5 @@ internal final class LoginViewControllerTests: TestCase {
         )
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }

@@ -262,6 +262,7 @@
 		20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
+		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		336193F02D825C8700BED4BD /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193EF2D825C8000BED4BD /* FilterCategoryView.swift */; };
 		336193F22D825C9B00BED4BD /* FilterCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193F12D825C9500BED4BD /* FilterCategoryViewModel.swift */; };
 		3361942F2D8370CE00BED4BD /* Fonts+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */; };
@@ -8064,6 +8065,7 @@
 				33F55B5B2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				33F55B592D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */,
+				3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */,
 				E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

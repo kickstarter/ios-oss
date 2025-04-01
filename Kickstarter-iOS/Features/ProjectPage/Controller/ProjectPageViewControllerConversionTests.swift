@@ -23,13 +23,10 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     self.cosmicSurgery = project
 
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-
     UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
