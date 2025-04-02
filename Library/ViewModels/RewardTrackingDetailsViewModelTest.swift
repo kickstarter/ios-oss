@@ -36,9 +36,11 @@ final class RewardTrackingDetailsViewModelTest: TestCase {
     self.vm.inputs.configure(with: data)
     self.backgroundColor.assertLastValue(.ksr_support_200)
     self.cornerRadius.assertLastValue(8.0)
+    self.trackShipping.assertDidNotEmitValue()
+
+    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
     self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
-    self.trackShipping.assertDidNotEmitValue()
   }
 
   func testView_Activity_Style() {
@@ -51,9 +53,11 @@ final class RewardTrackingDetailsViewModelTest: TestCase {
     self.vm.inputs.configure(with: data)
     self.backgroundColor.assertLastValue(Colors.Background.surfacePrimary.adaptive())
     self.cornerRadius.assertLastValue(0.0)
+    self.trackShipping.assertDidNotEmitValue()
+
+    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
     self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
-    self.trackShipping.assertDidNotEmitValue()
   }
 
   func testTrackingButtonTapped() {

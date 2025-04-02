@@ -1,6 +1,12 @@
 import Library
 import UIKit
 
+private enum Constants {
+  static let rootStackViewSpacing = Styles.grid(2)
+  static let rootStackViewLayoutMargins = UIEdgeInsets(all: 16.0)
+  static let titleStackViewSpacing: CGFloat = 8.0
+}
+
 protocol RewardTrackingDetailsViewDelegate: AnyObject {
   func didTrackingButtonTap(with trackingURL: URL)
 }
@@ -129,10 +135,4 @@ private func applyTrackingNumberLabelStyle(_ label: UILabel) {
   label.textColor = .ksr_support_400 // Do we want to implement a new Design System color?
   label.font = .ksr_bodyMD()
   label.adjustsFontForContentSizeCategory = true
-}
-
-private enum Constants {
-  static let rootStackViewSpacing = Styles.grid(2)
-  static let rootStackViewLayoutMargins = UIEdgeInsets(all: 16.0)
-  static let titleStackViewSpacing: CGFloat = 8.0
 }
