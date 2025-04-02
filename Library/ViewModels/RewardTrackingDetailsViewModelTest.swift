@@ -7,6 +7,8 @@ import XCTest
 final class RewardTrackingDetailsViewModelTest: TestCase {
   private let vm: RewardTrackingDetailsViewModelType = RewardTrackingDetailsViewModel()
 
+  private var backgroundColor = TestObserver<UIColor, Never>()
+  private var cornerRadius = TestObserver<CGFloat, Never>()
   private var rewardTrackingStatus = TestObserver<String, Never>()
   private var rewardTrackingNumber = TestObserver<String, Never>()
   private var trackShipping = TestObserver<URL, Never>()
@@ -17,18 +19,38 @@ final class RewardTrackingDetailsViewModelTest: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.backgroundColor.observe(self.backgroundColor.observer)
+    self.vm.outputs.cornerRadius.observe(self.cornerRadius.observer)
     self.vm.outputs.rewardTrackingStatus.observe(self.rewardTrackingStatus.observer)
     self.vm.outputs.rewardTrackingNumber.observe(self.rewardTrackingNumber.observer)
     self.vm.outputs.trackShipping.observe(self.trackShipping.observer)
   }
 
-  func testViewModel() {
+  func testView_BackingDetails_Style() {
     let data = RewardTrackingDetailsViewData(
       trackingNumber: self.testTrackingNumber,
-      trackingURL: self.testURL
+      trackingURL: self.testURL,
+      style: .backingDetails
     )
 
     self.vm.inputs.configure(with: data)
+    self.backgroundColor.assertLastValue(.ksr_support_200)
+    self.cornerRadius.assertLastValue(8.0)
+    self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
+    self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
+    self.trackShipping.assertDidNotEmitValue()
+  }
+
+  func testView_Activity_Style() {
+    let data = RewardTrackingDetailsViewData(
+      trackingNumber: self.testTrackingNumber,
+      trackingURL: self.testURL,
+      style: .activity
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.backgroundColor.assertLastValue(Colors.Background.surfacePrimary.adaptive())
+    self.cornerRadius.assertLastValue(0.0)
     self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
     self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
     self.trackShipping.assertDidNotEmitValue()

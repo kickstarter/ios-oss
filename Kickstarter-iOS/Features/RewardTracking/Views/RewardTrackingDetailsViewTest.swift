@@ -16,7 +16,7 @@ final class RewardTrackingDetailsViewTest: TestCase {
     super.tearDown()
   }
 
-  func testView() {
+  func testView_BackingDetailsStyle() {
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let view = RewardTrackingDetailsView(frame: .zero)
@@ -24,7 +24,8 @@ final class RewardTrackingDetailsViewTest: TestCase {
 
         let data = RewardTrackingDetailsViewData(
           trackingNumber: "1234567890",
-          trackingURL: URL(string: "http://ksr.com")!
+          trackingURL: URL(string: "http://ksr.com")!,
+          style: .backingDetails
         )
 
         view.configure(with: data)
@@ -37,6 +38,32 @@ final class RewardTrackingDetailsViewTest: TestCase {
         parent.view.frame.size.height = 140
 
         self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_ActivityStyle() {
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let view = RewardTrackingDetailsView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        let data = RewardTrackingDetailsViewData(
+          trackingNumber: "1234567890",
+          trackingURL: URL(string: "http://ksr.com")!,
+          style: .activity
+        )
+
+        view.configure(with: data)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: wrappedViewController(subview: view, device: device)
+        )
+        parent.view.frame.size.height = 140
 
         self.scheduler.advance(by: .seconds(1))
 

@@ -267,6 +267,7 @@
 		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
 		3344A77E2D9C93A200D7DE91 /* RewardTrackingDetailsViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */; };
 		3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77F2D9C96E300D7DE91 /* RewardTrackingDetailsViewModelTest.swift */; };
+		3344A7822D9CF5F200D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		336193F02D825C8700BED4BD /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193EF2D825C8000BED4BD /* FilterCategoryView.swift */; };
 		336193F22D825C9B00BED4BD /* FilterCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193F12D825C9500BED4BD /* FilterCategoryViewModel.swift */; };
 		3361942F2D8370CE00BED4BD /* Fonts+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */; };
@@ -8013,6 +8014,7 @@
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
 				33F39E342D9DB086007099A6 /* Assets.xcassets in Resources */,
+				3344A7822D9CF5F200D7DE91 /* Assets.xcassets in Resources */,
 				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

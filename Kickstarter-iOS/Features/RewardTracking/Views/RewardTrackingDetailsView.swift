@@ -50,11 +50,18 @@ final class RewardTrackingDetailsView: UIView {
 
     self.trackingStatusLabel.rac.text = self.viewModel.outputs.rewardTrackingStatus
     self.trackingNumberLabel.rac.text = self.viewModel.outputs.rewardTrackingNumber
+    self.rootStackView.rac.backgroundColor = self.viewModel.outputs.backgroundColor
 
     self.viewModel.outputs.trackShipping
       .observeForUI()
       .observeValues { [weak self] trackingURL in
         self?.delegate?.didTrackingButtonTap(with: trackingURL)
+      }
+
+    self.viewModel.outputs.cornerRadius
+      .observeForUI()
+      .observeValues { [weak self] cornerRadius in
+        self?.rootStackView.rounded(with: cornerRadius)
       }
   }
 
@@ -98,8 +105,6 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.spacing = Constants.rootStackViewSpacing
   stackView.layoutMargins = Constants.rootStackViewLayoutMargins
   stackView.isLayoutMarginsRelativeArrangement = true
-  stackView.backgroundColor = .ksr_support_200
-  stackView.rounded()
 }
 
 private func applyTrackingTitleStackViewStyle(_ stackView: UIStackView) {
