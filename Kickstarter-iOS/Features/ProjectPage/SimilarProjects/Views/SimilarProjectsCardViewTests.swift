@@ -164,6 +164,34 @@ final class SimilarProjectsCardViewTests: TestCase {
       }
     }
   }
+
+  func testView_ProjectState_NameWithDescenders() {
+    let validProjectFragment = createMockProjectNode(id: 1, name: "Project for a Thingy", state: "live")
+    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+
+    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+
+    orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
+        let view = SimilarProjectsCardView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.configureWith(value: self.similarProject!)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: wrappedViewController(subview: view, device: device)
+        )
+        parent.view.frame.size.height = 300
+
+        self.scheduler.advance(by: .seconds(1))
+
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
 }
 
 private func wrappedViewController(subview: UIView, device: Device) -> UIViewController {
