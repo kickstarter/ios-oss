@@ -119,7 +119,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       })
       .observeValues { [weak self] url, placeholderImageName in
         self?.circleAvatarImageView
-          .ksr_setImageWithURL(url, placeholderImage: UIImage(named: placeholderImageName))
+          .ksr_setImageWithURL(url, placeholderImage: image(named: placeholderImageName))
       }
 
     self.backerNameLabel.rac.hidden = self.viewModel.outputs.backerNameLabelHidden

@@ -102,7 +102,7 @@ final class SettingsViewController: UIViewController {
 
   private func leftBarButtonItem() -> UIBarButtonItem {
     return UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
+      image: image(named: "icon--cross"),
       style: .plain,
       target: self,
       action: #selector(self.closeButtonPressed)

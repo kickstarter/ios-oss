@@ -19,13 +19,10 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
   override func setUp() {
     super.setUp()
     self.commentCellHeaderStackView.layer.backgroundColor = UIColor.ksr_white.cgColor
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }

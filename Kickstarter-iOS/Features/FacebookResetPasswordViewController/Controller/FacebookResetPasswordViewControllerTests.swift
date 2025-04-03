@@ -4,11 +4,6 @@ import Library
 import SnapshotTesting
 
 internal final class FacebookResetPasswordViewControllerTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
   func testFacebookResetPasswordViewController() {
     let devices = [Device.phone4_7inch, Device.pad]
     orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
@@ -25,10 +20,5 @@ internal final class FacebookResetPasswordViewControllerTests: TestCase {
         )
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }

@@ -8,13 +8,10 @@ import XCTest
 internal final class ProjectPageNavBarViewTests: TestCase {
   override func setUp() {
     super.setUp()
-
     UIView.setAnimationsEnabled(false)
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }

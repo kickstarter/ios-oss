@@ -262,6 +262,7 @@
 		20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
+		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		336193F02D825C8700BED4BD /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193EF2D825C8000BED4BD /* FilterCategoryView.swift */; };
 		336193F22D825C9B00BED4BD /* FilterCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193F12D825C9500BED4BD /* FilterCategoryViewModel.swift */; };
 		3361942F2D8370CE00BED4BD /* Fonts+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */; };
@@ -298,6 +299,7 @@
 		33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */; };
 		33D11D462D6EFFB500CC88A3 /* KSRButtonStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */; };
 		33F04B262D28A8090078AED1 /* PledgeOverTimeBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F04B252D28A7F50078AED1 /* PledgeOverTimeBadgeView.swift */; };
+		33F39E342D9DB086007099A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		33F55B3A2D4143940007E50E /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B392D41438E0007E50E /* BadgeView.swift */; };
 		33F55B3C2D499CDB0007E50E /* PledgeOverTimeIncrementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B3B2D499CCA0007E50E /* PledgeOverTimeIncrementView.swift */; };
 		33F55B3E2D4A6D030007E50E /* PledgePaymentIncrementFormatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B3D2D4A6CF30007E50E /* PledgePaymentIncrementFormatted.swift */; };
@@ -7982,6 +7984,7 @@
 				E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */,
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
+				33F39E342D9DB086007099A6 /* Assets.xcassets in Resources */,
 				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8064,6 +8067,7 @@
 				33F55B5B2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				33F55B592D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */,
+				3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */,
 				E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

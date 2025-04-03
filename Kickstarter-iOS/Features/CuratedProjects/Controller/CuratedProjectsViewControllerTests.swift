@@ -6,18 +6,6 @@ import SnapshotTesting
 import XCTest
 
 internal final class CuratedProjectsViewControllerTests: TestCase {
-  override func setUp() {
-    super.setUp()
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-
-    super.tearDown()
-  }
-
   func testCuratedProjectsViewController() {
     let categories: [KsApi.Category] = [
       .art,

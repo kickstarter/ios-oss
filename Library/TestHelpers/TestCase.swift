@@ -15,7 +15,17 @@ internal class TestCase: XCTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let coreTelephonyNetworkInfo = MockCoreTelephonyNetworkInfo()
   internal let dateType = MockDate.self
-  internal let mainBundle = MockBundle()
+
+  /// Dynamically resolves the test bundle identifier based on the current test target.
+  /// This approach allows us to load resources like Colors (e.g. `AdaptiveColors`) and Images
+  /// correctly in Unit Tests by ensuring the `mainBundle` points to the right asset bundle.
+  /// This is especially useful when tests are executed from different targets (e.g. `Kickstarter-Framework-iOSTests`, `Library-iOS`),
+  /// allowing consistent resolution of asset resources during testing.
+  internal lazy var mainBundle: MockBundle = {
+    let bundle = Bundle(for: Self.self)
+    return MockBundle(bundleIdentifier: bundle.identifier)
+  }()
+
   internal let remoteConfigClient = MockRemoteConfigClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)

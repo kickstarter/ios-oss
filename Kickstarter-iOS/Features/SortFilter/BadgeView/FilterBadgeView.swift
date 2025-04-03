@@ -60,10 +60,10 @@ class FilterBadgeView<A: SortOption, B: FilterCategory>: UIView {
       )
     self.stackView.isLayoutMarginsRelativeArrangement = true
 
-    let filter = UIImage(named: "icon-sort")?
+    let filter = image(named: "icon-sort")?
       .withRenderingMode(.alwaysTemplate)
 
-    let carat = UIImage(named: "arrow-down")?
+    let carat = image(named: "arrow-down")?
       .withRenderingMode(.alwaysTemplate)
 
     var sortConfig = self.sortButton.configuration ?? UIButton.Configuration.plain()

@@ -8,8 +8,6 @@ import XCTest
 internal final class CommentsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -185,8 +183,7 @@ internal final class CommentsViewControllerTests: TestCase {
       apiService: MockService(
         fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.emptyCommentsTemplate)
       ),
-      currentUser: User.template,
-      mainBundle: Bundle.framework
+      currentUser: User.template
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
@@ -212,8 +209,7 @@ internal final class CommentsViewControllerTests: TestCase {
       apiService: MockService(
         fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON)
       ),
-      currentUser: User.template,
-      mainBundle: Bundle.framework
+      currentUser: User.template
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {

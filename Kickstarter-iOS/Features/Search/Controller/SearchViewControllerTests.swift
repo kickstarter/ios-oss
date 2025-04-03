@@ -6,16 +6,12 @@ import SnapshotTesting
 import XCTest
 
 internal final class SearchViewContollerTests: TestCase {
-  private let mockBundle = MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS")
-
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: self.mockBundle)
     UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
