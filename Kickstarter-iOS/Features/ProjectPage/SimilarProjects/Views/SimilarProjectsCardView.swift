@@ -93,7 +93,7 @@ final class SimilarProjectsCardView: UIView {
 
       // projectStatusStackView
       self.projectStatusStackView.topAnchor.constraint(
-        equalTo: self.projectTitleLabel.bottomAnchor,
+        equalTo: self.projectTitleLabel.lastBaselineAnchor,
         constant: Styles.grid(2)
       ),
       self.projectStatusStackView.leadingAnchor.constraint(
