@@ -94,7 +94,7 @@ final class SimilarProjectsCardView: UIView {
       // projectStatusStackView
       self.projectStatusStackView.topAnchor.constraint(
         equalTo: self.projectTitleLabel.lastBaselineAnchor,
-        constant: Styles.grid(2)
+        constant: Styles.grid(3)
       ),
       self.projectStatusStackView.leadingAnchor.constraint(
         equalTo: self.leadingAnchor,
