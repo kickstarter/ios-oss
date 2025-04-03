@@ -18,6 +18,7 @@ $(PROJECT_DIR)/KsApi/fragments/CountryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CategoryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ShippingRuleFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOUserSetupFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/OrderFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/LocationFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOProjectFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CheckoutFragment.graphql

@@ -4129,6 +4129,55 @@ public enum GraphAPI {
     }
   }
 
+  /// The state of checkout, e.g. complete, in progress, incomplete.
+  public enum CheckoutStateEnum: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// complete
+    case complete
+    /// in_progress
+    case inProgress
+    /// not_started
+    case notStarted
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "complete": self = .complete
+        case "in_progress": self = .inProgress
+        case "not_started": self = .notStarted
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .complete: return "complete"
+        case .inProgress: return "in_progress"
+        case .notStarted: return "not_started"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: CheckoutStateEnum, rhs: CheckoutStateEnum) -> Bool {
+      switch (lhs, rhs) {
+        case (.complete, .complete): return true
+        case (.inProgress, .inProgress): return true
+        case (.notStarted, .notStarted): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [CheckoutStateEnum] {
+      return [
+        .complete,
+        .inProgress,
+        .notStarted,
+      ]
+    }
+  }
+
   public enum PaymentIncrementState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
     /// The initial state of the payment increment; payment source has not been charged
@@ -8711,6 +8760,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
@@ -13043,6 +13093,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
@@ -14854,6 +14905,10 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
+        order {
+          __typename
+          ...OrderFragment
+        }
         paymentIncrements {
           __typename
           ...PaymentIncrementFragment
@@ -14894,6 +14949,7 @@ public enum GraphAPI {
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isLatePledge", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
+        GraphQLField("order", type: .object(Order.selections)),
         GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
         GraphQLField("pledgedOn", type: .scalar(String.self)),
         GraphQLField("project", type: .object(Project.selections)),
@@ -14911,8 +14967,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
     }
 
     public var __typename: String {
@@ -15010,6 +15066,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "location")
+      }
+    }
+
+    /// The order associated with the backing
+    public var order: Order? {
+      get {
+        return (resultMap["order"] as? ResultMap).flatMap { Order(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "order")
       }
     }
 
@@ -15365,6 +15431,62 @@ public enum GraphAPI {
         public var locationFragment: LocationFragment {
           get {
             return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Order: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Order"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(OrderFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, checkoutState: CheckoutStateEnum, currency: CurrencyCode, total: Int? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Order", "id": id, "checkoutState": checkoutState, "currency": currency, "total": total])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var orderFragment: OrderFragment {
+          get {
+            return OrderFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -16952,6 +17074,90 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "symbol")
+      }
+    }
+  }
+
+  public struct OrderFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment OrderFragment on Order {
+        __typename
+        id
+        checkoutState
+        currency
+        total
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Order"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("checkoutState", type: .nonNull(.scalar(CheckoutStateEnum.self))),
+        GraphQLField("currency", type: .nonNull(.scalar(CurrencyCode.self))),
+        GraphQLField("total", type: .scalar(Int.self)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, checkoutState: CheckoutStateEnum, currency: CurrencyCode, total: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Order", "id": id, "checkoutState": checkoutState, "currency": currency, "total": total])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// The state of checkout (taking into account order and cart status)
+    public var checkoutState: CheckoutStateEnum {
+      get {
+        return resultMap["checkoutState"]! as! CheckoutStateEnum
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "checkoutState")
+      }
+    }
+
+    /// The currency of the order
+    public var currency: CurrencyCode {
+      get {
+        return resultMap["currency"]! as! CurrencyCode
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "currency")
+      }
+    }
+
+    /// The total cost for the order including taxes and shipping
+    public var total: Int? {
+      get {
+        return resultMap["total"] as? Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "total")
       }
     }
   }

@@ -13,6 +13,7 @@ public struct Backing {
   public let isLatePledge: Bool
   public let locationId: Int?
   public let locationName: String?
+  public let order: 
   public let paymentIncrements: [PledgePaymentIncrement]
   public let paymentSource: PaymentSource?
   public let pledgedAt: TimeInterval
