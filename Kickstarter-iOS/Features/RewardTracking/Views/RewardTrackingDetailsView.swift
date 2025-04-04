@@ -122,7 +122,7 @@ private func applyTrackingTitleStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyTrackingIconImageViewStyle(_ imageView: UIImageView) {
-  imageView.image = image(named: "icon-shipped")
+  imageView.image = Library.image(named: "icon-shipped")
   imageView.tintColor = Colors.Icon.primary.adaptive()
   imageView.contentMode = .scaleAspectFit
   imageView.setContentHuggingPriority(.required, for: .horizontal)
