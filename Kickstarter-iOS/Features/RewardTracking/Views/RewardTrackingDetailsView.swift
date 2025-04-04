@@ -5,10 +5,17 @@ private enum Constants {
   static let rootStackViewSpacing = Styles.grid(2)
   static let rootStackViewLayoutMargins = UIEdgeInsets(all: 16.0)
   static let titleStackViewSpacing: CGFloat = 8.0
+  static let activityStyleCornerRadius: CGFloat = 8.0
+  static let backingStyleCornerRadius: CGFloat = 8.0
+}
+
+public enum RewardTrackingDetailsViewStyle {
+  case activity
+  case backingDetails
 }
 
 protocol RewardTrackingDetailsViewDelegate: AnyObject {
-  func didTrackingButtonTap(with trackingURL: URL)
+  func didTapTrackingButton(with trackingURL: URL)
 }
 
 final class RewardTrackingDetailsView: UIView {
@@ -16,6 +23,7 @@ final class RewardTrackingDetailsView: UIView {
 
   public weak var delegate: RewardTrackingDetailsViewDelegate?
   private let viewModel: RewardTrackingDetailsViewModelType = RewardTrackingDetailsViewModel()
+  private var style: RewardTrackingDetailsViewStyle
 
   private let rootStackView: UIStackView = UIStackView(frame: .zero)
   private let trackingTitleStackView: UIStackView = UIStackView(frame: .zero)
@@ -26,9 +34,9 @@ final class RewardTrackingDetailsView: UIView {
 
   // MARK: Lifecycle
 
-  override init(frame: CGRect) {
+  init(frame: CGRect = .zero, style: RewardTrackingDetailsViewStyle) {
+    self.style = style
     super.init(frame: frame)
-
     self.configureViews()
     self.setupConstraints()
     self.bindViewModel()
@@ -44,7 +52,7 @@ final class RewardTrackingDetailsView: UIView {
   public override func bindStyles() {
     super.bindStyles()
 
-    applyRootStackViewStyle(self.rootStackView)
+    applyRootStackViewStyle(self.rootStackView, style: self.style)
     applyTrackingIconImageViewStyle(self.trackingIconImageView)
     applyTrackingTitleStackViewStyle(self.trackingTitleStackView)
     applyTrackingStatusLabelStyle(self.trackingStatusLabel)
@@ -56,18 +64,11 @@ final class RewardTrackingDetailsView: UIView {
 
     self.trackingStatusLabel.rac.text = self.viewModel.outputs.rewardTrackingStatus
     self.trackingNumberLabel.rac.text = self.viewModel.outputs.rewardTrackingNumber
-    self.rootStackView.rac.backgroundColor = self.viewModel.outputs.backgroundColor
 
     self.viewModel.outputs.trackShipping
       .observeForUI()
       .observeValues { [weak self] trackingURL in
-        self?.delegate?.didTrackingButtonTap(with: trackingURL)
-      }
-
-    self.viewModel.outputs.cornerRadius
-      .observeForUI()
-      .observeValues { [weak self] cornerRadius in
-        self?.rootStackView.rounded(with: cornerRadius)
+        self?.delegate?.didTapTrackingButton(with: trackingURL)
       }
   }
 
@@ -106,11 +107,13 @@ final class RewardTrackingDetailsView: UIView {
 }
 
 // Styles helper
-private func applyRootStackViewStyle(_ stackView: UIStackView) {
+private func applyRootStackViewStyle(_ stackView: UIStackView, style: RewardTrackingDetailsViewStyle) {
   stackView.axis = .vertical
   stackView.spacing = Constants.rootStackViewSpacing
   stackView.layoutMargins = Constants.rootStackViewLayoutMargins
   stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.backgroundColor = style.backgroundColor
+  stackView.rounded(with: style.cornerRadius)
 }
 
 private func applyTrackingTitleStackViewStyle(_ stackView: UIStackView) {
@@ -135,4 +138,20 @@ private func applyTrackingNumberLabelStyle(_ label: UILabel) {
   label.textColor = .ksr_support_400 // Do we want to implement a new Design System color?
   label.font = .ksr_bodyMD()
   label.adjustsFontForContentSizeCategory = true
+}
+
+extension RewardTrackingDetailsViewStyle {
+  fileprivate var backgroundColor: UIColor {
+    switch self {
+    case .activity: return Colors.Background.surfacePrimary.adaptive()
+    case .backingDetails: return .ksr_support_200
+    }
+  }
+
+  fileprivate var cornerRadius: CGFloat {
+    switch self {
+    case .activity: return Constants.activityStyleCornerRadius
+    case .backingDetails: return Constants.backingStyleCornerRadius
+    }
+  }
 }
