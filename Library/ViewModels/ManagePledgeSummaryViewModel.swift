@@ -21,6 +21,8 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
   public let rewardMinimum: Double
+  public let rewardReceivedViewControllerViewIsHidden: Bool
+  public let rewardReceivedWithData: ManageViewPledgeRewardReceivedViewData
   public let shippingAmount: Double?
   public let shippingAmountHidden: Bool
   public let rewardIsLocalPickup: Bool
@@ -43,7 +45,9 @@ public protocol ManagePledgeSummaryViewModelOutputs {
   var circleAvatarViewHidden: Signal<Bool, Never> { get }
   var configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never> { get }
+  var configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never> { get }
   var pledgeDisclaimerViewHidden: Signal<Bool, Never> { get }
+  var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
@@ -76,6 +80,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
     self.backerNameLabelHidden = userAndIsBackingProject.map(second).negate()
     self.circleAvatarViewHidden = userAndIsBackingProject.map(second).negate()
+
+    self.configureRewardReceivedWithData = data.map(\.rewardReceivedWithData)
+    self.rewardReceivedViewControllerViewIsHidden = data.map(\.rewardReceivedViewControllerViewIsHidden)
 
     self.pledgeDisclaimerViewHidden = data.map(\.pledgeDisclaimerViewHidden)
 
@@ -127,7 +134,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public let circleAvatarViewHidden: Signal<Bool, Never>
   public let configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never>
   public let configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never>
+  public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
+  public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
   public var inputs: ManagePledgeSummaryViewModelInputs { return self }

@@ -27,6 +27,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
+    ManageViewPledgeRewardReceivedViewController.instantiate()
+  }()
+
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
     PledgeDisclaimerView(frame: .zero)
   }()
@@ -129,11 +133,19 @@ final class ManagePledgeSummaryViewController: UIViewController {
           .ksr_setImageWithURL(url, placeholderImage: image(named: placeholderImageName))
       }
 
+    self.viewModel.outputs.configureRewardReceivedWithData
+      .observeForControllerAction()
+      .observeValues { [weak self] data in
+        self?.rewardReceivedViewController.configureWith(data: data)
+      }
+
     self.backerNameLabel.rac.hidden = self.viewModel.outputs.backerNameLabelHidden
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerNumberLabel.rac.text = self.viewModel.outputs.backerNumberText
     self.backingDateLabel.rac.text = self.viewModel.outputs.backingDateText
     self.circleAvatarImageView.rac.hidden = self.viewModel.outputs.circleAvatarViewHidden
+    self.rewardReceivedViewController.view.rac.hidden = self.viewModel.outputs
+      .rewardReceivedViewControllerViewIsHidden
     self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
     self.totalAmountLabel.rac.attributedText = self.viewModel.outputs.totalAmountText
   }
@@ -154,11 +166,13 @@ final class ManagePledgeSummaryViewController: UIViewController {
     _ = ([self.totalLabel, self.totalAmountLabel], self.totalAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.addChild(self.rewardReceivedViewController)
     self.addChild(self.pledgeAmountSummaryViewController)
 
     let arrangedSubviews = [
       self.backerInfoContainerStackView,
       self.pledgeStatusLabelView,
+      self.rewardReceivedViewController.view,
       self.pledgeDisclaimerView,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView

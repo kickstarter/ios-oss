@@ -56,6 +56,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
@@ -90,6 +98,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
@@ -128,6 +144,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
@@ -169,6 +193,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: false,
@@ -207,6 +239,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: true,
@@ -254,6 +294,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: true,
@@ -286,6 +334,14 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
+      rewardReceivedViewControllerViewIsHidden: false,
+      rewardReceivedWithData: .init(
+        project: .template,
+        backerCompleted: true,
+        estimatedDeliveryOn: 1_475_361_315,
+        backingState: .collected,
+        estimatedShipping: nil
+      ),
       shippingAmount: nil,
       shippingAmountHidden: true,
       rewardIsLocalPickup: true,

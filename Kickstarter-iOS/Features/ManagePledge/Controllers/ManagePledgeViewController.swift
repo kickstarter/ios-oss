@@ -85,7 +85,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var pledgeDetailsSectionViews = {
-    [self.pledgeDetailsSectionLabel, self.rewardReceivedViewController.view]
+    [self.pledgeDetailsSectionLabel]
   }()
 
   private lazy var pledgeSummaryViewController: ManagePledgeSummaryViewController = {
@@ -120,10 +120,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
-
-  private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
-    ManageViewPledgeRewardReceivedViewController.instantiate()
-  }()
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -201,8 +197,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     super.bindViewModel()
 
     self.pledgeDetailsSectionLabel.rac.text = self.viewModel.outputs.pledgeDetailsSectionLabelText
-    self.rewardReceivedViewController.view.rac.hidden =
-      self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
     self.viewModel.outputs.paymentMethodViewHidden
       .observeForUI()
@@ -234,12 +228,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForUI()
       .observeValues { [weak self] data in
         self?.pledgeSummaryViewController.configureWith(data)
-      }
-
-    self.viewModel.outputs.configureRewardReceivedWithData
-      .observeForControllerAction()
-      .observeValues { [weak self] data in
-        self?.rewardReceivedViewController.configureWith(data: data)
       }
 
     self.viewModel.outputs.loadProjectAndRewardsIntoDataSource
@@ -397,7 +385,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> ksr_addArrangedSubviewsToStackView()
 
     [
-      self.rewardReceivedViewController,
       self.pledgeSummaryViewController,
       self.plotPaymentScheduleViewController
     ]
