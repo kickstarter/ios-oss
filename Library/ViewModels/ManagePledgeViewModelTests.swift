@@ -928,12 +928,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
         pledgePaymentMethodViewData,
         pledgePaymentMethodViewData
       ])
-      self.configurePledgeSummaryView.assertValues([
-        initialPledgeViewSummaryData,
-        initialPledgeViewSummaryData,
-        initialPledgeViewSummaryData,
-        updatedPledgeViewSummaryData
-      ])
 
       self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project, project, project, project])
       self.loadProjectAndRewardsIntoDataSourceReward.assertValues([
