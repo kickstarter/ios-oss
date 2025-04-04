@@ -27,7 +27,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     = TestObserver<String?, Never>()
   private let paymentMethodViewHidden = TestObserver<Bool, Never>()
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
-  private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
   private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
@@ -65,7 +64,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
     self.vm.outputs.pledgeDetailsSectionLabelText.observe(self.pledgeDetailsSectionLabelText.observer)
-    self.vm.outputs.pledgeDisclaimerViewHidden.observe(self.pledgeDisclaimerViewHidden.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
@@ -195,6 +193,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: envelope.backing.amount,
       pledgedOn: envelope.backing.pledgedAt,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
@@ -809,6 +808,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 25,
       pledgedOn: envelope.backing.pledgedAt,
+      pledgeDisclaimerViewHidden: true,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
@@ -834,6 +834,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 50,
       pledgedOn: envelope.backing.pledgedAt,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
@@ -1478,8 +1479,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testPledgeDisclaimerViewHidden_Shipping_UserIsCreatorOfProject() {
-    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
     let user = User.template
 
     let project = Project.cosmicSurgery
@@ -1495,17 +1494,13 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
       self.scheduler.advance()
 
-      self.pledgeDisclaimerViewHidden.assertValues([true])
+      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [true])
     }
   }
 
   func testPledgeDisclaimerViewHidden_NoShipping_UserIsNotCreatorOfProject() {
-    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
     let user = User.template
 
     let project = Project.cosmicSurgery
@@ -1534,18 +1529,14 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
       self.scheduler.advance()
       self.scheduler.advance(by: .milliseconds(300))
 
-      self.pledgeDisclaimerViewHidden.assertValues([true])
+      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [true])
     }
   }
 
   func testPledgeDisclaimerViewHidden_Shipping_UserIsNotCreatorOfProject() {
-    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
     let user = User.template
 
     let project = Project.cosmicSurgery
@@ -1561,11 +1552,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
-
       self.scheduler.advance()
 
-      self.pledgeDisclaimerViewHidden.assertValues([false])
+      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [false])
     }
   }
 

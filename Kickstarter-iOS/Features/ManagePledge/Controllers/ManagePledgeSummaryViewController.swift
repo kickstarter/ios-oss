@@ -27,6 +27,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
+  }()
+
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
     PledgeAmountSummaryViewController.instantiate()
   }()
@@ -49,6 +53,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
     self.configureViews()
     self.setupConstraints()
+    self.configureDisclaimerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -86,6 +91,8 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
     _ = self.backingDateLabel
       |> backingDateLabelStyle
+
+    applyDisclaimerStyle(self.pledgeDisclaimerView)
 
     _ = self.totalLabel
       |> totalLabelStyle
@@ -127,6 +134,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     self.backerNumberLabel.rac.text = self.viewModel.outputs.backerNumberText
     self.backingDateLabel.rac.text = self.viewModel.outputs.backingDateText
     self.circleAvatarImageView.rac.hidden = self.viewModel.outputs.circleAvatarViewHidden
+    self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
     self.totalAmountLabel.rac.attributedText = self.viewModel.outputs.totalAmountText
   }
 
@@ -151,6 +159,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     let arrangedSubviews = [
       self.backerInfoContainerStackView,
       self.pledgeStatusLabelView,
+      self.pledgeDisclaimerView,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView
     ]
@@ -167,6 +176,26 @@ final class ManagePledgeSummaryViewController: UIViewController {
       self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Layout.avatarWidth),
       self.circleAvatarImageView.heightAnchor.constraint(equalTo: self.circleAvatarImageView.widthAnchor)
     ])
+  }
+
+  private func configureDisclaimerView() {
+    let string1 = Strings.Remember_that_delivery_dates_are_not_guaranteed()
+    let string2 = Strings.Delays_or_changes_are_possible()
+
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 2
+
+    let attributedText = string1
+      .appending(String.nbsp)
+      .appending(string2)
+      .attributed(
+        with: UIFont.ksr_footnote(),
+        foregroundColor: .ksr_support_400,
+        attributes: [.paragraphStyle: paragraphStyle],
+        bolding: [string1]
+      )
+
+    self.pledgeDisclaimerView.configure(with: ("calendar-icon", attributedText))
   }
 }
 
@@ -230,4 +259,10 @@ private let totalLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Total() }
+}
+
+private func applyDisclaimerStyle(_ view: UIView) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = Styles.grid(2)
 }

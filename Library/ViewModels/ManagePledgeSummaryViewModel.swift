@@ -16,6 +16,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let omitUSCurrencyCode: Bool
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
+  public let pledgeDisclaimerViewHidden: Bool
   public let projectCurrencyCountry: Project.Country
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
@@ -42,6 +43,7 @@ public protocol ManagePledgeSummaryViewModelOutputs {
   var circleAvatarViewHidden: Signal<Bool, Never> { get }
   var configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never> { get }
+  var pledgeDisclaimerViewHidden: Signal<Bool, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
@@ -74,6 +76,8 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
     self.backerNameLabelHidden = userAndIsBackingProject.map(second).negate()
     self.circleAvatarViewHidden = userAndIsBackingProject.map(second).negate()
+
+    self.pledgeDisclaimerViewHidden = data.map(\.pledgeDisclaimerViewHidden)
 
     let userBackingProject = userAndIsBackingProject
       .filter(second >>> isTrue)
@@ -123,6 +127,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public let circleAvatarViewHidden: Signal<Bool, Never>
   public let configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never>
   public let configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never>
+  public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
   public var inputs: ManagePledgeSummaryViewModelInputs { return self }

@@ -17,6 +17,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   private let backingDateText = TestObserver<String, Never>()
   private let circleAvatarViewHidden = TestObserver<Bool, Never>()
   private let configurePledgeAmountSummary = TestObserver<PledgeAmountSummaryViewData, Never>()
+  private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
   private let totalAmountText = TestObserver<String, Never>()
 
   override func setUp() {
@@ -31,6 +32,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     self.vm.outputs.configurePledgeAmountSummaryViewWithData
       .observe(self.configurePledgeAmountSummary.observer)
     self.vm.outputs.circleAvatarViewHidden.observe(self.circleAvatarViewHidden.observer)
+    self.vm.outputs.pledgeDisclaimerViewHidden.observe(self.pledgeDisclaimerViewHidden.observer)
     self.vm.outputs.totalAmountText.map { $0.string }
       .observe(self.totalAmountText.observer)
   }
@@ -49,6 +51,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
@@ -82,6 +85,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
@@ -119,6 +123,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
@@ -159,6 +164,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
@@ -196,6 +202,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
@@ -226,5 +233,69 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     XCTAssertEqual(pledgeAmountSummaryValue.rewardMinimum, 30)
     XCTAssertTrue(pledgeAmountSummaryValue.shippingAmountHidden)
     XCTAssertTrue(pledgeAmountSummaryValue.rewardIsLocalPickup)
+  }
+
+  func testPledgeDisclaimerViewHidden() {
+    let data = ManagePledgeSummaryViewData(
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
+      currentUserIsCreatorOfProject: false,
+      isNoReward: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: true,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
+      shippingAmount: nil,
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: true,
+      paymentIncrements: nil,
+      project: nil
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeDisclaimerViewHidden.assertValues([true])
+  }
+
+  func testPledgeDisclaimerViewHidden_False() {
+    let data = ManagePledgeSummaryViewData(
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
+      currentUserIsCreatorOfProject: false,
+      isNoReward: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      pledgeDisclaimerViewHidden: false,
+      projectCurrencyCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
+      shippingAmount: nil,
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: true,
+      paymentIncrements: nil,
+      project: nil
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeDisclaimerViewHidden.assertValues([false])
   }
 }
