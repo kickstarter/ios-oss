@@ -8,11 +8,22 @@ import XCTest
 internal final class SearchLegacyViewContollerTests: TestCase {
   override func setUp() {
     super.setUp()
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.searchFilters.rawValue: false
+    ]
+
+    AppEnvironment.pushEnvironment(remoteConfigClient: mockConfigClient)
+
     UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
     UIView.setAnimationsEnabled(true)
+
+    AppEnvironment.popEnvironment()
+
     super.tearDown()
   }
 

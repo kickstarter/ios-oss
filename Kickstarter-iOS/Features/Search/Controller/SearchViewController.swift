@@ -20,7 +20,6 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
   private let backgroundView = UIView()
-  private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
   private var sortAndFilterHeader = FilterBadgeView<DiscoveryParams.Sort, KsApi.Category>(frame: .zero)
@@ -87,7 +86,7 @@ internal final class SearchViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
 
-    _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
+    _ = [self.searchLoaderIndicator]
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
@@ -125,43 +124,26 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextFieldHeightConstraint.constant = Styles.grid(5)
     self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.8
+
+    self.tableView.sectionHeaderTopPadding = 0
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.projects
-      .observeForUI()
-      .observeValues { [weak self] projects in
-        self?.dataSource.load(projects: projects)
-        self?.tableView.reloadData()
-      }
-
-    self.viewModel.outputs.isPopularTitleVisible
-      .observeForUI()
-      .observeValues { [weak self] visible in
-        self?.dataSource.popularTitle(isVisible: visible)
-        self?.tableView.reloadData()
-      }
+    Signal.combineLatest(
+      self.viewModel.outputs.isProjectsTitleVisible,
+      self.viewModel.outputs.projects
+    )
+    .observeForUI()
+    .observeValues { [weak self] showTitle, projects in
+      self?.dataSource.load(projects: projects, withDiscoverTitle: showTitle)
+      self?.tableView.reloadData()
+    }
 
     self.viewModel.outputs.searchLoaderIndicatorIsAnimating
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
         _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator : nil
-        if let headerView = _self.tableView.tableHeaderView {
-          headerView.frame = CGRect(
-            x: headerView.frame.origin.x,
-            y: headerView.frame.origin.y,
-            width: headerView.frame.size.width,
-            height: Styles.grid(15)
-          )
-        }
-      }
-
-    self.viewModel.outputs.popularLoaderIndicatorIsAnimating
-      .observeForUI()
-      .observeValues { [weak self] isAnimating in
-        guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator : nil
         if let headerView = _self.tableView.tableHeaderView {
           headerView.frame = CGRect(
             x: headerView.frame.origin.x,
@@ -189,7 +171,6 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
-    self.popularLoaderIndicator.rac.animating = self.viewModel.outputs.popularLoaderIndicatorIsAnimating
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.

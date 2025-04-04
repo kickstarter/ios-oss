@@ -61,10 +61,7 @@ public protocol SearchViewModelOutputs {
   var goToProject: Signal<(Int, RefTag), Never> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
-  var isPopularTitleVisible: Signal<Bool, Never> { get }
-
-  /// Emits when loading indicator should be animated.
-  var popularLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
+  var isProjectsTitleVisible: Signal<Bool, Never> { get }
 
   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[SearchResultCard], Never> { get }
@@ -81,7 +78,7 @@ public protocol SearchViewModelOutputs {
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 
-  /// Emits true when there are search results, and we should show the UI to sort and filter those results.
+  /// Emits true when there are search or discover results, and we should show the UI to sort and filter those results.
   var showSortAndFilterHeader: Signal<Bool, Never> { get }
 
   /// Emits a model object with possible category options when the category filter button is tapped.
@@ -136,37 +133,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         DiscoveryParams.withQuery(query, sort: sort, category: category)
       }
 
-    let popularQuery = GraphAPI.SearchQuery.from(discoveryParams: DiscoveryParams.popular)
-
-    let popularEvent = viewWillAppearNotAnimated
-      .switchMap {
-        AppEnvironment.current.apiService
-          .fetch(query: popularQuery)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.projects?.nodes?.compact() ?? [] }
-          .materialize()
-      }
-
-    let popular = popularEvent.values()
-
     // Every time the user changes their query, sort or filters, we set an empty
     // results set to clear out the page. The user will just see the spinner.
     let clears = queryParams.mapConst([SearchResult]())
 
-    self.isPopularTitleVisible = Signal.combineLatest(queryText, popular)
-      .map { query, _ in query.isEmpty }
-      .skipRepeats()
-
     let requestFirstPageWith: Signal<DiscoveryParams, Never> = queryParams
-      // Only request a new search page if the query is not empty.
-      // We'll show most popular if the query is empty.
-      .filter { params in
-        guard let query = params.query else {
-          return false
-        }
-
-        return !query.isEmpty
-      }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in
@@ -176,13 +147,24 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter(isTrue)
       .ignoreValues()
 
+    var firstRequest = true
     let requestFromOptionsWithDebounce: (DiscoveryParams)
       -> SignalProducer<GraphAPI.SearchQuery.Data, ErrorEnvelope> = { params in
         SignalProducer<(), ErrorEnvelope>(value: ())
           .switchMap {
-            AppEnvironment.current.apiService.fetch(query: GraphAPI.SearchQuery.from(discoveryParams: params))
+            let query = GraphAPI.SearchQuery.from(discoveryParams: params)
+            let request = AppEnvironment.current.apiService.fetch(query: query)
+            // Don't debounce if the page is empty and this is the first request.
+            let debounce = firstRequest ? DispatchTimeInterval.seconds(0) : AppEnvironment.current
+              .debounceInterval
+
+            if firstRequest {
+              firstRequest = false
+            }
+
+            return request
               .ksr_debounce(
-                AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler
+                debounce, on: AppEnvironment.current.scheduler
               )
           }
       }
@@ -227,13 +209,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.searchLoaderIndicatorIsAnimating = isLoading
 
-    let searchResults: Signal<[SearchResult], Never> = Signal.combineLatest(
-      self.isPopularTitleVisible,
-      popular,
-      .merge(clears, paginatedProjects)
-    )
-    .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
-    .skipRepeats(==)
+    let searchResults: Signal<[SearchResult], Never> = Signal.merge(clears, paginatedProjects)
+      .skipRepeats(==)
+
+    // Show the 'Discover projects' title if we're showing 'Discover' results (i.e. no query)
+    self.isProjectsTitleVisible = Signal.combineLatest(queryText, searchResults)
+      .map { query, projects in query.isEmpty && !projects.isEmpty }
+      .skipRepeats()
 
     self.projects = searchResults
       .map { (nodes: [
@@ -265,11 +247,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.searchTextEditingDidEndProperty.signal,
         self.cancelButtonPressedProperty.signal
       )
-
-    self.popularLoaderIndicatorIsAnimating = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      popularEvent.filter { $0.isTerminating }.mapConst(false)
-    )
 
     self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
@@ -359,13 +336,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.showSortAndFilterHeader = Signal.combineLatest(
-      self.isPopularTitleVisible,
-      queryText,
-      self.projects
-    ).map { isPopularTitleVisible, query, results in
-      !isPopularTitleVisible && !query.isEmpty && results.count > 0
-    }
+    self.showSortAndFilterHeader = self.projects
+      .map { results in
+        results.count > 0
+      }
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -440,8 +414,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
   public let goToProject: Signal<(Int, RefTag), Never>
-  public let isPopularTitleVisible: Signal<Bool, Never>
-  public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
+  public let isProjectsTitleVisible: Signal<Bool, Never>
   public let projects: Signal<[SearchResultCard], Never>
   public let resignFirstResponder: Signal<(), Never>
   public let searchFieldText: Signal<String, Never>
