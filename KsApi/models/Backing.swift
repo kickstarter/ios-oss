@@ -13,7 +13,7 @@ public struct Backing {
   public let isLatePledge: Bool
   public let locationId: Int?
   public let locationName: String?
-  public let order: 
+  public let order: Order?
   public let paymentIncrements: [PledgePaymentIncrement]
   public let paymentSource: PaymentSource?
   public let pledgedAt: TimeInterval
@@ -65,6 +65,7 @@ extension Backing: Decodable {
     case isLatePledge
     case locationId = "location_id"
     case locationName = "location_name"
+    case order
     case paymentIncrements = "payment_increments"
     case paymentSource = "payment_source"
     case pledgedAt = "pledged_at"
@@ -91,6 +92,7 @@ extension Backing: Decodable {
     self.isLatePledge = try values.decodeIfPresent(Bool.self, forKey: .isLatePledge) ?? false
     self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
     self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
+    self.order = try? values.decodeIfPresent(Order.self, forKey: .order)
     self.paymentIncrements = try values.decodeIfPresent(
       [PledgePaymentIncrement].self,
       forKey: .paymentIncrements

@@ -4447,6 +4447,7 @@ public enum GraphAPI {
     case insideVoicesFooter
     case stackedRecsOnMobile
     case projectPrelaunchSummaries
+    case caCurrencySelector
     case chCurrencySelector
     case dkCurrencySelector
     case noCurrencySelector
@@ -4487,7 +4488,6 @@ public enum GraphAPI {
     case backersCanChoosePlotV1
     case sepaDebitPaymentElement
     case trustAndSafetyProjectBanner
-    case partialRefunds_2024
     case notificationBannerUpdate_2024
     case reactBackedProjects
     case copyAddons
@@ -4496,6 +4496,7 @@ public enum GraphAPI {
     case pledgeManagementRefunds
     case discoverUi_2025
     case pledgeManagementBeta
+    case pledgeManagementRewardSetup
     case creatorExperience_2025
     case backingsDashV2_2025
     case secretRewards_2025
@@ -4572,6 +4573,7 @@ public enum GraphAPI {
         case "inside_voices_footer": self = .insideVoicesFooter
         case "stacked_recs_on_mobile": self = .stackedRecsOnMobile
         case "project_prelaunch_summaries": self = .projectPrelaunchSummaries
+        case "ca_currency_selector": self = .caCurrencySelector
         case "ch_currency_selector": self = .chCurrencySelector
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
@@ -4612,7 +4614,6 @@ public enum GraphAPI {
         case "backers_can_choose_plot_v1": self = .backersCanChoosePlotV1
         case "sepa_debit_payment_element": self = .sepaDebitPaymentElement
         case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
-        case "partial_refunds_2024": self = .partialRefunds_2024
         case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
@@ -4621,6 +4622,7 @@ public enum GraphAPI {
         case "pledge_management_refunds": self = .pledgeManagementRefunds
         case "discover_ui_2025": self = .discoverUi_2025
         case "pledge_management_beta": self = .pledgeManagementBeta
+        case "pledge_management_reward_setup": self = .pledgeManagementRewardSetup
         case "creator_experience_2025": self = .creatorExperience_2025
         case "backings_dash_v2_2025": self = .backingsDashV2_2025
         case "secret_rewards_2025": self = .secretRewards_2025
@@ -4698,6 +4700,7 @@ public enum GraphAPI {
         case .insideVoicesFooter: return "inside_voices_footer"
         case .stackedRecsOnMobile: return "stacked_recs_on_mobile"
         case .projectPrelaunchSummaries: return "project_prelaunch_summaries"
+        case .caCurrencySelector: return "ca_currency_selector"
         case .chCurrencySelector: return "ch_currency_selector"
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
@@ -4738,7 +4741,6 @@ public enum GraphAPI {
         case .backersCanChoosePlotV1: return "backers_can_choose_plot_v1"
         case .sepaDebitPaymentElement: return "sepa_debit_payment_element"
         case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
-        case .partialRefunds_2024: return "partial_refunds_2024"
         case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
@@ -4747,6 +4749,7 @@ public enum GraphAPI {
         case .pledgeManagementRefunds: return "pledge_management_refunds"
         case .discoverUi_2025: return "discover_ui_2025"
         case .pledgeManagementBeta: return "pledge_management_beta"
+        case .pledgeManagementRewardSetup: return "pledge_management_reward_setup"
         case .creatorExperience_2025: return "creator_experience_2025"
         case .backingsDashV2_2025: return "backings_dash_v2_2025"
         case .secretRewards_2025: return "secret_rewards_2025"
@@ -4824,6 +4827,7 @@ public enum GraphAPI {
         case (.insideVoicesFooter, .insideVoicesFooter): return true
         case (.stackedRecsOnMobile, .stackedRecsOnMobile): return true
         case (.projectPrelaunchSummaries, .projectPrelaunchSummaries): return true
+        case (.caCurrencySelector, .caCurrencySelector): return true
         case (.chCurrencySelector, .chCurrencySelector): return true
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
@@ -4864,7 +4868,6 @@ public enum GraphAPI {
         case (.backersCanChoosePlotV1, .backersCanChoosePlotV1): return true
         case (.sepaDebitPaymentElement, .sepaDebitPaymentElement): return true
         case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
-        case (.partialRefunds_2024, .partialRefunds_2024): return true
         case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
@@ -4873,6 +4876,7 @@ public enum GraphAPI {
         case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
         case (.discoverUi_2025, .discoverUi_2025): return true
         case (.pledgeManagementBeta, .pledgeManagementBeta): return true
+        case (.pledgeManagementRewardSetup, .pledgeManagementRewardSetup): return true
         case (.creatorExperience_2025, .creatorExperience_2025): return true
         case (.backingsDashV2_2025, .backingsDashV2_2025): return true
         case (.secretRewards_2025, .secretRewards_2025): return true
@@ -4951,6 +4955,7 @@ public enum GraphAPI {
         .insideVoicesFooter,
         .stackedRecsOnMobile,
         .projectPrelaunchSummaries,
+        .caCurrencySelector,
         .chCurrencySelector,
         .dkCurrencySelector,
         .noCurrencySelector,
@@ -4991,7 +4996,6 @@ public enum GraphAPI {
         .backersCanChoosePlotV1,
         .sepaDebitPaymentElement,
         .trustAndSafetyProjectBanner,
-        .partialRefunds_2024,
         .notificationBannerUpdate_2024,
         .reactBackedProjects,
         .copyAddons,
@@ -5000,6 +5004,7 @@ public enum GraphAPI {
         .pledgeManagementRefunds,
         .discoverUi_2025,
         .pledgeManagementBeta,
+        .pledgeManagementRewardSetup,
         .creatorExperience_2025,
         .backingsDashV2_2025,
         .secretRewards_2025,
@@ -9045,7 +9050,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9062,6 +9067,10 @@ public enum GraphAPI {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeSavedSearchSegment() -> Node {
+          return Node(unsafeResultMap: ["__typename": "SavedSearchSegment"])
         }
 
         public static func makeBacking() -> Node {
@@ -9502,7 +9511,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9515,6 +9524,10 @@ public enum GraphAPI {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeSavedSearchSegment() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "SavedSearchSegment"])
         }
 
         public static func makeBacking() -> Comment {
