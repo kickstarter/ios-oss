@@ -263,6 +263,11 @@
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
 		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
+		3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */; };
+		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
+		3344A77E2D9C93A200D7DE91 /* RewardTrackingDetailsViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */; };
+		3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77F2D9C96E300D7DE91 /* RewardTrackingDetailsViewModelTest.swift */; };
+		3344A7822D9CF5F200D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		336193F02D825C8700BED4BD /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193EF2D825C8000BED4BD /* FilterCategoryView.swift */; };
 		336193F22D825C9B00BED4BD /* FilterCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336193F12D825C9500BED4BD /* FilterCategoryViewModel.swift */; };
 		3361942F2D8370CE00BED4BD /* Fonts+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */; };
@@ -2007,6 +2012,10 @@
 		20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModel.swift; sourceTree = "<group>"; };
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
+		3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsView.swift; sourceTree = "<group>"; };
+		3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModel.swift; sourceTree = "<group>"; };
+		3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewTest.swift; sourceTree = "<group>"; };
+		3344A77F2D9C96E300D7DE91 /* RewardTrackingDetailsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModelTest.swift; sourceTree = "<group>"; };
 		336193EF2D825C8000BED4BD /* FilterCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryView.swift; sourceTree = "<group>"; };
 		336193F12D825C9500BED4BD /* FilterCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewModel.swift; sourceTree = "<group>"; };
 		3361942E2D8370C300BED4BD /* Fonts+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Fonts+SwiftUI.swift"; sourceTree = "<group>"; };
@@ -5040,6 +5049,7 @@
 				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
 				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
 				1937A70928C93BC800DD732D /* RewardPledgeNavigation */,
+				3344A7742D9C4D9900D7DE91 /* RewardTracking */,
 				1937A70A28C93BD100DD732D /* RiskMessaging */,
 				1937A71028C93CE000DD732D /* RootTabBar */,
 				19450C2428C821D000C60F97 /* Search */,
@@ -5853,6 +5863,23 @@
 				19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */,
 			);
 			path = SwiftUIHelpers;
+			sourceTree = "<group>";
+		};
+		3344A7742D9C4D9900D7DE91 /* RewardTracking */ = {
+			isa = PBXGroup;
+			children = (
+				3344A7752D9C4DC000D7DE91 /* Views */,
+			);
+			path = RewardTracking;
+			sourceTree = "<group>";
+		};
+		3344A7752D9C4DC000D7DE91 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */,
+				3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		336193ED2D825C4F00BED4BD /* SortFilter */ = {
@@ -7052,6 +7079,8 @@
 				8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */,
 				8A8099EE22E2142C00373E66 /* RewardCardContainerViewModelTests.swift */,
 				8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */,
+				3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */,
+				3344A77F2D9C96E300D7DE91 /* RewardTrackingDetailsViewModelTest.swift */,
 				8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */,
 				77BC00F523301BD300808E75 /* RewardCellViewModel.swift */,
 				77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */,
@@ -7985,6 +8014,7 @@
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
 				33F39E342D9DB086007099A6 /* Assets.xcassets in Resources */,
+				3344A7822D9CF5F200D7DE91 /* Assets.xcassets in Resources */,
 				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8502,6 +8532,7 @@
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
 				8A4B8E90263A02EA00D92E4E /* KSRAnalyticsIdentityData.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
+				3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
 				8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */,
 				D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */,
@@ -8768,6 +8799,7 @@
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
 				77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */,
+				3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */,
 				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
 				A7A627171E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift in Sources */,
@@ -8865,6 +8897,7 @@
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */,
+				3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */,
 				39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				7727494523F350EE0065E9F2 /* CategorySelectionViewController.swift in Sources */,
@@ -9307,6 +9340,7 @@
 				33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */,
 				A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */,
 				8A49395D24B5394700C3C3CE /* RewardAddOnSelectionDataSourceTests.swift in Sources */,
+				3344A77E2D9C93A200D7DE91 /* RewardTrackingDetailsViewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

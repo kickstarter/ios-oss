@@ -129,6 +129,37 @@ internal func traitControllers(
   return (parent, child)
 }
 
+/// Returns a `UIViewController` wrapped with the specified trait environment and containing a given subview.
+///
+/// This utility is intended for use in snapshot or UI tests. It creates a parent-child controller pair configured
+/// with the provided device traits (size, idiom, orientation, etc.), and injects the given subview into the child
+/// controller's view, pinned to its layout margins.
+///
+/// - Parameters:
+///   - subview: The `UIView` to embed in the child view controller.
+///   - device: The `Device` used to determine trait environment and container size.
+///   - orientation: The screen orientation to simulate (portrait or landscape).
+/// - Returns: A parent `UIViewController` configured with the specified traits, embedding the subview.
+func traitWrappedViewController(
+  subview: UIView,
+  device: Device,
+  orientation: Orientation = .portrait
+) -> UIViewController {
+  let controller = UIViewController(nibName: nil, bundle: nil)
+  let (parent, _) = traitControllers(device: device, orientation: orientation, child: controller)
+
+  controller.view.addSubview(subview)
+
+  NSLayoutConstraint.activate([
+    subview.leadingAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.leadingAnchor),
+    subview.topAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.topAnchor),
+    subview.trailingAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.trailingAnchor),
+    subview.bottomAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.bottomAnchor)
+  ])
+
+  return parent
+}
+
 extension CGSize {
   var inverted: CGSize {
     CGSize(width: self.height, height: self.width)
