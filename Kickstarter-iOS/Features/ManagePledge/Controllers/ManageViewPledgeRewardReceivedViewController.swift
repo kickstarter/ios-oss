@@ -10,11 +10,16 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     = ManageViewPledgeRewardReceivedViewModel()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rewardReceivedInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var labelStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var deliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var shippingLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var toggleViewController: ToggleViewController = {
     ToggleViewController(nibName: nil, bundle: nil)
+  }()
+
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
   }()
 
   // MARK: - Lifecycle
@@ -29,6 +34,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     )
 
     self.configureViews()
+    self.configureDisclaimerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -43,8 +49,9 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     _ = ([self.deliveryLabel, self.shippingLabel], self.labelStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.labelStackView, self.toggleViewController.view], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    self.rewardReceivedInfoStackView.addArrangedSubviews(self.labelStackView, self.toggleViewController.view)
+
+    self.rootStackView.addArrangedSubviews(self.rewardReceivedInfoStackView, self.pledgeDisclaimerView)
   }
 
   // MARK: - Actions
@@ -64,10 +71,16 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
+    _ = self.rewardReceivedInfoStackView
       |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
 
     _ = self.rootStackView
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(3)
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
+
+    _ = self.rewardReceivedInfoStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(1)
@@ -87,6 +100,8 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     _ = self.toggleViewController.toggle
       |> checkoutSwitchControlStyle
       |> \.accessibilityLabel %~ { _ in Strings.Reward_received() }
+
+    applyDisclaimerStyle(self.pledgeDisclaimerView)
   }
 
   // MARK: - View model
@@ -99,25 +114,56 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     self.shippingLabel.rac.hidden = self.viewModel.outputs.estimatedShippingHidden
     self.toggleViewController.toggle.rac.on = self.viewModel.outputs.rewardReceived
     self.toggleViewController.view.rac.hidden = self.viewModel.outputs.rewardReceivedHidden
+    self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
 
     self.viewModel.outputs.marginWidth
       .observeForUI()
       .observeValues { [weak self] borderWidth in
-        self?.view.layer.borderWidth = borderWidth
+        self?.rewardReceivedInfoStackView.layer.borderWidth = borderWidth
       }
 
     self.viewModel.outputs.layoutMargins
       .observeForUI()
       .observeValues { [weak self] layoutMargins in
-        self?.rootStackView.layoutMargins = layoutMargins
+        self?.rewardReceivedInfoStackView.layoutMargins = layoutMargins
       }
 
     self.viewModel.outputs.cornerRadius
       .observeForUI()
       .observeValues { [weak self] radius in
         guard let self = self else { return }
-        _ = self.view
+        _ = self.rewardReceivedInfoStackView
           |> roundedStyle(cornerRadius: radius)
       }
   }
+
+  // MARK: - Helpers
+
+  private func configureDisclaimerView() {
+    let string1 = Strings.Remember_that_delivery_dates_are_not_guaranteed()
+    let string2 = Strings.Delays_or_changes_are_possible()
+
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 2
+
+    let attributedText = string1
+      .appending(String.nbsp)
+      .appending(string2)
+      .attributed(
+        with: UIFont.ksr_footnote(),
+        foregroundColor: .ksr_support_400,
+        attributes: [.paragraphStyle: paragraphStyle],
+        bolding: [string1]
+      )
+
+    self.pledgeDisclaimerView.configure(with: ("calendar-icon", attributedText))
+  }
+}
+
+// MARK: - Styles
+
+private func applyDisclaimerStyle(_ view: UIView) {
+  view.clipsToBounds = true
+  view.layer.masksToBounds = true
+  view.layer.cornerRadius = Styles.grid(2)
 }

@@ -16,7 +16,6 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let omitUSCurrencyCode: Bool
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
-  public let pledgeDisclaimerViewHidden: Bool
   public let projectCurrencyCountry: Project.Country
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
@@ -46,7 +45,6 @@ public protocol ManagePledgeSummaryViewModelOutputs {
   var configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never> { get }
   var configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never> { get }
-  var pledgeDisclaimerViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
@@ -83,8 +81,6 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
     self.configureRewardReceivedWithData = data.map(\.rewardReceivedWithData)
     self.rewardReceivedViewControllerViewIsHidden = data.map(\.rewardReceivedViewControllerViewIsHidden)
-
-    self.pledgeDisclaimerViewHidden = data.map(\.pledgeDisclaimerViewHidden)
 
     let userBackingProject = userAndIsBackingProject
       .filter(second >>> isTrue)
@@ -135,7 +131,6 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public let configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never>
   public let configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
-  public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 

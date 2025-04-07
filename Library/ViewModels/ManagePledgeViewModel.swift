@@ -252,15 +252,17 @@ public final class ManagePledgeViewModel:
       project,
       backing,
       latestRewardDeliveryDate,
-      estimatedShipping
+      estimatedShipping,
+      pledgeDisclaimerViewHidden
     )
-    .map { project, backing, latestRewardDeliveryDate, estimatedShipping in
+    .map { project, backing, latestRewardDeliveryDate, estimatedShipping, pledgeDisclaimerViewHidden in
       ManageViewPledgeRewardReceivedViewData(
         project: project,
         backerCompleted: backing.backerCompleted ?? false,
         estimatedDeliveryOn: latestRewardDeliveryDate,
         backingState: backing.status,
-        estimatedShipping: estimatedShipping
+        estimatedShipping: estimatedShipping,
+        pledgeDisclaimerViewHidden: pledgeDisclaimerViewHidden
       )
     }
 
@@ -315,7 +317,6 @@ public final class ManagePledgeViewModel:
     self.configurePledgeSummaryView = Signal.combineLatest(
       projectAndReward,
       backing,
-      pledgeDisclaimerViewHidden,
       rewardReceivedWithData,
       rewardReceivedViewControllerViewIsHidden
     )
@@ -583,7 +584,6 @@ private func isPledgeOverTime(with backing: Backing) -> Bool {
 private func managePledgeSummaryViewData(
   with projectAndReward: (Project, Reward),
   backing: Backing,
-  pledgeDisclaimerViewHidden: Bool,
   rewardReceivedWithData: ManageViewPledgeRewardReceivedViewData,
   rewardReceivedViewControllerViewIsHidden: Bool
 ) -> ManagePledgeSummaryViewData? {
@@ -609,7 +609,6 @@ private func managePledgeSummaryViewData(
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,
-    pledgeDisclaimerViewHidden: pledgeDisclaimerViewHidden,
     projectCurrencyCountry: projectCurrencyCountry,
     projectDeadline: deadline,
     projectState: project.state,

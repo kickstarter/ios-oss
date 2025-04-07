@@ -186,7 +186,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: envelope.backing.amount,
       pledgedOn: envelope.backing.pledgedAt,
-      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
@@ -197,7 +196,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
         backerCompleted: true,
         estimatedDeliveryOn: 1_506_897_315.0,
         backingState: .pledged,
-        estimatedShipping: nil
+        estimatedShipping: nil,
+        pledgeDisclaimerViewHidden: false
       ),
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
@@ -243,37 +243,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.loadProjectAndRewardsIntoDataSourceProject.assertValue(project)
       self.loadProjectAndRewardsIntoDataSourceReward.assertValue([Reward.template])
-    }
-  }
-
-  func testConfigureRewardReceived() {
-    let project = Project.template
-
-    let env = ProjectAndBackingEnvelope.template
-      |> \.backing .~ (.template |> Backing.lens.addOns .~ nil)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    let expectedData = ManageViewPledgeRewardReceivedViewData(
-      project: project,
-      backerCompleted: true,
-      estimatedDeliveryOn: 1_506_897_315.0,
-      backingState: .pledged,
-      estimatedShipping: nil
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.rewardReceivedWithData }, [expectedData])
     }
   }
 
@@ -669,70 +638,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testRewardReceivedViewControllerIsHidden_EstimatedDeliveryOnIsNil() {
-    let reward = Reward.noReward
-
-    let backing = Backing.template
-      |> Backing.lens.status .~ .canceled
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.addOns .~ nil
-
-    let project = Project.template
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope.template
-      |> \.backing .~ backing
-      |> \.project .~ project
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        self.configurePledgeSummaryView.values.map { $0.rewardReceivedViewControllerViewIsHidden },
-        [true]
-      )
-    }
-  }
-
-  func testRewardReceivedViewControllerIsHidden_EstimatedDeliveryOnIsNotNil() {
-    let reward = Reward.template
-      |> Reward.lens.estimatedDeliveryOn .~ 1_475_361_315
-
-    let backing = Backing.template
-      |> Backing.lens.status .~ .collected
-      |> Backing.lens.reward .~ reward
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        self.configurePledgeSummaryView.values.map { $0.rewardReceivedViewControllerViewIsHidden },
-        [false]
-      )
-    }
-  }
-
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_CancellingPledge() {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
@@ -809,17 +714,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 25,
       pledgedOn: envelope.backing.pledgedAt,
-      pledgeDisclaimerViewHidden: true,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
-      rewardReceivedViewControllerViewIsHidden: true, rewardReceivedWithData: .init(
-        project: .template,
+      rewardReceivedViewControllerViewIsHidden: true,
+      rewardReceivedWithData: .init(
+        project: project,
         backerCompleted: true,
         estimatedDeliveryOn: 0.0,
         backingState: .pledged,
-        estimatedShipping: nil
+        estimatedShipping: nil,
+        pledgeDisclaimerViewHidden: true
       ),
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
@@ -842,18 +748,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 50,
       pledgedOn: envelope.backing.pledgedAt,
-      pledgeDisclaimerViewHidden: false,
       projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
       rewardReceivedViewControllerViewIsHidden: false,
       rewardReceivedWithData: .init(
-        project: .template,
+        project: project,
         backerCompleted: true,
         estimatedDeliveryOn: 1_506_897_315.0,
-        backingState: .collected,
-        estimatedShipping: nil
+        backingState: .pledged,
+        estimatedShipping: nil,
+        pledgeDisclaimerViewHidden: true
       ),
       shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
       shippingAmountHidden: true,
@@ -887,7 +793,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backerCompleted: true,
       estimatedDeliveryOn: 0,
       backingState: .pledged,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: true
     )
 
     withEnvironment(apiService: mockService1) {
@@ -937,6 +844,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let rewardReceivedWithData = self.configurePledgeSummaryView.values.map { $0.rewardReceivedWithData }
 
       XCTAssertEqual([rewardReceivedWithData.last], [expectedRewardReceivedData])
+
       self.title.assertValues(["Manage your pledge", "Manage your pledge", "Manage your pledge"])
     }
   }
@@ -1486,86 +1394,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethodViewHidden.assertValues([false])
-    }
-  }
-
-  func testPledgeDisclaimerViewHidden_Shipping_UserIsCreatorOfProject() {
-    let user = User.template
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.creator .~ user
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [true])
-    }
-  }
-
-  func testPledgeDisclaimerViewHidden_NoShipping_UserIsNotCreatorOfProject() {
-    let user = User.template
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
-
-    let addOn = Reward.template
-      |> Reward.lens.estimatedDeliveryOn .~ nil
-
-    let reward = Reward.template
-      |> Reward.lens.estimatedDeliveryOn .~ nil
-
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.addOns .~ [addOn]
-
-    let env = ProjectAndBackingEnvelope.template
-      |> \.backing .~ backing
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template |> Reward.lens.estimatedDeliveryOn .~ nil])
-    )
-
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-      self.scheduler.advance(by: .milliseconds(300))
-
-      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [true])
-    }
-  }
-
-  func testPledgeDisclaimerViewHidden_Shipping_UserIsNotCreatorOfProject() {
-    let user = User.template
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(self.configurePledgeSummaryView.values.map { $0.pledgeDisclaimerViewHidden }, [false])
     }
   }
 

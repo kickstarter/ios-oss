@@ -22,7 +22,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .collected,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
@@ -33,7 +34,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 80
+        parent.view.frame.size.height = 175
 
         assertSnapshot(
           matching: parent.view,
@@ -50,7 +51,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       backerCompleted: true,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .collected,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
@@ -61,7 +63,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 80
+        parent.view.frame.size.height = 175
 
         assertSnapshot(
           matching: parent.view,
@@ -78,7 +80,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: "About $3-$5"
+      estimatedShipping: "About $3-$5",
+      pledgeDisclaimerViewHidden: false
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
@@ -89,7 +92,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 60
+        parent.view.frame.size.height = 175
 
         assertSnapshot(
           matching: parent.view,
@@ -106,7 +109,8 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .collected,
-      estimatedShipping: "About $10-$100"
+      estimatedShipping: "About $10-$100",
+      pledgeDisclaimerViewHidden: false
     )
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
@@ -117,7 +121,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 110
+        parent.view.frame.size.height = 200
 
         assertSnapshot(
           matching: parent.view,
