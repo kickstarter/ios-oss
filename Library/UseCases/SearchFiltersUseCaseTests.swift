@@ -11,9 +11,9 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
   private let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
   private let showSort = TestObserver<SearchSortSheet, Never>()
-  private let isSortPillHighlighted = TestObserver<Bool, Never>()
-  private let categoryPillTitle = TestObserver<String, Never>()
-  private let isCategoryPillHighlighted = TestObserver<Bool, Never>()
+  private let pills = TestObserver<[SearchFilterPill], Never>()
+  private let categoryPill = TestObserver<SearchFilterPill, Never>()
+  private let sortPill = TestObserver<SearchFilterPill, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -30,9 +30,13 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
     self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
-    self.useCase.uiOutputs.categoryPillTitle.observe(self.categoryPillTitle.observer)
-    self.useCase.uiOutputs.isCategoryPillHighlighted.observe(self.isCategoryPillHighlighted.observer)
-    self.useCase.uiOutputs.isSortPillHighlighted.observe(self.isSortPillHighlighted.observer)
+    self.useCase.uiOutputs.pills.observe(self.pills.observer)
+    self.useCase.uiOutputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .sort })
+    }.skipNil().observe(self.sortPill.observer)
+    self.useCase.uiOutputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .category })
+    }.skipNil().observe(self.categoryPill.observer)
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -146,15 +150,19 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.selectedSort.assertLastValue(.magic)
-    self.isSortPillHighlighted.assertLastValue(
+
+    self.sortPill.assertDidEmitValue()
+    XCTAssertEqual(
+      self.sortPill.lastValue?.isHighlighted,
       false,
-      "Sort pill should not be  highlighted when default sort is selected"
+      "Sort pill should not be highlighted when default sort is selected"
     )
 
     self.useCase.inputs.selectedSortOption(.endingSoon)
-    self.isSortPillHighlighted.assertLastValue(
+    XCTAssertEqual(
+      self.sortPill.lastValue?.isHighlighted,
       true,
-      "Sort pill should be highlighted when default sort is selected"
+      "Sort pill should be highlighted when a non-default sort is selected"
     )
   }
 
@@ -168,21 +176,48 @@ final class SearchFiltersUseCaseTests: TestCase {
     ])
 
     self.selectedCategory.assertLastValue(nil)
-    self.isCategoryPillHighlighted.assertLastValue(
-      false,
+    self.categoryPill.assertDidEmitValue()
+
+    guard let categoryPill = self.categoryPill.lastValue else {
+      XCTFail("Category pill is missing.")
+      return
+    }
+
+    XCTAssertEqual(
+      categoryPill.isHighlighted, false,
       "Category pill should not be highlighted when no category is selected"
     )
-    self.categoryPillTitle.assertLastValue(
-      "Category",
+
+    guard case let .dropdown(title) = categoryPill.buttonType else {
+      XCTFail("Category pill is not a dropdown")
+      return
+    }
+
+    XCTAssertEqual(
+      title, "Category",
       "Category pill should have placeholder text when no category is selected"
     )
 
     self.useCase.inputs.selectedCategory(.illustration)
-    self.isCategoryPillHighlighted.assertLastValue(
+
+    guard let newCategoryPill = self.categoryPill.lastValue else {
+      XCTFail("Category pill is missing.")
+      return
+    }
+
+    XCTAssertEqual(
+      newCategoryPill.isHighlighted,
       true,
       "Category pill should be highlighted category is selected"
     )
-    self.categoryPillTitle.assertLastValue(
+
+    guard case let .dropdown(newTitle) = newCategoryPill.buttonType else {
+      XCTFail("Category pill is not a dropdown")
+      return
+    }
+
+    XCTAssertEqual(
+      newTitle,
       "Illustration",
       "Category pill should have selected category title when category is selected"
     )
