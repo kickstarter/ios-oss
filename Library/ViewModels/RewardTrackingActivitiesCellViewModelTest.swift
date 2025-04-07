@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class TrackingActivitiesCellViewModelTest: TestCase {
-  private let vm: TrackingActivitiesCellViewModelType = TrackingActivitiesCellViewModel()
+final class RewardTrackingActivitiesCellViewModelTest: TestCase {
+  private let vm: RewardTrackingActivitiesCellViewModelType = RewardTrackingActivitiesCellViewModel()
 
   private var projectName = TestObserver<String, Never>()
   private var projectImageURL = TestObserver<URL, Never>()

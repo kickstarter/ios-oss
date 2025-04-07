@@ -57,7 +57,7 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
     self.tableView.registerCellClass(ActivityErroredBackingsCell.self)
-    self.tableView.registerCellClass(TrackingActivitiesCell.self)
+    self.tableView.registerCellClass(RewardTrackingActivitiesCell.self)
     self.tableView.dataSource = self.dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
@@ -195,7 +195,7 @@ internal final class ActivitiesViewController: UITableViewController {
       if surveyCell.delegate == nil { surveyCell.delegate = self }
     case let erroredCell as ActivityErroredBackingsCell:
       if erroredCell.delegate == nil { erroredCell.delegate = self }
-    case let trackingCell as TrackingActivitiesCell:
+    case let trackingCell as RewardTrackingActivitiesCell:
       if trackingCell.delegate == nil { trackingCell.delegate = self }
     default:
       break

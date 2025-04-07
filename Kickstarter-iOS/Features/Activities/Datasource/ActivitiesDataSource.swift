@@ -56,14 +56,14 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  func load(rewardTrackings: [TrackingActivitiesCellData]) {
+  func load(rewardTrackings: [RewardTrackingActivitiesCellData]) {
     let section = Section.rewardTracking.rawValue
 
     self.clearValues(section: section)
 
     self.set(
       values: rewardTrackings,
-      cellClass: TrackingActivitiesCell.self,
+      cellClass: RewardTrackingActivitiesCell.self,
       inSection: section
     )
   }
@@ -82,7 +82,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
       cell.configureWith(value: value)
-    case let (cell as TrackingActivitiesCell, value as TrackingActivitiesCellData):
+    case let (cell as RewardTrackingActivitiesCell, value as RewardTrackingActivitiesCellData):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

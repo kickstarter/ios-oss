@@ -13,10 +13,10 @@ private enum Constants {
   static let projectImageAspectRatio: CGFloat = 0.5
 }
 
-final class TrackingActivitiesCell: UITableViewCell, ValueCell {
+final class RewardTrackingActivitiesCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel: TrackingActivitiesCellViewModelType = TrackingActivitiesCellViewModel()
+  private let viewModel: RewardTrackingActivitiesCellViewModelType = RewardTrackingActivitiesCellViewModel()
   public weak var delegate: RewardTrackingDetailsViewDelegate? {
     get { self.rewardTrackingDetailsView.delegate }
     set { self.rewardTrackingDetailsView.delegate = newValue }
@@ -118,7 +118,7 @@ final class TrackingActivitiesCell: UITableViewCell, ValueCell {
       }
   }
 
-  internal func configureWith(value data: TrackingActivitiesCellData) {
+  internal func configureWith(value data: RewardTrackingActivitiesCellData) {
     self.rewardTrackingDetailsView.configure(with: data.trackingData)
     self.viewModel.inputs.configure(with: data.project)
 

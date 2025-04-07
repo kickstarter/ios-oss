@@ -94,7 +94,7 @@ public protocol ActivitiesViewModelOutputs {
   var updateUserInEnvironment: Signal<User, Never> { get }
 
   /// Emits an array of rewards tracking that should be displayed.
-  var rewardTrackings: Signal<[TrackingActivitiesCellData], Never> { get }
+  var rewardTrackings: Signal<[RewardTrackingActivitiesCellData], Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -298,7 +298,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
           trackingURL: URL(string: "https://ksr.com")!,
           shippingDate: Date().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
         )
-        return [TrackingActivitiesCellData(trackingData: trackingData, project: $0)]
+        return [RewardTrackingActivitiesCellData(trackingData: trackingData, project: $0)]
       }
 
     self.goToTrackShipping = self.tappedTrackShippingProperty.signal.skipNil()
@@ -388,7 +388,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let showEmptyStateIsLoggedIn: Signal<Bool, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
   public let updateUserInEnvironment: Signal<User, Never>
-  public let rewardTrackings: Signal<[TrackingActivitiesCellData], Never>
+  public let rewardTrackings: Signal<[RewardTrackingActivitiesCellData], Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }
