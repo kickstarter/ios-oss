@@ -93,8 +93,8 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits a User that can be used to replace the current user in the environment.
   var updateUserInEnvironment: Signal<User, Never> { get }
 
-  /// Emits an array of rewards tracking that should be displayed.
-  var rewardTrackings: Signal<[RewardTrackingActivitiesCellData], Never> { get }
+  /// Emits an array of reward tracking data that should be displayed.
+  var rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -288,7 +288,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     // This is temporary until the backend implementation is completed.
     // Jira ticket TBD.
     // Epic [MBL-2270](https://kickstarter.atlassian.net/browse/MBL-2270)
-    self.rewardTrackings = self.activities
+    self.rewardTrackingData = self.activities
       .map { $0.first?.project }
       .skipNil()
       .filter { _ in featureRewardShipmentTrackingEnabled() }
@@ -388,7 +388,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let showEmptyStateIsLoggedIn: Signal<Bool, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
   public let updateUserInEnvironment: Signal<User, Never>
-  public let rewardTrackings: Signal<[RewardTrackingActivitiesCellData], Never>
+  public let rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

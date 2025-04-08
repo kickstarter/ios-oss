@@ -56,13 +56,13 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  func load(rewardTrackings: [RewardTrackingActivitiesCellData]) {
+  func load(rewardTrackingData: [RewardTrackingActivitiesCellData]) {
     let section = Section.rewardTracking.rawValue
 
     self.clearValues(section: section)
 
     self.set(
-      values: rewardTrackings,
+      values: rewardTrackingData,
       cellClass: RewardTrackingActivitiesCell.self,
       inSection: section
     )

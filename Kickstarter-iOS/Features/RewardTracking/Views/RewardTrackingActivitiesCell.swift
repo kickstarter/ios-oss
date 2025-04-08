@@ -98,8 +98,6 @@ final class RewardTrackingActivitiesCell: UITableViewCell, ValueCell {
     applyProjectLabelStyle(self.projectNameLabel)
     applyProjectImageViewStyle(self.projectImageView)
     applySeperatorViewStyle(self.separatorView)
-
-//    self.rewardTrackingDetailsView.setContentHuggingPriority(.required, for: .vertical)
   }
 
   public override func bindViewModel() {
