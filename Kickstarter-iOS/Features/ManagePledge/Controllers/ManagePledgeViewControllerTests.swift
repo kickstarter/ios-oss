@@ -102,25 +102,28 @@ final class ManagePledgeViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    withEnvironment(apiService: mockService, currentUser: user, language: language) {
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-      // Network request completes
-      self.scheduler.advance()
+        // Network request completes
+        self.scheduler.advance()
 
-      // endRefreshing is delayed by 300ms for animation duration
-      self.scheduler.advance(by: .milliseconds(300))
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
 
-      controller.tableView.layoutIfNeeded()
-      controller.tableView.reloadData()
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
-      assertSnapshot(
-        matching: parent.view,
-        as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)"
-      )
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
     }
   }
 
@@ -158,29 +161,32 @@ final class ManagePledgeViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    withEnvironment(apiService: mockService, currentUser: user, language: language) {
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
-      let (parent, _) = traitControllers(
-        device: device,
-        orientation: .portrait,
-        child: controller
-      )
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
 
-      // Network request completes
-      self.scheduler.advance()
+        // Network request completes
+        self.scheduler.advance()
 
-      // endRefreshing is delayed by 300ms for animation duration
-      self.scheduler.advance(by: .milliseconds(300))
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
 
-      controller.tableView.layoutIfNeeded()
-      controller.tableView.reloadData()
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
-      assertSnapshot(
-        matching: parent.view,
-        as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)"
-      )
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
     }
   }
 
@@ -218,29 +224,32 @@ final class ManagePledgeViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    withEnvironment(apiService: mockService, currentUser: user, language: language) {
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
-      let (parent, _) = traitControllers(
-        device: device,
-        orientation: .portrait,
-        child: controller
-      )
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
 
-      // Network request completes
-      self.scheduler.advance()
+        // Network request completes
+        self.scheduler.advance()
 
-      // endRefreshing is delayed by 300ms for animation duration
-      self.scheduler.advance(by: .milliseconds(300))
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
 
-      controller.tableView.layoutIfNeeded()
-      controller.tableView.reloadData()
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
-      assertSnapshot(
-        matching: parent.view,
-        as: .image(perceptualPrecision: 0.98),
-        named: "lang_\(language)_device_\(device)"
-      )
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
     }
   }
 
