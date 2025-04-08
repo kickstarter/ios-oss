@@ -71,35 +71,15 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.rewardReceivedInfoStackView
-      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    applyRewardReceivedInfoStackViewStyle(self.rewardReceivedInfoStackView)
 
-    _ = self.rootStackView
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(3)
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
+    applyRootStackViewStyle(self.rootStackView)
 
-    _ = self.rewardReceivedInfoStackView
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(1)
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
+    applyLabelStackViewStyle(self.labelStackView)
 
-    self.labelStackView.isLayoutMarginsRelativeArrangement = true
-    self.labelStackView.axis = .vertical
-    self.labelStackView.spacing = Styles.grid(2)
-    self.labelStackView.insetsLayoutMarginsFromSafeArea = false
+    applyToggleViewControllerTitleLabelStyle(self.toggleViewController.titleLabel)
 
-    _ = self.toggleViewController.titleLabel
-      |> checkoutTitleLabelStyle
-      |> \.font .~ UIFont.ksr_subhead()
-      |> \.textColor .~ .ksr_support_700
-      |> \.text %~ { _ in Strings.Reward_received() }
-
-    _ = self.toggleViewController.toggle
-      |> checkoutSwitchControlStyle
-      |> \.accessibilityLabel %~ { _ in Strings.Reward_received() }
+    applyToggleViewControllerToggleStyle(self.toggleViewController.toggle)
 
     applyDisclaimerStyle(self.pledgeDisclaimerView)
   }
@@ -132,8 +112,8 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] radius in
         guard let self = self else { return }
-        _ = self.rewardReceivedInfoStackView
-          |> roundedStyle(cornerRadius: radius)
+        self.rewardReceivedInfoStackView.layer.cornerRadius = radius
+        self.view.layoutIfNeeded()
       }
   }
 
@@ -161,6 +141,46 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
 }
 
 // MARK: - Styles
+
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(3)
+  stackView.insetsLayoutMarginsFromSafeArea = false
+}
+
+private func applyRewardReceivedInfoStackViewStyle(_ stackView: UIStackView) {
+  stackView.layer.borderColor = UIColor.ksr_support_300.cgColor
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(1)
+  stackView.insetsLayoutMarginsFromSafeArea = false
+  stackView.clipsToBounds = true
+  stackView.layer.masksToBounds = true
+}
+
+private func applyLabelStackViewStyle(_ stackView: UIStackView) {
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(2)
+  stackView.insetsLayoutMarginsFromSafeArea = false
+}
+
+private func applyToggleViewControllerTitleLabelStyle(_ label: UILabel) {
+  label.accessibilityTraits = UIAccessibilityTraits.header
+  label.adjustsFontForContentSizeCategory = true
+  label.font = UIFont.ksr_headline(size: 15)
+  label.numberOfLines = 0
+  label.font = UIFont.ksr_subhead()
+  label.textColor = .ksr_support_700
+  label.text = Strings.Reward_received()
+}
+
+private func applyToggleViewControllerToggleStyle(_ toggle: UISwitch) {
+  toggle.onTintColor = UIColor.ksr_create_700
+  toggle.tintColor = UIColor.ksr_support_300
+  toggle.accessibilityLabel = Strings.Reward_received()
+}
 
 private func applyDisclaimerStyle(_ view: UIView) {
   view.clipsToBounds = true

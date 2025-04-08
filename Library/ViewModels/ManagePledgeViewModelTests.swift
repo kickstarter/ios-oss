@@ -1477,6 +1477,111 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testPledgeDisclaimerViewHidden_Shipping_UserIsCreatorOfProject() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      guard let pledgeDisclaimerViewHidden = self.configurePledgeSummaryView.lastValue?.rewardReceivedWithData
+        .pledgeDisclaimerViewHidden else {
+        XCTAssertNil("configurePledgeSummaryView should not be nil.")
+        return
+      }
+
+      XCTAssertTrue(pledgeDisclaimerViewHidden)
+    }
+  }
+
+  func testPledgeDisclaimerViewHidden_NoShipping_UserIsNotCreatorOfProject() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+      )
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+
+    let addOn = Reward.template
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+
+    let reward = Reward.template
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.addOns .~ [addOn]
+
+    let env = ProjectAndBackingEnvelope.template
+      |> \.backing .~ backing
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template |> Reward.lens.estimatedDeliveryOn .~ nil])
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+      self.scheduler.advance(by: .milliseconds(300))
+
+      guard let pledgeDisclaimerViewHidden = self.configurePledgeSummaryView.lastValue?.rewardReceivedWithData
+        .pledgeDisclaimerViewHidden else {
+        XCTAssertNil("configurePledgeSummaryView should not be nil.")
+        return
+      }
+
+      XCTAssertTrue(pledgeDisclaimerViewHidden)
+    }
+  }
+
+  func testPledgeDisclaimerViewHidden_Shipping_UserIsNotCreatorOfProject() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      guard let pledgeDisclaimerViewHidden = self.configurePledgeSummaryView.lastValue?.rewardReceivedWithData
+        .pledgeDisclaimerViewHidden else {
+        XCTAssertNil("configurePledgeSummaryView should not be nil.")
+        return
+      }
+
+      XCTAssertFalse(pledgeDisclaimerViewHidden)
+    }
+  }
+
   func testPlotPaymentScheduleView_IsVisibleWhenFeatureFlagIsEnabled() {
     let user = User.template
 
