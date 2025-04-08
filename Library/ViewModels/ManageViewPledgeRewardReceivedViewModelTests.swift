@@ -17,6 +17,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
   private let marginWidth = TestObserver<CGFloat, Never>()
   private let rewardReceived = TestObserver<Bool, Never>()
   private let rewardReceivedHidden = TestObserver<Bool, Never>()
+  private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -32,6 +33,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.outputs.marginWidth.observe(self.marginWidth.observer)
     self.vm.outputs.rewardReceived.observe(self.rewardReceived.observer)
     self.vm.outputs.rewardReceivedHidden.observe(self.rewardReceivedHidden.observer)
+    self.vm.outputs.pledgeDisclaimerViewHidden.observe(self.pledgeDisclaimerViewHidden.observer)
   }
 
   func testAttributedText() {
@@ -46,7 +48,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: "About $1-$10"
+      estimatedShipping: "About $1-$10",
+      pledgeDisclaimerViewHidden: false
     )
 
     self.estimatedDeliveryDateLabelAttributedText.assertDidNotEmitValue()
@@ -70,7 +73,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -91,7 +95,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: true,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -112,7 +117,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     withEnvironment(apiService: MockService(backingUpdate: .template), currentUser: User.template) {
@@ -147,7 +153,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .dropped,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -172,7 +179,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .pledged,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -197,7 +205,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .preauth,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -222,7 +231,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .canceled,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -247,7 +257,8 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       backerCompleted: false,
       estimatedDeliveryOn: 1_475_361_315,
       backingState: .dropped,
-      estimatedShipping: nil
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: false
     )
 
     self.rewardReceivedHidden.assertDidNotEmitValue()
@@ -258,5 +269,31 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.rewardReceivedHidden.assertValues([true])
+  }
+
+  func testPledgeDisclaimerViewHidden() {
+    let backing = Backing.template
+      |> Backing.lens.backerCompleted .~ false
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    let data = ManageViewPledgeRewardReceivedViewData(
+      project: project,
+      backerCompleted: false,
+      estimatedDeliveryOn: 1_475_361_315,
+      backingState: .dropped,
+      estimatedShipping: nil,
+      pledgeDisclaimerViewHidden: true
+    )
+
+    self.rewardReceivedHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    self.pledgeDisclaimerViewHidden.assertValues([true])
   }
 }
