@@ -24,7 +24,11 @@ internal final class SearchDataSource: ValueCellDataSource {
     self.clearValues(section: Section.projects.rawValue)
 
     if projects.count > 0 && showTitle {
-      self.appendRow(value: (), cellClass: MostPopularCell.self, toSection: Section.projects.rawValue)
+      self.appendRow(
+        value: (),
+        cellClass: DiscoverProjectsTitleCell.self,
+        toSection: Section.projects.rawValue
+      )
     }
 
     if let mostPopular = projects.first {
@@ -62,7 +66,7 @@ internal final class SearchDataSource: ValueCellDataSource {
       value as any BackerDashboardProjectCellViewModel.ProjectCellModel
     ):
       cell.configureWith(value: value)
-    case let (cell as MostPopularCell, value as Void):
+    case let (cell as DiscoverProjectsTitleCell, value as Void):
       cell.configureWith(value: value)
     case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
       cell.configureWith(value: value)

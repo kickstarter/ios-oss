@@ -99,8 +99,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureNewDesignSystemEnabled()
   case .rewardShipmentTracking:
     return featureRewardShipmentTrackingEnabled()
-  case .searchFilters:
-    return featureSearchFiltersEnabled()
   case .similarProjectsCarousel:
     return featureSimilarProjectsCarouselEnabled()
   }
