@@ -24,7 +24,9 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.text %~ { _ in
-        Strings.Popular_Projects()
+        // TODO: When this flag is removed, you can rename/refactor this cell class.
+        featureSearchFiltersEnabled() ? Strings.activity_empty_state_logged_in_button() : Strings
+          .Popular_Projects()
       }
   }
 }

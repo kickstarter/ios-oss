@@ -5,16 +5,8 @@ import UIKit
 
 internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case popularTitle
     case projects
     case noResults
-  }
-
-  internal func popularTitle(isVisible visible: Bool) {
-    self.set(
-      cellIdentifiers: visible ? ["MostPopularCell"] : [],
-      inSection: Section.popularTitle.rawValue
-    )
   }
 
   internal func load(params: DiscoveryParams, visible: Bool) {
@@ -25,8 +17,15 @@ internal final class SearchDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(projects: [any BackerDashboardProjectCellViewModel.ProjectCellModel]) {
+  internal func load(
+    projects: [any BackerDashboardProjectCellViewModel.ProjectCellModel],
+    withDiscoverTitle showTitle: Bool
+  ) {
     self.clearValues(section: Section.projects.rawValue)
+
+    if projects.count > 0 && showTitle {
+      self.appendRow(value: (), cellClass: MostPopularCell.self, toSection: Section.projects.rawValue)
+    }
 
     if let mostPopular = projects.first {
       self.appendRow(
