@@ -198,6 +198,8 @@ public final class RewardAddOnCardView: UIView {
       .compactMap { $0 as? UILabel }
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
+
+    applyRewardImageViewStyle(self.rewardImageView)
   }
 
   public override func bindViewModel() {
@@ -453,4 +455,9 @@ private let sectionTitleLabelStyle: LabelStyle = { label in
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
+}
+
+private func applyRewardImageViewStyle(_ imageView: UIImageView) {
+  imageView.contentMode = .scaleAspectFill
+  imageView.clipsToBounds = true
 }

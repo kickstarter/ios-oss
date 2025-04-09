@@ -189,6 +189,8 @@ public final class RewardCardView: UIView {
 
     _ = self.pillsView
       |> \.backgroundColor .~ self.backgroundColor
+
+    applyRewardImageViewStyle(self.rewardImageView)
   }
 
   public override func bindViewModel() {
@@ -445,6 +447,11 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_body()
+}
+
+private func applyRewardImageViewStyle(_ imageView: UIImageView) {
+  imageView.contentMode = .scaleAspectFill
+  imageView.clipsToBounds = true
 }
 
 // MARK: - UICollectionViewDelegate
