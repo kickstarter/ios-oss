@@ -23,6 +23,9 @@ public enum NavigationSection: Int, CaseIterable {
 }
 
 public protocol ProjectNavigationSelectorViewModelInputs {
+  /// Called when the view is moved to the superview, similar to a viewDidAppear input
+  func didMoveToSuperview()
+
   /// Called when a button on the project navigation selector is tapped
   func buttonTapped(index: Int)
 
@@ -80,10 +83,16 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
       return baseTabs + moreTabs + aiDisclosureTab + environmentCommitmentTab
     }
 
-    self.configureNavigationSelectorUI = self.configureNavigationSelectorProperty.signal
+    let initialTabs = self.didMoveToSuperviewSignal
+      .take(first: 1)
+      .map { _ in [NavigationSection.overview] }
+
+    let projectDisplayedTabs = self.configureNavigationSelectorProperty.signal
       .skipNil()
       .map(first)
       .map(displayableTabs)
+
+    self.configureNavigationSelectorUI = initialTabs.merge(with: projectDisplayedTabs)
 
     let configureNavigationSelector = self.configureNavigationSelectorProperty.signal.skipNil()
 
@@ -129,6 +138,11 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     case 5: return .tabSelected(.environmentalCommitments)
     default: return nil
     }
+  }
+
+  fileprivate let (didMoveToSuperviewSignal, didMoveToSuperviewObserver) = Signal<Void, Never>.pipe()
+  public func didMoveToSuperview() {
+    self.didMoveToSuperviewObserver.send(value: ())
   }
 
   fileprivate let buttonTappedProperty = MutableProperty<Int>(0)
