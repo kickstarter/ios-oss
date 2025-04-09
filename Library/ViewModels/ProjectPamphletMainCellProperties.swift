@@ -5,12 +5,16 @@ public protocol HasProjectPamphletMainCellProperties {
   var projectPamphletMainCellProperties: ProjectPamphletMainCellProperties { get }
 }
 
-public typealias ProjectPamphletMainCellConfiguration = HasProjectPamphletMainCellProperties &
-  ProjectAnalyticsProperties &
-  ProjectCreatorConfiguration &
-  VideoViewConfiguration
+public typealias ProjectPamphletMainCellConfiguration =
+  HasProjectAnalyticsProperties &
+  HasProjectCreatorProperties &
+  HasProjectPamphletMainCellProperties &
+  HasServiceProjectWebURL &
+  HasVideoViewProperties
 
 public struct ProjectPamphletMainCellProperties {
+  public typealias Money = (amount: Int, currency: String, symbol: String)
+
   public let param: Param
   public let name: String
   public let blurb: String
@@ -27,16 +31,10 @@ public struct ProjectPamphletMainCellProperties {
   public let categoryName: String
   public let locationName: String
   public let deadline: TimeInterval?
-  public let needsConversion: Bool
-  public let fundingProgress: Float
-  public let goal: Int
-  public let pledged: Int
-  public let goalCurrentCurrency: Float?
-  public let convertedPledgedAmount: Float?
-  public let currentCountry: Project.Country?
-  public let pledgedUsd: Float
-  public let goalUsd: Float
-  public let omitUSCurrencyCode: Bool
+  public let usdExchangeRate: Float
+  public let projectUsdExchangeRate: Float
+  public let goal: Money
+  public let pledged: Money
   public let currency: String
   public let country: Project.Country
   public let projectNotice: String?
@@ -60,16 +58,10 @@ public struct ProjectPamphletMainCellProperties {
     categoryName: String,
     locationName: String,
     deadline: TimeInterval?,
-    needsConversion: Bool,
-    fundingProgress: Float,
-    goal: Int,
-    pledged: Int,
-    goalCurrentCurrency: Float?,
-    convertedPledgedAmount: Float?,
-    currentCountry: Project.Country?,
-    pledgedUsd: Float,
-    goalUsd: Float,
-    omitUSCurrencyCode: Bool,
+    usdExchangeRate: Float,
+    projectUsdExchangeRate: Float,
+    goal: Money,
+    pledged: Money,
     currency: String,
     country: Project.Country,
     projectNotice: String?,
@@ -92,21 +84,21 @@ public struct ProjectPamphletMainCellProperties {
     self.categoryName = categoryName
     self.locationName = locationName
     self.deadline = deadline
-    self.needsConversion = needsConversion
-    self.fundingProgress = fundingProgress
+    self.usdExchangeRate = usdExchangeRate
+    self.projectUsdExchangeRate = projectUsdExchangeRate
     self.goal = goal
     self.pledged = pledged
-    self.goalCurrentCurrency = goalCurrentCurrency
-    self.convertedPledgedAmount = convertedPledgedAmount
-    self.currentCountry = currentCountry
-    self.pledgedUsd = pledgedUsd
-    self.goalUsd = goalUsd
-    self.omitUSCurrencyCode = omitUSCurrencyCode
     self.currency = currency
     self.country = country
     self.projectNotice = projectNotice
     self.video = video
     self.webURL = webURL
+  }
+}
+
+extension ProjectPamphletMainCellProperties: HasVideoViewProperties {
+  public var videoViewProperties: any VideoViewProperties {
+    VideoViewPropertiesBox(video: self.video, photoFull: self.photo)
   }
 }
 
@@ -129,21 +121,74 @@ extension Project: HasProjectPamphletMainCellProperties {
       categoryName: self.category.name,
       locationName: self.location.displayableName,
       deadline: self.dates.deadline,
-      needsConversion: self.stats.needsConversion,
-      fundingProgress: self.stats.fundingProgress,
-      goal: self.stats.goal,
-      pledged: self.stats.pledged,
-      goalCurrentCurrency: self.stats.goalCurrentCurrency,
-      convertedPledgedAmount: self.stats.convertedPledgedAmount,
-      currentCountry: self.stats.currentCountry,
-      pledgedUsd: self.stats.pledgedUsd,
-      goalUsd: self.stats.goalUsd,
-      omitUSCurrencyCode: self.stats.omitUSCurrencyCode,
+      usdExchangeRate: self.stats.staticUsdRate,
+      projectUsdExchangeRate: self.stats.usdExchangeRate ?? self.stats.staticUsdRate,
+      goal: (amount: self.stats.goal, currency: self.statsCurrency, symbol: self.country.currencySymbol),
+      pledged: (
+        amount: self.stats.pledged,
+        currency: self.statsCurrency,
+        symbol: self.country.currencySymbol
+      ),
       currency: self.stats.currency,
       country: self.country,
       projectNotice: self.extendedProjectProperties?.projectNotice,
       video: self.video.map { ($0.hls, $0.high) },
       webURL: self.urls.web.project
     )
+  }
+}
+
+extension ProjectPamphletMainCellProperties {
+  /// Percent funded as measured from `0.0` to `1.0`. See `percentFunded` for a value from `0` to `100`.
+  public var fundingProgress: Float {
+    return self.goal.amount == 0 ? 0.0 : Float(self.pledged.amount) / Float(self.goal.amount)
+  }
+
+  /// Pledged amount converted to USD.
+  public var pledgedUsd: Float {
+    floor(Float(self.pledged.amount) * self.usdExchangeRate)
+  }
+
+  /// Total amount currently pledged to the project, converted to USD, irrespective of the users selected currency
+  public var totalAmountPledgedUsdCurrency: Float? {
+    Float(self.pledged.amount) * self.usdExchangeRate
+  }
+
+  /// Goal amount converted to USD.
+  public var goalUsd: Float {
+    floor(Float(self.goal.amount) * self.projectUsdExchangeRate)
+  }
+
+  /// Goal amount converted to current currency.
+  public var goalCurrentCurrency: Float? {
+    floor(Float(self.goal.amount) * self.usdExchangeRate)
+  }
+
+  /// Goal amount, converted to USD, irrespective of the users selected currency
+  public var goalUsdCurrency: Float {
+    Float(self.goal.amount) * (self.usdExchangeRate)
+  }
+
+  /// Country determined by current currency.
+  public var currentCountry: Project.Country? {
+    Project.Country(currencyCode: self.currency)
+  }
+
+  /// Omit US currency code
+  public var omitUSCurrencyCode: Bool {
+    let currentCurrency = self.currency
+
+    return currentCurrency == Project.Country.us.currencyCode
+  }
+
+  /// Project pledge & goal values need conversion
+  public var needsConversion: Bool {
+    let currentCurrency = self.currency
+
+    return self.currency != currentCurrency
+  }
+
+  public var goalMet: Bool {
+    return self.pledged >= self.goal
   }
 }

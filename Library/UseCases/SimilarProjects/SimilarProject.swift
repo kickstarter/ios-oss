@@ -3,7 +3,7 @@ import Kingfisher
 import KsApi
 
 /// Represents a project that is similar to the currently viewed project.
-public protocol SimilarProject {
+public protocol SimilarProject: ProjectPamphletMainCellConfiguration {
   /// The identifier for the project.
   var projectID: Int { get }
 
@@ -28,5 +28,14 @@ public protocol SimilarProject {
 extension SimilarProject {
   var shouldDisplayPrelaunch: Bool {
     self.isPrelaunchActivated && self.state == .submitted
+  }
+}
+
+extension SimilarProject {
+  public var projectPageParam: ProjectPageParam {
+    ProjectPageParamBox(
+      param: Param.id(self.projectID),
+      initialProject: self
+    )
   }
 }
