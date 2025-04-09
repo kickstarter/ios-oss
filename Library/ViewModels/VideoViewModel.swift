@@ -268,7 +268,10 @@ public protocol HasVideoViewProperties {
   var videoViewProperties: VideoViewProperties { get }
 }
 
-public typealias VideoViewConfiguration = HasServiceProjectWebURL & HasVideoViewProperties & ProjectAnalyticsProperties
+public typealias VideoViewConfiguration =
+  HasProjectAnalyticsProperties &
+  HasServiceProjectWebURL &
+  HasVideoViewProperties
 
 public struct VideoViewPropertiesBox: VideoViewProperties {
   public let video: (hls: String?, high: String)?

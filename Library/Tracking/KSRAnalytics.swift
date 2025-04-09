@@ -943,11 +943,11 @@ public final class KSRAnalytics {
    */
 
   public func trackProjectVideoPlaybackStarted(
-    project: any ProjectAnalyticsProperties,
+    project: any HasProjectAnalyticsProperties,
     videoLength: Int,
     videoPosition: Int
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = projectProperties(from: project.projectAnalyticsProperties, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
       .withAllValuesFrom(contextProperties(page: .project))
 
@@ -1295,8 +1295,8 @@ public final class KSRAnalytics {
    - parameter project: The project the creator's name is clicked from.
    */
 
-  public func trackGotoCreatorDetailsClicked(project: any ProjectAnalyticsProperties) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+  public func trackGotoCreatorDetailsClicked(project: any HasProjectAnalyticsProperties) {
+    let props = projectProperties(from: project.projectAnalyticsProperties, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .project))
 
     self.track(
