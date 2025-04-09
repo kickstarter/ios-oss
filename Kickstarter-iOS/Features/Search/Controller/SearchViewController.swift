@@ -279,7 +279,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
-    let projectParam = Either<Project, Param>(right: Param.id(projectId))
+    let projectParam = Either<Project, any ProjectPageParam>(right: Param.id(projectId))
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: RefInfo(refTag)

@@ -76,7 +76,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   func load(
     navigationSection: NavigationSection,
-    project: Project,
+    project: Either<Project, any ProjectPageParam>,
     refTag: RefTag?,
     isExpandedStates: [Bool]? = nil,
     similarProjectsState: SimilarProjectsState? = nil
@@ -86,8 +86,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     // Clear all sections
     self.clearValues()
 
-    switch navigationSection {
-    case .overview:
+    switch (navigationSection, project) {
+    case let (.overview, .left(project)):
       if currentUserIsCreator(of: project) {
         self.set(
           values: [project],
@@ -137,7 +137,17 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           )
         }
       }
-    case .campaign:
+
+    case let (.overview, .right(param)):
+      if let project = param.initialProject {
+        self.set(
+          values: [(project, refTag)],
+          cellClass: ProjectPamphletMainCell.self,
+          inSection: Section.overview.rawValue
+        )
+      }
+
+    case let (.campaign, .left(project)):
       self.set(
         values: [HeaderValue.campaign.description],
         cellClass: ProjectHeaderCell.self,
@@ -193,7 +203,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           break
         }
       }
-    case .faq:
+    case let (.faq, .left(project)):
       self.set(
         values: [HeaderValue.faqs.description],
         cellClass: ProjectHeaderCell.self,
@@ -232,7 +242,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectFAQsCell.self,
         inSection: Section.faqs.rawValue
       )
-    case .risks:
+    case let (.risks, .left(project)):
       // Risks are mandatory for creators
       let risks = project.extendedProjectProperties?.risks ?? ""
 
@@ -253,7 +263,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectRisksDisclaimerCell.self,
         inSection: Section.risksDisclaimer.rawValue
       )
-    case .aiDisclosure:
+    case let (.aiDisclosure, .left(project)):
       self.set(
         values: [HeaderValue.aiDisclosure.description],
         cellClass: ProjectHeaderCell.self,
@@ -304,7 +314,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectTabDisclaimerCell.self,
         inSection: Section.aiDisclosureDisclaimer.rawValue
       )
-    case .environmentalCommitments:
+    case let (.environmentalCommitments, .left(project)):
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
 
       self.set(
@@ -324,6 +334,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectTabDisclaimerCell.self,
         inSection: Section.environmentalCommitmentsDisclaimer.rawValue
       )
+    case (_, _):
+      break
     }
   }
 
