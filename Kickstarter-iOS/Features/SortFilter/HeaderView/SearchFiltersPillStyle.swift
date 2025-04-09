@@ -4,8 +4,10 @@ import SwiftUI
 private let tintColor = Colors.Text.primary.swiftUIColor()
 private let selectedColor = Colors.Border.subtle.swiftUIColor()
 
-struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
+struct SearchFiltersPillStyle<S: Shape>: SwiftUI.ButtonStyle {
   let isHighlighted: Bool
+  let shape: S
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .buttonStyle(.borderless)
@@ -17,16 +19,17 @@ struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
         trailing: Styles.grid(1)
       ))
       .foregroundStyle(.tint)
+      .compositingGroup()
+      .tint(
+        tintColor
+      )
+      .clipShape(self.shape)
       .overlay(
-        Capsule()
+        self.shape
           .stroke(
             configuration.isPressed ? selectedColor : tintColor,
             lineWidth: self.isHighlighted ? 2.0 : 1.0
           )
-      )
-      .clipShape(Capsule())
-      .tint(
-        tintColor
       )
   }
 }

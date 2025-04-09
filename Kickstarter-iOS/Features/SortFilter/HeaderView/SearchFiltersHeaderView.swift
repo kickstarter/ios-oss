@@ -22,23 +22,24 @@ struct SearchFiltersHeaderView: View {
     ScrollView(.horizontal) {
       HStack {
         ForEach(self.container.pills) { pill in
-          Button {
-            self.didTapPill(pill)
-          } label: {
-            switch pill.buttonType {
-            case let .image(image):
-              ImagePillLabel(image: Library.image(named: image)!)
-            case let .dropdown(title):
-              DropdownPillLabel(title: title)
+          switch pill.buttonType {
+          case let .image(image):
+            if let uiImage = Library.image(named: image) {
+              ImagePillButton(action: {
+                self.didTapPill(pill)
+              }, image: uiImage, isHighlighted: pill.isHighlighted)
             }
+          case let .dropdown(title):
+            DropdownPillButton(action: {
+              self.didTapPill(pill)
+            }, title: title, isHighlighted: pill.isHighlighted)
           }
-          .buttonStyle(SearchFiltersPillStyle(isHighlighted: pill.isHighlighted))
         }
       }
       .padding(EdgeInsets(
         top: Styles.grid(1),
-        leading: self.horizontalSizeClass == .compact ? Constants.pillLeftInsetForIPhone : Constants
-          .pillLeftInsetForIPad,
+        leading: self.horizontalSizeClass == .compact ?
+          Constants.pillLeftInsetForIPhone : Constants.pillLeftInsetForIPad,
         bottom: Styles.grid(1),
         trailing: Styles.grid(1)
       ))
