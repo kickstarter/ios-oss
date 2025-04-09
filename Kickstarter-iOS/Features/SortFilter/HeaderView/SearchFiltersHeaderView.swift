@@ -44,6 +44,7 @@ struct SearchFiltersHeaderView: View {
         trailing: Styles.grid(1)
       ))
     }
+    .scrollIndicators(.never)
   }
 }
 
