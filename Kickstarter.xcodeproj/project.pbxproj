@@ -8355,6 +8355,7 @@
 				8A23203125B0ECF700B940C3 /* IdentifyingTrackingClient.swift in Sources */,
 				606C45F329FACD68001BA067 /* RemoteConfigFeature.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
+				AAEABE9F2DA6F49D00B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
 				4751A67B272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift in Sources */,
