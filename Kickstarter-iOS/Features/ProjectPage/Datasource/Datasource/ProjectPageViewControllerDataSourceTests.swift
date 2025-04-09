@@ -147,7 +147,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .faq,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
@@ -204,7 +204,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: nil) {
       self.dataSource.load(
         navigationSection: .faq,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
@@ -251,7 +251,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .faq,
-        project: project,
+        project: .left(project),
         refTag: nil
       )
       XCTAssertEqual(11, self.dataSource.numberOfSections(in: self.tableView))
@@ -307,7 +307,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: nil) {
       self.dataSource.load(
         navigationSection: .faq,
-        project: project,
+        project: .left(project),
         refTag: nil
       )
       XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
@@ -350,7 +350,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .risks,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -404,7 +404,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .aiDisclosure,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -486,7 +486,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .aiDisclosure,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -561,7 +561,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -618,7 +618,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -671,7 +671,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -728,7 +728,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .overview,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -779,7 +779,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .overview,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil,
         similarProjectsState: .loading
@@ -815,7 +815,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .overview,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil,
         similarProjectsState: .loaded(projects: [])
@@ -851,7 +851,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
     self.dataSource.load(
       navigationSection: .faq,
-      project: project,
+      project: .left(project),
       refTag: nil,
       isExpandedStates: isExpandedStates
     )
@@ -874,7 +874,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
     self.dataSource.load(
       navigationSection: .overview,
-      project: project,
+      project: .left(project),
       refTag: nil
     )
 
@@ -900,7 +900,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
     self.dataSource.load(
       navigationSection: .overview,
-      project: project,
+      project: .left(project),
       refTag: nil
     )
 
@@ -926,7 +926,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -990,7 +990,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1072,7 +1072,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1127,7 +1127,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1165,7 +1165,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1213,7 +1213,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1263,7 +1263,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
@@ -1316,7 +1316,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .campaign,
-        project: project,
+        project: .left(project),
         refTag: nil,
         isExpandedStates: nil
       )
