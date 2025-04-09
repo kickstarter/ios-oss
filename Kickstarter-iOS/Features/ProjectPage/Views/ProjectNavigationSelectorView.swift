@@ -130,6 +130,11 @@ final class ProjectNavigationSelectorView: UIView {
       |> ksr_constrainViewToEdgesInParent()
   }
 
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    self.viewModel.inputs.didMoveToSuperview()
+  }
+
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.scrollView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
