@@ -4,8 +4,9 @@ fragment ProjectCardFragment on Project {
     id
     url(width: 1024)
   }
-  name
+
   pid
+  name
   state
   isLaunched
   deadlineAt
@@ -14,10 +15,15 @@ fragment ProjectCardFragment on Project {
   launchedAt
   isInPostCampaignPledgingPhase
   postCampaignPledgingEnabled
+  url
+
   goal {
     ...MoneyFragment
   }
   pledged {
     ...MoneyFragment
   }
+
+  ...ProjectAnalyticsFragment
+  ...ProjectPamphletMainCellPropertiesFragment
 }

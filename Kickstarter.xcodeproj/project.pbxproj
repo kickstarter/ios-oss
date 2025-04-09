@@ -1221,6 +1221,7 @@
 		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AAA75A102DA5007E003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
 		AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */; };
@@ -2983,6 +2984,7 @@
 		AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFeaturesFragment.graphql; sourceTree = "<group>"; };
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
+		AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectPamphletMainCellPropertiesFragment.graphql; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
 		AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Templates.swift"; sourceTree = "<group>"; };
 		AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Parsing.swift"; sourceTree = "<group>"; };
@@ -6310,6 +6312,7 @@
 		8ADCCDAA2656BC020079D308 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
+				AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */,
 				E11DE11D2D79F32900DD2ECA /* BackerDashboardProjectCellFragment.graphql */,
 				AA5480EA2D77F9DA00EC2849 /* ProjectCardFragment.graphql */,
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
@@ -8129,6 +8132,7 @@
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
 				06261603273B0E1500389981 /* PostComment.graphql in Resources */,
 				06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */,
+				AAA75A102DA5007E003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql in Resources */,
 				E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
 				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
