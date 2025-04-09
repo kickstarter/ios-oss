@@ -47,7 +47,10 @@ internal struct ImagePillButton: View {
       Image(uiImage: self.image)
         .renderingMode(.template)
         .aspectRatio(1.0, contentMode: .fill)
-        .frame(width: self.scale * buttonFont.defaultSize, height: self.scale * buttonFont.defaultSize)
+        .frame(
+          width: self.scale * buttonFont.defaultSize,
+          height: self.scale * buttonFont.defaultSize
+        )
         .padding(
           EdgeInsets(
             top: Styles.gridHalf(1),
