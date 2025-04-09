@@ -14,6 +14,7 @@ extension Backing {
     isLatePledge: false,
     locationId: 1,
     locationName: "United States",
+    order: nil,
     paymentIncrements: [],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,

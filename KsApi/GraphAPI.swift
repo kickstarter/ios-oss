@@ -4129,6 +4129,55 @@ public enum GraphAPI {
     }
   }
 
+  /// The state of checkout, e.g. complete, in progress, incomplete.
+  public enum CheckoutStateEnum: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// complete
+    case complete
+    /// in_progress
+    case inProgress
+    /// not_started
+    case notStarted
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "complete": self = .complete
+        case "in_progress": self = .inProgress
+        case "not_started": self = .notStarted
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .complete: return "complete"
+        case .inProgress: return "in_progress"
+        case .notStarted: return "not_started"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: CheckoutStateEnum, rhs: CheckoutStateEnum) -> Bool {
+      switch (lhs, rhs) {
+        case (.complete, .complete): return true
+        case (.inProgress, .inProgress): return true
+        case (.notStarted, .notStarted): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [CheckoutStateEnum] {
+      return [
+        .complete,
+        .inProgress,
+        .notStarted,
+      ]
+    }
+  }
+
   public enum PaymentIncrementState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
     /// The initial state of the payment increment; payment source has not been charged
@@ -4398,6 +4447,7 @@ public enum GraphAPI {
     case insideVoicesFooter
     case stackedRecsOnMobile
     case projectPrelaunchSummaries
+    case caCurrencySelector
     case chCurrencySelector
     case dkCurrencySelector
     case noCurrencySelector
@@ -4438,7 +4488,6 @@ public enum GraphAPI {
     case backersCanChoosePlotV1
     case sepaDebitPaymentElement
     case trustAndSafetyProjectBanner
-    case partialRefunds_2024
     case notificationBannerUpdate_2024
     case reactBackedProjects
     case copyAddons
@@ -4447,6 +4496,7 @@ public enum GraphAPI {
     case pledgeManagementRefunds
     case discoverUi_2025
     case pledgeManagementBeta
+    case pledgeManagementRewardSetup
     case creatorExperience_2025
     case backingsDashV2_2025
     case secretRewards_2025
@@ -4523,6 +4573,7 @@ public enum GraphAPI {
         case "inside_voices_footer": self = .insideVoicesFooter
         case "stacked_recs_on_mobile": self = .stackedRecsOnMobile
         case "project_prelaunch_summaries": self = .projectPrelaunchSummaries
+        case "ca_currency_selector": self = .caCurrencySelector
         case "ch_currency_selector": self = .chCurrencySelector
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
@@ -4563,7 +4614,6 @@ public enum GraphAPI {
         case "backers_can_choose_plot_v1": self = .backersCanChoosePlotV1
         case "sepa_debit_payment_element": self = .sepaDebitPaymentElement
         case "trust_and_safety_project_banner": self = .trustAndSafetyProjectBanner
-        case "partial_refunds_2024": self = .partialRefunds_2024
         case "notification_banner_update_2024": self = .notificationBannerUpdate_2024
         case "react_backed_projects": self = .reactBackedProjects
         case "copy_addons": self = .copyAddons
@@ -4572,6 +4622,7 @@ public enum GraphAPI {
         case "pledge_management_refunds": self = .pledgeManagementRefunds
         case "discover_ui_2025": self = .discoverUi_2025
         case "pledge_management_beta": self = .pledgeManagementBeta
+        case "pledge_management_reward_setup": self = .pledgeManagementRewardSetup
         case "creator_experience_2025": self = .creatorExperience_2025
         case "backings_dash_v2_2025": self = .backingsDashV2_2025
         case "secret_rewards_2025": self = .secretRewards_2025
@@ -4649,6 +4700,7 @@ public enum GraphAPI {
         case .insideVoicesFooter: return "inside_voices_footer"
         case .stackedRecsOnMobile: return "stacked_recs_on_mobile"
         case .projectPrelaunchSummaries: return "project_prelaunch_summaries"
+        case .caCurrencySelector: return "ca_currency_selector"
         case .chCurrencySelector: return "ch_currency_selector"
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
@@ -4689,7 +4741,6 @@ public enum GraphAPI {
         case .backersCanChoosePlotV1: return "backers_can_choose_plot_v1"
         case .sepaDebitPaymentElement: return "sepa_debit_payment_element"
         case .trustAndSafetyProjectBanner: return "trust_and_safety_project_banner"
-        case .partialRefunds_2024: return "partial_refunds_2024"
         case .notificationBannerUpdate_2024: return "notification_banner_update_2024"
         case .reactBackedProjects: return "react_backed_projects"
         case .copyAddons: return "copy_addons"
@@ -4698,6 +4749,7 @@ public enum GraphAPI {
         case .pledgeManagementRefunds: return "pledge_management_refunds"
         case .discoverUi_2025: return "discover_ui_2025"
         case .pledgeManagementBeta: return "pledge_management_beta"
+        case .pledgeManagementRewardSetup: return "pledge_management_reward_setup"
         case .creatorExperience_2025: return "creator_experience_2025"
         case .backingsDashV2_2025: return "backings_dash_v2_2025"
         case .secretRewards_2025: return "secret_rewards_2025"
@@ -4775,6 +4827,7 @@ public enum GraphAPI {
         case (.insideVoicesFooter, .insideVoicesFooter): return true
         case (.stackedRecsOnMobile, .stackedRecsOnMobile): return true
         case (.projectPrelaunchSummaries, .projectPrelaunchSummaries): return true
+        case (.caCurrencySelector, .caCurrencySelector): return true
         case (.chCurrencySelector, .chCurrencySelector): return true
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
@@ -4815,7 +4868,6 @@ public enum GraphAPI {
         case (.backersCanChoosePlotV1, .backersCanChoosePlotV1): return true
         case (.sepaDebitPaymentElement, .sepaDebitPaymentElement): return true
         case (.trustAndSafetyProjectBanner, .trustAndSafetyProjectBanner): return true
-        case (.partialRefunds_2024, .partialRefunds_2024): return true
         case (.notificationBannerUpdate_2024, .notificationBannerUpdate_2024): return true
         case (.reactBackedProjects, .reactBackedProjects): return true
         case (.copyAddons, .copyAddons): return true
@@ -4824,6 +4876,7 @@ public enum GraphAPI {
         case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
         case (.discoverUi_2025, .discoverUi_2025): return true
         case (.pledgeManagementBeta, .pledgeManagementBeta): return true
+        case (.pledgeManagementRewardSetup, .pledgeManagementRewardSetup): return true
         case (.creatorExperience_2025, .creatorExperience_2025): return true
         case (.backingsDashV2_2025, .backingsDashV2_2025): return true
         case (.secretRewards_2025, .secretRewards_2025): return true
@@ -4902,6 +4955,7 @@ public enum GraphAPI {
         .insideVoicesFooter,
         .stackedRecsOnMobile,
         .projectPrelaunchSummaries,
+        .caCurrencySelector,
         .chCurrencySelector,
         .dkCurrencySelector,
         .noCurrencySelector,
@@ -4942,7 +4996,6 @@ public enum GraphAPI {
         .backersCanChoosePlotV1,
         .sepaDebitPaymentElement,
         .trustAndSafetyProjectBanner,
-        .partialRefunds_2024,
         .notificationBannerUpdate_2024,
         .reactBackedProjects,
         .copyAddons,
@@ -4951,6 +5004,7 @@ public enum GraphAPI {
         .pledgeManagementRefunds,
         .discoverUi_2025,
         .pledgeManagementBeta,
+        .pledgeManagementRewardSetup,
         .creatorExperience_2025,
         .backingsDashV2_2025,
         .secretRewards_2025,
@@ -8711,6 +8765,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
@@ -8995,7 +9050,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9012,6 +9067,10 @@ public enum GraphAPI {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeSavedSearchSegment() -> Node {
+          return Node(unsafeResultMap: ["__typename": "SavedSearchSegment"])
         }
 
         public static func makeBacking() -> Node {
@@ -9452,7 +9511,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9465,6 +9524,10 @@ public enum GraphAPI {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeSavedSearchSegment() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "SavedSearchSegment"])
         }
 
         public static func makeBacking() -> Comment {
@@ -13043,6 +13106,7 @@ public enum GraphAPI {
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
@@ -14854,6 +14918,10 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
+        order {
+          __typename
+          ...OrderFragment
+        }
         paymentIncrements {
           __typename
           ...PaymentIncrementFragment
@@ -14894,6 +14962,7 @@ public enum GraphAPI {
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isLatePledge", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
+        GraphQLField("order", type: .object(Order.selections)),
         GraphQLField("paymentIncrements", type: .list(.nonNull(.object(PaymentIncrement.selections)))),
         GraphQLField("pledgedOn", type: .scalar(String.self)),
         GraphQLField("project", type: .object(Project.selections)),
@@ -14911,8 +14980,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
     }
 
     public var __typename: String {
@@ -15010,6 +15079,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "location")
+      }
+    }
+
+    /// The order associated with the backing
+    public var order: Order? {
+      get {
+        return (resultMap["order"] as? ResultMap).flatMap { Order(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "order")
       }
     }
 
@@ -15365,6 +15444,62 @@ public enum GraphAPI {
         public var locationFragment: LocationFragment {
           get {
             return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Order: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Order"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(OrderFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, checkoutState: CheckoutStateEnum, currency: CurrencyCode, total: Int? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Order", "id": id, "checkoutState": checkoutState, "currency": currency, "total": total])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var orderFragment: OrderFragment {
+          get {
+            return OrderFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -16952,6 +17087,90 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "symbol")
+      }
+    }
+  }
+
+  public struct OrderFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment OrderFragment on Order {
+        __typename
+        id
+        checkoutState
+        currency
+        total
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Order"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("checkoutState", type: .nonNull(.scalar(CheckoutStateEnum.self))),
+        GraphQLField("currency", type: .nonNull(.scalar(CurrencyCode.self))),
+        GraphQLField("total", type: .scalar(Int.self)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, checkoutState: CheckoutStateEnum, currency: CurrencyCode, total: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Order", "id": id, "checkoutState": checkoutState, "currency": currency, "total": total])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// The state of checkout (taking into account order and cart status)
+    public var checkoutState: CheckoutStateEnum {
+      get {
+        return resultMap["checkoutState"]! as! CheckoutStateEnum
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "checkoutState")
+      }
+    }
+
+    /// The currency of the order
+    public var currency: CurrencyCode {
+      get {
+        return resultMap["currency"]! as! CurrencyCode
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "currency")
+      }
+    }
+
+    /// The total cost for the order including taxes and shipping
+    public var total: Int? {
+      get {
+        return resultMap["total"] as? Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "total")
       }
     }
   }

@@ -18,6 +18,9 @@ fragment BackingFragment on Backing {
   location {
     ...LocationFragment
   }
+  order {
+    ...OrderFragment
+  }
   paymentIncrements {
     ...PaymentIncrementFragment
   }
