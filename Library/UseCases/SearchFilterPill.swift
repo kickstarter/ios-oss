@@ -12,14 +12,6 @@ public struct SearchFilterPill: Identifiable {
   public let filterType: FilterType
   public let buttonType: ButtonType
 
-  public var isImage: Bool {
-    if case let .image(string) = buttonType {
-      return true
-    }
-
-    return false
-  }
-
   /// What kind of option the pill represents.
   public enum FilterType {
     case sort
