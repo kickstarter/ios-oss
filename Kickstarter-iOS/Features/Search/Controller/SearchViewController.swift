@@ -129,15 +129,12 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func bindViewModel() {
-    Signal.combineLatest(
-      self.viewModel.outputs.isProjectsTitleVisible,
-      self.viewModel.outputs.projects
-    )
-    .observeForUI()
-    .observeValues { [weak self] showTitle, projects in
-      self?.dataSource.load(projects: projects, withDiscoverTitle: showTitle)
-      self?.tableView.reloadData()
-    }
+    self.viewModel.outputs.projectsAndTitle
+      .observeForUI()
+      .observeValues { [weak self] showTitle, projects in
+        self?.dataSource.load(projects: projects, withDiscoverTitle: showTitle)
+        self?.tableView.reloadData()
+      }
 
     self.viewModel.outputs.searchLoaderIndicatorIsAnimating
       .observeForUI()

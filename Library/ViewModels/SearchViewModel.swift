@@ -66,6 +66,9 @@ public protocol SearchViewModelOutputs {
   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[SearchResultCard], Never> { get }
 
+  /// A combination of `isProjectsTitleVisible` and `projects`. Used to power the datasource.
+  var projectsAndTitle: Signal<(Bool, [SearchResultCard]), Never> { get }
+
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), Never> { get }
 
@@ -340,6 +343,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { results in
         results.count > 0
       }
+
+    self.projectsAndTitle = Signal.combineLatest(
+      self.isProjectsTitleVisible,
+      self.projects
+    )
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -421,6 +429,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
   public let showSortAndFilterHeader: Signal<Bool, Never>
+  public let projectsAndTitle: Signal<(Bool, [SearchResultCard]), Never>
 
   public var showSort: Signal<SearchSortSheet, Never> {
     return self.searchFiltersUseCase.showSort
