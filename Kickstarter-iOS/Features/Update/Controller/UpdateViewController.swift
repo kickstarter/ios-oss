@@ -97,7 +97,7 @@ internal final class UpdateViewController: WebViewController {
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
-    let projectParam = Either<Project, Param>(left: project)
+    let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: RefInfo(refTag)
