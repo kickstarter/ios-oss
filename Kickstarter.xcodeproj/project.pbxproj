@@ -1621,7 +1621,7 @@
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
-		E10675642DA58AB4007CCA24 /* SearchFiltersHeaderPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675632DA58AB4007CCA24 /* SearchFiltersHeaderPills.swift */; };
+		E10675642DA58AB4007CCA24 /* SearchFiltersHeaderViewPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675632DA58AB4007CCA24 /* SearchFiltersHeaderViewPills.swift */; };
 		E10675662DA5A6E9007CCA24 /* SearchFilterPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -3404,7 +3404,7 @@
 		D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateType.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
-		E10675632DA58AB4007CCA24 /* SearchFiltersHeaderPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderPills.swift; sourceTree = "<group>"; };
+		E10675632DA58AB4007CCA24 /* SearchFiltersHeaderViewPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewPills.swift; sourceTree = "<group>"; };
 		E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterPill.swift; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -7681,7 +7681,7 @@
 		E1CFB6B62D91E99F004AB0D6 /* HeaderView */ = {
 			isa = PBXGroup;
 			children = (
-				E10675632DA58AB4007CCA24 /* SearchFiltersHeaderPills.swift */,
+				E10675632DA58AB4007CCA24 /* SearchFiltersHeaderViewPills.swift */,
 				E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */,
 			);
 			path = HeaderView;
@@ -9134,6 +9134,7 @@
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				60FF346B2DA7FC3C003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */,
 				E10675642DA58AB4007CCA24 /* SearchFiltersHeaderPills.swift in Sources */,
+				E10675642DA58AB4007CCA24 /* SearchFiltersHeaderViewPills.swift in Sources */,
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
 				E1CFB5972D8E0107004AB0D6 /* Category+FilterCategory.swift in Sources */,
 				D6600786240EFD6300AC1EDB /* CuratedProjectsViewController.swift in Sources */,
