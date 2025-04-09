@@ -4,17 +4,20 @@ import SwiftUI
 internal struct ImagePillLabel: View {
   let image: UIImage
   var body: some View {
-    Image(uiImage: self.image)
-      .renderingMode(.template)
-      .aspectRatio(1.0, contentMode: .fit)
-      .padding(
-        EdgeInsets(
-          top: Styles.gridHalf(1),
-          leading: Styles.gridHalf(1),
-          bottom: Styles.gridHalf(1),
-          trailing: Styles.gridHalf(1)
-        )
+    Text(
+      // Wrapping the image in a text causes it to resize along with the font size.
+      Image(uiImage: self.image)
+        .renderingMode(.template)
+    )
+    .aspectRatio(1.0, contentMode: .fit)
+    .padding(
+      EdgeInsets(
+        top: Styles.gridHalf(1),
+        leading: Styles.gridHalf(1),
+        bottom: Styles.gridHalf(1),
+        trailing: Styles.gridHalf(1)
       )
+    )
   }
 }
 
@@ -23,9 +26,11 @@ internal struct DropdownPillLabel: View {
   var body: some View {
     HStack {
       Text(self.title)
-      Spacer()
-      Image("arrow-down", bundle: Bundle.main)
-        .renderingMode(.template)
+      if let carat = Library.image(named: "arrow-down") {
+        Spacer()
+        Image(uiImage: carat)
+          .renderingMode(.template)
+      }
     }
     .padding(EdgeInsets(
       top: Styles.gridHalf(1),
