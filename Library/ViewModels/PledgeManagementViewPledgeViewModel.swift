@@ -28,11 +28,7 @@ internal final class PledgeManagementViewPledgeViewModel: PledgeManagementViewPl
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
-    self.webViewLoadRequest = project.map {
-      let urlString =
-        "\(AppEnvironment.current.apiService.serverConfig.webBaseUrl)/projects/\($0.creator.id)/\($0.slug)/backing/details"
-      return URL(string: urlString)
-    }
+    self.webViewLoadRequest = project.map(getProjectBackingDetailsURL(with:))
     .skipNil()
     .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
