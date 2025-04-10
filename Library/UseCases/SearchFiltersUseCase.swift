@@ -16,6 +16,8 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
   /// Call this when the user selects a new category.
   func selectedCategory(_ category: KsApi.Category?)
+  /// Call this when the user selects a new project state filter.
+  func selectedProjectState(_ state: DiscoveryParams.State)
   /// Call this when the clears their query and the sort options should reset.
   func clearOptions()
 }
@@ -46,6 +48,8 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
   /// The currently selected category. Defaults to nil. Default value only sent after `initialSignal` occurs.
   var selectedCategory: Signal<Category?, Never> { get }
+  /// The currently selected project state. Defaults to `.all`. Default value only sent after `initialSignal` occurs.
+  var selectedState: Signal<DiscoveryParams.State, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -83,6 +87,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedCategoryProperty.signal
     )
 
+    self.selectedState = Signal.merge(
+      self.selectedStateProperty.producer.takeWhen(initialSignal),
+      self.selectedStateProperty.signal
+    )
+
     self.isSortPillHighlighted = self.selectedSort
       .map { sort in sort != SearchFiltersUseCase.defaultSortOption }
 
@@ -116,6 +125,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       .defaultSortOption
   )
   fileprivate let selectedCategoryProperty = MutableProperty<Category?>(nil)
+  fileprivate let selectedStateProperty = MutableProperty<DiscoveryParams.State>(
+    SearchFiltersUseCase
+      .defaultStateOption
+  )
 
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[Category]>([])
@@ -131,6 +144,16 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     DiscoveryParams.Sort.most_backed
   ]
 
+  fileprivate static let defaultStateOption = DiscoveryParams.State.all
+
+  fileprivate let stateOptions = [
+    DiscoveryParams.State.all,
+    DiscoveryParams.State.live,
+    DiscoveryParams.State.late_pledge,
+    DiscoveryParams.State.upcoming,
+    DiscoveryParams.State.successful
+  ]
+
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
 
@@ -140,10 +163,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<Category?, Never>
+  public var selectedState: Signal<DiscoveryParams.State, Never>
 
   public func clearOptions() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     self.selectedCategoryProperty.value = nil
+    self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
   }
 
   public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
@@ -167,6 +192,15 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     }
 
     self.selectedCategoryProperty.value = category
+  }
+
+  public func selectedProjectState(_ state: DiscoveryParams.State) {
+    assert(
+      self.stateOptions.contains(state),
+      "Selected a state option that isn't actually available in SearchFiltersUseCase."
+    )
+
+    self.selectedStateProperty.value = state
   }
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
