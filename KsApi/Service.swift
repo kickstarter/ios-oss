@@ -394,6 +394,12 @@ public struct Service: ServiceType {
 
   public func fetchDiscovery(params: DiscoveryParams)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
+    if !params.validForAPIV1() {
+      assert(
+        false,
+        "Using a field which was added for GraphQL support in API V1. This param may have unexpected effects on an API V1 call."
+      )
+    }
     return request(.discover(params))
   }
 

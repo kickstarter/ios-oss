@@ -24,6 +24,8 @@ public struct DiscoveryParams {
     case all
     case live
     case successful
+    case late_pledge
+    case upcoming
   }
 
   public enum Sort: String, Decodable {
@@ -164,4 +166,49 @@ private func stringIntToBool(_ string: String?) -> Bool? {
   return Int(string)
     .filter { $0 <= 1 && $0 >= -1 }
     .flatMap { ($0 == 0) ? nil : ($0 == 1) }
+}
+
+extension DiscoveryParams {
+  /// We're using `DiscoveryParams` in two places: Discover, which is powered by API V1,
+  /// and Search, which is now powered by GraphQL (using the `projects` query; see `SearchQuery.graphql`).
+  /// Search uses `DiscoveryParams` because our Search analytics is tightly coupled with `DiscoveryParams`,
+  /// and we haven't had the chance to fix that yet.
+  ///
+  /// This function validates that the params are only using enum values which are available in API V1, _not_ values
+  /// which were added for Search/GraphQL support.
+
+  func validForAPIV1() -> Bool {
+    if let sort = self.sort {
+      switch sort {
+      case .endingSoon:
+        break
+      case .magic:
+        break
+      case .newest:
+        break
+      case .popular:
+        break
+      case .most_funded:
+        return false
+      case .most_backed:
+        return false
+      }
+    }
+
+    if let state = self.state {
+      switch state {
+      case .all:
+        break
+      case .live:
+        break
+      case .successful:
+        break
+      case .late_pledge:
+        return false
+      case .upcoming:
+        return false
+      }
+    }
+    return true
+  }
 }
