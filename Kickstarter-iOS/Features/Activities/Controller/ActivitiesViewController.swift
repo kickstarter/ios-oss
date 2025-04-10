@@ -190,13 +190,13 @@ internal final class ActivitiesViewController: UITableViewController {
   ) {
     switch cell {
     case let updateCell as ActivityUpdateCell:
-      if updateCell.delegate == nil { updateCell.delegate = self }
+      updateCell.delegate = self
     case let surveyCell as ActivitySurveyResponseCell:
-      if surveyCell.delegate == nil { surveyCell.delegate = self }
+      surveyCell.delegate = self
     case let erroredCell as ActivityErroredBackingsCell:
-      if erroredCell.delegate == nil { erroredCell.delegate = self }
+      erroredCell.delegate = self
     case let trackingCell as RewardTrackingActivitiesCell:
-      if trackingCell.delegate == nil { trackingCell.delegate = self }
+      trackingCell.delegate = self
     default:
       break
     }

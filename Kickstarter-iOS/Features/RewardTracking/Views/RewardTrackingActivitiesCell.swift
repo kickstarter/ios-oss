@@ -119,11 +119,6 @@ final class RewardTrackingActivitiesCell: UITableViewCell, ValueCell {
   internal func configureWith(value data: RewardTrackingActivitiesCellData) {
     self.rewardTrackingDetailsView.configure(with: data.trackingData)
     self.viewModel.inputs.configure(with: data.project)
-
-    self.rewardTrackingDetailsView.setNeedsLayout()
-    self.rewardTrackingDetailsView.layoutIfNeeded()
-    self.contentView.setNeedsLayout()
-    self.contentView.layoutIfNeeded()
   }
 }
 
