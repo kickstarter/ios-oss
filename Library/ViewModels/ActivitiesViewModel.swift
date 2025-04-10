@@ -293,12 +293,16 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .skipNil()
       .filter { _ in featureRewardShipmentTrackingEnabled() }
       .map {
-        let trackingData = RewardTrackingDetailsViewData(
-          trackingNumber: "1234567890",
-          trackingURL: URL(string: "https://ksr.com")!,
-          shippingDate: Date().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
-        )
-        return [RewardTrackingActivitiesCellData(trackingData: trackingData, project: $0)]
+        #if DEBUG
+          let trackingData = RewardTrackingDetailsViewData(
+            trackingNumber: "1234567890",
+            trackingURL: URL(string: "https://ksr.com")!,
+            shippingDate: Date().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
+          )
+          return [RewardTrackingActivitiesCellData(trackingData: trackingData, project: $0)]
+        #else
+          return []
+        #endif
       }
 
     self.goToTrackShipping = self.tappedTrackShippingProperty.signal.skipNil()
