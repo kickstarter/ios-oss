@@ -9,6 +9,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   private let selectedSort = TestObserver<DiscoveryParams.Sort, Never>()
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
+  private let selectedState = TestObserver<DiscoveryParams.State, Never>()
   private let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
   private let showSort = TestObserver<SearchSortSheet, Never>()
   private let pills = TestObserver<[SearchFilterPill], Never>()
@@ -28,6 +29,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.dataOuputs.selectedCategory.observe(self.selectedCategory.observer)
     self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
+    self.useCase.dataOuputs.selectedState.observe(self.selectedState.observer)
     self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
     self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
     self.useCase.uiOutputs.pills.observe(self.pills.observer)
@@ -53,6 +55,14 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.selectedSort.assertLastValue(.magic)
+  }
+
+  func test_state_onInitialSignal_isAll() {
+    self.selectedState.assertDidNotEmitValue()
+
+    self.initialObserver.send(value: ())
+
+    self.selectedState.assertLastValue(.all)
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -144,6 +154,21 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(newSelectedSort, .endingSoon, "Sort value should change when new sort is selected")
+  }
+
+  func test_selectingState_updatesState() {
+    self.initialObserver.send(value: ())
+
+    self.selectedState.assertLastValue(.all)
+
+    self.useCase.inputs.selectedProjectState(.late_pledge)
+
+    guard let newSelectedState = self.selectedState.lastValue else {
+      XCTFail("There should be a new selected state")
+      return
+    }
+
+    XCTAssertEqual(newSelectedState, .late_pledge, "State value should change when new state is selected")
   }
 
   func test_selectingSort_updatesSortPill() {
