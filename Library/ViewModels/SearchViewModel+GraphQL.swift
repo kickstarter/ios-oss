@@ -19,6 +19,24 @@ extension GraphAPI.ProjectSort {
   }
 }
 
+extension GraphAPI.PublicProjectState {
+  static func from(discovery state: DiscoveryParams.State) -> GraphAPI.PublicProjectState? {
+    switch state {
+    case .all:
+      // Returning all results means we're not filtering to any particular state
+      return nil
+    case .live:
+      return GraphAPI.PublicProjectState.live
+    case .successful:
+      return GraphAPI.PublicProjectState.successful
+    case .late_pledge:
+      return GraphAPI.PublicProjectState.latePledge
+    case .upcoming:
+      return GraphAPI.PublicProjectState.upcoming
+    }
+  }
+}
+
 extension GraphAPI.SearchQuery {
   static func from(
     discoveryParams params: DiscoveryParams,
@@ -31,11 +49,13 @@ extension GraphAPI.SearchQuery {
     } else {
       categoryId = nil
     }
+    let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
 
     return GraphAPI.SearchQuery(
       term: params.query,
       sort: sort,
       categoryId: categoryId,
+      state: state,
       first: params.perPage,
       cursor: cursor
     )
@@ -47,6 +67,7 @@ extension DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = .popular
     params.perPage = 15
+    params.state = .live
     return params
   }
 
@@ -56,6 +77,7 @@ extension DiscoveryParams {
     params.query = query
     params.category = category
     params.perPage = 15
+    params.state = .all
     return params
   }
 }
