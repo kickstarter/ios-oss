@@ -67,17 +67,22 @@ extension DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = .popular
     params.perPage = 15
-    params.state = .live
+    params.state = .all
     return params
   }
 
-  static func withQuery(_ query: String, sort: DiscoveryParams.Sort, category: Category?) -> DiscoveryParams {
+  static func withQuery(
+    _ query: String,
+    sort: DiscoveryParams.Sort,
+    category: Category?,
+    state: DiscoveryParams.State?
+  ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
     params.query = query
     params.category = category
     params.perPage = 15
-    params.state = .all
+    params.state = state
     return params
   }
 }
