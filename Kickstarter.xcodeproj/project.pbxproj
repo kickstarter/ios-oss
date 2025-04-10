@@ -621,6 +621,9 @@
 		60F03AC12D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */; };
 		60F03AC42D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */; };
 		60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */; };
+		60FF346B2DA7FC3C003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */; };
+		60FF346E2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */; };
+		60FF346F2DA803C5003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
 		7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848829BE4C11008F9941 /* MessageBannerView.swift */; };
@@ -2370,6 +2373,8 @@
 		60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewCell.swift; sourceTree = "<group>"; };
 		60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
+		60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewModel.swift; sourceTree = "<group>"; };
+		60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewModelTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -3472,6 +3477,10 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		60FF34652DA7F904003598A9 /* PledgeManagement */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PledgeManagement; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -5045,6 +5054,7 @@
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
 				1937A6F128C92F0C00DD732D /* PledgeAmount */,
 				1937A6F028C92F0000DD732D /* PledgeAmountSummary */,
+				60FF34652DA7F904003598A9 /* PledgeManagement */,
 				33785F712CD9ADB8004B148E /* PledgeOverTime */,
 				19A97D3928C802230031B857 /* PledgePaymentMethods */,
 				1937A70428C9392600DD732D /* PledgeShippingLocation */,
@@ -7003,6 +7013,8 @@
 				8A13D16D24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift */,
 				8A13D16024955A2E007E2C0B /* PledgeExpandableRewardsHeaderViewModel.swift */,
 				8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */,
+				60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */,
+				60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */,
 				33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */,
 				33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */,
 				8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */,
@@ -7761,6 +7773,9 @@
 			dependencies = (
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
 			);
+			fileSystemSynchronizedGroups = (
+				60FF34652DA7F904003598A9 /* PledgeManagement */,
+			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
@@ -8328,6 +8343,7 @@
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				D79A01A52242E91E004BC6A8 /* PushNotificationDialogType.swift in Sources */,
+				60FF346F2DA803C5003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */,
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
@@ -8864,6 +8880,7 @@
 				33F55B412D4A6DDD0007E50E /* PledgePaymentIncrementFormattedTest.swift in Sources */,
 				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
 				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
+				60FF346E2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
 				60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */,
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
@@ -9100,6 +9117,7 @@
 				6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
+				60FF346B2DA7FC3C003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */,
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
 				E1CFB5972D8E0107004AB0D6 /* Category+FilterCategory.swift in Sources */,
 				D6600786240EFD6300AC1EDB /* CuratedProjectsViewController.swift in Sources */,
