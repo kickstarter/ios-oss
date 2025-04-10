@@ -31,4 +31,19 @@ extension UIView {
 
     NSLayoutConstraint.activate(constraints)
   }
+
+  public func constrainViewToMargins(in parentView: UIView, priority: UILayoutPriority = .required) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+
+    let constraints = [
+      self.leadingAnchor.constraint(equalTo: parentView.layoutMarginsGuide.leadingAnchor),
+      self.trailingAnchor.constraint(equalTo: parentView.layoutMarginsGuide.trailingAnchor),
+      self.topAnchor.constraint(equalTo: parentView.layoutMarginsGuide.topAnchor),
+      self.bottomAnchor.constraint(equalTo: parentView.layoutMarginsGuide.bottomAnchor)
+    ]
+
+    constraints.forEach { $0.priority = priority }
+
+    NSLayoutConstraint.activate(constraints)
+  }
 }
