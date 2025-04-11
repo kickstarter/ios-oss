@@ -29,7 +29,7 @@ extension Project: HasProjectCreatorProperties {
   }
 }
 
-public typealias ProjectCreatorConfiguration = HasProjectCreatorProperties & HasServiceProjectWebURL
+public typealias ProjectCreatorConfiguration = HasProjectCreatorProperties & HasProjectWebURL
 
 public protocol ProjectCreatorViewModelInputs {
   /// Call with the project given to the view.

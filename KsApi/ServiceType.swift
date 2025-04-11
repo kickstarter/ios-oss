@@ -318,11 +318,11 @@ public protocol ServiceType {
   func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope>
 
   /// Increment the video complete stat for a project.
-  func incrementVideoCompletion(for project: any HasServiceProjectWebURL)
+  func incrementVideoCompletion(for project: any HasProjectWebURL)
     -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Increment the video start stat for a project.
-  func incrementVideoStart(forProject project: any HasServiceProjectWebURL)
+  func incrementVideoStart(forProject project: any HasProjectWebURL)
     -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Attempt a login with an email, password and optional code.

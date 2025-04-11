@@ -21,8 +21,8 @@ internal enum Route {
   case friendStats
   case followAllFriends
   case followFriend(userId: Int)
-  case incrementVideoCompletion(project: any HasServiceProjectWebURL)
-  case incrementVideoStart(project: any HasServiceProjectWebURL)
+  case incrementVideoCompletion(project: any HasProjectWebURL)
+  case incrementVideoStart(project: any HasProjectWebURL)
   case login(email: String, password: String, code: String?)
   case markAsRead(MessageThread)
   case messagesForThread(messageThreadId: Int)
