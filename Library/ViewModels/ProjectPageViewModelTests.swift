@@ -25,7 +25,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
-  private let configureDataSourceProject = TestObserver<Project, Never>()
+  private let configureDataSourceProject = TestObserver<Either<Project, any ProjectPageParam>, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewErrorEnvelope = TestObserver<ErrorEnvelope, Never>()
@@ -229,7 +229,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refInfo: nil)
+      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(project.id)), refInfo: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -312,11 +312,11 @@ final class ProjectPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.stats.currency,
+        self.configureDataSourceProject.lastValue?.left?.stats.currency,
         Project.Country.us.currencyCode
       )
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.country,
+        self.configureDataSourceProject.lastValue?.left?.country,
         Project.Country.us
       )
     }
@@ -402,11 +402,11 @@ final class ProjectPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.stats.currency,
+        self.configureDataSourceProject.lastValue?.left?.stats.currency,
         Project.Country.mx.currencyCode
       )
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.country,
+        self.configureDataSourceProject.lastValue?.left?.country,
         Project.Country.us
       )
     }
@@ -2223,7 +2223,7 @@ final class ProjectPageViewModelTests: TestCase {
 
   // MARK: - Functions
 
-  private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
+  private func configureInitialState(_ projectOrParam: Either<Project, any ProjectPageParam>) {
     self.vm.inputs.configureWith(projectOrParam: projectOrParam, refInfo: RefInfo(.discovery))
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear(animated: false)
