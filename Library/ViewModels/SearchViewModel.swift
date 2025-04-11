@@ -31,17 +31,15 @@ public protocol SearchViewModelInputs {
   /// Call when a project is tapped.
   func tapped(projectAtIndex index: Int)
 
-  /// Call when the sort button is tapped.
-  func tappedSort()
+  /// Call this when the user taps on a button to show one of the sort options.
+  func tappedButton(forFilterType type: SearchFilterPill.FilterType)
 
-  /// Call when the category filter button is tapped.
-  func tappedCategoryFilter()
-
-  /// Call when a new sort option has been selected.
+  /// Call this when the user selects a new sort option.
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
-
-  /// Call when a new category is selected.
+  /// Call this when the user selects a new category.
   func selectedCategory(_ category: KsApi.Category?)
+  /// Call this when the user selects a new project state filter.
+  func selectedProjectState(_ state: DiscoveryParams.State)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -84,11 +82,8 @@ public protocol SearchViewModelOutputs {
   /// Emits true when there are search or discover results, and we should show the UI to sort and filter those results.
   var showSortAndFilterHeader: Signal<Bool, Never> { get }
 
-  /// Emits a model object with possible category options when the category filter button is tapped.
-  var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
-
-  /// Emits a model object with possible sort options when the sort button is tapped.
-  var showSort: Signal<SearchSortSheet, Never> { get }
+  /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
+  var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
 
   /// Sends an array of model objects which represent filter options, to be displayed in the search filter header.
   var pills: Signal<[SearchFilterPill], Never> { get }
@@ -397,20 +392,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public func tappedSort() {
-    self.searchFiltersUseCase.tappedSort()
-  }
-
-  public func tappedCategoryFilter() {
-    self.searchFiltersUseCase.tappedCategoryFilter()
-  }
-
-  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
-    self.searchFiltersUseCase.inputs.selectedSortOption(sort)
-  }
-
-  public func selectedCategory(_ category: KsApi.Category?) {
-    self.searchFiltersUseCase.inputs.selectedCategory(category)
+  public func tappedButton(forFilterType type: SearchFilterPill.FilterType) {
+    self.searchFiltersUseCase.inputs.tappedButton(forFilterType: type)
   }
 
   private let categoriesUseCase: FetchCategoriesUseCase
@@ -427,12 +410,20 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let showSortAndFilterHeader: Signal<Bool, Never>
   public let projectsAndTitle: Signal<(Bool, [SearchResultCard]), Never>
 
-  public var showSort: Signal<SearchSortSheet, Never> {
-    return self.searchFiltersUseCase.showSort
+  public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> {
+    return self.searchFiltersUseCase.showFilters
   }
 
-  public var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> {
-    return self.searchFiltersUseCase.showCategoryFilters
+  public func selectedCategory(_ category: KsApi.Category?) {
+    self.searchFiltersUseCase.selectedCategory(category)
+  }
+
+  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
+    self.searchFiltersUseCase.selectedSortOption(sort)
+  }
+
+  public func selectedProjectState(_ state: DiscoveryParams.State) {
+    self.searchFiltersUseCase.selectedProjectState(state)
   }
 
   public var pills: Signal<[SearchFilterPill], Never> {
