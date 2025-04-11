@@ -1,5 +1,5 @@
-import KsApi
 import Foundation
+import KsApi
 
 public func getProjectBackingDetailsURL(with project: Project) -> URL? {
   let urlString =

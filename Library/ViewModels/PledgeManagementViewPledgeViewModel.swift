@@ -29,8 +29,8 @@ internal final class PledgeManagementViewPledgeViewModel: PledgeManagementViewPl
       .map(first)
 
     self.webViewLoadRequest = project.map(getProjectBackingDetailsURL(with:))
-    .skipNil()
-    .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+      .skipNil()
+      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
 
   internal var inputs: PledgeManagementViewPledgeViewModelInputs { return self }

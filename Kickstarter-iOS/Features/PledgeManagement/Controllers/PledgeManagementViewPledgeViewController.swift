@@ -14,7 +14,7 @@ internal final class PledgeManagementViewPledgeViewController: WebViewController
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     self.navigationItem.title = Strings.Backing_details()
 
     if self.navigationController?.viewControllers.count == .some(1) {
