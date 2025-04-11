@@ -1,5 +1,6 @@
 import KsApi
 import ReactiveSwift
+import UIKit
 
 public protocol SearchFiltersUseCaseType {
   var inputs: SearchFiltersUseCaseInputs { get }
@@ -25,27 +26,15 @@ public protocol SearchFiltersUseCaseUIOutputs {
   var showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never> { get }
   /// Sends a model object which can be used to display sort options.
   var showSort: Signal<SearchSortSheet, Never> { get }
-
-  // FIXME: MBL-2250
-  // Wait! Before you add more pill configurations, refactor this.
-  // The pills should be a more dynamic piece of UI, but I hard-coded the
-  // two pills we needed to start.
-
-  /// Whether or not to highlight the Sort option.
-  var isSortPillHighlighted: Signal<Bool, Never> { get }
-
-  /// The title for the category pill.
-  var categoryPillTitle: Signal<String, Never> { get }
-
-  /// Whether or not to highlight the Category option.
-  var isCategoryPillHighlighted: Signal<Bool, Never> { get }
+  /// Sends an array of model objects which represent filter options, to be displayed in the search filter header.
+  var pills: Signal<[SearchFilterPill], Never> { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
   /// The currently selected sort option. Defaults to `.popular`. Default value only sent after `initialSignal` occurs.
   var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
   /// The currently selected category. Defaults to nil. Default value only sent after `initialSignal` occurs.
-  var selectedCategory: Signal<Category?, Never> { get }
+  var selectedCategory: Signal<KsApi.Category?, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -83,18 +72,21 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedCategoryProperty.signal
     )
 
-    self.isSortPillHighlighted = self.selectedSort
-      .map { sort in sort != SearchFiltersUseCase.defaultSortOption }
-
-    self.categoryPillTitle = self.selectedCategory.map { category in
-      if let name = category?.name {
-        return name
+    self.pills = Signal.combineLatest(self.selectedSort, self.selectedCategory)
+      .map { sort, category in
+        [
+          SearchFilterPill(
+            isHighlighted: sort != SearchFiltersUseCase.defaultSortOption,
+            filterType: .sort,
+            buttonType: .image("icon-sort")
+          ),
+          SearchFilterPill(
+            isHighlighted: category != nil,
+            filterType: .category,
+            buttonType: .dropdown(category?.name ?? Strings.Category())
+          )
+        ]
       }
-
-      return Strings.Category()
-    }
-
-    self.isCategoryPillHighlighted = self.selectedCategory.map { $0 != nil }
   }
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
@@ -115,10 +107,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     SearchFiltersUseCase
       .defaultSortOption
   )
-  fileprivate let selectedCategoryProperty = MutableProperty<Category?>(nil)
+  fileprivate let selectedCategoryProperty = MutableProperty<KsApi.Category?>(nil)
 
   // Used for some extra sanity assertions.
-  fileprivate let categoriesProperty = MutableProperty<[Category]>([])
+  fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
 
   fileprivate static let defaultSortOption = DiscoveryParams.Sort.magic
 
@@ -134,12 +126,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public let showCategoryFilters: Signal<SearchFilterCategoriesSheet, Never>
   public let showSort: Signal<SearchSortSheet, Never>
 
-  public let isSortPillHighlighted: Signal<Bool, Never>
-  public let categoryPillTitle: Signal<String, Never>
-  public let isCategoryPillHighlighted: Signal<Bool, Never>
+  public let pills: Signal<[SearchFilterPill], Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
-  public var selectedCategory: Signal<Category?, Never>
+  public var selectedCategory: Signal<KsApi.Category?, Never>
 
   public func clearOptions() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
@@ -155,7 +145,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedSortProperty.value = sort
   }
 
-  public func selectedCategory(_ maybeCategory: Category?) {
+  public func selectedCategory(_ maybeCategory: KsApi.Category?) {
     guard let category = maybeCategory else {
       self.selectedCategoryProperty.value = nil
       return
@@ -176,7 +166,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
 public struct SearchFilterCategoriesSheet {
   public let categories: [KsApi.Category]
-  public let selectedCategory: Category?
+  public let selectedCategory: KsApi.Category?
 }
 
 public struct SearchSortSheet {

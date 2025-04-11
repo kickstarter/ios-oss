@@ -25,8 +25,8 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let showSort = TestObserver<SearchSortSheet, Never>()
   fileprivate let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
   fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
-  fileprivate let isSortPillHighlighted = TestObserver<Bool, Never>()
-  fileprivate let isCategoryPillHighlighted = TestObserver<Bool, Never>()
+  fileprivate let categoryPill = TestObserver<SearchFilterPill, Never>()
+  fileprivate let sortPill = TestObserver<SearchFilterPill, Never>()
 
   override func setUp() {
     super.setUp()
@@ -52,8 +52,13 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.showSortAndFilterHeader.observe(self.showSortAndFilterHeader.observer)
     self.vm.outputs.showSort.observe(self.showSort.observer)
     self.vm.outputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
-    self.vm.outputs.isCategoryPillHighlighted.observe(self.isCategoryPillHighlighted.observer)
-    self.vm.outputs.isSortPillHighlighted.observe(self.isSortPillHighlighted.observer)
+
+    self.vm.outputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .sort })
+    }.skipNil().observe(self.sortPill.observer)
+    self.vm.outputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .category })
+    }.skipNil().observe(self.categoryPill.observer)
   }
 
   func testSearchPopularFeatured_RefTag() {
@@ -253,28 +258,42 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted, false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.clearSearchText()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Clearing text should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Clearing text should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
     }
   }
 
@@ -301,28 +320,43 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.cancelButtonPressed()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Clearing text should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Clearing text should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
     }
   }
 
@@ -350,30 +384,45 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Canceling search should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Canceling search should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Canceling search should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Canceling search should clear category")
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
     }
   }
 
@@ -401,31 +450,55 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          true,
+          "Selecting sort should highlight sort pill"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test two")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(true, "Changing text shouldn't change sort")
-      self.isCategoryPillHighlighted.assertLastValue(true, "Changing text shouldn't change category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          true, "Changing text shouldn't change sort"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted, true, "Changing text shouldn't change category"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
     }
   }
 
