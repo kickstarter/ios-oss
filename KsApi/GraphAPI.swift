@@ -2611,6 +2611,73 @@ public enum GraphAPI {
     }
   }
 
+  /// Publically visible project states.
+  public enum PublicProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// Active and accepting pledges.
+    case live
+    /// Successfully funded by deadline.
+    case successful
+    /// Failed to fund by deadline.
+    case failed
+    /// Project is submitted and in prelaunch state.
+    case submitted
+    /// Project that is in prelaunch.
+    case upcoming
+    /// Project that is successful and accepting late pledges.
+    case latePledge
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "LIVE": self = .live
+        case "SUCCESSFUL": self = .successful
+        case "FAILED": self = .failed
+        case "SUBMITTED": self = .submitted
+        case "UPCOMING": self = .upcoming
+        case "LATE_PLEDGE": self = .latePledge
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .live: return "LIVE"
+        case .successful: return "SUCCESSFUL"
+        case .failed: return "FAILED"
+        case .submitted: return "SUBMITTED"
+        case .upcoming: return "UPCOMING"
+        case .latePledge: return "LATE_PLEDGE"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: PublicProjectState, rhs: PublicProjectState) -> Bool {
+      switch (lhs, rhs) {
+        case (.live, .live): return true
+        case (.successful, .successful): return true
+        case (.failed, .failed): return true
+        case (.submitted, .submitted): return true
+        case (.upcoming, .upcoming): return true
+        case (.latePledge, .latePledge): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [PublicProjectState] {
+      return [
+        .live,
+        .successful,
+        .failed,
+        .submitted,
+        .upcoming,
+        .latePledge,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -13977,11 +14044,12 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
           categoryId: $categoryId
+          state: $state
           after: $cursor
           first: $first
         ) {
@@ -14014,19 +14082,21 @@ public enum GraphAPI {
     public var term: String?
     public var sort: ProjectSort?
     public var categoryId: String?
+    public var state: PublicProjectState?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
+      self.state = state
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14034,7 +14104,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 
