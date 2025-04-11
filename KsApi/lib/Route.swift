@@ -21,8 +21,8 @@ internal enum Route {
   case friendStats
   case followAllFriends
   case followFriend(userId: Int)
-  case incrementVideoCompletion(project: ServiceProjectWebURL)
-  case incrementVideoStart(project: ServiceProjectWebURL)
+  case incrementVideoCompletion(project: any HasServiceProjectWebURL)
+  case incrementVideoStart(project: any HasServiceProjectWebURL)
   case login(email: String, password: String, code: String?)
   case markAsRead(MessageThread)
   case messagesForThread(messageThreadId: Int)
@@ -120,7 +120,7 @@ internal enum Route {
         return (.POST, "v1/users/self/friends", ["followed_id": userId], nil)
 
       case let .incrementVideoCompletion(project):
-        let statsURL = URL(string: project.projectWebURL)?
+        let statsURL = URL(string: project.serviceProjectWebURL)?
           .appendingPathComponent("video/plays")
         return (
           .POST,
@@ -130,7 +130,7 @@ internal enum Route {
         )
 
       case let .incrementVideoStart(project):
-        let statsURL = URL(string: project.projectWebURL)?
+        let statsURL = URL(string: project.serviceProjectWebURL)?
           .appendingPathComponent("video/plays")
         return (.POST, statsURL?.absoluteString ?? "", ["event_type": "start", "location": "internal"], nil)
 

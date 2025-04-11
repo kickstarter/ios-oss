@@ -151,7 +151,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.incrementVideoCompletion = Signal.combineLatest(project, videoCompleted)
       .map(first)
       .switchMap {
-        AppEnvironment.current.apiService.incrementVideoCompletion(forProject: $0)
+        AppEnvironment.current.apiService.incrementVideoCompletion(for: $0)
           .demoteErrors()
       }
 
@@ -268,7 +268,8 @@ public protocol HasVideoViewProperties {
   var videoViewProperties: VideoViewProperties { get }
 }
 
-public typealias VideoViewConfiguration = HasServiceProjectWebURL & HasVideoViewProperties & ProjectAnalyticsProperties
+public typealias VideoViewConfiguration = HasServiceProjectWebURL & HasVideoViewProperties &
+  ProjectAnalyticsProperties
 
 public struct VideoViewPropertiesBox: VideoViewProperties {
   public let video: (hls: String?, high: String)?

@@ -8,9 +8,9 @@ public protocol HasProjectPamphletMainCellProperties {
 }
 
 public typealias ProjectPamphletMainCellConfiguration = HasProjectPamphletMainCellProperties &
+  ProjectAnalyticsProperties &
   ProjectCreatorConfiguration &
-  VideoViewConfiguration &
-  ProjectAnalyticsProperties
+  VideoViewConfiguration
 
 public struct ProjectPamphletMainCellProperties {
   public let param: Param

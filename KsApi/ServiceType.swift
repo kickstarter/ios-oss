@@ -318,7 +318,7 @@ public protocol ServiceType {
   func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope>
 
   /// Increment the video complete stat for a project.
-  func incrementVideoCompletion(forProject project: any HasServiceProjectWebURL)
+  func incrementVideoCompletion(for project: any HasServiceProjectWebURL)
     -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Increment the video start stat for a project.
@@ -641,29 +641,5 @@ extension ServiceType {
     }
 
     return components
-  }
-}
-
-public struct ServiceProjectWebURL {
-  public let projectWebURL: String
-
-  public init(projectWebURL: String) {
-    self.projectWebURL = projectWebURL
-  }
-}
-
-public protocol HasServiceProjectWebURL {
-  var serviceProjectWebURL: ServiceProjectWebURL { get }
-}
-
-extension Project: HasServiceProjectWebURL {
-  public var serviceProjectWebURL: ServiceProjectWebURL {
-    ServiceProjectWebURL(projectWebURL: self.urls.web.project)
-  }
-}
-
-extension GraphAPI.ProjectFragment: HasServiceProjectWebURL {
-  public var serviceProjectWebURL: ServiceProjectWebURL {
-    ServiceProjectWebURL(projectWebURL: self.url)
   }
 }

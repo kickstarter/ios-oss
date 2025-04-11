@@ -744,9 +744,9 @@ public struct Service: ServiceType {
     return request(.followFriend(userId: id))
   }
 
-  public func incrementVideoCompletion(forProject project: any HasServiceProjectWebURL) ->
+  public func incrementVideoCompletion(for project: any HasServiceProjectWebURL) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    let producer = request(.incrementVideoCompletion(project: project.serviceProjectWebURL))
+    let producer = request(.incrementVideoCompletion(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>
 
     return producer
@@ -760,7 +760,7 @@ public struct Service: ServiceType {
 
   public func incrementVideoStart(forProject project: any HasServiceProjectWebURL) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    let producer = request(.incrementVideoStart(project: project.serviceProjectWebURL))
+    let producer = request(.incrementVideoStart(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>
 
     return producer
