@@ -36,6 +36,7 @@ public struct ProjectPamphletMainCellProperties {
   public let goal: Money
   public let pledged: Money
   public let currency: String
+  public let currentCurrency: String?
   public let country: Project.Country
   public let projectNotice: String?
   public let video: (hls: String?, high: String)?
@@ -63,6 +64,7 @@ public struct ProjectPamphletMainCellProperties {
     goal: Money,
     pledged: Money,
     currency: String,
+    currentCurrency: String?,
     country: Project.Country,
     projectNotice: String?,
     video: (hls: String?, high: String)?,
@@ -89,6 +91,7 @@ public struct ProjectPamphletMainCellProperties {
     self.goal = goal
     self.pledged = pledged
     self.currency = currency
+    self.currentCurrency = currentCurrency
     self.country = country
     self.projectNotice = projectNotice
     self.video = video
@@ -130,6 +133,7 @@ extension Project: HasProjectPamphletMainCellProperties {
         symbol: self.country.currencySymbol
       ),
       currency: self.stats.currency,
+      currentCurrency: self.stats.currentCurrency,
       country: self.country,
       projectNotice: self.extendedProjectProperties?.projectNotice,
       video: self.video.map { ($0.hls, $0.high) },
@@ -183,7 +187,7 @@ extension ProjectPamphletMainCellProperties {
 
   /// Project pledge & goal values need conversion
   public var needsConversion: Bool {
-    let currentCurrency = self.currency
+    let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
 
     return self.currency != currentCurrency
   }

@@ -141,6 +141,7 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
       goal: moneyFragmentToMoney(self.goal?.fragments.moneyFragment),
       pledged: moneyFragmentToMoney(self.pledged.fragments.moneyFragment),
       currency: self.currency.rawValue,
+      currentCurrency: nil,
       country: Project.Country(currencyCode: self.country.code.rawValue) ?? .us,
       projectNotice: "",
       video: video,
