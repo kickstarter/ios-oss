@@ -19,7 +19,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
   private let isPrelaunchProject = TestObserver<Bool, Never>()
-  private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
+  private let notifyDelegateToGoToCreator = TestObserver<any ProjectPamphletMainCellConfiguration, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelText = TestObserver<String, Never>()
@@ -540,7 +540,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.opacityForViews.assertValues([0.0])
 
-    self.vm.inputs.configureWith(value: (.template, nil))
+    self.vm.inputs.configureWith(value: (Project.template, nil))
 
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
@@ -548,16 +548,17 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testNotifyDelegateToGoToCreator() {
     let project = Project.template
 
-    self.notifyDelegateToGoToCreator.assertValues([])
+    XCTAssertTrue(self.notifyDelegateToGoToCreator.values.isEmpty)
 
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.notifyDelegateToGoToCreator.assertValues([])
+    XCTAssertTrue(self.notifyDelegateToGoToCreator.values.isEmpty)
 
     self.vm.inputs.creatorButtonTapped()
 
-    self.notifyDelegateToGoToCreator.assertValues([project])
+    XCTAssertEqual(self.notifyDelegateToGoToCreator.values.count, 1)
+    XCTAssertEqual(self.notifyDelegateToGoToCreator.values.first?.id, project.id)
 
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)

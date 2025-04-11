@@ -1235,6 +1235,9 @@
 		AAE7C9A82C75948B00800E03 /* PPOProjectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */; };
 		AAE7C9AB2C75949600800E03 /* PPOProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */; };
 		AAE7C9AC2C75949600800E03 /* PPOProjectCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */; };
+		AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */; };
+		AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */; };
+		AAEABEA82DA8C03D00B09688 /* VideoViewProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
@@ -3002,6 +3005,9 @@
 		AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCard.swift; sourceTree = "<group>"; };
 		AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModelTests.swift; sourceTree = "<group>"; };
 		AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardTests.swift; sourceTree = "<group>"; };
+		AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWebURL.swift; sourceTree = "<group>"; };
+		AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
+		AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewProperties.swift; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
 		D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
@@ -7071,6 +7077,7 @@
 				A7ED1F9E1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift */,
 				D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */,
 				D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */,
+				AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */,
 				A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */,
 				A7ED1F9F1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift */,
 				D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */,
@@ -7153,6 +7160,7 @@
 				A7ED1FA71E831C5C00BFFA01 /* TwoFactorViewModelTests.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
 				A7ED1FA81E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift */,
+				AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */,
 				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
@@ -7205,6 +7213,14 @@
 			path = CardView;
 			sourceTree = "<group>";
 		};
+		AAEABEA22DA8BDB600B09688 /* types */ = {
+			isa = PBXGroup;
+			children = (
+				AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */,
+			);
+			path = types;
+			sourceTree = "<group>";
+		};
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
@@ -7234,6 +7250,7 @@
 				D01587771EEB2ED6006E7684 /* models */,
 				775DFADB2162A56D00620CED /* mutations */,
 				7798B5292174F3BC008BC50D /* queries */,
+				AAEABEA22DA8BDB600B09688 /* types */,
 			);
 			path = KsApi;
 			sourceTree = "<group>";
@@ -8605,9 +8622,11 @@
 				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
+				AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */,
+				AAEABEA82DA8C03D00B09688 /* VideoViewProperties.swift in Sources */,
 				606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
@@ -9617,6 +9636,7 @@
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
+				AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,
 				065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */,
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
