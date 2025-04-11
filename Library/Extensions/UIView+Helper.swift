@@ -31,4 +31,27 @@ extension UIView {
 
     NSLayoutConstraint.activate(constraints)
   }
+
+  /// Constrains the view to the layout margins of a parent view with an optional priority.
+  ///
+  /// This method adds constraints to make the view fill the layout margins of its parent view.
+  /// Layout margins respect the readable content area and can be useful for consistent spacing.
+  ///
+  /// - Parameters:
+  ///   - parentView: The parent `UIView` to which the current view will be constrained.
+  ///   - priority: The priority of the constraints. Defaults to `.required`.
+  public func constrainViewToMargins(in parentView: UIView, priority: UILayoutPriority = .required) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+
+    let constraints = [
+      self.leadingAnchor.constraint(equalTo: parentView.layoutMarginsGuide.leadingAnchor),
+      self.trailingAnchor.constraint(equalTo: parentView.layoutMarginsGuide.trailingAnchor),
+      self.topAnchor.constraint(equalTo: parentView.layoutMarginsGuide.topAnchor),
+      self.bottomAnchor.constraint(equalTo: parentView.layoutMarginsGuide.bottomAnchor)
+    ]
+
+    constraints.forEach { $0.priority = priority }
+
+    NSLayoutConstraint.activate(constraints)
+  }
 }

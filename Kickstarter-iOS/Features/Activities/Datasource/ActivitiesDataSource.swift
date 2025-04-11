@@ -8,6 +8,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case erroredBackings
     case surveys
     case activities
+    case rewardTracking
   }
 
   internal func load(erroredBackings: [ProjectAndBackingEnvelope]) {
@@ -55,6 +56,18 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     }
   }
 
+  func load(rewardTrackingData: [RewardTrackingActivitiesCellData]) {
+    let section = Section.rewardTracking.rawValue
+
+    self.clearValues(section: section)
+
+    self.set(
+      values: rewardTrackingData,
+      cellClass: RewardTrackingActivitiesCell.self,
+      inSection: section
+    )
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ActivityErroredBackingsCell, value as [ProjectAndBackingEnvelope]):
@@ -68,6 +81,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case let (cell as ActivityProjectStatusCell, activity as Activity):
       cell.configureWith(value: activity)
     case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
+      cell.configureWith(value: value)
+    case let (cell as RewardTrackingActivitiesCell, value as RewardTrackingActivitiesCellData):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

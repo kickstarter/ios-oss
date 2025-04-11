@@ -57,6 +57,7 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
     self.tableView.registerCellClass(ActivityErroredBackingsCell.self)
+    self.tableView.registerCellClass(RewardTrackingActivitiesCell.self)
     self.tableView.dataSource = self.dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
@@ -167,6 +168,19 @@ internal final class ActivitiesViewController: UITableViewController {
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }
+
+    self.viewModel.outputs.rewardTrackingData
+      .observeForUI()
+      .observeValues { [weak self] trackings in
+        self?.dataSource.load(rewardTrackingData: trackings)
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.goToTrackShipping
+      .observeForUI()
+      .observeValues { trackingURL in
+        print("Track shipping URL: \(trackingURL)")
+      }
   }
 
   internal override func tableView(
@@ -174,12 +188,17 @@ internal final class ActivitiesViewController: UITableViewController {
     willDisplay cell: UITableViewCell,
     forRowAt indexPath: IndexPath
   ) {
-    if let cell = cell as? ActivityUpdateCell, cell.delegate == nil {
-      cell.delegate = self
-    } else if let cell = cell as? ActivitySurveyResponseCell, cell.delegate == nil {
-      cell.delegate = self
-    } else if let cell = cell as? ActivityErroredBackingsCell, cell.delegate == nil {
-      cell.delegate = self
+    switch cell {
+    case let updateCell as ActivityUpdateCell:
+      updateCell.delegate = self
+    case let surveyCell as ActivitySurveyResponseCell:
+      surveyCell.delegate = self
+    case let erroredCell as ActivityErroredBackingsCell:
+      erroredCell.delegate = self
+    case let trackingCell as RewardTrackingActivitiesCell:
+      trackingCell.delegate = self
+    default:
+      break
     }
 
     self.viewModel.inputs.willDisplayRow(
@@ -292,4 +311,12 @@ extension ActivitiesViewController: ManagePledgeViewControllerDelegate {
   }
 
   func managePledgeViewControllerDidDismiss(_: ManagePledgeViewController) {}
+}
+
+// MARK: - RewardTrackingDetailsViewDelegate
+
+extension ActivitiesViewController: RewardTrackingDetailsViewDelegate {
+  func didTapTrackingButton(with trackingURL: URL) {
+    self.viewModel.inputs.tappedTrackShipping(with: trackingURL)
+  }
 }
