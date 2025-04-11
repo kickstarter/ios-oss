@@ -22,7 +22,9 @@ internal final class SearchViewController: UITableViewController {
   private let backgroundView = UIView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
-  private var sortAndFilterHeader = FilterBadgeView<DiscoveryParams.Sort, KsApi.Category>(frame: .zero)
+
+  private var sortAndFilterHeader: UIViewController?
+  private let sortAndFilterViewModel = SearchFiltersHeaderViewModel(pills: [])
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -36,6 +38,20 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.register(nib: .BackerDashboardProjectCell)
 
     self.viewModel.inputs.viewDidLoad()
+
+    let pillView = SearchFiltersHeaderView(didTapPill: { pill in
+      switch pill.filterType {
+      case .sort:
+        self.sortButtonTapped()
+      case .category:
+        self.categoryButtonTapped()
+      }
+    }).environmentObject(self.sortAndFilterViewModel)
+
+    let sortAndFilterHeader = UIHostingController(rootView: pillView)
+    self.addChild(sortAndFilterHeader)
+
+    self.sortAndFilterHeader = sortAndFilterHeader
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -64,18 +80,6 @@ internal final class SearchViewController: UITableViewController {
     )
 
     self.searchTextField.delegate = self
-
-    self.sortAndFilterHeader.sortButton.addTarget(
-      self,
-      action: #selector(SearchViewController.sortButtonTapped),
-      for: .touchUpInside
-    )
-
-    self.sortAndFilterHeader.categoryButton.addTarget(
-      self,
-      action: #selector(SearchViewController.categoryButtonTapped),
-      for: .touchUpInside
-    )
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
@@ -188,23 +192,10 @@ internal final class SearchViewController: UITableViewController {
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
-
-    self.viewModel.outputs.categoryPillTitle
+    self.viewModel.outputs.pills
       .observeForUI()
-      .observeValues { [weak self] title in
-        self?.sortAndFilterHeader.setCategoryTitle(title)
-      }
-
-    self.viewModel.outputs.isSortPillHighlighted
-      .observeForUI()
-      .observeValues { [weak self] highlighted in
-        self?.sortAndFilterHeader.highlightSortButton(highlighted)
-      }
-
-    self.viewModel.outputs.isCategoryPillHighlighted
-      .observeForUI()
-      .observeValues { [weak self] highlighted in
-        self?.sortAndFilterHeader.highlightCategoryButton(highlighted)
+      .observeValues { pills in
+        self.sortAndFilterViewModel.pills = pills
       }
   }
 
@@ -310,7 +301,7 @@ internal final class SearchViewController: UITableViewController {
       return nil
     }
 
-    return self.sortAndFilterHeader
+    return self.sortAndFilterHeader?.view
   }
 
   private var headerHeight: CGFloat? = nil
@@ -320,8 +311,8 @@ internal final class SearchViewController: UITableViewController {
       return 0
     }
 
-    if self.headerHeight == nil {
-      let fittingSize = self.sortAndFilterHeader.systemLayoutSizeFitting(self.view.bounds.size)
+    if self.headerHeight == nil,
+       let fittingSize = self.sortAndFilterHeader?.view.systemLayoutSizeFitting(self.view.bounds.size) {
       self.headerHeight = fittingSize.height
     }
 
