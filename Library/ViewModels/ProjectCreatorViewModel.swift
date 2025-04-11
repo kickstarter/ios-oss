@@ -19,20 +19,6 @@ public struct ProjectCreatorProperties {
   }
 }
 
-extension ProjectCreatorProperties: VideoViewProperties, HasVideoViewProperties {
-  public var photoFull: String {
-    return "" // Not needed for ProjectCreator view
-  }
-
-  public var video: (hls: String?, high: String)? {
-    return nil // Not needed for ProjectCreator view
-  }
-
-  public var videoViewProperties: VideoViewProperties {
-    return self
-  }
-}
-
 extension Project: HasProjectCreatorProperties {
   public var projectCreatorProperties: ProjectCreatorProperties {
     return ProjectCreatorProperties(

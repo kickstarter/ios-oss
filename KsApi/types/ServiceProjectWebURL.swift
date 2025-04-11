@@ -13,4 +13,3 @@ extension GraphAPI.ProjectFragment: HasServiceProjectWebURL {
     self.url
   }
 }
-
