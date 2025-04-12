@@ -19197,7 +19197,6 @@ public enum GraphAPI {
         launchedAt
         isInPostCampaignPledgingPhase
         postCampaignPledgingEnabled
-        url
         goal {
           __typename
           ...MoneyFragment
@@ -19227,7 +19226,6 @@ public enum GraphAPI {
         GraphQLField("launchedAt", type: .scalar(String.self)),
         GraphQLField("isInPostCampaignPledgingPhase", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
-        GraphQLField("url", type: .nonNull(.scalar(String.self))),
         GraphQLField("goal", type: .object(Goal.selections)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
         GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
@@ -19357,16 +19355,6 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "postCampaignPledgingEnabled")
-      }
-    }
-
-    /// A URL to the project's page.
-    public var url: String {
-      get {
-        return resultMap["url"]! as! String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "url")
       }
     }
 
