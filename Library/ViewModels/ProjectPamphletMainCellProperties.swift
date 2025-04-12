@@ -9,7 +9,7 @@ public typealias ProjectPamphletMainCellConfiguration =
   HasProjectAnalyticsProperties &
   HasProjectCreatorProperties &
   HasProjectPamphletMainCellProperties &
-  HasServiceProjectWebURL &
+  HasProjectWebURL &
   HasVideoViewProperties
 
 public struct ProjectPamphletMainCellProperties {
@@ -100,8 +100,8 @@ public struct ProjectPamphletMainCellProperties {
 }
 
 extension ProjectPamphletMainCellProperties: HasVideoViewProperties {
-  public var videoViewProperties: any VideoViewProperties {
-    VideoViewPropertiesBox(video: self.video, photoFull: self.photo)
+  public var videoViewProperties: VideoViewProperties {
+    VideoViewProperties(video: self.video, photoFull: self.photo)
   }
 }
 

@@ -72,11 +72,11 @@ extension SimilarProjectFragment: ProjectPamphletMainCellConfiguration {
     ProjectCreatorProperties(id: self.projectID, name: self.name, projectWebURL: self.url)
   }
 
-  var serviceProjectWebURL: ServiceProjectWebURL {
-    ServiceProjectWebURL(projectWebURL: self.url)
+  var projectWebURL: String {
+    self.url
   }
 
-  var videoViewProperties: any VideoViewProperties {
+  var videoViewProperties: VideoViewProperties {
     self.projectPamphletMainCellProperties.videoViewProperties
   }
 }

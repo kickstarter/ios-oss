@@ -19185,6 +19185,7 @@ public enum GraphAPI {
         launchedAt
         isInPostCampaignPledgingPhase
         postCampaignPledgingEnabled
+        url
         goal {
           __typename
           ...MoneyFragment
@@ -19214,6 +19215,7 @@ public enum GraphAPI {
         GraphQLField("launchedAt", type: .scalar(String.self)),
         GraphQLField("isInPostCampaignPledgingPhase", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("url", type: .nonNull(.scalar(String.self))),
         GraphQLField("goal", type: .object(Goal.selections)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
         GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
@@ -19343,6 +19345,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "postCampaignPledgingEnabled")
+      }
+    }
+
+    /// A URL to the project's page.
+    public var url: String {
+      get {
+        return resultMap["url"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "url")
       }
     }
 
@@ -21237,6 +21249,7 @@ public enum GraphAPI {
             }
           }
         }
+        url
       }
       """
 
@@ -21268,6 +21281,7 @@ public enum GraphAPI {
         GraphQLField("country", type: .nonNull(.object(Country.selections))),
         GraphQLField("risks", type: .nonNull(.scalar(String.self))),
         GraphQLField("video", type: .object(Video.selections)),
+        GraphQLField("url", type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -21277,8 +21291,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(pid: Int, name: String, projectDescription: String, creator: Creator? = nil, state: ProjectState, stateChangedAt: String, image: Image? = nil, prelaunchActivated: Bool, backing: Backing? = nil, backersCount: Int, percentFunded: Int, goal: Goal? = nil, pledged: Pledged, currency: CurrencyCode, usdExchangeRate: Double? = nil, projectUsdExchangeRate: Double, category: Category? = nil, location: Location? = nil, deadlineAt: String? = nil, launchedAt: String? = nil, country: Country, risks: String, video: Video? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "pid": pid, "name": name, "projectDescription": projectDescription, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "state": state, "stateChangedAt": stateChangedAt, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backersCount": backersCount, "percentFunded": percentFunded, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "pledged": pledged.resultMap, "currency": currency, "usdExchangeRate": usdExchangeRate, "projectUsdExchangeRate": projectUsdExchangeRate, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "deadlineAt": deadlineAt, "launchedAt": launchedAt, "country": country.resultMap, "risks": risks, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }])
+    public init(pid: Int, name: String, projectDescription: String, creator: Creator? = nil, state: ProjectState, stateChangedAt: String, image: Image? = nil, prelaunchActivated: Bool, backing: Backing? = nil, backersCount: Int, percentFunded: Int, goal: Goal? = nil, pledged: Pledged, currency: CurrencyCode, usdExchangeRate: Double? = nil, projectUsdExchangeRate: Double, category: Category? = nil, location: Location? = nil, deadlineAt: String? = nil, launchedAt: String? = nil, country: Country, risks: String, video: Video? = nil, url: String) {
+      self.init(unsafeResultMap: ["__typename": "Project", "pid": pid, "name": name, "projectDescription": projectDescription, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "state": state, "stateChangedAt": stateChangedAt, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backersCount": backersCount, "percentFunded": percentFunded, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "pledged": pledged.resultMap, "currency": currency, "usdExchangeRate": usdExchangeRate, "projectUsdExchangeRate": projectUsdExchangeRate, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "deadlineAt": deadlineAt, "launchedAt": launchedAt, "country": country.resultMap, "risks": risks, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "url": url])
     }
 
     public var __typename: String {
@@ -21517,6 +21531,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "video")
+      }
+    }
+
+    /// A URL to the project's page.
+    public var url: String {
+      get {
+        return resultMap["url"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "url")
       }
     }
 
