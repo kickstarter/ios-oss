@@ -6,9 +6,9 @@ import UIKit
 internal final class PledgeManagementViewPledgeViewController: WebViewController {
   private let viewModel: PledgeManagementViewPledgeViewModelType = PledgeManagementViewPledgeViewModel()
 
-  internal static func configuredWith(project: Project) -> PledgeManagementViewPledgeViewController {
+  internal static func configured(with backingDetailsURL: URL) -> PledgeManagementViewPledgeViewController {
     let vc = PledgeManagementViewPledgeViewController()
-    vc.viewModel.inputs.configureWith(project: project)
+    vc.viewModel.inputs.configure(with: backingDetailsURL)
     return vc
   }
 

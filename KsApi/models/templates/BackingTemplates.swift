@@ -8,6 +8,7 @@ extension Backing {
     backer: .template,
     backerId: 1,
     backerCompleted: true,
+    backingDetailsPageRoute: "https://ksr.com/backing/details",
     bonusAmount: 0,
     cancelable: true,
     id: 1,

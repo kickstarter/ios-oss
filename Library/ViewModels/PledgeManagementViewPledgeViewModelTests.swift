@@ -22,7 +22,7 @@ final class PledgeManagementViewPledgeViewModelTests: TestCase {
       forURL: URL(string: urlString)!
     )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configure(with backingDetailsURL: project)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues([request])

@@ -39,4 +39,5 @@ fragment BackingFragment on Backing {
     ...MoneyFragment
   }
   status
+  backingDetailsPageRoute(type: url, tab: details)
 }

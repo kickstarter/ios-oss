@@ -1,5 +1,4 @@
 import Foundation
-import KsApi
 
 public struct Backing {
   public let addOns: [Reward]?
@@ -7,6 +6,7 @@ public struct Backing {
   public let backer: User?
   public let backerId: Int
   public let backerCompleted: Bool?
+  public let backingDetailsPageRoute: String
   public let bonusAmount: Double
   public let cancelable: Bool
   public let id: Int
@@ -59,6 +59,7 @@ extension Backing: Decodable {
     case backer
     case backerId = "backer_id"
     case backerCompleted = "backer_completed_at"
+    case backingDetailsUrl
     case bonusAmount = "bonus_amount"
     case cancelable
     case id
@@ -86,6 +87,7 @@ extension Backing: Decodable {
     self.backer = try values.decodeIfPresent(User.self, forKey: .backer)
     self.backerId = try values.decode(Int.self, forKey: .backerId)
     self.backerCompleted = try values.decodeIfPresent(Int.self, forKey: .backerCompleted) != nil
+    self.backingDetailsPageRoute = try values.decodeIfPresent(String.self, forKey: .backingDetailsUrl) ?? ""
     self.bonusAmount = try values.decodeIfPresent(Double.self, forKey: .bonusAmount) ?? 0.0
     self.cancelable = try values.decode(Bool.self, forKey: .cancelable)
     self.id = try values.decode(Int.self, forKey: .id)

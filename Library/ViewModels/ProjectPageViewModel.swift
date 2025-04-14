@@ -102,6 +102,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
+  /// Emits `Project` to take the user to the `PledgeManagementViewPledgeViewController`
+  var goToPledgeManagementViewPledge: Signal<URL, Never> { get }
+
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
 
@@ -306,8 +309,23 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .ignoreValues()
 
-    let shouldGoToManagePledge = ctaButtonTappedWithType
+    let order = projectAndBacking.map { _, backing in
+      backing.order
+    }
+
+    let shouldGoToNativeManagePledgeView = ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
+      .combineLatest(with: order)
+      .map { _, order -> Bool in
+        order?.checkoutState != .complete
+      }
+
+    let shouldGoToManagePledge = shouldGoToNativeManagePledgeView
+      .filter { $0 }
+      .ignoreValues()
+
+    let shouldGoToPMViewPledge = shouldGoToNativeManagePledgeView
+      .filter { !$0 }
       .ignoreValues()
 
     let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
@@ -333,6 +351,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
+
+    self.goToPledgeManagementViewPledge = projectAndBacking
+      .takeWhen(shouldGoToPMViewPledge)
+      .map { _, backing in
+        URL(string: backing.backingDetailsPageRoute)
+      }
+      .skipNil()
 
     self.goToManagePledge = projectAndBacking
       .takeWhen(shouldGoToManagePledge)
@@ -755,6 +780,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
+  public let goToPledgeManagementViewPledge: Signal<URL, Never>
   public let goToRestrictedCreator: Signal<String, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>

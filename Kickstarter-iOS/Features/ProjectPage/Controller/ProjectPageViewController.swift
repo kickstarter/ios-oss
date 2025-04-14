@@ -327,6 +327,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToManagePledge(params: params)
       }
 
+    self.viewModel.outputs.goToPledgeManagementViewPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToPledgeManagementViewPledgeViewController(with: project)
+      }
+
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
@@ -679,6 +685,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = nc
         |> \.modalPresentationStyle .~ .pageSheet
+    }
+
+    self.present(nc, animated: true)
+  }
+
+  private func goToPledgeManagementViewPledgeViewController(with backingDetailsURL: URL) {
+    let vc = PledgeManagementViewPledgeViewController.configured(with: backingDetailsURL)
+
+    let nc = RewardPledgeNavigationController(rootViewController: vc)
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      nc.modalPresentationStyle = .pageSheet
     }
 
     self.present(nc, animated: true)
