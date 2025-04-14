@@ -122,13 +122,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       )
 
     // DiscoveryParams using the users currently selected query text, sort and filters.
-    let queryParams: Signal<DiscoveryParams, Never> = queryText
-      .combineLatest(with: self.searchFiltersUseCase.selectedSort)
-      .combineLatest(with: self.searchFiltersUseCase.selectedCategory)
-      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
-      .map { query, sort, category in
-        DiscoveryParams.withQuery(query, sort: sort, category: category)
-      }
+    let queryParams: Signal<DiscoveryParams, Never> = Signal.combineLatest(
+      queryText,
+      self.searchFiltersUseCase.selectedSort,
+      self.searchFiltersUseCase.selectedCategory,
+      self.searchFiltersUseCase.selectedState
+    )
+    .map { query, sort, category, state in
+      DiscoveryParams.withQuery(query, sort: sort, category: category, state: state)
+    }
 
     // Every time the user changes their query, sort or filters, we set an empty
     // results set to clear out the page. The user will just see the spinner.

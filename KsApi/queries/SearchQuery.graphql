@@ -1,5 +1,5 @@
-query Search($term: String, $sort: ProjectSort, $categoryId: String, $first: Int, $cursor: String) {
-  projects(term: $term, sort: $sort, categoryId: $categoryId, after: $cursor, first: $first) {
+query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $first: Int, $cursor: String) {
+  projects(term: $term, sort: $sort, categoryId: $categoryId, state: $state, after: $cursor, first: $first) {
     nodes {
       ...BackerDashboardProjectCellFragment
       ...ProjectAnalyticsFragment
