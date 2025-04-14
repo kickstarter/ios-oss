@@ -9,6 +9,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case newDesignSystem = "new_design_system"
   case rewardShipmentTracking = "reward_shipment_tracking"
   case similarProjectsCarousel = "similar_projects_carousel"
+  case searchFilterByProjectStatus = "search_filter_by_project_status"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -22,6 +23,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .newDesignSystem: return "New Design System"
     case .rewardShipmentTracking: return "Reward Shipment Tracking"
     case .similarProjectsCarousel: return "Similar Projects Carousel"
+    case .searchFilterByProjectStatus: return "Filter Search by Project Status"
     }
   }
 }
