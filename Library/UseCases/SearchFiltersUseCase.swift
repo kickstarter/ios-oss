@@ -96,8 +96,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedStateProperty.producer.takeWhen(initialSignal),
       self.selectedStateProperty.signal
     )
-
-      
   }
 
   fileprivate let (tappedSortSignal, tappedSortObserver) = Signal<Void, Never>.pipe()
