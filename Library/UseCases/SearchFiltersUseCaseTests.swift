@@ -143,7 +143,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.showFilters.assertDidEmitValue()
 
     if let (_, type) = self.showFilters.lastValue {
-      XCTAssertEqual(type, .sort, "Tapping all filter button should show filters")
+      XCTAssertEqual(type, .all, "Tapping all filter button should show all filters")
     }
   }
 
