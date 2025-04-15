@@ -2099,6 +2099,57 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  func testPrefetchImageURLsOnFirstLoad_LoadingViaParam_Success() {
+    // Given a mock API that returns a project with an image in its HTML content
+    let imageUrl = URL(string: "https://placecats.com/millie/300/150")!
+    let projectWithImageElement = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: imageUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
+
+    let projectPamphletData = Project.ProjectPamphletData(project: projectWithImageElement, backingId: nil)
+
+    let prefetchImageElementsOnFirstLoad = TestObserver<[ImageViewElement], Never>()
+    self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(prefetchImageElementsOnFirstLoad.observer)
+
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      // When we configure with a project ID parameter and load the view
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(42)), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+
+      prefetchImageElementsOnFirstLoad.assertDidNotEmitValue()
+
+      // When the API response is processed
+      self.scheduler.advance()
+
+      // Then the prefetch signal emits with the correct image element
+      XCTAssertEqual(prefetchImageElementsOnFirstLoad.values.count, 1, "Should emit image elements once")
+
+      let emittedElements = prefetchImageElementsOnFirstLoad.values.first ?? []
+      XCTAssertEqual(emittedElements.count, 1, "Should contain exactly one image element")
+
+      let imageElement = emittedElements.first
+      XCTAssertEqual(imageElement?.src, imageUrl.absoluteString, "Should emit the correct image URL")
+      XCTAssertNil(imageElement?.href, "Image should not have a link")
+      XCTAssertNil(imageElement?.caption, "Image should not have a caption")
+    }
+  }
+
   // MARK: - Functions
 
   private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
