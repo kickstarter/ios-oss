@@ -45,7 +45,7 @@ extension CustomFont {
   /// Converts the custom font to a SwiftUI `Font`.
   /// - Parameter size: The font size to apply. If `nil`, the default size for the font will be used.
   /// - Returns: A SwiftUI `Font` created from the custom `UIFont`.
-  public func swiftUIFont(size: CGFloat?) -> Font {
+  public func swiftUIFont(size: CGFloat? = nil) -> Font {
     return Font(self.font(size: size))
   }
 }
