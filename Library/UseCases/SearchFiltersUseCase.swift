@@ -17,7 +17,7 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedCategory(_ category: KsApi.Category?)
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
-  /// Call this when the cleears their query and the sort options should reset.
+  /// Call this when the clears their query and the sort options should reset.
   func clearOptions()
 }
 
