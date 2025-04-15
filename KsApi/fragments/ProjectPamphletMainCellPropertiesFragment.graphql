@@ -1,0 +1,54 @@
+fragment ProjectPamphletMainCellPropertiesFragment on Project {
+  pid
+  name
+  projectDescription: description
+  creator {
+    id
+    name
+    isBlocked
+    imageUrl(width: 200)
+  }
+  state
+  stateChangedAt
+  image {
+    url(width: 1024)
+  }
+  prelaunchActivated
+  backing {
+    id
+  }
+  backersCount
+  percentFunded
+  goal {
+    ...MoneyFragment
+  }
+  pledged {
+    ...MoneyFragment
+  }
+  currency
+  usdExchangeRate
+  projectUsdExchangeRate
+  category {
+    name
+  }
+  location {
+    displayableName
+  }
+  deadlineAt
+  launchedAt
+  country {
+    code
+    name
+  }
+  risks
+  video {
+    videoSources {
+      hls {
+        src
+      }
+      high {
+        src
+      }
+    }
+  }
+}
