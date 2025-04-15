@@ -11,6 +11,7 @@ $(PROJECT_DIR)/KsApi/fragments/PaymentIncrementFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserStoredCardsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserEmailFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/MoneyFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/ProjectPamphletMainCellPropertiesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ProjectFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ProjectCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/BackerDashboardProjectCellFragment.graphql
