@@ -389,9 +389,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
-      freshProjectAndRefTag
-        .filter { $0.0.extendedProjectProperties.isSome }
-        .take(first: 1),
+      freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
