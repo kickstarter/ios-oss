@@ -12,10 +12,13 @@ public struct SearchFilterPill: Identifiable {
   public let filterType: FilterType
   public let buttonType: ButtonType
 
-  /// What kind of option the pill represents.
+  /// Which filter the pill represents.
+  /// Only one pill of each type will be shown, since this powers the id of the pill.
   public enum FilterType {
-    case sort
+    case all
     case category
+    case sort
+    case projectState
   }
 
   /// How the pill should be rendered.
@@ -24,7 +27,7 @@ public struct SearchFilterPill: Identifiable {
     case dropdown(String)
   }
 
-  public init(isHighlighted: Bool, filterType: FilterType, buttonType: ButtonType) {
+  public init(isHighlighted: Bool, filterType: SearchFilterPill.FilterType, buttonType: ButtonType) {
     self.isHighlighted = isHighlighted
     self.filterType = filterType
     self.buttonType = buttonType

@@ -22,8 +22,7 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
-  fileprivate let showSort = TestObserver<SearchSortSheet, Never>()
-  fileprivate let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
+  fileprivate let showFilters = TestObserver<(SearchFilterOptions, SearchFilterModalType), Never>()
   fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
   fileprivate let categoryPill = TestObserver<SearchFilterPill, Never>()
   fileprivate let sortPill = TestObserver<SearchFilterPill, Never>()
@@ -50,8 +49,7 @@ internal final class SearchViewModelTests: TestCase {
       .observe(self.hasAddedProjects.observer)
 
     self.vm.outputs.showSortAndFilterHeader.observe(self.showSortAndFilterHeader.observer)
-    self.vm.outputs.showSort.observe(self.showSort.observer)
-    self.vm.outputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
+    self.vm.outputs.showFilters.observe(self.showFilters.observer)
 
     self.vm.outputs.pills.map { pills in
       pills.first(where: { $0.filterType == .sort })
@@ -687,20 +685,19 @@ internal final class SearchViewModelTests: TestCase {
         "Selected sort should be in tracking properties"
       )
 
-      self.showSort.assertDidNotEmitValue()
-      self.showCategoryFilters.assertDidNotEmitValue()
+      self.showFilters.assertDidNotEmitValue()
 
-      self.vm.inputs.tappedSort()
-      self.showSort.assertDidEmitValue()
+      self.vm.inputs.tappedButton(forFilterType: .sort)
+      self.showFilters.assertDidEmitValue()
 
-      guard let sortSheet = self.showSort.lastValue else {
-        XCTFail("Sort sheet should have been shown after tappedSort was called")
+      guard let (options, type) = self.showFilters.lastValue else {
+        XCTFail("Sort sheet should have been shown after sort button was tapped")
         return
       }
 
-      XCTAssertTrue(sortSheet.sortOptions.count > 1, "Sort sheet should have multiple sort options")
+      XCTAssertTrue(options.sort.sortOptions.count > 1, "Sort sheet should have multiple sort options")
       XCTAssertTrue(
-        sortSheet.selectedOption == .magic,
+        options.sort.selectedOption == .magic,
         "Sort sheet should have first option selected by default"
       )
 
@@ -813,20 +810,19 @@ internal final class SearchViewModelTests: TestCase {
         "Selected category should be in tracking properties, but it should be nil because no category was selected yet"
       )
 
-      self.showSort.assertDidNotEmitValue()
-      self.showCategoryFilters.assertDidNotEmitValue()
+      self.showFilters.assertDidNotEmitValue()
 
-      self.vm.inputs.tappedCategoryFilter()
-      self.showCategoryFilters.assertDidEmitValue()
+      self.vm.inputs.tappedButton(forFilterType: .category)
+      self.showFilters.assertDidEmitValue()
 
-      guard let categorySheet = self.showCategoryFilters.lastValue else {
+      guard let (options, type) = self.showFilters.lastValue else {
         XCTFail("Category sheet should have been shown after tappedCategoryFilters was called")
         return
       }
 
-      XCTAssertTrue(categorySheet.categories.count == 4, "Category sheet should have 4 options")
+      XCTAssertTrue(options.category.categories.count == 4, "Category sheet should have 4 options")
       XCTAssertTrue(
-        categorySheet.selectedCategory.isNil,
+        options.category.selectedCategory.isNil,
         "Category sheet should have empty option selected by default"
       )
 
