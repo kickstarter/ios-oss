@@ -39,13 +39,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    let pillView = SearchFiltersHeaderView(didTapPill: { pill in
-      switch pill.filterType {
-      case .sort:
-        self.sortButtonTapped()
-      case .category:
-        self.categoryButtonTapped()
-      }
+    let pillView = SearchFiltersHeaderView(didTapPill: { [weak self] pill in
+      self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
     }).environmentObject(self.sortAndFilterViewModel)
 
     let sortAndFilterHeader = UIHostingController(rootView: pillView)
@@ -179,16 +174,17 @@ internal final class SearchViewController: UITableViewController {
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
       }
 
-    self.viewModel.outputs.showSort
+    self.viewModel.outputs.showFilters
       .observeForControllerAction()
-      .observeValues { [weak self] sheet in
-        self?.showSort(sheet)
-      }
-
-    self.viewModel.outputs.showCategoryFilters
-      .observeForControllerAction()
-      .observeValues { [weak self] sheet in
-        self?.showCategories(sheet)
+      .observeValues { [weak self] options, type in
+        switch type {
+        case .all:
+          self?.showAllFilters(options)
+        case .category:
+          self?.showCategories(options.category)
+        case .sort:
+          self?.showSort(options.sort)
+        }
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
@@ -204,7 +200,7 @@ internal final class SearchViewController: UITableViewController {
     presenter.present(viewController: viewController, from: self)
   }
 
-  fileprivate func showSort(_ sheet: SearchSortSheet) {
+  fileprivate func showSort(_ sheet: SearchFilterOptions.SortOptions) {
     let sortViewModel = SortViewModel(
       sortOptions: sheet.sortOptions,
       selectedSortOption: sheet.selectedOption
@@ -224,7 +220,7 @@ internal final class SearchViewController: UITableViewController {
     self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
-  fileprivate func showCategories(_ sheet: SearchFilterCategoriesSheet) {
+  fileprivate func showCategories(_ sheet: SearchFilterOptions.CategoryOptions) {
     let viewModel = FilterCategoryViewModel(with: sheet.categories)
     if let selectedCategory = sheet.selectedCategory {
       viewModel.selectCategory(selectedCategory)
@@ -245,6 +241,41 @@ internal final class SearchViewController: UITableViewController {
 
     let hostingController = UIHostingController(rootView: filterView)
     self.present(hostingController, animated: true)
+  }
+
+  fileprivate func showAllFilters(_ sheet: SearchFilterOptions) {
+    // FIXME: MBL-2220 This will be its own page. For now, using a UIAlertController.
+
+    let alertController = UIAlertController(
+      title: "Filters",
+      message: "Select your filters",
+      preferredStyle: .actionSheet
+    )
+
+    alertController.addAction(UIAlertAction(
+      title: "Categories ➜",
+      style: .default,
+      handler: { [weak self] _ in
+        self?.showCategories(sheet.category)
+      }
+    ))
+
+    for state in sheet.projectState.stateOptions {
+      let isSelected = (state == sheet.projectState.selectedOption)
+      let checkmark = isSelected ? " ✓" : ""
+
+      alertController.addAction(UIAlertAction(
+        title: "Project state: \(state.rawValue)\(checkmark)",
+        style: .default,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.selectedProjectState(state)
+        }
+      ))
+    }
+
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+    self.present(alertController, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
@@ -333,14 +364,6 @@ internal final class SearchViewController: UITableViewController {
 
   @objc fileprivate func searchBarContainerTapped() {
     self.viewModel.inputs.searchFieldDidBeginEditing()
-  }
-
-  @objc fileprivate func sortButtonTapped() {
-    self.viewModel.inputs.tappedSort()
-  }
-
-  @objc fileprivate func categoryButtonTapped() {
-    self.viewModel.inputs.tappedCategoryFilter()
   }
 }
 

@@ -6,6 +6,7 @@ public struct Colors {
     case accentGreenBold
     case accentGreenBoldPressed
     case accentGreenDisabled
+    case accentGraySubtle
     case accentRedSubtle
     case action
     case actionDisabled
@@ -22,6 +23,7 @@ public struct Colors {
 
   /// Border colors, mapped to `border/` namespace in Assets.
   public enum Border: String, AdaptiveColors {
+    case active
     case bold
     case dangerBold
     case subtle
