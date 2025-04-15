@@ -233,15 +233,15 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map { $0.flagging ?? false }
 
     self.prefetchImageURLs = project.signal
-      .skip(first: 1)
+      .compactMap { $0.extendedProjectProperties }
       .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
       .filterWhenLatestFrom(
         self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil(),
         satisfies: { NavigationSection(rawValue: $0) == .campaign }
       )
-      .switchMap { project, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
-        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? ImageViewElement } ?? []
+      .switchMap { properties, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
+        let imageViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement }
 
         if imageViewElements.count > 0 {
           let urlStrings = imageViewElements.map { $0.src }
@@ -255,19 +255,19 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
 
     self.prefetchImageURLsOnFirstLoad = project.signal
-      .skip(first: 1)
-      .switchMap { project -> SignalProducer<[ImageViewElement], Never> in
-        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? ImageViewElement } ?? []
+      .compactMap { $0.extendedProjectProperties }
+      .switchMap { properties -> SignalProducer<[ImageViewElement], Never> in
+        let imageViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement }
 
         return SignalProducer(value: imageViewElements)
       }
 
     self.precreateAudioVideoURLsOnFirstLoad = project.signal
-      .skip(first: 1)
-      .switchMap { project -> SignalProducer<[AudioVideoViewElement], Never> in
-        let audioVideoViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? AudioVideoViewElement } ?? []
+      .compactMap { $0.extendedProjectProperties }
+      .switchMap { properties -> SignalProducer<[AudioVideoViewElement], Never> in
+        let audioVideoViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? AudioVideoViewElement }
 
         return SignalProducer(value: audioVideoViewElements)
       }
@@ -389,7 +389,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
-      freshProjectAndRefTag.skip(first: 1),
+      freshProjectAndRefTag
+        .filter { $0.0.extendedProjectProperties.isSome }
+        .take(first: 1),
       self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
