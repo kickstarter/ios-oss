@@ -17,7 +17,7 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedCategory(_ category: KsApi.Category?)
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
-  /// Call this when the clears their query and the sort options should reset.
+  /// Call this when the cleears their query and the sort options should reset.
   func clearOptions()
 }
 
@@ -196,6 +196,10 @@ private func filterPills(
   let hasCategory = category != nil
   let hasState = state != SearchFiltersUseCase.defaultStateOption
 
+  let filterCount = [hasCategory, hasState].reduce(0) { filterCount, hasFilter in
+    filterCount + (hasFilter ? 1 : 0)
+  }
+
   var pills: [SearchFilterPill] = []
 
   pills.append(SearchFilterPill(
@@ -208,8 +212,8 @@ private func filterPills(
     pills.append(SearchFilterPill(
       isHighlighted: hasCategory || hasState,
       filterType: .all,
-      // FIXME: MBL-2218 Use the real filter icon.
-      buttonType: .image("star-small-icon")
+      buttonType: .image("icon-filters"),
+      count: filterCount
     ))
   }
 
@@ -224,13 +228,31 @@ private func filterPills(
       SearchFilterPill(
         isHighlighted: state != SearchFiltersUseCase.defaultStateOption,
         filterType: .projectState,
-        // FIXME: MBL-2218 Turn the state into a user-readable title.
-        buttonType: .dropdown(state.rawValue)
+        // FIXME: MBL-2232 Final translations
+        buttonType: .dropdown(hasState ? state.title : "Project status")
       )
     )
   }
 
   return pills
+}
+
+extension DiscoveryParams.State {
+  // FIXME: MBL-2232 Final translations
+  var title: String {
+    switch self {
+    case .all:
+      "All"
+    case .live:
+      "Live"
+    case .successful:
+      "Successful"
+    case .late_pledge:
+      "Late Pledge"
+    case .upcoming:
+      "Upcoming"
+    }
+  }
 }
 
 private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> SearchFilterModalType {
