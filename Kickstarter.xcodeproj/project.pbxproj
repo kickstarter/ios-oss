@@ -1227,6 +1227,7 @@
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
 		AAA75A102DA5007E003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */; };
+		AAA71B1E2DB03CBC00031C1F /* UserSettingsFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
 		AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */; };
@@ -3002,6 +3003,7 @@
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectPamphletMainCellPropertiesFragment.graphql; sourceTree = "<group>"; };
+		AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserSettingsFragment.graphql; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
 		AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Templates.swift"; sourceTree = "<group>"; };
 		AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Parsing.swift"; sourceTree = "<group>"; };
@@ -6375,6 +6377,7 @@
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
 				6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */,
 				AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */,
+				AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
 			);
@@ -9684,6 +9687,7 @@
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
+				AAA71B1E2DB03CBC00031C1F /* UserSettingsFragment.graphql in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				8AC3E0962698CF0600168BF8 /* ShippingRule+ShippingRuleFragment.swift in Sources */,
 				06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */,

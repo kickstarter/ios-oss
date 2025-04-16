@@ -424,11 +424,11 @@ private func pledgeAmountAndGoalAndCountry(
   }
 
   guard let goalCurrentCurrency = properties.goalCurrentCurrency,
+        let pledgedCurrentCurrency = properties.convertedPledgedAmount,
         let currentCountry = properties.currentCountry else {
     return (Int(properties.pledgedUsd), Int(properties.goalUsd), Project.Country.us)
   }
 
-  let pledgedCurrentCurrency = properties.pledged.amount
   return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), currentCountry)
 }
 

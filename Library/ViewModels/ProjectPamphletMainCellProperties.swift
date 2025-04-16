@@ -31,12 +31,14 @@ public struct ProjectPamphletMainCellProperties {
   public let categoryName: String
   public let locationName: String
   public let deadline: TimeInterval?
+  public let fxRate: Float
   public let usdExchangeRate: Float
   public let projectUsdExchangeRate: Float
   public let goal: Money
   public let pledged: Money
+  public let convertedPledgedAmount: Float?
   public let currency: String
-  public let currentCurrency: String?
+  public let currentCurrencyCode: String?
   public let country: Project.Country
   public let projectNotice: String?
   public let video: (hls: String?, high: String)?
@@ -59,12 +61,14 @@ public struct ProjectPamphletMainCellProperties {
     categoryName: String,
     locationName: String,
     deadline: TimeInterval?,
+    fxRate: Float,
     usdExchangeRate: Float,
     projectUsdExchangeRate: Float,
     goal: Money,
     pledged: Money,
+    convertedPledgedAmount: Float?,
     currency: String,
-    currentCurrency: String?,
+    currentCurrencyCode: String?,
     country: Project.Country,
     projectNotice: String?,
     video: (hls: String?, high: String)?,
@@ -86,12 +90,14 @@ public struct ProjectPamphletMainCellProperties {
     self.categoryName = categoryName
     self.locationName = locationName
     self.deadline = deadline
+    self.fxRate = fxRate
     self.usdExchangeRate = usdExchangeRate
     self.projectUsdExchangeRate = projectUsdExchangeRate
     self.goal = goal
     self.pledged = pledged
+    self.convertedPledgedAmount = convertedPledgedAmount
     self.currency = currency
-    self.currentCurrency = currentCurrency
+    self.currentCurrencyCode = currentCurrencyCode
     self.country = country
     self.projectNotice = projectNotice
     self.video = video
@@ -124,6 +130,7 @@ extension Project: HasProjectPamphletMainCellProperties {
       categoryName: self.category.name,
       locationName: self.location.displayableName,
       deadline: self.dates.deadline,
+      fxRate: self.stats.currentCurrencyRate ?? self.stats.staticUsdRate,
       usdExchangeRate: self.stats.staticUsdRate,
       projectUsdExchangeRate: self.stats.usdExchangeRate ?? self.stats.staticUsdRate,
       goal: (amount: self.stats.goal, currency: self.statsCurrency, symbol: self.country.currencySymbol),
@@ -132,8 +139,9 @@ extension Project: HasProjectPamphletMainCellProperties {
         currency: self.statsCurrency,
         symbol: self.country.currencySymbol
       ),
+      convertedPledgedAmount: self.stats.convertedPledgedAmount,
       currency: self.stats.currency,
-      currentCurrency: self.stats.currentCurrency,
+      currentCurrencyCode: self.stats.currentCurrency,
       country: self.country,
       projectNotice: self.extendedProjectProperties?.projectNotice,
       video: self.video.map { ($0.hls, $0.high) },
@@ -160,12 +168,12 @@ extension ProjectPamphletMainCellProperties {
 
   /// Goal amount converted to USD.
   public var goalUsd: Float {
-    floor(Float(self.goal.amount) * self.projectUsdExchangeRate)
+    floor(Float(self.goal.amount) * self.usdExchangeRate)
   }
 
   /// Goal amount converted to current currency.
   public var goalCurrentCurrency: Float? {
-    floor(Float(self.goal.amount) * self.usdExchangeRate)
+    floor(Float(self.goal.amount) * self.fxRate)
   }
 
   /// Goal amount, converted to USD, irrespective of the users selected currency
@@ -175,24 +183,28 @@ extension ProjectPamphletMainCellProperties {
 
   /// Country determined by current currency.
   public var currentCountry: Project.Country? {
-    Project.Country(currencyCode: self.currency)
+    self.currentCurrencyCode.flatMap(Project.Country.init(currencyCode:))
   }
 
   /// Omit US currency code
   public var omitUSCurrencyCode: Bool {
-    let currentCurrency = self.currency
-
-    return currentCurrency == Project.Country.us.currencyCode
+    self.currentCurrency == Project.Country.us.currencyCode
   }
 
   /// Project pledge & goal values need conversion
   public var needsConversion: Bool {
-    let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
-
-    return self.currency != currentCurrency
+    self.currency != self.currentCurrency
   }
 
   public var goalMet: Bool {
-    return self.pledged >= self.goal
+    self.pledged >= self.goal
   }
+
+  public var currentCurrency: String {
+    self.currentCurrencyCode ?? getCurrentCurrency()
+  }
+}
+
+private func getCurrentCurrency() -> String {
+  AppEnvironment.current.currentUser?.chosenCurrency ?? Project.Country.us.currencyCode
 }

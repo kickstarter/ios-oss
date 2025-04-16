@@ -178,7 +178,8 @@ final class SimilarProjectsUseCaseTests: TestCase {
     goal: Double? = 10_000,
     pledged: Double = 7_500,
     isInPostCampaignPledgingPhase: Bool = false,
-    isPostCampaignPledgingEnabled: Bool = false
+    isPostCampaignPledgingEnabled: Bool = false,
+    url: String = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   ) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
     var resultMap: [String: Any] = [
       "__typename": "Project",
@@ -195,7 +196,8 @@ final class SimilarProjectsUseCaseTests: TestCase {
         "symbol": "$"
       ],
       "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
-      "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled
+      "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled,
+      "url": url
     ]
 
     // Add optional fields

@@ -2,6 +2,7 @@
 
 public struct User {
   public var avatar: Avatar
+  public var chosenCurrency: String?
   public var erroredBackingsCount: Int?
   public var facebookConnected: Bool?
   public var id: Int
@@ -114,6 +115,7 @@ extension User: Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.avatar = try values.decode(Avatar.self, forKey: .avatar)
+    self.chosenCurrency = try values.decode(String?.self, forKey: .chosenCurrency)
     self.erroredBackingsCount = try values.decodeIfPresent(Int.self, forKey: .erroredBackingsCount)
     self.facebookConnected = try values.decodeIfPresent(Bool.self, forKey: .facebookConnected)
     self.id = try values.decode(Int.self, forKey: .id)
@@ -136,6 +138,7 @@ extension User: Decodable {
 
   enum CodingKeys: String, CodingKey {
     case avatar
+    case chosenCurrency = "chosen_currency"
     case erroredBackingsCount = "errored_backings_count"
     case facebookConnected = "facebook_connected"
     case id
