@@ -33,8 +33,7 @@ internal final class PledgeManagementViewPledgeViewModel: PledgeManagementViewPl
 
     self.webViewLoadRequest = backingDetailsURL
       .map {
-        print("url: \($0)")
-        return AppEnvironment.current.apiService.preparedRequest(forURL: $0)
+        AppEnvironment.current.apiService.preparedRequest(forURL: $0)
       }
   }
 

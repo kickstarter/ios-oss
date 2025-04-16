@@ -329,8 +329,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.goToPledgeManagementViewPledge
       .observeForControllerAction()
-      .observeValues { [weak self] project in
-        self?.goToPledgeManagementViewPledgeViewController(with: project)
+      .observeValues { [weak self] url in
+        self?.goToPledgeManagementViewPledgeViewController(with: url)
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
