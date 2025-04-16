@@ -161,6 +161,7 @@ extension User: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
     result["avatar"] = self.avatar.encode()
+    result["chosen_currency"] = self.chosenCurrency
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
     result["is_admin"] = self.isAdmin ?? false

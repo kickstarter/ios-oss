@@ -2200,7 +2200,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectRewardsResult: .success([.template])
     )) {
       // When we configure with a project ID parameter and load the view
-      self.vm.inputs.configureWith(projectOrParam: .right(.id(42)), refInfo: nil)
+      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(42)), refInfo: nil)
       self.vm.inputs.viewDidLoad()
 
       prefetchImageElementsOnFirstLoad.assertDidNotEmitValue()
