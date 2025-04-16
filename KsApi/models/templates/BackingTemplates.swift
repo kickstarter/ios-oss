@@ -40,4 +40,7 @@ extension Backing {
       state: .collected,
       stateReason: nil
     )]
+
+  internal static let templatePledgeManagement = Backing.template
+    |> Backing.lens.order .~ .init(checkoutState: .complete, currency: "USD", total: 1)
 }

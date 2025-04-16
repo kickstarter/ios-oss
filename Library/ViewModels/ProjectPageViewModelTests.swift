@@ -39,6 +39,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToComments = TestObserver<Project, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
+  private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
   private let goToReportProject = TestObserver<(Bool, String, String), Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
@@ -107,6 +108,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
+    self.vm.outputs.goToPledgeManagementViewPledge.observe(self.goToPledgeManagementViewPledge.observer)
     self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
@@ -965,11 +967,13 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
       self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
     }
   }
 
@@ -989,11 +993,68 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
       self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
       self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToPledgeManagementWebview_ManagingPledge() {
+    withEnvironment(config: .template) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.templatePledgeManagement
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+
+      self.configureInitialState(.left(project))
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+    }
+  }
+
+  func testGoToPledgeManagementWebview_ViewingPledge() {
+    withEnvironment(config: .template, currentUser: .template) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.templatePledgeManagement
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+
+      self.configureInitialState(.left(project))
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
     }
   }
 

@@ -15017,7 +15017,7 @@ public enum GraphAPI {
           ...MoneyFragment
         }
         status
-        backingDetailsPageRoute(type: url, tab: details)
+        backingDetailsPageRoute(type: url, tab: survey_responses)
       }
       """
 
@@ -15044,7 +15044,7 @@ public enum GraphAPI {
         GraphQLField("sequence", type: .scalar(Int.self)),
         GraphQLField("shippingAmount", type: .object(ShippingAmount.selections)),
         GraphQLField("status", type: .nonNull(.scalar(BackingState.self))),
-        GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "details"], type: .nonNull(.scalar(String.self))),
+        GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "survey_responses"], type: .nonNull(.scalar(String.self))),
       ]
     }
 

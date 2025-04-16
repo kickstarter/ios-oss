@@ -39,5 +39,5 @@ fragment BackingFragment on Backing {
     ...MoneyFragment
   }
   status
-  backingDetailsPageRoute(type: url, tab: details)
+  backingDetailsPageRoute(type: url, tab: survey_responses)
 }

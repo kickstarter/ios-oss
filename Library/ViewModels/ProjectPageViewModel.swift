@@ -309,25 +309,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .ignoreValues()
 
-    let order = projectAndBacking.map { _, backing in
-      backing.order
-    }
-
-    let shouldGoToNativeManagePledgeView = ctaButtonTappedWithType
-      .filter(shouldGoToManagePledge(with:))
-      .combineLatest(with: order)
-      .map { _, order -> Bool in
-        order?.checkoutState != .complete
-      }
-
-    let shouldGoToManagePledge = shouldGoToNativeManagePledgeView
-      .filter { $0 }
-      .ignoreValues()
-
-    let shouldGoToPMViewPledge = shouldGoToNativeManagePledgeView
-      .filter { !$0 }
-      .ignoreValues()
-
     let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
       .filter { state in
         switch state {
@@ -351,25 +332,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
-
-    self.goToPledgeManagementViewPledge = projectAndBacking
-      .takeWhen(shouldGoToPMViewPledge)
-      .map { _, backing in
-        URL(string: backing.backingDetailsPageRoute)
-      }
-      .skipNil()
-
-    self.goToManagePledge = projectAndBacking
-      .takeWhen(shouldGoToManagePledge)
-      .map(first)
-      .map { project -> ManagePledgeViewParamConfigData? in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
-
-        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
-      }
-      .skipNil()
 
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
@@ -642,6 +604,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           )
       }
 
+    // MARK: - Pledge View
+
+    self.pledgeViewUseCase = .init(with: projectAndBacking)
+
+    ctaButtonTappedWithType
+      .filter(shouldGoToManagePledge(with:))
+      .observeValues { _ in self.pledgeViewUseCase.goToPledgeViewTapped() }
+
     // MARK: Similar Projects
 
     freshProjectAndRefTag
@@ -773,14 +743,22 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewWillTransitionProperty.value = ()
   }
 
+  private let pledgeViewUseCase: PledgeViewUseCase
+
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
-  public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
-  public let goToPledgeManagementViewPledge: Signal<URL, Never>
+  public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
+    self.pledgeViewUseCase.goToNativePledgeView
+  }
+
+  public var goToPledgeManagementViewPledge: Signal<URL, Never> {
+    self.pledgeViewUseCase.goToPledgeManagementViewPledge
+  }
+
   public let goToRestrictedCreator: Signal<String, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
