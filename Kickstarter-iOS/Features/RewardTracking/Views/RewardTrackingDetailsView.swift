@@ -91,8 +91,7 @@ final class RewardTrackingDetailsView: UIView {
       self.trackingButton
     )
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
-    self.trackingButton.setTitle("Track shipment", for: .normal)
+    self.trackingButton.setTitle(Strings.Track_shipment(), for: .normal)
     self.trackingButton.addTarget(self, action: #selector(self.onTrackingButtonTapped), for: .touchUpInside)
 
     self.trackingShippingDaysLabel.isHidden = self.style != .activity
