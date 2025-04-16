@@ -228,8 +228,7 @@ private func filterPills(
       SearchFilterPill(
         isHighlighted: state != SearchFiltersUseCase.defaultStateOption,
         filterType: .projectState,
-        // FIXME: MBL-2232 Final translations
-        buttonType: .dropdown(hasState ? state.title : "Project status")
+        buttonType: .dropdown(hasState ? state.title : Strings.Project_status())
       )
     )
   }
@@ -238,19 +237,18 @@ private func filterPills(
 }
 
 extension DiscoveryParams.State {
-  // FIXME: MBL-2232 Final translations
   var title: String {
     switch self {
     case .all:
-      "All"
+      Strings.Project_status_all()
     case .live:
-      "Live"
+      Strings.Project_status_live()
     case .successful:
-      "Successful"
+      Strings.Project_status_successful()
     case .late_pledge:
-      "Late Pledge"
+      Strings.Project_status_late_pledges()
     case .upcoming:
-      "Upcoming"
+      Strings.Project_status_upcoming()
     }
   }
 }
