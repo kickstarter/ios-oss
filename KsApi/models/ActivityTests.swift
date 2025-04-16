@@ -66,6 +66,7 @@ internal final class ActivityTests: XCTestCase {
       "user": [
         "id": 2,
         "name": "User",
+        "chosen_currency": nil,
         "needs_password": false,
         "avatar": [
           "medium": "img.jpg",

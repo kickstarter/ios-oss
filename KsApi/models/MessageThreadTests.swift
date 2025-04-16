@@ -17,6 +17,7 @@ internal final class MessageThreadTests: XCTestCase {
             "medium": "img",
             "small": "img"
           ],
+          "chosen_currency": nil,
           "needs_password": true
         ],
         "sender": [
@@ -26,6 +27,7 @@ internal final class MessageThreadTests: XCTestCase {
             "medium": "img",
             "small": "img"
           ],
+          "chosen_currency": nil,
           "needs_password": true
         ]
       ],
@@ -37,6 +39,7 @@ internal final class MessageThreadTests: XCTestCase {
           "medium": "img",
           "small": "img"
         ],
+        "chosen_currency": nil,
         "needs_password": true
       ],
       "project": [
@@ -59,6 +62,7 @@ internal final class MessageThreadTests: XCTestCase {
             "medium": "http://www.kickstarter.com/medium.jpg",
             "small": "http://www.kickstarter.com/small.jpg"
           ],
+          "chosen_currency": nil,
           "needs_password": true
         ],
         "photo": [
