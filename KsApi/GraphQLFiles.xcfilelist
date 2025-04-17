@@ -1,6 +1,7 @@
 $(PROJECT_DIR)/KsApi/fragments/UserFeaturesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CreditCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/UserSettingsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/BackingFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/RewardFragment.graphql

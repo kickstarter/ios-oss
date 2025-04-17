@@ -420,7 +420,7 @@ private func pledgeAmountAndGoalAndCountry(
 ) -> ConvertedCurrrencyProjectData {
   guard needsConversion else {
     let pledgedCurrencyCountry = projectCountry(forCurrency: properties.currency) ?? properties.country
-    return (properties.pledged, properties.goal, pledgedCurrencyCountry)
+    return (properties.pledged.amount, properties.goal.amount, pledgedCurrencyCountry)
   }
 
   guard let goalCurrentCurrency = properties.goalCurrentCurrency,
@@ -471,12 +471,12 @@ private func conversionText(for properties: ProjectPamphletMainCellProperties) -
 
   return Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(
     pledged: Format.currency(
-      properties.pledged,
+      properties.pledged.amount,
       country: pledgedCurrencyCountry,
       omitCurrencyCode: properties.omitUSCurrencyCode
     ),
     goal: Format.currency(
-      properties.goal,
+      properties.goal.amount,
       country: goalCurrencyCountry,
       omitCurrencyCode: properties.omitUSCurrencyCode
     )

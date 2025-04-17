@@ -51,6 +51,7 @@ internal final class UpdateTests: XCTestCase {
           "small": "img.jpg",
           "large": "img.jpg"
         ],
+        "chosen_currency": nil,
         "needs_password": false
       ],
       "visible": true,

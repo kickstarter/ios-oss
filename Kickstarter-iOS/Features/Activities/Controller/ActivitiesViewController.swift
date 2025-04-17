@@ -220,7 +220,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   fileprivate func present(project: Project, refTag: RefTag) {
-    let projectParam = Either<Project, Param>(left: project)
+    let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: RefInfo(refTag)

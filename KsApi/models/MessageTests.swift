@@ -14,6 +14,7 @@ internal final class MessageTests: XCTestCase {
           "medium": "img",
           "small": "img"
         ],
+        "chosen_currency": nil,
         "needs_password": true
       ],
       "sender": [
@@ -23,6 +24,7 @@ internal final class MessageTests: XCTestCase {
           "medium": "img",
           "small": "img"
         ],
+        "chosen_currency": nil,
         "needs_password": true
       ]
     ])
