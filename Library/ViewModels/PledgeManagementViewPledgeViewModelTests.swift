@@ -5,7 +5,7 @@ import ReactiveSwift
 import XCTest
 
 final class PledgeManagementViewPledgeViewModelTests: TestCase {
-  private let vm: PledgeManagementViewPledgeViewModelType = PledgeManagementViewPledgeViewModel()
+  private let vm: PledgeManagementDetailsViewModelType = PledgeManagementDetailsViewModel()
   private let webViewLoadRequest = TestObserver<URLRequest, Never>()
 
   override func setUp() {

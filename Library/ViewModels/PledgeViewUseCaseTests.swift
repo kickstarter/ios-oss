@@ -6,7 +6,7 @@ import ReactiveSwift
 import XCTest
 
 final class PledgeViewUseCaseTests: TestCase {
-  private var useCase: PledgeViewUseCase!
+  private var useCase: PledgeViewRoutingUseCase!
 
   private let goToNativePledgeViewProjectParam = TestObserver<Param, Never>()
   private let goToNativePledgeViewBackingParam = TestObserver<Param?, Never>()
@@ -23,7 +23,7 @@ final class PledgeViewUseCaseTests: TestCase {
       .observe(self.goToNativePledgeViewProjectParam.observer)
     self.useCase.outputs.goToNativePledgeView.map(second)
       .observe(self.goToNativePledgeViewBackingParam.observer)
-    self.useCase.outputs.goToPledgeManagementViewPledge.observe(self.goToPledgeManagementViewPledge.observer)
+    self.useCase.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementViewPledge.observer)
   }
 
   func test_onStandardPledge() {
@@ -45,7 +45,7 @@ final class PledgeViewUseCaseTests: TestCase {
 
   func test_onPledgeManagementPledge() {
     let project = Project.template
-    let backing = Backing.templatePledgeManagement
+    let backing = Backing.templateMadeWithPledgeManagment
     let expectedURL = URL(string: backing.backingDetailsPageRoute)!
 
     self.projectAndBackingObserver.send(value: (project, backing))

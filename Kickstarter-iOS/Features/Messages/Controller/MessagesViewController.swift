@@ -192,7 +192,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   }
 
   fileprivate func goToPMViewPlede(with url: URL) {
-    let vc = PledgeManagementViewPledgeViewController.configured(with: url)
+    let vc = PledgeManagementDetailsWebViewController.configured(with: url)
     self.present(vc, animated: true)
   }
 

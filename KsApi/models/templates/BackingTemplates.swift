@@ -8,7 +8,7 @@ extension Backing {
     backer: .template,
     backerId: 1,
     backerCompleted: true,
-    backingDetailsPageRoute: "https://ksr.com/backing/details",
+    backingDetailsPageRoute: "https://ksr.com/backing/survey_repsonses",
     bonusAmount: 0,
     cancelable: true,
     id: 1,
@@ -41,6 +41,6 @@ extension Backing {
       stateReason: nil
     )]
 
-  internal static let templatePledgeManagement = Backing.template
+  internal static let templateMadeWithPledgeManagment = Backing.template
     |> Backing.lens.order .~ .init(checkoutState: .complete, currency: "USD", total: 1)
 }

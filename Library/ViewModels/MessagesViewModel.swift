@@ -143,14 +143,14 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
       let isBacker = project.personalization.isBacking == .some(true)
 
-      guard isBacker, let backingID = messageThreadEnvelope.messageThread.backing?.id else {
-        // If the messageThread does not contain a backing ID, or the user is a project creator,
-        // fallback to fetching the backing info using V1 endpoint `fetchBacking(forProject:forUser:)`
+      guard let backingID = messageThreadEnvelope.messageThread.backing?.id else {
+        // If the messageThread does not contain a backing ID, fall back to fetching the backing info using the V1 endpoint:
+        // `fetchBacking(forProject:forUser:)`
         let user = isBacker ? currentUser : participant
         let request = AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
 
         return request
-          .map { ($0, project, false) }
+          .map { (backing: $0, project: project, isFromBacking: false) }
           .demoteErrors()
       }
 
@@ -168,7 +168,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       (project, backing)
     }
 
-    self.pledgeViewUseCase = .init(with: projectAndBacking)
+    self.pledgeViewRoutingUseCase = .init(with: projectAndBacking)
 
     self.messages = messageThreadEnvelope
       .map { $0.messages }
@@ -256,7 +256,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   }
 
   public func backingInfoPressed() {
-    self.pledgeViewUseCase.goToPledgeViewTapped()
+    self.pledgeViewRoutingUseCase.goToPledgeViewTapped()
   }
 
   private let blockUserProperty = MutableProperty<String>("")
@@ -294,7 +294,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.viewWillAppearProperty.value = ()
   }
 
-  private let pledgeViewUseCase: PledgeViewUseCase
+  private let pledgeViewRoutingUseCase: PledgeViewRoutingUseCase
 
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
   public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
@@ -309,11 +309,11 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let didBlockUserError: Signal<(), Never>
 
   public var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> {
-    self.pledgeViewUseCase.goToNativePledgeView
+    self.pledgeViewRoutingUseCase.goToNativePledgeView
   }
 
   public var goToPledgeManagementViewPledge: Signal<URL, Never> {
-    self.pledgeViewUseCase.goToPledgeManagementViewPledge
+    self.pledgeViewRoutingUseCase.goToPledgeManagementPledgeView
   }
 
   public var inputs: MessagesViewModelInputs { return self }

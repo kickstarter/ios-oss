@@ -108,7 +108,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
-    self.vm.outputs.goToPledgeManagementViewPledge.observe(self.goToPledgeManagementViewPledge.observer)
+    self.vm.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementViewPledge.observer)
     self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
@@ -1006,7 +1006,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testGoToPledgeManagementWebview_ManagingPledge() {
     withEnvironment(config: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
-      let backing = Backing.templatePledgeManagement
+      let backing = Backing.templateMadeWithPledgeManagment
         |> Backing.lens.reward .~ reward
         |> Backing.lens.rewardId .~ reward.id
 
@@ -1033,7 +1033,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testGoToPledgeManagementWebview_ViewingPledge() {
     withEnvironment(config: .template, currentUser: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
-      let backing = Backing.templatePledgeManagement
+      let backing = Backing.templateMadeWithPledgeManagment
         |> Backing.lens.reward .~ reward
         |> Backing.lens.rewardId .~ reward.id
 

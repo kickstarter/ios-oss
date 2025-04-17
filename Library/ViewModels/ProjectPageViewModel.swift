@@ -102,8 +102,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
-  /// Emits `Project` to take the user to the `PledgeManagementViewPledgeViewController`
-  var goToPledgeManagementViewPledge: Signal<URL, Never> { get }
+  /// Emits `URL` to take the user to the `PledgeManagementDetailsWebViewController`
+  var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
 
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
@@ -606,11 +606,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: - Pledge View
 
-    self.pledgeViewUseCase = .init(with: projectAndBacking)
+    self.pledgeViewRoutingUseCase = .init(with: projectAndBacking)
 
     ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
-      .observeValues { _ in self.pledgeViewUseCase.goToPledgeViewTapped() }
+      .observeValues { _ in self.pledgeViewRoutingUseCase.goToPledgeViewTapped() }
 
     // MARK: Similar Projects
 
@@ -743,7 +743,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewWillTransitionProperty.value = ()
   }
 
-  private let pledgeViewUseCase: PledgeViewUseCase
+  private let pledgeViewRoutingUseCase: PledgeViewRoutingUseCase
 
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
@@ -752,11 +752,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
-    self.pledgeViewUseCase.goToNativePledgeView
+    self.pledgeViewRoutingUseCase.goToNativePledgeView
   }
 
-  public var goToPledgeManagementViewPledge: Signal<URL, Never> {
-    self.pledgeViewUseCase.goToPledgeManagementViewPledge
+  public var goToPledgeManagementPledgeView: Signal<URL, Never> {
+    self.pledgeViewRoutingUseCase.goToPledgeManagementPledgeView
   }
 
   public let goToRestrictedCreator: Signal<String, Never>

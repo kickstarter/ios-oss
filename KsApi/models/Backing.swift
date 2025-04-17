@@ -6,6 +6,12 @@ public struct Backing {
   public let backer: User?
   public let backerId: Int
   public let backerCompleted: Bool?
+
+  // Route used to load backing details. Currently points to `backing/survey_responses`
+  // instead of `backing/details` to avoid triggering a webview login prompt.
+  // The original `backing/details` endpoint requires re-authentication,
+  // even if the user is already authenticated in the app.
+  // This may be revisited if the backend updates the auth behavior of `backing/details`.
   public let backingDetailsPageRoute: String
   public let bonusAmount: Double
   public let cancelable: Bool

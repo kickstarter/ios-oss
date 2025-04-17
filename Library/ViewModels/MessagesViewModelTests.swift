@@ -228,7 +228,7 @@ internal final class MessagesViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.id .~ 42
       |> Project.lens.personalization.isBacking .~ true
-    let backing = Backing.templatePledgeManagement
+    let backing = Backing.templateMadeWithPledgeManagment
     let currentUser = User.template
       |> \.id .~ 42
     let messageThread = .template
