@@ -25,14 +25,24 @@ struct SearchFiltersHeaderView: View {
           switch pill.buttonType {
           case let .image(image):
             if let uiImage = Library.image(named: image) {
-              ImagePillButton(action: {
-                self.didTapPill(pill)
-              }, image: uiImage, isHighlighted: pill.isHighlighted)
+              ImagePillButton(
+                action: {
+                  self.didTapPill(pill)
+                },
+                image: uiImage,
+                isHighlighted: pill.isHighlighted,
+                count: pill.count
+              )
             }
           case let .dropdown(title):
-            DropdownPillButton(action: {
-              self.didTapPill(pill)
-            }, title: title, isHighlighted: pill.isHighlighted)
+            DropdownPillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              count: pill.count
+            )
           }
         }
       }

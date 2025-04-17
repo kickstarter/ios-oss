@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1703,6 +1703,7 @@
 		E1C880AF2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1CFB5972D8E0107004AB0D6 /* Category+FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5962D8E0107004AB0D6 /* Category+FilterCategory.swift */; };
+		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
 /* End PBXBuildFile section */
@@ -3479,6 +3480,7 @@
 		E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphQLSelectionSet+String.swift"; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1CFB5962D8E0107004AB0D6 /* Category+FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+FilterCategory.swift"; sourceTree = "<group>"; };
+		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
@@ -7701,6 +7703,7 @@
 			children = (
 				E10675632DA58AB4007CCA24 /* PillButtons.swift */,
 				E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */,
+				E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */,
 			);
 			path = HeaderView;
 			sourceTree = "<group>";
@@ -9333,6 +9336,7 @@
 				D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */,
 				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
 				336194992D8A22C900BED4BD /* FilterCategoryViewModelTest.swift in Sources */,
+				E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */,
 				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
 				E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */,

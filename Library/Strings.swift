@@ -4281,6 +4281,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Filter"
+
+   - **en**: "Filter"
+   - **de**: "Filter"
+   - **es**: "Filter"
+   - **fr**: "Filter"
+   - **ja**: "Filter"
+  */
+  public static func Filter() -> String {
+    return localizedString(
+      key: "Filter",
+      defaultValue: "Filter",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Filter by all projects"
 
    - **en**: "Filter by all projects"
@@ -5688,6 +5705,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Ill_do_this_later",
       defaultValue: "I'll do this later",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Include ended projects"
+
+   - **en**: "Include ended projects"
+   - **de**: "Include ended projects"
+   - **es**: "Include ended projects"
+   - **fr**: "Include ended projects"
+   - **ja**: "Include ended projects"
+  */
+  public static func Include_ended_projects() -> String {
+    return localizedString(
+      key: "Include_ended_projects",
+      defaultValue: "Include ended projects",
       count: nil,
       substitutions: [:]
     )
@@ -8923,6 +8957,108 @@ n'ont rien soutenu."
     return localizedString(
       key: "Project_saved",
       defaultValue: "Project saved.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project status"
+
+   - **en**: "Project status"
+   - **de**: "Project status"
+   - **es**: "Project status"
+   - **fr**: "Project status"
+   - **ja**: "Project status"
+  */
+  public static func Project_status() -> String {
+    return localizedString(
+      key: "Project_status",
+      defaultValue: "Project status",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All"
+
+   - **en**: "All"
+   - **de**: "All"
+   - **es**: "All"
+   - **fr**: "All"
+   - **ja**: "All"
+  */
+  public static func Project_status_all() -> String {
+    return localizedString(
+      key: "Project_status_all",
+      defaultValue: "All",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Late pledges"
+
+   - **en**: "Late pledges"
+   - **de**: "Late pledges"
+   - **es**: "Late pledges"
+   - **fr**: "Late pledges"
+   - **ja**: "Late pledges"
+  */
+  public static func Project_status_late_pledges() -> String {
+    return localizedString(
+      key: "Project_status_late_pledges",
+      defaultValue: "Late pledges",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Live"
+
+   - **en**: "Live"
+   - **de**: "Live"
+   - **es**: "Live"
+   - **fr**: "Live"
+   - **ja**: "Live"
+  */
+  public static func Project_status_live() -> String {
+    return localizedString(
+      key: "Project_status_live",
+      defaultValue: "Live",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Successful"
+
+   - **en**: "Successful"
+   - **de**: "Successful"
+   - **es**: "Successful"
+   - **fr**: "Successful"
+   - **ja**: "Successful"
+  */
+  public static func Project_status_successful() -> String {
+    return localizedString(
+      key: "Project_status_successful",
+      defaultValue: "Successful",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Upcoming"
+
+   - **en**: "Upcoming"
+   - **de**: "Upcoming"
+   - **es**: "Upcoming"
+   - **fr**: "Upcoming"
+   - **ja**: "Upcoming"
+  */
+  public static func Project_status_upcoming() -> String {
+    return localizedString(
+      key: "Project_status_upcoming",
+      defaultValue: "Upcoming",
       count: nil,
       substitutions: [:]
     )
@@ -12520,6 +12656,23 @@ catch your eye?"
     )
   }
   /**
+   "Track shipment"
+
+   - **en**: "Track shipment"
+   - **de**: "Track shipment"
+   - **es**: "Track shipment"
+   - **fr**: "Track shipment"
+   - **ja**: "Track shipment"
+  */
+  public static func Track_shipment() -> String {
+    return localizedString(
+      key: "Track_shipment",
+      defaultValue: "Track shipment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Track your backings"
 
    - **en**: "Track your backings"
@@ -12534,6 +12687,23 @@ catch your eye?"
       defaultValue: "Track your backings",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Tracking number: %{number}"
+
+   - **en**: "Tracking number: %{number}"
+   - **de**: "Tracking number: %{number}"
+   - **es**: "Tracking number: %{number}"
+   - **fr**: "Tracking number: %{number}"
+   - **ja**: "Tracking number: %{number}"
+  */
+  public static func Tracking_number(number: String) -> String {
+    return localizedString(
+      key: "Tracking_number",
+      defaultValue: "Tracking number: %{number}",
+      count: nil,
+      substitutions: ["number": number]
     )
   }
   /**
@@ -14592,6 +14762,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "<b>Your reward</b> estimated for delivery in %{delivery_date}",
       count: nil,
       substitutions: ["delivery_date": delivery_date]
+    )
+  }
+  /**
+   "Your reward has shipped!"
+
+   - **en**: "Your reward has shipped!"
+   - **de**: "Your reward has shipped!"
+   - **es**: "Your reward has shipped!"
+   - **fr**: "Your reward has shipped!"
+   - **ja**: "Your reward has shipped!"
+  */
+  public static func Your_reward_has_shipped() -> String {
+    return localizedString(
+      key: "Your_reward_has_shipped",
+      defaultValue: "Your reward has shipped!",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
