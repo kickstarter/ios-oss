@@ -256,6 +256,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Faq" = "FAQ";
+"Filter" = "Filter";
 "Filter_by_all_projects" = "Filter by all projects";
 "Filter_by_category_name" = "Filter by %{category_name}";
 "Filter_by_projects_backed_by_friends" = "Filter by projects backed by friends";
@@ -343,6 +344,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "If your project reaches its funding goal, the backer will be charged on %{project_deadline}.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "If your project reaches its funding goal, the backer will be charged %{total} on %{project_deadline}.";
 "Ill_do_this_later" = "I'll do this later";
+"Include_ended_projects" = "Include ended projects";
 "Increase_pledge" = "Increase pledge";
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
@@ -537,6 +539,12 @@
 "Project_goal_and_pledge" = "Project goal and pledge amounts will be shown in approximate conversions. A successfully funded project will collect your pledge in its native currency.";
 "Project_reminders" = "Project reminders";
 "Project_saved" = "Project saved.";
+"Project_status" = "Project status";
+"Project_status_all" = "All";
+"Project_status_late_pledges" = "Late pledges";
+"Project_status_live" = "Live";
+"Project_status_successful" = "Successful";
+"Project_status_upcoming" = "Upcoming";
 "Project_updates" = "Project updates";
 "Project_url" = "Project URL";
 "Projects_We_Love" = "Projects We Love";
@@ -764,7 +772,9 @@
 "Total_amount_billion_plus" = "%{total_amount} billion+";
 "Total_pledged" = "Total pledged";
 "Total_plus" = "%{total}+";
+"Track_shipment" = "Track shipment";
 "Track_your_backings" = "Track your backings";
+"Tracking_number" = "Tracking number: %{number}";
 "Twice_a_day_summary" = "Twice a day summary";
 "Unable_to_request" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
@@ -885,6 +895,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Your project didn’t reach its funding goal, so the backer’s payment method was never charged.";
 "Your_reward" = "Your reward";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Your reward</b> estimated for delivery in %{delivery_date}";
+"Your_reward_has_shipped" = "Your reward has shipped!";
 "Your_selection" = "Your selection";
 "Your_shipping_destination" = "Your shipping destination";
 "Your_shipping_location" = "Your shipping location";

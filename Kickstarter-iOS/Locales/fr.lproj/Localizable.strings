@@ -256,6 +256,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";
 "Failed_to_update_subscription" = "Mise à jour de l'abonnement impossible";
 "Faq" = "FAQ";
+"Filter" = "Filter";
 "Filter_by_all_projects" = "Filtrer : tous les projets";
 "Filter_by_category_name" = "Filtrer par catégorie : %{category_name}";
 "Filter_by_projects_backed_by_friends" = "Filtrer : engagements de mes amis";
@@ -343,6 +344,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "Si vous atteignez votre objectif de financement, le contributeur sera débité le %{project_deadline}.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "Si vous atteignez votre objectif de financement, le contributeur sera débité de %{total} le %{project_deadline}.";
 "Ill_do_this_later" = "Plus tard";
+"Include_ended_projects" = "Include ended projects";
 "Increase_pledge" = "Augmenter mon engagement";
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
@@ -537,6 +539,12 @@
 "Project_goal_and_pledge" = "La valeur de l'objectif de financement et des montants engagés sera convertie (approximativement). Si le projet est intégralement financé, votre engagement vous sera débité dans la devise d'origine du projet.";
 "Project_reminders" = "Rappels";
 "Project_saved" = "Projet enregistré.";
+"Project_status" = "Project status";
+"Project_status_all" = "All";
+"Project_status_late_pledges" = "Late pledges";
+"Project_status_live" = "Live";
+"Project_status_successful" = "Successful";
+"Project_status_upcoming" = "Upcoming";
 "Project_updates" = "Actus de projet";
 "Project_url" = "URL de projet";
 "Projects_We_Love" = "Nos coups de cœur";
@@ -764,7 +772,9 @@
 "Total_amount_billion_plus" = "Plus de 4 milliards de dollars";
 "Total_pledged" = "Total engagé";
 "Total_plus" = "Plus de %{total}";
+"Track_shipment" = "Track shipment";
 "Track_your_backings" = "Suivi de vos engagements";
+"Tracking_number" = "Tracking number: %{number}";
 "Twice_a_day_summary" = "Deux fois par jour";
 "Unable_to_request" = "Demande de données impossible.";
 "Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
@@ -885,6 +895,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "L'objectif de financement de votre projet n'a pas été atteint, donc le moyen de paiement du contributeur n'a pas été débité.";
 "Your_reward" = "Votre récompense";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Votre récompense</b> prévue pour %{delivery_date}";
+"Your_reward_has_shipped" = "Your reward has shipped!";
 "Your_selection" = "Votre sélection";
 "Your_shipping_destination" = "Destination d'expédition";
 "Your_shipping_location" = "Votre destination de livraison";

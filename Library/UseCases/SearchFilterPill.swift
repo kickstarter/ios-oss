@@ -11,6 +11,7 @@ public struct SearchFilterPill: Identifiable {
   public let isHighlighted: Bool
   public let filterType: FilterType
   public let buttonType: ButtonType
+  public let count: Int
 
   /// Which filter the pill represents.
   /// Only one pill of each type will be shown, since this powers the id of the pill.
@@ -27,9 +28,15 @@ public struct SearchFilterPill: Identifiable {
     case dropdown(String)
   }
 
-  public init(isHighlighted: Bool, filterType: SearchFilterPill.FilterType, buttonType: ButtonType) {
+  public init(
+    isHighlighted: Bool,
+    filterType: SearchFilterPill.FilterType,
+    buttonType: ButtonType,
+    count: Int = 0
+  ) {
     self.isHighlighted = isHighlighted
     self.filterType = filterType
     self.buttonType = buttonType
+    self.count = count
   }
 }

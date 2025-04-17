@@ -256,6 +256,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Faq" = "FAQ";
+"Filter" = "Filter";
 "Filter_by_all_projects" = "Filter: Alle Projekte";
 "Filter_by_category_name" = "Filter: %{category_name}";
 "Filter_by_projects_backed_by_friends" = "Filter: Von Freunden unterstützte Projekte";
@@ -343,6 +344,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "Wenn dein Projekt das Finanzierungsziel erreicht, wird der Finanzierungsbeitrag des Unterstützers am %{project_deadline} abgebucht.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "Wenn dein Projekt das Finanzierungsziel erreicht, wird die Karte des Unterstützers am %{project_deadline} mit %{total} belastet.";
 "Ill_do_this_later" = "Ich kümmere mich später darum";
+"Include_ended_projects" = "Include ended projects";
 "Increase_pledge" = "Finanzierungsbeitrag erhöhen";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
@@ -537,6 +539,12 @@
 "Project_goal_and_pledge" = "Es wird eine ungefähre Umrechnung des Finanzierungsziels und der Finanzierungsbeiträge angezeigt. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht.";
 "Project_reminders" = "Projekt-Erinnerungen";
 "Project_saved" = "Projekt gespeichert.";
+"Project_status" = "Project status";
+"Project_status_all" = "All";
+"Project_status_late_pledges" = "Late pledges";
+"Project_status_live" = "Live";
+"Project_status_successful" = "Successful";
+"Project_status_upcoming" = "Upcoming";
 "Project_updates" = "Projekt-Updates";
 "Project_url" = "Projekt-URL";
 "Projects_We_Love" = "Team-Favoriten";
@@ -764,7 +772,9 @@
 "Total_amount_billion_plus" = "%{total_amount} Milliarden+";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Total_plus" = "Über %{total}";
+"Track_shipment" = "Track shipment";
 "Track_your_backings" = "Folge deinen unterstützten Projekten";
+"Tracking_number" = "Tracking number: %{number}";
 "Twice_a_day_summary" = "Übersicht (zweimal täglich)";
 "Unable_to_request" = "Daten konnten nicht angefordert werden.";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
@@ -885,6 +895,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Dein Projekt hat das Finanzierungsziel leider nicht erreicht. Daher wurde die Zahlungsmethode des Unterstützers nicht belastet.";
 "Your_reward" = "Deine Belohnung";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Deine Belohnung</b> wird voraussichtlich im %{delivery_date} geliefert";
+"Your_reward_has_shipped" = "Your reward has shipped!";
 "Your_selection" = "Deine Auswahl";
 "Your_shipping_destination" = "Dein Versandziel";
 "Your_shipping_location" = "Dein Versand-Standort";
