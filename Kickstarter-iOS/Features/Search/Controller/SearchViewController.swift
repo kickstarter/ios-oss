@@ -312,7 +312,9 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.viewModel.inputs.tapped(projectAtIndex: indexPath.row)
+    if let project = self.dataSource.indexOfProject(forCellAtIndexPath: indexPath) {
+      self.viewModel.inputs.tapped(projectAtIndex: project)
+    }
   }
 
   internal override func tableView(
