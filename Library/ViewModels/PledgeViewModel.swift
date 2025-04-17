@@ -323,10 +323,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
           data.context == .fixPaymentMethod &&
             data.project.personalization.backing?.isLatePledge == true
         )
+
+      let projectCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project.country
+
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
-        projectCountry: data.project.country,
+        projectCountry: projectCountry,
         omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
         shipping: shipping,
         useLatePledgeCosts: isLatePledge
