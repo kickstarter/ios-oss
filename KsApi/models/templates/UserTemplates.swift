@@ -3,6 +3,7 @@ import Prelude
 extension User {
   internal static let template = User(
     avatar: .template,
+    chosenCurrency: nil,
     facebookConnected: nil,
     id: 1,
     isAdmin: false,

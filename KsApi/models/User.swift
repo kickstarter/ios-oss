@@ -115,7 +115,7 @@ extension User: Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.avatar = try values.decode(Avatar.self, forKey: .avatar)
-    self.chosenCurrency = try values.decode(String?.self, forKey: .chosenCurrency)
+    self.chosenCurrency = try? values.decode(String?.self, forKey: .chosenCurrency)
     self.erroredBackingsCount = try values.decodeIfPresent(Int.self, forKey: .erroredBackingsCount)
     self.facebookConnected = try values.decodeIfPresent(Bool.self, forKey: .facebookConnected)
     self.id = try values.decode(Int.self, forKey: .id)
