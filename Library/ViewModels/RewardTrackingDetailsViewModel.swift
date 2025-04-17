@@ -36,15 +36,13 @@ public final class RewardTrackingDetailsViewModel: RewardTrackingDetailsViewMode
   public init() {
     let configData = self.configDataSignal
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingNumber = configData.map {
-      "Tracking #: \($0.trackingNumber)"
+      Strings.Tracking_number(number: $0.trackingNumber)
     }
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingStatus = configData
       .ignoreValues().map {
-        "Your reward has been shipped."
+        Strings.Your_reward_has_shipped()
       }
 
     self.trackShipping = configData
