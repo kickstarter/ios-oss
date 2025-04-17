@@ -1679,6 +1679,7 @@
 		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
 		E1801FA72BA8EDB500EBB533 /* PaginatingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */; };
 		E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */; };
+		E182B7CA2DAFF529000C4067 /* FilterRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7C92DAFF525000C4067 /* FilterRootView.swift */; };
 		E182B7DF2DB2A89D000C4067 /* SelectedSearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7DA2DB2A80D000C4067 /* SelectedSearchFilters.swift */; };
 		E182B7E02DB2A8A3000C4067 /* SelectedSearchFilters+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */; };
 		E182B7E22DB2AAC9000C4067 /* SearchFilterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E12DB2AAC9000C4067 /* SearchFilterOptions.swift */; };
@@ -3465,6 +3466,7 @@
 		E17611E52B75242A00DF2F50 /* PaginatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatorTests.swift; sourceTree = "<group>"; };
 		E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatingList.swift; sourceTree = "<group>"; };
 		E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceSelected.swift; sourceTree = "<group>"; };
+		E182B7C92DAFF525000C4067 /* FilterRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterRootView.swift; sourceTree = "<group>"; };
 		E182B7DA2DB2A80D000C4067 /* SelectedSearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSearchFilters.swift; sourceTree = "<group>"; };
 		E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedSearchFilters+TestHelpers.swift"; sourceTree = "<group>"; };
 		E182B7E12DB2AAC9000C4067 /* SearchFilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterOptions.swift; sourceTree = "<group>"; };
@@ -5918,6 +5920,7 @@
 		336193ED2D825C4F00BED4BD /* SortFilter */ = {
 			isa = PBXGroup;
 			children = (
+				E182B7C92DAFF525000C4067 /* FilterRootView.swift */,
 				E1CFB6B62D91E99F004AB0D6 /* HeaderView */,
 				336194E12D8A95BB00BED4BD /* SortView */,
 				336193EE2D825C6500BED4BD /* FilterCategory */,
@@ -9072,6 +9075,7 @@
 				4751A679272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift in Sources */,
 				94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */,
 				D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */,
+				E182B7CA2DAFF529000C4067 /* FilterRootView.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
 				77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */,
 				4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */,
