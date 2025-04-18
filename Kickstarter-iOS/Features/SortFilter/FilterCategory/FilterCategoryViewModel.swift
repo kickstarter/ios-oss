@@ -37,7 +37,7 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
     self.categories.isEmpty
   }
 
-  init(with categories: [T]) {
+  init(with categories: [T], selectedCategory: T? = nil) {
     self.categories = categories
 
     self.selectedCategorySubject
@@ -48,6 +48,10 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
     self.selectedCategorySubject
       .receive(on: RunLoop.main)
       .assign(to: &self.$currentCategory)
+
+    if let category = selectedCategory {
+      self.selectCategory(category)
+    }
   }
 
   // MARK: - Inputs

@@ -11,9 +11,6 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
   private let selectedState = TestObserver<DiscoveryParams.State, Never>()
   private let showFilters = TestObserver<(SearchFilterOptions, SearchFilterModalType), Never>()
-  private let pills = TestObserver<[SearchFilterPill], Never>()
-  private let categoryPill = TestObserver<SearchFilterPill, Never>()
-  private let sortPill = TestObserver<SearchFilterPill, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -26,17 +23,10 @@ final class SearchFiltersUseCaseTests: TestCase {
       categories: self.categoriesSignal
     )
 
-    self.useCase.dataOuputs.selectedCategory.observe(self.selectedCategory.observer)
-    self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
-    self.useCase.dataOuputs.selectedState.observe(self.selectedState.observer)
+    self.useCase.dataOutputs.selectedCategory.observe(self.selectedCategory.observer)
+    self.useCase.dataOutputs.selectedSort.observe(self.selectedSort.observer)
+    self.useCase.dataOutputs.selectedState.observe(self.selectedState.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
-    self.useCase.uiOutputs.pills.observe(self.pills.observer)
-    self.useCase.uiOutputs.pills.map { pills in
-      pills.first(where: { $0.filterType == .sort })
-    }.skipNil().observe(self.sortPill.observer)
-    self.useCase.uiOutputs.pills.map { pills in
-      pills.first(where: { $0.filterType == .category })
-    }.skipNil().observe(self.categoryPill.observer)
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -55,7 +45,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedSort.assertLastValue(.magic)
   }
 
-  func test_state_onInitialSignal_isAll() {
+  func test_projectState_onInitialSignal_isAll() {
     self.selectedState.assertDidNotEmitValue()
 
     self.initialObserver.send(value: ())
@@ -74,13 +64,14 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     if let (options, type) = self.showFilters.lastValue {
       XCTAssertEqual(type, .sort, "Tapping sort button should show sort options")
-      XCTAssertEqual(
-        options.sort.selectedOption,
-        .magic,
-        "First option, magic, should be selected by default"
-      )
       XCTAssertGreaterThan(options.sort.sortOptions.count, 0, "There should be multiple sort options")
     }
+
+    XCTAssertEqual(
+      self.useCase.uiOutputs.selectedFilters.sort,
+      .magic,
+      "First option, magic, should be selected by default"
+    )
   }
 
   func test_tappedCategories_showsCategoryFilters() {
@@ -100,13 +91,14 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     if let (options, type) = self.showFilters.lastValue {
       XCTAssertEqual(type, .category, "Tapping category button should show category filters")
-      XCTAssertEqual(options.category.selectedCategory, nil, "No category should be selected by default")
       XCTAssertEqual(
         options.category.categories.count,
         4,
-        "The sheet should show categories that were loaded"
+        "The sheet should show the categories that were loaded"
       )
     }
+
+    XCTAssertEqual(self.useCase.selectedFilters.category, nil, "No category should be selected by default")
   }
 
   func test_tappedProjectState_showsAllOptions() {
@@ -120,17 +112,18 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     if let (options, type) = self.showFilters.lastValue {
       XCTAssertEqual(type, .all, "Tapping project state button should show all options")
-      XCTAssertEqual(
-        options.projectState.selectedOption,
-        .all,
-        "First option, All, should be selected by default"
-      )
       XCTAssertGreaterThan(
         options.projectState.stateOptions.count,
         0,
         "There should be multiple project state options"
       )
     }
+
+    XCTAssertEqual(
+      self.useCase.selectedFilters.projectState,
+      .all,
+      "First option, All, should be selected by default"
+    )
   }
 
   func test_tappedAllFilters_showsAllOptions() {
@@ -214,19 +207,27 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.selectedSort.assertLastValue(.magic)
 
-    self.sortPill.assertDidEmitValue()
-    XCTAssertEqual(
-      self.sortPill.lastValue?.isHighlighted,
-      false,
-      "Sort pill should not be highlighted when default sort is selected"
-    )
+    if let sortPill = self.useCase.selectedFilters.sortPill {
+      XCTAssertEqual(
+        sortPill.isHighlighted,
+        false,
+        "Sort pill should not be highlighted when default sort is selected"
+      )
+    } else {
+      XCTFail("Expected sort pill to be set")
+    }
 
     self.useCase.inputs.selectedSortOption(.endingSoon)
-    XCTAssertEqual(
-      self.sortPill.lastValue?.isHighlighted,
-      true,
-      "Sort pill should be highlighted when a non-default sort is selected"
-    )
+
+    if let sortPill = self.useCase.selectedFilters.sortPill {
+      XCTAssertEqual(
+        sortPill.isHighlighted,
+        true,
+        "Sort pill should be highlighted when a non-default sort is selected"
+      )
+    } else {
+      XCTFail("Expected sort pill to be set")
+    }
   }
 
   func test_selectingCategory_updatesCategoryPill() {
@@ -239,9 +240,8 @@ final class SearchFiltersUseCaseTests: TestCase {
     ])
 
     self.selectedCategory.assertLastValue(nil)
-    self.categoryPill.assertDidEmitValue()
 
-    guard let categoryPill = self.categoryPill.lastValue else {
+    guard let categoryPill = self.useCase.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
       return
     }
@@ -263,7 +263,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.inputs.selectedCategory(.illustration)
 
-    guard let newCategoryPill = self.categoryPill.lastValue else {
+    guard let newCategoryPill = self.useCase.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
       return
     }

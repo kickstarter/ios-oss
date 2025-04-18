@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
 
-/// The search view controller displays selected search options as a series of "pill"-style buttons.
+/// The search view controller displays selected search options as a series of "pill"-style buttons,
+/// using `SearchFiltersHeaderView`.
 /// This is a model object that represents one of those pills.
 public struct SearchFilterPill: Identifiable {
   public var id: Int {
