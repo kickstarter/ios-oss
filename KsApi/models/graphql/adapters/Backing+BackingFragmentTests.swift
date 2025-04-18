@@ -681,6 +681,7 @@ private func backingDictionary() -> [String: Any] {
       "uid": "1108924640"
     },
     "backerCompleted": false,
+    "backingDetailsPageRoute": "https://ksr.com/backing/survey_repsonses",
     "bonusAmount": {
       "__typename": "Money",
       "amount": "5.0",

@@ -102,6 +102,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
+  /// Emits `URL` to take the user to the `PledgeManagementDetailsWebViewController`
+  var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
+
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
 
@@ -306,10 +309,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .ignoreValues()
 
-    let shouldGoToManagePledge = ctaButtonTappedWithType
-      .filter(shouldGoToManagePledge(with:))
-      .ignoreValues()
-
     let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
       .filter { state in
         switch state {
@@ -333,18 +332,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
-
-    self.goToManagePledge = projectAndBacking
-      .takeWhen(shouldGoToManagePledge)
-      .map(first)
-      .map { project -> ManagePledgeViewParamConfigData? in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
-
-        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
-      }
-      .skipNil()
 
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
@@ -617,6 +604,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           )
       }
 
+    // MARK: - Pledge View
+
+    self.viewPledgeUseCase = .init(with: projectAndBacking)
+
+    ctaButtonTappedWithType
+      .filter(shouldGoToManagePledge(with:))
+      .observeValues { _ in self.viewPledgeUseCase.goToPledgeViewTapped() }
+
     // MARK: Similar Projects
 
     freshProjectAndRefTag
@@ -748,13 +743,22 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewWillTransitionProperty.value = ()
   }
 
+  private let viewPledgeUseCase: ViewPledgeUseCase
+
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
-  public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
+  public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
+    self.viewPledgeUseCase.goToNativePledgeView
+  }
+
+  public var goToPledgeManagementPledgeView: Signal<URL, Never> {
+    self.viewPledgeUseCase.goToPledgeManagementPledgeView
+  }
+
   public let goToRestrictedCreator: Signal<String, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
