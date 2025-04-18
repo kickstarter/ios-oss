@@ -606,11 +606,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: - Pledge View
 
-    self.pledgeViewRoutingUseCase = .init(with: projectAndBacking)
+    self.viewPledgeUseCase = .init(with: projectAndBacking)
 
     ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
-      .observeValues { _ in self.pledgeViewRoutingUseCase.goToPledgeViewTapped() }
+      .observeValues { _ in self.viewPledgeUseCase.goToPledgeViewTapped() }
 
     // MARK: Similar Projects
 
@@ -743,7 +743,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewWillTransitionProperty.value = ()
   }
 
-  private let pledgeViewRoutingUseCase: PledgeViewRoutingUseCase
+  private let viewPledgeUseCase: ViewPledgeUseCase
 
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
@@ -752,11 +752,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
-    self.pledgeViewRoutingUseCase.goToNativePledgeView
+    self.viewPledgeUseCase.goToNativePledgeView
   }
 
   public var goToPledgeManagementPledgeView: Signal<URL, Never> {
-    self.pledgeViewRoutingUseCase.goToPledgeManagementPledgeView
+    self.viewPledgeUseCase.goToPledgeManagementPledgeView
   }
 
   public let goToRestrictedCreator: Signal<String, Never>

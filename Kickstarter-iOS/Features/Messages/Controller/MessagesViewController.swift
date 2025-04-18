@@ -117,7 +117,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
     self.viewModel.outputs.goToPledgeManagementViewPledge
       .observeForControllerAction()
-      .observeValues { [weak self] url in self?.goToPMViewPlede(with: url) }
+      .observeValues { [weak self] url in self?.goToPMPledeView(with: url) }
 
     self.viewModel.outputs.didBlockUser
       .observeForUI()
@@ -191,7 +191,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.present(vc, animated: true)
   }
 
-  fileprivate func goToPMViewPlede(with url: URL) {
+  fileprivate func goToPMPledeView(with url: URL) {
     let vc = PledgeManagementDetailsWebViewController.configured(with: url)
     self.present(vc, animated: true)
   }

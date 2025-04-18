@@ -6,7 +6,7 @@ import ReactiveSwift
 import XCTest
 
 final class PledgeViewUseCaseTests: TestCase {
-  private var useCase: PledgeViewRoutingUseCase!
+  private var useCase: ViewPledgeUseCase!
 
   private let goToNativePledgeViewProjectParam = TestObserver<Param, Never>()
   private let goToNativePledgeViewBackingParam = TestObserver<Param?, Never>()

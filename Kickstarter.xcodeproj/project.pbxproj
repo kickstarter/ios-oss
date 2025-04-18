@@ -296,7 +296,7 @@
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
 		33A4392E2D93488800817A0E /* KSRButtonLegacyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */; };
-		33A684782DAD97910025B0EE /* PledgeViewRoutingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684772DAD97740025B0EE /* PledgeViewRoutingUseCase.swift */; };
+		33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */; };
 		33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */; };
 		33A6849E2DAF216C0025B0EE /* PledgeManagementDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A6849B2DAF216B0025B0EE /* PledgeManagementDetailsWebViewController.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
@@ -2056,7 +2056,7 @@
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
 		33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonLegacyStyle.swift; sourceTree = "<group>"; };
-		33A684772DAD97740025B0EE /* PledgeViewRoutingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewRoutingUseCase.swift; sourceTree = "<group>"; };
+		33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPledgeUseCase.swift; sourceTree = "<group>"; };
 		33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewUseCaseTests.swift; sourceTree = "<group>"; };
 		33A6849B2DAF216B0025B0EE /* PledgeManagementDetailsWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementDetailsWebViewController.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
@@ -7010,7 +7010,7 @@
 				A7ED1F891E831C5C00BFFA01 /* MessageDialogViewModelTests.swift */,
 				A7F4419D1D005A9400FE6FC5 /* MessagesSearchViewModel.swift */,
 				A7ED1F581E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift */,
-				33A684772DAD97740025B0EE /* PledgeViewRoutingUseCase.swift */,
+				33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */,
 				33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */,
 				A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */,
 				A7ED1F941E831C5C00BFFA01 /* MessagesViewModelTests.swift */,
@@ -8408,7 +8408,7 @@
 				7727494723FC66EA0065E9F2 /* CategorySelectionViewModel.swift in Sources */,
 				E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */,
 				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
-				33A684782DAD97910025B0EE /* PledgeViewRoutingUseCase.swift in Sources */,
+				33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,

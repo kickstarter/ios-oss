@@ -168,7 +168,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       (project, backing)
     }
 
-    self.pledgeViewRoutingUseCase = .init(with: projectAndBacking)
+    self.viewPledgeUseCase = .init(with: projectAndBacking)
 
     self.messages = messageThreadEnvelope
       .map { $0.messages }
@@ -256,7 +256,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   }
 
   public func backingInfoPressed() {
-    self.pledgeViewRoutingUseCase.goToPledgeViewTapped()
+    self.viewPledgeUseCase.goToPledgeViewTapped()
   }
 
   private let blockUserProperty = MutableProperty<String>("")
@@ -294,7 +294,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.viewWillAppearProperty.value = ()
   }
 
-  private let pledgeViewRoutingUseCase: PledgeViewRoutingUseCase
+  private let viewPledgeUseCase: ViewPledgeUseCase
 
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
   public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
@@ -309,11 +309,11 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let didBlockUserError: Signal<(), Never>
 
   public var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> {
-    self.pledgeViewRoutingUseCase.goToNativePledgeView
+    self.viewPledgeUseCase.goToNativePledgeView
   }
 
   public var goToPledgeManagementViewPledge: Signal<URL, Never> {
-    self.pledgeViewRoutingUseCase.goToPledgeManagementPledgeView
+    self.viewPledgeUseCase.goToPledgeManagementPledgeView
   }
 
   public var inputs: MessagesViewModelInputs { return self }
