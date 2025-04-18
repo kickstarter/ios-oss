@@ -38,9 +38,8 @@ final class RewardTrackingDetailsViewModelTest: TestCase {
     self.vm.inputs.configure(with: data)
     self.trackShipping.assertDidNotEmitValue()
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
-    self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
-    self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
+    self.rewardTrackingNumber.assertLastValue(Strings.Tracking_number(number: "1234567890"))
+    self.rewardTrackingStatus.assertLastValue(Strings.Your_reward_has_shipped())
   }
 
   func testView_Activity_Style() {
@@ -53,10 +52,9 @@ final class RewardTrackingDetailsViewModelTest: TestCase {
     self.vm.inputs.configure(with: data)
     self.trackShipping.assertDidNotEmitValue()
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
-    self.rewardTrackingNumber.assertLastValue("Tracking #: 1234567890")
-    self.rewardTrackingStatus.assertLastValue("Your reward has been shipped.")
-    self.shippingDays.assertLastValue("2 days ago")
+    self.rewardTrackingNumber.assertLastValue(Strings.Tracking_number(number: "1234567890"))
+    self.rewardTrackingStatus.assertLastValue(Strings.Your_reward_has_shipped())
+    self.shippingDays.assertLastValue(Strings.dates_time_days_ago(time_count: 2))
   }
 
   func testTrackingButtonTapped() {
