@@ -30,6 +30,9 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.isLatePledge, false)
       XCTAssertEqual(backing.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
       XCTAssertEqual(backing.locationName, "Canada")
+      XCTAssertEqual(backing.order?.checkoutState, .notStarted)
+      XCTAssertEqual(backing.order?.currency, "USD")
+      XCTAssertEqual(backing.order?.total, 0)
       XCTAssertEqual(backing.paymentIncrements.count, 1)
       XCTAssertEqual(backing.paymentIncrements[0].scheduledCollection, 1_739_806_159.0)
       XCTAssertEqual(backing.paymentSource?.type, .visa)
@@ -678,6 +681,7 @@ private func backingDictionary() -> [String: Any] {
       "uid": "1108924640"
     },
     "backerCompleted": false,
+    "backingDetailsPageRoute": "https://ksr.com/backing/survey_repsonses",
     "bonusAmount": {
       "__typename": "Money",
       "amount": "5.0",
@@ -1122,7 +1126,14 @@ private func backingDictionary() -> [String: Any] {
       "currency": "USD",
       "symbol": "$"
     },
-    "status": "pledged"
+    "status": "pledged",
+    "order": {
+      "__typename": "Order",
+      "id": "1",
+      "checkoutState": "not_started",
+      "currency": "USD",
+      "total": 0,
+    }
   }
   """
 

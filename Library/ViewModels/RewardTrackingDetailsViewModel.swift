@@ -1,13 +1,15 @@
+import Foundation
 import ReactiveSwift
-import UIKit
 
 public struct RewardTrackingDetailsViewData {
   public let trackingNumber: String
   public let trackingURL: URL
+  public let shippingDate: TimeInterval
 
-  public init(trackingNumber: String, trackingURL: URL) {
+  public init(trackingNumber: String, trackingURL: URL, shippingDate: TimeInterval) {
     self.trackingNumber = trackingNumber
     self.trackingURL = trackingURL
+    self.shippingDate = shippingDate
   }
 }
 
@@ -20,6 +22,7 @@ public protocol RewardTrackingDetailsViewModelOutputs {
   var rewardTrackingStatus: Signal<String, Never> { get }
   var rewardTrackingNumber: Signal<String, Never> { get }
   var trackShipping: Signal<URL, Never> { get }
+  var shippingDays: Signal<String, Never> { get }
 }
 
 public protocol RewardTrackingDetailsViewModelType {
@@ -33,20 +36,22 @@ public final class RewardTrackingDetailsViewModel: RewardTrackingDetailsViewMode
   public init() {
     let configData = self.configDataSignal
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingNumber = configData.map {
-      "Tracking #: \($0.trackingNumber)"
+      Strings.Tracking_number(number: $0.trackingNumber)
     }
 
-    // TODO: Replace with localized string once translations are available. [MBL-2271](https://kickstarter.atlassian.net/browse/MBL-2271)
     self.rewardTrackingStatus = configData
       .ignoreValues().map {
-        "Your reward has been shipped."
+        Strings.Your_reward_has_shipped()
       }
 
     self.trackShipping = configData
       .takeWhen(self.trackingButtonTappedSignal)
       .map { $0.trackingURL }
+
+    self.shippingDays = configData.map {
+      Format.relative(secondsInUTC: $0.shippingDate)
+    }
   }
 
   private let (configDataSignal, configDataObserver) = Signal<RewardTrackingDetailsViewData, Never>.pipe()
@@ -62,6 +67,7 @@ public final class RewardTrackingDetailsViewModel: RewardTrackingDetailsViewMode
   public var rewardTrackingStatus: Signal<String, Never>
   public var rewardTrackingNumber: Signal<String, Never>
   public var trackShipping: Signal<URL, Never>
+  public var shippingDays: Signal<String, Never>
 
   public var inputs: RewardTrackingDetailsViewModelInputs { return self }
   public var outputs: RewardTrackingDetailsViewModelOutputs { return self }

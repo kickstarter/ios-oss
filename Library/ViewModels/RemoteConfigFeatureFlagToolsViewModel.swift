@@ -95,14 +95,16 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePledgedProjectsOverviewV2Enabled()
   case .pledgeOverTime:
     return featurePledgeOverTimeEnabled()
+  case .netNewBackersWebView:
+    return featureNetNewBackersWebViewEnabled()
   case .newDesignSystem:
     return featureNewDesignSystemEnabled()
   case .rewardShipmentTracking:
     return featureRewardShipmentTrackingEnabled()
-  case .searchFilters:
-    return featureSearchFiltersEnabled()
   case .similarProjectsCarousel:
     return featureSimilarProjectsCarouselEnabled()
+  case .searchFilterByProjectStatus:
+    return featureSearchFilterByProjectStatusEnabled()
   }
 }
 

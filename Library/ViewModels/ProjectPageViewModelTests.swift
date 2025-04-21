@@ -39,6 +39,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToComments = TestObserver<Project, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
+  private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
   private let goToReportProject = TestObserver<(Bool, String, String), Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
@@ -107,6 +108,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
+    self.vm.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementViewPledge.observer)
     self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
@@ -965,11 +967,13 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
       self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
     }
   }
 
@@ -989,11 +993,78 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
       self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
       self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToPledgeManagementWebview_ManagingPledge() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.netNewBackersWebView.rawValue: true
+    ]
+
+    withEnvironment(config: .template, remoteConfigClient: mockConfigClient) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.templateMadeWithPledgeManagment
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+
+      self.configureInitialState(.left(project))
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+    }
+  }
+
+  func testGoToPledgeManagementWebview_ViewingPledge() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.netNewBackersWebView.rawValue: true
+    ]
+
+    withEnvironment(config: .template, currentUser: .template, remoteConfigClient: mockConfigClient) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.templateMadeWithPledgeManagment
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+
+      self.configureInitialState(.left(project))
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
     }
   }
 
@@ -2096,6 +2167,57 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertEqual(segmentClient.properties(forKey: "context_section"), ["overview", "overview"])
       XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
       XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
+    }
+  }
+
+  func testPrefetchImageURLsOnFirstLoad_LoadingViaParam_Success() {
+    // Given a mock API that returns a project with an image in its HTML content
+    let imageUrl = URL(string: "https://placecats.com/millie/300/150")!
+    let projectWithImageElement = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: imageUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
+
+    let projectPamphletData = Project.ProjectPamphletData(project: projectWithImageElement, backingId: nil)
+
+    let prefetchImageElementsOnFirstLoad = TestObserver<[ImageViewElement], Never>()
+    self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(prefetchImageElementsOnFirstLoad.observer)
+
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      // When we configure with a project ID parameter and load the view
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(42)), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+
+      prefetchImageElementsOnFirstLoad.assertDidNotEmitValue()
+
+      // When the API response is processed
+      self.scheduler.advance()
+
+      // Then the prefetch signal emits with the correct image element
+      XCTAssertEqual(prefetchImageElementsOnFirstLoad.values.count, 1, "Should emit image elements once")
+
+      let emittedElements = prefetchImageElementsOnFirstLoad.values.first ?? []
+      XCTAssertEqual(emittedElements.count, 1, "Should contain exactly one image element")
+
+      let imageElement = emittedElements.first
+      XCTAssertEqual(imageElement?.src, imageUrl.absoluteString, "Should emit the correct image URL")
+      XCTAssertNil(imageElement?.href, "Image should not have a link")
+      XCTAssertNil(imageElement?.caption, "Image should not have a caption")
     }
   }
 

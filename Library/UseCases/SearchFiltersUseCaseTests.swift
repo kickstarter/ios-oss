@@ -9,11 +9,11 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   private let selectedSort = TestObserver<DiscoveryParams.Sort, Never>()
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
-  private let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
-  private let showSort = TestObserver<SearchSortSheet, Never>()
-  private let isSortPillHighlighted = TestObserver<Bool, Never>()
-  private let categoryPillTitle = TestObserver<String, Never>()
-  private let isCategoryPillHighlighted = TestObserver<Bool, Never>()
+  private let selectedState = TestObserver<DiscoveryParams.State, Never>()
+  private let showFilters = TestObserver<(SearchFilterOptions, SearchFilterModalType), Never>()
+  private let pills = TestObserver<[SearchFilterPill], Never>()
+  private let categoryPill = TestObserver<SearchFilterPill, Never>()
+  private let sortPill = TestObserver<SearchFilterPill, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -28,11 +28,15 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.dataOuputs.selectedCategory.observe(self.selectedCategory.observer)
     self.useCase.dataOuputs.selectedSort.observe(self.selectedSort.observer)
-    self.useCase.uiOutputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
-    self.useCase.uiOutputs.showSort.observe(self.showSort.observer)
-    self.useCase.uiOutputs.categoryPillTitle.observe(self.categoryPillTitle.observer)
-    self.useCase.uiOutputs.isCategoryPillHighlighted.observe(self.isCategoryPillHighlighted.observer)
-    self.useCase.uiOutputs.isSortPillHighlighted.observe(self.isSortPillHighlighted.observer)
+    self.useCase.dataOuputs.selectedState.observe(self.selectedState.observer)
+    self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
+    self.useCase.uiOutputs.pills.observe(self.pills.observer)
+    self.useCase.uiOutputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .sort })
+    }.skipNil().observe(self.sortPill.observer)
+    self.useCase.uiOutputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .category })
+    }.skipNil().observe(self.categoryPill.observer)
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -51,22 +55,31 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedSort.assertLastValue(.magic)
   }
 
+  func test_state_onInitialSignal_isAll() {
+    self.selectedState.assertDidNotEmitValue()
+
+    self.initialObserver.send(value: ())
+
+    self.selectedState.assertLastValue(.all)
+  }
+
   func test_tappedSort_showsSortOptions() {
     self.initialObserver.send(value: ())
 
-    self.showSort.assertDidNotEmitValue()
+    self.showFilters.assertDidNotEmitValue()
 
-    self.useCase.inputs.tappedSort()
+    self.useCase.inputs.tappedButton(forFilterType: .sort)
 
-    self.showSort.assertDidEmitValue()
+    self.showFilters.assertDidEmitValue()
 
-    if let sortOptions = self.showSort.lastValue {
+    if let (options, type) = self.showFilters.lastValue {
+      XCTAssertEqual(type, .sort, "Tapping sort button should show sort options")
       XCTAssertEqual(
-        sortOptions.selectedOption,
+        options.sort.selectedOption,
         .magic,
         "First option, magic, should be selected by default"
       )
-      XCTAssertGreaterThan(sortOptions.sortOptions.count, 0, "There should be multiple sort options")
+      XCTAssertGreaterThan(options.sort.sortOptions.count, 0, "There should be multiple sort options")
     }
   }
 
@@ -79,19 +92,58 @@ final class SearchFiltersUseCaseTests: TestCase {
       .tabletopGames
     ])
 
-    self.showCategoryFilters.assertDidNotEmitValue()
+    self.showFilters.assertDidNotEmitValue()
 
-    self.useCase.inputs.tappedCategoryFilter()
+    self.useCase.inputs.tappedButton(forFilterType: .category)
 
-    self.showCategoryFilters.assertDidEmitValue()
+    self.showFilters.assertDidEmitValue()
 
-    if let categoryOptions = self.showCategoryFilters.lastValue {
-      XCTAssertEqual(categoryOptions.selectedCategory, nil, "No category should be selected by default")
+    if let (options, type) = self.showFilters.lastValue {
+      XCTAssertEqual(type, .category, "Tapping category button should show category filters")
+      XCTAssertEqual(options.category.selectedCategory, nil, "No category should be selected by default")
       XCTAssertEqual(
-        categoryOptions.categories.count,
+        options.category.categories.count,
         4,
         "The sheet should show categories that were loaded"
       )
+    }
+  }
+
+  func test_tappedProjectState_showsAllOptions() {
+    self.initialObserver.send(value: ())
+
+    self.showFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedButton(forFilterType: .projectState)
+
+    self.showFilters.assertDidEmitValue()
+
+    if let (options, type) = self.showFilters.lastValue {
+      XCTAssertEqual(type, .all, "Tapping project state button should show all options")
+      XCTAssertEqual(
+        options.projectState.selectedOption,
+        .all,
+        "First option, All, should be selected by default"
+      )
+      XCTAssertGreaterThan(
+        options.projectState.stateOptions.count,
+        0,
+        "There should be multiple project state options"
+      )
+    }
+  }
+
+  func test_tappedAllFilters_showsAllOptions() {
+    self.initialObserver.send(value: ())
+
+    self.showFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedButton(forFilterType: .all)
+
+    self.showFilters.assertDidEmitValue()
+
+    if let (_, type) = self.showFilters.lastValue {
+      XCTAssertEqual(type, .all, "Tapping all filter button should show all filters")
     }
   }
 
@@ -107,11 +159,11 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.categoriesObserver.send(value: categories)
 
-    self.showCategoryFilters.assertDidNotEmitValue()
+    self.showFilters.assertDidNotEmitValue()
     self.selectedCategory.assertLastValue(nil)
 
-    self.useCase.inputs.tappedCategoryFilter()
-    self.showCategoryFilters.assertDidEmitValue()
+    self.useCase.inputs.tappedButton(forFilterType: .category)
+    self.showFilters.assertDidEmitValue()
 
     self.useCase.inputs.selectedCategory(.art)
 
@@ -126,11 +178,11 @@ final class SearchFiltersUseCaseTests: TestCase {
   func test_selectingSort_updatesSort() {
     self.initialObserver.send(value: ())
 
-    self.showSort.assertDidNotEmitValue()
+    self.showFilters.assertDidNotEmitValue()
     self.selectedSort.assertLastValue(.magic)
 
-    self.useCase.inputs.tappedSort()
-    self.showSort.assertDidEmitValue()
+    self.useCase.inputs.tappedButton(forFilterType: .sort)
+    self.showFilters.assertDidEmitValue()
 
     self.useCase.inputs.selectedSortOption(.endingSoon)
 
@@ -142,19 +194,38 @@ final class SearchFiltersUseCaseTests: TestCase {
     XCTAssertEqual(newSelectedSort, .endingSoon, "Sort value should change when new sort is selected")
   }
 
+  func test_selectingState_updatesState() {
+    self.initialObserver.send(value: ())
+
+    self.selectedState.assertLastValue(.all)
+
+    self.useCase.inputs.selectedProjectState(.late_pledge)
+
+    guard let newSelectedState = self.selectedState.lastValue else {
+      XCTFail("There should be a new selected state")
+      return
+    }
+
+    XCTAssertEqual(newSelectedState, .late_pledge, "State value should change when new state is selected")
+  }
+
   func test_selectingSort_updatesSortPill() {
     self.initialObserver.send(value: ())
 
     self.selectedSort.assertLastValue(.magic)
-    self.isSortPillHighlighted.assertLastValue(
+
+    self.sortPill.assertDidEmitValue()
+    XCTAssertEqual(
+      self.sortPill.lastValue?.isHighlighted,
       false,
-      "Sort pill should not be  highlighted when default sort is selected"
+      "Sort pill should not be highlighted when default sort is selected"
     )
 
     self.useCase.inputs.selectedSortOption(.endingSoon)
-    self.isSortPillHighlighted.assertLastValue(
+    XCTAssertEqual(
+      self.sortPill.lastValue?.isHighlighted,
       true,
-      "Sort pill should be highlighted when default sort is selected"
+      "Sort pill should be highlighted when a non-default sort is selected"
     )
   }
 
@@ -168,21 +239,48 @@ final class SearchFiltersUseCaseTests: TestCase {
     ])
 
     self.selectedCategory.assertLastValue(nil)
-    self.isCategoryPillHighlighted.assertLastValue(
-      false,
+    self.categoryPill.assertDidEmitValue()
+
+    guard let categoryPill = self.categoryPill.lastValue else {
+      XCTFail("Category pill is missing.")
+      return
+    }
+
+    XCTAssertEqual(
+      categoryPill.isHighlighted, false,
       "Category pill should not be highlighted when no category is selected"
     )
-    self.categoryPillTitle.assertLastValue(
-      "Category",
+
+    guard case let .dropdown(title) = categoryPill.buttonType else {
+      XCTFail("Category pill is not a dropdown")
+      return
+    }
+
+    XCTAssertEqual(
+      title, "Category",
       "Category pill should have placeholder text when no category is selected"
     )
 
     self.useCase.inputs.selectedCategory(.illustration)
-    self.isCategoryPillHighlighted.assertLastValue(
+
+    guard let newCategoryPill = self.categoryPill.lastValue else {
+      XCTFail("Category pill is missing.")
+      return
+    }
+
+    XCTAssertEqual(
+      newCategoryPill.isHighlighted,
       true,
       "Category pill should be highlighted category is selected"
     )
-    self.categoryPillTitle.assertLastValue(
+
+    guard case let .dropdown(newTitle) = newCategoryPill.buttonType else {
+      XCTFail("Category pill is not a dropdown")
+      return
+    }
+
+    XCTAssertEqual(
+      newTitle,
       "Illustration",
       "Category pill should have selected category title when category is selected"
     )

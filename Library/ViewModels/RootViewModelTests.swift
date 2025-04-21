@@ -279,7 +279,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
+        ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -289,8 +289,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
-        ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"]
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
       ],
       "Show the logged in tabs."
     )
@@ -300,8 +300,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
-        ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"]
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
     )
@@ -311,9 +311,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
-        ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"],
-        ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
+        ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -586,7 +586,7 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
+          ["Discovery", "Activities", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab initially"
       )
@@ -596,8 +596,8 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
-          ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"]
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
         ],
         "Shows PPO tab when logged in with feature flag enabled"
       )
@@ -607,108 +607,11 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "SearchLegacy", "LoginTout"],
-          ["Discovery", "PPOContainer", "SearchLegacy", "BackerDashboard"],
-          ["Discovery", "Activities", "SearchLegacy", "LoginTout"]
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab when logged out again"
-      )
-    }
-  }
-
-  func testSetViewControllers_SearchFilters_FeatureFlagEnabled() {
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.searchFilters.rawValue: true
-    ]
-
-    withEnvironment(
-      mainBundle: MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS"),
-
-      remoteConfigClient: remoteConfig
-    ) {
-      self.vm.inputs.viewDidLoad()
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-      self.vm.inputs.userSessionStarted()
-
-      self.viewControllerNames.assertValues(
-        [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
-        ],
-        "Shows most up-to-date version of Search when flag is enabled."
-      )
-    }
-  }
-
-  func testAppToForeground_ChangesSearchTabIfNecessary() {
-    let viewControllerNames = TestObserver<[String], Never>()
-    self.vm.outputs.setViewControllers.map(extractRootNames)
-      .observe(viewControllerNames.observer)
-
-    let configClientFilters_Off = MockRemoteConfigClient()
-    configClientFilters_Off.features = [
-      RemoteConfigFeature.searchFilters.rawValue: false
-    ]
-
-    let configClientFilters_On = MockRemoteConfigClient()
-    configClientFilters_On.features = [
-      RemoteConfigFeature.searchFilters.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: configClientFilters_Off) {
-      self.vm.inputs.viewDidLoad()
-
-      self.viewControllerNames.assertValueCount(1)
-      self.tabBarItemsData.assertValueCount(1)
-
-      XCTAssertNotNil(
-        self.viewControllerNames.lastValue?.firstIndex(of: "SearchLegacy"),
-        "Search should use legacy controller when filters is off"
-      )
-
-      self.vm.inputs.applicationWillEnterForeground()
-
-      self.viewControllerNames.assertValueCount(
-        1,
-        "Filters hasn't changed, so no new view controllers should be set."
-      )
-      self.tabBarItemsData.assertValueCount(
-        1,
-        "Filters hasn't changed, so no new tab bar data should be set."
-      )
-    }
-
-    withEnvironment(
-      mainBundle: MockBundle(bundleIdentifier: "com.Kickstarter-Framework-iOS"),
-      remoteConfigClient: configClientFilters_On
-
-    ) {
-      self.vm.inputs.applicationWillEnterForeground()
-
-      self.viewControllerNames.assertValueCount(
-        2,
-        "Turning on filters and returning the app to foreground should change the view controller tabs."
-      )
-      self.tabBarItemsData.assertValueCount(
-        2,
-        "Turning on filters and returning the app to foreground should refresh the tab bar data."
-      )
-
-      XCTAssertNotNil(
-        self.viewControllerNames.lastValue?.firstIndex(of: "Search"),
-        "Search should use new controller when filters is on"
-      )
-
-      self.vm.inputs.applicationWillEnterForeground()
-      self.viewControllerNames.assertValueCount(
-        2,
-        "Filters hasn't changed, so no new view controllers should be set."
-      )
-      self.tabBarItemsData.assertValueCount(
-        2,
-        "Filters hasn't changed, so no new tab bar data should be set."
       )
     }
   }

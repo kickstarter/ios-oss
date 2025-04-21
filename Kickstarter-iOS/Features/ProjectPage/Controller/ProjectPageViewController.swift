@@ -327,6 +327,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToManagePledge(params: params)
       }
 
+    self.viewModel.outputs.goToPledgeManagementPledgeView
+      .observeForControllerAction()
+      .observeValues { [weak self] url in
+        self?.goToPledgeManagementWebViewController(with: url)
+      }
+
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
@@ -684,6 +690,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nc, animated: true)
   }
 
+  private func goToPledgeManagementWebViewController(with backingDetailsURL: URL) {
+    let vc = PledgeManagementDetailsWebViewController.configured(with: backingDetailsURL)
+
+    let nc = RewardPledgeNavigationController(rootViewController: vc)
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      nc.modalPresentationStyle = .pageSheet
+    }
+
+    self.present(nc, animated: true)
+  }
+
   private func goToComments(project: Project) {
     let vc = commentsViewController(for: project)
     if self.traitCollection.userInterfaceIdiom == .pad {
@@ -799,7 +817,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(alert, animated: true)
   }
 
-  private func goToCreatorProfile(forProject project: Project) {
+  private func goToCreatorProfile(forProject project: any ProjectCreatorConfiguration) {
     let vc = ProjectCreatorViewController.configuredWith(project: project)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
@@ -1052,12 +1070,12 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 
   internal func projectPamphletMainCell(
     _ cell: ProjectPamphletMainCell,
-    goToCreatorForProject project: Project
+    goToCreatorForProject project: any ProjectPamphletMainCellConfiguration
   ) {
     guard
       let currentUser = AppEnvironment.current.currentUser,
-      currentUser != project.creator,
-      !project.creator.isBlocked
+      currentUser.id != project.projectPamphletMainCellProperties.creatorId,
+      !project.projectPamphletMainCellProperties.isCreatorBlocked
     else {
       self.goToCreatorProfile(forProject: project)
       return
@@ -1066,7 +1084,10 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     let actionSheet = UIAlertController
       .blockUserActionSheet(
         blockUserHandler: { _ in
-          self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
+          self.presentBlockUserAlert(
+            username: project.projectPamphletMainCellProperties.creatorName,
+            userId: project.projectPamphletMainCellProperties.creatorId
+          )
         },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         sourceView: cell.creatorButton,

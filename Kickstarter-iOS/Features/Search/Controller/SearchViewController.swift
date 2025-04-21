@@ -20,10 +20,11 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
   private let backgroundView = UIView()
-  private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
-  private var sortAndFilterHeader = FilterBadgeView<DiscoveryParams.Sort, KsApi.Category>(frame: .zero)
+
+  private var sortAndFilterHeader: UIViewController?
+  private let sortAndFilterViewModel = SearchFiltersHeaderViewModel(pills: [])
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -37,6 +38,15 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.register(nib: .BackerDashboardProjectCell)
 
     self.viewModel.inputs.viewDidLoad()
+
+    let pillView = SearchFiltersHeaderView(didTapPill: { [weak self] pill in
+      self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
+    }).environmentObject(self.sortAndFilterViewModel)
+
+    let sortAndFilterHeader = UIHostingController(rootView: pillView)
+    self.addChild(sortAndFilterHeader)
+
+    self.sortAndFilterHeader = sortAndFilterHeader
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -66,18 +76,6 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.delegate = self
 
-    self.sortAndFilterHeader.sortButton.addTarget(
-      self,
-      action: #selector(SearchViewController.sortButtonTapped),
-      for: .touchUpInside
-    )
-
-    self.sortAndFilterHeader.categoryButton.addTarget(
-      self,
-      action: #selector(SearchViewController.categoryButtonTapped),
-      for: .touchUpInside
-    )
-
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
@@ -87,7 +85,7 @@ internal final class SearchViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
 
-    _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
+    _ = [self.searchLoaderIndicator]
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
@@ -125,20 +123,15 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextFieldHeightConstraint.constant = Styles.grid(5)
     self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.8
+
+    self.tableView.sectionHeaderTopPadding = 0
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.projects
+    self.viewModel.outputs.projectsAndTitle
       .observeForUI()
-      .observeValues { [weak self] projects in
-        self?.dataSource.load(projects: projects)
-        self?.tableView.reloadData()
-      }
-
-    self.viewModel.outputs.isPopularTitleVisible
-      .observeForUI()
-      .observeValues { [weak self] visible in
-        self?.dataSource.popularTitle(isVisible: visible)
+      .observeValues { [weak self] showTitle, projects in
+        self?.dataSource.load(projects: projects, withDiscoverTitle: showTitle)
         self?.tableView.reloadData()
       }
 
@@ -147,21 +140,6 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
         _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator : nil
-        if let headerView = _self.tableView.tableHeaderView {
-          headerView.frame = CGRect(
-            x: headerView.frame.origin.x,
-            y: headerView.frame.origin.y,
-            width: headerView.frame.size.width,
-            height: Styles.grid(15)
-          )
-        }
-      }
-
-    self.viewModel.outputs.popularLoaderIndicatorIsAnimating
-      .observeForUI()
-      .observeValues { [weak self] isAnimating in
-        guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator : nil
         if let headerView = _self.tableView.tableHeaderView {
           headerView.frame = CGRect(
             x: headerView.frame.origin.x,
@@ -189,7 +167,6 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
-    self.popularLoaderIndicator.rac.animating = self.viewModel.outputs.popularLoaderIndicatorIsAnimating
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
@@ -197,36 +174,24 @@ internal final class SearchViewController: UITableViewController {
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
       }
 
-    self.viewModel.outputs.showSort
+    self.viewModel.outputs.showFilters
       .observeForControllerAction()
-      .observeValues { [weak self] sheet in
-        self?.showSort(sheet)
-      }
-
-    self.viewModel.outputs.showCategoryFilters
-      .observeForControllerAction()
-      .observeValues { [weak self] sheet in
-        self?.showCategories(sheet)
+      .observeValues { [weak self] options, type in
+        switch type {
+        case .all:
+          self?.showAllFilters(options)
+        case .category:
+          self?.showCategories(options.category)
+        case .sort:
+          self?.showSort(options.sort)
+        }
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
-
-    self.viewModel.outputs.categoryPillTitle
+    self.viewModel.outputs.pills
       .observeForUI()
-      .observeValues { [weak self] title in
-        self?.sortAndFilterHeader.setCategoryTitle(title)
-      }
-
-    self.viewModel.outputs.isSortPillHighlighted
-      .observeForUI()
-      .observeValues { [weak self] highlighted in
-        self?.sortAndFilterHeader.highlightSortButton(highlighted)
-      }
-
-    self.viewModel.outputs.isCategoryPillHighlighted
-      .observeForUI()
-      .observeValues { [weak self] highlighted in
-        self?.sortAndFilterHeader.highlightCategoryButton(highlighted)
+      .observeValues { pills in
+        self.sortAndFilterViewModel.pills = pills
       }
   }
 
@@ -235,7 +200,7 @@ internal final class SearchViewController: UITableViewController {
     presenter.present(viewController: viewController, from: self)
   }
 
-  fileprivate func showSort(_ sheet: SearchSortSheet) {
+  fileprivate func showSort(_ sheet: SearchFilterOptions.SortOptions) {
     let sortViewModel = SortViewModel(
       sortOptions: sheet.sortOptions,
       selectedSortOption: sheet.selectedOption
@@ -255,7 +220,7 @@ internal final class SearchViewController: UITableViewController {
     self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
-  fileprivate func showCategories(_ sheet: SearchFilterCategoriesSheet) {
+  fileprivate func showCategories(_ sheet: SearchFilterOptions.CategoryOptions) {
     let viewModel = FilterCategoryViewModel(with: sheet.categories)
     if let selectedCategory = sheet.selectedCategory {
       viewModel.selectCategory(selectedCategory)
@@ -276,6 +241,41 @@ internal final class SearchViewController: UITableViewController {
 
     let hostingController = UIHostingController(rootView: filterView)
     self.present(hostingController, animated: true)
+  }
+
+  fileprivate func showAllFilters(_ sheet: SearchFilterOptions) {
+    // FIXME: MBL-2220 This will be its own page. For now, using a UIAlertController.
+
+    let alertController = UIAlertController(
+      title: "Filters",
+      message: "Select your filters",
+      preferredStyle: .actionSheet
+    )
+
+    alertController.addAction(UIAlertAction(
+      title: "Categories ➜",
+      style: .default,
+      handler: { [weak self] _ in
+        self?.showCategories(sheet.category)
+      }
+    ))
+
+    for state in sheet.projectState.stateOptions {
+      let isSelected = (state == sheet.projectState.selectedOption)
+      let checkmark = isSelected ? " ✓" : ""
+
+      alertController.addAction(UIAlertAction(
+        title: "Project state: \(state.rawValue)\(checkmark)",
+        style: .default,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.selectedProjectState(state)
+        }
+      ))
+    }
+
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+    self.present(alertController, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
@@ -312,7 +312,9 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.viewModel.inputs.tapped(projectAtIndex: indexPath.row)
+    if let project = self.dataSource.indexOfProject(forCellAtIndexPath: indexPath) {
+      self.viewModel.inputs.tapped(projectAtIndex: project)
+    }
   }
 
   internal override func tableView(
@@ -332,7 +334,7 @@ internal final class SearchViewController: UITableViewController {
       return nil
     }
 
-    return self.sortAndFilterHeader
+    return self.sortAndFilterHeader?.view
   }
 
   private var headerHeight: CGFloat? = nil
@@ -342,8 +344,8 @@ internal final class SearchViewController: UITableViewController {
       return 0
     }
 
-    if self.headerHeight == nil {
-      let fittingSize = self.sortAndFilterHeader.systemLayoutSizeFitting(self.view.bounds.size)
+    if self.headerHeight == nil,
+       let fittingSize = self.sortAndFilterHeader?.view.systemLayoutSizeFitting(self.view.bounds.size) {
       self.headerHeight = fittingSize.height
     }
 
@@ -364,14 +366,6 @@ internal final class SearchViewController: UITableViewController {
 
   @objc fileprivate func searchBarContainerTapped() {
     self.viewModel.inputs.searchFieldDidBeginEditing()
-  }
-
-  @objc fileprivate func sortButtonTapped() {
-    self.viewModel.inputs.tappedSort()
-  }
-
-  @objc fileprivate func categoryButtonTapped() {
-    self.viewModel.inputs.tappedCategoryFilter()
   }
 }
 

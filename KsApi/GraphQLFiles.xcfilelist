@@ -11,6 +11,7 @@ $(PROJECT_DIR)/KsApi/fragments/PaymentIncrementFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserStoredCardsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserEmailFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/MoneyFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/ProjectPamphletMainCellPropertiesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ProjectFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ProjectCardFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/BackerDashboardProjectCellFragment.graphql
@@ -18,6 +19,7 @@ $(PROJECT_DIR)/KsApi/fragments/CountryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CategoryFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/ShippingRuleFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOUserSetupFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/OrderFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/LocationFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOProjectFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CheckoutFragment.graphql

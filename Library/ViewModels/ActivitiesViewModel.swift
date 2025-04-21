@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -27,6 +28,9 @@ public protocol ActitiviesViewModelInputs {
 
   /// Call when the respond button is tapped in a survey cell.
   func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse)
+
+  /// Call when the Track shipping button is tapped in a TrackingActivitiesCell.
+  func tappedTrackShipping(with trackingURL: URL)
 
   /// Call when a user session ends.
   func userSessionEnded()
@@ -74,6 +78,9 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits a project and update when we should navigate to that update.
   var goToUpdate: Signal<(Project, Update), Never> { get }
 
+  /// Emits a tracking URL when we should navigate to a shipping tracking page.
+  var goToTrackShipping: Signal<URL, Never> { get }
+
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, Never> { get }
 
@@ -85,6 +92,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits a User that can be used to replace the current user in the environment.
   var updateUserInEnvironment: Signal<User, Never> { get }
+
+  /// Emits an array of reward tracking data that should be displayed.
+  var rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -271,6 +281,31 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         project: project
       )
     }
+
+    // Track shipping feature
+
+    // Simulated/mock data for development purposes.
+    // This is temporary until the backend implementation is completed.
+    // Jira ticket TBD.
+    // Epic [MBL-2270](https://kickstarter.atlassian.net/browse/MBL-2270)
+    self.rewardTrackingData = self.activities
+      .map { $0.first?.project }
+      .skipNil()
+      .filter { _ in featureRewardShipmentTrackingEnabled() }
+      .map {
+        #if DEBUG
+          let trackingData = RewardTrackingDetailsViewData(
+            trackingNumber: "1234567890",
+            trackingURL: URL(string: "https://ksr.com")!,
+            shippingDate: Date().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
+          )
+          return [RewardTrackingActivitiesCellData(trackingData: trackingData, project: $0)]
+        #else
+          return []
+        #endif
+      }
+
+    self.goToTrackShipping = self.tappedTrackShippingProperty.signal.skipNil()
   }
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
@@ -319,6 +354,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     self.tappedActivityProperty.value = activity
   }
 
+  fileprivate let tappedTrackShippingProperty = MutableProperty<URL?>(nil)
+  public func tappedTrackShipping(with trackingURL: URL) {
+    self.tappedTrackShippingProperty.value = trackingURL
+  }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -348,9 +388,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let goToProject: Signal<(Project, RefTag), Never>
   public let goToSurveyResponse: Signal<SurveyResponse, Never>
   public let goToUpdate: Signal<(Project, Update), Never>
+  public let goToTrackShipping: Signal<URL, Never>
   public let showEmptyStateIsLoggedIn: Signal<Bool, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
   public let updateUserInEnvironment: Signal<User, Never>
+  public let rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

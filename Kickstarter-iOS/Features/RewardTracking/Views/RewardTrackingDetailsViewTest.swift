@@ -6,6 +6,13 @@ import SwiftUI
 import XCTest
 
 final class RewardTrackingDetailsViewTest: TestCase {
+  private let testTrackingNumber = "1234567890"
+  private let testTrackingURL = URL(string: "http://ksr.com")!
+  // Mocked shipping date: 2 days ago from the current mock date
+  private lazy var shippingDate: TimeInterval = {
+    MockDate().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
+  }()
+
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -23,8 +30,9 @@ final class RewardTrackingDetailsViewTest: TestCase {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         let data = RewardTrackingDetailsViewData(
-          trackingNumber: "1234567890",
-          trackingURL: URL(string: "http://ksr.com")!
+          trackingNumber: self.testTrackingNumber,
+          trackingURL: self.testTrackingURL,
+          shippingDate: self.shippingDate
         )
 
         view.configure(with: data)
@@ -48,8 +56,9 @@ final class RewardTrackingDetailsViewTest: TestCase {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         let data = RewardTrackingDetailsViewData(
-          trackingNumber: "1234567890",
-          trackingURL: URL(string: "http://ksr.com")!
+          trackingNumber: self.testTrackingNumber,
+          trackingURL: self.testTrackingURL,
+          shippingDate: self.shippingDate
         )
 
         view.configure(with: data)
@@ -59,7 +68,7 @@ final class RewardTrackingDetailsViewTest: TestCase {
           orientation: .portrait,
           child: traitWrappedViewController(subview: view, device: device)
         )
-        parent.view.frame.size.height = 140
+        parent.view.frame.size.height = 170
 
         assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }

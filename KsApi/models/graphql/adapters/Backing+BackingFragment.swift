@@ -34,18 +34,26 @@ extension Backing {
         .compactMap { PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment) }
     }
 
+    var backingOrder: Order?
+
+    if let order = backingFragment.order {
+      backingOrder = Order(withGraphQLFragment: order.fragments.orderFragment)
+    }
+
     return Backing(
       addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       backer: backer,
       backerId: backerId,
       backerCompleted: backingFragment.backerCompleted,
+      backingDetailsPageRoute: backingFragment.backingDetailsPageRoute,
       bonusAmount: backingFragment.bonusAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       cancelable: backingFragment.cancelable,
       id: id,
       isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
+      order: backingOrder,
       paymentIncrements: paymentIncrements,
       paymentSource: backingPaymentSource(from: backingFragment),
       pledgedAt: backingFragment.pledgedOn.flatMap(Double.init) ?? 0,

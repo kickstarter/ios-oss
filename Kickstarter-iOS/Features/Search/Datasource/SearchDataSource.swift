@@ -3,18 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+typealias TitleRow = Void
+
 internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case popularTitle
     case projects
     case noResults
-  }
-
-  internal func popularTitle(isVisible visible: Bool) {
-    self.set(
-      cellIdentifiers: visible ? ["MostPopularCell"] : [],
-      inSection: Section.popularTitle.rawValue
-    )
   }
 
   internal func load(params: DiscoveryParams, visible: Bool) {
@@ -25,8 +19,19 @@ internal final class SearchDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(projects: [any BackerDashboardProjectCellViewModel.ProjectCellModel]) {
+  internal func load(
+    projects: [any BackerDashboardProjectCellViewModel.ProjectCellModel],
+    withDiscoverTitle showTitle: Bool
+  ) {
     self.clearValues(section: Section.projects.rawValue)
+
+    if projects.count > 0 && showTitle {
+      self.appendRow(
+        value: TitleRow(),
+        cellClass: DiscoverProjectsTitleCell.self,
+        toSection: Section.projects.rawValue
+      )
+    }
 
     if let mostPopular = projects.first {
       self.appendRow(
@@ -47,8 +52,27 @@ internal final class SearchDataSource: ValueCellDataSource {
     }
   }
 
-  internal func indexPath(forProjectRow row: Int) -> IndexPath {
-    return IndexPath(item: row, section: Section.projects.rawValue)
+  func indexOfProject(forCellAtIndexPath indexPath: IndexPath) -> Int? {
+    if indexPath.section != Section.projects.rawValue {
+      // Not the projects section
+      return nil
+    }
+
+    if self.numberOfItems(in: Section.projects.rawValue) == 0 {
+      // Projects are empty
+      return nil
+    }
+
+    let firstIndex = IndexPath(row: 0, section: Section.projects.rawValue)
+    let value = self[firstIndex]
+    let hasTitleRow = value is TitleRow
+
+    if hasTitleRow {
+      // If there's a title row, the index of the actual project is one item less.
+      return indexPath.row - 1
+    } else {
+      return indexPath.row
+    }
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -63,7 +87,7 @@ internal final class SearchDataSource: ValueCellDataSource {
       value as any BackerDashboardProjectCellViewModel.ProjectCellModel
     ):
       cell.configureWith(value: value)
-    case let (cell as MostPopularCell, value as Void):
+    case let (cell as DiscoverProjectsTitleCell, value as TitleRow):
       cell.configureWith(value: value)
     case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
       cell.configureWith(value: value)

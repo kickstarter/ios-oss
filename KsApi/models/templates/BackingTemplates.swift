@@ -8,12 +8,14 @@ extension Backing {
     backer: .template,
     backerId: 1,
     backerCompleted: true,
+    backingDetailsPageRoute: "https://ksr.com/backing/survey_repsonses",
     bonusAmount: 0,
     cancelable: true,
     id: 1,
     isLatePledge: false,
     locationId: 1,
     locationName: "United States",
+    order: nil,
     paymentIncrements: [],
     paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
@@ -38,4 +40,7 @@ extension Backing {
       state: .collected,
       stateReason: nil
     )]
+
+  internal static let templateMadeWithPledgeManagment = Backing.template
+    |> Backing.lens.order .~ .init(checkoutState: .complete, currency: "USD", total: 1)
 }

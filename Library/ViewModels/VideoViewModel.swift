@@ -9,7 +9,7 @@ private let pauseRate = 0.0
 
 public protocol VideoViewModelInputs {
   /// Call to configure cell with project value.
-  func configureWith(project: Project)
+  func configureWith(project: any VideoViewConfiguration)
 
   /// Call when the video playback crosses the completion threshold.
   func crossedCompletionThreshold()
@@ -117,6 +117,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, preferredTimescale: 1) }
 
     self.configurePlayerWithURL = project
+      .map { $0.videoViewProperties }
       .filter { $0.video != nil }
       .takeWhen(self.playButtonTappedProperty.signal)
       .map { URL(string: $0.video?.hls ?? $0.video?.high ?? "") }
@@ -138,19 +139,19 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .skipRepeats()
 
     self.playButtonHidden = Signal.merge(
-      project.map { $0.video == nil },
+      project.map { $0.videoViewProperties.video == nil },
       elementsHiddenOnPlayback
     )
     .skipRepeats()
 
-    self.projectImageURL = project.map { URL(string: $0.photo.full) }.skipRepeats(==)
+    self.projectImageURL = project.map { URL(string: $0.videoViewProperties.photoFull) }.skipRepeats(==)
 
     self.seekToBeginning = reachedEndOfVideo.ignoreValues()
 
     self.incrementVideoCompletion = Signal.combineLatest(project, videoCompleted)
       .map(first)
       .switchMap {
-        AppEnvironment.current.apiService.incrementVideoCompletion(forProject: $0)
+        AppEnvironment.current.apiService.incrementVideoCompletion(for: $0)
           .demoteErrors()
       }
 
@@ -209,8 +210,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.playButtonTappedProperty.value = ()
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let projectProperty = MutableProperty<(any VideoViewConfiguration)?>(nil)
+  public func configureWith(project: any VideoViewConfiguration) {
     self.projectProperty.value = project
   }
 

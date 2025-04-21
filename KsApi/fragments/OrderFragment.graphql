@@ -1,0 +1,6 @@
+fragment OrderFragment on Order {
+  id
+  checkoutState
+  currency
+  total
+}

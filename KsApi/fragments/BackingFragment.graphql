@@ -18,6 +18,9 @@ fragment BackingFragment on Backing {
   location {
     ...LocationFragment
   }
+  order {
+    ...OrderFragment
+  }
   paymentIncrements {
     ...PaymentIncrementFragment
   }
@@ -36,4 +39,8 @@ fragment BackingFragment on Backing {
     ...MoneyFragment
   }
   status
+  # Note: Using `backing/survey_responses` instead of `backing/details` to avoid webview login prompts.
+  # The `backing/details` endpoint requires re-authentication even if the user is already logged in.
+  # This can be revisited if the backend updates the auth requirements for `backing/details`.
+  backingDetailsPageRoute(type: url, tab: survey_responses)
 }

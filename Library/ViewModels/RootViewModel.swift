@@ -10,7 +10,7 @@ public enum RootViewControllerData: Equatable {
   case discovery
   case activities
   case pledgedProjectsAndActivities
-  case search(filtersEnabled: Bool)
+  case search
   case profile(isLoggedIn: Bool)
 
   public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
@@ -18,8 +18,7 @@ public enum RootViewControllerData: Equatable {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
     case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
-    case let (.search(lhsFiltersEnabled), .search(rhsFiltersEnabled)):
-      return lhsFiltersEnabled == rhsFiltersEnabled
+    case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
     default:
@@ -169,7 +168,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       Signal.merge(
         self.viewDidLoadProperty.signal,
         self.applicationWillEnterForegroundSignal.signal
-      ).map { _ in featureSearchFiltersEnabled() }
+      )
+      // Currently we have no tabs that reload based on feature flags -
+      // but if we need that feature again, this is where you put it.
+      //  .map { _ in myFeatureFlagEnabled()}
+      .map { _ in false }
       .skipRepeats()
       .skip(first: 1) // Only fire if applicationWillEnterForeground changes the original values in viewDidLoadProperty.
 
@@ -465,7 +468,7 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
     controllers.append(.activities)
   }
 
-  controllers.append(.search(filtersEnabled: featureSearchFiltersEnabled()))
+  controllers.append(.search)
   controllers.append(.profile(isLoggedIn: isLoggedIn))
 
   return controllers

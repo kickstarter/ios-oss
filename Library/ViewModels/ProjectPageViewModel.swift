@@ -102,6 +102,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
+  /// Emits `URL` to take the user to the `PledgeManagementDetailsWebViewController`
+  var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
+
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
 
@@ -233,15 +236,15 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map { $0.flagging ?? false }
 
     self.prefetchImageURLs = project.signal
-      .skip(first: 1)
+      .compactMap { $0.extendedProjectProperties }
       .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
       .filterWhenLatestFrom(
         self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil(),
         satisfies: { NavigationSection(rawValue: $0) == .campaign }
       )
-      .switchMap { project, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
-        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? ImageViewElement } ?? []
+      .switchMap { properties, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
+        let imageViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement }
 
         if imageViewElements.count > 0 {
           let urlStrings = imageViewElements.map { $0.src }
@@ -255,19 +258,19 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
 
     self.prefetchImageURLsOnFirstLoad = project.signal
-      .skip(first: 1)
-      .switchMap { project -> SignalProducer<[ImageViewElement], Never> in
-        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? ImageViewElement } ?? []
+      .compactMap { $0.extendedProjectProperties }
+      .switchMap { properties -> SignalProducer<[ImageViewElement], Never> in
+        let imageViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement }
 
         return SignalProducer(value: imageViewElements)
       }
 
     self.precreateAudioVideoURLsOnFirstLoad = project.signal
-      .skip(first: 1)
-      .switchMap { project -> SignalProducer<[AudioVideoViewElement], Never> in
-        let audioVideoViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? AudioVideoViewElement } ?? []
+      .compactMap { $0.extendedProjectProperties }
+      .switchMap { properties -> SignalProducer<[AudioVideoViewElement], Never> in
+        let audioVideoViewElements = properties.story.htmlViewElements
+          .compactMap { $0 as? AudioVideoViewElement }
 
         return SignalProducer(value: audioVideoViewElements)
       }
@@ -306,10 +309,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .ignoreValues()
 
-    let shouldGoToManagePledge = ctaButtonTappedWithType
-      .filter(shouldGoToManagePledge(with:))
-      .ignoreValues()
-
     let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
       .filter { state in
         switch state {
@@ -333,18 +332,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
-
-    self.goToManagePledge = projectAndBacking
-      .takeWhen(shouldGoToManagePledge)
-      .map(first)
-      .map { project -> ManagePledgeViewParamConfigData? in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
-
-        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
-      }
-      .skipNil()
 
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
@@ -617,6 +604,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           )
       }
 
+    // MARK: - Pledge View
+
+    self.viewPledgeUseCase = .init(with: projectAndBacking)
+
+    ctaButtonTappedWithType
+      .filter(shouldGoToManagePledge(with:))
+      .observeValues { _ in self.viewPledgeUseCase.goToPledgeViewTapped() }
+
     // MARK: Similar Projects
 
     freshProjectAndRefTag
@@ -748,13 +743,22 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewWillTransitionProperty.value = ()
   }
 
+  private let viewPledgeUseCase: ViewPledgeUseCase
+
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
-  public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
+  public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
+    self.viewPledgeUseCase.goToNativePledgeView
+  }
+
+  public var goToPledgeManagementPledgeView: Signal<URL, Never> {
+    self.viewPledgeUseCase.goToPledgeManagementPledgeView
+  }
+
   public let goToRestrictedCreator: Signal<String, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>

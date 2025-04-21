@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import Prelude
 import ReactiveSwift
 import UIKit
 
@@ -80,12 +79,9 @@ public final class RewardAddOnCardView: UIView {
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> checkoutWhiteBackgroundStyle
+    _ = checkoutWhiteBackgroundStyle(self)
 
-    _ = self.addButton
-      |> UIButton.lens.title(for: .normal) .~ Strings.Add()
-      |> blackButtonStyle
+    applyAddButtonStyle(self.addButton)
 
     var stackViews = [
       self.detailsStackView,
@@ -95,109 +91,38 @@ public final class RewardAddOnCardView: UIView {
     ]
 
     stackViews.insert(self.estimatedShippingStackView, at: 3)
-
-    _ = stackViews
-      ||> { stackView in
-        stackView
-          |> sectionStackViewStyle
-      }
+    stackViews.forEach(applySectionStackViewStyle)
 
     applyRootStackViewStyle(self.rootStackView)
+    applyDetailsStackViewStyle(self.detailsStackView)
+    applyTitleAmountStackViewStyle(self.titleAmountStackView)
+    _ = separatorStyle(self.includedItemsSeparator)
+    applyIncludedItemsStackViewStyle(self.includedItemsStackView)
+    applyIncludedItemsTitleLabel(self.includedItemsTitleLabel)
+    applyIncludedItemsLabel(self.includedItemsLabel)
+    _ = separatorStyle(self.estimatedShippingSeparator)
+    applyIncludedItemsStackViewStyle(self.estimatedShippingStackView)
+    applyEstimatedShippingTitleLabel(self.estimatedShippingTitleLabel)
+    applyEstimatedShippingLabel(self.estimatedShippingLabel)
+    applyDescriptionLabelStyle(self.descriptionLabel)
+    applyRewardTitleLabelStyle(self.rewardTitleLabel)
+    applyAmountLabelStyle(self.amountLabel)
+    applyAmountConvertedLabelStyle(self.amountConversionLabel)
+    applyQuantityLabelContainerStyle(self.quantityLabelContainer)
+    applyQuantityLabelStyle(self.quantityLabel)
+    applyStepperStyle(self.stepper)
+    applyStepperStackViewStyle(self.stepperStackView)
 
-    _ = self.detailsStackView
-      |> detailsStackViewStyle
+    self.rewardLocationStackView
+      .addArrangedSubviews(
+        self.rewardLocationTitleLabel,
+        self.rewardLocationPickupLabel
+      )
 
-    _ = self.titleAmountStackView
-      |> titleAmountStackViewStyle
-
-    _ = self.includedItemsSeparator
-      |> separatorStyle
-
-    _ = self.includedItemsStackView
-      |> includedItemsStackViewStyle
-
-    _ = self.includedItemsTitleLabel
-      |> baseRewardLabelStyle
-      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.text %~ { _ in Strings.project_view_pledge_includes() }
-      |> \.textColor .~ UIColor.ksr_support_400
-
-    _ = self.includedItemsLabel
-      |> baseRewardLabelStyle
-      |> \.font .~ .ksr_callout()
-
-    _ = self.estimatedShippingSeparator
-      |> separatorStyle
-
-    _ = self.estimatedShippingStackView
-      |> includedItemsStackViewStyle
-
-    _ = self.estimatedShippingTitleLabel
-      |> baseRewardLabelStyle
-      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.text %~ { _ in Strings.Estimated_Shipping() }
-      |> \.textColor .~ UIColor.ksr_support_400
-
-    _ = self.estimatedShippingLabel
-      |> baseRewardLabelStyle
-      |> \.font .~ .ksr_callout()
-
-    _ = self.descriptionLabel
-      |> baseRewardLabelStyle
-      |> descriptionLabelStyle
-
-    _ = self.rewardTitleLabel
-      |> baseRewardLabelStyle
-      |> rewardTitleLabelStyle
-
-    _ = self.amountLabel
-      |> baseRewardLabelStyle
-      |> amountLabelStyle
-
-    _ = self.amountConversionLabel
-      |> baseRewardLabelStyle
-      |> convertedAmountLabelStyle
-
-    _ = self.quantityLabelContainer
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
-      |> \.layer.borderWidth .~ 1
-      |> checkoutRoundedCornersStyle
-
-    _ = self.quantityLabel
-      |> \.font .~ UIFont.ksr_headline().monospaced
-
-    _ = self.stepper
-      |> checkoutStepperStyle
-      |> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal-grey")
-      |> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal-grey")
-
-    _ = self.stepperStackView
-      |> \.alignment .~ .center
-
-    _ = ([self.rewardLocationTitleLabel, self.rewardLocationPickupLabel], self.rewardLocationStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = self.rewardLocationStackView
-      |> includedItemsStackViewStyle
-
-    _ = self.rewardLocationTitleLabel
-      |> baseRewardLabelStyle
-      |> sectionTitleLabelStyle
-
-    _ = self.rewardLocationTitleLabel
-      |> \.text %~ { _ in Strings.Reward_location() }
-      |> \.textColor .~ UIColor.ksr_support_400
-
-    _ = self.rewardLocationPickupLabel
-      |> baseRewardLabelStyle
-      |> sectionBodyLabelStyle
-
-    _ = self.rewardLocationStackView.subviews
-      .dropFirst()
-      .compactMap { $0 as? UILabel }
-      ||> baseRewardLabelStyle
-      ||> sectionBodyLabelStyle
+    applyIncludedItemsStackViewStyle(self.rewardLocationStackView)
+    applyRewardLocationTitleLabelStyle(self.rewardLocationTitleLabel)
+    applySectionBodyLabelStyle(self.rewardLocationPickupLabel)
+    applyRewardImageViewStyle(self.rewardImageView)
   }
 
   public override func bindViewModel() {
@@ -272,51 +197,45 @@ public final class RewardAddOnCardView: UIView {
     self.rootStackView.addArrangedSubviews(self.rewardImageView, self.detailsStackView)
 
     self.rewardImageView.isHidden = true
-    var detailsSubviews = [
+
+    self.detailsStackView.addArrangedSubviews(
       self.rewardTitleLabel,
       self.titleAmountStackView,
       self.descriptionLabel,
+      self.estimatedShippingStackView,
       self.includedItemsStackView,
       self.rewardLocationStackView,
       self.pillsView,
       self.addButton,
       self.stepperStackView
-    ]
+    )
 
-    detailsSubviews.insert(self.estimatedShippingStackView, at: 4)
+    self.titleAmountStackView.addArrangedSubviews(
+      self.rewardTitleLabel,
+      self.amountLabel,
+      self.amountConversionLabel
+    )
 
-    _ = (detailsSubviews, self.detailsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let titleAmountViews = [self.rewardTitleLabel, self.amountLabel, self.amountConversionLabel]
-
-    _ = (titleAmountViews, self.titleAmountStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let includedItemsViews = [
+    self.includedItemsStackView.addArrangedSubviews(
       self.includedItemsSeparator,
       self.includedItemsTitleLabel,
       self.includedItemsLabel
-    ]
+    )
 
-    let estimatedShippingViews = [
+    self.estimatedShippingStackView.addArrangedSubviews(
       self.estimatedShippingSeparator,
       self.estimatedShippingTitleLabel,
       self.estimatedShippingLabel
-    ]
+    )
 
-    _ = (includedItemsViews, self.includedItemsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    self.quantityLabelContainer.addSubview(self.quantityLabel)
+    self.quantityLabel.constrainViewToMargins(in: self.quantityLabelContainer)
 
-    _ = (estimatedShippingViews, self.estimatedShippingStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.quantityLabel, self.quantityLabelContainer)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
-
-    _ = ([self.stepper, UIView(), self.quantityLabelContainer], self.stepperStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    self.stepperStackView.addArrangedSubviews(
+      self.stepper,
+      UIView(),
+      self.quantityLabelContainer
+    )
   }
 
   private func setupConstraints() {
@@ -386,71 +305,124 @@ public final class RewardAddOnCardView: UIView {
 
 // MARK: - Styles
 
-private let baseRewardLabelStyle: LabelStyle = { label in
-  label
-    |> \.numberOfLines .~ 0
-    |> \.textAlignment .~ .left
-    |> \.lineBreakMode .~ .byWordWrapping
+private func applyIncludedItemsTitleLabel(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.font = .ksr_callout().weighted(.semibold)
+  label.text = Strings.project_view_pledge_includes()
+  label.textColor = .ksr_support_400
 }
 
-private let detailsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.spacing .~ Styles.grid(3)
+private func applyEstimatedShippingTitleLabel(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.font = .ksr_callout().weighted(.semibold)
+  label.text = Strings.Estimated_Shipping()
+  label.textColor = .ksr_support_400
 }
 
-private let includedItemsStackViewStyle: StackViewStyle = { stackView in
-  stackView |> \.spacing .~ Styles.grid(2)
+private func applyEstimatedShippingLabel(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.font = .ksr_callout()
 }
 
-private let amountLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_create_700
-    |> \.font .~ UIFont.ksr_title3().bolded
+private func applyIncludedItemsLabel(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.font = .ksr_callout()
 }
 
-private let convertedAmountLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_support_400
-    |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
+private func applyBaseRewardLabelStyle(_ label: UILabel) {
+  label.numberOfLines = 0
+  label.textAlignment = .left
+  label.lineBreakMode = .byWordWrapping
 }
 
-private let descriptionLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_support_700
-    |> \.font .~ UIFont.ksr_body()
+private func applyDetailsStackViewStyle(_ stackView: UIStackView) {
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = .init(all: Styles.grid(3))
+  stackView.spacing = Styles.grid(3)
 }
 
-private let titleAmountStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.gridHalf(1)
+private func applyIncludedItemsStackViewStyle(_ stackView: UIStackView) {
+  stackView.spacing = Styles.grid(2)
 }
 
-private let rewardTitleLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_support_700
-    |> \.font .~ UIFont.ksr_title3().bolded
+private func applyAmountLabelStyle(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.textColor = .ksr_create_700
+  label.font = UIFont.ksr_title3().bolded
 }
 
-private let sectionStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(1)
+private func applyAmountConvertedLabelStyle(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.textColor = .ksr_support_400
+  label.font = UIFont.ksr_footnote().weighted(.medium)
 }
 
-private let sectionBodyLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_support_700
-    |> \.font .~ UIFont.ksr_body()
+private func applyDescriptionLabelStyle(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.textColor = .ksr_support_700
+  label.font = UIFont.ksr_body()
 }
 
-private let sectionTitleLabelStyle: LabelStyle = { label in
-  label
-    |> \.font .~ .ksr_headline()
+private func applyTitleAmountStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.gridHalf(1)
+}
+
+private func applyRewardTitleLabelStyle(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.textColor = .ksr_support_700
+  label.font = UIFont.ksr_title3().bolded
+}
+
+private func applySectionStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .vertical
+  stackView.spacing = Styles.grid(1)
+}
+
+private func applySectionBodyLabelStyle(_ label: UILabel) {
+  applyBaseRewardLabelStyle(label)
+  label.textColor = .ksr_support_700
+  label.font = UIFont.ksr_body()
 }
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
+}
+
+private func applyRewardImageViewStyle(_ imageView: UIImageView) {
+  imageView.contentMode = .scaleAspectFill
+  imageView.clipsToBounds = true
+}
+
+private func applyQuantityLabelContainerStyle(_ view: UIView) {
+  _ = checkoutRoundedCornersStyle(view)
+  view.layoutMargins = .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+  view.layer.borderColor = UIColor.ksr_support_300.cgColor
+  view.layer.borderWidth = 1
+}
+
+private func applyQuantityLabelStyle(_ label: UILabel) {
+  label.font = UIFont.ksr_headline().monospaced
+}
+
+private func applyStepperStyle(_ stepper: UIStepper) {
+  _ = checkoutStepperStyle(stepper)
+  stepper.setDecrementImage(image(named: "stepper-decrement-normal-grey"), for: .normal)
+  stepper.setIncrementImage(image(named: "stepper-increment-normal-grey"), for: .normal)
+}
+
+private func applyStepperStackViewStyle(_ stackView: UIStackView) {
+  stackView.alignment = .center
+}
+
+private func applyAddButtonStyle(_ button: UIButton) {
+  _ = blackButtonStyle(button)
+  button.setTitle(Strings.Add(), for: .normal)
+}
+
+private func applyRewardLocationTitleLabelStyle(_ label: UILabel) {
+  applySectionBodyLabelStyle(label)
+  label.text = Strings.Reward_location()
+  label.textColor = UIColor.ksr_support_400
+  label.font = .ksr_headline()
 }

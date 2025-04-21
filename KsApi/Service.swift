@@ -394,6 +394,12 @@ public struct Service: ServiceType {
 
   public func fetchDiscovery(params: DiscoveryParams)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
+    if !params.validForAPIV1() {
+      assert(
+        false,
+        "Using a field which was added for GraphQL support in API V1. This param may have unexpected effects on an API V1 call."
+      )
+    }
     return request(.discover(params))
   }
 
@@ -744,7 +750,7 @@ public struct Service: ServiceType {
     return request(.followFriend(userId: id))
   }
 
-  public func incrementVideoCompletion(forProject project: Project) ->
+  public func incrementVideoCompletion(for project: any HasProjectWebURL) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
     let producer = request(.incrementVideoCompletion(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>
@@ -758,7 +764,7 @@ public struct Service: ServiceType {
       }
   }
 
-  public func incrementVideoStart(forProject project: Project) ->
+  public func incrementVideoStart(forProject project: any HasProjectWebURL) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
     let producer = request(.incrementVideoStart(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>

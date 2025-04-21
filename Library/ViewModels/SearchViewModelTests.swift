@@ -16,18 +16,16 @@ internal final class SearchViewModelTests: TestCase {
   private let hasAddedProjects = TestObserver<Bool, Never>()
   fileprivate let hasProjects = TestObserver<Bool, Never>()
   fileprivate let isPopularTitleVisible = TestObserver<Bool, Never>()
-  fileprivate let popularLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate var noProjects = TestObserver<Bool, Never>()
   fileprivate let resignFirstResponder = TestObserver<(), Never>()
   fileprivate let searchFieldText = TestObserver<String, Never>()
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
-  fileprivate let showSort = TestObserver<SearchSortSheet, Never>()
-  fileprivate let showCategoryFilters = TestObserver<SearchFilterCategoriesSheet, Never>()
+  fileprivate let showFilters = TestObserver<(SearchFilterOptions, SearchFilterModalType), Never>()
   fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
-  fileprivate let isSortPillHighlighted = TestObserver<Bool, Never>()
-  fileprivate let isCategoryPillHighlighted = TestObserver<Bool, Never>()
+  fileprivate let categoryPill = TestObserver<SearchFilterPill, Never>()
+  fileprivate let sortPill = TestObserver<SearchFilterPill, Never>()
 
   override func setUp() {
     super.setUp()
@@ -35,8 +33,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
-    self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
-    self.vm.outputs.popularLoaderIndicatorIsAnimating.observe(self.popularLoaderIndicatorIsAnimating.observer)
+    self.vm.outputs.isProjectsTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
     self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
@@ -52,10 +49,14 @@ internal final class SearchViewModelTests: TestCase {
       .observe(self.hasAddedProjects.observer)
 
     self.vm.outputs.showSortAndFilterHeader.observe(self.showSortAndFilterHeader.observer)
-    self.vm.outputs.showSort.observe(self.showSort.observer)
-    self.vm.outputs.showCategoryFilters.observe(self.showCategoryFilters.observer)
-    self.vm.outputs.isCategoryPillHighlighted.observe(self.isCategoryPillHighlighted.observer)
-    self.vm.outputs.isSortPillHighlighted.observe(self.isSortPillHighlighted.observer)
+    self.vm.outputs.showFilters.observe(self.showFilters.observer)
+
+    self.vm.outputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .sort })
+    }.skipNil().observe(self.sortPill.observer)
+    self.vm.outputs.pills.map { pills in
+      pills.first(where: { $0.filterType == .category })
+    }.skipNil().observe(self.categoryPill.observer)
   }
 
   func testSearchPopularFeatured_RefTag() {
@@ -255,28 +256,42 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted, false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.clearSearchText()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Clearing text should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Clearing text should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
     }
   }
 
@@ -303,28 +318,43 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
 
       self.vm.inputs.cancelButtonPressed()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Clearing text should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Clearing text should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
+      } else {
+        XCTFail("Expected sort and category pills to be set")
+      }
     }
   }
 
@@ -352,30 +382,45 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(false, "Canceling search should clear sort")
-      self.isCategoryPillHighlighted.assertLastValue(false, "Canceling search should clear category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(sortPill.isHighlighted, false, "Canceling search should clear sort")
+        XCTAssertEqual(categoryPill.isHighlighted, false, "Canceling search should clear category")
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
     }
   }
 
@@ -403,72 +448,76 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(
-        false,
-        "Sort pill should not be highlighted with default sort option"
-      )
-      self.isCategoryPillHighlighted.assertLastValue(
-        false,
-        "Category pill should not be highlighted with default category options"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          false,
+          "Sort pill should not be highlighted with default sort option"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          false,
+          "Category pill should not be highlighted with default category options"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.selectedCategory(.art)
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      self.isSortPillHighlighted.assertLastValue(true, "Selecting sort should highlight sort pill")
-      self.isCategoryPillHighlighted.assertLastValue(
-        true,
-        "Selecting category should highlight category pill"
-      )
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          true,
+          "Selecting sort should highlight sort pill"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted,
+          true,
+          "Selecting category should highlight category pill"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test two")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      self.isSortPillHighlighted.assertLastValue(true, "Changing text shouldn't change sort")
-      self.isCategoryPillHighlighted.assertLastValue(true, "Changing text shouldn't change category")
+      if let sortPill = self.sortPill.lastValue, let categoryPill = self.categoryPill.lastValue {
+        XCTAssertEqual(
+          sortPill.isHighlighted,
+          true, "Changing text shouldn't change sort"
+        )
+        XCTAssertEqual(
+          categoryPill.isHighlighted, true, "Changing text shouldn't change category"
+        )
+      } else {
+        XCTFail("Expected sort and filter pills to be set")
+      }
     }
   }
 
-  func testPopularLoaderIndicatorIsAnimating() {
-    self.popularLoaderIndicatorIsAnimating.assertDidNotEmitValue()
-
-    self.vm.inputs.viewDidLoad()
-    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
-
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.popularLoaderIndicatorIsAnimating.assertLastValue(true)
-
-    self.scheduler.advance()
-
-    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
-
-    self.vm.inputs.searchTextChanged("b")
-
-    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
-
-    self.scheduler.advance()
-
-    self.popularLoaderIndicatorIsAnimating.assertLastValue(false)
-  }
-
   func testSearchLoaderIndicatorIsAnimating() {
+    self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
-    self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+    self.searchLoaderIndicatorIsAnimating.assertLastValue(true)
 
     self.scheduler.advance()
 
-    self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+    self.searchLoaderIndicatorIsAnimating.assertLastValue(false)
 
     self.vm.inputs.searchTextChanged("b")
 
-    self.searchLoaderIndicatorIsAnimating.assertValues([true])
+    self.searchLoaderIndicatorIsAnimating.assertLastValue(true)
 
     self.scheduler.advance()
 
-    self.searchLoaderIndicatorIsAnimating.assertValues([true, false])
+    self.searchLoaderIndicatorIsAnimating.assertLastValue(false)
   }
 
   // Tests a standard flow of searching for projects.
@@ -490,12 +539,12 @@ internal final class SearchViewModelTests: TestCase {
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
       self.vm.inputs.viewWillAppear(animated: true)
-      self.isPopularTitleVisible.assertValues([])
+      self.isPopularTitleVisible.assertLastValue(false, "Title hidden before results have loaded")
 
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.hasProjects.assertLastValue(true, "Projects emitted immediately after loading.")
+      self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
 
       XCTAssertEqual(
         ["Page Viewed"], self.segmentTrackingClient.events,
@@ -504,9 +553,9 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
-      self.isPopularTitleVisible.assertValues(
-        [true, false],
+      self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
+      self.isPopularTitleVisible.assertLastValue(
+        false,
         "Popular title hide immediately upon entering search."
       )
     }
@@ -514,10 +563,10 @@ internal final class SearchViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
-      self.isPopularTitleVisible.assertValues(
-        [true, false],
-        "Popular title visibility still not emit after time has passed."
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.isPopularTitleVisible.assertLastValue(
+        false,
+        "Popular title hides when search results are shown."
       )
 
       XCTAssertEqual(
@@ -546,12 +595,12 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("")
       self.scheduler.advance()
 
-      self.hasProjects.assertValues(
-        [true, false, true, false, true],
+      self.hasProjects.assertLastValue(
+        true,
         "Clearing search clears projects and brings back popular projects."
       )
-      self.isPopularTitleVisible.assertValues(
-        [true, false, true],
+      self.isPopularTitleVisible.assertLastValue(
+        true,
         "Clearing search brings back popular title."
       )
 
@@ -563,12 +612,12 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.viewWillAppear(animated: true)
 
-      self.hasProjects.assertValues(
-        [true, false, true, false, true],
+      self.hasProjects.assertLastValue(
+        true,
         "Leaving view and coming back doesn't load more projects."
       )
-      self.isPopularTitleVisible.assertValues(
-        [true, false, true],
+      self.isPopularTitleVisible.assertLastValue(
+        true,
         "Leaving view and coming back doesn't change popular title"
       )
 
@@ -595,19 +644,22 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
 
+      self.hasProjects.assertLastValue(false)
+      self.isPopularTitleVisible.assertLastValue(false)
+
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.hasProjects.assertLastValue(true, "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
       XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
       self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should be hidden for popular results."
+        true,
+        "Filter header should be shown for popular results."
       )
 
       self.vm.inputs.searchTextChanged("dogs")
 
-      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
       self.showSortAndFilterHeader.assertLastValue(
         false,
         "Filter header should be hidden when a search is loading."
@@ -633,20 +685,19 @@ internal final class SearchViewModelTests: TestCase {
         "Selected sort should be in tracking properties"
       )
 
-      self.showSort.assertDidNotEmitValue()
-      self.showCategoryFilters.assertDidNotEmitValue()
+      self.showFilters.assertDidNotEmitValue()
 
-      self.vm.inputs.tappedSort()
-      self.showSort.assertDidEmitValue()
+      self.vm.inputs.tappedButton(forFilterType: .sort)
+      self.showFilters.assertDidEmitValue()
 
-      guard let sortSheet = self.showSort.lastValue else {
-        XCTFail("Sort sheet should have been shown after tappedSort was called")
+      guard let (options, type) = self.showFilters.lastValue else {
+        XCTFail("Sort sheet should have been shown after sort button was tapped")
         return
       }
 
-      XCTAssertTrue(sortSheet.sortOptions.count > 1, "Sort sheet should have multiple sort options")
+      XCTAssertTrue(options.sort.sortOptions.count > 1, "Sort sheet should have multiple sort options")
       XCTAssertTrue(
-        sortSheet.selectedOption == .magic,
+        options.sort.selectedOption == .magic,
         "Sort sheet should have first option selected by default"
       )
 
@@ -718,19 +769,22 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
 
+      self.hasProjects.assertLastValue(false, "Projects should start loading")
+      self.isPopularTitleVisible.assertLastValue(false, "Popular title hidden while projects are loading")
+
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.hasProjects.assertLastValue(true, "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
       XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
       self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should be hidden for popular results."
+        true,
+        "Filter header should be shown for popular results."
       )
 
       self.vm.inputs.searchTextChanged("dogs")
 
-      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
       self.showSortAndFilterHeader.assertLastValue(
         false,
         "Filter header should be hidden when a search is loading."
@@ -756,20 +810,19 @@ internal final class SearchViewModelTests: TestCase {
         "Selected category should be in tracking properties, but it should be nil because no category was selected yet"
       )
 
-      self.showSort.assertDidNotEmitValue()
-      self.showCategoryFilters.assertDidNotEmitValue()
+      self.showFilters.assertDidNotEmitValue()
 
-      self.vm.inputs.tappedCategoryFilter()
-      self.showCategoryFilters.assertDidEmitValue()
+      self.vm.inputs.tappedButton(forFilterType: .category)
+      self.showFilters.assertDidEmitValue()
 
-      guard let categorySheet = self.showCategoryFilters.lastValue else {
+      guard let (options, type) = self.showFilters.lastValue else {
         XCTFail("Category sheet should have been shown after tappedCategoryFilters was called")
         return
       }
 
-      XCTAssertTrue(categorySheet.categories.count == 4, "Category sheet should have 4 options")
+      XCTAssertTrue(options.category.categories.count == 4, "Category sheet should have 4 options")
       XCTAssertTrue(
-        categorySheet.selectedCategory.isNil,
+        options.category.selectedCategory.isNil,
         "Category sheet should have empty option selected by default"
       )
 
@@ -828,12 +881,17 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.viewWillAppear(animated: true)
 
-      self.isPopularTitleVisible.assertValues([])
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(true)
+      self.hasProjects.assertLastValue(false)
+      self.isPopularTitleVisible.assertLastValue(
+        false,
+        "Popular title should be hidden while results are loading"
+      )
 
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      self.hasProjects.assertLastValue(true, "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
 
       XCTAssertEqual(
         ["Page Viewed"], self.segmentTrackingClient.events,
@@ -842,17 +900,17 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
-      self.isPopularTitleVisible.assertValues(
-        [true, false],
+      self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
+      self.isPopularTitleVisible.assertLastValue(
+        false,
         "Popular title hide immediately upon entering search."
       )
 
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
-      self.isPopularTitleVisible.assertValues(
-        [true, false],
+      self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
+      self.isPopularTitleVisible.assertLastValue(
+        false,
         "Popular title visibility still not emit after time has passed."
       )
 
@@ -877,37 +935,41 @@ internal final class SearchViewModelTests: TestCase {
       )]
 
       withEnvironment(apiService: MockService(fetchGraphQLResponses: emptyResponse)) {
-        self.hasProjects.assertValues([true, false, true], "No projects before view is visible.")
+        self.hasProjects.assertLastValue(true, "Projects from previous search still shown")
 
         self.vm.inputs.searchTextChanged("abcdefgh")
 
-        self.hasProjects.assertValues(
-          [true, false, true, false],
+        self.hasProjects.assertLastValue(
+          false,
           "Projects clear immediately upon entering search."
         )
         self.showEmptyState.assertValues([], "No query for project yet.")
 
         self.scheduler.advance()
 
-        self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
+        self.hasProjects.assertLastValue(false, "No Projects to emit.")
         self.showEmptyState.assertValues([true], "No Projects Found.")
 
         self.vm.inputs.searchTextChanged("abcdefghasfdsafd")
 
-        self.hasProjects.assertValues([true, false, true, false])
+        self.hasProjects.assertLastValue(false)
         self.showEmptyState.assertValues([true, false])
 
         self.scheduler.advance()
 
-        self.hasProjects.assertValues([true, false, true, false])
+        self.hasProjects.assertLastValue(false)
         self.showEmptyState.assertValues([true, false, true])
       }
 
-      self.vm.inputs.searchTextChanged("")
+      withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
+        self.vm.inputs.searchTextChanged("")
 
-      self.hasProjects.assertValues([true, false, true, false, true])
-      self.showEmptyState.assertValues([true, false, true, false])
-      self.isPopularTitleVisible.assertValues([true, false, true])
+        self.scheduler.advance()
+
+        self.hasProjects.assertLastValue(true, "Popular projects should show")
+        self.showEmptyState.assertLastValue(false)
+        self.isPopularTitleVisible.assertLastValue(true)
+      }
     }
   }
 
@@ -926,13 +988,17 @@ internal final class SearchViewModelTests: TestCase {
       debounceInterval: debounceDelay
     ) {
       let projects = TestObserver<[String], Never>()
+
       self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
+
+      self.hasProjects.assertLastValue(false, "Popular projects are loading")
+
       self.scheduler.advance(by: apiDelay)
 
-      self.hasProjects.assertValues([true], "Popular projects emit immediately.")
+      self.hasProjects.assertLastValue(true, "Popular projects should load")
       guard let popularProjects = projects.values.last else {
         XCTFail("Expected popular project")
         return
@@ -940,23 +1006,20 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      self.hasProjects.assertValues([true, false], "Clears projects immediately.")
+      self.hasProjects.assertLastValue(false, "Clears projects immediately.")
 
       self.scheduler.advance(by: debounceDelay.halved())
 
-      self.hasProjects.assertValues([true, false], "Doesn't emit projects after a little time.")
+      self.hasProjects.assertLastValue(false, "Doesn't emit projects after a little time.")
 
       self.vm.inputs.searchTextChanged("")
 
-      self.hasProjects.assertValues([true, false, true], "Brings back popular projets immediately.")
-      projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
+      self.hasProjects.assertLastValue(false, "Popular projects start to load")
+      self.searchLoaderIndicatorIsAnimating.assertLastValue(true, "Popular projects start to load")
 
       self.scheduler.run()
 
-      self.hasProjects.assertValues(
-        [true, false, true],
-        "Doesn't search for projects after time enough time passes."
-      )
+      self.hasProjects.assertLastValue(true, "Popular projects loaded.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
@@ -985,47 +1048,47 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
-      self.hasProjects.assertValues([true], "Popular projects load immediately.")
+      self.hasProjects.assertLastValue(true, "Popular projects load immediately.")
 
       self.vm.inputs.searchTextChanged("skull")
 
-      self.hasProjects.assertValues([true, false], "Projects clear after entering search term.")
+      self.hasProjects.assertLastValue(false, "Projects clear after entering search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
       self.scheduler.advance(by: debounceDelay.halved())
 
-      self.hasProjects.assertValues(
-        [true, false],
+      self.hasProjects.assertLastValue(
+        false,
         "No new projects load after waiting enough a little bit of time."
       )
 
       self.vm.inputs.searchTextChanged("skull graphic")
 
-      self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
+      self.hasProjects.assertLastValue(false, "No new projects load after entering new search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
       self.scheduler.advance(by: debounceDelay.halved())
 
-      self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
+      self.hasProjects.assertLastValue(false, "No new projects load after entering new search term.")
 
       // Wait enough time for debounced request to be made, but not enough time for it to finish.
       self.scheduler.advance(by: debounceDelay.halved())
 
-      self.hasProjects.assertValues(
-        [true, false], "No projects emit after waiting enough time for API to request to be made"
+      self.hasProjects.assertLastValue(
+        false, "No projects emit after waiting enough time for API to request to be made"
       )
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      self.hasProjects.assertValues(
-        [true, false],
+      self.hasProjects.assertLastValue(
+        false,
         "Still no new projects after entering another search term."
       )
 
       // wait enough time for API request to be fired.
       self.scheduler.advance(by: debounceDelay + apiDelay)
 
-      self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
+      self.hasProjects.assertLastValue(true, "Search projects load after waiting enough time.")
 
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
@@ -1035,7 +1098,7 @@ internal final class SearchViewModelTests: TestCase {
       // run out the scheduler
       self.scheduler.run()
 
-      self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
+      self.hasProjects.assertLastValue(true, "Nothing new is emitted.")
 
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
