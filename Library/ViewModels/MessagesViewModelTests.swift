@@ -6,23 +6,24 @@ import ReactiveSwift
 import XCTest
 
 internal final class MessagesViewModelTests: TestCase {
-  fileprivate let vm: MessagesViewModelType = MessagesViewModel()
+  private let vm: MessagesViewModelType = MessagesViewModel()
 
-  fileprivate let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), Never>()
-  fileprivate let emptyStateIsVisible = TestObserver<Bool, Never>()
-  fileprivate let emptyStateMessage = TestObserver<String, Never>()
-  fileprivate let goToBackingProjectParam = TestObserver<Param, Never>()
-  fileprivate let goToBackingBackingParam = TestObserver<Param?, Never>()
-  fileprivate let goToProject = TestObserver<Project, Never>()
-  fileprivate let goToRefTag = TestObserver<RefTag, Never>()
-  fileprivate let messages = TestObserver<[Message], Never>()
-  fileprivate let participantPreviouslyBlocked = TestObserver<Bool, Never>()
-  fileprivate let presentMessageDialog = TestObserver<MessageThread, Never>()
-  fileprivate let project = TestObserver<Project, Never>()
-  fileprivate let replyButtonIsEnabled = TestObserver<Bool, Never>()
-  fileprivate let successfullyMarkedAsRead = TestObserver<(), Never>()
-  fileprivate let didBlockUser = TestObserver<(), Never>()
-  fileprivate let didBlockUserError = TestObserver<(), Never>()
+  private let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), Never>()
+  private let emptyStateIsVisible = TestObserver<Bool, Never>()
+  private let emptyStateMessage = TestObserver<String, Never>()
+  private let goToBackingProjectParam = TestObserver<Param, Never>()
+  private let goToBackingBackingParam = TestObserver<Param?, Never>()
+  private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToRefTag = TestObserver<RefTag, Never>()
+  private let messages = TestObserver<[Message], Never>()
+  private let participantPreviouslyBlocked = TestObserver<Bool, Never>()
+  private let presentMessageDialog = TestObserver<MessageThread, Never>()
+  private let project = TestObserver<Project, Never>()
+  private let replyButtonIsEnabled = TestObserver<Bool, Never>()
+  private let successfullyMarkedAsRead = TestObserver<(), Never>()
+  private let didBlockUser = TestObserver<(), Never>()
+  private let didBlockUserError = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -33,6 +34,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.emptyStateIsVisibleAndMessageToUser.map { $0.1 }.observe(self.emptyStateMessage.observer)
     self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProjectParam.observer)
     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingBackingParam.observer)
+    self.vm.outputs.goToPledgeManagementViewPledge.observe(self.goToPledgeManagementViewPledge.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.messages.observe(self.messages.observer)
@@ -180,11 +182,13 @@ internal final class MessagesViewModelTests: TestCase {
 
       self.goToBackingProjectParam.assertDidNotEmitValue()
       self.goToBackingBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.backingInfoPressed()
 
       self.goToBackingProjectParam.assertValues([.slug(project.slug)])
       self.goToBackingBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
     }
   }
 
@@ -210,11 +214,53 @@ internal final class MessagesViewModelTests: TestCase {
 
       self.goToBackingProjectParam.assertDidNotEmitValue()
       self.goToBackingBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.backingInfoPressed()
 
       self.goToBackingProjectParam.assertValues([.slug(project.slug)])
       self.goToBackingBackingParam.assertValues([.id(backing.id)])
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToPledgeManagementWebview_CurrentUserIsBacker() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> Project.lens.personalization.isBacking .~ true
+    let backing = Backing.templateMadeWithPledgeManagment
+    let currentUser = User.template
+      |> \.id .~ 42
+    let messageThread = .template
+      |> MessageThread.lens.backing .~ backing
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
+
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
+
+    let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.netNewBackersWebView.rawValue: true
+    ]
+
+    withEnvironment(apiService: apiService, currentUser: currentUser, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.goToBackingProjectParam.assertDidNotEmitValue()
+      self.goToBackingBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+
+      self.vm.inputs.backingInfoPressed()
+
+      self.goToBackingProjectParam.assertDidNotEmitValue()
+      self.goToBackingBackingParam.assertDidNotEmitValue()
+      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
     }
   }
 

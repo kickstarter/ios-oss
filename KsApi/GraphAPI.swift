@@ -15017,6 +15017,7 @@ public enum GraphAPI {
           ...MoneyFragment
         }
         status
+        backingDetailsPageRoute(type: url, tab: survey_responses)
       }
       """
 
@@ -15043,6 +15044,7 @@ public enum GraphAPI {
         GraphQLField("sequence", type: .scalar(Int.self)),
         GraphQLField("shippingAmount", type: .object(ShippingAmount.selections)),
         GraphQLField("status", type: .nonNull(.scalar(BackingState.self))),
+        GraphQLField("backingDetailsPageRoute", arguments: ["type": "url", "tab": "survey_responses"], type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -15052,8 +15054,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState, backingDetailsPageRoute: String) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status, "backingDetailsPageRoute": backingDetailsPageRoute])
     }
 
     public var __typename: String {
@@ -15241,6 +15243,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "status")
+      }
+    }
+
+    /// URL/path for the backing details page
+    public var backingDetailsPageRoute: String {
+      get {
+        return resultMap["backingDetailsPageRoute"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "backingDetailsPageRoute")
       }
     }
 

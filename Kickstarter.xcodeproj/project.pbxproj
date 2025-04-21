@@ -296,7 +296,9 @@
 		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
 		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
 		33A4392E2D93488800817A0E /* KSRButtonLegacyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */; };
-		33A6849E2DAF216C0025B0EE /* PledgeManagementViewPledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A6849B2DAF216B0025B0EE /* PledgeManagementViewPledgeViewController.swift */; };
+		33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */; };
+		33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */; };
+		33A6849E2DAF216C0025B0EE /* PledgeManagementDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A6849B2DAF216B0025B0EE /* PledgeManagementDetailsWebViewController.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
 		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
 		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
@@ -619,9 +621,8 @@
 		60F03AC12D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */; };
 		60F03AC42D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */; };
 		60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */; };
-		60FF346B2DA7FC3C003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */; };
 		60FF346E2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */; };
-		60FF346F2DA803C5003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */; };
+		60FF346F2DA803C5003598A9 /* PledgeManagementDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF34692DA7F97D003598A9 /* PledgeManagementDetailsViewModel.swift */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
 		7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848829BE4C11008F9941 /* MessageBannerView.swift */; };
@@ -2059,7 +2060,9 @@
 		339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewControllerTest.swift; sourceTree = "<group>"; };
 		339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
 		33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonLegacyStyle.swift; sourceTree = "<group>"; };
-		33A6849B2DAF216B0025B0EE /* PledgeManagementViewPledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewController.swift; sourceTree = "<group>"; };
+		33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPledgeUseCase.swift; sourceTree = "<group>"; };
+		33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewUseCaseTests.swift; sourceTree = "<group>"; };
+		33A6849B2DAF216B0025B0EE /* PledgeManagementDetailsWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementDetailsWebViewController.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
 		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
@@ -2379,7 +2382,7 @@
 		60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewCell.swift; sourceTree = "<group>"; };
 		60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
-		60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewModel.swift; sourceTree = "<group>"; };
+		60FF34692DA7F97D003598A9 /* PledgeManagementDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementDetailsViewModel.swift; sourceTree = "<group>"; };
 		60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewModelTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
@@ -5995,7 +5998,7 @@
 		33A6849C2DAF216B0025B0EE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				33A6849B2DAF216B0025B0EE /* PledgeManagementViewPledgeViewController.swift */,
+				33A6849B2DAF216B0025B0EE /* PledgeManagementDetailsWebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -7016,6 +7019,8 @@
 				A7ED1F891E831C5C00BFFA01 /* MessageDialogViewModelTests.swift */,
 				A7F4419D1D005A9400FE6FC5 /* MessagesSearchViewModel.swift */,
 				A7ED1F581E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift */,
+				33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */,
+				33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */,
 				A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */,
 				A7ED1F941E831C5C00BFFA01 /* MessagesViewModelTests.swift */,
 				A7F4419F1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift */,
@@ -7042,7 +7047,7 @@
 				8A13D16D24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift */,
 				8A13D16024955A2E007E2C0B /* PledgeExpandableRewardsHeaderViewModel.swift */,
 				8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */,
-				60FF34692DA7F97D003598A9 /* PledgeManagementViewPledgeViewModel.swift */,
+				60FF34692DA7F97D003598A9 /* PledgeManagementDetailsViewModel.swift */,
 				60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */,
 				33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */,
 				33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */,
@@ -8401,7 +8406,7 @@
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				D79A01A52242E91E004BC6A8 /* PushNotificationDialogType.swift in Sources */,
-				60FF346F2DA803C5003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */,
+				60FF346F2DA803C5003598A9 /* PledgeManagementDetailsViewModel.swift in Sources */,
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
@@ -8431,6 +8436,7 @@
 				7727494723FC66EA0065E9F2 /* CategorySelectionViewModel.swift in Sources */,
 				E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */,
 				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
+				33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
@@ -8874,6 +8880,7 @@
 				6051C66B2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift in Sources */,
 				477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */,
 				AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */,
+				33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */,
 				A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */,
 				8A213CF7239EB22900BBB4C7 /* MockTrackingClient.swift in Sources */,
 				D033E2C222A05B4800464E43 /* MockApplication.swift in Sources */,
@@ -9113,7 +9120,7 @@
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
 				AAE7C9A72C75948B00800E03 /* PPOProjectCardViewModel.swift in Sources */,
 				3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */,
-				33A6849E2DAF216C0025B0EE /* PledgeManagementViewPledgeViewController.swift in Sources */,
+				33A6849E2DAF216C0025B0EE /* PledgeManagementDetailsWebViewController.swift in Sources */,
 				60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */,
 				604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */,
 				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
@@ -9182,7 +9189,6 @@
 				6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
-				60FF346B2DA7FC3C003598A9 /* PledgeManagementViewPledgeViewModel.swift in Sources */,
 				E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */,
 				E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */,
 				E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */,
