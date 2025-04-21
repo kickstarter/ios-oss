@@ -115,6 +115,10 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
 
+    self.viewModel.outputs.goToPledgeManagementViewPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] url in self?.goToPMPledeView(with: url) }
+
     self.viewModel.outputs.didBlockUser
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -184,6 +188,11 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
   fileprivate func goToBacking(with params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.controller(with: params)
+    self.present(vc, animated: true)
+  }
+
+  fileprivate func goToPMPledeView(with url: URL) {
+    let vc = PledgeManagementDetailsWebViewController.configured(with: url)
     self.present(vc, animated: true)
   }
 

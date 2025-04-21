@@ -3,12 +3,12 @@ import Library
 import Prelude
 import UIKit
 
-internal final class PledgeManagementViewPledgeViewController: WebViewController {
-  private let viewModel: PledgeManagementViewPledgeViewModelType = PledgeManagementViewPledgeViewModel()
+internal final class PledgeManagementDetailsWebViewController: WebViewController {
+  private let viewModel: PledgeManagementDetailsViewModelType = PledgeManagementDetailsViewModel()
 
-  internal static func configuredWith(project: Project) -> PledgeManagementViewPledgeViewController {
-    let vc = PledgeManagementViewPledgeViewController()
-    vc.viewModel.inputs.configureWith(project: project)
+  internal static func configured(with backingDetailsURL: URL) -> PledgeManagementDetailsWebViewController {
+    let vc = PledgeManagementDetailsWebViewController()
+    vc.viewModel.inputs.configure(with: backingDetailsURL)
     return vc
   }
 

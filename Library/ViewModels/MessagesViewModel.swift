@@ -42,6 +42,9 @@ public protocol MessagesViewModelOutputs {
   /// Emits when we should go to the backing screen.
   var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
+  /// Emits when we should go to the Pledge Management View Pledge webview.
+  var goToPledgeManagementViewPledge: Signal<URL, Never> { get }
+
   /// Emits when we should go to the projet.
   var goToProject: Signal<(Project, RefTag), Never> { get }
 
@@ -129,23 +132,43 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
     self.backingAndProjectAndIsFromBacking = Signal.combineLatest(
-      configBacking, self.project, participant, currentUser
+      configBacking, self.project, participant, currentUser, messageThreadEnvelope
     )
     .switchMap { value -> SignalProducer<(Backing, Project, Bool), Never> in
-      let (backing, project, participant, currentUser) = value
+      let (backing, project, participant, currentUser, messageThreadEnvelope) = value
 
       if let backing = backing {
         return SignalProducer(value: (backing, project, true))
       }
 
-      let request = project.personalization.isBacking == .some(true)
-        ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
-        : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
+      let isBacker = project.personalization.isBacking == .some(true)
 
-      return request
-        .map { ($0, project, false) }
-        .demoteErrors()
+      guard let backingID = messageThreadEnvelope.messageThread.backing?.id else {
+        // If the messageThread does not contain a backing ID, fall back to fetching the backing info using the V1 endpoint:
+        // `fetchBacking(forProject:forUser:)`
+        let user = isBacker ? currentUser : participant
+        let request = AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
+
+        return request
+          .map { (backing: $0, project: project, isFromBacking: false) }
+          .demoteErrors()
+      }
+
+      let request = AppEnvironment.current.apiService.fetchBacking(id: backingID, withStoredCards: false)
+      return request.map { projectAndBacking in
+        (projectAndBacking.backing, project, false)
+      }
+      .demoteErrors()
     }
+
+    let projectAndBacking = self.backingAndProjectAndIsFromBacking.map { backing, project, _ -> (
+      Project,
+      Backing
+    ) in
+      (project, backing)
+    }
+
+    self.viewPledgeUseCase = .init(with: projectAndBacking)
 
     self.messages = messageThreadEnvelope
       .map { $0.messages }
@@ -183,18 +206,6 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.presentMessageDialog = messageThreadEnvelope
       .map { ($0.messageThread, .messages) }
       .takeWhen(self.replyButtonPressedProperty.signal)
-
-    self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
-      .takeWhen(self.backingInfoPressedProperty.signal)
-      .compactMap { env, _ -> ManagePledgeViewParamConfigData? in
-        guard let backing = env.messageThread.backing else {
-          return nil
-        }
-
-        let project = env.messageThread.project
-
-        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
-      }
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
       .map { ($0, .messageThread) }
@@ -244,9 +255,8 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       }
   }
 
-  private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {
-    self.backingInfoPressedProperty.value = ()
+    self.viewPledgeUseCase.goToPledgeViewTapped()
   }
 
   private let blockUserProperty = MutableProperty<String>("")
@@ -284,9 +294,10 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.viewWillAppearProperty.value = ()
   }
 
+  private let viewPledgeUseCase: ViewPledgeUseCase
+
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
   public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
-  public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let messages: Signal<[Message], Never>
   public let participantPreviouslyBlocked: Signal<Bool, Never>
@@ -296,6 +307,14 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let successfullyMarkedAsRead: Signal<(), Never>
   public let didBlockUser: Signal<(), Never>
   public let didBlockUserError: Signal<(), Never>
+
+  public var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> {
+    self.viewPledgeUseCase.goToNativePledgeView
+  }
+
+  public var goToPledgeManagementViewPledge: Signal<URL, Never> {
+    self.viewPledgeUseCase.goToPledgeManagementPledgeView
+  }
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }
