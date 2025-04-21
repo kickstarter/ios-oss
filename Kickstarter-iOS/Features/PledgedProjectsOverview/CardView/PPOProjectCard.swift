@@ -66,7 +66,7 @@ struct PPOProjectCard: View {
   private var flagList: some View {
     if self.viewModel.card.alerts.isEmpty == false {
       HStack {
-        VStack(alignment: .leading) {
+        FlowLayout(horizontalSpacing: 8, alignment: .leading) {
           ForEach(self.viewModel.card.alerts) { alert in
             PPOAlertFlag(alert: alert)
           }
