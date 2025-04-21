@@ -46,6 +46,7 @@ extension Backing {
       backer: backer,
       backerId: backerId,
       backerCompleted: backingFragment.backerCompleted,
+      backingDetailsPageRoute: backingFragment.backingDetailsPageRoute,
       bonusAmount: backingFragment.bonusAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       cancelable: backingFragment.cancelable,
       id: id,

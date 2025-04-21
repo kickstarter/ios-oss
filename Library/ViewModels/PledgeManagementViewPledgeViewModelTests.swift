@@ -5,7 +5,7 @@ import ReactiveSwift
 import XCTest
 
 final class PledgeManagementViewPledgeViewModelTests: TestCase {
-  private let vm: PledgeManagementViewPledgeViewModelType = PledgeManagementViewPledgeViewModel()
+  private let vm: PledgeManagementDetailsViewModelType = PledgeManagementDetailsViewModel()
   private let webViewLoadRequest = TestObserver<URLRequest, Never>()
 
   override func setUp() {
@@ -15,14 +15,13 @@ final class PledgeManagementViewPledgeViewModelTests: TestCase {
   }
 
   func testLoadWebViewRequest() {
-    let project = Project.template
-    let urlString =
-      "\(AppEnvironment.current.apiService.serverConfig.webBaseUrl)/projects/\(project.creator.id)/\(project.slug)/backing/details"
+    let url =
+      URL(string: "\(AppEnvironment.current.apiService.serverConfig.webBaseUrl)/projects/backing/details")!
     let request = AppEnvironment.current.apiService.preparedRequest(
-      forURL: URL(string: urlString)!
+      forURL: url
     )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configure(with: url)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues([request])
