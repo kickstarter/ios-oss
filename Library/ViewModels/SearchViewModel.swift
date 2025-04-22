@@ -85,8 +85,8 @@ public protocol SearchViewModelOutputs {
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
   var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
 
-  /// Sends an array of model objects which represent filter options, to be displayed in the search filter header.
-  var pills: Signal<[SearchFilterPill], Never> { get }
+  /// An @ObservableObject model which SwiftUI can use to observe the selected filters. Owned and automatically updated by the `SearchFiltersUseCase`, which this view model itself owns.
+  var selectedFilters: SelectedSearchFilters { get }
 }
 
 public protocol SearchViewModelType {
@@ -426,8 +426,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchFiltersUseCase.selectedProjectState(state)
   }
 
-  public var pills: Signal<[SearchFilterPill], Never> {
-    return self.searchFiltersUseCase.pills
+  public var selectedFilters: SelectedSearchFilters {
+    return self.searchFiltersUseCase.selectedFilters
   }
 
   public var inputs: SearchViewModelInputs { return self }

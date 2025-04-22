@@ -24,7 +24,6 @@ internal final class SearchViewController: UITableViewController {
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
 
   private var sortAndFilterHeader: UIViewController?
-  private let sortAndFilterViewModel = SearchFiltersHeaderViewModel(pills: [])
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -39,9 +38,12 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    let pillView = SearchFiltersHeaderView(didTapPill: { [weak self] pill in
-      self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
-    }).environmentObject(self.sortAndFilterViewModel)
+    let pillView = SelectedSearchFiltersHeaderView(
+      selectedFilters: self.viewModel.outputs.selectedFilters,
+      didTapPill: { [weak self] pill in
+        self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
+      }
+    )
 
     let sortAndFilterHeader = UIHostingController(rootView: pillView)
     self.addChild(sortAndFilterHeader)
@@ -181,18 +183,13 @@ internal final class SearchViewController: UITableViewController {
         case .all:
           self?.showAllFilters(options)
         case .category:
-          self?.showCategories(options.category)
+          self?.showCategories(options)
         case .sort:
           self?.showSort(options.sort)
         }
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
-    self.viewModel.outputs.pills
-      .observeForUI()
-      .observeValues { pills in
-        self.sortAndFilterViewModel.pills = pills
-      }
   }
 
   fileprivate func present(sheet viewController: UIViewController, withHeight _: CGFloat) {
@@ -203,7 +200,7 @@ internal final class SearchViewController: UITableViewController {
   fileprivate func showSort(_ sheet: SearchFilterOptions.SortOptions) {
     let sortViewModel = SortViewModel(
       sortOptions: sheet.sortOptions,
-      selectedSortOption: sheet.selectedOption
+      selectedSortOption: self.viewModel.outputs.selectedFilters.sort
     )
 
     let sortView = SortView(
@@ -220,11 +217,11 @@ internal final class SearchViewController: UITableViewController {
     self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
-  fileprivate func showCategories(_ sheet: SearchFilterOptions.CategoryOptions) {
-    let viewModel = FilterCategoryViewModel(with: sheet.categories)
-    if let selectedCategory = sheet.selectedCategory {
-      viewModel.selectCategory(selectedCategory)
-    }
+  fileprivate func showCategories(_ sheet: SearchFilterOptions) {
+    let viewModel = FilterCategoryViewModel<KsApi.Category>(
+      with: sheet.category.categories,
+      selectedCategory: self.viewModel.outputs.selectedFilters.category
+    )
 
     let filterView = FilterCategoryView(
       viewModel: viewModel,
@@ -256,12 +253,12 @@ internal final class SearchViewController: UITableViewController {
       title: "Categories ➜",
       style: .default,
       handler: { [weak self] _ in
-        self?.showCategories(sheet.category)
+        self?.showCategories(sheet)
       }
     ))
 
     for state in sheet.projectState.stateOptions {
-      let isSelected = (state == sheet.projectState.selectedOption)
+      let isSelected = (state == self.viewModel.outputs.selectedFilters.projectState)
       let checkmark = isSelected ? " ✓" : ""
 
       alertController.addAction(UIAlertAction(
