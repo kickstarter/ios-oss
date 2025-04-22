@@ -46,31 +46,25 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public init(initialSignal: Signal<Void, Never>, categories: Signal<[KsApi.Category], Never>) {
     self.categoriesProperty <~ categories
 
-    self.showFilters = SignalProducer.combineLatest(
-      self.categoriesProperty.producer,
-      self.selectedCategoryProperty.producer,
-      self.selectedSortProperty.producer,
-      self.selectedStateProperty.producer
-    )
-    .takePairWhen(self.tappedFilterTypeSignal)
-    .map { a, b in (a.0, a.1, a.2, a.3, b) }
-    .map { [sortOptions, stateOptions] categories, category, sort, _, pill in
-      let options = SearchFilterOptions(
-        category: SearchFilterOptions.CategoryOptions(
-          categories: categories
-        ),
-        sort: SearchFilterOptions.SortOptions(
-          sortOptions: sortOptions
-        ),
-        projectState: SearchFilterOptions.ProjectStateOptions(
-          stateOptions: stateOptions
+    self.showFilters = self.categoriesProperty.producer
+      .takePairWhen(self.tappedFilterTypeSignal)
+      .map { [sortOptions, stateOptions] categories, pill in
+        let options = SearchFilterOptions(
+          category: SearchFilterOptions.CategoryOptions(
+            categories: categories
+          ),
+          sort: SearchFilterOptions.SortOptions(
+            sortOptions: sortOptions
+          ),
+          projectState: SearchFilterOptions.ProjectStateOptions(
+            stateOptions: stateOptions
+          )
         )
-      )
 
-      let modalType = filterModal(toShowForPill: pill)
+        let modalType = filterModal(toShowForPill: pill)
 
-      return (options, modalType)
-    }
+        return (options, modalType)
+      }
 
     self.selectedSort = Signal.merge(
       self.selectedSortProperty.producer.takeWhen(initialSignal),
