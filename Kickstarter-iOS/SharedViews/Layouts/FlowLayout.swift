@@ -8,8 +8,17 @@ public struct FlowLayout: Layout {
   private var alignment: HorizontalAlignment
 
   public init(
-    horizontalSpacing: CGFloat = 8,
-    verticalSpacing: CGFloat = 8,
+    spacing: CGFloat = 0,
+    alignment: HorizontalAlignment = .leading
+  ) {
+    self.horizontalSpacing = spacing
+    self.verticalSpacing = spacing
+    self.alignment = alignment
+  }
+
+  public init(
+    horizontalSpacing: CGFloat = 0,
+    verticalSpacing: CGFloat = 0,
     alignment: HorizontalAlignment = .leading
   ) {
     self.horizontalSpacing = horizontalSpacing
