@@ -3,7 +3,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-final class FilterCategoryViewTest: TestCase {
+final class FilterCategoryViewTest_PhaseOne: TestCase {
   private let size = CGSize(width: 375, height: 667)
   private let testCategories = ConcreteFilterCategory.allCases
 
