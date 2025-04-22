@@ -1,15 +1,15 @@
 public protocol HasProjectWebURL {
-  var serviceProjectWebURL: String { get }
+  var projectWebURL: String { get }
 }
 
 extension Project: HasProjectWebURL {
-  public var serviceProjectWebURL: String {
+  public var projectWebURL: String {
     self.urls.web.project
   }
 }
 
 extension GraphAPI.ProjectFragment: HasProjectWebURL {
-  public var serviceProjectWebURL: String {
+  public var projectWebURL: String {
     self.url
   }
 }

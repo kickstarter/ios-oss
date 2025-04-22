@@ -558,7 +558,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.creatorButtonTapped()
 
     XCTAssertEqual(self.notifyDelegateToGoToCreator.values.count, 1)
-    XCTAssertEqual(self.notifyDelegateToGoToCreator.values.first?.id, project.id)
+    XCTAssertEqual(
+      self.notifyDelegateToGoToCreator.values.first?.projectPamphletMainCellProperties.param.id,
+      project.id
+    )
 
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)

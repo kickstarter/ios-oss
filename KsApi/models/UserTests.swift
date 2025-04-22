@@ -20,6 +20,7 @@ final class UserTests: XCTestCase {
         "medium": "http://www.kickstarter.com/medium.jpg",
         "small": "http://www.kickstarter.com/small.jpg"
       ],
+      "chosen_currency": "USD",
       "needs_password": true,
       "backed_projects_count": 2,
       "draft_projects_count": 4,
@@ -80,6 +81,7 @@ final class UserTests: XCTestCase {
         "small": "http://www.kickstarter.com/small.jpg",
         "large": "http://www.kickstarter.com/large.jpg"
       ],
+      "chosen_currency": "USD",
       "needs_password": false,
       "backed_projects_count": 2,
       "games_newsletter": false,
