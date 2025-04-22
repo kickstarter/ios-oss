@@ -253,7 +253,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
-        projectCountry: data.project.country,
+        projectCountry: projectCountry,
         omitCurrencyCode: omitUSCurrencyCode,
         shipping: shippingSummary,
         useLatePledgeCosts: true
