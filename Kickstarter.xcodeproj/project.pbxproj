@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1679,6 +1679,10 @@
 		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
 		E1801FA72BA8EDB500EBB533 /* PaginatingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */; };
 		E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */; };
+		E182B7DF2DB2A89D000C4067 /* SelectedSearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7DA2DB2A80D000C4067 /* SelectedSearchFilters.swift */; };
+		E182B7E02DB2A8A3000C4067 /* SelectedSearchFilters+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */; };
+		E182B7E22DB2AAC9000C4067 /* SearchFilterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E12DB2AAC9000C4067 /* SearchFilterOptions.swift */; };
+		E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
@@ -3461,6 +3465,10 @@
 		E17611E52B75242A00DF2F50 /* PaginatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatorTests.swift; sourceTree = "<group>"; };
 		E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatingList.swift; sourceTree = "<group>"; };
 		E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceSelected.swift; sourceTree = "<group>"; };
+		E182B7DA2DB2A80D000C4067 /* SelectedSearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSearchFilters.swift; sourceTree = "<group>"; };
+		E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedSearchFilters+TestHelpers.swift"; sourceTree = "<group>"; };
+		E182B7E12DB2AAC9000C4067 /* SearchFilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterOptions.swift; sourceTree = "<group>"; };
+		E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams+SearchFilters.swift"; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
@@ -6216,6 +6224,7 @@
 		778F891A22D3E35600D095C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */,
 				AAD759F32D2FA1E900A4E003 /* Publisher+Helpers.swift */,
 				33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */,
 				3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */,
@@ -7211,11 +7220,8 @@
 			isa = PBXGroup;
 			children = (
 				AA7452A32D91BB8100DCB655 /* SimilarProjects */,
-				AA7452A42D91BB8100DCB655 /* FetchCategoriesUseCase.swift */,
-				AA7452A52D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift */,
-				AA7452A62D91BB8100DCB655 /* SearchFiltersUseCase.swift */,
-				E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */,
-				AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */,
+				E182B7E32DB2AB98000C4067 /* FetchCategories */,
+				E182B7DE2DB2A88D000C4067 /* SearchFilters */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -7649,6 +7655,28 @@
 				AA645E9D2C772C650034705A /* PagedTabBarTests.swift */,
 			);
 			path = PagedContainer;
+			sourceTree = "<group>";
+		};
+		E182B7DE2DB2A88D000C4067 /* SearchFilters */ = {
+			isa = PBXGroup;
+			children = (
+				AA7452A62D91BB8100DCB655 /* SearchFiltersUseCase.swift */,
+				AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */,
+				E182B7E12DB2AAC9000C4067 /* SearchFilterOptions.swift */,
+				E182B7DA2DB2A80D000C4067 /* SelectedSearchFilters.swift */,
+				E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */,
+				E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */,
+			);
+			path = SearchFilters;
+			sourceTree = "<group>";
+		};
+		E182B7E32DB2AB98000C4067 /* FetchCategories */ = {
+			isa = PBXGroup;
+			children = (
+				AA7452A42D91BB8100DCB655 /* FetchCategoriesUseCase.swift */,
+				AA7452A52D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift */,
+			);
+			path = FetchCategories;
 			sourceTree = "<group>";
 		};
 		E1A149252ACE060E00F49709 /* templates */ = {
@@ -8529,6 +8557,7 @@
 				8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				94C92E8A2659F09A00A96818 /* PaddingLabel.swift in Sources */,
+				E182B7E22DB2AAC9000C4067 /* SearchFilterOptions.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
 				D04AAC24218BB70D00CF713E /* DiscoveryProjectCategoryViewModel.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
@@ -8641,6 +8670,7 @@
 				33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				77556F5420A099B3008CEA57 /* ExperimentName+Helpers.swift in Sources */,
+				E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				77AA2B3B233C0A1B008BBCB8 /* CreateBackingInput+Constructor.swift in Sources */,
 				6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */,
@@ -8686,6 +8716,7 @@
 				33F55B532D5282F20007E50E /* CustomFont.swift in Sources */,
 				D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */,
 				A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */,
+				E182B7DF2DB2A89D000C4067 /* SelectedSearchFilters.swift in Sources */,
 				8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */,
 				06232D4B27962F4900A81755 /* TextViewElementCellViewModel.swift in Sources */,
 				37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */,
@@ -8747,6 +8778,7 @@
 				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
 				60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */,
+				E182B7E02DB2A8A3000C4067 /* SelectedSearchFilters+TestHelpers.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,

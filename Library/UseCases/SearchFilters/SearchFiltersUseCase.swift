@@ -5,7 +5,7 @@ import UIKit
 public protocol SearchFiltersUseCaseType {
   var inputs: SearchFiltersUseCaseInputs { get }
   var uiOutputs: SearchFiltersUseCaseUIOutputs { get }
-  var dataOuputs: SearchFiltersUseCaseDataOutputs { get }
+  var dataOutputs: SearchFiltersUseCaseDataOutputs { get }
 }
 
 public protocol SearchFiltersUseCaseInputs {
@@ -24,8 +24,9 @@ public protocol SearchFiltersUseCaseInputs {
 public protocol SearchFiltersUseCaseUIOutputs {
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
   var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
-  /// Sends an array of model objects which represent filter options, to be displayed in the search filter header.
-  var pills: Signal<[SearchFilterPill], Never> { get }
+
+  /// An @ObservableObject model which SwiftUI can use to observe the selected filters. Owned and automatically updated by this use case.
+  var selectedFilters: SelectedSearchFilters { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
@@ -45,34 +46,25 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public init(initialSignal: Signal<Void, Never>, categories: Signal<[KsApi.Category], Never>) {
     self.categoriesProperty <~ categories
 
-    self.showFilters = SignalProducer.combineLatest(
-      self.categoriesProperty.producer,
-      self.selectedCategoryProperty.producer,
-      self.selectedSortProperty.producer,
-      self.selectedStateProperty.producer
-    )
-    .takePairWhen(self.tappedFilterTypeSignal)
-    .map { a, b in (a.0, a.1, a.2, a.3, b) }
-    .map { [sortOptions, stateOptions] categories, category, sort, state, pill in
-      let options = SearchFilterOptions(
-        category: SearchFilterOptions.CategoryOptions(
-          categories: categories,
-          selectedCategory: category
-        ),
-        sort: SearchFilterOptions.SortOptions(
-          sortOptions: sortOptions,
-          selectedOption: sort
-        ),
-        projectState: SearchFilterOptions.ProjectStateOptions(
-          stateOptions: stateOptions,
-          selectedOption: state
+    self.showFilters = self.categoriesProperty.producer
+      .takePairWhen(self.tappedFilterTypeSignal)
+      .map { [sortOptions, stateOptions] categories, pill in
+        let options = SearchFilterOptions(
+          category: SearchFilterOptions.CategoryOptions(
+            categories: categories
+          ),
+          sort: SearchFilterOptions.SortOptions(
+            sortOptions: sortOptions
+          ),
+          projectState: SearchFilterOptions.ProjectStateOptions(
+            stateOptions: stateOptions
+          )
         )
-      )
 
-      let modalType = filterModal(toShowForPill: pill)
+        let modalType = filterModal(toShowForPill: pill)
 
-      return (options, modalType)
-    }
+        return (options, modalType)
+      }
 
     self.selectedSort = Signal.merge(
       self.selectedSortProperty.producer.takeWhen(initialSignal),
@@ -89,10 +81,21 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedStateProperty.signal
     )
 
-    self.pills = Signal.combineLatest(self.selectedSort, self.selectedCategory, self.selectedState)
-      .map { sort, category, state in
-        filterPills(fromSelectedSort: sort, category: category, state: state)
-      }
+    self.selectedFilters = SelectedSearchFilters(
+      sort: self.selectedSortProperty.value,
+      category: self.selectedCategoryProperty.value,
+      projectState: self.selectedStateProperty.value
+    )
+
+    Signal.combineLatest(
+      self.dataOutputs.selectedSort,
+      self.dataOutputs.selectedCategory,
+      self.dataOutputs.selectedState
+    )
+    .observeForUI()
+    .observeValues { [weak selectedFilters] sort, category, state in
+      selectedFilters?.update(withSort: sort, category: category, projectState: state)
+    }
   }
 
   fileprivate let (tappedFilterTypeSignal, tappedFilterTypeObserver) = Signal<
@@ -117,7 +120,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
 
-  fileprivate static let defaultSortOption = DiscoveryParams.Sort.magic
+  internal static let defaultSortOption = DiscoveryParams.Sort.magic
 
   fileprivate let sortOptions = [
     DiscoveryParams.Sort.magic, // aka Recommended
@@ -128,7 +131,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     DiscoveryParams.Sort.most_backed
   ]
 
-  fileprivate static let defaultStateOption = DiscoveryParams.State.all
+  internal static let defaultStateOption = DiscoveryParams.State.all
 
   fileprivate let stateOptions = [
     DiscoveryParams.State.all,
@@ -139,11 +142,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   ]
 
   public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never>
-  public let pills: Signal<[SearchFilterPill], Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<KsApi.Category?, Never>
   public var selectedState: Signal<DiscoveryParams.State, Never>
+
+  public private(set) var selectedFilters: SelectedSearchFilters
 
   public func clearOptions() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
@@ -185,72 +189,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
-  public var dataOuputs: SearchFiltersUseCaseDataOutputs { return self }
-}
-
-private func filterPills(
-  fromSelectedSort sort: DiscoveryParams.Sort,
-  category: KsApi.Category?,
-  state: DiscoveryParams.State
-) -> [SearchFilterPill] {
-  let hasCategory = category != nil
-  let hasState = state != SearchFiltersUseCase.defaultStateOption
-
-  let filterCount = [hasCategory, hasState].reduce(0) { filterCount, hasFilter in
-    filterCount + (hasFilter ? 1 : 0)
-  }
-
-  var pills: [SearchFilterPill] = []
-
-  pills.append(SearchFilterPill(
-    isHighlighted: sort != SearchFiltersUseCase.defaultSortOption,
-    filterType: .sort,
-    buttonType: .image("icon-sort")
-  ))
-
-  if featureSearchFilterByProjectStatusEnabled() {
-    pills.append(SearchFilterPill(
-      isHighlighted: hasCategory || hasState,
-      filterType: .all,
-      buttonType: .image("icon-filters"),
-      count: filterCount
-    ))
-  }
-
-  pills.append(SearchFilterPill(
-    isHighlighted: category != nil,
-    filterType: .category,
-    buttonType: .dropdown(category?.name ?? Strings.Category())
-  ))
-
-  if featureSearchFilterByProjectStatusEnabled() {
-    pills.append(
-      SearchFilterPill(
-        isHighlighted: state != SearchFiltersUseCase.defaultStateOption,
-        filterType: .projectState,
-        buttonType: .dropdown(hasState ? state.title : Strings.Project_status())
-      )
-    )
-  }
-
-  return pills
-}
-
-extension DiscoveryParams.State {
-  var title: String {
-    switch self {
-    case .all:
-      Strings.Project_status_all()
-    case .live:
-      Strings.Project_status_live()
-    case .successful:
-      Strings.Project_status_successful()
-    case .late_pledge:
-      Strings.Project_status_late_pledges()
-    case .upcoming:
-      Strings.Project_status_upcoming()
-    }
-  }
+  public var dataOutputs: SearchFiltersUseCaseDataOutputs { return self }
 }
 
 private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> SearchFilterModalType {
@@ -268,29 +207,8 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
   return modalType
 }
 
-public enum SearchFilterModalType {
+public enum SearchFilterModalType: Hashable {
   case all
   case category
   case sort
-}
-
-public struct SearchFilterOptions {
-  public struct CategoryOptions {
-    public let categories: [KsApi.Category]
-    public let selectedCategory: KsApi.Category?
-  }
-
-  public struct SortOptions {
-    public let sortOptions: [DiscoveryParams.Sort]
-    public let selectedOption: DiscoveryParams.Sort
-  }
-
-  public struct ProjectStateOptions {
-    public let stateOptions: [DiscoveryParams.State]
-    public let selectedOption: DiscoveryParams.State
-  }
-
-  public let category: CategoryOptions
-  public let sort: SortOptions
-  public let projectState: ProjectStateOptions
 }
