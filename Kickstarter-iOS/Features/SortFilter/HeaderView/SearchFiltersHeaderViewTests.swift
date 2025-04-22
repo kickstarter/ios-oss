@@ -41,10 +41,7 @@ final class SearchFiltersHeaderViewTests: TestCase {
         )
       ]
 
-      let container = SearchFiltersHeaderViewModel(pills: pills)
-
-      let view = SearchFiltersHeaderView(didTapPill: { _ in })
-        .environmentObject(container)
+      let view = SearchFiltersHeaderView(didTapPill: { _ in }, pills: pills)
         .environment(\.sizeCategory, contentSize)
         .frame(width: size.width, height: 100)
 

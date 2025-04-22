@@ -1,27 +1,28 @@
 import Library
 import SwiftUI
 
-class SearchFiltersHeaderViewModel: ObservableObject {
-  @Published var pills: [SearchFilterPill]
+struct SelectedSearchFiltersHeaderView: View {
+  @ObservedObject var selectedFilters: SelectedSearchFilters
+  let didTapPill: (SearchFilterPill) -> Void
 
-  init(pills: [SearchFilterPill]) {
-    self.pills = pills
+  var body: some View {
+    SearchFiltersHeaderView(
+      didTapPill: self.didTapPill,
+      pills: self.selectedFilters.pills
+    )
   }
 }
 
 struct SearchFiltersHeaderView: View {
   let didTapPill: (SearchFilterPill) -> Void
+  let pills: [SearchFilterPill]
 
-  // The pills are passed down from the parent SearchViewController.
-  // Using an EnvironmentObject here because that's the cleanest way to represent
-  // this relationship to SwiftUI.
-  @EnvironmentObject var container: SearchFiltersHeaderViewModel
   @SwiftUICore.Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   var body: some View {
     ScrollView(.horizontal) {
       HStack {
-        ForEach(self.container.pills) { pill in
+        ForEach(self.pills) { pill in
           switch pill.buttonType {
           case let .image(image):
             if let uiImage = Library.image(named: image) {
@@ -77,9 +78,6 @@ let previewPills = [
   )
 ]
 
-let previewContainer = SearchFiltersHeaderViewModel(pills: previewPills)
-
 #Preview {
-  SearchFiltersHeaderView(didTapPill: { _ in })
-    .environmentObject(previewContainer)
+  SearchFiltersHeaderView(didTapPill: { _ in }, pills: previewPills)
 }
