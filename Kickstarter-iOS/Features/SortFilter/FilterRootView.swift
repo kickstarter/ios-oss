@@ -2,6 +2,8 @@ import KsApi
 import Library
 import SwiftUI
 
+// FIXME: MBL-2220: All of this UI is placeholder UI.
+// It's functional, but not up to spec, and includes no translations.
 struct FilterRootView: View {
   @State var filterOptions: SearchFilterOptions
   @State var navigationState: [SearchFilterModalType]
