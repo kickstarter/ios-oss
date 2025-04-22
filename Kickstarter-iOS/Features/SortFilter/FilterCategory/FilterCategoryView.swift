@@ -9,7 +9,11 @@ struct FilterCategoryView<T: FilterCategory>: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      self.headerView
+      if !featureSearchFilterByProjectStatusEnabled() {
+        // When status filters are enabled, this is presented in a NavigationStack
+        // and has a built-in navigation title view.
+        self.headerView
+      }
 
       if self.viewModel.isLoading {
         ProgressView()

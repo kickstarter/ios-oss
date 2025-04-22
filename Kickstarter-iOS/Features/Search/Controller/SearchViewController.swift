@@ -218,6 +218,11 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func showCategories(_ sheet: SearchFilterOptions) {
+    if featureSearchFilterByProjectStatusEnabled() {
+      self.showFilters(sheet, filterType: .category)
+      return
+    }
+
     let viewModel = FilterCategoryViewModel<KsApi.Category>(
       with: sheet.category.categories,
       selectedCategory: self.viewModel.outputs.selectedFilters.category
@@ -240,39 +245,30 @@ internal final class SearchViewController: UITableViewController {
     self.present(hostingController, animated: true)
   }
 
-  fileprivate func showAllFilters(_ sheet: SearchFilterOptions) {
-    // FIXME: MBL-2220 This will be its own page. For now, using a UIAlertController.
+  fileprivate func showAllFilters(_ opts: SearchFilterOptions) {
+    self.showFilters(opts, filterType: .all)
+  }
 
-    let alertController = UIAlertController(
-      title: "Filters",
-      message: "Select your filters",
-      preferredStyle: .actionSheet
+  fileprivate func showFilters(_ options: SearchFilterOptions, filterType: SearchFilterModalType) {
+    var filterView = FilterRootView(
+      filterOptions: options,
+      filterType: filterType,
+      selectedFilters: self.viewModel.outputs.selectedFilters
     )
-
-    alertController.addAction(UIAlertAction(
-      title: "Categories ➜",
-      style: .default,
-      handler: { [weak self] _ in
-        self?.showCategories(sheet)
-      }
-    ))
-
-    for state in sheet.projectState.stateOptions {
-      let isSelected = (state == self.viewModel.outputs.selectedFilters.projectState)
-      let checkmark = isSelected ? " ✓" : ""
-
-      alertController.addAction(UIAlertAction(
-        title: "Project state: \(state.rawValue)\(checkmark)",
-        style: .default,
-        handler: { [weak self] _ in
-          self?.viewModel.inputs.selectedProjectState(state)
-        }
-      ))
+    filterView.onSelectedProjectState = { [weak self] state in
+      self?.viewModel.inputs.selectedProjectState(state)
     }
-
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
-    self.present(alertController, animated: true)
+    filterView.onSelectedCategory = { [weak self] category in
+      self?.viewModel.inputs.selectedCategory(category)
+    }
+    filterView.onResults = { [weak self] in
+      self?.dismiss(animated: true)
+    }
+    filterView.onClose = { [weak self] in
+      self?.dismiss(animated: true)
+    }
+    let hostingController = UIHostingController(rootView: filterView)
+    self.present(hostingController, animated: true)
   }
 
   fileprivate func goTo(projectId: Int, refTag: RefTag) {
