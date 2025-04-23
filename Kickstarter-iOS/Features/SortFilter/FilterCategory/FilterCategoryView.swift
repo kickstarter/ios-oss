@@ -3,7 +3,8 @@ import SwiftUI
 
 struct FilterCategoryView<T: FilterCategory>: View {
   @StateObject var viewModel: FilterCategoryViewModel<T>
-  var onSelectedCategory: ((T?) -> Void)? = nil
+
+  var onSelectedCategory: (((T, T?)?) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
@@ -26,8 +27,10 @@ struct FilterCategoryView<T: FilterCategory>: View {
     .background(Colors.Background.surfacePrimary.swiftUIColor())
 
     // Handle actions
-    .onReceive(self.viewModel.selectedCategory) { category in
-      self.onSelectedCategory?(category)
+    .onReceive(self.viewModel.selectedCategory) { result in
+      if let (category, subcategory) = result {
+        self.onSelectedCategory?((category, subcategory))
+      }
     }
     .onReceive(self.viewModel.seeResultsTapped) {
       self.onResults?()
@@ -68,21 +71,57 @@ struct FilterCategoryView<T: FilterCategory>: View {
             .foregroundStyle(Colors.Text.primary.swiftUIColor())
           Spacer()
           self.radioButton(isSelected: self.viewModel.isCategorySelected(category))
+            .id("\(category.id)-radio-button")
         }
+        .background(Colors.Background.surfacePrimary.swiftUIColor())
         .padding(.vertical, Constants.rowPaddingVertical)
         .padding(.horizontal, Constants.rowPaddingHorizontal)
 
+        self.subcategories(
+          for: category
+        )
+
         self.separator
+          .id("\(category.id)-separator")
       }
       .background(Colors.Background.surfacePrimary.swiftUIColor())
       .listRowInsets(EdgeInsets()) // Remove List internal insets
       .listRowSeparator(.hidden) // Hide default separators
       .contentShape(Rectangle())
       .onTapGesture { [weak viewModel] () in
-        viewModel?.selectCategory(category)
+        if let viewModel, !viewModel.isCategorySelected(category) {
+          viewModel.selectCategory(category)
+        }
       }
+      .id(category.id)
     }
     .listStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func subcategories(for category: T) -> some View {
+    if self.viewModel.isCategorySelected(category), let subcategories = category.availableSubcategories {
+      FlowLayout(horizontalSpacing: 8, verticalSpacing: 8, alignment: .leading) {
+        TitlePillButton(
+          title: Strings.Project_status_all(),
+          isHighlighted: self.viewModel.isSubcategorySelected(nil),
+          count: category.projectCount
+        ) {
+          self.viewModel.selectCategory(category, subcategory: nil)
+        }
+        ForEach(subcategories) { subcategory in
+          TitlePillButton(
+            title: subcategory.name,
+            isHighlighted: self.viewModel.isSubcategorySelected(subcategory),
+            count: subcategory.projectCount
+          ) {
+            self.viewModel.selectCategory(category, subcategory: subcategory)
+          }
+          .id(subcategory.id)
+        }
+      }
+      .padding(EdgeInsets(top: 4, leading: 24, bottom: 16, trailing: 24))
+    }
   }
 
   @ViewBuilder
@@ -149,7 +188,8 @@ private enum Constants {
   #Preview("Filter Categories") {
     FilterCategoryView(
       viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
-      onSelectedCategory: { category in
+      onSelectedCategory: { results in
+        let (category, subcategory) = results ?? (nil, nil)
         print("Selected Category: \(category?.name ?? "None")")
       },
       onResults: {

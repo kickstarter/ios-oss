@@ -10,7 +10,7 @@ struct FilterRootView: View {
 
   @ObservedObject var selectedFilters: SelectedSearchFilters
 
-  var onSelectedCategory: ((KsApi.Category?) -> Void)? = nil
+  var onSelectedCategory: (((KsApi.Category, KsApi.Category?)?) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil

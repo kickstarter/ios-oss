@@ -3,11 +3,13 @@ import Foundation
 
 protocol FilterCategory: Identifiable, Equatable {
   var name: String { get }
+  var availableSubcategories: [Self]? { get }
+  var projectCount: Int? { get }
 }
 
 protocol FilterCategoryViewModelInputs {
   associatedtype T: FilterCategory
-  func selectCategory(_ category: T)
+  func selectCategory(_ category: T, subcategory: T?)
   func seeResults()
   func close()
   func resetSelection()
@@ -15,13 +17,14 @@ protocol FilterCategoryViewModelInputs {
 
 protocol FilterCategoryViewModelOutputs {
   associatedtype T: FilterCategory
-  var selectedCategory: AnyPublisher<T?, Never> { get }
+  var selectedCategory: AnyPublisher<(T, subcategory: T?)?, Never> { get }
   var seeResultsTapped: AnyPublisher<Void, Never> { get }
   var closeTapped: AnyPublisher<Void, Never> { get }
   var categories: [T] { get }
   var canReset: Bool { get }
   var isLoading: Bool { get }
   func isCategorySelected(_ category: T) -> Bool
+  func isSubcategorySelected(_ category: T?) -> Bool
 }
 
 typealias FilterCategoryViewModelType =
@@ -32,6 +35,9 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
   @Published private(set) var categories: [T] = []
   @Published private(set) var canReset: Bool = false
   @Published private var currentCategory: T? = nil
+  @Published private var currentSubcategory: T? = nil
+
+  private var cancellables: Set<AnyCancellable> = []
 
   var isLoading: Bool {
     self.categories.isEmpty
@@ -46,18 +52,24 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
       .assign(to: &self.$canReset)
 
     self.selectedCategorySubject
+      .map { $0?.0 }
       .receive(on: RunLoop.main)
       .assign(to: &self.$currentCategory)
 
+    self.selectedCategorySubject
+      .map { $0?.1 }
+      .receive(on: RunLoop.main)
+      .assign(to: &self.$currentSubcategory)
+
     if let category = selectedCategory {
-      self.selectCategory(category)
+      self.selectCategory(category, subcategory: nil)
     }
   }
 
   // MARK: - Inputs
 
-  func selectCategory(_ category: T) {
-    self.selectedCategorySubject.send(category)
+  func selectCategory(_ category: T, subcategory: T? = nil) {
+    self.selectedCategorySubject.send((category, subcategory: subcategory))
   }
 
   func resetSelection() {
@@ -74,7 +86,7 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
 
   // MARK: - Outputs
 
-  var selectedCategory: AnyPublisher<T?, Never> {
+  var selectedCategory: AnyPublisher<(T, subcategory: T?)?, Never> {
     self.selectedCategorySubject.eraseToAnyPublisher()
   }
 
@@ -86,12 +98,16 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
     self.closeTappedSubject.eraseToAnyPublisher()
   }
 
-  private let selectedCategorySubject = PassthroughSubject<T?, Never>()
+  private let selectedCategorySubject = PassthroughSubject<(T, subcategory: T?)?, Never>()
   private let seeResultsTappedSubject = PassthroughSubject<Void, Never>()
   private let closeTappedSubject = PassthroughSubject<Void, Never>()
 
   func isCategorySelected(_ category: T) -> Bool {
-    return self.currentCategory?.id == category.id
+    self.currentCategory?.id == category.id
+  }
+
+  func isSubcategorySelected(_ subcategory: T?) -> Bool {
+    self.currentSubcategory == subcategory
   }
 }
 
@@ -108,5 +124,13 @@ internal enum ConcreteFilterCategory: String, FilterCategory, CaseIterable {
 
   var name: String {
     return self.rawValue
+  }
+
+  var availableSubcategories: [ConcreteFilterCategory]? {
+    return Self.allCases
+  }
+
+  var projectCount: Int? {
+    42
   }
 }

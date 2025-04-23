@@ -230,8 +230,9 @@ internal final class SearchViewController: UITableViewController {
 
     let filterView = FilterCategoryView_PhaseOne(
       viewModel: viewModel,
-      onSelectedCategory: { [weak self] category in
-        self?.viewModel.inputs.selectedCategory(category)
+      onSelectedCategory: { [weak self] selection in
+        let (category, subcategory) = selection ?? (nil, nil)
+        self?.viewModel.inputs.selectedCategory(subcategory ?? category)
       },
       onResults: { [weak self] in
         self?.dismiss(animated: true)
@@ -266,8 +267,9 @@ internal final class SearchViewController: UITableViewController {
     filterView.onSelectedProjectState = { [weak self] state in
       self?.viewModel.inputs.selectedProjectState(state)
     }
-    filterView.onSelectedCategory = { [weak self] category in
-      self?.viewModel.inputs.selectedCategory(category)
+    filterView.onSelectedCategory = { [weak self] selection in
+      let (category, subcategory) = selection ?? (nil, nil)
+      self?.viewModel.inputs.selectedCategory(subcategory ?? category)
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)
