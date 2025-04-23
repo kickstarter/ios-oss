@@ -15,6 +15,7 @@ fragment ProjectCardFragment on Project {
   launchedAt
   isInPostCampaignPledgingPhase
   postCampaignPledgingEnabled
+  url
 
   goal {
     ...MoneyFragment

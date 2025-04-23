@@ -1,5 +1,8 @@
 import Foundation
-import KsApi
+
+public protocol HasProjectAnalyticsProperties {
+  var projectAnalyticsProperties: ProjectAnalyticsProperties { get }
+}
 
 public protocol ProjectAnalyticsProperties {
   var categoryAnalyticsName: String? { get }
@@ -42,6 +45,10 @@ public protocol ProjectAnalyticsProperties {
   var statsUpdatesCount: Int? { get }
 
   var tags: [String]? { get }
+}
+
+extension Project: HasProjectAnalyticsProperties {
+  public var projectAnalyticsProperties: any ProjectAnalyticsProperties { self }
 }
 
 extension Project: ProjectAnalyticsProperties {

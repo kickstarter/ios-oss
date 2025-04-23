@@ -62,7 +62,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
   public static func configuredWith(
-    projectOrParam: Either<Project, Param>,
+    projectOrParam: Either<Project, any ProjectPageParam>,
     refInfo: RefInfo?
   ) -> ProjectPageViewController {
     let vc = ProjectPageViewController.instantiate()
@@ -220,7 +220,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       tableViewBottomToPledgeCTA,
       self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor)
+      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      self.tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 1)
     ]
 
     NSLayoutConstraint.activate(tableViewConstraints)
@@ -494,7 +495,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         let initialDatasourceLoad = {
           self?.dataSource.load(
             navigationSection: navSection,
-            project: project,
+            project: .left(project),
             refTag: refTag,
             isExpandedStates: initialIsExpandedArray,
             similarProjectsState: similarProjectsState
@@ -511,7 +512,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] project, refTag, isExpandedValues in
         self?.dataSource.load(
           navigationSection: .faq,
-          project: project,
+          project: .left(project),
           refTag: refTag,
           isExpandedStates: isExpandedValues
         )
@@ -576,7 +577,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] project in
         guard let self else { return }
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: Either<Project, Param>.right(.id(project.projectID)),
+          projectOrParam: Either<Project, any ProjectPageParam>.right(project.projectPageParam),
           refInfo: RefInfo(.similarProjects)
         )
         if let nav = self.navigationController {

@@ -49,6 +49,7 @@ enum PPOStyles {
   )
 
   static let flagFont = UIFont.ksr_caption1().bolded
+  static let flagSpacing: CGFloat = 8
 
   static let bannerPadding = 7
 

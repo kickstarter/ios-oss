@@ -3,6 +3,26 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public protocol ProjectPageParam {
+  var param: Param { get }
+  var initialProject: (any ProjectPamphletMainCellConfiguration)? { get }
+}
+
+public struct ProjectPageParamBox: ProjectPageParam {
+  public let param: Param
+  public let initialProject: (any ProjectPamphletMainCellConfiguration)?
+
+  public init(param: Param, initialProject: (any ProjectPamphletMainCellConfiguration)?) {
+    self.param = param
+    self.initialProject = initialProject
+  }
+}
+
+extension Param: ProjectPageParam {
+  public var param: Param { self }
+  public var initialProject: (any ProjectPamphletMainCellConfiguration)? { nil }
+}
+
 public protocol ProjectPageViewModelInputs {
   /// Call when didSelectRowAt is called on a `ProjectFAQAskAQuestionCell`
   func askAQuestionCellTapped()
@@ -14,7 +34,7 @@ public protocol ProjectPageViewModelInputs {
   func blockUser(id: Int)
 
   /// Call with the project given to the view controller.
-  func configureWith(projectOrParam: Either<Project, Param>, refInfo: RefInfo?)
+  func configureWith(projectOrParam: Either<Project, any ProjectPageParam>, refInfo: RefInfo?)
 
   /// Call when the Thank you page is dismissed after finishing backing the project
   func didBackProject()
@@ -82,7 +102,12 @@ public protocol ProjectPageViewModelInputs {
 
 public protocol ProjectPageViewModelOutputs {
   /// Emits a tuple of a `NavigationSection`, `Project` and `RefTag?` to configure the data source
-  var configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never> { get }
+  var configureDataSource: Signal<
+    (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
+    Never
+  > {
+    get
+  }
 
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
@@ -277,13 +302,30 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.precreateAudioVideoURLs = self.prepareAudioVideoAtProperty.signal.skipNil()
 
+    let initialProjectData = self.configDataProperty.signal
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .compactMap { data -> (Either<Project, any ProjectPageParam>, RefTag?)? in
+        guard
+          let (either, refInfo) = data,
+          let right = either.right,
+          let project = right.initialProject
+        else { return nil }
+        return (either, refInfo?.refTag)
+      }
+
+    let initialProjectDataSource = initialProjectData
+      .map { config, refInfo in
+        (NavigationSection.overview, config, refInfo)
+      }
+
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map { projectAndRefTag, _ in
         let (project, refTag) = projectAndRefTag
-        return (.overview, project, refTag)
+        return (.overview, .left(project), refTag)
       }
+      .merge(with: initialProjectDataSource)
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -638,8 +680,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.blockUserProperty.value = id
   }
 
-  private let configDataProperty = MutableProperty<(Either<Project, Param>, RefInfo?)?>(nil)
-  public func configureWith(projectOrParam: Either<Project, Param>, refInfo: RefInfo?) {
+  private let configDataProperty = MutableProperty<(Either<Project, any ProjectPageParam>, RefInfo?)?>(nil)
+  public func configureWith(projectOrParam: Either<Project, any ProjectPageParam>, refInfo: RefInfo?) {
     self.configDataProperty.value = (projectOrParam, refInfo)
   }
 
@@ -745,7 +787,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
   private let viewPledgeUseCase: ViewPledgeUseCase
 
-  public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
+  public let configureDataSource: Signal<
+    (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
+    Never
+  >
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
@@ -804,24 +849,24 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   }
 }
 
-private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
+private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPageParam>)
   -> SignalProducer<[User], ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param)
+  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param.param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   return projectFriendsProducer
 }
 
-private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
+private func fetchProject(projectOrParam: Either<Project, any ProjectPageParam>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
   let configCurrency = AppEnvironment.current.launchedCountries.countries
     .first(where: { $0.countryCode == AppEnvironment.current.countryCode })?.currencyCode
 
   let projectAndBackingIdProducer = AppEnvironment.current.apiService
-    .fetchProject(projectParam: param, configCurrency: configCurrency)
+    .fetchProject(projectParam: param.param, configCurrency: configCurrency)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   let projectAndBackingProducer = projectAndBackingIdProducer

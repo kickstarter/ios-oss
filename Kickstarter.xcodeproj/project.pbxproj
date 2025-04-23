@@ -1226,7 +1226,9 @@
 		AA7BB4612CF67E5200E2B2D4 /* FetchUserSetup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4602CF67E5200E2B2D4 /* FetchUserSetup.graphql */; };
 		AA7BB4632CF67E7900E2B2D4 /* UserFeaturesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AAA71B292DB2C53700031C1F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA71B282DB2C53000031C1F /* FlowLayout.swift */; };
 		AAA75A102DA5007E003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */; };
+		AAA71B1E2DB03CBC00031C1F /* UserSettingsFragment.graphql in Sources */ = {isa = PBXBuildFile; fileRef = AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
 		AAB4CBE12D42F4AE0057BADB /* PPOProjectCardModel+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */; };
@@ -1241,6 +1243,8 @@
 		AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */; };
 		AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */; };
 		AAEABEA82DA8C03D00B09688 /* VideoViewProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */; };
+		AAEABE9F2DA6F49D00B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABE9E2DA6F49900B09688 /* ProjectPamphletMainCellProperties.swift */; };
+		AAEABEA12DA7350400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
@@ -3004,7 +3008,9 @@
 		AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFeaturesFragment.graphql; sourceTree = "<group>"; };
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
+		AAA71B282DB2C53000031C1F /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		AAA75A0F2DA50075003F6CB3 /* ProjectPamphletMainCellPropertiesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectPamphletMainCellPropertiesFragment.graphql; sourceTree = "<group>"; };
+		AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserSettingsFragment.graphql; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
 		AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Templates.swift"; sourceTree = "<group>"; };
 		AAB4CBE02D42F4AA0057BADB /* PPOProjectCardModel+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PPOProjectCardModel+Parsing.swift"; sourceTree = "<group>"; };
@@ -3022,6 +3028,8 @@
 		AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWebURL.swift; sourceTree = "<group>"; };
 		AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
 		AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewProperties.swift; sourceTree = "<group>"; };
+		AAEABE9E2DA6F49900B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
+		AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
 		D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
@@ -6054,6 +6062,7 @@
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
+				AAA71B282DB2C53000031C1F /* FlowLayout.swift */,
 				3742036C22DD41BA007AA86E /* PillLayout.swift */,
 			);
 			path = Layouts;
@@ -6383,6 +6392,7 @@
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
 				6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */,
 				AA7BB4622CF67E7900E2B2D4 /* UserFeaturesFragment.graphql */,
+				AAA71B1D2DB03CB800031C1F /* UserSettingsFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
 			);
@@ -7116,6 +7126,7 @@
 				D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */,
 				AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */,
 				AAEABE9E2DA6F49900B09688 /* ProjectPamphletMainCellProperties.swift */,
+				AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */,
 				A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */,
 				A7ED1F9F1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift */,
 				D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */,
@@ -8682,6 +8693,7 @@
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
+				AAEABEA12DA7350400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */,
@@ -9175,6 +9187,7 @@
 				20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */,
 				3767EDA722CFFE6C0088E8E4 /* ShippingRulesDataSource.swift in Sources */,
 				770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */,
+				AAA71B292DB2C53700031C1F /* FlowLayout.swift in Sources */,
 				06232D392795D26600A81755 /* TextViewElementCell.swift in Sources */,
 				D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */,
 				6035AFA22C516A67007E28FC /* RewardsCollectionViewHeaderView.swift in Sources */,
@@ -9714,6 +9727,7 @@
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
+				AAA71B1E2DB03CBC00031C1F /* UserSettingsFragment.graphql in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				8AC3E0962698CF0600168BF8 /* ShippingRule+ShippingRuleFragment.swift in Sources */,
 				06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */,
