@@ -26,6 +26,7 @@ fragment ProjectPamphletMainCellPropertiesFragment on Project {
     ...MoneyFragment
   }
   currency
+  fxRate
   usdExchangeRate
   projectUsdExchangeRate
   category {
@@ -51,4 +52,5 @@ fragment ProjectPamphletMainCellPropertiesFragment on Project {
       }
     }
   }
+  url
 }

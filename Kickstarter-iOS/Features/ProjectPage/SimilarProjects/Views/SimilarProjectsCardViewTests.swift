@@ -213,7 +213,75 @@ private func createMockProjectNode(
       "symbol": "$"
     ],
     "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
-    "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled
+    "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled,
+
+    "image": [
+      "__typename": "Photo",
+      "id": "UGhvdG8tNDg2ODQ3NTg=",
+      "url": "https://i.kickstarter.com/assets/048/684/758/6ddc33481300f1f68bc0f8079c4e14ab_original.jpg?anim=false&fit=cover&gravity=auto&height=576&origin=ugc&q=92&v=1743084521&width=1024&sig=fOX9WaONZF%2FmUUtOBUqn%2FL2Tp0glAu1QsYklxk%2FKeo0%3D"
+    ],
+    "deadlineAt": 1_745_506_853,
+    "launchedAt": 1_742_914_853,
+    "url": "https://www.kickstarter.com/projects/ollis/the-ollis-cast-iron-skillet-and-dutch-oven-foundry-pan",
+    "goal": [
+      "__typename": "Money",
+      "amount": "35000.0",
+      "currency": "GBP",
+      "symbol": "£"
+    ],
+    "addOns": [
+      "__typename": "ProjectRewardConnection",
+      "totalCount": 0
+    ],
+    "backersCount": 276,
+    "category": [
+      "__typename": "Category",
+      "analyticsName": "Product Design",
+      "parentCategory": [
+        "__typename": "Category",
+        "analyticsName": "Design",
+        "id": "Q2F0ZWdvcnktNw=="
+      ],
+      "name": "Product Design"
+    ],
+    "commentsCount": 17,
+    "country": [
+      "__typename": "Country",
+      "code": "GB",
+      "name": "the United Kingdom"
+    ],
+    "creator": [
+      "__typename": "User",
+      "id": "x",
+      "createdProjects": [
+        "__typename": "UserCreatedProjectsConnection",
+        "totalCount": 1
+      ],
+      "name": "x",
+      "isBlocked": false,
+      "imageUrl": ""
+    ],
+    "currency": "GBP",
+    "isWatched": false,
+    "isPrelaunchActivated": true,
+    "projectTags": [],
+    "rewards": [
+      "__typename": "ProjectRewardConnection",
+      "totalCount": 4
+    ],
+    "fxRate": 1.28198554,
+    "usdExchangeRate": 1.28198554,
+    "posts": [
+      "__typename": "PostConnection",
+      "totalCount": 2
+    ],
+    "projectDescription": "x",
+    "stateChangedAt": 1_742_914_857,
+    "projectUsdExchangeRate": 1.28198554,
+    "location": [
+      "__typename": "Location",
+      "displayableName": "London, UK"
+    ]
   ]
 
   // Add optional fields
