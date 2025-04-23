@@ -288,21 +288,26 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     // This is temporary until the backend implementation is completed.
     // Jira ticket TBD.
     // Epic [MBL-2270](https://kickstarter.atlassian.net/browse/MBL-2270)
-    self.rewardTrackingData = self.activities
-      .map { $0.first?.project }
-      .skipNil()
+    self.rewardTrackingData = self.activities.signal
       .filter { _ in featureRewardShipmentTrackingEnabled() }
-      .map {
-        #if DEBUG
+      .map { $0.filter { $0.category == .shipped } }
+      .map { shipmentActivities in
+        var data: [RewardTrackingActivitiesCellData] = []
+
+        shipmentActivities.forEach { activity in
+          guard let project = activity.project,
+                let trackingNumber = activity.trackingNumber,
+                let trackingUrl = activity.trackingUrl else { return }
+
           let trackingData = RewardTrackingDetailsViewData(
-            trackingNumber: "1234567890",
-            trackingURL: URL(string: "https://ksr.com")!,
-            shippingDate: Date().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
+            trackingNumber: trackingNumber,
+            trackingURL: URL(string: trackingUrl)!
           )
-          return [RewardTrackingActivitiesCellData(trackingData: trackingData, project: $0)]
-        #else
-          return []
-        #endif
+
+          data.append(RewardTrackingActivitiesCellData(trackingData: trackingData, project: project))
+        }
+
+        return data
       }
 
     self.goToTrackShipping = self.tappedTrackShippingProperty.signal.skipNil()
