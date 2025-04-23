@@ -27,7 +27,6 @@ final class RewardTrackingDetailsView: UIView {
   private var style: RewardTrackingDetailsViewStyle
 
   private let rootStackView: UIStackView = UIStackView(frame: .zero)
-  private let trackingShippingDaysLabel: UILabel = UILabel(frame: .zero)
   private let trackingTitleStackView: UIStackView = UIStackView(frame: .zero)
   private let trackingIconImageView: UIImageView = UIImageView(frame: .zero)
   private let trackingStatusLabel: UILabel = UILabel(frame: .zero)
@@ -59,7 +58,6 @@ final class RewardTrackingDetailsView: UIView {
     applyTrackingTitleStackViewStyle(self.trackingTitleStackView)
     applyTrackingStatusLabelStyle(self.trackingStatusLabel)
     applyTrackingNumberLabelStyle(self.trackingNumberLabel)
-    applyTrackingShippingDaysLabelStyle(self.trackingShippingDaysLabel)
   }
 
   public override func bindViewModel() {
@@ -67,7 +65,6 @@ final class RewardTrackingDetailsView: UIView {
 
     self.trackingStatusLabel.rac.text = self.viewModel.outputs.rewardTrackingStatus
     self.trackingNumberLabel.rac.text = self.viewModel.outputs.rewardTrackingNumber
-    self.trackingShippingDaysLabel.rac.text = self.viewModel.outputs.shippingDays
 
     self.viewModel.outputs.trackShipping
       .observeForUI()
@@ -85,7 +82,6 @@ final class RewardTrackingDetailsView: UIView {
     )
 
     self.rootStackView.addArrangedSubviews(
-      self.trackingShippingDaysLabel,
       self.trackingTitleStackView,
       self.trackingNumberLabel,
       self.trackingButton
@@ -93,8 +89,6 @@ final class RewardTrackingDetailsView: UIView {
 
     self.trackingButton.setTitle(Strings.Track_shipment(), for: .normal)
     self.trackingButton.addTarget(self, action: #selector(self.onTrackingButtonTapped), for: .touchUpInside)
-
-    self.trackingShippingDaysLabel.isHidden = self.style != .activity
   }
 
   private func setupConstraints() {
@@ -148,12 +142,6 @@ private func applyTrackingStatusLabelStyle(_ label: UILabel) {
 private func applyTrackingNumberLabelStyle(_ label: UILabel) {
   label.textColor = .ksr_support_400 // Do we want to implement a new Design System color?
   label.font = .ksr_bodyMD()
-  label.adjustsFontForContentSizeCategory = true
-}
-
-private func applyTrackingShippingDaysLabelStyle(_ label: UILabel) {
-  label.font = .ksr_bodySM().bolded
-  label.textColor = .ksr_support_700
   label.adjustsFontForContentSizeCategory = true
 }
 
