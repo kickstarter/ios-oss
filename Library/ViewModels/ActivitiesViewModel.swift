@@ -290,7 +290,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     // Epic [MBL-2270](https://kickstarter.atlassian.net/browse/MBL-2270)
     self.rewardTrackingData = self.activities.signal
       .filter { _ in featureRewardShipmentTrackingEnabled() }
-      .map { $0.filter { $0.category == .shipped } }
+      .map { activities in activities.filter { $0.category == .shipped } }
       .map { shipmentActivities in
         var data: [RewardTrackingActivitiesCellData] = []
 
