@@ -21,10 +21,10 @@ final class FilterCategoryViewModelTest: XCTestCase {
     var cancellables: [AnyCancellable] = []
 
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
-    var selectedCategory: (ConcreteFilterCategory, subcategories: [ConcreteFilterCategory]?)? = nil
+    var selectedCategory: (ConcreteFilterCategory, subcategory: ConcreteFilterCategory?)? = nil
     let expectation = expectation(description: "Waiting for a category")
-    viewModel.selectedCategory.sink { category in
-      selectedCategory = category
+    viewModel.selectedCategory.sink { selection in
+      selectedCategory = selection
       expectation.fulfill()
     }
     .store(in: &cancellables)
@@ -73,11 +73,11 @@ final class FilterCategoryViewModelTest: XCTestCase {
 
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
 
-    var selectedCategory: (ConcreteFilterCategory, subcategories: [ConcreteFilterCategory]?)? = nil
+    var selectedCategory: (ConcreteFilterCategory, subcategory: ConcreteFilterCategory?)? = nil
     let expectation = expectation(description: "Waiting for reset")
     expectation.expectedFulfillmentCount = 2
-    viewModel.selectedCategory.sink { category in
-      selectedCategory = category
+    viewModel.selectedCategory.sink { selection in
+      selectedCategory = selection
       expectation.fulfill()
     }
     .store(in: &cancellables)

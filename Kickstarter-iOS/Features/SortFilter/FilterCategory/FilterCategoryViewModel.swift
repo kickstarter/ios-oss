@@ -4,7 +4,6 @@ import Foundation
 protocol FilterCategory: Identifiable, Equatable {
   var name: String { get }
   var availableSubcategories: [Self]? { get }
-  var projectCount: Int? { get }
 }
 
 protocol FilterCategoryViewModelInputs {
@@ -128,9 +127,5 @@ internal enum ConcreteFilterCategory: String, FilterCategory, CaseIterable {
 
   var availableSubcategories: [ConcreteFilterCategory]? {
     return Self.allCases
-  }
-
-  var projectCount: Int? {
-    42
   }
 }

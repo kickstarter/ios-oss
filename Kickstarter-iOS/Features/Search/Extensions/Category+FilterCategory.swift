@@ -17,8 +17,4 @@ extension KsApi.Category: FilterCategory {
   public var availableSubcategories: [KsApi.Category]? {
     self.subcategories?.nodes
   }
-
-  public var projectCount: Int? {
-    self.totalProjectCount
-  }
 }

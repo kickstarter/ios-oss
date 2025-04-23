@@ -4,7 +4,7 @@ import SwiftUI
 struct FilterCategoryView<T: FilterCategory>: View {
   @StateObject var viewModel: FilterCategoryViewModel<T>
 
-  var onSelectedCategory: (((T, T?)?) -> Void)? = nil
+  var onSelectedCategory: ((T?) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
@@ -29,7 +29,7 @@ struct FilterCategoryView<T: FilterCategory>: View {
     // Handle actions
     .onReceive(self.viewModel.selectedCategory) { result in
       if let (category, subcategory) = result {
-        self.onSelectedCategory?((category, subcategory))
+        self.onSelectedCategory?(subcategory ?? category)
       }
     }
     .onReceive(self.viewModel.seeResultsTapped) {
@@ -105,7 +105,7 @@ struct FilterCategoryView<T: FilterCategory>: View {
         TitlePillButton(
           title: Strings.Project_status_all(),
           isHighlighted: self.viewModel.isSubcategorySelected(nil),
-          count: category.projectCount
+          count: nil
         ) {
           self.viewModel.selectCategory(category, subcategory: nil)
         }
@@ -113,7 +113,7 @@ struct FilterCategoryView<T: FilterCategory>: View {
           TitlePillButton(
             title: subcategory.name,
             isHighlighted: self.viewModel.isSubcategorySelected(subcategory),
-            count: subcategory.projectCount
+            count: nil
           ) {
             self.viewModel.selectCategory(category, subcategory: subcategory)
           }
@@ -188,8 +188,7 @@ private enum Constants {
   #Preview("Filter Categories") {
     FilterCategoryView(
       viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
-      onSelectedCategory: { results in
-        let (category, subcategory) = results ?? (nil, nil)
+      onSelectedCategory: { category in
         print("Selected Category: \(category?.name ?? "None")")
       },
       onResults: {
