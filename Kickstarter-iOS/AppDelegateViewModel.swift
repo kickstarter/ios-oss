@@ -1052,7 +1052,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     case .follow:
       return .tab(.activity)
 
-    case .funding, .unknown, .watch:
+    case .funding, .shipped, .unknown, .watch:
       return nil
     }
   }

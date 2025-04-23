@@ -6,9 +6,9 @@ import UIKit
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case erroredBackings
+    case rewardTracking
     case surveys
     case activities
-    case rewardTracking
   }
 
   internal func load(erroredBackings: [ProjectAndBackingEnvelope]) {

@@ -317,6 +317,7 @@ public struct Service: ServiceType {
       .failure,
       .follow,
       .launch,
+      .shipped,
       .success,
       .update
     ]
