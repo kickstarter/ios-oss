@@ -11,7 +11,7 @@ final class FilterCategoryViewTest_PhaseOne: TestCase {
   func testFilterCategoryView_LoadingState() async {
     let view =
       VStack {
-        FilterCategoryView(viewModel: FilterCategoryViewModel<ConcreteFilterCategory>(with: []))
+        FilterCategoryView_PhaseOne(viewModel: FilterCategoryViewModel<ConcreteFilterCategory>(with: []))
           .frame(width: self.size.width)
           .frame(maxHeight: .infinity)
           .padding()
@@ -25,7 +25,7 @@ final class FilterCategoryViewTest_PhaseOne: TestCase {
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
     let view =
       VStack {
-        FilterCategoryView(viewModel: viewModel)
+        FilterCategoryView_PhaseOne(viewModel: viewModel)
           .frame(width: self.size.width)
           .frame(maxHeight: .infinity)
           .padding()
