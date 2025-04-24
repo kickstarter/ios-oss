@@ -6,7 +6,7 @@ extension SelectedSearchFilters {
   }
 
   var filterPill: SearchFilterPill? {
-    return self.pills.first(where: { $0.filterType == .all })
+    return self.pills.first(where: { $0.filterType == .allFilters })
   }
 
   var categoryPill: SearchFilterPill? {

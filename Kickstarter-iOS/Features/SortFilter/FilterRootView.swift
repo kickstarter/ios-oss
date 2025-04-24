@@ -12,6 +12,7 @@ struct FilterRootView: View {
 
   var onSelectedCategory: ((KsApi.Category?) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
+  var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
@@ -77,7 +78,7 @@ struct FilterRootView: View {
     selectedFilters: SelectedSearchFilters
   ) {
     self.filterOptions = filterOptions
-    if filterType == .all {
+    if filterType == .allFilters {
       // Show the root view
       self.navigationState = []
     } else {
