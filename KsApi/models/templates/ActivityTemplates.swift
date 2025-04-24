@@ -16,6 +16,8 @@ extension Activity {
       rewardId: nil
     ),
     project: .template,
+    trackingNumber: nil,
+    trackingUrl: nil,
     update: nil,
     user: .template
   )

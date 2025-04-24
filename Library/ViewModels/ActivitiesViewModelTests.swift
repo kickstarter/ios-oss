@@ -20,6 +20,7 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let goToFriends = TestObserver<FriendsSource, Never>()
   fileprivate let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   fileprivate let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
+  fileprivate let rewardTrackingData = TestObserver<[RewardTrackingActivitiesCellData], Never>()
   fileprivate let showEmptyStateIsLoggedIn = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSection = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSectionSource = TestObserver<FriendsSource, Never>()
@@ -28,6 +29,9 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let showFacebookConnectErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let unansweredSurveyResponse = TestObserver<[SurveyResponse], Never>()
   fileprivate let updateUserInEnvironment = TestObserver<User, Never>()
+
+  fileprivate let testTrackingNumber = "test-tracking-number"
+  fileprivate let testTrackingURL = "test-tracking-number"
 
   override func setUp() {
     super.setUp()
@@ -42,6 +46,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.goToSurveyResponse.observe(self.goToSurveyResponse.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
+    self.vm.outputs.rewardTrackingData.observe(self.rewardTrackingData.observer)
     self.vm.outputs.showEmptyStateIsLoggedIn.observe(self.showEmptyStateIsLoggedIn.observer)
     self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
@@ -323,6 +328,54 @@ final class ActivitiesViewModelTests: TestCase {
       ["activity_feed"],
       self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)
     )
+  }
+
+  func testShippedActivitiesArePresent_WhenThereIsRewardTrackingData() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.rewardShipmentTracking.rawValue: true
+    ]
+
+    let activityWithShippedReward1 = .template
+      |> Activity.lens.id .~ 4
+      |> Activity.lens.category .~ .shipped
+      |> Activity.lens.trackingNumber .~ self.testTrackingNumber
+      |> Activity.lens.trackingUrl .~ self.testTrackingURL
+    let activityWithShippedReward2 = .template
+      |> Activity.lens.id .~ 5
+      |> Activity.lens.category .~ .shipped
+      |> Activity.lens.trackingNumber .~ self.testTrackingNumber
+      |> Activity.lens.trackingUrl .~ self.testTrackingURL
+
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.activitiesPresent.assertValues([], "No activities shown for logged-out user.")
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [
+      self.activity1,
+      self.activity2,
+      activityWithShippedReward1,
+      activityWithShippedReward2
+    ]), remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
+
+      self.activitiesPresent.assertValues([true], "Activities load after session starts and view appears.")
+
+      XCTAssertEqual(self.rewardTrackingData.values.first?.count, 2)
+
+      if let trackingCellData = self.rewardTrackingData.values.first, trackingCellData.isEmpty == false {
+        trackingCellData.forEach { data in
+          XCTAssertEqual(data.trackingData.trackingNumber, self.testTrackingNumber)
+          XCTAssertEqual(data.trackingData.trackingURL, URL(string: self.testTrackingURL)!)
+        }
+      } else {
+        XCTFail("rewardTrackingData is empty when it should have 2 values: \(self.rewardTrackingData.values)")
+      }
+    }
   }
 
   func testSurveys() {

@@ -6,9 +6,9 @@ import UIKit
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case erroredBackings
+    case rewardTracking
     case surveys
     case activities
-    case rewardTracking
   }
 
   internal func load(erroredBackings: [ProjectAndBackingEnvelope]) {
@@ -50,6 +50,9 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
         self.appendRow(value: activity, cellClass: ActivityFriendFollowCell.self, toSection: section)
       case .cancellation, .failure, .launch, .success, .suspension:
         self.appendRow(value: activity, cellClass: ActivityProjectStatusCell.self, toSection: section)
+      case .shipped:
+        // shipped data is loaded via `load(rewardTrackingData:...)` below on line: 62
+        break
       default:
         assertionFailure("Unsupported activity: \(activity)")
       }
