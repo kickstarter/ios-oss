@@ -178,8 +178,8 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.viewModel.outputs.goToTrackShipping
       .observeForUI()
-      .observeValues { trackingURL in
-        print("Track shipping URL: \(trackingURL)")
+      .observeValues { [weak self] url in
+        self?.goTo(url: url)
       }
   }
 

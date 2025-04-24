@@ -8,10 +8,6 @@ import XCTest
 final class RewardTrackingDetailsViewTest: TestCase {
   private let testTrackingNumber = "1234567890"
   private let testTrackingURL = URL(string: "http://ksr.com")!
-  // Mocked shipping date: 2 days ago from the current mock date
-  private lazy var shippingDate: TimeInterval = {
-    MockDate().addingTimeInterval(-2 * 24 * 60 * 60).timeIntervalSince1970
-  }()
 
   override func setUp() {
     super.setUp()
@@ -31,8 +27,7 @@ final class RewardTrackingDetailsViewTest: TestCase {
 
         let data = RewardTrackingDetailsViewData(
           trackingNumber: self.testTrackingNumber,
-          trackingURL: self.testTrackingURL,
-          shippingDate: self.shippingDate
+          trackingURL: self.testTrackingURL
         )
 
         view.configure(with: data)
@@ -57,8 +52,7 @@ final class RewardTrackingDetailsViewTest: TestCase {
 
         let data = RewardTrackingDetailsViewData(
           trackingNumber: self.testTrackingNumber,
-          trackingURL: self.testTrackingURL,
-          shippingDate: self.shippingDate
+          trackingURL: self.testTrackingURL
         )
 
         view.configure(with: data)

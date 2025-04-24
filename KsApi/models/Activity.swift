@@ -8,6 +8,8 @@ public struct Activity {
   public let id: Int
   public let memberData: MemberData
   public let project: Project?
+  public let trackingNumber: String?
+  public let trackingUrl: String?
   public let update: Update?
   public let user: User?
 
@@ -20,6 +22,7 @@ public struct Activity {
     case follow
     case funding
     case launch
+    case shipped
     case success
     case suspension
     case update
@@ -51,6 +54,8 @@ extension Activity: Decodable {
     case createdAt = "created_at"
     case id
     case project
+    case trackingNumber = "tracking_number"
+    case trackingUrl = "tracking_url"
     case update
     case user
   }
@@ -63,6 +68,8 @@ extension Activity: Decodable {
     self.id = try values.decode(Int.self, forKey: .id)
     self.memberData = try Activity.MemberData(from: decoder)
     self.project = try values.decodeIfPresent(Project.self, forKey: .project)
+    self.trackingNumber = try values.decodeIfPresent(String.self, forKey: .trackingNumber)
+    self.trackingUrl = try values.decodeIfPresent(String.self, forKey: .trackingUrl)
     self.update = try values.decodeIfPresent(Update.self, forKey: .update)
     self.user = try values.decodeIfPresent(User.self, forKey: .user)
   }
