@@ -19,7 +19,7 @@ final class SearchFiltersHeaderViewTests: TestCase {
       let pills = [
         SearchFilterPill(
           isHighlighted: true,
-          filterType: .all,
+          filterType: .allFilters,
           buttonType: .image("shortcut-icon-k"),
           count: 42
         ),

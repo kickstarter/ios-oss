@@ -180,7 +180,7 @@ internal final class SearchViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] options, type in
         switch type {
-        case .all:
+        case .allFilters:
           self?.showAllFilters(options)
         case .category:
           self?.showCategories(options)
@@ -246,7 +246,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func showAllFilters(_ opts: SearchFilterOptions) {
-    self.showFilters(opts, filterType: .all)
+    self.showFilters(opts, filterType: .allFilters)
   }
 
   fileprivate func showFilters(_ options: SearchFilterOptions, filterType: SearchFilterModalType) {
@@ -268,6 +268,9 @@ internal final class SearchViewController: UITableViewController {
     }
     filterView.onSelectedCategory = { [weak self] category in
       self?.viewModel.inputs.selectedCategory(category)
+    }
+    filterView.onReset = { [weak self] type in
+      self?.viewModel.inputs.resetFilters(for: type)
     }
     filterView.onResults = { [weak self] in
       self?.dismiss(animated: true)

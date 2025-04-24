@@ -17,7 +17,7 @@ public struct SearchFilterPill: Identifiable {
   /// Which filter the pill represents.
   /// Only one pill of each type will be shown, since this powers the id of the pill.
   public enum FilterType {
-    case all
+    case allFilters
     case category
     case sort
     case projectState

@@ -36,10 +36,15 @@ public protocol SearchViewModelInputs {
 
   /// Call this when the user selects a new sort option.
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
+
   /// Call this when the user selects a new category.
   func selectedCategory(_ category: KsApi.Category?)
+
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
+
+  /// Call this when the user taps reset on a filter modal
+  func resetFilters(for: SearchFilterModalType)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -344,13 +349,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
-    self.searchFiltersUseCase.inputs.clearOptions()
+    self.searchFiltersUseCase.inputs.clearedQueryText()
   }
 
   fileprivate let clearSearchTextProperty = MutableProperty(())
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
-    self.searchFiltersUseCase.inputs.clearOptions()
+    self.searchFiltersUseCase.inputs.clearedQueryText()
   }
 
   fileprivate let searchFieldDidBeginEditingProperty = MutableProperty(())
@@ -363,7 +368,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextChangedProperty.value = searchText
 
     if searchText.isEmpty {
-      self.searchFiltersUseCase.inputs.clearOptions()
+      self.searchFiltersUseCase.inputs.clearedQueryText()
     }
   }
 
@@ -394,6 +399,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func tappedButton(forFilterType type: SearchFilterPill.FilterType) {
     self.searchFiltersUseCase.inputs.tappedButton(forFilterType: type)
+  }
+
+  public func resetFilters(for type: SearchFilterModalType) {
+    self.searchFiltersUseCase.inputs.resetFilters(for: type)
   }
 
   private let categoriesUseCase: FetchCategoriesUseCase
