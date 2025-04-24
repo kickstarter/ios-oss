@@ -7,7 +7,8 @@ extension Activity {
       view: { $0.category },
       set: { Activity(
         category: $0, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
-        memberData: $1.memberData, project: $1.project, update: $1.update, user: $1.user
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $1.update, user: $1.user
       ) }
     )
 
@@ -15,7 +16,8 @@ extension Activity {
       view: { $0.comment },
       set: { Activity(
         category: $1.category, comment: $0, createdAt: $1.createdAt, id: $1.id,
-        memberData: $1.memberData, project: $1.project, update: $1.update, user: $1.user
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $1.update, user: $1.user
       ) }
     )
 
@@ -23,7 +25,8 @@ extension Activity {
       view: { $0.createdAt },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $0, id: $1.id,
-        memberData: $1.memberData, project: $1.project, update: $1.update, user: $1.user
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $1.update, user: $1.user
       ) }
     )
 
@@ -31,7 +34,8 @@ extension Activity {
       view: { $0.id },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $0,
-        memberData: $1.memberData, project: $1.project, update: $1.update, user: $1.user
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $1.update, user: $1.user
       ) }
     )
 
@@ -39,7 +43,8 @@ extension Activity {
       view: { $0.memberData },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
-        memberData: $0, project: $1.project, update: $1.update, user: $1.user
+        memberData: $0, project: $1.project, trackingNumber: $1.trackingNumber, trackingUrl: $1.trackingUrl,
+        update: $1.update, user: $1.user
       ) }
     )
 
@@ -47,7 +52,27 @@ extension Activity {
       view: { $0.project },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
-        memberData: $1.memberData, project: $0, update: $1.update, user: $1.user
+        memberData: $1.memberData, project: $0, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl,
+        update: $1.update, user: $1.user
+      ) }
+    )
+
+    public static let trackingNumber = Lens<Activity, String?>(
+      view: { $0.trackingNumber },
+      set: { Activity(
+        category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
+        memberData: $1.memberData, project: $1.project, trackingNumber: $0, trackingUrl: $1.trackingUrl,
+        update: $1.update, user: $1.user
+      ) }
+    )
+
+    public static let trackingUrl = Lens<Activity, String?>(
+      view: { $0.trackingNumber },
+      set: { Activity(
+        category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber, trackingUrl: $0,
+        update: $1.update, user: $1.user
       ) }
     )
 
@@ -55,7 +80,8 @@ extension Activity {
       view: { $0.update },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
-        memberData: $1.memberData, project: $1.project, update: $0, user: $1.user
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $0, user: $1.user
       ) }
     )
 
@@ -63,7 +89,8 @@ extension Activity {
       view: { $0.user },
       set: { Activity(
         category: $1.category, comment: $1.comment, createdAt: $1.createdAt, id: $1.id,
-        memberData: $1.memberData, project: $1.project, update: $1.update, user: $0
+        memberData: $1.memberData, project: $1.project, trackingNumber: $1.trackingNumber,
+        trackingUrl: $1.trackingUrl, update: $1.update, user: $0
       ) }
     )
   }
