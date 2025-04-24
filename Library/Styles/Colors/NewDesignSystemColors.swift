@@ -44,5 +44,6 @@ public struct Colors {
     case inverseDisabled
     case inverseprimary
     case primary
+    case secondary
   }
 }
