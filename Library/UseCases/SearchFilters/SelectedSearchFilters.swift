@@ -69,9 +69,8 @@ public class SelectedSearchFilters: ObservableObject {
   }
 
   private func updatePills() {
-    let filterCount = [self.hasCategory, self.hasProjectState].reduce(0) { filterCount, hasFilter in
-      filterCount + (hasFilter ? 1 : 0)
-    }
+    let filterCount = [self.hasCategory, self.hasProjectState]
+      .count(where: { $0 == true })
 
     var pills: [SearchFilterPill] = []
 
