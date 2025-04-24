@@ -1,7 +1,7 @@
 import Library
 import SwiftUI
 
-struct FilterCategoryView<T: FilterCategory>: View {
+struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
   @StateObject var viewModel: FilterCategoryViewModel<T>
   var onSelectedCategory: ((T?) -> Void)? = nil
   var onResults: (() -> Void)? = nil
@@ -9,6 +9,8 @@ struct FilterCategoryView<T: FilterCategory>: View {
 
   var body: some View {
     VStack(spacing: 0) {
+      self.headerView
+
       if self.viewModel.isLoading {
         ProgressView()
           .controlSize(.large)
@@ -147,7 +149,7 @@ private enum Constants {
 
 #if targetEnvironment(simulator)
   #Preview("Filter Categories") {
-    FilterCategoryView(
+    FilterCategoryView_PhaseOne(
       viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
       onSelectedCategory: { category in
         print("Selected Category: \(category?.name ?? "None")")

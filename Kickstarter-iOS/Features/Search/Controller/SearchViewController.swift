@@ -228,7 +228,7 @@ internal final class SearchViewController: UITableViewController {
       selectedCategory: self.viewModel.outputs.selectedFilters.category
     )
 
-    let filterView = FilterCategoryView(
+    let filterView = FilterCategoryView_PhaseOne(
       viewModel: viewModel,
       onSelectedCategory: { [weak self] category in
         self?.viewModel.inputs.selectedCategory(category)

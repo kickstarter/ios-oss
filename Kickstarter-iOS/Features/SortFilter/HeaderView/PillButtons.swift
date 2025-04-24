@@ -1,10 +1,17 @@
 import Library
 import SwiftUI
 
+private let spacing01 = 4.0
 private let buttonFont = InterFont.headingMD
 
-private struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
+internal struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
   let isHighlighted: Bool
+  /// The pill style adds an extra half-unit of spacing to its label, which assumes that the label is text
+  /// and needs a little extra space in the end caps. If the pill is displaying square content (i.e. an icon),
+  /// set `isSquare` to `true` to remove that extra spacing.
+  var isSquare: Bool = false
+  private let padding: CGFloat = spacing01 * 2
+  private let extraPadding: CGFloat = spacing01
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
@@ -16,10 +23,10 @@ private struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
       )
       .padding(
         EdgeInsets(
-          top: Styles.grid(2),
-          leading: Styles.grid(2),
-          bottom: Styles.grid(2),
-          trailing: Styles.grid(2)
+          top: self.padding,
+          leading: self.isSquare ? self.padding : (self.padding + self.extraPadding),
+          bottom: self.padding,
+          trailing: self.isSquare ? self.padding : (self.padding + self.extraPadding)
         )
       )
       .clipShape(Capsule())
@@ -61,10 +68,10 @@ internal struct FilterBadgeView: View {
     Text("\(self.count)")
       .font(InterFont.headingXS.swiftUIFont())
       .padding(EdgeInsets(
-        top: Styles.gridHalf(1),
-        leading: Styles.grid(1),
-        bottom: Styles.gridHalf(1),
-        trailing: Styles.grid(1)
+        top: spacing01,
+        leading: spacing01,
+        bottom: spacing01,
+        trailing: spacing01
       ))
       .foregroundStyle(Colors.Text.primary.swiftUIColor())
       .background(Colors.Background.accentGraySubtle.swiftUIColor())
@@ -93,7 +100,8 @@ internal struct ImagePillButton: View {
       .pillHeight()
     }
     .buttonStyle(SearchFiltersPillStyle(
-      isHighlighted: self.isHighlighted
+      isHighlighted: self.isHighlighted,
+      isSquare: true
     ))
   }
 }
