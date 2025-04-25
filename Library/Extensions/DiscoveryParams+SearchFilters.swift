@@ -10,7 +10,7 @@ extension DiscoveryParams.State {
     case .successful:
       Strings.Project_status_successful()
     case .late_pledge:
-      Strings.Project_status_late_pledges()
+      Strings.Project_status_late_pledge()
     case .upcoming:
       Strings.Project_status_upcoming()
     }

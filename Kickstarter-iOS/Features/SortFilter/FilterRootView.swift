@@ -98,7 +98,7 @@ struct FilterRootView: View {
   var footerView: some View {
     HStack(spacing: Styles.grid(2)) {
       // FIXME: MBL-2232 Translate this string
-      Button(self.navigationState == [] ? "Reset All" : Strings.Reset_filters()) {
+      Button(self.navigationState == [] ? Strings.Reset_all_filters() : Strings.Reset_filters()) {
         if let action = self.onReset {
           action(self.modalType)
         }

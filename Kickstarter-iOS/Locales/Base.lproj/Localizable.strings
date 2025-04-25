@@ -509,6 +509,7 @@
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
 "Pledge_details" = "Pledge details";
 "Pledge_in_full" = "Pledge in full";
+"Pledge_label" = "Pledge";
 "Pledge_management" = "Pledge management";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Pledge to projects and view all your saved and backed projects in one place.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Pledge to your favorites, then view all the projects you’ve backed here.";
@@ -541,7 +542,7 @@
 "Project_saved" = "Project saved.";
 "Project_status" = "Project status";
 "Project_status_all" = "All";
-"Project_status_late_pledges" = "Late pledges";
+"Project_status_late_pledge" = "Late pledge";
 "Project_status_live" = "Live";
 "Project_status_successful" = "Successful";
 "Project_status_upcoming" = "Upcoming";
@@ -589,6 +590,7 @@
 "Request_my_personal_data" = "Request my personal data";
 "Resend_email" = "Resend email";
 "Resend_verification_email" = "Re-send verification email";
+"Reset_all_filters" = "Reset all";
 "Reset_filters" = "Reset";
 "Reset_your_password" = "Reset your password";
 "Retry" = "Retry";
