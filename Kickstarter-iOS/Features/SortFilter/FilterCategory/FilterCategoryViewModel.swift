@@ -1,6 +1,8 @@
 import Combine
 import Foundation
 
+typealias CategoryAndSubcategory<T> = (category: T, subcategory: T?)
+
 protocol FilterCategory: Identifiable, Equatable {
   var name: String { get }
   var availableSubcategories: [Self]? { get }
@@ -16,7 +18,7 @@ protocol FilterCategoryViewModelInputs {
 
 protocol FilterCategoryViewModelOutputs {
   associatedtype T: FilterCategory
-  var selectedCategory: AnyPublisher<(T, subcategory: T?)?, Never> { get }
+  var selectedCategory: AnyPublisher<CategoryAndSubcategory<T>?, Never> { get }
   var seeResultsTapped: AnyPublisher<Void, Never> { get }
   var closeTapped: AnyPublisher<Void, Never> { get }
   var categories: [T] { get }
@@ -51,12 +53,12 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
       .assign(to: &self.$canReset)
 
     self.selectedCategorySubject
-      .map { $0?.0 }
+      .map { $0?.category }
       .receive(on: RunLoop.main)
       .assign(to: &self.$currentCategory)
 
     self.selectedCategorySubject
-      .map { $0?.1 }
+      .map { $0?.subcategory }
       .receive(on: RunLoop.main)
       .assign(to: &self.$currentSubcategory)
 
@@ -68,7 +70,7 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
   // MARK: - Inputs
 
   func selectCategory(_ category: T, subcategory: T? = nil) {
-    self.selectedCategorySubject.send((category, subcategory: subcategory))
+    self.selectedCategorySubject.send((category: category, subcategory: subcategory))
   }
 
   func resetSelection() {
@@ -85,7 +87,7 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
 
   // MARK: - Outputs
 
-  var selectedCategory: AnyPublisher<(T, subcategory: T?)?, Never> {
+  var selectedCategory: AnyPublisher<CategoryAndSubcategory<T>?, Never> {
     self.selectedCategorySubject.eraseToAnyPublisher()
   }
 
@@ -97,7 +99,7 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
     self.closeTappedSubject.eraseToAnyPublisher()
   }
 
-  private let selectedCategorySubject = PassthroughSubject<(T, subcategory: T?)?, Never>()
+  private let selectedCategorySubject = PassthroughSubject<CategoryAndSubcategory<T>?, Never>()
   private let seeResultsTappedSubject = PassthroughSubject<Void, Never>()
   private let closeTappedSubject = PassthroughSubject<Void, Never>()
 
