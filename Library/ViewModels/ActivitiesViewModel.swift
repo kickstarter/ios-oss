@@ -92,9 +92,6 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits a User that can be used to replace the current user in the environment.
   var updateUserInEnvironment: Signal<User, Never> { get }
-
-  /// Emits an array of reward tracking data that should be displayed.
-  var rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -282,35 +279,6 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       )
     }
 
-    // Track shipping feature
-
-    self.rewardTrackingData = self.activities.signal
-      .filter { _ in featureRewardShipmentTrackingEnabled() }
-      .map { activities in
-        activities
-          .filter { $0.category == .shipped }
-          .compactMap { activity -> RewardTrackingActivitiesCellData? in
-            guard
-              let project = activity.project,
-              let trackingNumber = activity.trackingNumber,
-              let trackingUrl = activity.trackingUrl,
-              let trackingURL = URL(string: trackingUrl)
-            else {
-              return nil
-            }
-
-            let trackingData = RewardTrackingDetailsViewData(
-              trackingNumber: trackingNumber,
-              trackingURL: trackingURL
-            )
-
-            return RewardTrackingActivitiesCellData(
-              trackingData: trackingData,
-              project: project
-            )
-          }
-      }
-
     self.goToTrackShipping = self.tappedTrackShippingProperty.signal.skipNil()
   }
 
@@ -398,7 +366,6 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let showEmptyStateIsLoggedIn: Signal<Bool, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
   public let updateUserInEnvironment: Signal<User, Never>
-  public let rewardTrackingData: Signal<[RewardTrackingActivitiesCellData], Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }
