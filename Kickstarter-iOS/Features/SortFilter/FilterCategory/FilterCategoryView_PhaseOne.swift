@@ -2,7 +2,7 @@ import Library
 import SwiftUI
 
 struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
-  @StateObject var viewModel: FilterCategoryViewModel<T>
+  @StateObject var viewModel: FilterCategoryViewModel_PhaseOne<T>
   var onSelectedCategory: ((T?) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
@@ -28,6 +28,7 @@ struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
     .background(Colors.Background.surfacePrimary.swiftUIColor())
 
     // Handle actions
+
     .onReceive(self.viewModel.selectedCategory) { category in
       self.onSelectedCategory?(category)
     }
@@ -150,7 +151,7 @@ private enum Constants {
 #if targetEnvironment(simulator)
   #Preview("Filter Categories") {
     FilterCategoryView_PhaseOne(
-      viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
+      viewModel: FilterCategoryViewModel_PhaseOne(with: ConcreteFilterCategory.allCases),
       onSelectedCategory: { category in
         print("Selected Category: \(category?.name ?? "None")")
       },

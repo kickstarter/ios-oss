@@ -223,7 +223,7 @@ internal final class SearchViewController: UITableViewController {
       return
     }
 
-    let viewModel = FilterCategoryViewModel<KsApi.Category>(
+    let viewModel = FilterCategoryViewModel_PhaseOne<KsApi.Category>(
       with: sheet.category.categories,
       selectedCategory: self.viewModel.outputs.selectedFilters.category
     )
