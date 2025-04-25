@@ -18,13 +18,21 @@ extension UpdateBackingInput {
     // be changed; amount, locationId, and rewardIds.
     let isFixPledge = updateBackingData.pledgeContext == .fixPaymentMethod
 
+    // Check if this is a change payment method and PLOT pledge; if so, only include paymentSourceId or applePay.
+    let isChangePaymentMethodAndPlot = updateBackingData
+      .pledgeContext == .changePaymentMethod && updateBackingData.backing.paymentIncrements.count > 0
+
+    let shouldOmitAmount = updateBackingData.backing
+      .isLatePledge || isFixPledge || isChangePaymentMethodAndPlot
+    let shouldOmitLocationAndRewards = isFixPledge || isChangePaymentMethodAndPlot
+
     return UpdateBackingInput(
-      amount: (updateBackingData.backing.isLatePledge || isFixPledge) ? nil : pledgeTotal,
+      amount: shouldOmitAmount ? nil : pledgeTotal,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: backingId,
-      locationId: isFixPledge ? nil : locationId,
+      locationId: shouldOmitLocationAndRewards ? nil : locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
-      rewardIds: isFixPledge ? nil : rewardIds,
+      rewardIds: shouldOmitLocationAndRewards ? nil : rewardIds,
       setupIntentClientSecret: updateBackingData.setupIntentClientSecret
     )
   }
