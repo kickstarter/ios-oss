@@ -22,6 +22,10 @@ final class FilterCategoryViewTest: TestCase {
 
   @MainActor
   func testFilterCategoryView_CategoriesList() async {
+    // FIXME: https://kickstarter.atlassian.net/browse/MBL-2384
+    // This snapshot test looks wrong, the UI in the app does not have the lines
+    // along the left and right sides of the button. This is consistent with
+    // other uses of SearchFiltersPillStyle.
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
     let view =
       VStack {

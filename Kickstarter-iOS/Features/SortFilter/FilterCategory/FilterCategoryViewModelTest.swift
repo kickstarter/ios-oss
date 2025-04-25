@@ -21,17 +21,17 @@ final class FilterCategoryViewModelTest: XCTestCase {
     var cancellables: [AnyCancellable] = []
 
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
-    var selectedCategory: ConcreteFilterCategory? = nil
+    var selectedCategory: (ConcreteFilterCategory, subcategory: ConcreteFilterCategory?)? = nil
     let expectation = expectation(description: "Waiting for a category")
-    viewModel.selectedCategory.sink { category in
-      selectedCategory = category
+    viewModel.selectedCategory.sink { selection in
+      selectedCategory = selection
       expectation.fulfill()
     }
     .store(in: &cancellables)
 
     viewModel.selectCategory(.categoryFour)
     waitForExpectations(timeout: 0.1)
-    XCTAssertEqual(selectedCategory, .categoryFour)
+    XCTAssertEqual(selectedCategory?.0, .categoryFour)
   }
 
   func testSeeResultsTapped() throws {
@@ -73,11 +73,11 @@ final class FilterCategoryViewModelTest: XCTestCase {
 
     let viewModel = FilterCategoryViewModel(with: self.testCategories)
 
-    var selectedCategory: ConcreteFilterCategory? = nil
+    var selectedCategory: (ConcreteFilterCategory, subcategory: ConcreteFilterCategory?)? = nil
     let expectation = expectation(description: "Waiting for reset")
     expectation.expectedFulfillmentCount = 2
-    viewModel.selectedCategory.sink { category in
-      selectedCategory = category
+    viewModel.selectedCategory.sink { selection in
+      selectedCategory = selection
       expectation.fulfill()
     }
     .store(in: &cancellables)
@@ -85,6 +85,6 @@ final class FilterCategoryViewModelTest: XCTestCase {
     viewModel.selectCategory(.categoryFour)
     viewModel.resetSelection()
     waitForExpectations(timeout: 0.1)
-    XCTAssertEqual(selectedCategory, nil)
+    XCTAssertNil(selectedCategory)
   }
 }

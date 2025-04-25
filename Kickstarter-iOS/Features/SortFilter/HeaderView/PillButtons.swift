@@ -79,6 +79,28 @@ internal struct FilterBadgeView: View {
   }
 }
 
+internal struct TitlePillButton: View {
+  let title: String
+  let isHighlighted: Bool
+  let count: Int?
+  let action: () -> Void
+
+  var body: some View {
+    Button(action: self.action) {
+      HStack {
+        Text(self.title)
+        if let count = self.count, count > 0 {
+          FilterBadgeView(count: count)
+        }
+      }
+      .pillHeight()
+    }
+    .buttonStyle(SearchFiltersPillStyle(
+      isHighlighted: self.isHighlighted
+    ))
+  }
+}
+
 internal struct ImagePillButton: View {
   let action: () -> Void
   let image: UIImage

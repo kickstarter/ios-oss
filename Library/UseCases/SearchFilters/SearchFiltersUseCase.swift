@@ -185,8 +185,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       return
     }
 
-    let index = self.categoriesProperty.value.firstIndex(of: category)
-    if index == nil {
+    let categories = self.categoriesProperty.value
+    let subcategories = categories.lazy.flatMap { $0.subcategories?.nodes ?? [] }
+    let exists = categories.contains(category) || subcategories.contains(category)
+    if !exists {
       assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
     }
 
