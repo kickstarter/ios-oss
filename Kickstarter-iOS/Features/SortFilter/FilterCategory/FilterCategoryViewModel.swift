@@ -62,21 +62,15 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
   }
 
   private func selectInitialCategory(selectedCategory: T) {
+    if let category = self.categories.first(where: { $0 == selectedCategory }) {
+      self.selectCategory(category, subcategory: nil)
+      return
+    }
+
     for category in self.categories {
-      if category == selectedCategory {
-        self.selectCategory(category, subcategory: nil)
+      if let subcategory = category.availableSubcategories?.first(where: { $0 == selectedCategory }) {
+        self.selectCategory(category, subcategory: subcategory)
         return
-      }
-
-      guard let subcategories = category.availableSubcategories else {
-        continue
-      }
-
-      for subcategory in subcategories {
-        if subcategory == selectedCategory {
-          self.selectCategory(category, subcategory: subcategory)
-          return
-        }
       }
     }
   }
