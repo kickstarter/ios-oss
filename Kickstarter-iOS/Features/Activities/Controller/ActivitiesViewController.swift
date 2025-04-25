@@ -169,13 +169,6 @@ internal final class ActivitiesViewController: UITableViewController {
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }
 
-    self.viewModel.outputs.rewardTrackingData
-      .observeForUI()
-      .observeValues { [weak self] trackings in
-        self?.dataSource.load(rewardTrackingData: trackings)
-        self?.tableView.reloadData()
-      }
-
     self.viewModel.outputs.goToTrackShipping
       .observeForUI()
       .observeValues { [weak self] url in

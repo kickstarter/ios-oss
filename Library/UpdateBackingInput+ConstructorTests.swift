@@ -97,6 +97,63 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
   }
 
+  func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsPaymentSource() {
+    let reward = Reward.template
+
+    let data: UpdateBackingData = (
+      backing: Backing.templatePlot,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: ShippingRule.template,
+      paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
+      applePayParams: nil,
+      pledgeContext: .changePaymentMethod
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: false)
+
+    XCTAssertNil(input.amount)
+    XCTAssertNil(input.applePay)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertNil(input.locationId)
+    XCTAssertEqual(input.paymentSourceId, UserCreditCards.amex.id)
+    XCTAssertNil(input.rewardIds)
+  }
+
+  func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsApplePay() {
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
+    )
+
+    let reward = Reward.template
+
+    let data: UpdateBackingData = (
+      backing: Backing.templatePlot,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: ShippingRule.template,
+      paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
+      applePayParams: applePayParams,
+      pledgeContext: .changePaymentMethod
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+
+    XCTAssertNil(input.amount)
+    XCTAssertEqual(input.applePay, applePayParams)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertNil(input.locationId)
+    XCTAssertNil(input.paymentSourceId)
+    XCTAssertNil(input.rewardIds)
+  }
+
   func testUpdateBackingInput_UpdateBackingData_AmountIsNull_WhenLatePledge_isApplePay() {
     let applePayParams = ApplePayParams(
       paymentInstrumentName: "paymentInstrumentName",

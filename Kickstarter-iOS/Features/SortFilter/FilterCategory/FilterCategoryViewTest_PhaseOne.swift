@@ -11,10 +11,12 @@ final class FilterCategoryViewTest_PhaseOne: TestCase {
   func testFilterCategoryView_LoadingState() async {
     let view =
       VStack {
-        FilterCategoryView_PhaseOne(viewModel: FilterCategoryViewModel<ConcreteFilterCategory>(with: []))
-          .frame(width: self.size.width)
-          .frame(maxHeight: .infinity)
-          .padding()
+        FilterCategoryView_PhaseOne(
+          viewModel: FilterCategoryViewModel_PhaseOne<ConcreteFilterCategory>(with: [])
+        )
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
       }.frame(height: self.size.height)
     try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: view, as: .image)
@@ -22,7 +24,7 @@ final class FilterCategoryViewTest_PhaseOne: TestCase {
 
   @MainActor
   func testFilterCategoryView_CategoriesList() async {
-    let viewModel = FilterCategoryViewModel(with: self.testCategories)
+    let viewModel = FilterCategoryViewModel_PhaseOne(with: self.testCategories)
     let view =
       VStack {
         FilterCategoryView_PhaseOne(viewModel: viewModel)

@@ -13,4 +13,8 @@ extension KsApi.Category: FilterCategory {
     }
     return intId
   }
+
+  public var availableSubcategories: [KsApi.Category]? {
+    self.subcategories?.nodes
+  }
 }

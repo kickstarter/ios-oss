@@ -11,14 +11,16 @@ public protocol SearchFiltersUseCaseType {
 public protocol SearchFiltersUseCaseInputs {
   /// Call this when the user taps on a button to show one of the sort options.
   func tappedButton(forFilterType: SearchFilterPill.FilterType)
+  /// Call this when the clears their query and the sort options should reset.
+  func clearedQueryText()
   /// Call this when the user selects a new sort option.
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
   /// Call this when the user selects a new category.
   func selectedCategory(_ category: KsApi.Category?)
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
-  /// Call this when the clears their query and the sort options should reset.
-  func clearOptions()
+  /// Call this when the user taps reset on a filter modal
+  func resetFilters(for: SearchFilterModalType)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
@@ -149,10 +151,23 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public private(set) var selectedFilters: SelectedSearchFilters
 
-  public func clearOptions() {
+  public func clearedQueryText() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     self.selectedCategoryProperty.value = nil
     self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
+  }
+
+  public func resetFilters(for modal: SearchFilterModalType) {
+    switch modal {
+    case .allFilters:
+      // Sort isn't a filter, so it's not included here.
+      self.selectedCategoryProperty.value = nil
+      self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
+    case .category:
+      self.selectedCategoryProperty.value = nil
+    case .sort:
+      self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
+    }
   }
 
   public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
@@ -170,8 +185,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       return
     }
 
-    let index = self.categoriesProperty.value.firstIndex(of: category)
-    if index == nil {
+    let categories = self.categoriesProperty.value
+    let subcategories = categories.lazy.flatMap { $0.subcategories?.nodes ?? [] }
+    let exists = categories.contains(category) || subcategories.contains(category)
+    if !exists {
       assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
     }
 
@@ -195,20 +212,20 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> SearchFilterModalType {
   let modalType: SearchFilterModalType
   switch pill {
-  case .all:
-    modalType = .all
+  case .allFilters:
+    modalType = .allFilters
   case .category:
     modalType = .category
   case .sort:
     modalType = .sort
   case .projectState:
-    modalType = .all
+    modalType = .allFilters
   }
   return modalType
 }
 
 public enum SearchFilterModalType: Hashable {
-  case all
+  case allFilters
   case category
   case sort
 }

@@ -29,12 +29,24 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
 
+  func assert_selectedSort_isDefault() {
+    self.selectedSort.assertLastValue(.magic, "Selected sort should be default value")
+  }
+
+  func assert_selectedProjectState_isDefault() {
+    self.selectedState.assertLastValue(.all, "Selected project state should be default value")
+  }
+
+  func assert_selectedCategory_isDefault() {
+    self.selectedCategory.assertLastValue(nil, "Selected category should be default value")
+  }
+
   func test_category_onInitialSignal_isNil() {
     self.selectedCategory.assertDidNotEmitValue()
 
     self.initialObserver.send(value: ())
 
-    self.selectedCategory.assertLastValue(nil)
+    self.assert_selectedCategory_isDefault()
   }
 
   func test_sort_onInitialSignal_isRecommended() {
@@ -50,7 +62,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.initialObserver.send(value: ())
 
-    self.selectedState.assertLastValue(.all)
+    self.assert_selectedProjectState_isDefault()
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -98,7 +110,11 @@ final class SearchFiltersUseCaseTests: TestCase {
       )
     }
 
-    XCTAssertEqual(self.useCase.selectedFilters.category, nil, "No category should be selected by default")
+    XCTAssertEqual(
+      self.useCase.uiOutputs.selectedFilters.category,
+      nil,
+      "No category should be selected by default"
+    )
   }
 
   func test_tappedProjectState_showsAllOptions() {
@@ -111,7 +127,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.showFilters.assertDidEmitValue()
 
     if let (options, type) = self.showFilters.lastValue {
-      XCTAssertEqual(type, .all, "Tapping project state button should show all options")
+      XCTAssertEqual(type, .allFilters, "Tapping project state button should show all options")
       XCTAssertGreaterThan(
         options.projectState.stateOptions.count,
         0,
@@ -120,7 +136,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(
-      self.useCase.selectedFilters.projectState,
+      self.useCase.uiOutputs.selectedFilters.projectState,
       .all,
       "First option, All, should be selected by default"
     )
@@ -131,12 +147,12 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.showFilters.assertDidNotEmitValue()
 
-    self.useCase.inputs.tappedButton(forFilterType: .all)
+    self.useCase.inputs.tappedButton(forFilterType: .allFilters)
 
     self.showFilters.assertDidEmitValue()
 
     if let (_, type) = self.showFilters.lastValue {
-      XCTAssertEqual(type, .all, "Tapping all filter button should show all filters")
+      XCTAssertEqual(type, .allFilters, "Tapping all filter button should show all filters")
     }
   }
 
@@ -153,7 +169,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.categoriesObserver.send(value: categories)
 
     self.showFilters.assertDidNotEmitValue()
-    self.selectedCategory.assertLastValue(nil)
+    self.assert_selectedCategory_isDefault()
 
     self.useCase.inputs.tappedButton(forFilterType: .category)
     self.showFilters.assertDidEmitValue()
@@ -190,7 +206,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   func test_selectingState_updatesState() {
     self.initialObserver.send(value: ())
 
-    self.selectedState.assertLastValue(.all)
+    self.assert_selectedProjectState_isDefault()
 
     self.useCase.inputs.selectedProjectState(.late_pledge)
 
@@ -207,7 +223,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.selectedSort.assertLastValue(.magic)
 
-    if let sortPill = self.useCase.selectedFilters.sortPill {
+    if let sortPill = self.useCase.uiOutputs.selectedFilters.sortPill {
       XCTAssertEqual(
         sortPill.isHighlighted,
         false,
@@ -219,7 +235,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.inputs.selectedSortOption(.endingSoon)
 
-    if let sortPill = self.useCase.selectedFilters.sortPill {
+    if let sortPill = self.useCase.uiOutputs.selectedFilters.sortPill {
       XCTAssertEqual(
         sortPill.isHighlighted,
         true,
@@ -239,9 +255,9 @@ final class SearchFiltersUseCaseTests: TestCase {
       .tabletopGames
     ])
 
-    self.selectedCategory.assertLastValue(nil)
+    self.assert_selectedCategory_isDefault()
 
-    guard let categoryPill = self.useCase.selectedFilters.categoryPill else {
+    guard let categoryPill = self.useCase.uiOutputs.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
       return
     }
@@ -263,7 +279,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.inputs.selectedCategory(.illustration)
 
-    guard let newCategoryPill = self.useCase.selectedFilters.categoryPill else {
+    guard let newCategoryPill = self.useCase.uiOutputs.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
       return
     }
@@ -292,18 +308,99 @@ final class SearchFiltersUseCaseTests: TestCase {
       .art
     ])
 
-    self.selectedSort.assertLastValue(.magic)
-    self.selectedCategory.assertLastValue(nil)
+    self.assert_selectedSort_isDefault()
+    self.assert_selectedCategory_isDefault()
+    self.assert_selectedProjectState_isDefault()
 
     self.useCase.inputs.selectedSortOption(.popular)
     self.useCase.inputs.selectedCategory(.art)
+    self.useCase.inputs.selectedProjectState(.late_pledge)
 
     self.selectedSort.assertLastValue(.popular)
     self.selectedCategory.assertLastValue(.art)
+    self.selectedState.assertLastValue(.late_pledge)
 
-    self.useCase.inputs.clearOptions()
+    self.useCase.inputs.clearedQueryText()
 
-    self.selectedSort.assertLastValue(.magic, "Sort should revert to default sort when options are cleared")
-    self.selectedCategory.assertLastValue(nil, "Category should revert to nil when options are cleared")
+    self.assert_selectedSort_isDefault()
+    self.assert_selectedCategory_isDefault()
+    self.assert_selectedProjectState_isDefault()
+  }
+
+  func test_resetFiltersForType_resetsOnlySpecificFilters() {
+    self.initialObserver.send(value: ())
+    self.categoriesObserver.send(value: [
+      .art,
+      .documentary,
+      .documentarySpanish
+    ])
+
+    XCTAssertFalse(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .allFilters),
+      "Reset should be disabled because no filters were set"
+    )
+    XCTAssertFalse(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .category),
+      "Reset should be disabled because no category was set"
+    )
+    XCTAssertFalse(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .sort),
+      "Reset should be disabled because no sort was set"
+    )
+
+    // Select some options
+    self.useCase.inputs.selectedSortOption(.popular)
+    self.selectedSort.assertLastValue(.popular)
+
+    self.useCase.inputs.selectedCategory(.documentarySpanish)
+    self.selectedCategory.assertLastValue(.documentarySpanish)
+
+    self.useCase.inputs.selectedProjectState(.late_pledge)
+    self.selectedState.assertLastValue(.late_pledge)
+
+    XCTAssertTrue(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .allFilters),
+      "Reset should be enabled because some filters were set"
+    )
+    XCTAssertTrue(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .category),
+      "Reset should be enabled because some filters were set"
+    )
+    XCTAssertTrue(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .sort),
+      "Reset should be enabled because some sort was set"
+    )
+
+    self.useCase.inputs.resetFilters(for: .category)
+    self.assert_selectedCategory_isDefault()
+    XCTAssertFalse(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .category),
+      "Resetting the category should disable the reset button afterwards"
+    )
+
+    self.selectedSort.assertLastValue(.popular, "Resetting category shouldn't affect sort")
+    self.selectedState.assertLastValue(.late_pledge, "Resetting category shouldn't affect project state")
+
+    self.useCase.inputs.resetFilters(for: .allFilters)
+    self.assert_selectedProjectState_isDefault()
+    XCTAssertFalse(
+      self.useCase.uiOutputs.selectedFilters.canReset(filter: .allFilters),
+      "Resetting all filters should disable the reset button afterwards"
+    )
+
+    self.selectedSort.assertLastValue(
+      .popular,
+      "Sort isn't on the all filters page, so it shouldn't be reset by all filters"
+    )
+    self.assert_selectedCategory_isDefault()
+
+    self.useCase.inputs.resetFilters(for: .sort)
+    self.assert_selectedSort_isDefault()
+    self.assert_selectedCategory_isDefault()
+    self.assert_selectedProjectState_isDefault()
+
+    XCTAssertFalse(self.useCase.uiOutputs.selectedFilters.canReset(filter: .allFilters))
+    XCTAssertFalse(self.useCase.uiOutputs.selectedFilters.canReset(filter: .category))
+    XCTAssertFalse(self.useCase.uiOutputs.selectedFilters.canReset(filter: .sort))
   }
 }

@@ -65,11 +65,14 @@ final class RewardTrackingDetailsView: UIView {
 
     self.trackingStatusLabel.rac.text = self.viewModel.outputs.rewardTrackingStatus
     self.trackingNumberLabel.rac.text = self.viewModel.outputs.rewardTrackingNumber
+    self.trackingButton.rac.hidden = self.viewModel.outputs.trackingButtonHidden
 
     self.viewModel.outputs.trackShipping
       .observeForUI()
       .observeValues { [weak self] trackingURL in
-        self?.delegate?.didTapTrackingButton(with: trackingURL)
+        guard let url = trackingURL else { return }
+
+        self?.delegate?.didTapTrackingButton(with: url)
       }
   }
 
