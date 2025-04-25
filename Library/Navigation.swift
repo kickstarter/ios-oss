@@ -435,7 +435,7 @@ private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
     // This same workaround exists in the Pledge Management WebView flow:
     // https://github.com/kickstarter/ios-oss/blob/main/KsApi/models/Backing.swift#L15
     // https://github.com/kickstarter/ios-oss/blob/main/Library/ViewModels/ViewPledgeUseCase.swift#L43
-    // TODO: Revisit this if `backing/details` becomes publicly accessible or authentication rules change.
+    // TODO: Revisit this if `backing/details` becomes accessible or authentication rules change.
     if path.hasSuffix(Constants.backingDetailsPath) {
       path = path.replacingOccurrences(of: Constants.backingDetailsPath, with: Constants.fallbackBackingPath)
     }
