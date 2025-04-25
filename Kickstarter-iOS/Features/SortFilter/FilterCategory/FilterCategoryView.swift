@@ -5,8 +5,6 @@ struct FilterCategoryView<T: FilterCategory>: View {
   @StateObject var viewModel: FilterCategoryViewModel<T>
 
   var onSelectedCategory: ((T?) -> Void)? = nil
-  var onResults: (() -> Void)? = nil
-  var onClose: (() -> Void)? = nil
 
   var body: some View {
     VStack(spacing: 0) {
@@ -18,11 +16,6 @@ struct FilterCategoryView<T: FilterCategory>: View {
       } else {
         self.categoryList
       }
-
-      Spacer()
-
-      self.footerView
-        .padding()
     }
     .background(Colors.Background.surfacePrimary.swiftUIColor())
 
@@ -32,33 +25,6 @@ struct FilterCategoryView<T: FilterCategory>: View {
         self.onSelectedCategory?(subcategory ?? category)
       }
     }
-    .onReceive(self.viewModel.seeResultsTapped) {
-      self.onResults?()
-    }
-    .onReceive(self.viewModel.closeTapped) {
-      self.onClose?()
-    }
-  }
-
-  @ViewBuilder
-  private var headerView: some View {
-    HStack {
-      Text(Strings.Category())
-        .font(Font.ksr_headingXL())
-        .foregroundStyle(Colors.Text.primary.swiftUIColor())
-      Spacer()
-      Button(action: { [weak viewModel] () in
-        viewModel?.close()
-      }) {
-        Image(ImageResource.iconCross)
-          .foregroundStyle(Colors.Icon.primary.swiftUIColor())
-          .accessibilityLabel(Strings.accessibility_discovery_buttons_close())
-          .accessibilityAddTraits(.isButton)
-      }
-    }
-    .padding(Constants.headerPadding)
-    .background(Colors.Background.surfacePrimary.swiftUIColor())
-    self.separator
   }
 
   @ViewBuilder
@@ -133,25 +99,6 @@ struct FilterCategoryView<T: FilterCategory>: View {
   }
 
   @ViewBuilder
-  private var footerView: some View {
-    HStack(spacing: Styles.grid(2)) {
-      Button(Strings.Reset_filters()) { [weak viewModel] () in
-        viewModel?.resetSelection()
-      }
-      .buttonStyle(KSRButtonStyleModifier(style: .outlined))
-      .frame(maxWidth: Constants.resetButtonMaxWidth)
-      .disabled(!self.viewModel.canReset)
-
-      Button(Strings.See_results()) { [weak viewModel] () in
-        viewModel?.seeResults()
-      }
-      .buttonStyle(KSRButtonStyleModifier(style: .filled))
-      .frame(maxWidth: .infinity)
-      .disabled(self.viewModel.isLoading)
-    }
-  }
-
-  @ViewBuilder
   private func radioButton(isSelected: Bool) -> some View {
     ZStack {
       Circle()
@@ -190,12 +137,6 @@ private enum Constants {
       viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
       onSelectedCategory: { category in
         print("Selected Category: \(category?.name ?? "None")")
-      },
-      onResults: {
-        print("Results tapped")
-      },
-      onClose: {
-        print("Closed")
       }
     )
   }

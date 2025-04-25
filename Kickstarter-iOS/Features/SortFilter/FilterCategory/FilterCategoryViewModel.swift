@@ -11,18 +11,12 @@ protocol FilterCategory: Identifiable, Equatable {
 protocol FilterCategoryViewModelInputs {
   associatedtype T: FilterCategory
   func selectCategory(_ category: T, subcategory: T?)
-  func seeResults()
-  func close()
-  func resetSelection()
 }
 
 protocol FilterCategoryViewModelOutputs {
   associatedtype T: FilterCategory
   var selectedCategory: AnyPublisher<CategoryAndSubcategory<T>?, Never> { get }
-  var seeResultsTapped: AnyPublisher<Void, Never> { get }
-  var closeTapped: AnyPublisher<Void, Never> { get }
   var categories: [T] { get }
-  var canReset: Bool { get }
   var isLoading: Bool { get }
   func isCategorySelected(_ category: T) -> Bool
   func isSubcategorySelected(_ category: T?) -> Bool
@@ -63,7 +57,27 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
       .assign(to: &self.$currentSubcategory)
 
     if let category = selectedCategory {
-      self.selectCategory(category, subcategory: nil)
+      self.selectInitialCategory(selectedCategory: category)
+    }
+  }
+
+  private func selectInitialCategory(selectedCategory: T) {
+    for category in self.categories {
+      if category == selectedCategory {
+        self.selectCategory(category, subcategory: nil)
+        return
+      }
+
+      guard let subcategories = category.availableSubcategories else {
+        continue
+      }
+
+      for subcategory in subcategories {
+        if subcategory == selectedCategory {
+          self.selectCategory(category, subcategory: subcategory)
+          return
+        }
+      }
     }
   }
 
@@ -77,31 +91,13 @@ class FilterCategoryViewModel<T: FilterCategory>: FilterCategoryViewModelType {
     self.selectedCategorySubject.send(nil)
   }
 
-  func seeResults() {
-    self.seeResultsTappedSubject.send()
-  }
-
-  func close() {
-    self.closeTappedSubject.send()
-  }
-
   // MARK: - Outputs
 
   var selectedCategory: AnyPublisher<CategoryAndSubcategory<T>?, Never> {
     self.selectedCategorySubject.eraseToAnyPublisher()
   }
 
-  var seeResultsTapped: AnyPublisher<Void, Never> {
-    self.seeResultsTappedSubject.eraseToAnyPublisher()
-  }
-
-  var closeTapped: AnyPublisher<Void, Never> {
-    self.closeTappedSubject.eraseToAnyPublisher()
-  }
-
   private let selectedCategorySubject = PassthroughSubject<CategoryAndSubcategory<T>?, Never>()
-  private let seeResultsTappedSubject = PassthroughSubject<Void, Never>()
-  private let closeTappedSubject = PassthroughSubject<Void, Never>()
 
   func isCategorySelected(_ category: T) -> Bool {
     self.currentCategory?.id == category.id
