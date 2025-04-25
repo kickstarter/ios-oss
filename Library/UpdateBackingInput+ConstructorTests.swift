@@ -96,9 +96,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertNil(input.paymentSourceId)
     XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
   }
-  
-  func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsPaymentSource() {
 
+  func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsPaymentSource() {
     let reward = Reward.template
 
     let data: UpdateBackingData = (
@@ -122,7 +121,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.paymentSourceId, UserCreditCards.amex.id)
     XCTAssertNil(input.rewardIds)
   }
-  
+
   func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsApplePay() {
     let applePayParams = ApplePayParams(
       paymentInstrumentName: "paymentInstrumentName",
@@ -130,7 +129,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       transactionIdentifier: "transactionIdentifier",
       token: "token"
     )
-    
+
     let reward = Reward.template
 
     let data: UpdateBackingData = (
