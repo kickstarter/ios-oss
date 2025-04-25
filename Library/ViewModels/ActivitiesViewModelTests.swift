@@ -224,13 +224,19 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testShippedActivities() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.rewardShipmentTracking.rawValue: true
+    ]
+
     withEnvironment(
       apiService: MockService(fetchActivitiesResponse: [
         self.activity1,
         self.activity2,
         self.shippedActivity
       ]),
-      currentUser: .template
+      currentUser: .template,
+      remoteConfigClient: mockConfigClient
     ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.userSessionStarted()

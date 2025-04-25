@@ -92,16 +92,14 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   private func rewardTrackingActivitiyData(from activity: Activity) -> RewardTrackingActivitiesCellData? {
     guard featureRewardShipmentTrackingEnabled() == true,
           let project = activity.project,
-          let trackingNumber = activity.trackingNumber,
-          let trackingUrl = activity.trackingUrl,
-          let trackingURL = URL(string: trackingUrl)
+          let trackingNumber = activity.trackingNumber
     else {
       return nil
     }
 
     let trackingData = RewardTrackingDetailsViewData(
       trackingNumber: trackingNumber,
-      trackingURL: trackingURL
+      trackingURL: URL(string: activity.trackingUrl ?? "")
     )
 
     return RewardTrackingActivitiesCellData(

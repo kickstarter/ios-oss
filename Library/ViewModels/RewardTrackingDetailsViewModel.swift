@@ -3,9 +3,9 @@ import ReactiveSwift
 
 public struct RewardTrackingDetailsViewData {
   public let trackingNumber: String
-  public let trackingURL: URL
+  public let trackingURL: URL?
 
-  public init(trackingNumber: String, trackingURL: URL) {
+  public init(trackingNumber: String, trackingURL: URL?) {
     self.trackingNumber = trackingNumber
     self.trackingURL = trackingURL
   }
@@ -19,7 +19,8 @@ public protocol RewardTrackingDetailsViewModelInputs {
 public protocol RewardTrackingDetailsViewModelOutputs {
   var rewardTrackingStatus: Signal<String, Never> { get }
   var rewardTrackingNumber: Signal<String, Never> { get }
-  var trackShipping: Signal<URL, Never> { get }
+  var trackingButtonHidden: Signal<Bool, Never> { get }
+  var trackShipping: Signal<URL?, Never> { get }
 }
 
 public protocol RewardTrackingDetailsViewModelType {
@@ -42,6 +43,8 @@ public final class RewardTrackingDetailsViewModel: RewardTrackingDetailsViewMode
         Strings.Your_reward_has_shipped()
       }
 
+    self.trackingButtonHidden = configData.map { $0.trackingURL == nil }
+
     self.trackShipping = configData
       .takeWhen(self.trackingButtonTappedSignal)
       .map { $0.trackingURL }
@@ -59,7 +62,8 @@ public final class RewardTrackingDetailsViewModel: RewardTrackingDetailsViewMode
 
   public var rewardTrackingStatus: Signal<String, Never>
   public var rewardTrackingNumber: Signal<String, Never>
-  public var trackShipping: Signal<URL, Never>
+  public var trackingButtonHidden: Signal<Bool, Never>
+  public var trackShipping: Signal<URL?, Never>
 
   public var inputs: RewardTrackingDetailsViewModelInputs { return self }
   public var outputs: RewardTrackingDetailsViewModelOutputs { return self }
