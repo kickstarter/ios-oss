@@ -133,6 +133,24 @@ public final class NavigationTests: XCTestCase {
       )
     }
 
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+      self.assertProjectMatch(
+        path: "/projects/1234567890/project/backing/survey_responses",
+        navigation: .surveyWebview(
+          "https://www.kickstarter.com/projects/1234567890/project/backing/survey_responses"
+        )
+      )
+
+      // Ensures `backing/details` deeplink is redirected to `survey_responses`
+      // This mimics the runtime fallback applied to avoid re-auth issues in the WebView.
+      self.assertProjectMatch(
+        path: "/projects/1234567890/project/backing/details",
+        navigation: .surveyWebview(
+          "https://www.kickstarter.com/projects/1234567890/project/backing/survey_responses"
+        )
+      )
+    }
+
     KSRAssertMatch(
       .signup,
       "/signup"

@@ -1,6 +1,11 @@
 import Foundation
 import KsApi
 
+private enum Constants {
+  static let backingDetailsPath = "backing/details"
+  static let fallbackBackingPath = "backing/survey_responses"
+}
+
 public enum Navigation: Equatable {
   case checkout(Int, Navigation.Checkout)
   case emailClick
@@ -424,7 +429,17 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let path = params.path() {
+     var path = params.path() {
+    // Fallback logic for deeplinks: replace `backing/details` with `backing/survey_responses`
+    // to prevent re-authentication prompts in the WebView caused by backend restrictions.
+    // This same workaround exists in the Pledge Management WebView flow:
+    // https://github.com/kickstarter/ios-oss/blob/main/KsApi/models/Backing.swift#L15
+    // https://github.com/kickstarter/ios-oss/blob/main/Library/ViewModels/ViewPledgeUseCase.swift#L43
+    // TODO: Revisit this if `backing/details` becomes accessible or authentication rules change.
+    if path.hasSuffix(Constants.backingDetailsPath) {
+      path = path.replacingOccurrences(of: Constants.backingDetailsPath, with: Constants.fallbackBackingPath)
+    }
+
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
     let survey = Navigation.Project.surveyWebview(url)
