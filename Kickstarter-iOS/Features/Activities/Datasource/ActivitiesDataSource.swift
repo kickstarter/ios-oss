@@ -6,7 +6,6 @@ import UIKit
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case erroredBackings
-    case rewardTracking
     case surveys
     case activities
   }
@@ -51,24 +50,20 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       case .cancellation, .failure, .launch, .success, .suspension:
         self.appendRow(value: activity, cellClass: ActivityProjectStatusCell.self, toSection: section)
       case .shipped:
-        // shipped data is loaded via `load(rewardTrackingData:...)` below on line: 62
-        break
+        guard let rewardTrackingActivityData = rewardTrackingActivitiyData(from: activity) else {
+          assert(false, "Unable to create a RewardTrackingActivitiesCellData from activity: \(activity)")
+          return
+        }
+
+        self.appendRow(
+          value: rewardTrackingActivityData,
+          cellClass: RewardTrackingActivitiesCell.self,
+          toSection: section
+        )
       default:
         assertionFailure("Unsupported activity: \(activity)")
       }
     }
-  }
-
-  func load(rewardTrackingData: [RewardTrackingActivitiesCellData]) {
-    let section = Section.rewardTracking.rawValue
-
-    self.clearValues(section: section)
-
-    self.set(
-      values: rewardTrackingData,
-      cellClass: RewardTrackingActivitiesCell.self,
-      inSection: section
-    )
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -92,5 +87,26 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
+  }
+
+  private func rewardTrackingActivitiyData(from activity: Activity) -> RewardTrackingActivitiesCellData? {
+    guard featureRewardShipmentTrackingEnabled() == true,
+          let project = activity.project,
+          let trackingNumber = activity.trackingNumber,
+          let trackingUrl = activity.trackingUrl,
+          let trackingURL = URL(string: trackingUrl)
+    else {
+      return nil
+    }
+
+    let trackingData = RewardTrackingDetailsViewData(
+      trackingNumber: trackingNumber,
+      trackingURL: trackingURL
+    )
+
+    return RewardTrackingActivitiesCellData(
+      trackingData: trackingData,
+      project: project
+    )
   }
 }
