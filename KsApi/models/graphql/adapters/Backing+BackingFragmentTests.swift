@@ -731,6 +731,9 @@ private func backingDictionary() -> [String: Any] {
           "MASTERCARD",
           "AMEX"
       ],
+      "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
+      "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as four payments",
+      "pledgeOverTimeCollectionPlanShortPitch": "You will be charged for your pledge over four payments, at no extra cost.",
       "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
       "backersCount": 135,
       "backing": {
@@ -1038,7 +1041,10 @@ private func backingDictionary() -> [String: Any] {
           "__typename": "ProjectBackerFriendsConnection",
           "nodes": []
         },
-          "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
+        "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as four payments",
+        "pledgeOverTimeCollectionPlanShortPitch": "You will be charged for your pledge over four payments, at no extra cost.",
+        "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
         "isWatched": false
       },
       "remainingQuantity": null,

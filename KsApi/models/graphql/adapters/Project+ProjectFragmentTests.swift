@@ -402,6 +402,9 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "minPledge": 23,
        "name":"FINAL GAMBLE Issue #1",
        "pid":1841936784,
+      "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
+      "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as four payments",
+      "pledgeOverTimeCollectionPlanShortPitch": "You will be charged for your pledge over four payments, at no extra cost.",
       "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
        "pledged":{
           "__typename":"Money",

@@ -82,6 +82,11 @@ extension Project {
         id: projectFragment.pid,
         location: location,
         name: projectFragment.name,
+        pledgeOverTimeCollectionPlanChargeExplanation: projectFragment
+          .pledgeOverTimeCollectionPlanChargeExplanation ?? "",
+        pledgeOverTimeCollectionPlanChargedAsNPayments: projectFragment
+          .pledgeOverTimeCollectionPlanChargedAsNPayments ?? "",
+        pledgeOverTimeCollectionPlanShortPitch: projectFragment.pledgeOverTimeCollectionPlanShortPitch ?? "",
         pledgeOverTimeMinimumExplanation: projectFragment.pledgeOverTimeMinimumExplanation ?? "",
         personalization: projectPersonalization(
           isStarred: projectFragment.isWatched,

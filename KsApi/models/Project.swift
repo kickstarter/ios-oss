@@ -16,6 +16,9 @@ public struct Project {
   public var id: Int
   public var location: Location
   public var name: String
+  public var pledgeOverTimeCollectionPlanChargeExplanation: String
+  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String
+  public var pledgeOverTimeCollectionPlanShortPitch: String
   public var pledgeOverTimeMinimumExplanation: String
   public var personalization: Personalization
   public var photo: Photo
@@ -282,6 +285,10 @@ extension Project: Decodable {
     case location
     case name
     case photo
+    case pledgeOverTimeCollectionPlanChargeExplanation = "pledge_over_time_collection_plan_charge_explanation"
+    case pledgeOverTimeCollectionPlanChargedAsNPayments =
+      "pledge_over_time_collection_plan_charged_as_n_payments"
+    case pledgeOverTimeCollectionPlanShortPitch = "pledge_over_time_collection_plan_short_pitch"
     case pledgeOverTimeMinimumExplanation = "pledge_over_time_minimum_explanation"
     case isInPostCampaignPledgingPhase = "is_in_post_campaign_pledging_phase"
     case postCampaignPledgingEnabled = "post_campaign_pledging_enabled"
@@ -315,6 +322,18 @@ extension Project: Decodable {
     self.photo = try values.decode(Photo.self, forKey: .photo)
     self.isInPostCampaignPledgingPhase =
       try values.decodeIfPresent(Bool.self, forKey: .isInPostCampaignPledgingPhase) ?? false
+    self.pledgeOverTimeCollectionPlanChargeExplanation = try values.decodeIfPresent(
+      String.self,
+      forKey: .pledgeOverTimeCollectionPlanChargeExplanation
+    ) ?? ""
+    self.pledgeOverTimeCollectionPlanChargedAsNPayments = try values.decodeIfPresent(
+      String.self,
+      forKey: .pledgeOverTimeCollectionPlanChargedAsNPayments
+    ) ?? ""
+    self.pledgeOverTimeCollectionPlanShortPitch = try values.decodeIfPresent(
+      String.self,
+      forKey: .pledgeOverTimeCollectionPlanShortPitch
+    ) ?? ""
     self.pledgeOverTimeMinimumExplanation = try values.decodeIfPresent(
       String.self,
       forKey: .pledgeOverTimeMinimumExplanation

@@ -64,6 +64,9 @@ fragment ProjectFragment on Project {
   minPledge
   name
   pid
+  pledgeOverTimeCollectionPlanChargeExplanation
+  pledgeOverTimeCollectionPlanChargedAsNPayments
+  pledgeOverTimeCollectionPlanShortPitch
   pledgeOverTimeMinimumExplanation
   pledged {
     ...MoneyFragment
