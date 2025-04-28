@@ -59,7 +59,7 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     _ = self.pledgeLabel
       |> titleLabelStyle
-      |> \.text %~ { _ in Strings.Pledge() }
+      |> \.text %~ { _ in Strings.Pledge_label() }
 
     _ = self.pledgeAmountLabel
       |> amountLabelStyle
