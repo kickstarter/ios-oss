@@ -2423,6 +2423,7 @@ public enum GraphAPI {
     case errored
     case authenticationRequired
     case dropped
+    case dummy
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -2435,6 +2436,7 @@ public enum GraphAPI {
         case "errored": self = .errored
         case "authentication_required": self = .authenticationRequired
         case "dropped": self = .dropped
+        case "dummy": self = .dummy
         default: self = .__unknown(rawValue)
       }
     }
@@ -2448,6 +2450,7 @@ public enum GraphAPI {
         case .errored: return "errored"
         case .authenticationRequired: return "authentication_required"
         case .dropped: return "dropped"
+        case .dummy: return "dummy"
         case .__unknown(let value): return value
       }
     }
@@ -2461,6 +2464,7 @@ public enum GraphAPI {
         case (.errored, .errored): return true
         case (.authenticationRequired, .authenticationRequired): return true
         case (.dropped, .dropped): return true
+        case (.dummy, .dummy): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -2475,6 +2479,7 @@ public enum GraphAPI {
         .errored,
         .authenticationRequired,
         .dropped,
+        .dummy,
       ]
     }
   }
@@ -4255,6 +4260,8 @@ public enum GraphAPI {
     case errored
     /// Payment increment is cancelled by user action or is an abandoned increment due to failure to complete payment
     case cancelled
+    /// Backer issued a dispute and we (kickstarter) lost the dispute
+    case chargebackLost
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4264,6 +4271,7 @@ public enum GraphAPI {
         case "COLLECTED": self = .collected
         case "ERRORED": self = .errored
         case "CANCELLED": self = .cancelled
+        case "CHARGEBACK_LOST": self = .chargebackLost
         default: self = .__unknown(rawValue)
       }
     }
@@ -4274,6 +4282,7 @@ public enum GraphAPI {
         case .collected: return "COLLECTED"
         case .errored: return "ERRORED"
         case .cancelled: return "CANCELLED"
+        case .chargebackLost: return "CHARGEBACK_LOST"
         case .__unknown(let value): return value
       }
     }
@@ -4284,6 +4293,7 @@ public enum GraphAPI {
         case (.collected, .collected): return true
         case (.errored, .errored): return true
         case (.cancelled, .cancelled): return true
+        case (.chargebackLost, .chargebackLost): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4295,6 +4305,7 @@ public enum GraphAPI {
         .collected,
         .errored,
         .cancelled,
+        .chargebackLost,
       ]
     }
   }
@@ -4560,7 +4571,6 @@ public enum GraphAPI {
     case copyAddons
     case kdsMessagesApp
     case kdsMessagesAppBackerFilter
-    case pledgeManagementRefunds
     case discoverUi_2025
     case pledgeManagementBeta
     case pledgeManagementRewardSetup
@@ -4577,6 +4587,12 @@ public enum GraphAPI {
     case pledgeManagementBackerReport
     case improvedTaxCodeCollection_2025
     case pledgeUpgrade_2025
+    case pledgeOverTimeGa_2025
+    case pmOpenBetaV1_2025
+    case removeEventSourcing_2025
+    case digitalRewards_2025
+    case newPmBackers_2025
+    case tariffManagerContactForm_2025
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4686,7 +4702,6 @@ public enum GraphAPI {
         case "copy_addons": self = .copyAddons
         case "KDS_messages_app": self = .kdsMessagesApp
         case "KDS_messages_app_backer_filter": self = .kdsMessagesAppBackerFilter
-        case "pledge_management_refunds": self = .pledgeManagementRefunds
         case "discover_ui_2025": self = .discoverUi_2025
         case "pledge_management_beta": self = .pledgeManagementBeta
         case "pledge_management_reward_setup": self = .pledgeManagementRewardSetup
@@ -4703,6 +4718,12 @@ public enum GraphAPI {
         case "pledge_management_backer_report": self = .pledgeManagementBackerReport
         case "improved_tax_code_collection_2025": self = .improvedTaxCodeCollection_2025
         case "pledge_upgrade_2025": self = .pledgeUpgrade_2025
+        case "pledge_over_time_ga_2025": self = .pledgeOverTimeGa_2025
+        case "pm_open_beta_v1_2025": self = .pmOpenBetaV1_2025
+        case "remove_event_sourcing_2025": self = .removeEventSourcing_2025
+        case "digital_rewards_2025": self = .digitalRewards_2025
+        case "new_pm_backers_2025": self = .newPmBackers_2025
+        case "tariff_manager_contact_form_2025": self = .tariffManagerContactForm_2025
         default: self = .__unknown(rawValue)
       }
     }
@@ -4813,7 +4834,6 @@ public enum GraphAPI {
         case .copyAddons: return "copy_addons"
         case .kdsMessagesApp: return "KDS_messages_app"
         case .kdsMessagesAppBackerFilter: return "KDS_messages_app_backer_filter"
-        case .pledgeManagementRefunds: return "pledge_management_refunds"
         case .discoverUi_2025: return "discover_ui_2025"
         case .pledgeManagementBeta: return "pledge_management_beta"
         case .pledgeManagementRewardSetup: return "pledge_management_reward_setup"
@@ -4830,6 +4850,12 @@ public enum GraphAPI {
         case .pledgeManagementBackerReport: return "pledge_management_backer_report"
         case .improvedTaxCodeCollection_2025: return "improved_tax_code_collection_2025"
         case .pledgeUpgrade_2025: return "pledge_upgrade_2025"
+        case .pledgeOverTimeGa_2025: return "pledge_over_time_ga_2025"
+        case .pmOpenBetaV1_2025: return "pm_open_beta_v1_2025"
+        case .removeEventSourcing_2025: return "remove_event_sourcing_2025"
+        case .digitalRewards_2025: return "digital_rewards_2025"
+        case .newPmBackers_2025: return "new_pm_backers_2025"
+        case .tariffManagerContactForm_2025: return "tariff_manager_contact_form_2025"
         case .__unknown(let value): return value
       }
     }
@@ -4940,7 +4966,6 @@ public enum GraphAPI {
         case (.copyAddons, .copyAddons): return true
         case (.kdsMessagesApp, .kdsMessagesApp): return true
         case (.kdsMessagesAppBackerFilter, .kdsMessagesAppBackerFilter): return true
-        case (.pledgeManagementRefunds, .pledgeManagementRefunds): return true
         case (.discoverUi_2025, .discoverUi_2025): return true
         case (.pledgeManagementBeta, .pledgeManagementBeta): return true
         case (.pledgeManagementRewardSetup, .pledgeManagementRewardSetup): return true
@@ -4957,6 +4982,12 @@ public enum GraphAPI {
         case (.pledgeManagementBackerReport, .pledgeManagementBackerReport): return true
         case (.improvedTaxCodeCollection_2025, .improvedTaxCodeCollection_2025): return true
         case (.pledgeUpgrade_2025, .pledgeUpgrade_2025): return true
+        case (.pledgeOverTimeGa_2025, .pledgeOverTimeGa_2025): return true
+        case (.pmOpenBetaV1_2025, .pmOpenBetaV1_2025): return true
+        case (.removeEventSourcing_2025, .removeEventSourcing_2025): return true
+        case (.digitalRewards_2025, .digitalRewards_2025): return true
+        case (.newPmBackers_2025, .newPmBackers_2025): return true
+        case (.tariffManagerContactForm_2025, .tariffManagerContactForm_2025): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -5068,7 +5099,6 @@ public enum GraphAPI {
         .copyAddons,
         .kdsMessagesApp,
         .kdsMessagesAppBackerFilter,
-        .pledgeManagementRefunds,
         .discoverUi_2025,
         .pledgeManagementBeta,
         .pledgeManagementRewardSetup,
@@ -5085,6 +5115,12 @@ public enum GraphAPI {
         .pledgeManagementBackerReport,
         .improvedTaxCodeCollection_2025,
         .pledgeUpgrade_2025,
+        .pledgeOverTimeGa_2025,
+        .pmOpenBetaV1_2025,
+        .removeEventSourcing_2025,
+        .digitalRewards_2025,
+        .newPmBackers_2025,
+        .tariffManagerContactForm_2025,
       ]
     }
   }
@@ -9117,7 +9153,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "Order", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9216,6 +9252,10 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
+        public static func makeOrder() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Order"])
+        }
+
         public static func makeAttachedAudio() -> Node {
           return Node(unsafeResultMap: ["__typename": "AttachedAudio"])
         }
@@ -9262,10 +9302,6 @@ public enum GraphAPI {
 
         public static func makeRefund() -> Node {
           return Node(unsafeResultMap: ["__typename": "Refund"])
-        }
-
-        public static func makeOrder() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Order"])
         }
 
         public static func makeCheckout() -> Node {
@@ -9578,7 +9614,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Order", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["SavedSearchSegment", "Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "Order", "AttachedAudio", "AttachedVideo", "ProjectProfile", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "AdjustmentSummary", "Refund", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -9673,6 +9709,10 @@ public enum GraphAPI {
           return Comment(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
+        public static func makeOrder() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Order"])
+        }
+
         public static func makeAttachedAudio() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "AttachedAudio"])
         }
@@ -9719,10 +9759,6 @@ public enum GraphAPI {
 
         public static func makeRefund() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "Refund"])
-        }
-
-        public static func makeOrder() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Order"])
         }
 
         public static func makeCheckout() -> Comment {
@@ -19669,6 +19705,9 @@ public enum GraphAPI {
         minPledge
         name
         pid
+        pledgeOverTimeCollectionPlanChargeExplanation
+        pledgeOverTimeCollectionPlanChargedAsNPayments
+        pledgeOverTimeCollectionPlanShortPitch
         pledgeOverTimeMinimumExplanation
         pledged {
           __typename
@@ -19746,6 +19785,9 @@ public enum GraphAPI {
         GraphQLField("minPledge", type: .nonNull(.scalar(Int.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
+        GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
+        GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
         GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
@@ -19772,8 +19814,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, projectNotice: String? = nil, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "projectNotice": projectNotice, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, projectNotice: String? = nil, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "projectNotice": projectNotice, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -20071,6 +20113,36 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "pid")
+      }
+    }
+
+    /// Backer-facing summary of when the incremental charges will occur
+    public var pledgeOverTimeCollectionPlanChargeExplanation: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanChargeExplanation"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargeExplanation")
+      }
+    }
+
+    /// Quick summary of the amount of increments pledges will be spread over
+    public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanChargedAsNPayments"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargedAsNPayments")
+      }
+    }
+
+    /// Backer-facing short summary of this project's number of payment increments to split over
+    public var pledgeOverTimeCollectionPlanShortPitch: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanShortPitch"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanShortPitch")
       }
     }
 

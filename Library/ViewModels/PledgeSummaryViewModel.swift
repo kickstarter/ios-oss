@@ -118,7 +118,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
     self.pledgeOverTimeChargesText = pledgeOverTimeData.skipNil()
       .map {
-        Strings.Charged_as_number_of_payments(number: "\($0.paymentIncrements.count)")
+        $0.project.pledgeOverTimeCollectionPlanChargedAsNPayments
       }
   }
 

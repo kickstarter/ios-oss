@@ -36,6 +36,9 @@ extension Project {
     id: 1,
     location: .template,
     name: "The Project",
+    pledgeOverTimeCollectionPlanChargeExplanation: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
+    pledgeOverTimeCollectionPlanChargedAsNPayments: "charged as four payments",
+    pledgeOverTimeCollectionPlanShortPitch: "You will be charged for your pledge over four payments, at no extra cost.",
     pledgeOverTimeMinimumExplanation: "Available for pledges over $125",
     personalization: Project.Personalization(
       backing: nil,
