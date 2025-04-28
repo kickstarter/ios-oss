@@ -1182,23 +1182,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backer"
+backers"
 
    - **en**: "%{backers_count}
-backer"
+backers"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinador"
+patrocinadores"
    - **fr**: "%{backers_count}
-contributeur"
+contributeurs"
    - **ja**: "%{backers_count}
 バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbacker",
+      defaultValue: "%{backers_count}\nbackers",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -2541,18 +2541,18 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Continue with %{quantity_count} add-on"
+   "Continue with %{quantity_count} add-ons"
 
-   - **en**: "Continue with %{quantity_count} add-on"
-   - **de**: "Weiter mit %{quantity_count} Add-on"
-   - **es**: "Continuar con %{quantity_count} complemento"
-   - **fr**: "Continuer avec %{quantity_count} complément"
+   - **en**: "Continue with %{quantity_count} add-ons"
+   - **de**: "Weiter mit %{quantity_count} Add-ons"
+   - **es**: "Continuar con %{quantity_count} complementos"
+   - **fr**: "Continuer avec %{quantity_count} compléments"
    - **ja**: "%{quantity_count} 個のアドオンで続行する"
   */
   public static func Continue_with_quantity_count_add_ons(quantity_count: Int) -> String {
     return localizedString(
       key: "Continue_with_quantity_count_add_ons",
-      defaultValue: "Continue with %{quantity_count} add-on",
+      defaultValue: "Continue with %{quantity_count} add-ons",
       count: quantity_count,
       substitutions: ["quantity_count": Format.wholeNumber(quantity_count)]
     )
@@ -4285,9 +4285,9 @@ Cliquez pour réessayer."
 
    - **en**: "Filter"
    - **de**: "Filter"
-   - **es**: "Filter"
-   - **fr**: "Filter"
-   - **ja**: "Filter"
+   - **es**: "Filtro"
+   - **fr**: "Filtre"
+   - **ja**: "絞り込む"
   */
   public static func Filter() -> String {
     return localizedString(
@@ -4417,18 +4417,18 @@ Cliquez pour réessayer."
     )
   }
   /**
-   "%{filter_name}: %{project_count} live project"
+   "%{filter_name}: %{project_count} live projects"
 
-   - **en**: "%{filter_name}: %{project_count} live project"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
-   - **es**: "%{filter_name}: %{project_count} proyecto activo"
-   - **fr**: "%{filter_name} : %{project_count} projet en cours"
+   - **en**: "%{filter_name}: %{project_count} live projects"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
+   - **es**: "%{filter_name}: %{project_count} proyectos activos"
+   - **fr**: "%{filter_name} : %{project_count} projets en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live project",
+      defaultValue: "%{filter_name}: %{project_count} live projects",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -5713,10 +5713,10 @@ Cliquez pour réessayer."
    "Include ended projects"
 
    - **en**: "Include ended projects"
-   - **de**: "Include ended projects"
-   - **es**: "Include ended projects"
-   - **fr**: "Include ended projects"
-   - **ja**: "Include ended projects"
+   - **de**: "Beendete Projekte anzeigen"
+   - **es**: "Incluir proyectos finalizados"
+   - **fr**: "Inclure les projets terminés"
+   - **ja**: "終了済みのプロジェクトを含む"
   */
   public static func Include_ended_projects() -> String {
     return localizedString(
@@ -6413,8 +6413,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restante"
-   - **fr**: "%{left_count} restante"
+   - **es**: "%{left_count} restantes"
+   - **fr**: "%{left_count} restantes"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -8319,7 +8319,7 @@ n'ont rien soutenu."
    "Pledge"
 
    - **en**: "Pledge"
-   - **de**: "Beitrag leisten"
+   - **de**: "Unterstützen"
    - **es**: "Contribuir"
    - **fr**: "Je m'engage"
    - **ja**: "プレッジする"
@@ -8338,7 +8338,7 @@ n'ont rien soutenu."
    - **en**: "Pledge Over Time"
    - **de**: "Ratenzahlung"
    - **es**: "Contribución en cuotas"
-   - **fr**: "Engagement étalé dans le temps"
+   - **fr**: "Contribution étalée dans le temps"
    - **ja**: "経時プレッジ"
   */
   public static func Pledge_Over_Time() -> String {
@@ -8447,6 +8447,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Pledge_in_full",
       defaultValue: "Pledge in full",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge"
+
+   - **en**: "Pledge"
+   - **de**: "Finanzierungsbeitrag"
+   - **es**: "Contribución"
+   - **fr**: "Contribution"
+   - **ja**: "プレッジ"
+  */
+  public static func Pledge_label() -> String {
+    return localizedString(
+      key: "Pledge_label",
+      defaultValue: "Pledge",
       count: nil,
       substitutions: [:]
     )
@@ -8965,10 +8982,10 @@ n'ont rien soutenu."
    "Project status"
 
    - **en**: "Project status"
-   - **de**: "Project status"
-   - **es**: "Project status"
-   - **fr**: "Project status"
-   - **ja**: "Project status"
+   - **de**: "Projektstatus"
+   - **es**: "Estado del proyecto"
+   - **fr**: "État d'avancement du projet"
+   - **ja**: "プロジェクトのステータス"
   */
   public static func Project_status() -> String {
     return localizedString(
@@ -8982,10 +8999,10 @@ n'ont rien soutenu."
    "All"
 
    - **en**: "All"
-   - **de**: "All"
-   - **es**: "All"
-   - **fr**: "All"
-   - **ja**: "All"
+   - **de**: "Alle"
+   - **es**: "Todos"
+   - **fr**: "Tout"
+   - **ja**: "すべて"
   */
   public static func Project_status_all() -> String {
     return localizedString(
@@ -8996,18 +9013,18 @@ n'ont rien soutenu."
     )
   }
   /**
-   "Late pledges"
+   "Late pledge"
 
-   - **en**: "Late pledges"
-   - **de**: "Late pledges"
-   - **es**: "Late pledges"
-   - **fr**: "Late pledges"
-   - **ja**: "Late pledges"
+   - **en**: "Late pledge"
+   - **de**: "Nachträglicher Beitrag"
+   - **es**: "Contribución tardía"
+   - **fr**: "Contribution tardive"
+   - **ja**: "遅延プレッジ"
   */
-  public static func Project_status_late_pledges() -> String {
+  public static func Project_status_late_pledge() -> String {
     return localizedString(
-      key: "Project_status_late_pledges",
-      defaultValue: "Late pledges",
+      key: "Project_status_late_pledge",
+      defaultValue: "Late pledge",
       count: nil,
       substitutions: [:]
     )
@@ -9017,9 +9034,9 @@ n'ont rien soutenu."
 
    - **en**: "Live"
    - **de**: "Live"
-   - **es**: "Live"
-   - **fr**: "Live"
-   - **ja**: "Live"
+   - **es**: "Activo"
+   - **fr**: "En cours"
+   - **ja**: "ライブ"
   */
   public static func Project_status_live() -> String {
     return localizedString(
@@ -9033,10 +9050,10 @@ n'ont rien soutenu."
    "Successful"
 
    - **en**: "Successful"
-   - **de**: "Successful"
-   - **es**: "Successful"
-   - **fr**: "Successful"
-   - **ja**: "Successful"
+   - **de**: "Erfolgreich"
+   - **es**: "Exitoso"
+   - **fr**: "Intégralement financé"
+   - **ja**: "成功済"
   */
   public static func Project_status_successful() -> String {
     return localizedString(
@@ -9050,10 +9067,10 @@ n'ont rien soutenu."
    "Upcoming"
 
    - **en**: "Upcoming"
-   - **de**: "Upcoming"
-   - **es**: "Upcoming"
-   - **fr**: "Upcoming"
-   - **ja**: "Upcoming"
+   - **de**: "In Kürze"
+   - **es**: "Próximamente"
+   - **fr**: "Bientôt en ligne"
+   - **ja**: "今後登場予定"
   */
   public static func Project_status_upcoming() -> String {
     return localizedString(
@@ -9815,6 +9832,23 @@ daring ideas."
     )
   }
   /**
+   "Reset all"
+
+   - **en**: "Reset all"
+   - **de**: "Reset all"
+   - **es**: "Reset all"
+   - **fr**: "Reset all"
+   - **ja**: "Reset all"
+  */
+  public static func Reset_all_filters() -> String {
+    return localizedString(
+      key: "Reset_all_filters",
+      defaultValue: "Reset all",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Reset"
 
    - **en**: "Reset"
@@ -10053,18 +10087,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} reward"
+   "%{rewards_count} rewards"
 
-   - **en**: "%{rewards_count} reward"
-   - **de**: "%{rewards_count} Belohnung"
-   - **es**: "%{rewards_count} recompensa"
-   - **fr**: "%{rewards_count} récompense"
+   - **en**: "%{rewards_count} rewards"
+   - **de**: "%{rewards_count} Belohnungen"
+   - **es**: "%{rewards_count} recompensas"
+   - **fr**: "%{rewards_count} récompenses"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} reward",
+      defaultValue: "%{rewards_count} rewards",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -10087,18 +10121,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} reward:"
+   "%{rewards_count} rewards:"
 
-   - **en**: "%{rewards_count} reward:"
-   - **de**: "%{rewards_count} Belohnung:"
-   - **es**: "%{rewards_count} recompensa:"
-   - **fr**: "%{rewards_count} récompense :"
+   - **en**: "%{rewards_count} rewards:"
+   - **de**: "%{rewards_count} Belohnungen:"
+   - **es**: "%{rewards_count} recompensas:"
+   - **fr**: "%{rewards_count} récompenses :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} reward:",
+      defaultValue: "%{rewards_count} rewards:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -11158,18 +11192,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} other"
+   "%{friend_name} and %{remaining_count} others"
 
-   - **en**: "%{friend_name} and %{remaining_count} other"
-   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
-   - **es**: "%{friend_name} y %{remaining_count} persona más"
-   - **fr**: "%{friend_name} et %{remaining_count} autre"
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -12659,10 +12693,10 @@ catch your eye?"
    "Track shipment"
 
    - **en**: "Track shipment"
-   - **de**: "Track shipment"
-   - **es**: "Track shipment"
-   - **fr**: "Track shipment"
-   - **ja**: "Track shipment"
+   - **de**: "Sendung verfolgen"
+   - **es**: "Seguir envío"
+   - **fr**: "Suivre le colis"
+   - **ja**: "配送状況を追跡"
   */
   public static func Track_shipment() -> String {
     return localizedString(
@@ -12693,10 +12727,10 @@ catch your eye?"
    "Tracking number: %{number}"
 
    - **en**: "Tracking number: %{number}"
-   - **de**: "Tracking number: %{number}"
-   - **es**: "Tracking number: %{number}"
-   - **fr**: "Tracking number: %{number}"
-   - **ja**: "Tracking number: %{number}"
+   - **de**: "Sendungsnummer: %{number}"
+   - **es**: "Número de seguimiento: %{number}"
+   - **fr**: "Numéro de suivi : %{number}"
+   - **ja**: "追跡番号：%{number}"
   */
   public static func Tracking_number(number: String) -> String {
     return localizedString(
@@ -13358,7 +13392,7 @@ catch your eye?"
    - **en**: "We can’t process your Pledge Over Time payment. Please <a href="%{view_your_pledge_link}">view your pledge</a> on a web browser and log in to fix your payment."
    - **de**: "Wir können deine Ratenzahlung nicht verarbeiten. Bitte <a href="%{view_your_pledge_link}">sieh dir deinen Finanzierungsbeitrag in einem Webbrowser an</a> und melde dich an, um den Fehler mit deiner Zahlung zu beheben."
    - **es**: "No podemos procesar el pago de tu contribución en cuotas. Es necesario que <a href="%{view_your_pledge_link}">revises tu contribución</a> en un navegador web e inicies sesión para arreglar el pago."
-   - **fr**: "Impossible de traiter le règlement de votre engagement étalé dans le temps. Veuillez vous connecter et <a href="%{view_your_pledge_link}">consulter votre engagement</a> sur un navigateur Web pour régler le problème."
+   - **fr**: "Impossible de traiter le règlement de votre contribution étalée dans le temps. Veuillez vous connecter et <a href="%{view_your_pledge_link}">consulter votre engagement</a> sur un navigateur Web pour régler le problème."
    - **ja**: "経時プレッジのお支払いを処理できませんでした。ウェブブラウザから<a href="%{view_your_pledge_link}">プレッジを確認</a>し、ログインしてお支払い方法を修正してください。"
   */
   public static func We_cant_process_your_Pledge_Over_Time_payment(view_your_pledge_link: String) -> String {
@@ -14379,7 +14413,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "You will be charged for your pledge over four payments, at no extra cost."
    - **de**: "Dein Finanzierungsbeitrag wird dir in vier Raten belastet. Dir entstehen dadurch keine zusätzlichen Kosten."
    - **es**: "Se te cobrará tu contribución en cuatro pagos sin costo adicional."
-   - **fr**: "Votre engagement sera étalé en quatre prélèvements, sans frais supplémentaires."
+   - **fr**: "Votre contribution sera étalée en quatre prélèvements, sans frais supplémentaires."
    - **ja**: "プレッジの請求が4回に分けて行われます。追加の手数料はかかりません。"
   */
   public static func You_will_be_charged_for_your_pledge_over_four_payments_collapsed_description() -> String {
@@ -14768,10 +14802,10 @@ Veuillez réessayer ultérieurement."
    "Your reward has shipped!"
 
    - **en**: "Your reward has shipped!"
-   - **de**: "Your reward has shipped!"
-   - **es**: "Your reward has shipped!"
-   - **fr**: "Your reward has shipped!"
-   - **ja**: "Your reward has shipped!"
+   - **de**: "Deine Belohnung wurde versendet!"
+   - **es**: "¡Recompensa enviada!"
+   - **fr**: "Votre récompense a été expédiée !"
+   - **ja**: "リワードが発送されました！"
   */
   public static func Your_reward_has_shipped() -> String {
     return localizedString(
@@ -16958,18 +16992,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comment"
+   "%{comments_count} comments"
 
-   - **en**: "%{comments_count} comment"
-   - **de**: "%{comments_count} Kommentar"
-   - **es**: "%{comments_count} commentario"
-   - **fr**: "%{comments_count} commentaire"
+   - **en**: "%{comments_count} comments"
+   - **de**: "%{comments_count} Kommentare"
+   - **es**: "%{comments_count} commentarios"
+   - **fr**: "%{comments_count} commentaires"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comment",
+      defaultValue: "%{comments_count} comments",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -20636,7 +20670,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22569,18 +22603,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{likes_count} like"
+   "%{likes_count} likes"
 
-   - **en**: "%{likes_count} like"
-   - **de**: "%{likes_count} Person gefällt das"
-   - **es**: "A %{likes_count} persona le gusta"
-   - **fr**: "%{likes_count} mention J'aime"
+   - **en**: "%{likes_count} likes"
+   - **de**: "%{likes_count} Personen gefällt das"
+   - **es**: "A %{likes_count} personas les gusta"
+   - **fr**: "%{likes_count} mentions J'aime"
    - **ja**: "いいね！%{likes_count}件"
   */
   public static func likes_count_likes(likes_count: Int) -> String {
     return localizedString(
       key: "likes_count_likes",
-      defaultValue: "%{likes_count} like",
+      defaultValue: "%{likes_count} likes",
       count: likes_count,
       substitutions: ["likes_count": Format.wholeNumber(likes_count)]
     )
@@ -24048,7 +24082,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -27182,18 +27216,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} project"
+   "%{project_count} projects"
 
-   - **en**: "%{project_count} project"
-   - **de**: "%{project_count} Projekt"
-   - **es**: "%{project_count} proyecto"
-   - **fr**: "%{project_count} projet"
+   - **en**: "%{project_count} projects"
+   - **de**: "%{project_count} Projekte"
+   - **es**: "%{project_count} proyectos"
+   - **fr**: "%{project_count} projets"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} project",
+      defaultValue: "%{project_count} projects",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -27227,7 +27261,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -28179,7 +28213,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -29051,18 +29085,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} update"
+   "%{updates_count} updates"
 
-   - **en**: "%{updates_count} update"
-   - **de**: "%{updates_count} Update"
-   - **es**: "%{updates_count} actualización"
-   - **fr**: "%{updates_count} actu"
+   - **en**: "%{updates_count} updates"
+   - **de**: "%{updates_count} Updates"
+   - **es**: "%{updates_count} actualizaciones"
+   - **fr**: "%{updates_count} actus"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} update",
+      defaultValue: "%{updates_count} updates",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )

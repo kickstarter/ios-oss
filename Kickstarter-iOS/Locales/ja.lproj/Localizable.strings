@@ -256,7 +256,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Faq" = "FAQ";
-"Filter" = "Filter";
+"Filter" = "絞り込む";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
 "Filter_by_category_name" = "%{category_name} に絞る";
 "Filter_by_projects_backed_by_friends" = "友達がバックしてるプロジェクトに絞る";
@@ -344,7 +344,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、バッカーは %{project_deadline} に請求されます。";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} にバッカーへ %{total} が請求されます。";
 "Ill_do_this_later" = "後でする";
-"Include_ended_projects" = "Include ended projects";
+"Include_ended_projects" = "終了済みのプロジェクトを含む";
 "Increase_pledge" = "プレッジ額を上げる";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
@@ -509,6 +509,7 @@
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "プレッジでプロジェクトに生命を。";
 "Pledge_details" = "プレッジ詳細";
 "Pledge_in_full" = "一括払いのプレッジ";
+"Pledge_label" = "プレッジ";
 "Pledge_management" = "プレッジ管理";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "プロジェクトを探す、プロジェクトにプレッジする、プロジェクトを保存する、全て一つの場所で。";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "ここにバックした全プロジェクトが表示されます。";
@@ -539,12 +540,12 @@
 "Project_goal_and_pledge" = "プロジェクトのゴール額とプレッジ額はおおよその換算金額で表示されます。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められます。";
 "Project_reminders" = "プロジェクトのリマインダー";
 "Project_saved" = "プロジェクトを保存しました。";
-"Project_status" = "Project status";
-"Project_status_all" = "All";
-"Project_status_late_pledges" = "Late pledges";
-"Project_status_live" = "Live";
-"Project_status_successful" = "Successful";
-"Project_status_upcoming" = "Upcoming";
+"Project_status" = "プロジェクトのステータス";
+"Project_status_all" = "すべて";
+"Project_status_late_pledge" = "遅延プレッジ";
+"Project_status_live" = "ライブ";
+"Project_status_successful" = "成功済";
+"Project_status_upcoming" = "今後登場予定";
 "Project_updates" = "プロジェクトの更新情報";
 "Project_url" = "プロジェクトのURL";
 "Projects_We_Love" = "Projects We Love";
@@ -589,6 +590,7 @@
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_email" = "メールを再送";
 "Resend_verification_email" = "認証メールをもう一度送信";
+"Reset_all_filters" = "Reset all";
 "Reset_filters" = "リセット";
 "Reset_your_password" = "パスワードをリセット";
 "Retry" = "もう一度試す";
@@ -772,9 +774,9 @@
 "Total_amount_billion_plus" = "%{total_amount},000,000,000 以上";
 "Total_pledged" = "プレッジ総計";
 "Total_plus" = "%{total}以上";
-"Track_shipment" = "Track shipment";
+"Track_shipment" = "配送状況を追跡";
 "Track_your_backings" = "バックしたプロジェクトを追跡";
-"Tracking_number" = "Tracking number: %{number}";
+"Tracking_number" = "追跡番号：%{number}";
 "Twice_a_day_summary" = "1日2回の概要";
 "Unable_to_request" = "データをリクエストできません。";
 "Unfollow_friend_name" = "%{friend_name} のフォロー解除";
@@ -895,7 +897,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "あなたのプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。";
 "Your_reward" = "リワード";
 "Your_reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配送予定日は%{delivery_date}";
-"Your_reward_has_shipped" = "Your reward has shipped!";
+"Your_reward_has_shipped" = "リワードが発送されました！";
 "Your_selection" = "選択内容";
 "Your_shipping_destination" = "配送地域";
 "Your_shipping_location" = "配送地域";

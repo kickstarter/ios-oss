@@ -256,7 +256,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
 "Failed_to_update_subscription" = "No se pudo actualizar la suscripción";
 "Faq" = "Preguntas frecuentes";
-"Filter" = "Filter";
+"Filter" = "Filtro";
 "Filter_by_all_projects" = "Filtro: Todos los proyectos";
 "Filter_by_category_name" = "Filtro: %{category_name}";
 "Filter_by_projects_backed_by_friends" = "Filtro: Proyectos patrocinados por amigos";
@@ -344,7 +344,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará el %{project_deadline}.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará %{total} el %{project_deadline}.";
 "Ill_do_this_later" = "Lo haré más tarde";
-"Include_ended_projects" = "Include ended projects";
+"Include_ended_projects" = "Incluir proyectos finalizados";
 "Increase_pledge" = "Incrementar contribución";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
@@ -509,6 +509,7 @@
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
 "Pledge_details" = "Detalles de la contribución";
 "Pledge_in_full" = "Contribución total";
+"Pledge_label" = "Contribución";
 "Pledge_management" = "Gestión de contribución";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar.";
@@ -539,12 +540,12 @@
 "Project_goal_and_pledge" = "La meta del proyecto y los montos de contribución se mostrarán en conversiones aproximadas. Un proyecto financiado con éxito cobrará tu contribución en su moneda nativa.";
 "Project_reminders" = "Recordatorios del proyecto";
 "Project_saved" = "Proyecto guardado.";
-"Project_status" = "Project status";
-"Project_status_all" = "All";
-"Project_status_late_pledges" = "Late pledges";
-"Project_status_live" = "Live";
-"Project_status_successful" = "Successful";
-"Project_status_upcoming" = "Upcoming";
+"Project_status" = "Estado del proyecto";
+"Project_status_all" = "Todos";
+"Project_status_late_pledge" = "Contribución tardía";
+"Project_status_live" = "Activo";
+"Project_status_successful" = "Exitoso";
+"Project_status_upcoming" = "Próximamente";
 "Project_updates" = "Actualizaciones del proyecto";
 "Project_url" = "URL del proyecto";
 "Projects_We_Love" = "Nuestros Favoritos";
@@ -589,6 +590,7 @@
 "Request_my_personal_data" = "Solicitar mis datos personales";
 "Resend_email" = "Reenviar correo";
 "Resend_verification_email" = "Volver a enviar correo electrónico de verificación";
+"Reset_all_filters" = "Reset all";
 "Reset_filters" = "Restablecer";
 "Reset_your_password" = "Restablece tu contraseña";
 "Retry" = "Volver a intentar";
@@ -772,9 +774,9 @@
 "Total_amount_billion_plus" = "%{total_amount} mil millones+";
 "Total_pledged" = "Contribuciones en total";
 "Total_plus" = "Más de %{total}";
-"Track_shipment" = "Track shipment";
+"Track_shipment" = "Seguir envío";
 "Track_your_backings" = "Sigue los proyectos que has patrocinado";
-"Tracking_number" = "Tracking number: %{number}";
+"Tracking_number" = "Número de seguimiento: %{number}";
 "Twice_a_day_summary" = "Resumen dos veces al día";
 "Unable_to_request" = "No se pueden solicitar datos.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
@@ -895,7 +897,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Tu proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo al método de pago del patrocinador.";
 "Your_reward" = "Tu recompensa";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Tu recompensa</b> estimada para entregarse en %{delivery_date}";
-"Your_reward_has_shipped" = "Your reward has shipped!";
+"Your_reward_has_shipped" = "¡Recompensa enviada!";
 "Your_selection" = "Tu selección";
 "Your_shipping_destination" = "Tu destino de envío";
 "Your_shipping_location" = "Tu ubicación de envío";
