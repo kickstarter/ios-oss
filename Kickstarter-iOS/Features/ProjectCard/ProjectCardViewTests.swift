@@ -4,7 +4,7 @@
 import SnapshotTesting
 import XCTest
 
-final class SimilarProjectsCardViewTests: TestCase {
+final class ProjectCardViewTests: TestCase {
   var similarProject: SimilarProjectFragment?
 
   override func setUp() {
@@ -26,7 +26,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
-        let view = SimilarProjectsCardView(frame: .zero)
+        let view = ProjectCardView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.configureWith(value: self.similarProject!)
@@ -53,7 +53,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
-        let view = SimilarProjectsCardView(frame: .zero)
+        let view = ProjectCardView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.configureWith(value: self.similarProject!)
@@ -80,7 +80,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
-        let view = SimilarProjectsCardView(frame: .zero)
+        let view = ProjectCardView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.configureWith(value: self.similarProject!)
@@ -113,7 +113,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
-        let view = SimilarProjectsCardView(frame: .zero)
+        let view = ProjectCardView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.configureWith(value: self.similarProject!)
@@ -146,7 +146,7 @@ final class SimilarProjectsCardViewTests: TestCase {
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
-        let view = SimilarProjectsCardView(frame: .zero)
+        let view = ProjectCardView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.configureWith(value: self.similarProject!)

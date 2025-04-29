@@ -16,7 +16,7 @@ protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {
 final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var projectCardView: SimilarProjectsCardView = { SimilarProjectsCardView(frame: .zero) }()
+  private lazy var projectCardView: ProjectCardView = { ProjectCardView(frame: .zero) }()
 
   internal var project: SimilarProject?
 

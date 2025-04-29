@@ -30,12 +30,12 @@ public protocol ProjectsCardViewModelOutputs {
   var prelaunchProject: Signal<Bool, Never> { get }
 }
 
-public protocol SimilarProjectsCardViewModelType {
+public protocol ProjectCardViewModelType {
   var inputs: ProjectsCardViewModelInputs { get }
   var outputs: ProjectsCardViewModelOutputs { get }
 }
 
-public final class SimilarProjectsCardViewModel: SimilarProjectsCardViewModelType,
+public final class ProjectCardViewModel: ProjectCardViewModelType,
   ProjectsCardViewModelInputs,
   ProjectsCardViewModelOutputs {
   public init() {

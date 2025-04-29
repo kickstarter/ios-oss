@@ -14,7 +14,7 @@ private enum Constants {
   static let viewSpacing = Styles.grid(3)
 }
 
-final class SimilarProjectsCardView: UIView {
+final class ProjectCardView: UIView {
   // MARK: - Properties
 
   private lazy var projectImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -25,7 +25,7 @@ final class SimilarProjectsCardView: UIView {
   private lazy var progressBarContainerView = { UIView(frame: .zero) }()
   private lazy var progressBarView = { UIView(frame: .zero) }()
 
-  private let viewModel: SimilarProjectsCardViewModelType = SimilarProjectsCardViewModel()
+  private let viewModel: ProjectCardViewModelType = ProjectCardViewModel()
 
   // MARK: - Lifecycle
 
