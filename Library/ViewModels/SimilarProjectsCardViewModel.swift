@@ -4,7 +4,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol ProjectsCardViewModelInputs {
-  func configureWith(project: any SimilarProject)
+  func configureWith(project: any ProjectCardProperties)
 }
 
 public protocol ProjectsCardViewModelOutputs {
@@ -56,8 +56,8 @@ public final class ProjectCardViewModel: ProjectCardViewModelType,
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
-  fileprivate let projectProperty = MutableProperty<(any SimilarProject)?>(nil)
-  public func configureWith(project: any SimilarProject) {
+  fileprivate let projectProperty = MutableProperty<(any ProjectCardProperties)?>(nil)
+  public func configureWith(project: any ProjectCardProperties) {
     self.projectProperty.value = project
   }
 
@@ -73,7 +73,7 @@ public final class ProjectCardViewModel: ProjectCardViewModelType,
   public var outputs: ProjectsCardViewModelOutputs { return self }
 }
 
-private func getProjectStatus(for project: any SimilarProject) -> String {
+private func getProjectStatus(for project: any ProjectCardProperties) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Launching_soon() }
 
   let percentage = Format.percentage(project.percentFunded)
@@ -101,7 +101,7 @@ private func getProjectStatus(for project: any SimilarProject) -> String {
   }
 }
 
-private func getProjectStatusImage(for project: any SimilarProject) -> UIImage? {
+private func getProjectStatusImage(for project: any ProjectCardProperties) -> UIImage? {
 //  guard !(project.isInPostCampaignPledgingPhase && project.isPostCampaignPledgingEnabled)
 //  else { return UIImage(named: "icon-late-pledge-timer") }
 
@@ -117,11 +117,11 @@ private func getProjectStatusImage(for project: any SimilarProject) -> UIImage? 
   }
 }
 
-private func isProjectPrelaunch(_ project: any SimilarProject) -> Bool {
+private func isProjectPrelaunch(_ project: any ProjectCardProperties) -> Bool {
   project.shouldDisplayPrelaunch && project.isPrelaunchActivated
 }
 
-private func progressBarColorForProject(_ project: any SimilarProject) -> UIColor {
+private func progressBarColorForProject(_ project: any ProjectCardProperties) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_create_500

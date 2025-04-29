@@ -6,7 +6,7 @@ import XCTest
 
 final class SimilarProjectsUseCaseTests: TestCase {
   private var useCase: SimilarProjectsUseCase!
-  private let projectTappedObserver = TestObserver<SimilarProject, Never>()
+  private let projectTappedObserver = TestObserver<any ProjectCardProperties, Never>()
   private let similarProjectsObserver = TestObserver<SimilarProjectsState, Never>()
   private var mockService: MockService!
 

@@ -2,7 +2,7 @@ import Foundation
 import Kingfisher
 import KsApi
 
-internal struct SimilarProjectFragment: SimilarProject {
+internal struct SimilarProjectFragment: ProjectCardProperties {
   let projectID: Int
   let image: Kingfisher.Source
   let name: String

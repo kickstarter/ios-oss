@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 protocol SimilarProjectsTableViewCellDelegate: AnyObject {
-  func didSelectProject(_ project: SimilarProject)
+  func didSelectProject(_ project: any ProjectCardProperties)
 }
 
 enum SimilarProjectsCellConstants {
@@ -185,7 +185,7 @@ extension SimilarProjectsTableViewCell: UICollectionViewDelegate, UICollectionVi
 }
 
 extension SimilarProjectsTableViewCell: SimilarProjectsCollectionViewDataSourceDelegate {
-  func didSelectProject(_ project: any SimilarProject) {
+  func didSelectProject(_ project: any ProjectCardProperties) {
     self.delegate?.didSelectProject(project)
   }
 }

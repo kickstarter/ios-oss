@@ -124,7 +124,7 @@ final class ProjectCardView: UIView {
     ])
   }
 
-  internal func configureWith(value: any SimilarProject) {
+  internal func configureWith(value: any ProjectCardProperties) {
     self.viewModel.inputs.configureWith(project: value)
 
     self.layoutIfNeeded()
