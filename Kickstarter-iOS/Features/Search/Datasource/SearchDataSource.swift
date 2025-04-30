@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import Prelude
 import UIKit
 
 typealias TitleRow = Void
@@ -58,14 +57,26 @@ internal final class SearchDataSource: ValueCellDataSource {
       return nil
     }
 
-    if self.numberOfItems(in: Section.projects.rawValue) == 0 {
+    let projectsSectionCount = self.numberOfItems(in: Section.projects.rawValue)
+
+    if projectsSectionCount == 0 {
       // Projects are empty
+      return nil
+    }
+
+    guard indexPath.row < projectsSectionCount else {
+      // Out of bounds
       return nil
     }
 
     let firstIndex = IndexPath(row: 0, section: Section.projects.rawValue)
     let value = self[firstIndex]
     let hasTitleRow = value is TitleRow
+
+    if hasTitleRow && indexPath == firstIndex {
+      // Tapping on the title row does nothing.
+      return nil
+    }
 
     if hasTitleRow {
       // If there's a title row, the index of the actual project is one item less.
