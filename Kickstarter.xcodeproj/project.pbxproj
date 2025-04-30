@@ -1627,6 +1627,7 @@
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
 		E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675632DA58AB4007CCA24 /* PillButtons.swift */; };
 		E10675662DA5A6E9007CCA24 /* SearchFilterPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */; };
+		E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10BE8DB2B14F1C100F73DC9 /* BlockUser.graphql */; };
@@ -3425,6 +3426,7 @@
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
 		E10675632DA58AB4007CCA24 /* PillButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtons.swift; sourceTree = "<group>"; };
 		E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterPill.swift; sourceTree = "<group>"; };
+		E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4448,6 +4450,7 @@
 			isa = PBXGroup;
 			children = (
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
+				E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */,
 			);
 			path = Datasource;
 			sourceTree = "<group>";
@@ -9378,6 +9381,7 @@
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
+				E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
 				06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */,
