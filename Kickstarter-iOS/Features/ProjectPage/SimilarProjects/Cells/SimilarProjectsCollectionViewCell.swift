@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 protocol SimilarProjectsCollectionViewCellDelegate: AnyObject {
-  func didSelectProject(_ project: any ProjectCardProperties)
+  func didSelectProject(_ project: ProjectCardProperties)
 }
 
 /*
@@ -18,7 +18,7 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
   private lazy var projectCardView: ProjectCardView = { ProjectCardView(frame: .zero) }()
 
-  internal var project: (any ProjectCardProperties)?
+  internal var project: ProjectCardProperties?
 
   weak var delegate: SimilarProjectsCollectionViewCellDelegate?
 
@@ -57,7 +57,7 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: any ProjectCardProperties) {
+  func configureWith(value: ProjectCardProperties) {
     self.projectCardView.configureWith(value: value)
     self.project = value
 

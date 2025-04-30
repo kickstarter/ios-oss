@@ -6,7 +6,7 @@ import XCTest
 
 final class SimilarProjectsUseCaseTests: TestCase {
   private var useCase: SimilarProjectsUseCase!
-  private let projectTappedObserver = TestObserver<any ProjectCardProperties, Never>()
+  private let projectTappedObserver = TestObserver<ProjectCardProperties, Never>()
   private let similarProjectsObserver = TestObserver<SimilarProjectsState, Never>()
   private var mockService: MockService!
 
@@ -114,7 +114,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
     // Test the parsing constructor
     let similarProject =
-      try XCTUnwrap(SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment))
+      try XCTUnwrap(ProjectCardProperties(validProjectFragment.fragments.projectCardFragment))
 
     // Verify the parsing succeeded
     XCTAssertNotNil(similarProject, "Parsing should succeed with valid data")
@@ -148,19 +148,19 @@ final class SimilarProjectsUseCaseTests: TestCase {
     // Test with missing image URL
     let missingImageFragment = self.createMockProjectNode(imageURL: nil)
 
-    let missingImageProject = SimilarProjectFragment(missingImageFragment.fragments.projectCardFragment)
+    let missingImageProject = ProjectCardProperties(missingImageFragment.fragments.projectCardFragment)
     XCTAssertNil(missingImageProject, "Parsing should fail with missing image URL")
 
     // Test with invalid image URL
     let invalidImageFragment = self.createMockProjectNode(imageURL: "127.0.0.1:8000/test")
 
-    let invalidImageProject = SimilarProjectFragment(invalidImageFragment.fragments.projectCardFragment)
+    let invalidImageProject = ProjectCardProperties(invalidImageFragment.fragments.projectCardFragment)
     XCTAssertNil(invalidImageProject, "Parsing should fail with invalid image URL")
 
     // Test with invalid state
     let invalidStateNode = self.createMockProjectNode(state: "invalid_state")
 
-    let invalidStateProject = SimilarProjectFragment(invalidStateNode.fragments.projectCardFragment)
+    let invalidStateProject = ProjectCardProperties(invalidStateNode.fragments.projectCardFragment)
     XCTAssertNil(invalidStateProject, "Parsing should fail with invalid state")
   }
 

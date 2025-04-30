@@ -2,25 +2,7 @@ import Foundation
 import Kingfisher
 import KsApi
 
-internal struct SimilarProjectFragment: ProjectCardProperties {
-  let projectID: Int
-  let image: Kingfisher.Source
-  let name: String
-  let isLaunched: Bool
-  let isPrelaunchActivated: Bool
-  let isInPostCampaignPledgingPhase: Bool
-  let isPostCampaignPledgingEnabled: Bool
-  let launchedAt: Date?
-  let deadlineAt: Date?
-  let percentFunded: Int
-  let state: Project.State
-  let goal: Money?
-  let pledged: Money?
-  let url: String
-
-  private let projectAnalytics: any ProjectAnalyticsProperties
-  private let projectPamphletMainCell: any HasProjectPamphletMainCellProperties
-
+extension ProjectCardProperties {
   init?(_ fragment: GraphAPI.ProjectCardFragment) {
     guard
       let imageURLString = fragment.image?.url,
@@ -43,6 +25,7 @@ internal struct SimilarProjectFragment: ProjectCardProperties {
     self.image = .network(imageURL)
     self.name = fragment.name
     self.isLaunched = fragment.isLaunched
+    self.isStarred = fragment.isWatched
     self.isPrelaunchActivated = fragment.prelaunchActivated
     self.isInPostCampaignPledgingPhase = fragment.isInPostCampaignPledgingPhase
     self.isPostCampaignPledgingEnabled = fragment.postCampaignPledgingEnabled
@@ -59,24 +42,24 @@ internal struct SimilarProjectFragment: ProjectCardProperties {
   }
 }
 
-extension SimilarProjectFragment: ProjectPamphletMainCellConfiguration {
-  var projectAnalyticsProperties: any ProjectAnalyticsProperties {
+extension ProjectCardProperties: ProjectPamphletMainCellConfiguration {
+  public var projectAnalyticsProperties: any ProjectAnalyticsProperties {
     self.projectAnalytics
   }
 
-  var projectPamphletMainCellProperties: ProjectPamphletMainCellProperties {
+  public var projectPamphletMainCellProperties: ProjectPamphletMainCellProperties {
     self.projectPamphletMainCell.projectPamphletMainCellProperties
   }
 
-  var projectCreatorProperties: ProjectCreatorProperties {
+  public var projectCreatorProperties: ProjectCreatorProperties {
     ProjectCreatorProperties(id: self.projectID, name: self.name, projectWebURL: self.url)
   }
 
-  var projectWebURL: String {
+  public var projectWebURL: String {
     self.url
   }
 
-  var videoViewProperties: VideoViewProperties {
+  public var videoViewProperties: VideoViewProperties {
     self.projectPamphletMainCellProperties.videoViewProperties
   }
 }

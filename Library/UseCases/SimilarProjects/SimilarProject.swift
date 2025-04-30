@@ -2,36 +2,73 @@ import Foundation
 import Kingfisher
 import KsApi
 
-/// Represents a project that is similar to the currently viewed project.
-public protocol ProjectCardProperties: ProjectPamphletMainCellConfiguration {
+/// Represents a project that can be displayed in a project card.
+public struct ProjectCardProperties {
   /// The identifier for the project.
-  var projectID: Int { get }
+  public let projectID: Int
+  public let image: Kingfisher.Source
+  public let name: String
 
-  var image: Kingfisher.Source { get }
+  public let isLaunched: Bool
+  public let isStarred: Bool
+  public let isPrelaunchActivated: Bool
+  public let isInPostCampaignPledgingPhase: Bool
+  public let isPostCampaignPledgingEnabled: Bool
 
-  var name: String { get }
+  public let launchedAt: Date?
+  public let deadlineAt: Date?
+  public let percentFunded: Int
 
-  var isLaunched: Bool { get }
-  var isPrelaunchActivated: Bool { get }
-  var isInPostCampaignPledgingPhase: Bool { get }
-  var isPostCampaignPledgingEnabled: Bool { get }
+  public let state: Project.State
+  public let goal: Money?
+  public let pledged: Money?
+  public let url: String
 
-  var launchedAt: Date? { get }
-  var deadlineAt: Date? { get }
-  var percentFunded: Int { get }
+  let projectAnalytics: any ProjectAnalyticsProperties
+  let projectPamphletMainCell: any HasProjectPamphletMainCellProperties
 
-  var state: Project.State { get }
-  var goal: Money? { get }
-  var pledged: Money? { get }
-}
+  public init(
+    projectID: Int,
+    image: Kingfisher.Source,
+    name: String,
+    isLaunched: Bool,
+    isStarred: Bool,
+    isPrelaunchActivated: Bool,
+    isInPostCampaignPledgingPhase: Bool,
+    isPostCampaignPledgingEnabled: Bool,
+    launchedAt: Date?,
+    deadlineAt: Date?,
+    percentFunded: Int,
+    state: Project.State,
+    goal: Money?,
+    pledged: Money?,
+    url: String,
+    projectAnalytics: any ProjectAnalyticsProperties,
+    projectPamphletMainCell: any HasProjectPamphletMainCellProperties
+  ) {
+    self.projectID = projectID
+    self.image = image
+    self.name = name
+    self.isLaunched = isLaunched
+    self.isStarred = isStarred
+    self.isPrelaunchActivated = isPrelaunchActivated
+    self.isInPostCampaignPledgingPhase = isInPostCampaignPledgingPhase
+    self.isPostCampaignPledgingEnabled = isPostCampaignPledgingEnabled
+    self.launchedAt = launchedAt
+    self.deadlineAt = deadlineAt
+    self.percentFunded = percentFunded
+    self.state = state
+    self.goal = goal
+    self.pledged = pledged
+    self.url = url
+    self.projectAnalytics = projectAnalytics
+    self.projectPamphletMainCell = projectPamphletMainCell
+  }
 
-extension ProjectCardProperties {
-  var shouldDisplayPrelaunch: Bool {
+  public var shouldDisplayPrelaunch: Bool {
     self.isPrelaunchActivated && self.state == .submitted
   }
-}
 
-extension ProjectCardProperties {
   public var projectPageParam: ProjectPageParam {
     ProjectPageParamBox(
       param: Param.id(self.projectID),

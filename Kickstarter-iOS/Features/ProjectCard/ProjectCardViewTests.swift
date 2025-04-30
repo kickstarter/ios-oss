@@ -5,7 +5,7 @@ import SnapshotTesting
 import XCTest
 
 final class ProjectCardViewTests: TestCase {
-  var similarProject: SimilarProjectFragment?
+  var similarProject: ProjectCardProperties?
 
   override func setUp() {
     super.setUp()
@@ -20,9 +20,9 @@ final class ProjectCardViewTests: TestCase {
 
   func testView_ProjectState_Live() {
     let validProjectFragment = createMockProjectNode(id: 1, name: "Project 1", state: "live")
-    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+    self.similarProject = ProjectCardProperties(validProjectFragment.fragments.projectCardFragment)
 
-    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+    XCTAssertNotNil(self.similarProject, "ProjectCardProperties should not be nil")
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -47,9 +47,9 @@ final class ProjectCardViewTests: TestCase {
 
   func testView_ProjectState_Successful() {
     let validProjectFragment = createMockProjectNode(id: 1, name: "Project 1", state: "successful")
-    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+    self.similarProject = ProjectCardProperties(validProjectFragment.fragments.projectCardFragment)
 
-    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+    XCTAssertNotNil(self.similarProject, "ProjectCardProperties should not be nil")
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -74,9 +74,9 @@ final class ProjectCardViewTests: TestCase {
 
   func testView_ProjectState_Failed() {
     let validProjectFragment = createMockProjectNode(id: 1, name: "Project 1", state: "failed")
-    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+    self.similarProject = ProjectCardProperties(validProjectFragment.fragments.projectCardFragment)
 
-    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+    XCTAssertNotNil(self.similarProject, "ProjectCardProperties should not be nil")
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -107,9 +107,9 @@ final class ProjectCardViewTests: TestCase {
       prelaunchActivated: true,
       launchedAt: "-5"
     )
-    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+    self.similarProject = ProjectCardProperties(validProjectFragment.fragments.projectCardFragment)
 
-    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+    XCTAssertNotNil(self.similarProject, "ProjectCardProperties should not be nil")
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -140,9 +140,9 @@ final class ProjectCardViewTests: TestCase {
       isInPostCampaignPledgingPhase: true,
       isPostCampaignPledgingEnabled: true
     )
-    self.similarProject = SimilarProjectFragment(validProjectFragment.fragments.projectCardFragment)
+    self.similarProject = ProjectCardProperties(validProjectFragment.fragments.projectCardFragment)
 
-    XCTAssertNotNil(self.similarProject, "SimilarProjectFragment should not be nil")
+    XCTAssertNotNil(self.similarProject, "ProjectCardProperties should not be nil")
 
     orthogonalCombos([Language.en, Language.es], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {

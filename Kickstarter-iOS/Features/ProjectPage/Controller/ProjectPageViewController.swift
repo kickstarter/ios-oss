@@ -1100,7 +1100,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 }
 
 extension ProjectPageViewController: SimilarProjectsTableViewCellDelegate {
-  func didSelectProject(_ project: any ProjectCardProperties) {
+  func didSelectProject(_ project: ProjectCardProperties) {
     self.viewModel.inputs.similarProjectTapped(project: project)
   }
 }
