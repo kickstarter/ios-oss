@@ -3,6 +3,7 @@ query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: Pub
     nodes {
       ...BackerDashboardProjectCellFragment
       ...ProjectAnalyticsFragment
+      ...ProjectCardFragment
     }
     totalCount
     pageInfo {
