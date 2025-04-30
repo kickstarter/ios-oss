@@ -252,7 +252,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
       .map { projects, query, index in
 
-        guard index < projects.count else {
+        guard index >= 0, index < projects.count else {
           let emptyResult: (Int, RefTag)? = nil
           assert(false, "Tapped card out of bounds.")
           return emptyResult
@@ -319,7 +319,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
       .observeValues { params, results, index in
 
-        guard index < results.count else {
+        guard index >= 0, index < results.count else {
           assert(false, "Tapped card out of bounds.")
           return
         }
