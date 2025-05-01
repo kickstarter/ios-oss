@@ -1,14 +1,14 @@
+import KsApi
 import Library
 import SwiftUI
 
-struct FilterCategoryView<T: FilterCategory>: View {
-  @StateObject var viewModel: FilterCategoryViewModel<T>
-
-  var onSelectedCategory: ((T?) -> Void)? = nil
+struct FilterCategoryView: View {
+  let categories: [KsApi.Category]
+  @Binding var selectedCategory: SearchFiltersCategory
 
   var body: some View {
     VStack(spacing: 0) {
-      if self.viewModel.isLoading {
+      if self.categories.isEmpty {
         ProgressView()
           .controlSize(.large)
           .progressViewStyle(CircularProgressViewStyle(tint: Colors.Icon.green.swiftUIColor()))
@@ -18,25 +18,18 @@ struct FilterCategoryView<T: FilterCategory>: View {
       }
     }
     .background(Colors.Background.surfacePrimary.swiftUIColor())
-
-    // Handle actions
-    .onReceive(self.viewModel.selectedCategory) { result in
-      if let (category, subcategory) = result {
-        self.onSelectedCategory?(subcategory ?? category)
-      }
-    }
   }
 
   @ViewBuilder
   private var categoryList: some View {
-    List(self.viewModel.categories) { category in
+    List(self.categories) { category in
       VStack(spacing: 0) {
         HStack {
           Text(category.name)
             .font(Font.ksr_headingLG())
             .foregroundStyle(Colors.Text.primary.swiftUIColor())
           Spacer()
-          self.radioButton(isSelected: self.viewModel.isCategorySelected(category))
+          self.radioButton(isSelected: self.selectedCategory.isRootCategorySelected(category))
             .id("\(category.id)-radio-button")
         }
         .background(Colors.Background.surfacePrimary.swiftUIColor())
@@ -54,10 +47,8 @@ struct FilterCategoryView<T: FilterCategory>: View {
       .listRowInsets(EdgeInsets()) // Remove List internal insets
       .listRowSeparator(.hidden) // Hide default separators
       .contentShape(Rectangle())
-      .onTapGesture { [weak viewModel] () in
-        if let viewModel, !viewModel.isCategorySelected(category) {
-          viewModel.selectCategory(category)
-        }
+      .onTapGesture { () in
+        self.selectedCategory = .rootCategory(category)
       }
       .id(category.id)
     }
@@ -65,23 +56,24 @@ struct FilterCategoryView<T: FilterCategory>: View {
   }
 
   @ViewBuilder
-  private func subcategories(for category: T) -> some View {
-    if self.viewModel.isCategorySelected(category), let subcategories = category.availableSubcategories {
+  private func subcategories(for category: KsApi.Category) -> some View {
+    if self.selectedCategory.isRootCategorySelected(category),
+       let subcategories = category.availableSubcategories {
       FlowLayout(horizontalSpacing: 8, verticalSpacing: 8, alignment: .leading) {
         TitlePillButton(
           title: Strings.Project_status_all(),
-          isHighlighted: self.viewModel.isSubcategorySelected(nil),
+          isHighlighted: !self.selectedCategory.hasSubcategory(),
           count: nil
         ) {
-          self.viewModel.selectCategory(category, subcategory: nil)
+          self.selectedCategory = .rootCategory(category)
         }
         ForEach(subcategories) { subcategory in
           TitlePillButton(
             title: subcategory.name,
-            isHighlighted: self.viewModel.isSubcategorySelected(subcategory),
+            isHighlighted: self.selectedCategory.isSubcategorySelected(subcategory),
             count: nil
           ) {
-            self.viewModel.selectCategory(category, subcategory: subcategory)
+            self.selectedCategory = .subcategory(category, subcategory)
           }
           .id(subcategory.id)
         }
@@ -132,12 +124,20 @@ private enum Constants {
 }
 
 #if targetEnvironment(simulator)
+
+  let previewCategories = (1...5).map { i in
+    Category(
+      analyticsName: nil,
+      id: "\(i)",
+      name: "Category Number \(i)"
+    )
+    /* TODO: add subcategories here for a nicer preview */
+  }
+
   #Preview("Filter Categories") {
     FilterCategoryView(
-      viewModel: FilterCategoryViewModel(with: ConcreteFilterCategory.allCases),
-      onSelectedCategory: { category in
-        print("Selected Category: \(category?.name ?? "None")")
-      }
+      categories: previewCategories,
+      selectedCategory: .constant(.rootCategory(previewCategories[2]))
     )
   }
 #endif

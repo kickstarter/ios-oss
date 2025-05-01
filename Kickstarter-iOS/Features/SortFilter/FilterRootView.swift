@@ -8,11 +8,21 @@ struct FilterRootView: View {
 
   @ObservedObject var selectedFilters: SelectedSearchFilters
 
-  var onSelectedCategory: ((KsApi.Category?) -> Void)? = nil
+  var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
+
+  private var selectedCategory: Binding<SearchFiltersCategory> {
+    Binding {
+      self.selectedFilters.category
+    } set: { newValue in
+      if let action = self.onSelectedCategory {
+        action(newValue)
+      }
+    }
+  }
 
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
@@ -86,11 +96,8 @@ struct FilterRootView: View {
   @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
-      viewModel: FilterCategoryViewModel(
-        with: self.filterOptions.category.categories,
-        selectedCategory: self.selectedFilters.category.category
-      ),
-      onSelectedCategory: self.onSelectedCategory
+      categories: self.filterOptions.category.categories,
+      selectedCategory: self.selectedCategory
     )
   }
 
