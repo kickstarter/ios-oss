@@ -72,6 +72,7 @@ extension UIButton {
     }
 
     self.configuration = buttonConfiguration
+    self.setNeedsUpdateConfiguration()
   }
 
   private func updateContentInsets() {
