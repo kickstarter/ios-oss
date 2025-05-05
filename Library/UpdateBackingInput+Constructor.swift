@@ -6,7 +6,28 @@ extension UpdateBackingInput {
     from updateBackingData: UpdateBackingData,
     isApplePay: Bool
   ) -> UpdateBackingInput {
-    let backingId = updateBackingData.backing.graphID
+    // For pledges that only change or fix the payment method,
+    // we skip amount, rewards, and shipping info.
+    if updateBackingData.pledgeContext == .changePaymentMethod || updateBackingData
+      .pledgeContext == .fixPaymentMethod {
+      return self.baseInput(
+        from: updateBackingData,
+        isApplePay: isApplePay,
+        amount: nil,
+        rewardIds: nil,
+        locationId: nil
+      )
+    }
+
+    // For regular pledge updates (e.g. update reward, amount, or shipping),
+    // we include all relevant info unless it's a late pledge (omit amount).
+    return self.buildFullBackingInput(from: updateBackingData, isApplePay: isApplePay)
+  }
+
+  private static func buildFullBackingInput(
+    from updateBackingData: UpdateBackingData,
+    isApplePay: Bool
+  ) -> UpdateBackingInput {
     let (pledgeTotal, rewardIds, locationId) = sanitizedPledgeParameters(
       from: updateBackingData.rewards,
       selectedQuantities: updateBackingData.selectedQuantities,
@@ -14,25 +35,29 @@ extension UpdateBackingInput {
       shippingRule: updateBackingData.shippingRule
     )
 
-    // Check if this is a fix errored pledge context. If it is, do not include fields that cannot
-    // be changed; amount, locationId, and rewardIds.
-    let isFixPledge = updateBackingData.pledgeContext == .fixPaymentMethod
+    return self.baseInput(
+      from: updateBackingData,
+      isApplePay: isApplePay,
+      amount: updateBackingData.backing.isLatePledge ? nil : pledgeTotal,
+      rewardIds: rewardIds,
+      locationId: locationId
+    )
+  }
 
-    // Check if this is a change payment method and PLOT pledge; if so, only include paymentSourceId or applePay.
-    let isChangePaymentMethodAndPlot = updateBackingData
-      .pledgeContext == .changePaymentMethod && updateBackingData.backing.paymentIncrements.count > 0
-
-    let shouldOmitAmount = updateBackingData.backing
-      .isLatePledge || isFixPledge || isChangePaymentMethodAndPlot
-    let shouldOmitLocationAndRewards = isFixPledge || isChangePaymentMethodAndPlot
-
+  private static func baseInput(
+    from updateBackingData: UpdateBackingData,
+    isApplePay: Bool,
+    amount: String?,
+    rewardIds: [String]?,
+    locationId: String?
+  ) -> UpdateBackingInput {
     return UpdateBackingInput(
-      amount: shouldOmitAmount ? nil : pledgeTotal,
+      amount: amount,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
-      id: backingId,
-      locationId: shouldOmitLocationAndRewards ? nil : locationId,
+      id: updateBackingData.backing.graphID,
+      locationId: locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
-      rewardIds: shouldOmitLocationAndRewards ? nil : rewardIds,
+      rewardIds: rewardIds,
       setupIntentClientSecret: updateBackingData.setupIntentClientSecret
     )
   }
