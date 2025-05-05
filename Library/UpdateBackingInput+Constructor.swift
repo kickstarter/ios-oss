@@ -20,7 +20,7 @@ extension UpdateBackingInput {
     }
 
     // For regular pledge updates (e.g. update reward, amount, or shipping),
-    // we include all relevant info unless it's a late pledge (omit amount).
+    // we include all relevant info.
     return self.buildFullBackingInput(from: updateBackingData, isApplePay: isApplePay)
   }
 
@@ -38,7 +38,7 @@ extension UpdateBackingInput {
     return self.baseInput(
       from: updateBackingData,
       isApplePay: isApplePay,
-      amount: updateBackingData.backing.isLatePledge ? nil : pledgeTotal,
+      amount: pledgeTotal,
       rewardIds: rewardIds,
       locationId: locationId
     )
