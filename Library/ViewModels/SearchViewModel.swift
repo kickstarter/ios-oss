@@ -38,7 +38,7 @@ public protocol SearchViewModelInputs {
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
 
   /// Call this when the user selects a new category.
-  func selectedCategory(_ category: KsApi.Category?)
+  func selectedCategory(_ category: SearchFiltersCategory)
 
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
@@ -129,7 +129,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedState
     )
     .map { query, sort, category, state in
-      DiscoveryParams.withQuery(query, sort: sort, category: category, state: state)
+      DiscoveryParams.withQuery(query, sort: sort, category: category.category, state: state)
     }
 
     // Every time the user changes their query, sort or filters, we set an empty
@@ -423,7 +423,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     return self.searchFiltersUseCase.showFilters
   }
 
-  public func selectedCategory(_ category: KsApi.Category?) {
+  public func selectedCategory(_ category: SearchFiltersCategory) {
     self.searchFiltersUseCase.selectedCategory(category)
   }
 
