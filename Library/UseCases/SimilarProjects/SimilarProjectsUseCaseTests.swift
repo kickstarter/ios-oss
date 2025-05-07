@@ -335,6 +335,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
       "projectDescription": projectDescription,
       "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
       "isLaunched": isLaunched,
+      "isWatched": false,
       "prelaunchActivated": prelaunchActivated,
       "percentFunded": percentFunded,
       "pledged": [
