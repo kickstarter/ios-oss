@@ -6,6 +6,12 @@ import ReactiveSwift
 public typealias SearchResultCard = ProjectCardProperties
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
+public struct SearchResults {
+  public let isProjectsTitleVisible: Bool
+  public let count: Int
+  public let projects: [BackerDashboardProjectCellViewModel.ProjectCellModel]
+}
+
 public protocol SearchViewModelInputs {
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
@@ -63,14 +69,8 @@ public protocol SearchViewModelOutputs {
   /// Emits a project ID  and ref tag when the project page should be opened.
   var goToProject: Signal<(Int, RefTag), Never> { get }
 
-  /// Emits true when the popular title should be shown, and false otherwise.
-  var isProjectsTitleVisible: Signal<Bool, Never> { get }
-
-  /// Emits an array of projects when they should be shown on the screen.
-  var projects: Signal<[SearchResultCard], Never> { get }
-
-  /// A combination of `isProjectsTitleVisible` and `projects`. Used to power the datasource.
-  var projectsAndTitle: Signal<(Bool, [SearchResultCard]), Never> { get }
+  /// Used to power the datasource. Emits projects, a title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
+  var searchResults: Signal<SearchResults, Never> { get }
 
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), Never> { get }
@@ -212,7 +212,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .skipRepeats(==)
 
     // Show the 'Discover projects' title if we're showing 'Discover' results (i.e. no query)
-    self.isProjectsTitleVisible = Signal.combineLatest(queryText, searchResults)
+    let isProjectsTitleVisible = Signal.combineLatest(queryText, searchResults)
       .map { query, projects in query.isEmpty && !projects.isEmpty }
       .skipRepeats()
 
@@ -341,10 +341,27 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         results.count > 0
       }
 
-    self.projectsAndTitle = Signal.combineLatest(
-      self.isProjectsTitleVisible,
+    let emptyResultsOnFirstAppearance = viewWillAppearNotAnimated
+      .take(first: 1)
+      .mapConst(
+        SearchResults(
+          isProjectsTitleVisible: false,
+          count: 0,
+          projects: []
+        )
+      )
+
+    self.searchResults = Signal.combineLatest(
+      isProjectsTitleVisible,
+      stats,
       self.projects
-    )
+    ).map { isProjectsTitleVisible, resultCount, projects in
+      SearchResults(
+        isProjectsTitleVisible: isProjectsTitleVisible,
+        count: resultCount,
+        projects: projects.map({$0.projectCellModel})
+      )
+    }.merge(with: emptyResultsOnFirstAppearance)
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
@@ -411,14 +428,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
   public let goToProject: Signal<(Int, RefTag), Never>
-  public let isProjectsTitleVisible: Signal<Bool, Never>
   public let projects: Signal<[SearchResultCard], Never>
   public let resignFirstResponder: Signal<(), Never>
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
   public let showSortAndFilterHeader: Signal<Bool, Never>
-  public let projectsAndTitle: Signal<(Bool, [SearchResultCard]), Never>
+  public let searchResults: Signal<SearchResults, Never>
 
   public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> {
     return self.searchFiltersUseCase.showFilters
