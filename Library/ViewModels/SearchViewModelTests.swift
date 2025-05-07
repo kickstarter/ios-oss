@@ -31,17 +31,20 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
-    self.vm.outputs.isProjectsTitleVisible.observe(self.isPopularTitleVisible.observer)
-    self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
-    self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
+    self.vm.outputs.searchResults.map { $0.isProjectsTitleVisible }
+      .observe(self.isPopularTitleVisible.observer)
+    self.vm.outputs.searchResults.map { !$0.projects.isEmpty }.skipRepeats(==)
+      .observe(self.hasProjects.observer)
+    self.vm.outputs.searchResults.map { $0.projects.isEmpty }.skipRepeats(==)
+      .observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
     self.vm.outputs.searchLoaderIndicatorIsAnimating.observe(self.searchLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
     self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
 
-    self.vm.outputs.projects
-      .map { $0.count }
+    self.vm.outputs.searchResults
+      .map { $0.projects.count }
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
@@ -992,7 +995,7 @@ internal final class SearchViewModelTests: TestCase {
     ) {
       let projects = TestObserver<[String], Never>()
 
-      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
+      self.vm.outputs.searchResults.map { $0.projects.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
@@ -1045,7 +1048,7 @@ internal final class SearchViewModelTests: TestCase {
       debounceInterval: debounceDelay
     ) {
       let projects = TestObserver<[String], Never>()
-      self.vm.outputs.projects.map { $0.map { $0.name } }.observe(projects.observer)
+      self.vm.outputs.searchResults.map { $0.projects.map { $0.name } }.observe(projects.observer)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
