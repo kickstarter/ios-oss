@@ -14094,6 +14094,7 @@ public enum GraphAPI {
             __typename
             ...BackerDashboardProjectCellFragment
             ...ProjectAnalyticsFragment
+            ...ProjectCardFragment
           }
           totalCount
           pageInfo {
@@ -14112,6 +14113,8 @@ public enum GraphAPI {
       document.append("\n" + BackerDashboardProjectCellFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + ProjectAnalyticsFragment.fragmentDefinition)
+      document.append("\n" + ProjectCardFragment.fragmentDefinition)
+      document.append("\n" + ProjectPamphletMainCellPropertiesFragment.fragmentDefinition)
       return document
     }
 
@@ -14232,6 +14235,7 @@ public enum GraphAPI {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLFragmentSpread(BackerDashboardProjectCellFragment.self),
               GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
+              GraphQLFragmentSpread(ProjectCardFragment.self),
             ]
           }
 
@@ -14278,6 +14282,15 @@ public enum GraphAPI {
             public var projectAnalyticsFragment: ProjectAnalyticsFragment {
               get {
                 return ProjectAnalyticsFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+
+            public var projectCardFragment: ProjectCardFragment {
+              get {
+                return ProjectCardFragment(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -19234,6 +19247,7 @@ public enum GraphAPI {
         isInPostCampaignPledgingPhase
         postCampaignPledgingEnabled
         url
+        isWatched
         goal {
           __typename
           ...MoneyFragment
@@ -19264,6 +19278,7 @@ public enum GraphAPI {
         GraphQLField("isInPostCampaignPledgingPhase", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("postCampaignPledgingEnabled", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("url", type: .nonNull(.scalar(String.self))),
+        GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("goal", type: .object(Goal.selections)),
         GraphQLField("pledged", type: .nonNull(.object(Pledged.selections))),
         GraphQLFragmentSpread(ProjectAnalyticsFragment.self),
@@ -19403,6 +19418,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "url")
+      }
+    }
+
+    /// Is the current user watching this project?
+    public var isWatched: Bool {
+      get {
+        return resultMap["isWatched"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isWatched")
       }
     }
 
