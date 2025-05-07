@@ -5,6 +5,15 @@
       "nodes": [
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC00NzYyOTE4MjU=",
           "name": "Test Project",
           "projectState": "LIVE",
@@ -27,6 +36,7 @@
           },
           "isLaunched": true,
           "projectPrelaunchActivated": false,
+          "prelaunchActivated": false,
           "deadlineAt": 1708238721,
           "projectLaunchedAt": 1703054721,
           "isWatched": false,
@@ -38,6 +48,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Product Design",
             "analyticsName": "Product Design",
             "parentCategory": {
               "__typename": "Category",
@@ -48,10 +59,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "Hong Kong",
             "code": "HK"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMDIzNzc4MjEx",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -73,7 +88,18 @@
           "state": "LIVE",
           "video": {
             "__typename": "Video",
-            "id": "VmlkZW8tMTI2MTkxMw=="
+            "id": "VmlkZW8tMTI2MTkxMw==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+              }
+            }
           },
           "fxRate": 0.12867125,
           "usdExchangeRate": 0.12867125,
@@ -84,6 +110,15 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xOTk2MzE2ODE3",
           "name": "Test Project",
           "projectState": "LIVE",
@@ -106,6 +141,7 @@
           },
           "isLaunched": true,
           "projectPrelaunchActivated": false,
+          "prelaunchActivated": false,
           "deadlineAt": 1708937364,
           "projectLaunchedAt": 1706345364,
           "isWatched": false,
@@ -117,6 +153,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Apps",
             "analyticsName": "Apps",
             "parentCategory": {
               "__typename": "Category",
@@ -127,10 +164,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "Italy",
             "code": "IT"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0yMTE4MjIyMjAx",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -160,6 +201,15 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xOTIxNzkxOTU0",
           "name": "Test Project",
           "projectState": "LIVE",
@@ -182,6 +232,7 @@
           },
           "isLaunched": true,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": 1725001200,
           "projectLaunchedAt": 1722340768,
           "isWatched": false,
@@ -193,6 +244,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Tabletop Games",
             "analyticsName": "Tabletop Games",
             "parentCategory": {
               "__typename": "Category",
@@ -203,10 +255,14 @@
           "commentsCount": 104,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xNDAyMzU5ODIw",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -228,7 +284,18 @@
           "state": "LIVE",
           "video": {
             "__typename": "Video",
-            "id": "VmlkZW8tMTMwNDUxOQ=="
+            "id": "VmlkZW8tMTMwNDUxOQ==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+              }
+            }
           },
           "fxRate": 1,
           "usdExchangeRate": 1,
@@ -239,6 +306,15 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMjk0NzE4NjYy",
           "name": "Test Project",
           "projectState": "LIVE",
@@ -261,6 +337,7 @@
           },
           "isLaunched": true,
           "projectPrelaunchActivated": false,
+          "prelaunchActivated": false,
           "deadlineAt": 1708144534,
           "projectLaunchedAt": 1705552534,
           "isWatched": false,
@@ -272,6 +349,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Graphic Design",
             "analyticsName": "Graphic Design",
             "parentCategory": {
               "__typename": "Category",
@@ -282,10 +360,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xODQxOTc0NTA2",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -307,7 +389,18 @@
           "state": "LIVE",
           "video": {
             "__typename": "Video",
-            "id": "VmlkZW8tMTI2ODM1NQ=="
+            "id": "VmlkZW8tMTI2ODM1NQ==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+              }
+            }
           },
           "fxRate": 1,
           "usdExchangeRate": 1,
@@ -318,6 +411,15 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMzg1ODI5MzEw",
           "name": "Test Project",
           "projectState": "LIVE",
@@ -340,6 +442,7 @@
           },
           "isLaunched": true,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": 1708606331,
           "projectLaunchedAt": 1706014331,
           "isWatched": false,
@@ -351,6 +454,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Toys",
             "analyticsName": "Toys",
             "parentCategory": {
               "__typename": "Category",
@@ -361,10 +465,14 @@
           "commentsCount": 10,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0yMTEwNDEzNjQ3",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -386,7 +494,18 @@
           "state": "LIVE",
           "video": {
             "__typename": "Video",
-            "id": "VmlkZW8tMTI1MDA5Ng=="
+            "id": "VmlkZW8tMTI1MDA5Ng==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+              }
+            }
           },
           "fxRate": 1,
           "usdExchangeRate": 1,
