@@ -66,7 +66,7 @@ public struct ProjectCardProperties {
   }
 
   public var shouldDisplayPrelaunch: Bool {
-    self.isPrelaunchActivated && self.state == .submitted
+    self.isPrelaunchActivated
   }
 
   public var projectPageParam: ProjectPageParam {
