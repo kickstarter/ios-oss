@@ -1213,8 +1213,8 @@
 		AA6E9E852C62B9DC001543FC /* PPOAlertFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD2BEE82C59B981003D8B95 /* PPOAlertFlag.swift */; };
 		AA6E9E882C63EAE9001543FC /* PPOProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */; };
 		AA6E9E8A2C63EE78001543FC /* PPOAddressSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */; };
-		AA7452A92D91BB8100DCB655 /* SimilarProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA74529E2D91BB8100DCB655 /* SimilarProject.swift */; };
-		AA7452AA2D91BB8100DCB655 /* SimilarProject+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA74529F2D91BB8100DCB655 /* SimilarProject+Parsing.swift */; };
+		AA6F1E392DCAE74700E80FD3 /* ProjectCardProperties+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA74529F2D91BB8100DCB655 /* ProjectCardProperties+Parsing.swift */; };
+		AA7452A92D91BB8100DCB655 /* ProjectCardProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA74529E2D91BB8100DCB655 /* ProjectCardProperties.swift */; };
 		AA7452AB2D91BB8100DCB655 /* SimilarProjectsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A02D91BB8100DCB655 /* SimilarProjectsState.swift */; };
 		AA7452AC2D91BB8100DCB655 /* SimilarProjectsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A12D91BB8100DCB655 /* SimilarProjectsUseCase.swift */; };
 		AA7452AE2D91BB8100DCB655 /* FetchCategoriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A42D91BB8100DCB655 /* FetchCategoriesUseCase.swift */; };
@@ -2998,8 +2998,8 @@
 		AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModel.swift; sourceTree = "<group>"; };
 		AA6E9E862C63E7C3001543FC /* PPOProjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCreator.swift; sourceTree = "<group>"; };
 		AA6E9E892C63EE78001543FC /* PPOAddressSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOAddressSummary.swift; sourceTree = "<group>"; };
-		AA74529E2D91BB8100DCB655 /* SimilarProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProject.swift; sourceTree = "<group>"; };
-		AA74529F2D91BB8100DCB655 /* SimilarProject+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SimilarProject+Parsing.swift"; sourceTree = "<group>"; };
+		AA74529E2D91BB8100DCB655 /* ProjectCardProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCardProperties.swift; sourceTree = "<group>"; };
+		AA74529F2D91BB8100DCB655 /* ProjectCardProperties+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectCardProperties+Parsing.swift"; sourceTree = "<group>"; };
 		AA7452A02D91BB8100DCB655 /* SimilarProjectsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsState.swift; sourceTree = "<group>"; };
 		AA7452A12D91BB8100DCB655 /* SimilarProjectsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsUseCase.swift; sourceTree = "<group>"; };
 		AA7452A22D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsUseCaseTests.swift; sourceTree = "<group>"; };
@@ -7234,8 +7234,8 @@
 		AA7452A32D91BB8100DCB655 /* SimilarProjects */ = {
 			isa = PBXGroup;
 			children = (
-				AA74529E2D91BB8100DCB655 /* SimilarProject.swift */,
-				AA74529F2D91BB8100DCB655 /* SimilarProject+Parsing.swift */,
+				AA74529E2D91BB8100DCB655 /* ProjectCardProperties.swift */,
+				AA74529F2D91BB8100DCB655 /* ProjectCardProperties+Parsing.swift */,
 				AA7452A02D91BB8100DCB655 /* SimilarProjectsState.swift */,
 				AA7452A12D91BB8100DCB655 /* SimilarProjectsUseCase.swift */,
 				AA7452A22D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift */,
@@ -8559,6 +8559,7 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				3362A3CB2DA883F700E5E85D /* ProjectURLBuilder.swift in Sources */,
+				AA6F1E392DCAE74700E80FD3 /* ProjectCardProperties+Parsing.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */,
 				064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */,
@@ -8592,8 +8593,7 @@
 				E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */,
 				D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
-				AA7452A92D91BB8100DCB655 /* SimilarProject.swift in Sources */,
-				AA7452AA2D91BB8100DCB655 /* SimilarProject+Parsing.swift in Sources */,
+				AA7452A92D91BB8100DCB655 /* ProjectCardProperties.swift in Sources */,
 				AA7452AB2D91BB8100DCB655 /* SimilarProjectsState.swift in Sources */,
 				AA7452AC2D91BB8100DCB655 /* SimilarProjectsUseCase.swift in Sources */,
 				AA7452AE2D91BB8100DCB655 /* FetchCategoriesUseCase.swift in Sources */,
