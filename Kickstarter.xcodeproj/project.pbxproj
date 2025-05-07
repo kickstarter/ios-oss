@@ -175,7 +175,7 @@
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
 		06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F0269398CB00017845 /* MoneyFragment.graphql */; };
 		06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F4269398CB00017845 /* LocationFragment.graphql */; };
-		06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* CreditCardFragment.graphql */; };
+		06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */; };
 		06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F3269398CB00017845 /* CountryFragment.graphql */; };
 		06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */; };
 		06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EE269398CA00017845 /* CategoryFragment.graphql */; };
@@ -2557,7 +2557,7 @@
 		8A1556EF269398CB00017845 /* ProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectFragment.graphql; sourceTree = "<group>"; };
 		8A1556F0269398CB00017845 /* MoneyFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = MoneyFragment.graphql; sourceTree = "<group>"; };
 		8A1556F1269398CB00017845 /* UserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFragment.graphql; sourceTree = "<group>"; };
-		8A1556F2269398CB00017845 /* CreditCardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreditCardFragment.graphql; sourceTree = "<group>"; };
+		8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentSourceFragment.graphql; sourceTree = "<group>"; };
 		8A1556F3269398CB00017845 /* CountryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CountryFragment.graphql; sourceTree = "<group>"; };
 		8A1556F4269398CB00017845 /* LocationFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LocationFragment.graphql; sourceTree = "<group>"; };
 		8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingQuery.graphql; sourceTree = "<group>"; };
@@ -6390,7 +6390,7 @@
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
 				068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */,
 				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
-				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
+				8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */,
 				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
 				8A1556F0269398CB00017845 /* MoneyFragment.graphql */,
 				60ED07BB2D9EFF66007779B5 /* OrderFragment.graphql */,
@@ -8273,7 +8273,7 @@
 				E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
-				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
+				06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */,
 				399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */,
 				068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */,
 				E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */,

@@ -1,4 +1,4 @@
-fragment CreditCardFragment on PaymentSource {
+fragment PaymentSourceFragment on PaymentSource {
   ... on CreditCard {
     expirationDate
     id

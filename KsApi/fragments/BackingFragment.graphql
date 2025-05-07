@@ -10,8 +10,8 @@ fragment BackingFragment on Backing {
     ...MoneyFragment
   }
   cancelable
-  creditCard: paymentSource {
-    ...CreditCardFragment
+  paymentSource {
+    ...PaymentSourceFragment
   }
   id
   isLatePledge
