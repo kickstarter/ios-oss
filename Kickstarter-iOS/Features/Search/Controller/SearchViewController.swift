@@ -141,8 +141,8 @@ internal final class SearchViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator : nil
-        if let headerView = _self.tableView.tableHeaderView {
+        _self.tableView.tableFooterView = isAnimating ? _self.searchLoaderIndicator : nil
+        if let headerView = _self.tableView.tableFooterView {
           headerView.frame = CGRect(
             x: headerView.frame.origin.x,
             y: headerView.frame.origin.y,
