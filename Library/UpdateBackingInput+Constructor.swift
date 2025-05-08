@@ -8,8 +8,8 @@ extension UpdateBackingInput {
   ) -> UpdateBackingInput {
     // For pledges that only change or fix the payment method,
     // we skip amount, rewards, and shipping info.
-    if updateBackingData.pledgeContext == .changePaymentMethod || updateBackingData
-      .pledgeContext == .fixPaymentMethod {
+    if updateBackingData.pledgeContext == .changePaymentMethod
+      || updateBackingData.pledgeContext == .fixPaymentMethod {
       return self.baseInput(
         from: updateBackingData,
         isApplePay: isApplePay,
