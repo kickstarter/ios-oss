@@ -1,6 +1,11 @@
 import Combine
 import Foundation
 
+protocol FilterCategory: Identifiable, Equatable {
+  var name: String { get }
+  var availableSubcategories: [Self]? { get }
+}
+
 protocol FilterCategoryViewModelInputs_PhaseOne {
   associatedtype T: FilterCategory
   func selectCategory(_ category: T)
@@ -88,5 +93,25 @@ class FilterCategoryViewModel_PhaseOne<T: FilterCategory>: FilterCategoryViewMod
 
   func isCategorySelected(_ category: T) -> Bool {
     return self.currentCategory?.id == category.id
+  }
+}
+
+internal enum ConcreteFilterCategory: String, FilterCategory, CaseIterable {
+  case categoryOne = "Category One"
+  case categoryTwo = "Category Two"
+  case categoryThree = "Category Three"
+  case categoryFour = "Category Four"
+  case categoryFive = "Category Five"
+
+  var id: Int {
+    return self.rawValue.hashValue
+  }
+
+  var name: String {
+    return self.rawValue
+  }
+
+  var availableSubcategories: [ConcreteFilterCategory]? {
+    return Self.allCases
   }
 }

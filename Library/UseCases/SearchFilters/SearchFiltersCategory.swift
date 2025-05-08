@@ -19,6 +19,39 @@ public enum SearchFiltersCategory: Equatable {
       return subcategory
     }
   }
+
+  public func isRootCategorySelected(_ category: KsApi.Category) -> Bool {
+    switch self {
+    case .none:
+      return false
+    case let .rootCategory(root):
+      return root.id == category.id
+    case let .subcategory(root, _):
+      return root.id == category.id
+    }
+  }
+
+  public func isSubcategorySelected(_ category: KsApi.Category) -> Bool {
+    switch self {
+    case .none:
+      return false
+    case .rootCategory:
+      return false
+    case let .subcategory(_, subcategory):
+      return subcategory.id == category.id
+    }
+  }
+
+  public func hasSubcategory() -> Bool {
+    switch self {
+    case .none:
+      return false
+    case .rootCategory:
+      return false
+    case .subcategory:
+      return true
+    }
+  }
 }
 
 public func == (lhs: SearchFiltersCategory, rhs: SearchFiltersCategory) -> Bool {

@@ -274,22 +274,7 @@ internal final class SearchViewController: UITableViewController {
       self?.viewModel.inputs.selectedProjectState(state)
     }
     filterView.onSelectedCategory = { [weak self] category in
-
-      guard let category = category else {
-        self?.viewModel.inputs.selectedCategory(.none)
-        return
-      }
-
-      guard let parent = category.parent else {
-        self?.viewModel.inputs.selectedCategory(
-          .rootCategory(category)
-        )
-        return
-      }
-
-      self?.viewModel.inputs.selectedCategory(
-        .subcategory(rootCategory: parent, subcategory: category)
-      )
+      self?.viewModel.inputs.selectedCategory(category)
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)
