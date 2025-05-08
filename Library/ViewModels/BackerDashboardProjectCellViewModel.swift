@@ -47,6 +47,10 @@ public protocol BackerDashboardProjectCellViewModelType {
 
 public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCellViewModelType,
   BackerDashboardProjectCellViewModelInputs, BackerDashboardProjectCellViewModelOutputs {
+  public protocol HasProjectCellModel {
+    var projectCellModel: any ProjectCellModel { get }
+  }
+
   public protocol ProjectCellModel {
     var name: String { get }
     var state: Project.State { get }

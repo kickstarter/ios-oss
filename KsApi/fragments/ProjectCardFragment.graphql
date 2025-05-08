@@ -17,6 +17,8 @@ fragment ProjectCardFragment on Project {
   postCampaignPledgingEnabled
   url
 
+  isWatched
+
   goal {
     ...MoneyFragment
   }
