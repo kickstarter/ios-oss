@@ -6,7 +6,6 @@ import XCTest
 
 final class FilterCategoryViewTest: TestCase {
   private let size = CGSize(width: 375, height: 667)
-  private let testCategories = ConcreteFilterCategory.allCases
 
   @MainActor
   func testFilterCategoryView_LoadingState() async {
