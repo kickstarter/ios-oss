@@ -28,14 +28,22 @@ final class FilterCategoryViewTest: TestCase {
     // other uses of SearchFiltersPillStyle.
     let view =
       VStack {
-        FilterCategoryView(categories: [
-          .art,
-          .filmAndVideo,
-          .games
-        ], selectedCategory: .constant(.subcategory(.art, .illustration)))
-          .frame(width: self.size.width)
-          .frame(maxHeight: .infinity)
-          .padding()
+        FilterCategoryView(
+          categories: [
+            .art,
+            .filmAndVideo,
+            .games
+          ],
+          selectedCategory: .constant(
+            .subcategory(
+              rootCategory: .art,
+              subcategory: .illustration
+            )
+          )
+        )
+        .frame(width: self.size.width)
+        .frame(maxHeight: .infinity)
+        .padding()
       }.frame(height: self.size.height)
 
     try? await Task.sleep(nanoseconds: 10_000_000)
