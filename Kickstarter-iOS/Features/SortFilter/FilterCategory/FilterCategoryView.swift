@@ -73,7 +73,10 @@ struct FilterCategoryView: View {
             isHighlighted: self.selectedCategory.isSubcategorySelected(subcategory),
             count: nil
           ) {
-            self.selectedCategory = .subcategory(category, subcategory)
+            self.selectedCategory = .subcategory(
+              rootCategory: category,
+              subcategory: subcategory
+            )
           }
           .id(subcategory.id)
         }
