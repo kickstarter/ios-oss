@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
+public typealias SearchResultCard = ProjectCardProperties
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
 public protocol SearchViewModelInputs {
@@ -217,10 +217,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .skipRepeats()
 
     self.projects = searchResults
-      .map { (nodes: [
-        SearchResult
-      ]) -> [GraphAPI.BackerDashboardProjectCellFragment] in
-        nodes.map { $0.fragments.backerDashboardProjectCellFragment }
+      .map { (nodes: [SearchResult]) -> [SearchResultCard] in
+        nodes.compactMap { node in
+          let fragment = node.fragments.projectCardFragment
+          return ProjectCardProperties(fragment)
+        }
       }
 
     let shouldShowEmptyState = Signal.merge(
@@ -454,5 +455,29 @@ private func refTag(query: String, projects: [SearchResult], project: SearchResu
     return RefTag.searchPopular
   } else {
     return RefTag.search
+  }
+}
+
+private struct ProjectCardPropertiesProjectCellModel: BackerDashboardProjectCellViewModel.ProjectCellModel {
+  private let properties: ProjectCardProperties
+  init(_ properties: ProjectCardProperties) {
+    self.properties = properties
+  }
+
+  var name: String { self.properties.name }
+  var state: KsApi.Project.State { self.properties.state }
+  var imageURL: String? { self.properties.image.url?.absoluteString }
+  var fundingProgress: Float { Float(self.properties.percentFunded) / 100 }
+  var percentFunded: Int { self.properties.percentFunded }
+  var displayPrelaunch: Bool? { self.properties.shouldDisplayPrelaunch }
+  var prelaunchActivated: Bool? { self.properties.isPrelaunchActivated }
+  var launchedAt: TimeInterval? { self.properties.launchedAt?.timeIntervalSince1970 }
+  var deadline: TimeInterval? { self.properties.deadlineAt?.timeIntervalSince1970 }
+  var isStarred: Bool? { self.properties.isStarred }
+}
+
+extension ProjectCardProperties: BackerDashboardProjectCellViewModel.HasProjectCellModel {
+  public var projectCellModel: any BackerDashboardProjectCellViewModel.ProjectCellModel {
+    ProjectCardPropertiesProjectCellModel(self)
   }
 }

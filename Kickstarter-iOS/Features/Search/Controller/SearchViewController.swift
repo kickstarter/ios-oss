@@ -133,7 +133,7 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.projectsAndTitle
       .observeForUI()
       .observeValues { [weak self] showTitle, projects in
-        self?.dataSource.load(projects: projects, withDiscoverTitle: showTitle)
+        self?.dataSource.load(projects: projects.map(\.projectCellModel), withDiscoverTitle: showTitle)
         self?.tableView.reloadData()
       }
 

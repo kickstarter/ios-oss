@@ -7,7 +7,7 @@ public enum SimilarProjectsState {
   case loading
 
   /// Similar projects have been successfully loaded.
-  case loaded(projects: [any SimilarProject])
+  case loaded(projects: [ProjectCardProperties])
 
   /// An error occurred while loading similar projects.
   case error(error: Error)

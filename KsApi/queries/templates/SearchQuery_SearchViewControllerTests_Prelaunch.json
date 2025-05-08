@@ -5,13 +5,22 @@
       "nodes": [
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -27,6 +36,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -38,6 +48,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -48,10 +59,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -81,13 +96,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -103,6 +127,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -114,6 +139,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -124,10 +150,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -157,13 +187,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -179,6 +218,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -190,6 +230,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -200,10 +241,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -233,13 +278,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -255,6 +309,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -266,6 +321,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -276,10 +332,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -309,13 +369,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -331,6 +400,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -342,6 +412,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -352,10 +423,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -385,13 +460,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -407,6 +491,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -418,6 +503,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -428,10 +514,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -461,13 +551,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -483,6 +582,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -494,6 +594,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -504,10 +605,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -537,13 +642,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -559,6 +673,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -570,6 +685,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -580,10 +696,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -613,13 +733,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -635,6 +764,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -646,6 +776,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -656,10 +787,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",
@@ -689,13 +824,22 @@
         },
         {
           "__typename": "Project",
+          "risks": "May fail",
+          "stateChangedAt": 1742914857,
+          "projectUsdExchangeRate": 1.28198554,
+          "location": {
+            "__typename": "Location",
+            "displayableName": "London, UK"
+          },
+          "projectDescription": "x",
+          "url": "https://www.kickstarter.com/projects/161513292/test-project",
           "projectId": "UHJvamVjdC0xMTIzOTAyMzM4",
           "name": "Cosmic Surgery",
           "projectState": "LIVE",
           "image": {
             "__typename": "Photo",
             "id": "UGhvdG8tNDM2OTg1NzE=",
-            "url": ""
+            "url": "https://kickstarter.com/banner.jpg"
           },
           "goal": {
             "__typename": "Money",
@@ -711,6 +855,7 @@
           },
           "isLaunched": false,
           "projectPrelaunchActivated": true,
+          "prelaunchActivated": true,
           "deadlineAt": null,
           "projectLaunchedAt": null,
           "isWatched": false,
@@ -722,6 +867,7 @@
           "backing": null,
           "category": {
             "__typename": "Category",
+            "name": "Illustration",
             "analyticsName": "Illustration",
             "parentCategory": {
               "__typename": "Category",
@@ -732,10 +878,14 @@
           "commentsCount": 0,
           "country": {
             "__typename": "Country",
+            "name": "United States",
             "code": "US"
           },
           "creator": {
             "__typename": "User",
+            "name": "Doug",
+            "isBlocked": false,
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci00NjY3NTI0ODY=",
             "createdProjects": {
               "__typename": "UserCreatedProjectsConnection",

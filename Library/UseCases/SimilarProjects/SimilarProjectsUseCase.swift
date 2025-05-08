@@ -12,7 +12,7 @@ public protocol SimilarProjectsUseCaseInputs {
   /// Triggers navigation to the selected project's details.
   ///
   /// - Parameter project: The project that was tapped.
-  func projectTapped(project: any SimilarProject)
+  func projectTapped(project: ProjectCardProperties)
 
   /// Call when a project ID is loaded or becomes available.
   /// Initiates fetching of similar projects for the given project ID.
@@ -27,7 +27,7 @@ public protocol SimilarProjectsUseCaseOutputs {
 
   /// Signal that emits when a user has tapped on a similar project.
   /// Use this to navigate to the selected project's details.
-  var navigateToProject: Signal<any SimilarProject, Never> { get }
+  var navigateToProject: Signal<ProjectCardProperties, Never> { get }
 }
 
 /// A Use Case for fetching similar projects and navigating to them when the user taps them.
@@ -57,7 +57,7 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
       .map { response in response.projects?.nodes ?? [] }
       .map { nodes in nodes
         .compactMap { node in node?.fragments.projectCardFragment }
-        .compactMap { fragment in SimilarProjectFragment(fragment) }
+        .compactMap { fragment in ProjectCardProperties(fragment) }
       }
       .map { projects in .loaded(projects: projects) }
       .flatMapError { error in
@@ -67,8 +67,8 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 
   // MARK: - Inputs
 
-  private let (projectTappedSignal, projectTappedObserver) = Signal<any SimilarProject, Never>.pipe()
-  public func projectTapped(project: any SimilarProject) {
+  private let (projectTappedSignal, projectTappedObserver) = Signal<ProjectCardProperties, Never>.pipe()
+  public func projectTapped(project: ProjectCardProperties) {
     self.projectTappedObserver.send(value: project)
   }
 
@@ -79,7 +79,7 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
 
   // MARK: - Outputs
 
-  public let navigateToProject: Signal<any SimilarProject, Never>
+  public let navigateToProject: Signal<ProjectCardProperties, Never>
 
   public let similarProjectsProperty = MutableProperty<SimilarProjectsState>(.loading)
   public var similarProjects: Property<SimilarProjectsState> {

@@ -4,13 +4,13 @@ import Library
 import UIKit
 
 protocol SimilarProjectsCollectionViewDataSourceDelegate: AnyObject {
-  func didSelectProject(_ project: SimilarProject)
+  func didSelectProject(_ project: ProjectCardProperties)
 }
 
 final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
   weak var delegate: SimilarProjectsCollectionViewDataSourceDelegate?
 
-  func load(_ values: [any SimilarProject], isLoading: Bool = false) {
+  func load(_ values: [ProjectCardProperties], isLoading: Bool = false) {
     guard isLoading == false else {
       /// Sets `[(), ()]` in values so that two cells display to indicate that a collection is loading.
       return self.set(
@@ -31,7 +31,7 @@ final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as SimilarProjectsLoadingCollectionViewCell, value as Void):
       cell.configureWith(value: value)
-    case let (cell as SimilarProjectsCollectionViewCell, value as any SimilarProject):
+    case let (cell as SimilarProjectsCollectionViewCell, value as ProjectCardProperties):
       cell.configureWith(value: value)
       cell.delegate = self
     default:
@@ -41,7 +41,7 @@ final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
 }
 
 extension SimilarProjectsCollectionViewDataSource: SimilarProjectsCollectionViewCellDelegate {
-  func didSelectProject(_ project: any SimilarProject) {
+  func didSelectProject(_ project: ProjectCardProperties) {
     self.delegate?.didSelectProject(project)
   }
 }
