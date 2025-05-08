@@ -9,6 +9,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   case debugRemoteConfigFeatureFlags
   case debugPushNotifications
   case designSystem
+  case colors
   case paginatedScrollView
   case changeEnvironment
   case changeLanguage
@@ -33,6 +34,7 @@ public enum BetaToolsRow: Int, CaseIterable {
     case .debugRemoteConfigFeatureFlags: return "Remote Config Feature Flags"
     case .debugPushNotifications: return "Debug Push Notifications"
     case .designSystem: return "Design System"
+    case .colors: return "Semantic Colors"
     case .paginatedScrollView: return "Paginated Scroll View"
     case .changeEnvironment: return "Change Environment"
     case .changeLanguage: return "Change Language"
@@ -74,6 +76,7 @@ public protocol BetaToolsViewModelOutputs {
   var goToPushNotificationTools: Signal<(), Never> { get }
   var goToPaginatedScrollView: Signal<(), Never> { get }
   var goToDesignSystem: Signal<(), Never> { get }
+  var goToColors: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
   var showChangeEnvironmentSheetWithSourceViewIndex: Signal<Int, Never> { get }
@@ -174,6 +177,12 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.changeLanguage }
       .map { $0.rawValue }
 
+    self.goToColors =
+      self.didSelectBetaToolsRowProperty.signal
+        .skipNil()
+        .filter { $0 == BetaToolsRow.colors }
+        .ignoreValues()
+
     self.logoutWithParams = self.didUpdateEnvironmentProperty.signal
       .map {
         .defaults
@@ -218,6 +227,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let goToPushNotificationTools: Signal<(), Never>
   public let goToPaginatedScrollView: Signal<(), Never>
   public let goToDesignSystem: Signal<(), Never>
+  public let goToColors: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>
   public let logoutWithParams: Signal<DiscoveryParams, Never>
