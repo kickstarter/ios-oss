@@ -8,4 +8,9 @@ fragment PaymentSourceFragment on PaymentSource {
     type
     stripeCardId
   }
+  ... on BankAccount {
+    id
+    lastFour
+    bankName
+  }
 }

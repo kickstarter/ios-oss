@@ -15485,8 +15485,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeBankAccount() -> PaymentSource {
-        return PaymentSource(unsafeResultMap: ["__typename": "BankAccount"])
+      public static func makeBankAccount(id: String, lastFour: String, bankName: String? = nil) -> PaymentSource {
+        return PaymentSource(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
       }
 
       public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> PaymentSource {
@@ -17288,6 +17288,11 @@ public enum GraphAPI {
           type
           stripeCardId
         }
+        ... on BankAccount {
+          id
+          lastFour
+          bankName
+        }
       }
       """
 
@@ -17296,7 +17301,7 @@ public enum GraphAPI {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLTypeCase(
-          variants: ["CreditCard": AsCreditCard.selections],
+          variants: ["CreditCard": AsCreditCard.selections, "BankAccount": AsBankAccount.selections],
           default: [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           ]
@@ -17310,12 +17315,12 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public static func makeBankAccount() -> PaymentSourceFragment {
-      return PaymentSourceFragment(unsafeResultMap: ["__typename": "BankAccount"])
-    }
-
     public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> PaymentSourceFragment {
       return PaymentSourceFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+    }
+
+    public static func makeBankAccount(id: String, lastFour: String, bankName: String? = nil) -> PaymentSourceFragment {
+      return PaymentSourceFragment(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
     }
 
     public var __typename: String {
@@ -17440,6 +17445,78 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "stripeCardId")
+        }
+      }
+    }
+
+    public var asBankAccount: AsBankAccount? {
+      get {
+        if !AsBankAccount.possibleTypes.contains(__typename) { return nil }
+        return AsBankAccount(unsafeResultMap: resultMap)
+      }
+      set {
+        guard let newValue = newValue else { return }
+        resultMap = newValue.resultMap
+      }
+    }
+
+    public struct AsBankAccount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["BankAccount"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
+          GraphQLField("bankName", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: String, lastFour: String, bankName: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: String {
+        get {
+          return resultMap["id"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The last four digits of the account number.
+      public var lastFour: String {
+        get {
+          return resultMap["lastFour"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastFour")
+        }
+      }
+
+      /// The bank name if available.
+      public var bankName: String? {
+        get {
+          return resultMap["bankName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "bankName")
         }
       }
     }
