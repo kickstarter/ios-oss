@@ -16,6 +16,91 @@ internal final class SearchViewContollerTests: TestCase {
     super.tearDown()
   }
 
+  func testView_initialLoadingState() {
+    // This is a loading page with a spinner, so just test it in one language.
+    let language = Language.en
+
+    [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
+      withEnvironment(language: Language.en) {
+        let controller = Storyboard.Search.instantiate(SearchViewController.self)
+        controller.viewWillAppear(true)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_loadingMoreResults() {
+    // We're testing that the loading spinner is visible, no need to check translations.
+    let language = Language.en
+
+    [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
+
+      let searchResponse = [(
+        GraphAPI.SearchQuery.self,
+        GraphAPI.SearchQuery.Data.activeResults
+      )]
+
+      let controller = Storyboard.Search.instantiate(SearchViewController.self)
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+      // Load the first set of results
+      withEnvironment(
+        apiService: MockService(fetchGraphQLResponses: searchResponse), language: language
+      ) {
+        controller.viewWillAppear(true)
+
+        self.scheduler.run()
+      }
+
+      guard let numProjects = GraphAPI.SearchQuery.Data.activeResults.projects?.nodes?.count else {
+        XCTFail("Missing projects data")
+        return
+      }
+
+      let lastIndex = IndexPath(row: numProjects, section: 0)
+
+      // For some reason the scrolling is finicky on iPad, not sure why.
+      let scrollPosition: UITableView.ScrollPosition = device == .pad ? .bottom : .top
+
+      withEnvironment(apiService: MockService()) {
+        // Scroll to the bottom to trigger a new load
+        XCTAssertNoThrow(
+          controller.tableView.scrollToRow(
+            at: lastIndex,
+            at: scrollPosition,
+            animated: false
+          )
+        )
+
+        self.scheduler.run()
+
+        // Force a layout pass so the footer is displayed
+        parent.view.layoutIfNeeded()
+
+        // Scroll again so the footer is actually visible for the test
+        XCTAssertNoThrow(
+          controller.tableView.scrollToRow(
+            at: lastIndex,
+            at: scrollPosition,
+            animated: false
+          )
+        )
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testView_defaultState() {
     let searchResponse = [(
       GraphAPI.SearchQuery.self,
