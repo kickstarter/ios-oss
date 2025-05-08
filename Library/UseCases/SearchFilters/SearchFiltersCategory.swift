@@ -22,20 +22,21 @@ public enum SearchFiltersCategory: Equatable {
 }
 
 public func == (lhs: SearchFiltersCategory, rhs: SearchFiltersCategory) -> Bool {
-  if case .none = lhs, case .none = rhs {
+  switch (lhs, rhs) {
+  case (.none, .none):
     return true
-  }
 
-  if case let .rootCategory(leftCategory) = lhs,
-     case let .rootCategory(rightCategory) = rhs {
+  case let (.rootCategory(leftCategory), .rootCategory(rightCategory)):
     return leftCategory.id == rightCategory.id
-  }
 
-  if case let .subcategory(leftRootCategory, leftSubcategory) = lhs,
-     case let .subcategory(rightRootCategory, rightSubcategory) = rhs {
+  case let (
+    .subcategory(leftRootCategory, leftSubcategory),
+    .subcategory(rightRootCategory, rightSubcategory)
+  ):
     return leftRootCategory.id == rightRootCategory.id &&
       leftSubcategory.id == rightSubcategory.id
-  }
 
-  return false
+  default:
+    return false
+  }
 }

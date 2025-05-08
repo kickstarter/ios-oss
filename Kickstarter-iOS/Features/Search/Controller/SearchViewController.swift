@@ -232,11 +232,12 @@ internal final class SearchViewController: UITableViewController {
       viewModel: viewModel,
       onSelectedCategory: { [weak self] category in
 
-        if let category = category {
-          self?.viewModel.inputs.selectedCategory(.rootCategory(category))
-        } else {
+        guard let category = category else {
           self?.viewModel.inputs.selectedCategory(.none)
+          return
         }
+
+        self?.viewModel.inputs.selectedCategory(.rootCategory(category))
 
       },
       onResults: { [weak self] in
@@ -279,15 +280,16 @@ internal final class SearchViewController: UITableViewController {
         return
       }
 
-      if let parent = category.parent {
-        self?.viewModel.inputs.selectedCategory(
-          .subcategory(rootCategory: parent, subcategory: category)
-        )
-      } else {
+      guard let parent = category.parent else {
         self?.viewModel.inputs.selectedCategory(
           .rootCategory(category)
         )
+        return
       }
+
+      self?.viewModel.inputs.selectedCategory(
+        .subcategory(rootCategory: parent, subcategory: category)
+      )
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)
