@@ -277,7 +277,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       "Category pill should have placeholder text when no category is selected"
     )
 
-    self.useCase.inputs.selectedCategory(.subcategory(.art, .illustration))
+    self.useCase.inputs.selectedCategory(.subcategory(rootCategory: .art, subcategory: .illustration))
 
     guard let newCategoryPill = self.useCase.uiOutputs.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
@@ -352,7 +352,10 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.selectedSortOption(.popular)
     self.selectedSort.assertLastValue(.popular)
 
-    self.useCase.inputs.selectedCategory(.subcategory(.documentary, .documentarySpanish))
+    self.useCase.inputs.selectedCategory(.subcategory(
+      rootCategory: .documentary,
+      subcategory: .documentarySpanish
+    ))
     self.selectedCategory.assertLastValue(.documentarySpanish)
 
     self.useCase.inputs.selectedProjectState(.late_pledge)

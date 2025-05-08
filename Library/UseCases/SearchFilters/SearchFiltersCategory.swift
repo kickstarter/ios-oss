@@ -3,7 +3,7 @@ import KsApi
 public enum SearchFiltersCategory: Equatable {
   case none
   case rootCategory(KsApi.Category)
-  case subcategory(KsApi.Category, KsApi.Category)
+  case subcategory(rootCategory: KsApi.Category, subcategory: KsApi.Category)
 
   public var name: String? {
     return self.category?.name
