@@ -225,13 +225,20 @@ internal final class SearchViewController: UITableViewController {
 
     let viewModel = FilterCategoryViewModel_PhaseOne<KsApi.Category>(
       with: sheet.category.categories,
-      selectedCategory: self.viewModel.outputs.selectedFilters.category
+      selectedCategory: self.viewModel.outputs.selectedFilters.category.category
     )
 
     let filterView = FilterCategoryView_PhaseOne(
       viewModel: viewModel,
       onSelectedCategory: { [weak self] category in
-        self?.viewModel.inputs.selectedCategory(category)
+
+        guard let category = category else {
+          self?.viewModel.inputs.selectedCategory(.none)
+          return
+        }
+
+        self?.viewModel.inputs.selectedCategory(.rootCategory(category))
+
       },
       onResults: { [weak self] in
         self?.dismiss(animated: true)
@@ -267,7 +274,22 @@ internal final class SearchViewController: UITableViewController {
       self?.viewModel.inputs.selectedProjectState(state)
     }
     filterView.onSelectedCategory = { [weak self] category in
-      self?.viewModel.inputs.selectedCategory(category)
+
+      guard let category = category else {
+        self?.viewModel.inputs.selectedCategory(.none)
+        return
+      }
+
+      guard let parent = category.parent else {
+        self?.viewModel.inputs.selectedCategory(
+          .rootCategory(category)
+        )
+        return
+      }
+
+      self?.viewModel.inputs.selectedCategory(
+        .subcategory(rootCategory: parent, subcategory: category)
+      )
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)

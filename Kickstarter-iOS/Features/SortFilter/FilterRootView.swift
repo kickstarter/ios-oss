@@ -41,7 +41,7 @@ struct FilterRootView: View {
         Text(Strings.Category())
           .font(InterFont.headingLG.swiftUIFont())
           .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        if let selectedCategory = self.selectedFilters.category?.name {
+        if let selectedCategory = self.selectedFilters.category.name {
           Text(selectedCategory)
             .font(InterFont.bodyMD.swiftUIFont())
             .foregroundStyle(Colors.Text.secondary.swiftUIColor())
@@ -88,7 +88,7 @@ struct FilterRootView: View {
     FilterCategoryView(
       viewModel: FilterCategoryViewModel(
         with: self.filterOptions.category.categories,
-        selectedCategory: self.selectedFilters.category
+        selectedCategory: self.selectedFilters.category.category
       ),
       onSelectedCategory: self.onSelectedCategory
     )
