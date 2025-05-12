@@ -36,7 +36,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     }
 
     comments.forEach { comment in
-      guard comment.isDeleted == false else {
+      if comment.isDeletedOrFlagged {
         self.appendRow(
           value: comment,
           cellClass: CommentRemovedCell.self,

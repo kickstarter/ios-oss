@@ -40,7 +40,10 @@ public enum PostCommentMutationTemplate {
           "replies": [
             "__typename": "CommentConnection",
             "totalCount": 0
-          ]
+          ],
+          "hasFlaggings": false,
+          "removedPerGuidelines": false,
+          "sustained": false
         ]
       ]
     ]

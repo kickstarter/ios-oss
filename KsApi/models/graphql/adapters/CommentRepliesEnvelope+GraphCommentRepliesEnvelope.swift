@@ -8,15 +8,19 @@ extension CommentRepliesEnvelope {
   static func commentRepliesEnvelope(
     from data: GraphAPI.FetchCommentRepliesQuery.Data
   ) -> CommentRepliesEnvelope? {
-    guard let parentCommentFragment = data.comment?.fragments.commentWithRepliesFragment,
-          let parentComment = Comment.comment(from: parentCommentFragment),
-          let repliesData = parentCommentFragment.replies else {
+    guard let parentCommentFragment = data.comment?.fragments.commentWithRepliesFragment?.fragments
+      .commentBaseFragment,
+      let repliesData = data.comment?.fragments.commentWithRepliesFragment?.replies,
+      let parentComment = Comment.comment(from: parentCommentFragment, replyCount: repliesData.totalCount)
+    else {
       return nil
     }
 
     let replies = repliesData.edges?
       .compactMap { $0?.node?.fragments.commentFragment }
-      .compactMap(Comment.comment(from:)) ?? []
+      .compactMap {
+        Comment.comment(from: $0.fragments.commentBaseFragment, replyCount: $0.replies?.totalCount)
+      } ?? []
 
     return CommentRepliesEnvelope(
       comment: parentComment,

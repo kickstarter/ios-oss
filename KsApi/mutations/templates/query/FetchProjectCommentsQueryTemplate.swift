@@ -51,7 +51,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 0
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -80,7 +83,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 1
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -109,7 +115,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 2
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -138,7 +147,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 1
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -167,7 +179,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 2
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -196,7 +211,10 @@ public enum FetchProjectCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 8
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }],
           "pageInfo": {

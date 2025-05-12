@@ -94,13 +94,7 @@ public final class CommentCellViewModel:
       }
       .map(URL.init)
 
-    self.body = comment.map {
-      if $0.author.isBlocked {
-        return Strings.This_user_has_been_blocked()
-      } else {
-        return $0.body
-      }
-    }
+    self.body = comment.map(getCommentBody)
 
     self.authorName = comment.map {
       if $0.author.isBlocked {
@@ -245,4 +239,56 @@ private func replyButtonHidden(isLoggedOut: Bool, isNotABackerCreatorOrCollabora
 
 private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
   return replyCount == 0
+}
+
+private func getCommentBody(_ comment: Comment) -> String {
+  if comment.author.isBlocked {
+    return Strings.This_user_has_been_blocked()
+  }
+
+  if comment.removedPerGuidelines {
+    return commentRemovedPerGuidelines()
+  }
+
+  if comment.isDeleted {
+    return commentDeletedText()
+  }
+
+  if comment.hasFlaggings && !comment.sustained {
+    return commentFlaggedText()
+  }
+
+  return comment.body
+}
+
+private func commentRemovedPerGuidelines() -> String {
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return ""
+  }
+
+  // FIXME: Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
+  return "This comment has been removed for violating <a href=\"\(communityGuidelinesLink)\">Kickstarter’s Community Guidelines.</a>"
+}
+
+private func commentDeletedText() -> String {
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return ""
+  }
+
+  return Strings.This_comment_has_been_removed_by_Kickstarter() + " " + Strings
+    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
+}
+
+private func commentFlaggedText() -> String {
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return ""
+  }
+
+  return Strings
+    .This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines(
+      community_guidelines: communityGuidelinesLink
+    )
 }

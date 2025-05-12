@@ -30,6 +30,18 @@ extension CommentsEnvelope {
     totalCount: 4
   )
 
+  static let flaggedCommentsTemplate = CommentsEnvelope(
+    comments: [
+      Comment.commentUnderReviewTemplate,
+      Comment.commentRemovedPerGuidelinesTemplate,
+      Comment.deletedTemplate
+    ],
+    cursor: nil,
+    hasNextPage: false,
+    slug: "slug",
+    totalCount: 4
+  )
+
   internal static let emptyCommentsTemplate = CommentsEnvelope(
     comments: [],
     cursor: nil,

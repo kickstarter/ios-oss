@@ -108,7 +108,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -155,7 +158,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -202,7 +208,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -249,7 +258,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -296,7 +308,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -343,7 +358,10 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
               },
               {
@@ -398,9 +416,12 @@ public enum FetchCommentRepliesQueryTemplate {
                   "parentId": "Q29tbWVudC0zNDc0MDc3NA==",
                   "replies": {
                     "totalCount": 0
-                  }
+                  },
+                  "hasFlaggings": false,
+                  "removedPerGuidelines": false,
+                  "sustained": false
                 }
-              }
+              },
             ],
             "pageInfo": {
               "__typename": "PageInfo",
@@ -408,7 +429,10 @@ public enum FetchCommentRepliesQueryTemplate {
               "startCursor": "Mg=="
             },
             "totalCount": 8
-          }
+          },
+          "hasFlaggings": false,
+          "removedPerGuidelines": false,
+          "sustained": false
         }
     }
     """

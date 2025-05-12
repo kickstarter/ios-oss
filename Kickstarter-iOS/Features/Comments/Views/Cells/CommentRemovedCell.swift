@@ -71,7 +71,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
 
     _ = self.commentTextView
       |> tappableLinksViewStyle
-      |> \.attributedText .~ attributedTextCommentRemoved()
 
     self.viewModel.inputs.bindStyles()
   }
@@ -117,6 +116,12 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
         self.delegate?.commentRemovedCell(self, didTapURL: url)
       }
+
+    self.viewModel.outputs.body
+      .observeForUI()
+      .observeValues { body in
+        self.commentTextView.attributedText = attributedText(body)
+      }
   }
 }
 
@@ -130,47 +135,26 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 
 // MARK: - Functions
 
-private func attributedTextCommentRemoved() -> NSAttributedString {
-  let regularFontAttribute: String.Attributes = [
+private func attributedText(_ text: String) -> NSAttributedString? {
+  let attributes: [NSAttributedString.Key: Any] = [
     .font: UIFont.ksr_callout(),
-    .foregroundColor: UIColor.ksr_support_400
-  ]
-  let coloredFontAttribute: String.Attributes = [
-    .font: UIFont.ksr_callout(),
-    .foregroundColor: UIColor.ksr_create_700,
-    .underlineStyle: 0
+    .foregroundColor: UIColor.ksr_support_400,
+    .underlineStyle: false
   ]
 
-  let removedCommentAttributedString = NSMutableAttributedString(
-    string: Strings.This_comment_has_been_removed_by_Kickstarter(),
-    attributes: regularFontAttribute
-  )
-
-  guard let communityGuidelinesLink = HelpType.community
-    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
-    return removedCommentAttributedString
-  }
-
-  let communityGuidelinesString = Strings
-    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
-
-  guard let communityGuidelinesAttributedString = try? NSMutableAttributedString(
-    data: Data(communityGuidelinesString.utf8),
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(text.utf8),
     options: [
       .documentType: NSAttributedString.DocumentType.html,
       .characterEncoding: String.Encoding.utf8.rawValue
     ],
     documentAttributes: nil
-  ) else { return removedCommentAttributedString }
+  ) else { return nil }
 
-  let fullRange = (communityGuidelinesAttributedString.string as NSString)
-    .range(of: communityGuidelinesAttributedString.string)
-  communityGuidelinesAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+  attributedString.addAttributes(attributes, range: fullRange)
 
-  let combinedString = removedCommentAttributedString + NSAttributedString(string: " ") +
-    communityGuidelinesAttributedString
-
-  return combinedString
+  return attributedString
 }
 
 // MARK: - UITextViewDelegate
