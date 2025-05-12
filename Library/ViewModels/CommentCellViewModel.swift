@@ -111,9 +111,12 @@ public final class CommentCellViewModel:
       status.takeWhen(self.bindStylesProperty.signal)
     )
 
-    self.postTime = comment.map {
-      Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
-    }
+    self.postTime = comment
+      .map { $0.createdAt }
+      .skipNil()
+      .map { createdAt -> String in
+        Format.date(secondsInUTC: createdAt, dateStyle: .medium, timeStyle: .short)
+      }
 
     self.postedButtonIsHidden = self.commentStatus.map { $0 != .retrySuccess }
 
@@ -237,7 +240,7 @@ private func replyButtonHidden(isLoggedOut: Bool, isNotABackerCreatorOrCollabora
   return isLoggedOut || isNotABackerCreatorOrCollaborator
 }
 
-private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
+private func viewRepliesStackViewHidden(_ replyCount: Int?) -> Bool {
   return replyCount == 0
 }
 
@@ -254,7 +257,7 @@ private func getCommentBody(_ comment: Comment) -> String {
     return commentDeletedText()
   }
 
-  if comment.hasFlaggings && !comment.sustained {
+  if comment.isFlagged {
     return commentFlaggedText()
   }
 
@@ -267,7 +270,7 @@ private func commentRemovedPerGuidelines() -> String {
     return ""
   }
 
-  // FIXME: Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
+  // FIXME: MBL-2428 - Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
   return "This comment has been removed for violating <a href=\"\(communityGuidelinesLink)\">Kickstarter’s Community Guidelines.</a>"
 }
 

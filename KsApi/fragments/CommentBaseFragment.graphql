@@ -1,6 +1,10 @@
 fragment CommentBaseFragment on Comment {
   author {
-    ...UserFragment
+    id
+    imageUrl(width: 200)
+    isBlocked
+    isCreator
+    name
   }
   authorBadges
   body

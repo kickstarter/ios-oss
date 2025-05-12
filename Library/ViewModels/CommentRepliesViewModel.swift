@@ -164,8 +164,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
           .fetchCommentReplies(
             id: comment.id,
             cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit,
-            withStoredCards: false
+            limit: CommentRepliesEnvelope.paginationLimit
           )
       },
       requestFromCursor: { comment, cursor in
@@ -173,8 +172,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
           .fetchCommentReplies(
             id: comment.id,
             cursor: cursor,
-            limit: CommentRepliesEnvelope.paginationLimit,
-            withStoredCards: false
+            limit: CommentRepliesEnvelope.paginationLimit
           )
       },
       // only return new pages, we'll concat them ourselves

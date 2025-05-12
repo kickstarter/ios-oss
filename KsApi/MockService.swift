@@ -810,8 +810,7 @@
     func fetchProjectComments(
       slug: String,
       cursor: String?,
-      limit: Int?,
-      withStoredCards: Bool
+      limit: Int?
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
@@ -820,8 +819,7 @@
       let fetchProjectCommentsQuery = GraphAPI.FetchProjectCommentsQuery(
         slug: slug,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       )
 
       return client
@@ -831,8 +829,7 @@
     func fetchUpdateComments(
       id: String,
       cursor: String?,
-      limit: Int?,
-      withStoredCards: Bool
+      limit: Int?
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
@@ -841,8 +838,7 @@
       let fetchUpdateCommentsQuery = GraphAPI.FetchUpdateCommentsQuery(
         postId: id,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       )
 
       return client
@@ -852,8 +848,7 @@
     func fetchCommentReplies(
       id: String,
       cursor: String?,
-      limit: Int,
-      withStoredCards: Bool
+      limit: Int
     ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
@@ -862,8 +857,7 @@
       let fetchCommentRepliesQuery = GraphAPI.FetchCommentRepliesQuery(
         commentId: id,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       )
 
       return client

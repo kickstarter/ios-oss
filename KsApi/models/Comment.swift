@@ -4,11 +4,11 @@ public struct Comment {
   public var author: Author
   public var authorBadges: [AuthorBadge]
   public var body: String
-  public let createdAt: TimeInterval
+  public let createdAt: TimeInterval?
   public var id: String
   public var isDeleted: Bool
   public var parentId: String?
-  public var replyCount: Int
+  public var replyCount: Int?
   public var hasFlaggings: Bool
   public var removedPerGuidelines: Bool
   public var sustained: Bool
@@ -98,6 +98,10 @@ extension Comment {
   public var isDeletedOrFlagged: Bool {
     return self.isDeleted
       || self.removedPerGuidelines
-      || self.hasFlaggings && !self.sustained
+      || self.isFlagged
+  }
+
+  public var isFlagged: Bool {
+    self.hasFlaggings && !self.sustained
   }
 }

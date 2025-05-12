@@ -6,7 +6,7 @@ extension Comment {
    */
   static func comment(from commentBaseFragment: GraphAPI.CommentBaseFragment, replyCount: Int?) -> Comment? {
     guard
-      let author = commentBaseFragment.author?.fragments.userFragment,
+      let author = commentBaseFragment.author,
       let decomposedAuthorId = decompose(id: author.id)
     else { return nil }
 
@@ -26,11 +26,11 @@ extension Comment {
       author: commentAuthor,
       authorBadges: authorBadges,
       body: commentBaseFragment.body,
-      createdAt: commentBaseFragment.createdAt.flatMap(TimeInterval.init) ?? 0,
+      createdAt: commentBaseFragment.createdAt.flatMap(TimeInterval.init),
       id: commentBaseFragment.id,
       isDeleted: commentBaseFragment.deleted,
       parentId: commentBaseFragment.parentId,
-      replyCount: replyCount ?? 0,
+      replyCount: replyCount,
       hasFlaggings: commentBaseFragment.hasFlaggings,
       removedPerGuidelines: commentBaseFragment.removedPerGuidelines,
       sustained: commentBaseFragment.sustained,

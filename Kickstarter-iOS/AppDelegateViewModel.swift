@@ -568,8 +568,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .fetchCommentReplies(
             id: commentId,
             cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit,
-            withStoredCards: false
+            limit: CommentRepliesEnvelope.paginationLimit
           )
           .demoteErrors()
           .observeForUI()
@@ -669,8 +668,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .fetchCommentReplies(
             id: commentId,
             cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit,
-            withStoredCards: false
+            limit: CommentRepliesEnvelope.paginationLimit
           )
           .demoteErrors()
           .observeForUI()

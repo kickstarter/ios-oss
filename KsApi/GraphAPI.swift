@@ -6900,7 +6900,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      mutation PostComment($input: PostCommentInput!, $withStoredCards: Boolean = false) {
+      mutation PostComment($input: PostCommentInput!) {
         createComment(input: $input) {
           __typename
           comment {
@@ -6917,22 +6917,17 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentFragment.fragmentDefinition)
       document.append("\n" + CommentBaseFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
 
     public var input: PostCommentInput
-    public var withStoredCards: Bool?
 
-    public init(input: PostCommentInput, withStoredCards: Bool? = nil) {
+    public init(input: PostCommentInput) {
       self.input = input
-      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["input": input, "withStoredCards": withStoredCards]
+      return ["input": input]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -9357,7 +9352,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchCommentReplies($commentId: ID!, $cursor: String, $limit: Int!, $withStoredCards: Boolean!) {
+      query FetchCommentReplies($commentId: ID!, $cursor: String, $limit: Int!) {
         comment: node(id: $commentId) {
           __typename
           ...CommentWithRepliesFragment
@@ -9371,9 +9366,6 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentWithRepliesFragment.fragmentDefinition)
       document.append("\n" + CommentBaseFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + CommentFragment.fragmentDefinition)
       return document
     }
@@ -9381,17 +9373,15 @@ public enum GraphAPI {
     public var commentId: GraphQLID
     public var cursor: String?
     public var limit: Int
-    public var withStoredCards: Bool
 
-    public init(commentId: GraphQLID, cursor: String? = nil, limit: Int, withStoredCards: Bool) {
+    public init(commentId: GraphQLID, cursor: String? = nil, limit: Int) {
       self.commentId = commentId
       self.cursor = cursor
       self.limit = limit
-      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["commentId": commentId, "cursor": cursor, "limit": limit, "withStoredCards": withStoredCards]
+      return ["commentId": commentId, "cursor": cursor, "limit": limit]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -11113,7 +11103,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectComments($slug: String!, $cursor: String, $limit: Int, $withStoredCards: Boolean!) {
+      query FetchProjectComments($slug: String!, $cursor: String, $limit: Int) {
         project(slug: $slug) {
           __typename
           comments(after: $cursor, first: $limit) {
@@ -11144,26 +11134,21 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentFragment.fragmentDefinition)
       document.append("\n" + CommentBaseFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
 
     public var slug: String
     public var cursor: String?
     public var limit: Int?
-    public var withStoredCards: Bool
 
-    public init(slug: String, cursor: String? = nil, limit: Int? = nil, withStoredCards: Bool) {
+    public init(slug: String, cursor: String? = nil, limit: Int? = nil) {
       self.slug = slug
       self.cursor = cursor
       self.limit = limit
-      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["slug": slug, "cursor": cursor, "limit": limit, "withStoredCards": withStoredCards]
+      return ["slug": slug, "cursor": cursor, "limit": limit]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -12475,7 +12460,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int, $withStoredCards: Boolean!) {
+      query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int) {
         post(id: $postId) {
           __typename
           ... on FreeformPost {
@@ -12507,26 +12492,21 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentFragment.fragmentDefinition)
       document.append("\n" + CommentBaseFragment.fragmentDefinition)
-      document.append("\n" + UserFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
-      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
 
     public var postId: GraphQLID
     public var cursor: String?
     public var limit: Int?
-    public var withStoredCards: Bool
 
-    public init(postId: GraphQLID, cursor: String? = nil, limit: Int? = nil, withStoredCards: Bool) {
+    public init(postId: GraphQLID, cursor: String? = nil, limit: Int? = nil) {
       self.postId = postId
       self.cursor = cursor
       self.limit = limit
-      self.withStoredCards = withStoredCards
     }
 
     public var variables: GraphQLMap? {
-      return ["postId": postId, "cursor": cursor, "limit": limit, "withStoredCards": withStoredCards]
+      return ["postId": postId, "cursor": cursor, "limit": limit]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -16007,7 +15987,11 @@ public enum GraphAPI {
         __typename
         author {
           __typename
-          ...UserFragment
+          id
+          imageUrl(width: 200)
+          isBlocked
+          isCreator
+          name
         }
         authorBadges
         body
@@ -16163,7 +16147,11 @@ public enum GraphAPI {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(UserFragment.self),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("imageUrl", arguments: ["width": 200], type: .nonNull(.scalar(String.self))),
+          GraphQLField("isBlocked", type: .scalar(Bool.self)),
+          GraphQLField("isCreator", type: .scalar(Bool.self)),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -16171,6 +16159,10 @@ public enum GraphAPI {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, imageUrl: String, isBlocked: Bool? = nil, isCreator: Bool? = nil, name: String) {
+        self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isBlocked": isBlocked, "isCreator": isCreator, "name": name])
       }
 
       public var __typename: String {
@@ -16182,29 +16174,52 @@ public enum GraphAPI {
         }
       }
 
-      public var fragments: Fragments {
+      public var id: GraphQLID {
         get {
-          return Fragments(unsafeResultMap: resultMap)
+          return resultMap["id"]! as! GraphQLID
         }
         set {
-          resultMap += newValue.resultMap
+          resultMap.updateValue(newValue, forKey: "id")
         }
       }
 
-      public struct Fragments {
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
+      /// The user's avatar.
+      public var imageUrl: String {
+        get {
+          return resultMap["imageUrl"]! as! String
         }
+        set {
+          resultMap.updateValue(newValue, forKey: "imageUrl")
+        }
+      }
 
-        public var userFragment: UserFragment {
-          get {
-            return UserFragment(unsafeResultMap: resultMap)
-          }
-          set {
-            resultMap += newValue.resultMap
-          }
+      /// Is user blocked by current user
+      public var isBlocked: Bool? {
+        get {
+          return resultMap["isBlocked"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "isBlocked")
+        }
+      }
+
+      /// Whether a user is a creator of any project
+      public var isCreator: Bool? {
+        get {
+          return resultMap["isCreator"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "isCreator")
+        }
+      }
+
+      /// The user's provided name.
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
         }
       }
     }

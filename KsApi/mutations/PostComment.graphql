@@ -1,4 +1,4 @@
-mutation PostComment($input: PostCommentInput!, $withStoredCards: Boolean = false) {
+mutation PostComment($input: PostCommentInput!) {
   createComment(input: $input) {
     comment {
       ...CommentFragment
