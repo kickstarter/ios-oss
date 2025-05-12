@@ -20,13 +20,9 @@ internal final class SearchResultsCountCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value count: Int) {
-    let nf = NumberFormatter()
-    nf.usesGroupingSeparator = true
-    guard let formattedCount = nf.string(from: NSNumber(integerLiteral: count)) else {
-      self.titleLabel.text = nil
-      return
-    }
-
+    let formattedCount = Format.wholeNumber(count)
+    
+    //TODO: Use translated strings (see #31242)
     if count == 1 {
       self.titleLabel.text = "1 result"
     } else {
