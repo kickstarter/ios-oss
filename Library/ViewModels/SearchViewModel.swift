@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias SearchResultCard = any BackerDashboardProjectCellViewModel.ProjectCellModel
+public typealias SearchResultCard = ProjectCardProperties
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
 
 public protocol SearchViewModelInputs {
@@ -38,7 +38,7 @@ public protocol SearchViewModelInputs {
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
 
   /// Call this when the user selects a new category.
-  func selectedCategory(_ category: KsApi.Category?)
+  func selectedCategory(_ category: SearchFiltersCategory)
 
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
@@ -129,7 +129,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedState
     )
     .map { query, sort, category, state in
-      DiscoveryParams.withQuery(query, sort: sort, category: category, state: state)
+      DiscoveryParams.withQuery(query, sort: sort, category: category.category, state: state)
     }
 
     // Every time the user changes their query, sort or filters, we set an empty
@@ -217,10 +217,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .skipRepeats()
 
     self.projects = searchResults
-      .map { (nodes: [
-        SearchResult
-      ]) -> [GraphAPI.BackerDashboardProjectCellFragment] in
-        nodes.map { $0.fragments.backerDashboardProjectCellFragment }
+      .map { (nodes: [SearchResult]) -> [SearchResultCard] in
+        nodes.compactMap { node in
+          let fragment = node.fragments.projectCardFragment
+          return ProjectCardProperties(fragment)
+        }
       }
 
     let shouldShowEmptyState = Signal.merge(
@@ -423,7 +424,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     return self.searchFiltersUseCase.showFilters
   }
 
-  public func selectedCategory(_ category: KsApi.Category?) {
+  public func selectedCategory(_ category: SearchFiltersCategory) {
     self.searchFiltersUseCase.selectedCategory(category)
   }
 
@@ -454,5 +455,29 @@ private func refTag(query: String, projects: [SearchResult], project: SearchResu
     return RefTag.searchPopular
   } else {
     return RefTag.search
+  }
+}
+
+private struct ProjectCardPropertiesProjectCellModel: BackerDashboardProjectCellViewModel.ProjectCellModel {
+  private let properties: ProjectCardProperties
+  init(_ properties: ProjectCardProperties) {
+    self.properties = properties
+  }
+
+  var name: String { self.properties.name }
+  var state: KsApi.Project.State { self.properties.state }
+  var imageURL: String? { self.properties.image.url?.absoluteString }
+  var fundingProgress: Float { Float(self.properties.percentFunded) / 100 }
+  var percentFunded: Int { self.properties.percentFunded }
+  var displayPrelaunch: Bool? { self.properties.shouldDisplayPrelaunch }
+  var prelaunchActivated: Bool? { self.properties.isPrelaunchActivated }
+  var launchedAt: TimeInterval? { self.properties.launchedAt?.timeIntervalSince1970 }
+  var deadline: TimeInterval? { self.properties.deadlineAt?.timeIntervalSince1970 }
+  var isStarred: Bool? { self.properties.isStarred }
+}
+
+extension ProjectCardProperties: BackerDashboardProjectCellViewModel.HasProjectCellModel {
+  public var projectCellModel: any BackerDashboardProjectCellViewModel.ProjectCellModel {
+    ProjectCardPropertiesProjectCellModel(self)
   }
 }

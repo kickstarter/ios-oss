@@ -97,7 +97,7 @@ public protocol ProjectPageViewModelInputs {
   func viewWillTransition()
 
   /// Call when a similar project is tapped.
-  func similarProjectTapped(project: any SimilarProject)
+  func similarProjectTapped(project: ProjectCardProperties)
 }
 
 public protocol ProjectPageViewModelOutputs {
@@ -201,7 +201,7 @@ public protocol ProjectPageViewModelOutputs {
   var similarProjects: Property<SimilarProjectsState> { get }
 
   /// Signal that emits when a user taps on a similar project.
-  var navigateToSimilarProject: Signal<any SimilarProject, Never> { get }
+  var navigateToSimilarProject: Signal<ProjectCardProperties, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -836,7 +836,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
   private let similarProjectsUseCase = SimilarProjectsUseCase()
 
-  public func similarProjectTapped(project: any SimilarProject) {
+  public func similarProjectTapped(project: ProjectCardProperties) {
     self.similarProjectsUseCase.projectTapped(project: project)
   }
 
@@ -844,7 +844,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.similarProjectsUseCase.similarProjects
   }
 
-  public var navigateToSimilarProject: Signal<any SimilarProject, Never> {
+  public var navigateToSimilarProject: Signal<ProjectCardProperties, Never> {
     self.similarProjectsUseCase.navigateToProject
   }
 }
