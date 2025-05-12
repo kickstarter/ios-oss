@@ -10,6 +10,16 @@ public struct SearchResults {
   public let isProjectsTitleVisible: Bool
   public let count: Int
   public let projects: [BackerDashboardProjectCellViewModel.ProjectCellModel]
+
+  public init(
+    isProjectsTitleVisible: Bool,
+    count: Int,
+    projects: [BackerDashboardProjectCellViewModel.ProjectCellModel]
+  ) {
+    self.isProjectsTitleVisible = isProjectsTitleVisible
+    self.count = count
+    self.projects = projects
+  }
 }
 
 public protocol SearchViewModelInputs {
@@ -359,7 +369,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       SearchResults(
         isProjectsTitleVisible: isProjectsTitleVisible,
         count: resultCount,
-        projects: projects.map({$0.projectCellModel})
+        projects: projects.map { $0.projectCellModel }
       )
     }.merge(with: emptyResultsOnFirstAppearance)
   }

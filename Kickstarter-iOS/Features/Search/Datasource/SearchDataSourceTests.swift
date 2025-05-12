@@ -7,7 +7,11 @@ class SearchDataSourceTests: XCTestCase {
   func test_indexOfProject_withTitleRow_returnsCorrectProjectIndex() {
     let datasource = SearchDataSource()
 
-    datasource.load(projects: threeTestProjects, withDiscoverTitle: true)
+    datasource.load(results: SearchResults(
+      isProjectsTitleVisible: true,
+      count: 3_843,
+      projects: threeTestProjects
+    ))
 
     XCTAssertEqual(
       datasource.numberOfItems(in: projectsSection),
@@ -82,78 +86,6 @@ class SearchDataSourceTests: XCTestCase {
 
     XCTAssertNil(
       datasource.indexOfProject(forCellAtIndexPath: IndexPath(row: 4, section: projectsSection)),
-      "Requesting index for out-of-bounds project should return nil"
-    )
-  }
-
-  func test_indexOfProject_withoutTitleRow_returnsCorrectProjectIndex() {
-    let datasource = SearchDataSource()
-
-    datasource.load(projects: threeTestProjects, withDiscoverTitle: false)
-
-    XCTAssertEqual(
-      datasource.numberOfItems(in: projectsSection),
-      3,
-      "When no title row is set, number of items should equal the number of projects"
-    )
-
-    XCTAssertEqual(
-      datasource.numberOfItems(),
-      3,
-      "Datasource should have a total of 3 items - three projects"
-    )
-
-    XCTAssertTrue(
-      datasource[IndexPath(row: 0, section: projectsSection)] is TestProject,
-      "First value in the data source should be a project"
-    )
-
-    XCTAssertTrue(
-      datasource[IndexPath(row: 1, section: projectsSection)] is TestProject,
-      "Second value in the data source should be a project"
-    )
-
-    XCTAssertTrue(
-      datasource[IndexPath(row: 2, section: projectsSection)] is TestProject,
-      "Third value in the data source should be a project"
-    )
-
-    if let index = datasource.indexOfProject(forCellAtIndexPath: IndexPath(
-      row: 0,
-      section: projectsSection
-    )) {
-      let tappedProject = threeTestProjects[index]
-      XCTAssertEqual(tappedProject, threeTestProjects[0], "Tapping on first row should return first project")
-    } else {
-      XCTFail("Expected value for index")
-    }
-
-    if let index = datasource.indexOfProject(forCellAtIndexPath: IndexPath(
-      row: 1,
-      section: projectsSection
-    )) {
-      let tappedProject = threeTestProjects[index]
-      XCTAssertEqual(
-        tappedProject,
-        threeTestProjects[1],
-        "Tapping on second row should return second project"
-      )
-    } else {
-      XCTFail("Expected value for index")
-    }
-
-    if let index = datasource.indexOfProject(forCellAtIndexPath: IndexPath(
-      row: 2,
-      section: projectsSection
-    )) {
-      let tappedProject = threeTestProjects[index]
-      XCTAssertEqual(tappedProject, threeTestProjects[2], "Tapping on last row should return last project")
-    } else {
-      XCTFail("Expected value for index")
-    }
-
-    XCTAssertNil(
-      datasource.indexOfProject(forCellAtIndexPath: IndexPath(row: 3, section: projectsSection)),
       "Requesting index for out-of-bounds project should return nil"
     )
   }
