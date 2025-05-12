@@ -57,12 +57,12 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
 
-    XCTAssertEqual(input.amount, "105.00")
+    XCTAssertNil(input.amount)
     XCTAssertNil(input.applePay)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
-    XCTAssertEqual(input.locationId, "42")
+    XCTAssertNil(input.locationId)
     XCTAssertEqual(input.paymentSourceId, "6")
-    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+    XCTAssertNil(input.rewardIds)
   }
 
   func testUpdateBackingInput_UpdateBackingData_IsApplePay() {
@@ -89,12 +89,12 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
 
-    XCTAssertEqual(input.amount, "105.00")
+    XCTAssertNil(input.amount)
     XCTAssertEqual(input.applePay, applePayParams)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
-    XCTAssertEqual(input.locationId, "42")
+    XCTAssertNil(input.locationId)
     XCTAssertNil(input.paymentSourceId)
-    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+    XCTAssertNil(input.rewardIds)
   }
 
   func testUpdateBackingInput_UpdateBackingData_IsPLOT_IsPaymentSource() {
@@ -181,7 +181,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
 
-    XCTAssertNil(input.amount)
+    XCTAssertEqual(input.amount, "105.00")
     XCTAssertEqual(input.applePay, applePayParams)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertEqual(input.locationId, "42")
@@ -209,7 +209,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
 
-    XCTAssertNil(input.amount)
+    XCTAssertEqual(input.amount, "105.00")
     XCTAssertNil(input.applePay)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertEqual(input.locationId, "42")
