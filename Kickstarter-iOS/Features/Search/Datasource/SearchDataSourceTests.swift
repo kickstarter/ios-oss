@@ -89,12 +89,12 @@ class SearchDataSourceTests: XCTestCase {
       "Requesting index for out-of-bounds project should return nil"
     )
   }
-  
+
   func test_indexOfProject_withCountRow_returnsCorrectProjectIndex() {
     let datasource = SearchDataSource()
 
     datasource.load(results: SearchResults(
-      isProjectsTitleVisible: false, //If the project title is hidden, we'll show a count title row.
+      isProjectsTitleVisible: false, // If the project title is hidden, we'll show a count title row.
       count: 3_843,
       projects: threeTestProjects
     ))
@@ -175,7 +175,6 @@ class SearchDataSourceTests: XCTestCase {
       "Requesting index for out-of-bounds project should return nil"
     )
   }
-
 
   func test_indexOfProject_withEmptyState_returnsNil() {
     let datasource = SearchDataSource()

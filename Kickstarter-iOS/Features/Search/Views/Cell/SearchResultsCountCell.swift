@@ -21,8 +21,8 @@ internal final class SearchResultsCountCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value count: Int) {
     let formattedCount = Format.wholeNumber(count)
-    
-    //TODO: Use translated strings (see #31242)
+
+    // TODO: Use translated strings (see #31242)
     if count == 1 {
       self.titleLabel.text = "1 result"
     } else {
