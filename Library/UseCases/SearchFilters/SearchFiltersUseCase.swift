@@ -16,7 +16,7 @@ public protocol SearchFiltersUseCaseInputs {
   /// Call this when the user selects a new sort option.
   func selectedSortOption(_ sort: DiscoveryParams.Sort)
   /// Call this when the user selects a new category.
-  func selectedCategory(_ category: KsApi.Category?)
+  func selectedCategory(_ category: SearchFiltersCategory)
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
   /// Call this when the user taps reset on a filter modal
@@ -35,7 +35,7 @@ public protocol SearchFiltersUseCaseDataOutputs {
   /// The currently selected sort option. Defaults to `.popular`. Default value only sent after `initialSignal` occurs.
   var selectedSort: Signal<DiscoveryParams.Sort, Never> { get }
   /// The currently selected category. Defaults to nil. Default value only sent after `initialSignal` occurs.
-  var selectedCategory: Signal<KsApi.Category?, Never> { get }
+  var selectedCategory: Signal<SearchFiltersCategory, Never> { get }
   /// The currently selected project state. Defaults to `.all`. Default value only sent after `initialSignal` occurs.
   var selectedState: Signal<DiscoveryParams.State, Never> { get }
 }
@@ -113,7 +113,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     SearchFiltersUseCase
       .defaultSortOption
   )
-  fileprivate let selectedCategoryProperty = MutableProperty<KsApi.Category?>(nil)
+  fileprivate let selectedCategoryProperty = MutableProperty<SearchFiltersCategory>(.none)
   fileprivate let selectedStateProperty = MutableProperty<DiscoveryParams.State>(
     SearchFiltersUseCase
       .defaultStateOption
@@ -146,14 +146,14 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
-  public var selectedCategory: Signal<KsApi.Category?, Never>
+  public var selectedCategory: Signal<SearchFiltersCategory, Never>
   public var selectedState: Signal<DiscoveryParams.State, Never>
 
   public private(set) var selectedFilters: SelectedSearchFilters
 
   public func clearedQueryText() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
-    self.selectedCategoryProperty.value = nil
+    self.selectedCategoryProperty.value = .none
     self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
   }
 
@@ -161,10 +161,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     switch modal {
     case .allFilters:
       // Sort isn't a filter, so it's not included here.
-      self.selectedCategoryProperty.value = nil
+      self.selectedCategoryProperty.value = .none
       self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
     case .category:
-      self.selectedCategoryProperty.value = nil
+      self.selectedCategoryProperty.value = .none
     case .sort:
       self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     }
@@ -179,20 +179,17 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedSortProperty.value = sort
   }
 
-  public func selectedCategory(_ maybeCategory: KsApi.Category?) {
-    guard let category = maybeCategory else {
-      self.selectedCategoryProperty.value = nil
-      return
+  public func selectedCategory(_ selectedCategory: SearchFiltersCategory) {
+    if let category = selectedCategory.category {
+      let categories = self.categoriesProperty.value
+      let subcategories = categories.lazy.flatMap { $0.subcategories?.nodes ?? [] }
+      let exists = categories.contains(category) || subcategories.contains(category)
+      if !exists {
+        assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
+      }
     }
 
-    let categories = self.categoriesProperty.value
-    let subcategories = categories.lazy.flatMap { $0.subcategories?.nodes ?? [] }
-    let exists = categories.contains(category) || subcategories.contains(category)
-    if !exists {
-      assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
-    }
-
-    self.selectedCategoryProperty.value = category
+    self.selectedCategoryProperty.value = selectedCategory
   }
 
   public func selectedProjectState(_ state: DiscoveryParams.State) {

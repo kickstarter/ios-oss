@@ -141,12 +141,12 @@ internal final class SearchViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator : nil
-        if let headerView = _self.tableView.tableHeaderView {
-          headerView.frame = CGRect(
-            x: headerView.frame.origin.x,
-            y: headerView.frame.origin.y,
-            width: headerView.frame.size.width,
+        _self.tableView.tableFooterView = isAnimating ? _self.searchLoaderIndicator : nil
+        if let footerView = _self.tableView.tableFooterView {
+          footerView.frame = CGRect(
+            x: footerView.frame.origin.x,
+            y: footerView.frame.origin.y,
+            width: footerView.frame.size.width,
             height: Styles.grid(15)
           )
         }
@@ -225,13 +225,20 @@ internal final class SearchViewController: UITableViewController {
 
     let viewModel = FilterCategoryViewModel_PhaseOne<KsApi.Category>(
       with: sheet.category.categories,
-      selectedCategory: self.viewModel.outputs.selectedFilters.category
+      selectedCategory: self.viewModel.outputs.selectedFilters.category.category
     )
 
     let filterView = FilterCategoryView_PhaseOne(
       viewModel: viewModel,
       onSelectedCategory: { [weak self] category in
-        self?.viewModel.inputs.selectedCategory(category)
+
+        guard let category = category else {
+          self?.viewModel.inputs.selectedCategory(.none)
+          return
+        }
+
+        self?.viewModel.inputs.selectedCategory(.rootCategory(category))
+
       },
       onResults: { [weak self] in
         self?.dismiss(animated: true)

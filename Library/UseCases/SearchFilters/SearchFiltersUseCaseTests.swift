@@ -23,7 +23,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       categories: self.categoriesSignal
     )
 
-    self.useCase.dataOutputs.selectedCategory.observe(self.selectedCategory.observer)
+    self.useCase.dataOutputs.selectedCategory.map { $0.category }.observe(self.selectedCategory.observer)
     self.useCase.dataOutputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.dataOutputs.selectedState.observe(self.selectedState.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
@@ -112,7 +112,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     XCTAssertEqual(
       self.useCase.uiOutputs.selectedFilters.category,
-      nil,
+      .none,
       "No category should be selected by default"
     )
   }
@@ -174,7 +174,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.tappedButton(forFilterType: .category)
     self.showFilters.assertDidEmitValue()
 
-    self.useCase.inputs.selectedCategory(.art)
+    self.useCase.inputs.selectedCategory(.rootCategory(.art))
 
     guard let newCategory = self.selectedCategory.lastValue else {
       XCTFail("There should be a new selected category")
@@ -277,7 +277,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       "Category pill should have placeholder text when no category is selected"
     )
 
-    self.useCase.inputs.selectedCategory(.illustration)
+    self.useCase.inputs.selectedCategory(.subcategory(rootCategory: .art, subcategory: .illustration))
 
     guard let newCategoryPill = self.useCase.uiOutputs.selectedFilters.categoryPill else {
       XCTFail("Category pill is missing.")
@@ -313,7 +313,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedProjectState_isDefault()
 
     self.useCase.inputs.selectedSortOption(.popular)
-    self.useCase.inputs.selectedCategory(.art)
+    self.useCase.inputs.selectedCategory(.rootCategory(.art))
     self.useCase.inputs.selectedProjectState(.late_pledge)
 
     self.selectedSort.assertLastValue(.popular)
@@ -352,7 +352,10 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.selectedSortOption(.popular)
     self.selectedSort.assertLastValue(.popular)
 
-    self.useCase.inputs.selectedCategory(.documentarySpanish)
+    self.useCase.inputs.selectedCategory(.subcategory(
+      rootCategory: .documentary,
+      subcategory: .documentarySpanish
+    ))
     self.selectedCategory.assertLastValue(.documentarySpanish)
 
     self.useCase.inputs.selectedProjectState(.late_pledge)

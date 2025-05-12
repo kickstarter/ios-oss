@@ -10,7 +10,7 @@ public class SelectedSearchFilters: ObservableObject {
   public let objectWillChange = ObservableObjectPublisher()
 
   public private(set) var sort: DiscoveryParams.Sort
-  public private(set) var category: KsApi.Category?
+  public private(set) var category: SearchFiltersCategory
   public private(set) var projectState: DiscoveryParams.State
   public fileprivate(set) var pills: [SearchFilterPill]
 
@@ -19,7 +19,14 @@ public class SelectedSearchFilters: ObservableObject {
   }
 
   public var hasCategory: Bool {
-    return self.category != nil
+    switch self.category {
+    case .none:
+      return false
+    case .rootCategory:
+      return true
+    case .subcategory:
+      return true
+    }
   }
 
   public var hasProjectState: Bool {
@@ -32,7 +39,7 @@ public class SelectedSearchFilters: ObservableObject {
 
   internal init(
     sort: DiscoveryParams.Sort,
-    category: KsApi.Category? = nil,
+    category: SearchFiltersCategory,
     projectState: DiscoveryParams.State
   ) {
     self.sort = sort
@@ -45,7 +52,7 @@ public class SelectedSearchFilters: ObservableObject {
 
   internal func update(
     withSort sort: DiscoveryParams.Sort,
-    category: KsApi.Category?,
+    category: SearchFiltersCategory,
     projectState: DiscoveryParams.State
   ) {
     self.objectWillChange.send()
@@ -89,10 +96,12 @@ public class SelectedSearchFilters: ObservableObject {
       ))
     }
 
+    let selectedCategory = self.category.category
+
     pills.append(SearchFilterPill(
       isHighlighted: self.hasCategory,
       filterType: .category,
-      buttonType: .dropdown(self.category?.name ?? Strings.Category())
+      buttonType: .dropdown(selectedCategory?.name ?? Strings.Category())
     ))
 
     if featureSearchFilterByProjectStatusEnabled() {

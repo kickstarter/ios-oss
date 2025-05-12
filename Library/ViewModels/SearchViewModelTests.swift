@@ -262,7 +262,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and category pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.art)
+      self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
       if let sortPill = self.vm.outputs.selectedFilters.sortPill,
@@ -328,7 +328,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and category pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.art)
+      self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
       if let sortPill = self.vm.outputs.selectedFilters.sortPill,
@@ -395,7 +395,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and filter pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.art)
+      self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
       if let sortPill = self.vm.outputs.selectedFilters.sortPill,
@@ -464,7 +464,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and filter pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.art)
+      self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
       if let sortPill = self.vm.outputs.selectedFilters.sortPill,
@@ -825,11 +825,11 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertTrue(options.category.categories.count == 4, "Category sheet should have 4 options")
       XCTAssertTrue(
-        self.vm.outputs.selectedFilters.category == nil,
+        self.vm.outputs.selectedFilters.category == .none,
         "Category sheet should have empty option selected by default"
       )
 
-      self.vm.inputs.selectedCategory(.filmAndVideo)
+      self.vm.inputs.selectedCategory(.rootCategory(.filmAndVideo))
 
       self.hasProjects.assertLastValue(false, "Projects clear when new category filter is chosen")
       self.searchLoaderIndicatorIsAnimating.assertLastValue(
