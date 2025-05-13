@@ -91,6 +91,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePostCampaignPledgeEnabled()
   case .useKeychainForOAuthToken:
     return featureUseKeychainForOAuthTokenEnabled()
+  case .onboardingFlow:
+    return onboardingFlowEnabled()
   case .pledgedProjectsOverviewV2Enabled:
     return featurePledgedProjectsOverviewV2Enabled()
   case .pledgeOverTime:
