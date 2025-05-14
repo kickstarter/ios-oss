@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,10 +37,10 @@
                                     </connections>
                                 </switch>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" name="white"/>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" name="white"/>
                     <constraints>
                         <constraint firstItem="Cmu-c3-5lZ" firstAttribute="top" secondItem="7cu-CT-WhZ" secondAttribute="top" constant="6" id="58q-fN-MBn"/>
                         <constraint firstAttribute="trailing" secondItem="Cmu-c3-5lZ" secondAttribute="trailing" constant="12" id="MKs-M4-h4U"/>
@@ -50,15 +49,15 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItP-7t-eYl" userLabel="Top Line">
-                    <rect key="frame" x="0.0" y="20" width="375" height="1"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="0.5"/>
+                    <color key="backgroundColor" name="white"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="BOl-8T-w6z"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iXy-hG-gUz" userLabel="Line">
-                    <rect key="frame" x="0.0" y="590" width="375" height="1"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="0.0" y="590" width="375" height="0.5"/>
+                    <color key="backgroundColor" name="white"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="Yvz-31-0jq"/>
                     </constraints>
@@ -81,6 +80,7 @@
                     </subviews>
                 </stackView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="7cu-CT-WhZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="01L-5Z-Ywl"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iXy-hG-gUz" secondAttribute="trailing" id="0Ni-h3-MBO"/>
@@ -96,7 +96,6 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cE8-Gr-rvi" secondAttribute="trailing" constant="12" id="uGI-5y-2Wq"/>
                 <constraint firstItem="iXy-hG-gUz" firstAttribute="top" secondItem="7cu-CT-WhZ" secondAttribute="bottom" id="xhp-Um-iPw"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="primaryDescriptionLabel" destination="YVu-og-jIg" id="ypi-xo-XhU"/>
                 <outlet property="secondaryDescriptionLabel" destination="qch-mV-CcX" id="bsh-ZQ-vef"/>
@@ -105,6 +104,12 @@
                 <outletCollection property="separatorViews" destination="ItP-7t-eYl" collectionClass="NSMutableArray" id="sHc-J5-hlB"/>
                 <outletCollection property="separatorViews" destination="iXy-hG-gUz" collectionClass="NSMutableArray" id="XDg-Ma-EWQ"/>
             </connections>
+            <point key="canvasLocation" x="-26" y="-42"/>
         </view>
     </objects>
+    <resources>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>

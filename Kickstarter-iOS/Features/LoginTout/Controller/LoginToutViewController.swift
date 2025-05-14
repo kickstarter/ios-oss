@@ -70,6 +70,9 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Need a dark version of the background image for this page to work.
+    self.overrideUserInterfaceStyle = .light
+
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()

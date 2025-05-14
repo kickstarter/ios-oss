@@ -66,6 +66,8 @@ internal final class MessageDialogViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.cancelButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
@@ -112,4 +114,5 @@ extension MessageDialogViewController: UITextViewDelegate {
 
 private func applyBodyTextViewStyle(_ textView: UITextView) {
   textView.font = .ksr_body()
+  textView.backgroundColor = Colors.Background.Surface.primary.uiColor()
 }
