@@ -23,7 +23,7 @@ struct ChangeEmailView: View {
   var body: some View {
     GeometryReader { proxy in
       List {
-        Color(.ksr_support_100)
+        LegacyColors.ksr_support_100.swiftUIColor()
           .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .center)
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
@@ -52,7 +52,7 @@ struct ChangeEmailView: View {
             self.reactiveViewModel.warningMessageWithAlert.1
           )
           .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .leading)
-          .background(Color(.ksr_support_100))
+          .background(LegacyColors.ksr_support_100.swiftUIColor())
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
         }
@@ -63,7 +63,7 @@ struct ChangeEmailView: View {
               self.reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
             }
             .font(Font(UIFont.ksr_body()))
-            .foregroundColor(Color(.ksr_create_700))
+            .foregroundColor(LegacyColors.ksr_create_700.swiftUIColor())
             .padding(self.contentPadding)
             .disabled(self.showLoading)
 
@@ -73,7 +73,7 @@ struct ChangeEmailView: View {
           .listRowInsets(EdgeInsets())
         }
 
-        Color(.ksr_support_100)
+        LegacyColors.ksr_support_100.swiftUIColor()
           .frame(maxWidth: .infinity, maxHeight: self.minListRow, alignment: .center)
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
@@ -125,7 +125,7 @@ struct ChangeEmailView: View {
         .listRowInsets(EdgeInsets())
       }
       .navigationTitle(Strings.Change_email())
-      .background(Color(.ksr_support_100))
+      .background(LegacyColors.ksr_support_100.swiftUIColor())
       .listStyle(.plain)
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -179,7 +179,7 @@ struct ChangeEmailView: View {
             alignment: .leading
           )
           .font(Font(UIFont.ksr_body()))
-          .foregroundColor(Color(.ksr_support_700))
+          .foregroundColor(LegacyColors.ksr_support_700.swiftUIColor())
         Spacer()
 
         InputFieldUserInputView(
@@ -204,14 +204,14 @@ struct ChangeEmailView: View {
         SecureField(
           "",
           text: self.valueText,
-          prompt: Text(self.placeholderText).foregroundColor(Color(.ksr_support_400))
+          prompt: Text(self.placeholderText).foregroundColor(LegacyColors.ksr_support_400.swiftUIColor())
         )
       } else {
         TextField(
           "",
           text: self.valueText,
           prompt:
-          Text(self.placeholderText).foregroundColor(Color(.ksr_support_400))
+          Text(self.placeholderText).foregroundColor(LegacyColors.ksr_support_400.swiftUIColor())
         )
       }
     }
@@ -219,7 +219,8 @@ struct ChangeEmailView: View {
 
   @ViewBuilder
   private func warningLabel(text: String, _ alert: Bool) -> some View {
-    let textColor = alert ? Color(.ksr_alert) : Color(.ksr_support_400)
+    let textColor = alert ? LegacyColors.ksr_alert.swiftUIColor() : LegacyColors.ksr_support_400
+      .swiftUIColor()
 
     Label(text, systemImage: "exclamationmark.triangle.fill")
       .labelStyle(.titleOnly)

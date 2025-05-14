@@ -349,28 +349,28 @@ private func applyIncludedItemsTitleLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   applySectionTitleLabelStyle(label)
   label.text = Strings.project_view_pledge_includes()
-  label.textColor = UIColor.ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyEstimatedDeliveryTitleLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   applySectionTitleLabelStyle(label)
   label.text = Strings.Estimated_delivery()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyEstimatedShippingTitleLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   applySectionTitleLabelStyle(label)
   label.text = Strings.Estimated_Shipping()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyRewardLocationTitleLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   applySectionTitleLabelStyle(label)
   label.text = Strings.Reward_location()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyPillsViewStyle(_ view: PillsView) {
@@ -393,7 +393,7 @@ private func applyPriceStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applySectionBodyLabelStyle(_ label: UILabel) {
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_body()
 }
 
@@ -402,17 +402,17 @@ private func applyIncludedItemsStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyRewardTitleLabelStyle(_ label: UILabel) {
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_title2().bolded
 }
 
 private func applyMinimumPriceLabelStyle(_ label: UILabel) {
-  label.textColor = .ksr_create_700
+  label.textColor = LegacyColors.ksr_create_700.uiColor()
   label.font = UIFont.ksr_title3().bolded
 }
 
 private func applyMinimumPriceConversionLabelStyle(_ label: UILabel) {
-  label.textColor = .ksr_create_700
+  label.textColor = LegacyColors.ksr_create_700.uiColor()
   label.font = UIFont.ksr_caption1().bolded
 }
 

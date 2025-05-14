@@ -112,9 +112,9 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   public var textColor: UIColor {
     switch self {
     case .logout:
-      return .ksr_alert
+      return LegacyColors.ksr_alert.uiColor()
     default:
-      return .ksr_support_700
+      return LegacyColors.ksr_support_700.uiColor()
     }
   }
 }

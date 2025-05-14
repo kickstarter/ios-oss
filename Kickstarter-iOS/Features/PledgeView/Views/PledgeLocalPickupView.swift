@@ -61,7 +61,7 @@ final class PledgeLocalPickupView: UIView {
 
     _ = self.locationLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ .ksr_support_400
+      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
   }
 
   // MARK: - View model

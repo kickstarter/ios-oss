@@ -133,11 +133,11 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute: String.Attributes = [
     .font: UIFont.ksr_callout(),
-    .foregroundColor: UIColor.ksr_support_400
+    .foregroundColor: LegacyColors.ksr_support_400.uiColor()
   ]
   let coloredFontAttribute: String.Attributes = [
     .font: UIFont.ksr_callout(),
-    .foregroundColor: UIColor.ksr_create_700,
+    .foregroundColor: LegacyColors.ksr_create_700.uiColor(),
     .underlineStyle: 0
   ]
 

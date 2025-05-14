@@ -6,7 +6,7 @@ final class NumberFormatterTests: TestCase {
 
   let defaultAttributes: String.Attributes = [
     .font: UIFont.preferredFont(forTextStyle: .title1),
-    .foregroundColor: UIColor.ksr_black
+    .foregroundColor: LegacyColors.ksr_black.uiColor()
   ]
 
   let currencySymbolAttributes: String.Attributes = [

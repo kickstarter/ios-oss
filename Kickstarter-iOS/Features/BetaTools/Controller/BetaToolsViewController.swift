@@ -424,13 +424,13 @@ extension BetaToolsViewController: MFMailComposeViewControllerDelegate {
 private let detailLabelStyle: Library.LabelStyle = { label in
   label
     |> \.font .~ .ksr_headline(size: 15)
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.textAlignment .~ .right
 }
 
 private let titleLabelStyle: Library.LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font .~ .ksr_body()
 }

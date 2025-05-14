@@ -19,7 +19,7 @@ public extension UIBarButtonItem {
       target: target,
       action: selector
     )
-    bbi.tintColor = .ksr_create_700
+    bbi.tintColor = LegacyColors.ksr_create_700.uiColor()
     return bbi
   }
 
@@ -30,7 +30,7 @@ public extension UIBarButtonItem {
       target: target,
       action: selector
     )
-    bbi.tintColor = .ksr_create_700
+    bbi.tintColor = LegacyColors.ksr_create_700.uiColor()
     return bbi
   }
 }

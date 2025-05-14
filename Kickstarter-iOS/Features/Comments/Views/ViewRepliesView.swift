@@ -44,7 +44,7 @@ final class ViewRepliesView: UIView {
 
     _ = self.textLabel
       |> \.text %~ { _ in Strings.View_replies() }
-      |> \.textColor .~ UIColor.ksr_support_400
+      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> \.font .~ UIFont.ksr_callout(size: 14)
 
     _ = self.iconImageView

@@ -94,7 +94,7 @@ private let categoryLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_title3().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let descriptionLabelStyle: LabelStyle = { label in
@@ -102,7 +102,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

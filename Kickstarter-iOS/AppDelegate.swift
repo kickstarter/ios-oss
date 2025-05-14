@@ -247,7 +247,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.configUpdatedNotificationObserved()
       }
 
-    self.window?.tintColor = .ksr_create_700
+    self.window?.tintColor = LegacyColors.ksr_create_700.uiColor()
 
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,

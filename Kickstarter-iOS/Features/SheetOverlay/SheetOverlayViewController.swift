@@ -50,7 +50,7 @@ final class SheetOverlayViewController: UIViewController {
     self.childViewController.didMove(toParent: self)
 
     _ = self.view
-      |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
+      |> \.backgroundColor .~ LegacyColors.ksr_support_700.uiColor().withAlphaComponent(0.8)
   }
 
   /// Enables tap to dismiss

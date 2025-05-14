@@ -100,7 +100,10 @@ private struct BaseRowView: View {
         .resizable()
         .scaledToFit()
         .frame(width: 15, height: 15)
-        .foregroundColor(self.item.type == .parent ? Color(.ksr_create_700) : Color(.ksr_support_400))
+        .foregroundColor(
+          self.item.type == .parent ? LegacyColors.ksr_create_700
+            .swiftUIColor() : LegacyColors.ksr_support_400.swiftUIColor()
+        )
     }
   }
 }

@@ -20,9 +20,9 @@ internal final class DiscoverProjectsTitleCell: UITableViewCell, ValueCell {
       }
 
     _ = self.titleLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.text %~ { _ in
         Strings.activity_empty_state_logged_in_button()
       }

@@ -124,8 +124,8 @@ private func progressBarColorForProject(
 ) -> UIColor {
   switch project.state {
   case .live, .successful:
-    return .ksr_create_700
+    return LegacyColors.ksr_create_700.uiColor()
   default:
-    return .ksr_support_300
+    return LegacyColors.ksr_support_300.uiColor()
   }
 }

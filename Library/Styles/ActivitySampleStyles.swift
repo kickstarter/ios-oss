@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let activitySampleBackingTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_700
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
@@ -18,19 +18,19 @@ public let activitySampleCellStyle: (UITableViewCell) -> UITableViewCell = { cel
 }
 
 public let activitySampleFriendFollowLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectSubtitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_700
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
@@ -47,7 +47,7 @@ public let activitySampleStackViewStyle =
 
 public let activitySampleTitleLabelStyle =
   UILabel.lens.font .~ .ksr_footnote()
-    <> UILabel.lens.textColor .~ .ksr_support_400
+    <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.numberOfLines .~ 1
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.text %~ { _ in Strings.discovery_activity_sample_title_Since_your_last_visit() }

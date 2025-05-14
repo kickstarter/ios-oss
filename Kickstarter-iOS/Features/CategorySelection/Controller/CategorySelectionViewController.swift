@@ -315,7 +315,7 @@ extension CategorySelectionViewController: CategoryPillCellDelegate {
 
 private let skipButtonStyle: BarButtonStyle = { button in
   button
-    |> \.tintColor .~ .ksr_white
+    |> \.tintColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let headerViewStyle: ViewStyle = { view in
@@ -331,9 +331,9 @@ private let buttonStackViewStyle: StackViewStyle = { stackView in
 
 private let buttonViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.layoutMargins .~ .init(all: Styles.grid(2))
-    |> \.layer.shadowColor .~ UIColor.ksr_black.cgColor
+    |> \.layer.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
     |> \.layer.shadowOpacity .~ 0.12
     |> \.layer.shadowOffset .~ CGSize(width: 0, height: -1.0)
     |> \.layer.shadowRadius .~ CGFloat(1.0)
@@ -347,12 +347,12 @@ private let continueButtonStyle: ButtonStyle = { button in
 
 private let collectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let warningLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.ksr_alert
+    |> \.textColor .~ LegacyColors.ksr_alert.uiColor()
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping

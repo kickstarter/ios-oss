@@ -49,11 +49,11 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = titleLabels
-      ||> UILabel.lens.textColor .~ .ksr_support_400
+      ||> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       ||> UILabel.lens.font .~ .ksr_title1(size: 22)
 
     _ = rowStackViews.compactMap { $0.arrangedSubviews.first as? UILabel }
-      ||> UILabel.lens.textColor .~ .ksr_support_700
+      ||> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       ||> UILabel.lens.font .~ .ksr_body()
 
     _ = buttons

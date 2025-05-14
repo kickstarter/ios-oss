@@ -203,8 +203,8 @@ private let replyButtonStyle: ButtonStyle = { button in
     .title(for: .normal) %~ { _ in Strings.general_navigation_buttons_reply() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
-    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
     |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(-1))
     |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(leftRight: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
@@ -216,8 +216,8 @@ private let postedButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Posted() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "posted")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700
-    |> UIButton.lens.tintColor .~ UIColor.ksr_create_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_create_700.uiColor()
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

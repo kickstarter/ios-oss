@@ -70,6 +70,6 @@ private let headerStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 
 private let headerLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.textColor .~ UIColor.ksr_support_400
-    |> \.backgroundColor .~ UIColor.ksr_support_100
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }

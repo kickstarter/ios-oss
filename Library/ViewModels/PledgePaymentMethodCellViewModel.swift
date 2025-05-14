@@ -128,7 +128,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     self.checkmarkImageHidden = cardTypeIsAvailable.negate()
 
     self.lastFourLabelTextColor = cardTypeIsAvailable.map { cardTypeIsAvailable in
-      cardTypeIsAvailable ? UIColor.ksr_support_700 : UIColor.ksr_support_400
+      cardTypeIsAvailable ? LegacyColors.ksr_support_700.uiColor() : LegacyColors.ksr_support_400.uiColor()
     }
   }
 

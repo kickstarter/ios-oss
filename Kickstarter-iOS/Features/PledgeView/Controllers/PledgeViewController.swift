@@ -223,7 +223,7 @@ final class PledgeViewController: UIViewController,
   override func bindStyles() {
     super.bindStyles()
 
-    self.view.backgroundColor = UIColor.ksr_support_100
+    self.view.backgroundColor = LegacyColors.ksr_support_100.uiColor()
 
     applyTitleLabelStyle(self.titleLabel)
 
@@ -674,13 +674,13 @@ private func applyRootInsetStackViewStyle(_ stackView: UIStackView) {
 
 private func applyTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
-  label.textColor = UIColor.ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_title2().bolded
 }
 
 private func applySectionTitleLabelStyle(_ label: UILabel) {
   label.numberOfLines = 1
-  label.textColor = UIColor.ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_headline().bolded
 }
 

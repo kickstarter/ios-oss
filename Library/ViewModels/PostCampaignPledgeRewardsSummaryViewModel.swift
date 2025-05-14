@@ -259,7 +259,7 @@ private func attributedRewardCurrency(
   return NSAttributedString(
     string: currencyString,
     attributes: [
-      .foregroundColor: UIColor.ksr_support_400,
+      .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
       .font: UIFont.ksr_subhead().bolded
     ]
   )

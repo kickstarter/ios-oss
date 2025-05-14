@@ -331,7 +331,7 @@ private let tableViewStyle: TableViewStyle = { tableView in
   tableView
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
-    |> \.separatorColor .~ UIColor.ksr_support_200
+    |> \.separatorColor .~ LegacyColors.ksr_support_200.uiColor()
     |> \.separatorInset .~ .zero
 }
 

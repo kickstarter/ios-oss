@@ -139,30 +139,30 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
       self.deadlineSubtitleLabel
     ]
-      ||> UILabel.lens.textColor .~ .ksr_support_400
+      ||> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
 
     _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
-      |> UILabel.lens.textColor .~ .ksr_create_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
 
     _ = self.fundingSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
-      |> UILabel.lens.textColor .~ .ksr_create_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
 
     _ = self.cardView
       |> cardStyle()
 
     _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_support_300
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
 
     _ = self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_create_700
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_create_700.uiColor()
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_support_400
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.metadataLabel
       |> postcardMetadataLabelStyle
@@ -185,10 +185,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectNameAndBlurbLabel
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.projectStateSubtitleLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 1
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
@@ -212,7 +212,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
 
     _ = self.socialStackView
@@ -383,7 +383,7 @@ private let locationStackViewStyle: StackViewStyle = { stackView in
 private let locationLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 1
 }
@@ -391,6 +391,6 @@ private let locationLabelStyle: LabelStyle = { label in
 private let locationImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> UIImageView.lens.image .~ Library.image(named: "location-icon")
-    |> \.tintColor .~ .ksr_support_400
+    |> \.tintColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.contentMode .~ .scaleAspectFit
 }

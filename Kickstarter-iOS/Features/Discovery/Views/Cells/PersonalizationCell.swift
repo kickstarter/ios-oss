@@ -175,7 +175,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 private let containerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> \.backgroundColor .~ .ksr_trust_700
+    |> \.backgroundColor .~ LegacyColors.ksr_trust_700.uiColor()
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
     |> \.accessibilityLabel %~ { _ in Strings.Well_help_you_find_a_project_to_back() }
@@ -186,7 +186,7 @@ private let baseLabelStyle: LabelStyle = { label in
   label
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.textAlignment .~ .center
 }
 
@@ -216,7 +216,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
 
 private let dismissButtonStyle: ButtonStyle = { button in
   button
-    |> \.tintColor .~ UIColor.ksr_white
+    |> \.tintColor .~ LegacyColors.ksr_white.uiColor()
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
     |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Dismiss() }
 }

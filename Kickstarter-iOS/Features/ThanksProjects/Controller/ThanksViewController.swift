@@ -74,19 +74,19 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UITableView.lens.estimatedRowHeight .~ 550
 
     _ = self.thankYouLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.font .~ UIFont.ksr_title1(size: 36)
       |> UILabel.lens.text %~ { _ in Strings.Thank_you_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
     _ = self.backedLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
 
     _ = self.separatorView
-      |> UIView.lens.backgroundColor .~ .ksr_support_700
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_700.uiColor()
 
     _ = self.recommendationsLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 

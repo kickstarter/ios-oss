@@ -191,12 +191,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     super.bindStyles()
 
     _ = self.view |>
-      \.backgroundColor .~ .ksr_white
+      \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.tableView |> tableViewStyle
 
     _ = self.projectNavigationShadowView
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> dropShadowStyle(
         offset: .init(width: 0, height: 0),
         shadowOpacity: ProjectPageViewControllerStyles.Layout
@@ -304,8 +304,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           return
         }
 
-        defaultNavigationBarView.standardAppearance.shadowColor = .ksr_white
-        defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = .ksr_white
+        defaultNavigationBarView.standardAppearance.shadowColor = LegacyColors.ksr_white.uiColor()
+        defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = LegacyColors.ksr_white.uiColor()
       }
 
     self.viewModel.outputs.updateWatchProjectWithPrelaunchProjectState

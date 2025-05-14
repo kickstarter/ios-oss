@@ -287,7 +287,7 @@ private func applySubtitleLabelStyle(_ label: UILabel) {
   label.adjustsFontForContentSizeCategory = true
   label.numberOfLines = 0
   label.font = UIFont.ksr_caption1()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applySelectionIndicatorImageViewStyle(_ imageView: UIImageView) {
@@ -298,7 +298,7 @@ private func applyTermsOfUseStyle(_ button: UIButton) {
   button.configuration = {
     var config = UIButton.Configuration.borderless()
     config.contentInsets = Constants.contentInsets
-    config.baseForegroundColor = .ksr_create_700
+    config.baseForegroundColor = LegacyColors.ksr_create_700.uiColor()
     return config
   }()
 
@@ -306,7 +306,7 @@ private func applyTermsOfUseStyle(_ button: UIButton) {
 }
 
 private func applyTextColorByState(_ label: UILabel, isEnabled: Bool) {
-  label.textColor = isEnabled ? .ksr_black : .ksr_support_300
+  label.textColor = isEnabled ? LegacyColors.ksr_black.uiColor() : LegacyColors.ksr_support_300.uiColor()
 }
 
 /// Used when PLOT is loading to show a shimmering loading view instead of an option title. In this file so we can use the same spacing constants.

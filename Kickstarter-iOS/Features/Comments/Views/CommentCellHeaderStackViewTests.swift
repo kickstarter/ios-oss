@@ -18,7 +18,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.commentCellHeaderStackView.layer.backgroundColor = UIColor.ksr_white.cgColor
+    self.commentCellHeaderStackView.layer.backgroundColor = LegacyColors.ksr_white.uiColor().cgColor
     UIView.setAnimationsEnabled(false)
   }
 

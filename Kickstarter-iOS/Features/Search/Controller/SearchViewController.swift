@@ -92,16 +92,16 @@ internal final class SearchViewController: UITableViewController {
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
+      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
       |> UIButton.lens.titleLabel.font .~ .ksr_callout(size: 15)
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
     _ = self.searchBarContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_support_100
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self.searchIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_support_400
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UIImageView.lens.image .~ image(named: "search-icon")
 
     _ = self.searchStackView
@@ -114,11 +114,11 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchTextField
       |> UITextField.lens.font .~ .ksr_body(size: 14)
-      |> UITextField.lens.textColor .~ .ksr_support_400
+      |> UITextField.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     self.searchTextField.attributedPlaceholder = NSAttributedString(
       string: Strings.tabbar_search(),
-      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400]
+      attributes: [NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()]
     )
 
     _ = self.tableView

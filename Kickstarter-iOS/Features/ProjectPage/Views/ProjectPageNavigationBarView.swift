@@ -29,7 +29,7 @@ final class ProjectPageNavigationBarView: UIView {
     let buttonView = UIButton(type: .custom)
       |> UIButton.lens.title(for: .normal) .~ nil
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.tintColor .~ .ksr_support_700
+      |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
@@ -71,7 +71,7 @@ final class ProjectPageNavigationBarView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> \.backgroundColor .~ .ksr_white
+    _ = self |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.rootStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true

@@ -115,10 +115,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     let subtitleLabelStyling = UILabel.lens.font .~ .ksr_caption1(size: 13)
       <> UILabel.lens.numberOfLines .~ 1
-      <> UILabel.lens.backgroundColor .~ .ksr_white
+      <> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_support_400
+      ||> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       ||> subtitleLabelStyling
 
     _ = self.pledgeSubtitleLabel |> subtitleLabelStyling
@@ -126,21 +126,21 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
       ||> UILabel.lens.numberOfLines .~ 1
-      ||> UILabel.lens.backgroundColor .~ .ksr_white
+      ||> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.categoryStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.categoryIconImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.tintColor .~ .ksr_support_400
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UIImageView.lens.image .~ Library.image(named: "category-icon")
-      |> UIImageView.lens.backgroundColor .~ .ksr_white
+      |> UIImageView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.categoryNameLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_body(size: 12)
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     let isIpad = self.traitCollection.isRegularRegular == true
     let leftRightInsetValue: CGFloat = isIpad ? Styles.grid(16) : Styles.grid(4)
@@ -175,7 +175,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
 
@@ -187,27 +187,27 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.creatorLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.creatorStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_support_300
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
 
     _ = self.locationImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.tintColor .~ .ksr_support_400
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UIImageView.lens.image .~ Library.image(named: "location-icon")
-      |> UIImageView.lens.backgroundColor .~ .ksr_white
+      |> UIImageView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.locationNameLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_body(size: 12)
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.locationStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -218,9 +218,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .ksr_body(size: 18)
           : .ksr_body(size: 15)
       }
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ (verticalSpacing / 2)
@@ -231,9 +231,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .ksr_title3(size: 28)
           : .ksr_title3(size: 20)
       }
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ verticalSpacing
@@ -244,18 +244,18 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
-      |> UIStackView.lens.backgroundColor .~ .ksr_white
+      |> UIStackView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.backingContainerViewLeadingConstraint
       |> \.constant .~ leftRightInsetValue
 
     _ = self.backingContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ .ksr_create_700
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_create_700.uiColor()
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
     _ = self.backingLabel
-      |> UILabel.lens.textColor .~ .ksr_white
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
   }
 

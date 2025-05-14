@@ -1,30 +1,60 @@
 import SwiftUICore
 import UIKit
 
-/// A semantic color from the Kickstarter design system, like "surface/primary".
-/// Includes a light and dark mode color pair, as well as an identifying title.
-public struct SemanticColor {
-  private let lightModeColor: CoreColor
-  private let darkModeColor: CoreColor
-  public let name: String
+public protocol AdaptiveColor {
+  var lightModeColor: UIColor { get }
+  var darkModeColor: UIColor { get }
+}
 
-  init(_ name: String, lightMode: CoreColor, darkMode: CoreColor) {
-    self.name = name
-    self.lightModeColor = lightMode
-    self.darkModeColor = darkMode
-  }
-
-  public func uiColor() -> UIColor {
+public extension AdaptiveColor {
+  func uiColor() -> UIColor {
     return UIColor { traits in
       if traits.userInterfaceStyle == .dark && featureDarkModeEnabled() {
-        return UIColor(coreColor: self.darkModeColor)
+        return self.darkModeColor
       } else {
-        return UIColor(coreColor: self.lightModeColor)
+        return self.lightModeColor
       }
     }
   }
 
-  public func swiftUIColor() -> Color {
+  func swiftUIColor() -> Color {
     Color(uiColor: self.uiColor())
+  }
+}
+
+/// A semantic color from the Kickstarter design system, like "surface/primary".
+/// Includes a light and dark mode color pair, as well as an identifying title.
+public struct SemanticColor: AdaptiveColor {
+  private let lightMode: CoreColor
+  private let darkMode: CoreColor
+
+  public let name: String
+
+  init(_ name: String, lightMode: CoreColor, darkMode: CoreColor) {
+    self.name = name
+    self.lightMode = lightMode
+    self.darkMode = darkMode
+  }
+
+  public var lightModeColor: UIColor {
+    return UIColor(coreColor: self.lightMode)
+  }
+
+  public var darkModeColor: UIColor {
+    return UIColor(coreColor: self.darkMode)
+  }
+}
+
+/// Used for old design system colors which can't be mapped directly to the Kickstarter color palette.
+public struct LegacyColor: AdaptiveColor {
+  public let name: String
+
+  public let lightModeColor: UIColor
+  public let darkModeColor: UIColor
+
+  init(_ name: String, lightMode: UIColor, darkMode: UIColor) {
+    self.name = name
+    self.lightModeColor = lightMode
+    self.darkModeColor = darkMode
   }
 }

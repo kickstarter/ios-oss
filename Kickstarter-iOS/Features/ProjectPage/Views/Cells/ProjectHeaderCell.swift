@@ -74,9 +74,9 @@ final class ProjectHeaderCell: UITableViewCell, ValueCell {
 
 private let titleLabelStyle: LabelStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.font .~ UIFont.ksr_title1().bolded
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }

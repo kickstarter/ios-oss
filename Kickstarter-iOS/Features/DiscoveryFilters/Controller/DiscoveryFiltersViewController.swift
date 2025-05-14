@@ -97,7 +97,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     super.bindStyles()
 
     _ = self.bgView
-      |> UIView.lens.backgroundColor .~ .ksr_white
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
