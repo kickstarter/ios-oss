@@ -101,7 +101,7 @@ final class PledgeViewCTAContainerView: UIView {
     self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
     self.pledgeImmediatelyLabel.numberOfLines = 0
     self.pledgeImmediatelyLabel.textAlignment = .center
-    self.pledgeImmediatelyLabel.textColor = UIColor.ksr_support_400
+    self.pledgeImmediatelyLabel.textColor = LegacyColors.ksr_support_400.uiColor()
 
     disclaimerStackViewStyle(self.disclaimerStackView)
 
@@ -274,8 +274,8 @@ private func disclaimerStackViewStyle(_ stackView: UIStackView) {
 private let layerStyle: LayerStyle = { layer in
   layer
     |> checkoutLayerCardRoundedStyle
-    |> \.backgroundColor .~ UIColor.ksr_white.cgColor
-    |> \.shadowColor .~ UIColor.ksr_black.cgColor
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor().cgColor
+    |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
     |> \.shadowOpacity .~ 0.12
     |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
     |> \.shadowRadius .~ CGFloat(1.0)
@@ -293,7 +293,7 @@ private func termsTextViewStyle(_ textView: UITextView) {
   textView.textContainerInset = UIEdgeInsets.zero
   textView.textContainer.lineFragmentPadding = 0
   textView.linkTextAttributes = [
-    .foregroundColor: UIColor.ksr_create_700
+    .foregroundColor: LegacyColors.ksr_create_700.uiColor()
   ]
   textView.attributedText = attributedTermsText()
   textView.accessibilityTraits = [.staticText]

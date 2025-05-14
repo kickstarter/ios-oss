@@ -90,7 +90,7 @@ final class CommentInputContainerView: UIView {
     _ = self.postButton
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.titleLabel.numberOfLines .~ 0
-      |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
+      |> UIButton.lens.titleColor(for: .normal) %~ { _ in LegacyColors.ksr_create_700.uiColor() }
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }
       |> UIButton.lens.titleLabel.textAlignment .~ .center
   }
@@ -104,8 +104,8 @@ final class CommentInputContainerView: UIView {
 
 private let containerStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
-    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
+    |> \.layer.borderColor .~ LegacyColors.ksr_support_200.uiColor().cgColor
     |> \.layer.borderWidth .~ 1
     |> \.layer.cornerRadius .~ Layout.Container.radius
     |> \.clipsToBounds .~ true
@@ -113,7 +113,7 @@ private let containerStyle: ViewStyle = { view in
 
 private let placeholderLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.font .~ UIFont.ksr_body(size: 15.0)
     |> \.text .~ Strings.Write_a_comment()
     |> \.adjustsFontForContentSizeCategory .~ true

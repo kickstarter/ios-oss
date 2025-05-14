@@ -52,7 +52,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = self.arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
-      |> UIImageView.lens.tintColor .~ .ksr_support_400
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.projectCountLabel
       |> UILabel.lens.isHidden .~ cellValue.cellType.projectCountLabelHidden
@@ -69,23 +69,23 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> settingsTitleLabelStyle
 
     _ = self.projectCountLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_body()
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
       |> UIButton.lens.image(for: .normal) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_support_400,
+        tintColor: LegacyColors.ksr_support_400.uiColor(),
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_support_300,
+        tintColor: LegacyColors.ksr_support_300.uiColor(),
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_create_700,
+        tintColor: LegacyColors.ksr_create_700.uiColor(),
         inBundle: Bundle.framework
       )
 
@@ -93,17 +93,17 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> notificationButtonStyle
       |> UIButton.lens.image(for: .normal) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_support_400,
+        tintColor: LegacyColors.ksr_support_400.uiColor(),
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_support_300,
+        tintColor: LegacyColors.ksr_support_300.uiColor(),
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_create_700,
+        tintColor: LegacyColors.ksr_create_700.uiColor(),
         inBundle: Bundle.framework
       )
   }

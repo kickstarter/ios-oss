@@ -883,8 +883,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testLabelTextColor() {
-    let green = UIColor.ksr_create_700
-    let red = UIColor.ksr_alert
+    let green = LegacyColors.ksr_create_700.uiColor()
+    let red = LegacyColors.ksr_alert.uiColor()
 
     self.vm.inputs.configureWith(data: (.template, reward: Reward.noReward, 0))
 
@@ -907,8 +907,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testLabelTextColor_WhenShippingAmountUpdates() {
-    let green = UIColor.ksr_create_700
-    let red = UIColor.ksr_alert
+    let green = LegacyColors.ksr_create_700.uiColor()
+    let red = LegacyColors.ksr_alert.uiColor()
 
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
 
@@ -1100,8 +1100,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testTextFieldTextColor() {
-    let green = UIColor.ksr_create_700
-    let red = UIColor.ksr_alert
+    let green = LegacyColors.ksr_create_700.uiColor()
+    let red = LegacyColors.ksr_alert.uiColor()
 
     self.vm.inputs.configureWith(data: (.template, reward: Reward.noReward, 0))
 
@@ -1124,8 +1124,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testTextFieldValueChangedRounding() {
-    let green = UIColor.ksr_create_700
-    let red = UIColor.ksr_alert
+    let green = LegacyColors.ksr_create_700.uiColor()
+    let red = LegacyColors.ksr_alert.uiColor()
 
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
 

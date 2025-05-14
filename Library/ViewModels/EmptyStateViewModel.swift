@@ -51,9 +51,9 @@ public enum EmptyStateViewType {
   var bodyLabelTextColor: UIColor {
     switch self {
     case .errorPullToRefresh:
-      return .ksr_support_700
+      return LegacyColors.ksr_support_700.uiColor()
     case .addOnsUnavailable:
-      return .ksr_support_400
+      return LegacyColors.ksr_support_400.uiColor()
     }
   }
 }

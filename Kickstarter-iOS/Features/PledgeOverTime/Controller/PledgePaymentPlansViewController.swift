@@ -160,10 +160,10 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyWhiteBackgroundStyle(_ view: UIView) {
-  view.backgroundColor = UIColor.ksr_white
+  view.backgroundColor = LegacyColors.ksr_white.uiColor()
 }
 
 private func applySeparatorStyle(_ view: UIView) {
-  view.backgroundColor = UIColor.ksr_support_300
+  view.backgroundColor = LegacyColors.ksr_support_300.uiColor()
   view.accessibilityElementsHidden = true
 }

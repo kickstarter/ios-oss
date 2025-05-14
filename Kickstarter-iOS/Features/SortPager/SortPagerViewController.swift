@@ -99,7 +99,7 @@ internal final class SortPagerViewController: UIViewController {
       |> UIScrollView.lens.scrollsToTop .~ false
 
     _ = self.view
-      |> UIView.lens.backgroundColor .~ .ksr_white
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.borderLineView
       |> discoveryBorderLineStyle
@@ -142,7 +142,7 @@ internal final class SortPagerViewController: UIViewController {
     _ = self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, _ in
         UIButton()
-          |> UIButton.lens.backgroundColor .~ .ksr_white
+          |> UIButton.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
           |> UIButton.lens.tag .~ idx
           |> UIButton.lens.targets .~ [
             (self, #selector(self.sortButtonTapped(_:)), .touchUpInside)

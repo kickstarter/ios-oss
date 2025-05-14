@@ -18,7 +18,7 @@ final class RewardPledgeNavigationController: UINavigationController {
   private var navigationBarAppearance: UINavigationBarAppearance {
     let navBarAppearance = UINavigationBarAppearance()
     navBarAppearance.configureWithOpaqueBackground()
-    navBarAppearance.backgroundColor = .ksr_white
+    navBarAppearance.backgroundColor = LegacyColors.ksr_white.uiColor()
 
     return navBarAppearance
   }

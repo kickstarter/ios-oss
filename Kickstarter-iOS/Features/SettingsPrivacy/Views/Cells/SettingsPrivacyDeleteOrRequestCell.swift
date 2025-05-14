@@ -36,11 +36,11 @@ internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueC
 
     switch value.cellType {
     case .request:
-      self.deleteAccountLabel.textColor = .ksr_support_700
+      self.deleteAccountLabel.textColor = LegacyColors.ksr_support_700.uiColor()
       self.deleteAccountLabel.text = Strings.Request_my_personal_data()
       self.deleteAccountButton.accessibilityLabel = Strings.Request_my_personal_data()
     case .delete:
-      self.deleteAccountLabel.textColor = .ksr_alert
+      self.deleteAccountLabel.textColor = LegacyColors.ksr_alert.uiColor()
       self.deleteAccountLabel.text = Strings.Delete_my_Kickstarter_Account()
       self.deleteAccountButton.accessibilityLabel = Strings.Delete_my_Kickstarter_Account()
     }

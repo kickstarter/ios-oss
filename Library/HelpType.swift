@@ -73,7 +73,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
   }
 
   public var textColor: UIColor {
-    return .ksr_support_700
+    return LegacyColors.ksr_support_700.uiColor()
   }
 
   public func url(withBaseUrl baseUrl: URL) -> URL? {

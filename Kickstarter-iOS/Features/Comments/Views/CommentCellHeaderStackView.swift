@@ -15,7 +15,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
   private lazy var authorNameBadgeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var authorNameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -55,14 +55,14 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
     _ = self.authorNameLabel
       |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_support_700
+      |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.postTimeLabel
       |> \.numberOfLines .~ 2
-      |> \.textColor .~ .ksr_support_400
+      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_footnote()
       |> \.adjustsFontForContentSizeCategory .~ true
@@ -154,8 +154,8 @@ private func setStyleForCreatorAndCollaborator(text: String) -> PaddingLabelStyl
     label
       |> \.text .~ text
       |> \.font .~ UIFont.ksr_footnote()
-      |> \.textColor .~ UIColor.ksr_create_700
-      |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
+      |> \.textColor .~ LegacyColors.ksr_create_700.uiColor()
+      |> \.backgroundColor .~ LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06)
       |> roundedStyle(cornerRadius: Styles.grid(1))
       |> \.adjustsFontForContentSizeCategory .~ true
   }

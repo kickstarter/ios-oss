@@ -138,7 +138,7 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 private func attributedText(_ text: String) -> NSAttributedString? {
   let attributes: [NSAttributedString.Key: Any] = [
     .font: UIFont.ksr_callout(),
-    .foregroundColor: UIColor.ksr_support_400,
+    .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
     .underlineStyle: false
   ]
 

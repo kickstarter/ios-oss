@@ -14,7 +14,7 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
     string: "\(projectName) ",
     attributes: [
       NSAttributedString.Key.font: UIFont.ksr_title3(size: 18.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor()
     ]
   )
 
@@ -22,7 +22,7 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
     string: project.blurb,
     attributes: [
       NSAttributedString.Key.font: UIFont.ksr_title3(size: 18.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()
     ]
   )
 
@@ -32,5 +32,5 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
 }
 
 public func projectCellBackgroundColor() -> UIColor {
-  return .ksr_white
+  return LegacyColors.ksr_white.uiColor()
 }

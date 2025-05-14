@@ -235,7 +235,7 @@ private func amountStringForReward(
   shippingRule: ShippingRule?
 ) -> NSAttributedString {
   let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
-  let foregroundColor: UIColor = UIColor.ksr_create_700
+  let foregroundColor: UIColor = LegacyColors.ksr_create_700.uiColor()
 
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 

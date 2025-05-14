@@ -22,7 +22,7 @@ public final class CountBadgeView: UIView {
 
     _ = self
       |> roundedStyle(cornerRadius: floor(self.bounds.size.height / 2.0))
-      |> CountBadgeView.lens.backgroundColor .~ .ksr_support_300
+      |> CountBadgeView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
       |> CountBadgeView.lens.layoutMargins .~ .init(topBottom: 4.0, leftRight: 8.0)
       |> CountBadgeView.lens.contentHuggingPriority(for: .horizontal) .~ required
       |> CountBadgeView.lens.contentCompressionResistancePriority(for: .horizontal) .~ required
@@ -30,7 +30,7 @@ public final class CountBadgeView: UIView {
 
     _ = self.label
       |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.contentHuggingPriority(for: .horizontal) .~ required
       |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ required
       |> UILabel.lens.translatesAutoresizingMaskIntoConstraints .~ false
