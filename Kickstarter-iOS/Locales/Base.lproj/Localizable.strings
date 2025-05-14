@@ -38,6 +38,7 @@
 "All_or_nothing" = "All-or-nothing";
 "Allow" = "Allow";
 "Allow_app_to_track" = "Allow app to track?";
+"Allow_tracking" = "Allow tracking";
 "Almost_there" = "Almost there!";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
@@ -249,6 +250,7 @@
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
 "Explore_projects_we_love" = "Explore projects we love";
+"Explore_the_app" = "Explore the app";
 "Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Facebook_reconnect" = "Please reconnect";
@@ -312,6 +314,7 @@
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
 "Funding_successful" = "Funding successful";
 "Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
+"Get_notified" = "Get notified";
 "Get_notified_about_new_messages" = "Get notified about new messages?";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
 "Get_notified_when_your_friends_back_and_launch_projects" = "Get notified when your friends back and launch projects";
@@ -457,6 +460,7 @@
 "Not_followed" = "Not followed";
 "Not_now" = "Not Now";
 "Not_raising_funds" = "Not raising funds for a creative project";
+"Not_right_now" = "Not right now";
 "Notification_email_notification_off" = "%{notification}, email notification, off";
 "Notification_email_notification_on" = "%{notification}, email notification, on";
 "Notification_push_notification_off" = "%{notification}, push notification, off";
@@ -631,6 +635,12 @@
 "Saves_project" = "Saves project.";
 "Say_something_kind" = "Say something kind...";
 "Scheduled" = "Scheduled";
+"Search_results.few" = "%{search_results_count} results";
+"Search_results.many" = "%{search_results_count} results";
+"Search_results.one" = "%{search_results_count} result";
+"Search_results.other" = "%{search_results_count} results";
+"Search_results.two" = "%{search_results_count} results";
+"Search_results.zero" = "No results";
 "Security_code" = "Security code";
 "See_all_backed__projects" = "See all backed projects";
 "See_all_category_name_projects" = "See all %{category_name} projects";
@@ -679,6 +689,7 @@
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Sign_up" = "Sign up";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
+"Sign_up_or_log_in" = "Sign up or log in";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Similar_projects" = "Similar projects";
 "Skip_add_ons" = "Skip add-ons";
@@ -746,6 +757,7 @@
 "These_projects_could_use_your_support" = "These projects could use your support.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "This allows you to see project goal and pledge amounts in your preferred currency.";
 "This_comment_has_been_removed_by_Kickstarter" = "This comment has been removed by Kickstarter.";
+"This_comment_has_been_removed_for_violating_kickstarters_community_guidelines" = "This comment has been removed for violating <a href=\"%{community_guidelines}\">Kickstarter’s Community Guidelines.</a>";
 "This_comment_is_under_review" = "This comment is under review.";
 "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "This comment is under review for potentially violating <a href=\"%{community_guidelines}\">Kickstarter’s Community Guidelines.</a>";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
@@ -792,6 +804,7 @@
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
 "Update_pledge" = "Update pledge";
 "Use_of_ai" = "Use of AI";
+"Use_personalization" = "Use personalization";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
@@ -1585,6 +1598,17 @@
 "minutes.zero" = "minutes";
 "minutes_plural" = "minutes";
 "number_of_items_items" = "%{number_of_items} items";
+"onboarding.join_the_community.subtitle" = "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.";
+"onboarding.join_the_community.title" = "Join the community";
+"onboarding.personalize_your_experience.subtitle" = "Allow tracking to help us improve your in-app experience.";
+"onboarding.personalize_your_experience.subtitle_settings" = "You can change your tracking preference anytime in your device settings.";
+"onboarding.personalize_your_experience.title" = "Personalize your experience";
+"onboarding.save_projects_for_later.subtitle" = "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.";
+"onboarding.save_projects_for_later.title" = "Save projects for later";
+"onboarding.stay_in_the_know.subtitle" = "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings.";
+"onboarding.stay_in_the_know.title" = "Stay in the know";
+"onboarding.welcome_to_kickstarter.subtitle" = "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our \"Projects We Love\" picks.";
+"onboarding.welcome_to_kickstarter.title" = "Welcome to Kickstarter";
 "percentage_funded" = "%{percentage} funded";
 "pledge_amount_pledged_on_pledge_date" = "<b>%{pledge_amount}</b> pledged on %{pledge_date}";
 "plus_shipping_cost" = "+%{shipping_cost}";
