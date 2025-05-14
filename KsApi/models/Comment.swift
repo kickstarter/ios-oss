@@ -4,11 +4,15 @@ public struct Comment {
   public var author: Author
   public var authorBadges: [AuthorBadge]
   public var body: String
-  public let createdAt: TimeInterval
+  public let createdAt: TimeInterval?
   public var id: String
   public var isDeleted: Bool
   public var parentId: String?
-  public var replyCount: Int
+  public var replyCount: Int?
+  public var hasFlaggings: Bool
+  public var removedPerGuidelines: Bool
+  public var sustained: Bool
+
   /// return the first `authorBadges`, if nil  return `.backer`
   public var authorBadge: AuthorBadge {
     return self.authorBadges.first ?? .backer
@@ -61,7 +65,7 @@ extension Comment {
     let author = Author(
       id: "\(user.id)",
       imageUrl: user.avatar.medium,
-      isBlocked: user.isBlocked ?? false,
+      isBlocked: user.isBlocked,
       isCreator: project.creator == user,
       name: user.name
     )
@@ -74,6 +78,9 @@ extension Comment {
       isDeleted: false,
       parentId: parentId,
       replyCount: 0,
+      hasFlaggings: false,
+      removedPerGuidelines: false,
+      sustained: false,
       status: .success
     )
   }
@@ -86,3 +93,15 @@ extension Comment {
 }
 
 extension Comment: Equatable {}
+
+extension Comment {
+  public var isDeletedOrFlagged: Bool {
+    return self.isDeleted
+      || self.removedPerGuidelines
+      || self.isFlagged
+  }
+
+  public var isFlagged: Bool {
+    self.hasFlaggings && !self.sustained
+  }
+}

@@ -14,6 +14,9 @@ public protocol SurveyResponseViewModelInputs {
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
 
+  /// Call when the user session starts.
+  func userSessionStarted()
+
   /// Call when the view loads.
   func viewDidLoad()
 }
@@ -30,6 +33,9 @@ public protocol SurveyResponseViewModelOutputs {
   /// Emits a project param that should be used to present the manage pledge view controller
   var goToPledge: Signal<Param, Never> { get }
 
+  /// Emits a login intent that should be used to log in.
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
+
   /// Emits a request that should be loaded by the webview.
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
@@ -41,9 +47,24 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public init() {
+    let initialIsLoggedIn = self.viewDidLoadProperty.signal.compactMap {
+      AppEnvironment.current.currentUser != nil
+    }
+
+    self.goToLoginSignup = initialIsLoggedIn.filter(isFalse).map { _ in
+      LoginIntent.generic
+    }
+
+    let isLoggedIn = Signal.merge(
+      initialIsLoggedIn,
+      self.userSessionStartedProperty.signal.mapConst(true)
+    )
+
+    // Wait until user is logged in before handling survey response.
     let surveyResponse = Signal.combineLatest(
       self.initialSurveyProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
+      self.viewDidLoadProperty.signal,
+      isLoggedIn.filter(isTrue)
     )
     .map(first)
 
@@ -141,6 +162,11 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.initialSurveyProperty.value = surveyUrl
   }
 
+  fileprivate let userSessionStartedProperty = MutableProperty(())
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
@@ -149,6 +175,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let goToUpdate: Signal<(Project, Update), Never>
   public let goToPledge: Signal<Param, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
+  public let goToLoginSignup: Signal<LoginIntent, Never>
 
   public var inputs: SurveyResponseViewModelInputs { return self }
   public var outputs: SurveyResponseViewModelOutputs { return self }

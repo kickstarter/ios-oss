@@ -26,11 +26,6 @@ extension UIColor {
     return .hex(0xFFF2EC)
   }
 
-  /// 0xFECCB3
-  public static var ksr_celebrate_300: UIColor {
-    return .hex(0xFECCB3)
-  }
-
   /// 0xF97B62
   public static var ksr_celebrate_500: UIColor {
     return .hex(0xF97B62)
@@ -64,11 +59,6 @@ extension UIColor {
   /// 0x1877F2
   public static var ksr_facebookBlue: UIColor {
     return .hex(0x1877F2)
-  }
-
-  /// 0xB6D9E1
-  public static var ksr_inform: UIColor {
-    return .hex(0xB6D9E1)
   }
 
   /// 0xF3F3F3
@@ -106,11 +96,6 @@ extension UIColor {
     return .hex(0xDBE7FF)
   }
 
-  /// 0x71A0FF
-  public static var ksr_trust_300: UIColor {
-    return .hex(0x71A0FF)
-  }
-
   /// 0x5555FF
   public static var ksr_trust_500: UIColor {
     return .hex(0x5555FF)
@@ -119,11 +104,6 @@ extension UIColor {
   /// 0x0A007D
   public static var ksr_trust_700: UIColor {
     return .hex(0x0A007D)
-  }
-
-  /// 0xF9D66D
-  public static var ksr_warn: UIColor {
-    return .hex(0xF9D66D)
   }
 
   /// 0xFFFFFF

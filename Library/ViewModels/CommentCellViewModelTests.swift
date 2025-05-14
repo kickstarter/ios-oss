@@ -5,6 +5,10 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+private enum Constants {
+  static let communityLink = "https://www.kickstarter.com/help/community"
+}
+
 internal final class CommentCellViewModelTests: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
@@ -284,6 +288,55 @@ internal final class CommentCellViewModelTests: TestCase {
       self.viewCommentReplies
         .assertValue(comment, "A Comment was emitted after the view replies button was tapped.")
     }
+  }
+
+  func testOutputs_When_Flag_RemovedPerGuidelines() {
+    let comment = Comment.template
+      |> \.removedPerGuidelines .~ true
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    // FIXME: MBL-2428 - Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
+    self.body
+      .assertLastValue(
+        "This comment has been removed for violating <a href=\"https://www.kickstarter.com/help/community\">Kickstarter’s Community Guidelines.</a>"
+      )
+  }
+
+  func testOutputs_When_Flag_IsDeleted() {
+    let comment = Comment.template
+      |> \.isDeleted .~ true
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    let body = Strings.This_comment_has_been_removed_by_Kickstarter() + " " + Strings
+      .Learn_more_about_comment_guidelines(community_link: Constants.communityLink)
+    self.body.assertLastValue(body)
+  }
+
+  func testOutputs_When_Flag_HasFlagging() {
+    let comment = Comment.template
+      |> \.hasFlaggings .~ true
+      |> \.sustained .~ false
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    let body = Strings
+      .This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines(
+        community_guidelines: Constants.communityLink
+      )
+
+    self.body.assertLastValue(body)
+  }
+
+  func testOutputs_When_Flag_HasFlagging_And_Sustained() {
+    let comment = Comment.template
+      |> \.hasFlaggings .~ true
+      |> \.sustained .~ true
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    self.body.assertLastValue(comment.body)
   }
 
   func testPersonalizedLabels_UserIs_Creator_Author() {

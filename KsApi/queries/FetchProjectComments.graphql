@@ -1,4 +1,4 @@
-query FetchProjectComments($slug: String!, $cursor: String, $limit: Int, $withStoredCards: Boolean!) {
+query FetchProjectComments($slug: String!, $cursor: String, $limit: Int) {
   project(slug: $slug) {
     comments(after: $cursor, first: $limit) {
       edges {

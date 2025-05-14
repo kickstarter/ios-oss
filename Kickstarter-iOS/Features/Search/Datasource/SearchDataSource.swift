@@ -2,7 +2,7 @@ import KsApi
 import Library
 import UIKit
 
-typealias TitleRow = Void
+private typealias TitleRow = Void
 
 internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
@@ -18,36 +18,47 @@ internal final class SearchDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(
-    projects: [any BackerDashboardProjectCellViewModel.ProjectCellModel],
-    withDiscoverTitle showTitle: Bool
-  ) {
+  internal func load(results: SearchResults) {
     self.clearValues(section: Section.projects.rawValue)
 
-    if projects.count > 0 && showTitle {
+    guard results.projects.count > 0 else {
+      // The screen is loading. Projects were cleared.
+      return
+    }
+
+    // Add either the discover title, or the number of results,
+    // before the project cards
+    if results.isProjectsTitleVisible {
       self.appendRow(
         value: TitleRow(),
         cellClass: DiscoverProjectsTitleCell.self,
         toSection: Section.projects.rawValue
       )
-    }
-
-    if let mostPopular = projects.first {
+    } else {
       self.appendRow(
-        value: mostPopular,
-        cellClass: MostPopularSearchProjectCell.self,
+        value: results.count,
+        cellClass: SearchResultsCountCell.self,
         toSection: Section.projects.rawValue
       )
     }
 
-    if !projects.isEmpty {
-      projects.dropFirst().forEach {
-        self.appendRow(
-          value: $0,
-          cellClass: BackerDashboardProjectCell.self,
-          toSection: Section.projects.rawValue
-        )
-      }
+    guard let mostPopular = results.projects.first else {
+      return
+    }
+
+    // First result card should be displayed extra large
+    self.appendRow(
+      value: mostPopular,
+      cellClass: MostPopularSearchProjectCell.self,
+      toSection: Section.projects.rawValue
+    )
+
+    results.projects.dropFirst().forEach {
+      self.appendRow(
+        value: $0,
+        cellClass: BackerDashboardProjectCell.self,
+        toSection: Section.projects.rawValue
+      )
     }
   }
 
@@ -71,7 +82,8 @@ internal final class SearchDataSource: ValueCellDataSource {
 
     let firstIndex = IndexPath(row: 0, section: Section.projects.rawValue)
     let value = self[firstIndex]
-    let hasTitleRow = value is TitleRow
+    let firstRowIsProject = value is BackerDashboardProjectCellViewModel.ProjectCellModel
+    let hasTitleRow = !firstRowIsProject
 
     if hasTitleRow && indexPath == firstIndex {
       // Tapping on the title row does nothing.
@@ -101,6 +113,8 @@ internal final class SearchDataSource: ValueCellDataSource {
     case let (cell as DiscoverProjectsTitleCell, value as TitleRow):
       cell.configureWith(value: value)
     case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
+      cell.configureWith(value: value)
+    case let (cell as SearchResultsCountCell, value as Int):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
