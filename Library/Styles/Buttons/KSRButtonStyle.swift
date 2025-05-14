@@ -13,32 +13,33 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
 
   public var backgroundColor: UIColor {
     switch self {
-    case .filled: Colors.Background.action.adaptive()
-    case .green: Colors.Background.accentGreenBold.adaptive()
-    case .filledInverted: Colors.Background.surfacePrimary.adaptive()
-    case .filledDestructive: Colors.Background.dangerBold.adaptive()
-    case .facebook: Colors.Background.facebookDefault.adaptive()
+    case .filled: Colors.Background.action.uiColor()
+    case .green: Colors.Background.Accent.Green.bold.uiColor()
+    case .filledInverted: Colors.Background.Surface.primary.uiColor()
+    case .filledDestructive: Colors.Background.Danger.bold.uiColor()
+    case .facebook:
+      UIColor.hex(0x1877F2)
     default: .clear
     }
   }
 
   public var highlightedBackgroundColor: UIColor {
     switch self {
-    case .filled: Colors.Background.actionPressed.adaptive()
-    case .green: Colors.Background.accentGreenBoldPressed.adaptive()
-    case .filledDestructive: Colors.Background.dangerBoldPressed.adaptive()
-    case .borderlessDestructive, .outlinedDestructive: Colors.Background.accentRedSubtle.adaptive()
+    case .filled: Colors.Background.Action.pressed.uiColor()
+    case .green: Colors.Background.Accent.Green.Bold.pressed.uiColor()
+    case .filledDestructive: Colors.Background.Danger.Bold.pressed.uiColor()
+    case .borderlessDestructive, .outlinedDestructive: Colors.Background.Accent.Red.subtle.uiColor()
     case .facebook: self.backgroundColor.mixDarker(0.35)
-    default: Colors.Background.inversePressed.adaptive()
+    default: Colors.Background.Inverse.pressed.uiColor()
     }
   }
 
   public var disabledBackgroundColor: UIColor {
     switch self {
-    case .filled: Colors.Background.actionDisabled.adaptive()
-    case .green: Colors.Background.accentGreenDisabled.adaptive()
-    case .filledInverted: Colors.Background.inverseDisabled.adaptive()
-    case .filledDestructive: Colors.Background.dangerDisabled.adaptive()
+    case .filled: Colors.Background.Action.disabled.uiColor()
+    case .green: Colors.Background.Accent.Green.disabled.uiColor()
+    case .filledInverted: Colors.Background.Inverse.disabled.uiColor()
+    case .filledDestructive: Colors.Background.Danger.disabled.uiColor()
     case .facebook: self.backgroundColor.mixLighter(0.35)
     default: .clear
     }
@@ -46,25 +47,25 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
 
   public var titleColor: UIColor {
     switch self {
-    case .filled, .green, .facebook, .filledDestructive: Colors.Text.inverseprimary.adaptive()
-    case .filledInverted, .borderless, .outlined: Colors.Text.primary.adaptive()
-    case .outlinedDestructive, .borderlessDestructive: Colors.Text.accentRed.adaptive()
+    case .filled, .green, .facebook, .filledDestructive: Colors.Text.Inverse.primary.uiColor()
+    case .filledInverted, .borderless, .outlined: Colors.Text.primary.uiColor()
+    case .outlinedDestructive, .borderlessDestructive: Colors.Text.Accent.red.uiColor()
     }
   }
 
   public var highlightedTitleColor: UIColor {
     switch self {
-    case .outlinedDestructive, .borderlessDestructive: Colors.Text.accentRedBolder.adaptive()
+    case .outlinedDestructive, .borderlessDestructive: Colors.Text.Accent.Red.bolder.uiColor()
     default: self.titleColor
     }
   }
 
   public var disabledTitleColor: UIColor {
     switch self {
-    case .filled: Colors.Text.inverseDisabled.adaptive()
-    case .green, .filledInverted, .borderless, .outlined: Colors.Text.disabled.adaptive()
-    case .filledDestructive: Colors.Text.accentRedInverseDisabled.adaptive()
-    case .outlinedDestructive, .borderlessDestructive: Colors.Text.accentRedDisabled.adaptive()
+    case .filled: Colors.Text.Inverse.disabled.uiColor()
+    case .green, .filledInverted, .borderless, .outlined: Colors.Text.disabled.uiColor()
+    case .filledDestructive: Colors.Text.Accent.Red.Inverse.disabled.uiColor()
+    case .outlinedDestructive, .borderlessDestructive: Colors.Text.Accent.Red.disabled.uiColor()
     case .facebook: self.titleColor.mixLighter(0.35)
     }
   }
@@ -82,23 +83,23 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
 
   public var borderColor: UIColor {
     switch self {
-    case .outlined: Colors.Border.bold.adaptive()
-    case .outlinedDestructive: Colors.Background.dangerBold.adaptive()
+    case .outlined: Colors.Border.bold.uiColor()
+    case .outlinedDestructive: Colors.Background.Danger.bold.uiColor()
     default: .clear
     }
   }
 
   public var highlightedBorderColor: UIColor {
     switch self {
-    case .outlinedDestructive: Colors.Border.dangerBold.adaptive()
+    case .outlinedDestructive: Colors.Border.Danger.bold.uiColor()
     default: self.borderColor
     }
   }
 
   public var disabledBorderColor: UIColor {
     switch self {
-    case .outlined: Colors.Border.subtle.adaptive()
-    case .outlinedDestructive: Colors.Text.accentRedDisabled.adaptive()
+    case .outlined: Colors.Border.subtle.uiColor()
+    case .outlinedDestructive: Colors.Border.Danger.subtle.uiColor()
     default: self.borderColor
     }
   }
