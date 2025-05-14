@@ -132,7 +132,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
   stackView.spacing = Constants.rootStackViewSpacing
   stackView.layer.borderWidth = Constants.borderWidth
-  stackView.layer.borderColor = UIColor.ksr_support_300.cgColor
+  stackView.layer.borderColor = LegacyColors.ksr_support_300.uiColor().cgColor
 }
 
 private func applyHeaderStackViewStyle(_ stackView: UIStackView) {
@@ -144,7 +144,7 @@ private func applyHeaderStackViewStyle(_ stackView: UIStackView) {
 
 private func applyProjectLabelStyle(_ label: UILabel) {
   label.font = .ksr_headingMD()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyProjectImageViewStyle(_ imageView: UIImageView) {
@@ -153,5 +153,5 @@ private func applyProjectImageViewStyle(_ imageView: UIImageView) {
 }
 
 private func applySeperatorViewStyle(_ view: UIView) {
-  view.backgroundColor = .ksr_support_200
+  view.backgroundColor = LegacyColors.ksr_support_200.uiColor()
 }

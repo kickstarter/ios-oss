@@ -16,6 +16,7 @@ struct ColorsView: View {
     Colors.Background.Danger.bold,
     Colors.Background.Danger.Bold.pressed,
     Colors.Background.Danger.disabled,
+    Colors.Background.Danger.subtle,
     Colors.Background.Inverse.pressed,
     Colors.Background.Inverse.disabled,
     Colors.Background.Surface.primary,
@@ -24,6 +25,7 @@ struct ColorsView: View {
     Colors.Border.subtle,
     Colors.Border.Danger.bold,
     Colors.Border.Danger.subtle,
+    Colors.Icon.danger,
     Colors.Icon.green,
     Colors.Icon.primary,
     Colors.Text.primary,
@@ -36,6 +38,38 @@ struct ColorsView: View {
     Colors.Text.Accent.Red.disabled,
     Colors.Text.Accent.Red.Inverse.disabled
   ]
+
+  let legacyColors = [
+    LegacyColors.ksr_alert,
+    LegacyColors.ksr_black,
+    LegacyColors.ksr_white,
+    LegacyColors.ksr_celebrate_100,
+    LegacyColors.ksr_celebrate_500,
+    LegacyColors.ksr_celebrate_700,
+    LegacyColors.ksr_create_100,
+    LegacyColors.ksr_create_300,
+    LegacyColors.ksr_create_500,
+    LegacyColors.ksr_create_700,
+    LegacyColors.ksr_support_100,
+    LegacyColors.ksr_support_200,
+    LegacyColors.ksr_support_300,
+    LegacyColors.ksr_support_400,
+    LegacyColors.ksr_support_500,
+    LegacyColors.ksr_support_700,
+    LegacyColors.ksr_trust_100,
+    LegacyColors.ksr_trust_500,
+    LegacyColors.ksr_trust_700
+  ]
+
+  @ViewBuilder
+  var colorList: some View {
+    ForEach(self.semanticColors) { color in
+      ColorCard(title: color.name, color: color.swiftUIColor())
+    }
+    ForEach(self.legacyColors) { color in
+      ColorCard(title: color.name, color: color.swiftUIColor())
+    }
+  }
 
   var body: some View {
     ScrollView {
@@ -55,9 +89,7 @@ struct ColorsView: View {
               Text("Light mode")
                 .font(InterFont.headingLG.swiftUIFont())
                 .foregroundStyle(Colors.Text.primary.swiftUIColor())
-              ForEach(self.semanticColors) { color in
-                ColorCard(title: color.name, color: color.swiftUIColor())
-              }
+              self.colorList
             }
             .padding(.all, 4)
           }
@@ -68,9 +100,7 @@ struct ColorsView: View {
               Text("Dark mode")
                 .font(InterFont.headingLG.swiftUIFont())
                 .foregroundStyle(Colors.Text.primary.swiftUIColor())
-              ForEach(self.semanticColors) { color in
-                ColorCard(title: color.name, color: color.swiftUIColor())
-              }
+              self.colorList
             }
             .padding(.all, 4)
           }
@@ -85,6 +115,12 @@ struct ColorsView: View {
 }
 
 extension SemanticColor: @retroactive Identifiable {
+  public var id: String {
+    return self.name
+  }
+}
+
+extension LegacyColor: @retroactive Identifiable {
   public var id: String {
     return self.name
   }

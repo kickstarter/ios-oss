@@ -21,7 +21,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     self.tableView.register(nib: Nib.SettingsPrivacySwitchCell)
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(4)))
-    self.tableView.tableHeaderView?.backgroundColor = .ksr_support_100
+    self.tableView.tableHeaderView?.backgroundColor = LegacyColors.ksr_support_100.uiColor()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -30,7 +30,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> UITableViewController.lens.view.backgroundColor .~ .ksr_support_100
+      |> UITableViewController.lens.view.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
       |> UITableViewController.lens.title %~ { _ in Strings.Privacy() }
   }
 

@@ -103,11 +103,11 @@ final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
   private func attributedText(from type: ProjectDisclaimerType) -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
-      .foregroundColor: UIColor.ksr_support_700
+      .foregroundColor: LegacyColors.ksr_support_700.uiColor()
     ]
     let coloredFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
-      .foregroundColor: UIColor.ksr_create_700,
+      .foregroundColor: LegacyColors.ksr_create_700.uiColor(),
       .underlineStyle: NSUnderlineStyle.single.rawValue
     ]
 

@@ -43,12 +43,12 @@ final class UIStackViewTests: XCTestCase {
       |> ksr_setBackgroundColor(.ksr_black)
 
     XCTAssertEqual(2, stackView.subviews.count)
-    XCTAssertEqual(UIColor.ksr_black, stackView.subviews[0].backgroundColor)
+    XCTAssertEqual(LegacyColors.ksr_black.uiColor(), stackView.subviews[0].backgroundColor)
 
     _ = stackView
       |> ksr_setBackgroundColor(.ksr_black)
 
     XCTAssertEqual(2, stackView.subviews.count, "setBackgroundColor is idempotent")
-    XCTAssertEqual(UIColor.ksr_black, stackView.subviews[0].backgroundColor)
+    XCTAssertEqual(LegacyColors.ksr_black.uiColor(), stackView.subviews[0].backgroundColor)
   }
 }

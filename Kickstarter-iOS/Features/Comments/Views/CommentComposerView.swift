@@ -88,7 +88,7 @@ final class CommentComposerView: UIView {
 
     _ = self
       |> \.autoresizingMask .~ .flexibleHeight
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> \.clipsToBounds .~ true
 
     _ = self.inputContainerView.inputTextView
@@ -128,10 +128,10 @@ final class CommentComposerView: UIView {
       |> rootStackViewStyle
 
     _ = self.topBorderView
-      |> \.backgroundColor .~ .ksr_support_200
+      |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
 
     _ = self.avatarImageView
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self.onlyBackersLabel |> onlyBackersLabelStyle
   }
@@ -234,7 +234,7 @@ extension CommentComposerView: UITextViewDelegate {
 
 private let onlyBackersLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.font .~ UIFont.ksr_body(size: 15.0)
     |> \.text .~ Strings.Only_backers_can_post_comments()
     |> \.adjustsFontForContentSizeCategory .~ true

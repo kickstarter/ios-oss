@@ -178,7 +178,7 @@ private func accessoryViewInViewController(
 ) -> UIViewController {
   let controller = UIViewController()
   let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-  _ = controller.view |> \.backgroundColor .~ .ksr_white
+  _ = controller.view |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
   controller.view.addSubview(composer)
 
   NSLayoutConstraint.activate([

@@ -15,7 +15,10 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
   private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rightColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_support_100 }()
+  private lazy var selectionView: UIView = {
+    UIView(frame: .zero) |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
+  }()
+
   private lazy var unavailableCardTypeLabel: UILabel = { UILabel(frame: .zero) }()
 
   private let viewModel: PledgePaymentMethodCellViewModelType = PledgePaymentMethodCellViewModel()
@@ -191,7 +194,7 @@ private let expirationDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_caption2()
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
@@ -219,5 +222,5 @@ private let unavailableCardTypeLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 0
     |> \.font .~ UIFont.ksr_caption1()
-    |> \.textColor .~ UIColor.ksr_alert
+    |> \.textColor .~ LegacyColors.ksr_alert.uiColor()
 }

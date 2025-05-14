@@ -28,12 +28,12 @@ func percentFundedString(
   case .live, .successful:
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: fontSize),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_create_700.uiColor()
     ])
   default:
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: fontSize),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()
     ])
   }
 }
@@ -43,14 +43,14 @@ func metadataBackgroundColorForProject(
     .ProjectCellModel
 ) -> UIColor {
   guard !isProjectPrelaunch(project) else {
-    return .ksr_create_700
+    return LegacyColors.ksr_create_700.uiColor()
   }
 
   switch project.state {
   case .live, .successful:
-    return .ksr_create_700
+    return LegacyColors.ksr_create_700.uiColor()
   default:
-    return .ksr_support_700
+    return LegacyColors.ksr_support_700.uiColor()
   }
 }
 
@@ -62,12 +62,12 @@ func titleString(
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor()
     ])
   default:
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()
     ])
   }
 }

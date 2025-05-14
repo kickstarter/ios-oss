@@ -73,7 +73,7 @@ final class ProcessingView: UIView {
 
 private let processingViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
+    |> \.backgroundColor .~ LegacyColors.ksr_support_700.uiColor().withAlphaComponent(0.8)
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityLabel %~ { _ in Strings.project_checkout_finalizing_title() }
 }
@@ -87,7 +87,7 @@ private let processingLabelStyle: LabelStyle = { label in
   label
     |> \.isAccessibilityElement .~ false
     |> \.font .~ UIFont.ksr_callout()
-    |> \.textColor .~ UIColor.ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0

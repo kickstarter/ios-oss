@@ -69,7 +69,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 
 private func applyChargesLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_footnote()
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.textAlignment = .right
   label.numberOfLines = 0
   label.adjustsFontForContentSizeCategory = true

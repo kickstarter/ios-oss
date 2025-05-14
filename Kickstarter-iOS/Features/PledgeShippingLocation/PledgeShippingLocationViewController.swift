@@ -227,8 +227,8 @@ private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
       top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
     )
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700
-    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_create_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
+    |> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_create_700.uiColor()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
     |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
     |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)

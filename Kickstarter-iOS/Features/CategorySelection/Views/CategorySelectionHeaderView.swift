@@ -41,7 +41,7 @@ final class CategorySelectionHeaderView: UIView {
 
     _ = self
       |> \.clipsToBounds .~ true
-      |> \.backgroundColor .~ UIColor.ksr_trust_700
+      |> \.backgroundColor .~ LegacyColors.ksr_trust_700.uiColor()
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -107,7 +107,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 3
 }
@@ -115,7 +115,7 @@ private let titleLabelStyle: LabelStyle = { label in
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 2
 }
@@ -123,7 +123,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
 private let stepLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 1
 }

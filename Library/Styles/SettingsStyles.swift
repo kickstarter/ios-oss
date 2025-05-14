@@ -6,18 +6,18 @@ import UIKit
 public let settingsSectionButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
 
-public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ .ksr_support_400
+public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
 
 public let settingsSectionLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font .~ .ksr_subhead()
     |> \.numberOfLines .~ 2
 }
 
 public let settingsTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font .~ .ksr_body()
 }
 
@@ -25,7 +25,7 @@ public let settingsDetailLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ .ksr_body()
     |> \.numberOfLines .~ 1
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.lineBreakMode .~ .byTruncatingTail
 }
 
@@ -33,7 +33,7 @@ public let settingsDescriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ .ksr_body(size: 13)
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.lineBreakMode .~ .byWordWrapping
 }
 
@@ -45,12 +45,12 @@ public let settingsHeaderFooterLabelBaseStyle: LabelStyle = { (label: UILabel) i
 
 public let settingsHeaderFooterLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.backgroundColor .~ .ksr_support_100
-    |> \.textColor .~ .ksr_support_400
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
 }
 
 public let settingsFormFieldStyle =
-  UITextField.lens.textColor .~ .ksr_support_400
+  UITextField.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
 public let settingsEmailFieldAutoFillStyle = emailFieldAutoFillStyle
   <> settingsFormFieldStyle
@@ -66,44 +66,44 @@ public let settingsPasswordFormFieldAutoFillStyle = passwordFieldAutoFillStyle
 public let settingsNewPasswordFormFieldAutoFillStyle = newPasswordFieldAutoFillStyle
   <> settingsPasswordFormFieldStyle
 
-public let settingsSeparatorStyle = UIView.lens.backgroundColor .~ .ksr_support_300
+public let settingsSeparatorStyle = UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
   <> UIView.lens.accessibilityElementsHidden .~ true
 
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-    <> UIButton.lens.tintColor .~ .ksr_support_400
+    <> UIButton.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
 
-public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
-  <> UISwitch.lens.tintColor .~ .ksr_support_100
+public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ LegacyColors.ksr_create_700.uiColor()
+  <> UISwitch.lens.tintColor .~ LegacyColors.ksr_support_100.uiColor()
 
 public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Double_tap_to_toggle_setting() }
   <> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraits.none
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_100.cgColor
+  <> UIButton.lens.layer.borderColor .~ LegacyColors.ksr_support_100.uiColor().cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_support_100
-  <> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_support_100
+  <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.ksr_support_100.uiColor()
+  <> UIButton.lens.backgroundColor(for: .selected) .~ LegacyColors.ksr_support_100.uiColor()
   <> UIButton.lens.title(for: .normal) .~ nil
   <> UIButton.lens.clipsToBounds .~ true
 
 public let settingsViewControllerStyle: (UIViewController) -> UIViewController = { tvc in
   tvc
     |> baseControllerStyle()
-    |> UIViewController.lens.view.backgroundColor .~ .ksr_support_100
+    |> UIViewController.lens.view.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }
 
-public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_support_100
+public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
   <> UITableView.lens.separatorStyle .~ .none
 
 public let settingsTableViewSeparatorStyle = UITableView.lens.separatorStyle .~ .singleLine
-  <> \.separatorColor .~ .ksr_support_300
+  <> \.separatorColor .~ LegacyColors.ksr_support_300.uiColor()
   <> \.separatorInset .~ .zero
 
 public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
     string: string,
-    attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400]
+    attributes: [NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()]
   )
 }
 
@@ -137,7 +137,7 @@ public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
 
 public func settingsLabelStyle(_ label: UILabel) -> UILabel {
   return label
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.font %~ { _ in .ksr_body() }
 }
 
@@ -156,13 +156,13 @@ public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
 public func settingsGroupedTableViewStyle(_ tableView: UITableView) -> UITableView {
   return tableView
     |> \.allowsSelection .~ false
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
     |> \.separatorInset .~ .zero
 }
 
 public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
   return textField
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.font %~ { _ in .ksr_body() }
     |> \.textAlignment %~~ { _, stackView in
       stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .left : .right

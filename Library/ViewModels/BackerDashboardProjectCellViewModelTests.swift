@@ -49,7 +49,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["50%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([0.5])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -70,7 +70,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["110%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([1.1])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -91,7 +91,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["20%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([0.2])
-    self.progressBarColor.assertValues([UIColor.ksr_support_300])
+    self.progressBarColor.assertValues([LegacyColors.ksr_support_300.uiColor()])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -113,7 +113,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["110%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([1.1])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([false])
   }
@@ -212,7 +212,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["50%"])
     self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
     self.progress.assertValues([0.5])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Test Project Data Live"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -258,7 +258,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["400%"])
     self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
     self.progress.assertValues([4.0])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Test Project Data Successful"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -304,7 +304,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["10%"])
     self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
     self.progress.assertValues([0.1])
-    self.progressBarColor.assertValues([UIColor.ksr_support_300])
+    self.progressBarColor.assertValues([LegacyColors.ksr_support_300.uiColor()])
     self.projectTitleText.assertValues(["Test Project Data Failed"])
     self.savedIconIsHidden.assertValues([true])
   }
@@ -352,7 +352,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["50%"])
     self.photoURL.assertValues(["https://www.kickerstart.com/image.png"])
     self.progress.assertValues([0.5])
-    self.progressBarColor.assertValues([UIColor.ksr_create_700])
+    self.progressBarColor.assertValues([LegacyColors.ksr_create_700.uiColor()])
     self.projectTitleText.assertValues(["Test Project Data Live"])
     self.savedIconIsHidden.assertValues([false])
   }

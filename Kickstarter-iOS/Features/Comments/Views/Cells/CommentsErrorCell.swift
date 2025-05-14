@@ -42,7 +42,7 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
 
     _ = self.iconImageView
       |> UIImageView.lens.image .~ Library.image(named: "icon--alert")
-      |> \.tintColor .~ .ksr_black
+      |> \.tintColor .~ LegacyColors.ksr_black.uiColor()
   }
 
   // MARK: - Configuration
@@ -84,5 +84,5 @@ private let messageLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textAlignment .~ .center
-    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }

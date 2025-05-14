@@ -50,7 +50,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
     _ = self.bodyTextView
       |> commentBodyTextViewStyle
-      |> \.textColor .~ .ksr_support_400
+      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     self.viewModel.inputs.bindStyles()
   }
@@ -107,8 +107,8 @@ private let retryButtonStyle: ButtonStyle = { button in
     { _ in Strings.Couldnt_post() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_celebrate_700.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_celebrate_700.uiColor()
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
     |> UIButton.lens.titleLabel.numberOfLines .~ 0
@@ -120,8 +120,8 @@ private let postingButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")?
     .withRenderingMode(.alwaysTemplate)
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
-    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

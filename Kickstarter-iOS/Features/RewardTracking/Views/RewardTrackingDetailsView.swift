@@ -143,7 +143,8 @@ private func applyTrackingStatusLabelStyle(_ label: UILabel) {
 }
 
 private func applyTrackingNumberLabelStyle(_ label: UILabel) {
-  label.textColor = .ksr_support_400 // Do we want to implement a new Design System color?
+  label.textColor = LegacyColors.ksr_support_400
+    .uiColor() // Do we want to implement a new Design System color?
   label.font = .ksr_bodyMD()
   label.adjustsFontForContentSizeCategory = true
 }
@@ -152,7 +153,7 @@ extension RewardTrackingDetailsViewStyle {
   fileprivate var backgroundColor: UIColor {
     switch self {
     case .activity: return Colors.Background.Surface.primary.uiColor()
-    case .backingDetails: return .ksr_support_200
+    case .backingDetails: return LegacyColors.ksr_support_200.uiColor()
     }
   }
 

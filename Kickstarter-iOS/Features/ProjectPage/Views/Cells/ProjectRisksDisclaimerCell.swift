@@ -117,7 +117,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.isUserInteractionEnabled .~ true
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_create_700
+    |> \.textColor .~ LegacyColors.ksr_create_700.uiColor()
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

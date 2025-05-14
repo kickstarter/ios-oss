@@ -84,7 +84,7 @@ final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.numberOfLines .~ 0
 }
 
