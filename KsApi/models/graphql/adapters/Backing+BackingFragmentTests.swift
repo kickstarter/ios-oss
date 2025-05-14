@@ -689,7 +689,7 @@ private func backingDictionary() -> [String: Any] {
       "symbol": "$"
     },
     "cancelable": true,
-    "creditCard": {
+    "paymentSource": {
       "__typename": "CreditCard",
       "expirationDate": "2033-03-01",
       "id": "69021181",

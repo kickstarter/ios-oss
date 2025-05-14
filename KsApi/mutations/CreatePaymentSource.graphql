@@ -3,7 +3,7 @@ mutation CreatePaymentSource($input: CreatePaymentSourceInput!) {
     clientMutationId
     isSuccessful
     paymentSource {
-      ...CreditCardFragment
+      ...PaymentSourceFragment
     }
   }
 }

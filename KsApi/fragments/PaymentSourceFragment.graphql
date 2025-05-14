@@ -1,0 +1,15 @@
+fragment PaymentSourceFragment on PaymentSource {
+  ... on CreditCard {
+    expirationDate
+    id
+    lastFour
+    paymentType
+    type
+    stripeCardId
+  }
+  ... on BankAccount {
+    id
+    lastFour
+    bankName
+  }
+}
