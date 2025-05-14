@@ -131,13 +131,13 @@ private func applyTrackingTitleStackViewStyle(_ stackView: UIStackView) {
 
 private func applyTrackingIconImageViewStyle(_ imageView: UIImageView) {
   imageView.image = Library.image(named: "icon-shipped")
-  imageView.tintColor = Colors.Icon.primary.adaptive()
+  imageView.tintColor = Colors.Icon.primary.uiColor()
   imageView.contentMode = .scaleAspectFit
   imageView.setContentHuggingPriority(.required, for: .horizontal)
 }
 
 private func applyTrackingStatusLabelStyle(_ label: UILabel) {
-  label.textColor = Colors.Text.primary.adaptive()
+  label.textColor = Colors.Text.primary.uiColor()
   label.font = .ksr_headingMD()
   label.adjustsFontForContentSizeCategory = true
 }
@@ -151,7 +151,7 @@ private func applyTrackingNumberLabelStyle(_ label: UILabel) {
 extension RewardTrackingDetailsViewStyle {
   fileprivate var backgroundColor: UIColor {
     switch self {
-    case .activity: return Colors.Background.surfacePrimary.adaptive()
+    case .activity: return Colors.Background.Surface.primary.uiColor()
     case .backingDetails: return .ksr_support_200
     }
   }

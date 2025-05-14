@@ -13,7 +13,7 @@ struct SortView<T: SortOption>: View {
         .frame(height: self.dynamicHeight())
       Spacer()
     }
-    .background(Colors.Background.surfacePrimary.swiftUIColor())
+    .background(Colors.Background.Surface.primary.swiftUIColor())
 
     // Handle actions
     .onReceive(self.viewModel.selectedSortOption) { sortOption in
@@ -57,7 +57,7 @@ struct SortView<T: SortOption>: View {
         .padding(.vertical, Constants.rowPaddingVertical)
         .padding(.horizontal, Constants.rowPaddingHorizontal)
       }
-      .background(Colors.Background.surfacePrimary.swiftUIColor())
+      .background(Colors.Background.Surface.primary.swiftUIColor())
       .listRowInsets(EdgeInsets()) // Remove List internal insets
       .listRowSeparator(.hidden) // Hide default separators
       .contentShape(Rectangle())

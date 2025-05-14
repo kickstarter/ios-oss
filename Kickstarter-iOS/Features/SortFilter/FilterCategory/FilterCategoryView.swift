@@ -17,7 +17,7 @@ struct FilterCategoryView: View {
         self.categoryList
       }
     }
-    .background(Colors.Background.surfacePrimary.swiftUIColor())
+    .background(Colors.Background.Surface.primary.swiftUIColor())
   }
 
   @ViewBuilder
@@ -32,7 +32,7 @@ struct FilterCategoryView: View {
           self.radioButton(isSelected: self.selectedCategory.isRootCategorySelected(category))
             .id("\(category.id)-radio-button")
         }
-        .background(Colors.Background.surfacePrimary.swiftUIColor())
+        .background(Colors.Background.Surface.primary.swiftUIColor())
         .padding(.vertical, Constants.rowPaddingVertical)
         .padding(.horizontal, Constants.rowPaddingHorizontal)
 
@@ -43,7 +43,7 @@ struct FilterCategoryView: View {
         self.separator
           .id("\(category.id)-separator")
       }
-      .background(Colors.Background.surfacePrimary.swiftUIColor())
+      .background(Colors.Background.Surface.primary.swiftUIColor())
       .listRowInsets(EdgeInsets()) // Remove List internal insets
       .listRowSeparator(.hidden) // Hide default separators
       .contentShape(Rectangle())
