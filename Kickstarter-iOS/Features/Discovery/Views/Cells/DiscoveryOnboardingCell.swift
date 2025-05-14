@@ -57,6 +57,7 @@ private let discoveryOnboardingTitleStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.numberOfLines .~ 2
     |> \.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
+    |> \.textColor .~ Colors.Text.primary.uiColor()
 }
 
 private let discoveryOnboardingLogoStyle: ImageViewStyle = { imageView in

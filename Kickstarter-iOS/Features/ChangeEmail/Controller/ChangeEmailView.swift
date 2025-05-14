@@ -41,7 +41,7 @@ struct ChangeEmailView: View {
             self.retrievedEmailText = newValue
           }
 
-          Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
+          LegacyColors.ksr_cell_separator.swiftUIColor().frame(maxWidth: .infinity, maxHeight: 1)
         }
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
@@ -67,7 +67,7 @@ struct ChangeEmailView: View {
             .padding(self.contentPadding)
             .disabled(self.showLoading)
 
-            Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
+            LegacyColors.ksr_cell_separator.swiftUIColor().frame(maxWidth: .infinity, maxHeight: 1)
           }
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
@@ -119,7 +119,7 @@ struct ChangeEmailView: View {
           }
           // FIXME: So "Done" on keyboard doesn't trigger Save --> in the future we might want to add this (was in the old `ChangeEmailViewController`)
 
-          Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
+          LegacyColors.ksr_cell_separator.swiftUIColor().frame(maxWidth: .infinity, maxHeight: 1)
         }
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())

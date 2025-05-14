@@ -21,6 +21,8 @@ internal final class DiscoveryViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = LegacyColors.ksr_white.uiColor()
+
     self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
     self.pageViewController.ksr_setViewControllers(
