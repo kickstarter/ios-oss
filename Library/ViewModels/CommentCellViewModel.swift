@@ -245,23 +245,18 @@ private func viewRepliesStackViewHidden(_ replyCount: Int?) -> Bool {
 }
 
 private func getCommentBody(_ comment: Comment) -> String {
-  if comment.author.isBlocked {
+  switch true {
+  case comment.author.isBlocked:
     return Strings.This_user_has_been_blocked()
-  }
-
-  if comment.removedPerGuidelines {
+  case comment.removedPerGuidelines:
     return commentRemovedPerGuidelines()
-  }
-
-  if comment.isDeleted {
+  case comment.isDeleted:
     return commentDeletedText()
-  }
-
-  if comment.isFlagged {
+  case comment.isFlagged:
     return commentFlaggedText()
+  default:
+    return comment.body
   }
-
-  return comment.body
 }
 
 private func commentRemovedPerGuidelines() -> String {
