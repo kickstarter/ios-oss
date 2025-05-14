@@ -95,5 +95,6 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     _ = self.textBackgroundView
       |> UIView.lens.alpha .~ 0.96
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
   }
 }

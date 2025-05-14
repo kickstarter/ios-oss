@@ -37,4 +37,15 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
     _ = self.arrowIconImage
       |> settingsArrowViewStyle
   }
+
+  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    super.setHighlighted(highlighted, animated: animated)
+
+    let backgroundColor: UIColor = LegacyColors.ksr_support_300.uiColor()
+    let highlightedColor = highlighted ? backgroundColor.withAlphaComponent(0.1) : LegacyColors.ksr_white
+      .uiColor()
+
+    _ = self
+      |> UITableViewCell.lens.backgroundColor .~ highlightedColor
+  }
 }

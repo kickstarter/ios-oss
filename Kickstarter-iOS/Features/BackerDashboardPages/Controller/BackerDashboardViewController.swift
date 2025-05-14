@@ -190,6 +190,8 @@ internal final class BackerDashboardViewController: UIViewController {
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
 
+    self.selectedButtonIndicatorView.backgroundColor = Colors.Text.primary.uiColor()
+
     _ = self.headerStackView
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
