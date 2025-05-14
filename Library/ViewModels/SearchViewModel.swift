@@ -79,7 +79,7 @@ public protocol SearchViewModelOutputs {
   /// Emits a project ID  and ref tag when the project page should be opened.
   var goToProject: Signal<(Int, RefTag), Never> { get }
 
-  /// Used to power the datasource. Emits projects, a title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
+  /// Used to power the datasource. Emits projects, whether or not to show the "Popular" title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
   var searchResults: Signal<SearchResults, Never> { get }
 
   /// Emits when the search field should resign focus.
