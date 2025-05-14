@@ -35,6 +35,7 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     self.tableView.register(nib: .BackerDashboardProjectCell)
+    self.tableView.registerCellClass(SearchResultsCountCell.self)
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -130,10 +131,10 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.projectsAndTitle
+    self.viewModel.outputs.searchResults
       .observeForUI()
-      .observeValues { [weak self] showTitle, projects in
-        self?.dataSource.load(projects: projects.map(\.projectCellModel), withDiscoverTitle: showTitle)
+      .observeValues { [weak self] results in
+        self?.dataSource.load(results: results)
         self?.tableView.reloadData()
       }
 
