@@ -13,7 +13,7 @@ public enum PaymentType: String, Decodable {
     case .googlePay:
       return "Google Pay"
     case .bankAccount:
-      return "Bank account"
+      return nil // TODO(MBL-2434): Use translated "bank account" string.
     case .creditCard:
       return nil
     }
