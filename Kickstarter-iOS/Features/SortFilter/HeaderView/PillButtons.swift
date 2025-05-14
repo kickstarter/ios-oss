@@ -74,7 +74,7 @@ internal struct FilterBadgeView: View {
         trailing: spacing01
       ))
       .foregroundStyle(Colors.Text.primary.swiftUIColor())
-      .background(Colors.Background.accentGraySubtle.swiftUIColor())
+      .background(Colors.Background.Accent.Gray.subtle.swiftUIColor())
       .clipShape(RoundedRectangle(cornerRadius: Styles.grid(1)))
   }
 }
