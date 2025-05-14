@@ -51,7 +51,10 @@ public enum FetchUpdateCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 0
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -80,7 +83,10 @@ public enum FetchUpdateCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 0
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }, {
             "__typename": "CommentEdge",
@@ -109,7 +115,10 @@ public enum FetchUpdateCommentsQueryTemplate {
               "replies": {
                 "__typename": "CommentConnection",
                 "totalCount": 2
-              }
+              },
+              "hasFlaggings": false,
+              "removedPerGuidelines": false,
+              "sustained": false
             }
           }],
           "pageInfo": {

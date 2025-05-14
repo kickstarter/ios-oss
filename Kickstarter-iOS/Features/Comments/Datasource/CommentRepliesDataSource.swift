@@ -146,8 +146,8 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   ) -> IndexPath? {
     let section = Section.replies.rawValue
 
-    // Removed
-    guard comment.isDeleted == false else {
+    // Removed or flagged
+    if comment.isDeletedOrFlagged {
       if let indexPath = indexPath {
         self.set(
           value: comment,
@@ -157,7 +157,9 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
         )
 
         return indexPath
-      } else if append {
+      }
+
+      if append {
         return self.appendRow(
           value: comment,
           cellClass: CommentRemovedCell.self,

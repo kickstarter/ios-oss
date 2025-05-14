@@ -114,7 +114,10 @@ public enum CommentFragmentTemplate {
       "replies": {
         "__typename": "CommentConnection",
         "totalCount": 3
-      }
+      },
+      "hasFlaggings": false,
+      "removedPerGuidelines": false,
+      "sustained": false
     }
     """
 
