@@ -203,7 +203,7 @@ final class ProjectCardView: UIView {
 }
 
 private func applyBaseStyle(_ view: UIView) {
-  view.backgroundColor = .ksr_white
+  view.backgroundColor = LegacyColors.ksr_white.uiColor()
   view.clipsToBounds = true
   view.layer.masksToBounds = true
   view.layer.cornerRadius = Constants.cornerRadius
@@ -219,7 +219,7 @@ private func applyProjectStatusStackViewStyle(_ stackView: UIStackView) {
 
 private func applyProjectImageViewStyle(_ imageView: UIImageView) {
   imageView.contentMode = .scaleAspectFit
-  imageView.backgroundColor = .ksr_support_300
+  imageView.backgroundColor = LegacyColors.ksr_support_300.uiColor()
   imageView.clipsToBounds = true
   imageView.accessibilityIgnoresInvertColors = true
   imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +227,7 @@ private func applyProjectImageViewStyle(_ imageView: UIImageView) {
 
 private func applyProjectTitleLabelStyle(_ label: UILabel) {
   label.font = .ksr_title2()
-  label.textColor = .ksr_black
+  label.textColor = LegacyColors.ksr_black.uiColor()
   label.numberOfLines = 2
   label.lineBreakMode = .byTruncatingTail
   label.translatesAutoresizingMaskIntoConstraints = false
@@ -241,7 +241,7 @@ private func applyProjectStatusImageViewStyle(_ imageView: UIImageView) {
 
 private func applyProjectStatusLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_bodyMD()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
   label.numberOfLines = 0
   label.translatesAutoresizingMaskIntoConstraints = false
 }
@@ -251,6 +251,6 @@ private func applyProgressViewStyle(_ view: UIView) {
 }
 
 private func applyProgressBackgroundViewStyle(_ view: UIView) {
-  view.backgroundColor = .ksr_support_100
+  view.backgroundColor = LegacyColors.ksr_support_100.uiColor()
   view.translatesAutoresizingMaskIntoConstraints = false
 }

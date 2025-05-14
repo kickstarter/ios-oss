@@ -70,7 +70,7 @@ internal final class MessageDialogViewController: UIViewController {
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
     _ = self.postButton

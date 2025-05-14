@@ -40,7 +40,7 @@ final class EmptyStateViewModelTests: TestCase {
 
     self.bodyLabelHidden.assertValues([false])
     self.bodyLabelText.assertValues(["Something went wrong—pull to refresh."])
-    self.bodyLabelTextColor.assertValues([.ksr_support_700])
+    self.bodyLabelTextColor.assertValues([LegacyColors.ksr_support_700.uiColor()])
     self.imageName.assertValues(["icon-exclamation"])
     self.leftRightMargins.assertValues([Styles.grid(10)])
     self.titleLabelHidden.assertValues([true])
@@ -60,7 +60,7 @@ final class EmptyStateViewModelTests: TestCase {
 
     self.bodyLabelHidden.assertValues([false])
     self.bodyLabelText.assertValues(["Change your shipping location or skip add-ons to continue."])
-    self.bodyLabelTextColor.assertValues([.ksr_support_400])
+    self.bodyLabelTextColor.assertValues([LegacyColors.ksr_support_400.uiColor()])
     self.imageName.assertValues(["icon-globe"])
     self.leftRightMargins.assertValues([Styles.grid(3)])
     self.titleLabelHidden.assertValues([false])

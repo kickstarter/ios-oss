@@ -63,7 +63,7 @@ public enum CheckoutConstants {
 public func checkoutCurrencyDefaultAttributes() -> String.Attributes {
   return [
     .font: UIFont.ksr_title1(),
-    .foregroundColor: UIColor.ksr_support_400
+    .foregroundColor: LegacyColors.ksr_support_400.uiColor()
   ]
 }
 
@@ -85,12 +85,12 @@ public enum Layout {
 
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }
 
 public let checkoutLabelStyle: LabelStyle = { label in
   label
-    |> \.backgroundColor .~ UIColor.ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }
 
 public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
@@ -106,8 +106,8 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
 
 public let checkoutSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
-    |> \.onTintColor .~ UIColor.ksr_create_700
-    |> \.tintColor .~ UIColor.ksr_support_300
+    |> \.onTintColor .~ LegacyColors.ksr_create_700.uiColor()
+    |> \.tintColor .~ LegacyColors.ksr_support_300.uiColor()
 }
 
 public let checkoutStepperStyle: (UIStepper) -> UIStepper = { stepper in
@@ -132,7 +132,7 @@ public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
 
 public let checkoutWhiteBackgroundStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
@@ -151,7 +151,7 @@ public let tappableLinksViewStyle: TextViewStyle = { (textView: UITextView) -> U
     |> \.textContainerInset .~ UIEdgeInsets.zero
     |> \.textContainer.lineFragmentPadding .~ 0
     |> \.linkTextAttributes .~ [
-      .foregroundColor: UIColor.ksr_create_700
+      .foregroundColor: LegacyColors.ksr_create_700.uiColor()
     ]
 
   return textView
@@ -169,7 +169,7 @@ public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
 
   let attributes: String.Attributes = [
     .font: UIFont.ksr_caption1(),
-    .foregroundColor: UIColor.ksr_support_400,
+    .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
     .underlineStyle: 0
   ]
 
@@ -217,7 +217,7 @@ public let cardSelectButtonStyle: ButtonStyle = { button in
 
 public let pledgeCardViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 }

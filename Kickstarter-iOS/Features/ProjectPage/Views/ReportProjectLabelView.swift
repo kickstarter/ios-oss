@@ -13,7 +13,7 @@ struct ReportProjectLabelView: View {
       HStack {
         Text(Strings.Report_this_project_to())
           .font(Font(UIFont.ksr_body(size: 14)))
-          .foregroundColor(Color(.ksr_support_700))
+          .foregroundColor(LegacyColors.ksr_support_700.swiftUIColor())
 
         Spacer()
 
@@ -33,7 +33,7 @@ struct ReportProjectLabelView: View {
           .resizable()
           .scaledToFit()
           .frame(width: 20, height: 20)
-          .foregroundColor(Color(.ksr_support_500))
+          .foregroundColor(LegacyColors.ksr_support_500.swiftUIColor())
 
         Text(
           html: Strings.It_looks(
@@ -52,7 +52,7 @@ struct ReportProjectLabelView: View {
         .font(Font(UIFont.ksr_caption1()))
       }
       .padding()
-      .background(Color(.ksr_support_100))
+      .background(LegacyColors.ksr_support_100.swiftUIColor())
       .cornerRadius(15)
     }
   }

@@ -281,6 +281,6 @@ private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
 private let tableViewSeparatorStyle: TableViewStyle = { tableView in
   tableView
     |> \.separatorStyle .~ .singleLine
-    |> \.separatorColor .~ .ksr_support_300
+    |> \.separatorColor .~ LegacyColors.ksr_support_300.uiColor()
     |> \.separatorInset .~ .init(left: Styles.grid(2))
 }

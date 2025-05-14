@@ -25,7 +25,7 @@ private enum PostcardMetadataType {
       return PostcardMetadataData(
         iconImage: image(named: "metadata-backing"),
         labelText: Strings.discovery_baseball_card_metadata_backer(),
-        iconAndTextColor: .ksr_create_700
+        iconAndTextColor: LegacyColors.ksr_create_700.uiColor()
       )
     case .featured:
       guard let rootCategory = project.category.parentName else { return nil }
@@ -34,7 +34,7 @@ private enum PostcardMetadataType {
         labelText: Strings.discovery_baseball_card_metadata_featured_project(
           category_name: rootCategory
         ),
-        iconAndTextColor: .ksr_support_700
+        iconAndTextColor: LegacyColors.ksr_support_700.uiColor()
       )
     }
   }
@@ -213,7 +213,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
 
     self.projectStateTitleLabelColor = configuredProject
-      .map { $0.state == .successful ? .ksr_create_700 : .ksr_support_700 }
+      .map {
+        $0.state == .successful ? LegacyColors.ksr_create_700.uiColor() : LegacyColors.ksr_support_700
+          .uiColor()
+      }
       .skipRepeats()
 
     self.projectStateTitleLabelText = configuredProject

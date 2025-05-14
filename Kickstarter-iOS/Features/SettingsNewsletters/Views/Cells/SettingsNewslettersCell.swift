@@ -42,7 +42,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
 
   override func bindStyles() {
     _ = self.contentView
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self.separatorViews
       ||> separatorStyle

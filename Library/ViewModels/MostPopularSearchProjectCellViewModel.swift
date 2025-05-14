@@ -83,12 +83,12 @@ private func progressBarColorForProject(
   _ project: any BackerDashboardProjectCellViewModel
     .ProjectCellModel
 ) -> UIColor {
-  guard !isProjectPrelaunch(project) else { return .ksr_create_700 }
+  guard !isProjectPrelaunch(project) else { return LegacyColors.ksr_create_700.uiColor() }
 
   switch project.state {
   case .live, .successful:
-    return .ksr_create_700
+    return LegacyColors.ksr_create_700.uiColor()
   default:
-    return .ksr_support_400
+    return LegacyColors.ksr_support_400.uiColor()
   }
 }

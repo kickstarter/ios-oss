@@ -499,8 +499,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private func addShadowLayers() {
     let projectStatusShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ UIColor.ksr_white.withAlphaComponent(0.95).cgColor
-      |> \.shadowColor .~ UIColor.ksr_black.cgColor
+      |> \.fillColor .~ LegacyColors.ksr_white.uiColor().withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4
       |> \.shadowOffset .~ CGSize(width: 0, height: 1)
@@ -510,8 +510,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectStatusContainerView.layer.insertSublayer(projectStatusShadowLayer, at: 0)
 
     let saveButtonShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ UIColor.ksr_white.withAlphaComponent(0.95).cgColor
-      |> \.shadowColor .~ UIColor.ksr_black.cgColor
+      |> \.fillColor .~ LegacyColors.ksr_white.uiColor().withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4
       |> \.shadowOffset .~ CGSize(width: 0, height: 1)
@@ -609,8 +609,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 private let avatarImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.layer.borderColor .~ UIColor.ksr_white.cgColor
-    |> \.backgroundColor .~ UIColor.ksr_support_300
+    |> \.layer.borderColor .~ LegacyColors.ksr_white.uiColor().cgColor
+    |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
     |> \.layer.borderWidth .~ 2
     |> \.clipsToBounds .~ true
     |> ignoresInvertColorsImageViewStyle
@@ -619,19 +619,19 @@ private let avatarImageViewStyle: ImageViewStyle = { imageView in
 
 private let collectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.preservesSuperviewLayoutMargins .~ false
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }
 
 private let cardContainerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let projectStatusContainerViewStyle: ViewStyle = { view in
@@ -642,14 +642,14 @@ private let projectStatusContainerViewStyle: ViewStyle = { view in
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ Library.image(named: "icon--star")
-    |> \.tintColor .~ .ksr_create_700
+    |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
     |> \.contentMode .~ .center
 }
 
 private let projectImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
-    |> \.backgroundColor .~ .ksr_support_300
+    |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
     |> \.contentMode .~ .scaleAspectFill
     |> ignoresInvertColorsImageViewStyle
 }
@@ -659,8 +659,8 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_headline().bolded
-    |> \.textColor .~ .ksr_support_700
-    |> \.backgroundColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let projectBlurbLabelStyle: LabelStyle = { label in
@@ -668,15 +668,15 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ .ksr_support_400
-    |> \.backgroundColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let projectStatusLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.backgroundColor .~ .clear
 }
 
@@ -684,13 +684,13 @@ private let facepileDescriptionLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font .~ UIFont.ksr_footnote().bolded
 }
 
 private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.tintColor .~ .ksr_support_400
+    |> \.tintColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.contentMode .~ .center
 }
 
@@ -706,14 +706,14 @@ private let percentFundedLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_create_700
-    |> \.backgroundColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_create_700.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ Library.image(named: "icon--humans")
-    |> \.tintColor .~ .ksr_support_400
+    |> \.tintColor .~ LegacyColors.ksr_support_400.uiColor()
     |> \.contentMode .~ .center
 }
 
@@ -721,8 +721,8 @@ private let backersCountLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_support_700
-    |> \.backgroundColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
@@ -751,14 +751,14 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
 private let youreABackerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.backgroundColor .~ UIColor.ksr_trust_500
+    |> \.backgroundColor .~ LegacyColors.ksr_trust_500.uiColor()
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 }
 
 private let youreABackerLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
-    |> \.textColor .~ UIColor.ksr_white
+    |> \.textColor .~ LegacyColors.ksr_white.uiColor()
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.text %~ { _ in Strings.Youre_a_backer_no_punctuation() }

@@ -31,7 +31,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 
     _ = self.tableView
       |> \.separatorStyle .~ .singleLine
-      |> \.separatorColor .~ .ksr_support_300
+      |> \.separatorColor .~ LegacyColors.ksr_support_300.uiColor()
       |> \.separatorInset .~ .init(left: Styles.grid(2))
   }
 

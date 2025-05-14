@@ -30,11 +30,11 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
     _ = self.noResultsLabel
       |> UILabel.lens.text %~ { _ in Strings.No_Results() }
       |> UILabel.lens.font .~ .ksr_body(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.searchTermNotFoundLabel
       |> UILabel.lens.font .~ .ksr_body(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.rootStackView

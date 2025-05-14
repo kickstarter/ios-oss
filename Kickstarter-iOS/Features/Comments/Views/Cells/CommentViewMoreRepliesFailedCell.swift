@@ -81,7 +81,7 @@ private let bodyTextLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_subhead()
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_celebrate_700
+    |> \.textColor .~ LegacyColors.ksr_celebrate_700.uiColor()
     |> \.text .~ Strings.Couldnt_load_more_comments_Tap_to_retry()
 }
 

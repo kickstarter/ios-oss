@@ -78,7 +78,7 @@ internal final class EmptyStatesViewController: UIViewController {
     self.stripViewTopLayoutConstraint.constant = -Styles.grid(3)
 
     _ = self.view
-      |> UIView.lens.backgroundColor .~ .ksr_white
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UIView.lens.layoutMargins .~ (
         self.traitCollection.isRegularRegular
           ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
@@ -97,16 +97,16 @@ internal final class EmptyStatesViewController: UIViewController {
     }
 
     _ = self.titleLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
 
     _ = self.subtitleLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
 
     _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -122,7 +122,7 @@ internal final class EmptyStatesViewController: UIViewController {
       |> greenButtonStyle
 
     _ = self.backgroundStripView
-      |> UIView.lens.backgroundColor .~ .ksr_white
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
   }
 
   internal func setEmptyState(_ emptyState: EmptyState) {

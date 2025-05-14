@@ -285,7 +285,7 @@ public func ksr_pledgeAmount(
 }
 
 public func discoveryPageBackgroundColor() -> UIColor {
-  return UIColor.ksr_white
+  return LegacyColors.ksr_white.uiColor()
 }
 
 public func rewardIsAvailable(_ reward: Reward) -> Bool {
@@ -758,7 +758,7 @@ public func estimatedShippingConversionText(
 
 public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
+    .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700.uiColor()])
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   return Format.attributedCurrency(

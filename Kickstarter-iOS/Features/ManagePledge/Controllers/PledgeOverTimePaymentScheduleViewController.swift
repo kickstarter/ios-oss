@@ -200,20 +200,20 @@ private func applyPaymentsScheduleStackViewStyle(_ stackView: UIStackView) {
 private func applyTitleLabelStyle(_ label: UILabel) {
   label.adjustsFontForContentSizeCategory = true
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = .ksr_black
+  label.textColor = LegacyColors.ksr_black.uiColor()
 }
 
 private func applyCollapseIndicatorImageViewStyle(_ imageView: UIImageView) {
   imageView.contentMode = .scaleAspectFit
   imageView.image = UIImage(systemName: "chevron.down")
-  imageView.tintColor = .ksr_support_700
+  imageView.tintColor = LegacyColors.ksr_support_700.uiColor()
 }
 
 private func applyTermsOfUseStyle(_ button: UIButton) {
   button.configuration = {
     var config = UIButton.Configuration.borderless()
     config.contentInsets = Constants.contentInsets
-    config.baseForegroundColor = .ksr_create_700
+    config.baseForegroundColor = LegacyColors.ksr_create_700.uiColor()
     return config
   }()
 

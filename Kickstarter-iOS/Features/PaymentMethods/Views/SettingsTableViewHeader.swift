@@ -14,7 +14,7 @@ final class SettingsTableViewHeader: UIView, NibLoading {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
       |> \.layoutMargins .~ .init(
         top: Styles.grid(5),
         left: Styles.grid(2),

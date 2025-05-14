@@ -29,7 +29,7 @@ import UIKit
       |> postcardCategoryLabelStyle
 
     _ = self.categoryViewImageView
-      |> \.tintColor .~ .ksr_support_300
+      |> \.tintColor .~ LegacyColors.ksr_support_300.uiColor()
   }
 
   internal override func bindViewModel() {
