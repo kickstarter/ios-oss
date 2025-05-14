@@ -525,6 +525,7 @@
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
 		6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633529B9023300B87B39 /* GraphUserEmailTests.swift */; };
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
+		600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 600A0EEA2DD23BAA00954829 /* Lottie */; };
 		601342EC2C81414000B851FA /* PostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* PostCampaignCheckoutViewController.swift */; };
 		601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */; };
 		601342F12C8141F000B851FA /* PostCampaignCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F02C8141F000B851FA /* PostCampaignCheckoutViewModel.swift */; };
@@ -1628,6 +1629,7 @@
 		E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */; };
 		E10841702DCA7472000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */; };
 		E108416E2DCA6AC8000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */; };
+		E10841692DC2675D000E4F17 /* ObservedSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841682DC26753000E4F17 /* ObservedSignal.swift */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10BE8DB2B14F1C100F73DC9 /* BlockUser.graphql */; };
@@ -3427,6 +3429,7 @@
 		E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
 		E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
 		E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
+		E10841682DC26753000E4F17 /* ObservedSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedSignal.swift; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3528,6 +3531,7 @@
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
+				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
@@ -6144,6 +6148,7 @@
 		6080DA3E2AB366550088EF3D /* SwiftUI+Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E10841682DC26753000E4F17 /* ObservedSignal.swift */,
 				6080DA3F2AB366680088EF3D /* Text+HTML.swift */,
 			);
 			path = "SwiftUI+Extensions";
@@ -7824,6 +7829,7 @@
 				1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */,
 				E113BD902B7D615000D3A809 /* Prelude */,
 				E1B214702BFD184500109961 /* KingfisherWebP */,
+				600A0EEA2DD23BAA00954829 /* Lottie */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8096,6 +8102,7 @@
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
+				600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -9282,6 +9289,7 @@
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				06B0FDB92702579800147E3E /* ProjectPageViewController.swift in Sources */,
 				8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */,
+				E10841692DC2675D000E4F17 /* ObservedSignal.swift in Sources */,
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
@@ -11640,6 +11648,14 @@
 				minimumVersion = 11.4.0;
 			};
 		};
+		600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
 		606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
@@ -11760,6 +11776,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		600A0EEA2DD23BAA00954829 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		606754BC28CF91D60033CD5E /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;

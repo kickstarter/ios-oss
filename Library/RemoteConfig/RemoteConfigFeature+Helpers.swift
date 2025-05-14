@@ -27,6 +27,10 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
 
+public func onboardingFlowEnabled() -> Bool {
+  featureEnabled(feature: .onboardingFlow)
+}
+
 public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV2Enabled)
 }
