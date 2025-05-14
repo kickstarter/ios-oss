@@ -113,6 +113,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.clipsToBounds .~ true
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
+    self.contentStackView.backgroundColor = LegacyColors.ksr_white.uiColor()
+
     let subtitleLabelStyling = UILabel.lens.font .~ .ksr_caption1(size: 13)
       <> UILabel.lens.numberOfLines .~ 1
       <> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()

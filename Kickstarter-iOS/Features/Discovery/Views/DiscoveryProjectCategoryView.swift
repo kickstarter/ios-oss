@@ -22,9 +22,6 @@ import UIKit
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.blurView
-      |> UIImageView.lens.image .~ Library.image(named: "white--gradient--layer")
-
     _ = self.categoryViewLabel
       |> postcardCategoryLabelStyle
 

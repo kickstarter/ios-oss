@@ -363,4 +363,10 @@ public struct LegacyColors {
     lightMode: UIColor.hex(0x0A007D),
     darkMode: UIColor(coreColor: .blue_03)
   )
+
+  public static let ksr_cell_separator = LegacyColor(
+    "legacy/ksr_cell_separator",
+    lightMode: UIColor.hex(0xDCDEDD),
+    darkMode: UIColor(coreColor: .gray_800)
+  )
 }

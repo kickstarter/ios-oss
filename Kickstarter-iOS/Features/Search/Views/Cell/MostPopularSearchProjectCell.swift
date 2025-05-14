@@ -49,7 +49,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.projectInfoOverlayView
-      |> UIView.lens.backgroundColor .~ .init(white: 1.0, alpha: 0.95)
+      |> UIView.lens.backgroundColor .~ Colors.Background.Surface.primary.uiColor().withAlphaComponent(0.95)
       |> UIView.lens.layoutMargins %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .init(all: Styles.grid(6))
