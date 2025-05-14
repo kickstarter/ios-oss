@@ -132,7 +132,6 @@ extension Backing.PaymentSource: Decodable {
     case id
     case lastFour = "last_four"
     case paymentType = "payment_type"
-    case state
     case type
   }
 }

@@ -30,7 +30,6 @@ public enum CreatePaymentSourceMutationTemplate {
           "id": "69021299",
           "lastFour": "4242",
           "paymentType": GraphAPI.PaymentTypes.creditCard,
-          "state": GraphAPI.CreditCardState.active,
           "type": GraphAPI.CreditCardTypes.visa,
           "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
         ]

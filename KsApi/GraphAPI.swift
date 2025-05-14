@@ -4295,57 +4295,6 @@ public enum GraphAPI {
     }
   }
 
-  /// States of Credit Cards
-  public enum CreditCardState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-    public typealias RawValue = String
-    case unauthorized
-    case verifying
-    case active
-    case inactive
-    /// Auto generated constant for unknown enum values
-    case __unknown(RawValue)
-
-    public init?(rawValue: RawValue) {
-      switch rawValue {
-        case "UNAUTHORIZED": self = .unauthorized
-        case "VERIFYING": self = .verifying
-        case "ACTIVE": self = .active
-        case "INACTIVE": self = .inactive
-        default: self = .__unknown(rawValue)
-      }
-    }
-
-    public var rawValue: RawValue {
-      switch self {
-        case .unauthorized: return "UNAUTHORIZED"
-        case .verifying: return "VERIFYING"
-        case .active: return "ACTIVE"
-        case .inactive: return "INACTIVE"
-        case .__unknown(let value): return value
-      }
-    }
-
-    public static func == (lhs: CreditCardState, rhs: CreditCardState) -> Bool {
-      switch (lhs, rhs) {
-        case (.unauthorized, .unauthorized): return true
-        case (.verifying, .verifying): return true
-        case (.active, .active): return true
-        case (.inactive, .inactive): return true
-        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-        default: return false
-      }
-    }
-
-    public static var allCases: [CreditCardState] {
-      return [
-        .unauthorized,
-        .verifying,
-        .active,
-        .inactive,
-      ]
-    }
-  }
-
   /// The type of environmental commitment for a project.
   public enum EnvironmentalCommitmentCategory: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -6561,8 +6510,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
-            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) {
+            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
           }
 
           public var __typename: String {
@@ -15489,8 +15438,8 @@ public enum GraphAPI {
         return PaymentSource(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
       }
 
-      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> PaymentSource {
-        return PaymentSource(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) -> PaymentSource {
+        return PaymentSource(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -17284,7 +17233,6 @@ public enum GraphAPI {
           id
           lastFour
           paymentType
-          state
           type
           stripeCardId
         }
@@ -17315,8 +17263,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> PaymentSourceFragment {
-      return PaymentSourceFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) -> PaymentSourceFragment {
+      return PaymentSourceFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
     }
 
     public static func makeBankAccount(id: String, lastFour: String, bankName: String? = nil) -> PaymentSourceFragment {
@@ -17353,7 +17301,6 @@ public enum GraphAPI {
           GraphQLField("id", type: .nonNull(.scalar(String.self))),
           GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
           GraphQLField("paymentType", type: .nonNull(.scalar(CreditCardPaymentType.self))),
-          GraphQLField("state", type: .nonNull(.scalar(CreditCardState.self))),
           GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
           GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
         ]
@@ -17365,8 +17312,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
-        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) {
+        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -17415,16 +17362,6 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "paymentType")
-        }
-      }
-
-      /// The card's state.
-      public var state: CreditCardState {
-        get {
-          return resultMap["state"]! as! CreditCardState
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "state")
         }
       }
 

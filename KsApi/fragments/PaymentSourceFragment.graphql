@@ -4,7 +4,6 @@ fragment PaymentSourceFragment on PaymentSource {
     id
     lastFour
     paymentType
-    state
     type
     stripeCardId
   }

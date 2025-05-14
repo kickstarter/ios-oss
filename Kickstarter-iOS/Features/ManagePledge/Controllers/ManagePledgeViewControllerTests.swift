@@ -252,14 +252,14 @@ final class ManagePledgeViewControllerTests: TestCase {
       }
     }
   }
-  
+
   // Test SEPA, which is a bank account payment in the EU. This payment method is only available
   // during pledge on web, but it should still show up if users look at their pledge on mobile.
   func testView_SEPA() {
     let user = User.template
     let reward = Reward.template
     let paymentSource = Backing.PaymentSource(id: "7", lastFour: "7890", paymentType: .bankAccount)
-    
+
     let backing = Backing.template
       |> Backing.lens.amount .~ 22
       |> Backing.lens.reward .~ reward
