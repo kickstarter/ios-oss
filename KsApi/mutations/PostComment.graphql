@@ -1,22 +1,7 @@
 mutation PostComment($input: PostCommentInput!) {
   createComment(input: $input) {
     comment {
-      author {
-        id
-        imageUrl(width: 200)
-        isBlocked
-        isCreator
-        name
-      }
-      authorBadges
-      body
-      createdAt
-      deleted
-      parentId
-      id
-      replies {
-        totalCount
-      }
+      ...CommentFragment
     }
   }
 }

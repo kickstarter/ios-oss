@@ -37,7 +37,7 @@ public struct Backing {
     public var id: String?
     public var lastFour: String?
     public var paymentType: PaymentType
-    public var state: String
+    public var state: String?
     public var type: CreditCardType?
   }
 
@@ -132,7 +132,6 @@ extension Backing.PaymentSource: Decodable {
     case id
     case lastFour = "last_four"
     case paymentType = "payment_type"
-    case state
     case type
   }
 }

@@ -5,7 +5,7 @@ extension CreatePaymentSourceEnvelope {
   static func from(_ data: GraphAPI.CreatePaymentSourceMutation.Data) -> CreatePaymentSourceEnvelope? {
     guard let createdPaymentSource = data.createPaymentSource,
           createdPaymentSource.isSuccessful,
-          let rawCreditCardData = createdPaymentSource.paymentSource?.fragments.creditCardFragment
+          let rawCreditCardData = createdPaymentSource.paymentSource?.fragments.paymentSourceFragment
           .asCreditCard,
           let rawCardType = CreditCardType(rawValue: rawCreditCardData.type.rawValue) else {
       return nil

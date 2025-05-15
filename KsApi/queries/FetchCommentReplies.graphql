@@ -1,7 +1,6 @@
 query FetchCommentReplies($commentId: ID!,
   $cursor: String,
-  $limit: Int!,
-  $withStoredCards: Boolean!) {
+  $limit: Int!) {
   comment: node(id: $commentId) {
     ...CommentWithRepliesFragment
   }

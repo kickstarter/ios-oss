@@ -15,6 +15,9 @@ extension Comment {
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 2,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -32,6 +35,9 @@ extension Comment {
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 2,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -50,6 +56,9 @@ extension Comment {
     isDeleted: false,
     parentId: "Q29tbWVudC0zMjY2NDAxMg==",
     replyCount: 0,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -68,6 +77,9 @@ extension Comment {
     isDeleted: false,
     parentId: "Q29tbWVudC0zMjY2NDAxMg==",
     replyCount: 0,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .failed
   )
 
@@ -86,6 +98,9 @@ extension Comment {
     isDeleted: false,
     parentId: nil,
     replyCount: 2,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -103,6 +118,9 @@ extension Comment {
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: true,
     replyCount: 2,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -120,6 +138,9 @@ extension Comment {
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 10,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -137,6 +158,9 @@ extension Comment {
     id: "BOD5af89jdDA4fG==",
     isDeleted: false,
     replyCount: 0,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -154,6 +178,9 @@ extension Comment {
     id: "BOD5af89jdDA4fG==",
     isDeleted: false,
     replyCount: 0,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .success
   )
 
@@ -171,6 +198,9 @@ extension Comment {
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 15,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .failed
   )
 
@@ -188,6 +218,9 @@ extension Comment {
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 15,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .retrying
   )
 
@@ -205,7 +238,50 @@ extension Comment {
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     replyCount: 4,
+    hasFlaggings: false,
+    removedPerGuidelines: false,
+    sustained: false,
     status: .retrySuccess
+  )
+
+  public static let commentUnderReviewTemplate = Comment(
+    author: Author(
+      id: "ADG8hYbp7gsDAZ==",
+      imageUrl: "https://ks/img/cordero.jpg",
+      isBlocked: false,
+      isCreator: false,
+      name: "Cordero"
+    ),
+    authorBadges: [.superbacker],
+    body: "This comment text should never be seen.",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
+    id: "BOD5af89jdDA4fG==",
+    isDeleted: false,
+    replyCount: 0,
+    hasFlaggings: true,
+    removedPerGuidelines: false,
+    sustained: false,
+    status: .success
+  )
+
+  public static let commentRemovedPerGuidelinesTemplate = Comment(
+    author: Author(
+      id: "ADG8hYbp7gsDAZ==",
+      imageUrl: "https://ks/img/cordero.jpg",
+      isBlocked: false,
+      isCreator: false,
+      name: "Cordero"
+    ),
+    authorBadges: [.superbacker],
+    body: "This comment text should never be seen.",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
+    id: "BOD5af89jdDA4fG==",
+    isDeleted: true,
+    replyCount: 0,
+    hasFlaggings: true,
+    removedPerGuidelines: true,
+    sustained: false,
+    status: .success
   )
 
   public static let templates: [Comment] = [

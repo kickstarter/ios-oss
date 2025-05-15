@@ -89,7 +89,6 @@
 		06232D4B27962F4900A81755 /* TextViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */; };
 		06261603273B0E1500389981 /* PostComment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06261602273B0E1500389981 /* PostComment.graphql */; };
 		06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */; };
-		0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */; };
 		062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */; };
 		062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */; };
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
@@ -175,7 +174,7 @@
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
 		06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F0269398CB00017845 /* MoneyFragment.graphql */; };
 		06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F4269398CB00017845 /* LocationFragment.graphql */; };
-		06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* CreditCardFragment.graphql */; };
+		06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */; };
 		06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F3269398CB00017845 /* CountryFragment.graphql */; };
 		06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */; };
 		06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EE269398CA00017845 /* CategoryFragment.graphql */; };
@@ -187,7 +186,6 @@
 		06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */; };
 		06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */; };
 		06ED88D727BFF02200893A24 /* AudioVideoViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16FA2773B0DE009E4354 /* AudioVideoViewElementCell.swift */; };
-		06F2CA312762707B00056F35 /* Comment+CommentWithRepliesFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */; };
 		06F7BE1826B31A020094BF37 /* UserCreditCards+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */; };
 		06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */; };
 		06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */; };
@@ -306,6 +304,7 @@
 		33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */; };
 		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
 		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
+		33B098762DCAF96D000CE6AE /* CommentBaseFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */; };
 		33D11D462D6EFFB500CC88A3 /* KSRButtonStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */; };
@@ -1904,7 +1903,6 @@
 		06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		06261602273B0E1500389981 /* PostComment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PostComment.graphql; sourceTree = "<group>"; };
 		06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInput.swift"; sourceTree = "<group>"; };
-		06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+PostCommentMutationData.swift"; sourceTree = "<group>"; };
 		062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = DeletePaymentSource.graphql; sourceTree = "<group>"; };
 		062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift"; sourceTree = "<group>"; };
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
@@ -1991,7 +1989,6 @@
 		06EA2D36280F1F1900F4DE2E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
-		06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentWithRepliesFragment.swift"; sourceTree = "<group>"; };
 		06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
 		06FE22AD278626AB008753DB /* Element+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+Helpers.swift"; sourceTree = "<group>"; };
@@ -2081,6 +2078,7 @@
 		33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentIncrementState+Extension.swift"; sourceTree = "<group>"; };
 		33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
 		33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewControllerTest.swift; sourceTree = "<group>"; };
+		33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentBaseFragment.graphql; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
 		33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyle.swift; sourceTree = "<group>"; };
 		33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyleConfiguration.swift; sourceTree = "<group>"; };
@@ -2558,7 +2556,7 @@
 		8A1556EF269398CB00017845 /* ProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectFragment.graphql; sourceTree = "<group>"; };
 		8A1556F0269398CB00017845 /* MoneyFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = MoneyFragment.graphql; sourceTree = "<group>"; };
 		8A1556F1269398CB00017845 /* UserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFragment.graphql; sourceTree = "<group>"; };
-		8A1556F2269398CB00017845 /* CreditCardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreditCardFragment.graphql; sourceTree = "<group>"; };
+		8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentSourceFragment.graphql; sourceTree = "<group>"; };
 		8A1556F3269398CB00017845 /* CountryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CountryFragment.graphql; sourceTree = "<group>"; };
 		8A1556F4269398CB00017845 /* LocationFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LocationFragment.graphql; sourceTree = "<group>"; };
 		8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingQuery.graphql; sourceTree = "<group>"; };
@@ -6393,10 +6391,11 @@
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
+				33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */,
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
 				068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */,
 				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
-				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
+				8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */,
 				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
 				8A1556F0269398CB00017845 /* MoneyFragment.graphql */,
 				60ED07BB2D9EFF66007779B5 /* OrderFragment.graphql */,
@@ -6434,8 +6433,6 @@
 				19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */,
 				8A15571C2693B29600017845 /* Comment+CommentFragment.swift */,
 				06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */,
-				06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */,
-				06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */,
 				8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */,
 				8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */,
 				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
@@ -8271,6 +8268,7 @@
 				AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */,
 				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
+				33B098762DCAF96D000CE6AE /* CommentBaseFragment.graphql in Resources */,
 				393E8DA12C5BE07C00AEA968 /* PPOBackingFragment.graphql in Resources */,
 				606EC1EA2D2847CA00286CBD /* PaymentIncrementFragment.graphql in Resources */,
 				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
@@ -8283,7 +8281,7 @@
 				E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
-				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
+				06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */,
 				399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */,
 				068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */,
 				E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */,
@@ -9705,7 +9703,6 @@
 				D01588BB1EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift in Sources */,
 				D01589071EEB2ED7006E7684 /* ProjectNotification.swift in Sources */,
 				6051C6632B600E8000514202 /* CreateCheckoutMutation.swift in Sources */,
-				06F2CA312762707B00056F35 /* Comment+CommentWithRepliesFragment.swift in Sources */,
 				D01588D31EEB2ED7006E7684 /* SurveyResponseLenses.swift in Sources */,
 				60ED07BE2D9F063F007779B5 /* Order.swift in Sources */,
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
@@ -9741,7 +9738,6 @@
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
-				0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
 				AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,

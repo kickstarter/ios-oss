@@ -1,0 +1,18 @@
+fragment CommentBaseFragment on Comment {
+  author {
+    id
+    imageUrl(width: 200)
+    isBlocked
+    isCreator
+    name
+  }
+  authorBadges
+  body
+  createdAt
+  deleted
+  id
+  parentId
+  hasFlaggings
+  removedPerGuidelines
+  sustained
+}
