@@ -29,7 +29,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     self.expectedParagraphStyle.minimumLineHeight = 22
     self.expectedFontAttributes = [
       NSAttributedString.Key.font: self.expectedBaseFont,
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700,
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor(),
       NSAttributedString.Key.paragraphStyle: self.expectedParagraphStyle
     ]
 
@@ -118,7 +118,8 @@ internal final class TextElementCellViewModelTests: TestCase {
     let linkWithStylesTextElement = TextViewElement(components: [linkWithStylesTextComponent])
 
     self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
-    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700
+      .uiColor()
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
 
@@ -139,7 +140,8 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
     let linkWithNoStylesTextElement = TextViewElement(components: [linkWithNoStylesTextComponent])
 
-    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700
+      .uiColor()
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
 
@@ -171,7 +173,8 @@ internal final class TextElementCellViewModelTests: TestCase {
 
       self.expectedHeaderFont = UIFont.ksr_body(size: fontSize).bolded
       self.expectedFontAttributes[NSAttributedString.Key.font] = self.expectedHeaderFont
-      self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
+      self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_support_700
+        .uiColor()
       self.expectedParagraphStyle.minimumLineHeight = 25
       self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle
 
@@ -228,7 +231,8 @@ internal final class TextElementCellViewModelTests: TestCase {
     )
 
     self.expectedParagraphStyle = baseParagraphStyle
-    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700
+      .uiColor()
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle
     self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!

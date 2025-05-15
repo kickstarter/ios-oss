@@ -59,8 +59,8 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
 
     _ = self.layer
       |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.ksr_white.cgColor
-      |> \.shadowColor .~ UIColor.ksr_black.cgColor
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor().cgColor
+      |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ CGFloat(1.0)

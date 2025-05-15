@@ -265,11 +265,11 @@ public final class RewardAddOnCardView: UIView {
   private func configurePillsView(_ pills: [String]) {
     let pillData = pills.map { text -> PillData in
       PillData(
-        backgroundColor: UIColor.ksr_celebrate_100,
+        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
         text: text,
-        textColor: .ksr_support_400,
+        textColor: LegacyColors.ksr_support_400.uiColor(),
         imageName: nil
       )
     }
@@ -309,14 +309,14 @@ private func applyIncludedItemsTitleLabel(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   label.font = .ksr_callout().weighted(.semibold)
   label.text = Strings.project_view_pledge_includes()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyEstimatedShippingTitleLabel(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
   label.font = .ksr_callout().weighted(.semibold)
   label.text = Strings.Estimated_Shipping()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
 }
 
 private func applyEstimatedShippingLabel(_ label: UILabel) {
@@ -347,19 +347,19 @@ private func applyIncludedItemsStackViewStyle(_ stackView: UIStackView) {
 
 private func applyAmountLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
-  label.textColor = .ksr_create_700
+  label.textColor = LegacyColors.ksr_create_700.uiColor()
   label.font = UIFont.ksr_title3().bolded
 }
 
 private func applyAmountConvertedLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
   label.font = UIFont.ksr_footnote().weighted(.medium)
 }
 
 private func applyDescriptionLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_body()
 }
 
@@ -370,7 +370,7 @@ private func applyTitleAmountStackViewStyle(_ stackView: UIStackView) {
 
 private func applyRewardTitleLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_title3().bolded
 }
 
@@ -381,7 +381,7 @@ private func applySectionStackViewStyle(_ stackView: UIStackView) {
 
 private func applySectionBodyLabelStyle(_ label: UILabel) {
   applyBaseRewardLabelStyle(label)
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_body()
 }
 
@@ -397,7 +397,7 @@ private func applyRewardImageViewStyle(_ imageView: UIImageView) {
 private func applyQuantityLabelContainerStyle(_ view: UIView) {
   _ = checkoutRoundedCornersStyle(view)
   view.layoutMargins = .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-  view.layer.borderColor = UIColor.ksr_support_300.cgColor
+  view.layer.borderColor = LegacyColors.ksr_support_300.uiColor().cgColor
   view.layer.borderWidth = 1
 }
 
@@ -423,6 +423,6 @@ private func applyAddButtonStyle(_ button: UIButton) {
 private func applyRewardLocationTitleLabelStyle(_ label: UILabel) {
   applySectionBodyLabelStyle(label)
   label.text = Strings.Reward_location()
-  label.textColor = UIColor.ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
   label.font = .ksr_headline()
 }

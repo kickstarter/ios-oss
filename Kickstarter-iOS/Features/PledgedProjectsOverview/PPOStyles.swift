@@ -5,8 +5,8 @@ import SwiftUI
 enum PPOStyles {
   static let header = (
     font: UIFont.ksr_title2(),
-    foreground: UIColor.ksr_black,
-    background: UIColor.ksr_white,
+    foreground: LegacyColors.ksr_black.uiColor(),
+    background: LegacyColors.ksr_white.uiColor(),
     padding: Edge.Set.top
   )
 
@@ -19,33 +19,33 @@ enum PPOStyles {
 
   static let error = (
     font: UIFont.ksr_callout(),
-    foreground: UIColor.ksr_black,
-    background: UIColor.ksr_white
+    foreground: LegacyColors.ksr_black.uiColor(),
+    background: LegacyColors.ksr_white.uiColor()
   )
 
   static let warningColor = (
-    foreground: UIColor.ksr_support_400,
-    background: UIColor.ksr_celebrate_100
+    foreground: LegacyColors.ksr_support_400.uiColor(),
+    background: LegacyColors.ksr_celebrate_100.uiColor()
   )
 
   static let alertColor = (
-    foreground: UIColor.ksr_alert_foreground,
-    background: UIColor.ksr_alert_background
+    foreground: Colors.Text.Accent.Red.bolder.uiColor(),
+    background: Colors.Background.Danger.subtle.uiColor()
   )
 
   static let title = (
     font: UIFont.ksr_subhead().bolded,
-    color: UIColor.ksr_black
+    color: LegacyColors.ksr_black.uiColor()
   )
 
   static let subtitle = (
     font: UIFont.ksr_footnote(),
-    color: UIColor.ksr_support_400
+    color: LegacyColors.ksr_support_400.uiColor()
   )
 
   static let body = (
     font: UIFont.ksr_caption1(),
-    color: UIColor.ksr_black
+    color: LegacyColors.ksr_black.uiColor()
   )
 
   static let flagFont = UIFont.ksr_caption1().bolded
@@ -53,7 +53,7 @@ enum PPOStyles {
 
   static let bannerPadding = 7
 
-  static let background = UIColor.ksr_white
+  static let background = LegacyColors.ksr_white.uiColor()
 
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice

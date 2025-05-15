@@ -60,9 +60,12 @@ public final class VideoViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.playButton
       |> UIButton.lens.image(for: .normal) .~ image(named: "play-arrow-icon")
-      <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_white.withAlphaComponent(0.5)
+      <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
+      .withAlphaComponent(0.5)
       <> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_play_video() }
 
     _ = self.projectImageView

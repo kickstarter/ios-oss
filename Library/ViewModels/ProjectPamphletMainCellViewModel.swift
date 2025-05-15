@@ -157,19 +157,22 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.projectStateLabelTextColor = properties
       .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_create_700 : UIColor.ksr_support_400 }
+      .map {
+        $0.state == .successful ? LegacyColors.ksr_create_700.uiColor() : LegacyColors.ksr_support_400
+          .uiColor()
+      }
 
     self.fundingProgressBarViewBackgroundColor = properties
       .map(progressColor(forProperties:))
 
     self.projectUnsuccessfulLabelTextColor = properties
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_support_400 : UIColor.ksr_support_400
+        LegacyColors.ksr_support_400.uiColor() : LegacyColors.ksr_support_400.uiColor()
       }
 
     self.pledgedTitleLabelTextColor = properties
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_create_700 : UIColor.ksr_support_400
+        LegacyColors.ksr_create_700.uiColor() : LegacyColors.ksr_support_400.uiColor()
       }
 
     self.prelaunchProjectBackingText = properties
@@ -486,8 +489,8 @@ private func conversionText(for properties: ProjectPamphletMainCellProperties) -
 private func progressColor(forProperties properties: ProjectPamphletMainCellProperties) -> UIColor {
   switch properties.state {
   case .canceled, .failed, .suspended:
-    return .ksr_support_400
+    return LegacyColors.ksr_support_400.uiColor()
   default:
-    return .ksr_create_700
+    return LegacyColors.ksr_create_700.uiColor()
   }
 }

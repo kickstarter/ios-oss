@@ -64,18 +64,18 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.bodyTextView
-      |> UITextView.lens.textColor .~ .ksr_support_400
+      |> UITextView.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
 
     _ = self.dividerView
       |> separatorStyle
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.timestampLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_caption1()
   }
 

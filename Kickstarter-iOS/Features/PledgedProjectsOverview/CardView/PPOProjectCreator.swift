@@ -40,7 +40,7 @@ struct PPOProjectCreator: View {
     static let labelMaxWidth = CGFloat.infinity
     static let labelAlignment = Alignment.leading
     static let buttonAlignment = Alignment.trailing
-    static let sendMessageColor = UIColor.ksr_create_700
+    static let sendMessageColor = LegacyColors.ksr_create_700.uiColor()
   }
 }
 

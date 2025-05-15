@@ -22,7 +22,7 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
   open override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.backgroundColor = .white
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
     addChild(self.toggle)
     self.view.addSubview(self.toggle.view)
     self.toggle.view.translatesAutoresizingMaskIntoConstraints = false

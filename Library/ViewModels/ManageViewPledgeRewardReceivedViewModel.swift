@@ -150,7 +150,7 @@ private func attributedText(totalString: String, valueSubstring: String) -> NSAt
     attributedString: totalString
       .attributed(
         with: font,
-        foregroundColor: .ksr_support_400,
+        foregroundColor: LegacyColors.ksr_support_400.uiColor(),
         attributes: [:],
         bolding: [totalString.replacingOccurrences(of: valueSubstring, with: "")]
       )
@@ -159,7 +159,7 @@ private func attributedText(totalString: String, valueSubstring: String) -> NSAt
   attributedText.setAttributes(
     [
       .font: font,
-      .foregroundColor: UIColor.ksr_support_700
+      .foregroundColor: LegacyColors.ksr_support_700.uiColor()
     ],
     range: (totalString as NSString).range(of: valueSubstring)
   )

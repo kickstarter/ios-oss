@@ -18,18 +18,18 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
     _ = self.addCardButton
       |> \.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(4))
       |> \.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(2))
-      |> \.tintColor .~ .ksr_create_700
-      |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_white
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
-      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_create_700
+      |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
+      |> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
+      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
+      |> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_create_700.uiColor()
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
       |> UIButton.lens.titleLabel.font .~ .ksr_subhead()
 
     _ = self.addCardButton.imageView
-      ?|> \.tintColor .~ .ksr_create_700
+      ?|> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.separatorView
       |> separatorStyle

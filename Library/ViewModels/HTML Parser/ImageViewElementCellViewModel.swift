@@ -71,7 +71,7 @@ private func attributedTextFrom(_ imageElement: ImageViewElement)
   paragraphStyle.minimumLineHeight = 22
   let baseFontAttributes = [
     NSAttributedString.Key.font: baseFont,
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400,
+    NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor(),
     NSAttributedString.Key.paragraphStyle: paragraphStyle
   ]
 
@@ -79,7 +79,7 @@ private func attributedTextFrom(_ imageElement: ImageViewElement)
 
   if let validURLString = imageElement.href,
      let validURL = URL(string: validURLString) {
-    combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    combinedAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700.uiColor()
     combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     combinedAttributes[NSAttributedString.Key.link] = validURL
   }

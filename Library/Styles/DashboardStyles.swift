@@ -3,8 +3,8 @@ import Prelude_UIKit
 import UIKit
 
 public let dashboardActionButtonStyle = UIButton.lens.titleLabel.font .~ .ksr_subhead()
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_400
+  <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
+  <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_support_400.uiColor()
 
 public let dashboardActivityButtonStyle =
   dashboardActionButtonStyle
@@ -13,29 +13,29 @@ public let dashboardActivityButtonStyle =
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_700
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     <> UILabel.lens.font .~ .ksr_title2()
 
 public let dashboardCardStyle: (UIView) -> UIView = { view in
   view
-    |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> UIView.lens.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
     |> UIView.lens.layer.borderWidth .~ 1.0
 }
 
 public let dashboardChartCardViewStyle = dashboardCardStyle
-  <> UIView.lens.backgroundColor .~ .ksr_support_100
+  <> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
   <> UIView.lens.layoutMargins .~ .init(topBottom: 24.0, leftRight: 0.0)
 
 public let dashboardColumnTitleButtonStyle =
   UIButton.lens.titleLabel.font .~ UIFont.ksr_caption1().bolded
-    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
-    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_100
+    <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
+    <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_support_100.uiColor()
     <> UIButton.lens.contentEdgeInsets .~
     .init(top: Styles.grid(2), left: 0, bottom: Styles.grid(1), right: 0)
     <> UIButton.lens.contentHorizontalAlignment .~ .left
 
 public let dashboardColumnTextLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardContextCellStyle: (UITableViewCell) -> UITableViewCell = { cell in
@@ -47,19 +47,19 @@ public let dashboardContextCellStyle: (UITableViewCell) -> UITableViewCell = { c
 }
 
 public let dashboardDrawerProjectNameTextLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardDrawerProjectNumberTextLabelStyle = dashboardColumnTextLabelStyle
   <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardFundingGraphAxisSeparatorViewStyle =
-  UIView.lens.backgroundColor .~ .ksr_support_400
+  UIView.lens.backgroundColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UIView.lens.accessibilityElementsHidden .~ true
 
 public let dashboardFundingGraphXAxisLabelStyle =
   UILabel.lens.font .~ UIFont.ksr_caption1().bolded
-    <> UILabel.lens.textColor .~ .ksr_support_400
+    <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.accessibilityElementsHidden .~ true
 
 public let dashboardFundingGraphXAxisStackViewStyle =
@@ -68,7 +68,7 @@ public let dashboardFundingGraphXAxisStackViewStyle =
 
 public let dashboardFundingGraphYAxisLabelStyle =
   UILabel.lens.font .~ .ksr_caption2()
-    <> UILabel.lens.textColor .~ .ksr_support_400
+    <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
 public let dashboardFundingProgressTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_funding_title_funding_progress() }
@@ -79,11 +79,11 @@ public let dashboardFundingStatsStackView =
     <> UIStackView.lens.distribution .~ .equalSpacing
 
 public let dashboardStatTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_700
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     <> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
 public let dashboardStatSubtitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardMessagesButtonStyle =
@@ -94,11 +94,11 @@ public let dashboardMessagesButtonStyle =
 
 public let dashboardLastUpdatePublishedAtLabelStyle =
   UILabel.lens.font .~ .ksr_caption1()
-    <> UILabel.lens.textColor .~ .ksr_support_400
+    <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.accessibilityElementsHidden .~ true
 
 public let dashboardReferrersPledgePercentLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.font .~ .ksr_footnote()
 
 public let dashboardReferrersShowMoreButtonStyle = greenButtonStyle
@@ -147,28 +147,28 @@ public let dashboardTitleViewTextEnabledStyle =
   }
 
 public let dashboardVideoCompletionPercentageLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_400
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
     <> UILabel.lens.font .~ UIFont.ksr_caption1()
 
 public let dashboardVideoExternalPlaysProgressViewStyle =
-  UIView.lens.backgroundColor .~ .ksr_celebrate_500
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_celebrate_700.cgColor
+  UIView.lens.backgroundColor .~ LegacyColors.ksr_celebrate_500.uiColor()
+    <> UIView.lens.layer.borderColor .~ LegacyColors.ksr_celebrate_700.uiColor().cgColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoGraphPercentageLabelStyle =
-  UILabel.lens.textColor .~ .ksr_white
+  UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
     <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardVideoInternalPlaysProgressViewStyle =
-  UIView.lens.backgroundColor .~ .ksr_create_700
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_create_700.cgColor
+  UIView.lens.backgroundColor .~ LegacyColors.ksr_create_700.uiColor()
+    <> UIView.lens.layer.borderColor .~ LegacyColors.ksr_create_700.uiColor().cgColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_video_title_video_plays() }
 
 public let dashboardVideoTotalPlaysCountLabelStyle =
-  UILabel.lens.textColor .~ .ksr_support_700
+  UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     <> UILabel.lens.font .~ UIFont.ksr_title1().bolded
 
 public let dashboardViewProjectButtonStyle = greyButtonStyle

@@ -114,7 +114,7 @@ final class PledgeRewardsSummaryViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    self.view.backgroundColor = .ksr_white
+    self.view.backgroundColor = LegacyColors.ksr_white.uiColor()
     self.view.clipsToBounds = true
 
     self.applyRootStackViewStyle(self.rootStackView)
@@ -182,7 +182,7 @@ final class PledgeRewardsSummaryViewController: UIViewController {
     tableView.delegate = self
     tableView.rowHeight = UITableView.automaticDimension
     tableView.separatorStyle = .none
-    tableView.backgroundColor = .ksr_white
+    tableView.backgroundColor = LegacyColors.ksr_white.uiColor()
     tableView.translatesAutoresizingMaskIntoConstraints = false
   }
 
@@ -194,7 +194,7 @@ final class PledgeRewardsSummaryViewController: UIViewController {
   }
 
   private func applySeparatorViewStyle(_ view: UIView) {
-    view.backgroundColor = .ksr_support_200
+    view.backgroundColor = LegacyColors.ksr_support_200.uiColor()
     view.translatesAutoresizingMaskIntoConstraints = false
   }
 
@@ -205,7 +205,7 @@ final class PledgeRewardsSummaryViewController: UIViewController {
 
   private func applySectionHeaderLabelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
-    label.textColor = UIColor.ksr_black
+    label.textColor = LegacyColors.ksr_black.uiColor()
     label.numberOfLines = 0
     label.frame = CGRectMake(
       CheckoutConstants.PledgeView.Inset.leftRight,

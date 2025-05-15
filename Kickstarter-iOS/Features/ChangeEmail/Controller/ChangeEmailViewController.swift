@@ -50,7 +50,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self
       |> settingsViewControllerStyle
@@ -59,7 +59,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       }
 
     _ = self.messageLabelView
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self.unverifiedEmailLabel
       |> settingsDescriptionLabelStyle
@@ -239,7 +239,7 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
 private let warningMessageLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.textColor .~ UIColor.ksr_alert
+    |> \.textColor .~ LegacyColors.ksr_alert.uiColor()
     |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 }
 
@@ -247,13 +247,13 @@ private let currentEmailTitleStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.text %~ { _ in Strings.Current_email() }
-    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let currentEmailValueStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
-    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let newEmailLabelStyle: LabelStyle = { (label: UILabel) in
@@ -287,5 +287,5 @@ private let passwordTextFieldStyle: TextFieldStyle = { (textField: UITextField) 
 private let resendVerificationEmailButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.font .~ .ksr_body()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
 }

@@ -7,6 +7,7 @@ extension Text {
     do {
       var attrString = try html.htmlToAttributedString()
       attrString.font = .ksr_subhead()
+      attrString.foregroundColor = Colors.Text.primary.swiftUIColor()
 
       for hyperlink in hyperlinks {
         if let range = attrString.range(of: hyperlink, options: .caseInsensitive) {

@@ -75,8 +75,16 @@ extension ShimmerLoading where Self: UIView {
 }
 
 private func shimmerGradientLayer(with frame: CGRect) -> CAGradientLayer {
-  let gradientBackgroundColor: CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
-  let gradientMovingColor: CGColor = UIColor(white: 0.75, alpha: 1.0).cgColor
+  let isDark = UIScreen.main.traitCollection.userInterfaceStyle == .dark
+
+  let gradientBackgroundColor: CGColor = isDark ? UIColor(white: 0.15, alpha: 1.0).cgColor : UIColor(
+    white: 0.85,
+    alpha: 1.0
+  ).cgColor
+  let gradientMovingColor: CGColor = isDark ? UIColor(white: 0.25, alpha: 1.0).cgColor : UIColor(
+    white: 0.75,
+    alpha: 1.0
+  ).cgColor
 
   let gradientLayer = CAGradientLayer()
   gradientLayer.frame = frame

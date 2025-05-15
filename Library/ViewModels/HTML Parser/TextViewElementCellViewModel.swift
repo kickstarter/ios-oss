@@ -77,7 +77,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
     paragraphStyle.minimumLineHeight = 22
     let baseFontAttributes = [
       NSAttributedString.Key.font: baseFont,
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700,
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor(),
       NSAttributedString.Key.paragraphStyle: paragraphStyle
     ]
 
@@ -107,7 +107,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
           combinedAttributes[NSAttributedString.Key.font] = baseFont.italicized
         }
       case .link:
-        combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+        combinedAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700.uiColor()
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
 
         if let validURLString = textItem.link,
@@ -133,7 +133,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         }
       case .header1, .header2, .header3, .header4, .header5, .header6:
         combinedAttributes[NSAttributedString.Key.font] = textHeaderFonts[textStyleType]
-        combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
+        combinedAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_support_700.uiColor()
         paragraphStyle.minimumLineHeight = 25
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       }

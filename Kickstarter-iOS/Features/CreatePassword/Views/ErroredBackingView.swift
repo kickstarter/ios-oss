@@ -110,18 +110,18 @@ final class ErroredBackingView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_support_300
+      |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
 
     _ = self.fixIconImageView
       |> \.clipsToBounds .~ true
       |> \.contentMode .~ .scaleAspectFit
-      |> \.tintColor .~ .ksr_alert
+      |> \.tintColor .~ LegacyColors.ksr_alert.uiColor()
 
     _ = self.finalCollectionDateStackView
       |> finalCollectionStackViewStyle
 
     _ = self.finalCollectionDateLabel
-      |> \.textColor .~ .ksr_alert
+      |> \.textColor .~ LegacyColors.ksr_alert.uiColor()
       |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.backingInfoStackView

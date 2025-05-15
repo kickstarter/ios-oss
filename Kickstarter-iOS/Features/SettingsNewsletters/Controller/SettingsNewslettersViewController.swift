@@ -30,10 +30,10 @@ internal final class SettingsNewslettersViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 
     _ = self.tableView
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.estimatedRowHeight .~ 127
       |> UITableView.lens.allowsSelection .~ false

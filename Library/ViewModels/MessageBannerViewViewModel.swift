@@ -20,7 +20,7 @@ public final class MessageBannerViewViewModel: ObservableObject, Equatable {
       "\(configuration.message) \(Strings.Message_banner_accessibility_Double_tap_to_dismiss())"
     self.iconImageName = configuration.type.iconImageName ?? ""
     self.iconIsHidden = configuration.type.shouldShowIconImage
-    self.iconTintColor = Color(configuration.type.iconImageTintColor ?? .ksr_white)
+    self.iconTintColor = Color(configuration.type.iconImageTintColor ?? LegacyColors.ksr_white.uiColor())
     self.messageTextAlignment = configuration.type == .info ? .center : .leading
     self.messageTextColor = Color(configuration.type.textColor)
   }

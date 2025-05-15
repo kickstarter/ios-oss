@@ -71,18 +71,18 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     _ = self.bodyLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.projectImageView
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
   }
 
   @IBAction internal func tappedProjectImage() {

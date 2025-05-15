@@ -93,12 +93,12 @@ private func applyDateAndStatusStackViewStyle(_ stackView: UIStackView) {
 
 private func applyDateLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_subhead().bolded
-  label.textColor = .ksr_black
+  label.textColor = LegacyColors.ksr_black.uiColor()
 }
 
 private func applyAmountLabelStyle(_ label: UILabel) {
   label.textAlignment = .right
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = .ksr_title1()
   label.adjustsFontForContentSizeCategory = true
 }

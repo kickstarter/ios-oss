@@ -131,7 +131,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       .appending(string2)
       .attributed(
         with: UIFont.ksr_footnote(),
-        foregroundColor: .ksr_support_400,
+        foregroundColor: LegacyColors.ksr_support_400.uiColor(),
         attributes: [.paragraphStyle: paragraphStyle],
         bolding: [string1]
       )
@@ -150,7 +150,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyRewardReceivedInfoStackViewStyle(_ stackView: UIStackView) {
-  stackView.layer.borderColor = UIColor.ksr_support_300.cgColor
+  stackView.layer.borderColor = LegacyColors.ksr_support_300.uiColor().cgColor
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.axis = .vertical
   stackView.spacing = Styles.grid(1)
@@ -172,13 +172,13 @@ private func applyToggleViewControllerTitleLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_headline(size: 15)
   label.numberOfLines = 0
   label.font = UIFont.ksr_subhead()
-  label.textColor = .ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.text = Strings.Reward_received()
 }
 
 private func applyToggleViewControllerToggleStyle(_ toggle: UISwitch) {
-  toggle.onTintColor = UIColor.ksr_create_700
-  toggle.tintColor = UIColor.ksr_support_300
+  toggle.onTintColor = LegacyColors.ksr_create_700.uiColor()
+  toggle.tintColor = LegacyColors.ksr_support_300.uiColor()
   toggle.accessibilityLabel = Strings.Reward_received()
 }
 

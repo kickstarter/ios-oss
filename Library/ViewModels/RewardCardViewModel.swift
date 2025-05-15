@@ -239,7 +239,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   let title = reward.title.coalesceWith("")
   let titleAttributed = title.attributed(
     with: UIFont.ksr_title2(),
-    foregroundColor: UIColor.ksr_support_700,
+    foregroundColor: LegacyColors.ksr_support_700.uiColor(),
     attributes: attributes,
     bolding: [title]
   )
@@ -256,7 +256,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   let qty = "\(selectedQuantity) x "
   let qtyAttributed = qty.attributed(
     with: UIFont.ksr_title2(),
-    foregroundColor: UIColor.ksr_create_700,
+    foregroundColor: LegacyColors.ksr_create_700.uiColor(),
     attributes: attributes,
     bolding: [title]
   )
@@ -277,9 +277,9 @@ private func addOnsString(reward: Reward) -> RewardCardPillData? {
   guard reward.hasAddOns else { return nil }
 
   return RewardCardPillData(
-    backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
+    backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
     text: Strings.Add_ons(),
-    textColor: UIColor.ksr_create_700
+    textColor: LegacyColors.ksr_create_700.uiColor()
   )
 }
 
@@ -299,9 +299,9 @@ private func timeLeftString(project: Project, reward: Reward) -> RewardCardPillD
     )
 
     return RewardCardPillData(
-      backgroundColor: UIColor.ksr_celebrate_100,
+      backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
       text: Strings.Time_left_left(time_left: time + " " + unit),
-      textColor: UIColor.ksr_support_400
+      textColor: LegacyColors.ksr_support_400.uiColor()
     )
   }
 
@@ -318,19 +318,19 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
     let backersCount = reward.backersCount ?? 0
 
     return backersCount > 0 ? RewardCardPillData(
-      backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
+      backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
       text: Strings.general_backer_count_backers(backer_count: backersCount),
-      textColor: UIColor.ksr_create_700
+      textColor: LegacyColors.ksr_create_700.uiColor()
     ) : nil
   }
 
   return RewardCardPillData(
-    backgroundColor: UIColor.ksr_celebrate_100,
+    backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
     text: Strings.remaining_count_left_of_limit_count(
       remaining_count: "\(remaining)",
       limit_count: "\(limit)"
     ),
-    textColor: UIColor.ksr_support_400
+    textColor: LegacyColors.ksr_support_400.uiColor()
   )
 }
 
@@ -339,9 +339,9 @@ private func shippingSummaryString(project: Project, reward: Reward) -> RewardCa
      reward.shipping.enabled,
      let shippingSummaryText = reward.shipping.summary {
     return RewardCardPillData(
-      backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
+      backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
       text: shippingSummaryText,
-      textColor: UIColor.ksr_create_700
+      textColor: LegacyColors.ksr_create_700.uiColor()
     )
     /** FIXME: No longer used on iOS. Might still be needed on Android/Web before removing from: `Kickstarter` `config/locales/native/en.yml`
      Strings.Ships_worldwide()

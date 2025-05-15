@@ -72,27 +72,27 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       )
 
     _ = self.metadataBackgroundView
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_white.cgColor
+      |> UIView.lens.layer.borderColor .~ LegacyColors.ksr_white.uiColor().cgColor
       |> UIView.lens.layer.borderWidth .~ 1.0
 
     _ = self.metadataStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(30), leftRight: Styles.grid(20))
 
     _ = self.metadataLabel
-      |> UILabel.lens.textColor .~ .ksr_white
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_white
+      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.percentFundedLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.projectNameLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .ksr_support_700
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UIView.lens.alpha .~ 0.15
 
     _ = self.projectImageView

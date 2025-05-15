@@ -1,3 +1,4 @@
+import Library
 import UIKit
 
 internal enum Device: CaseIterable {
@@ -115,8 +116,8 @@ internal func traitControllers(
 
   child.view.frame = parent.view.frame
 
-  parent.view.backgroundColor = .ksr_white
-  child.view.backgroundColor = .ksr_white
+  parent.view.backgroundColor = LegacyColors.ksr_white.uiColor()
+  child.view.backgroundColor = LegacyColors.ksr_white.uiColor()
 
   let allTraits = UITraitCollection.init(traitsFrom: [traits, additionalTraits])
   parent.setOverrideTraitCollection(allTraits, forChild: child)

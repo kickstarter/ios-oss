@@ -8,11 +8,11 @@ public enum MessageBannerType {
   var backgroundColor: UIColor {
     switch self {
     case .success:
-      return .ksr_trust_500
+      return LegacyColors.ksr_trust_500.uiColor()
     case .error:
-      return .ksr_alert
+      return LegacyColors.ksr_alert.uiColor()
     case .info:
-      return .ksr_trust_500
+      return LegacyColors.ksr_trust_500.uiColor()
     }
   }
 
@@ -30,14 +30,14 @@ public enum MessageBannerType {
   var iconImageTintColor: UIColor? {
     switch self {
     case .success, .info, .error:
-      return .ksr_white
+      return LegacyColors.ksr_white.uiColor()
     }
   }
 
   var textColor: UIColor {
     switch self {
     case .success, .info, .error:
-      return .ksr_white
+      return LegacyColors.ksr_white.uiColor()
     }
   }
 

@@ -68,7 +68,7 @@ public final class RestrictedCreatorViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    self.view.backgroundColor = UIColor.ksr_white
+    self.view.backgroundColor = LegacyColors.ksr_white.uiColor()
     self.view.insetsLayoutMarginsFromSafeArea = true
     self.view.layoutMargins = UIEdgeInsets(top: Styles.grid(4))
 

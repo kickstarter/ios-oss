@@ -14,7 +14,7 @@ struct PPOProjectDetails: View {
     HStack {
       KFImage(source: self.image)
         .placeholder {
-          Color(.ksr_support_200)
+          LegacyColors.ksr_support_200.swiftUIColor()
         }
         .resizable()
         .clipShape(Constants.imageShape)

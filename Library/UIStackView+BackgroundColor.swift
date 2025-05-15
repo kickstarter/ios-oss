@@ -2,7 +2,7 @@ import Prelude
 import UIKit
 
 extension UIStackView {
-  public func pinBackground(_ color: UIColor = .ksr_support_100) {
+  public func pinBackground(_ color: UIColor = LegacyColors.ksr_support_100.uiColor()) {
     let view = UIView()
       |> UIView.lens.backgroundColor .~ color
       |> UIView.lens.layer.cornerRadius .~ 6.0

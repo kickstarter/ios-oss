@@ -70,6 +70,9 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Need a dark version of the background image for this page to work.
+    self.overrideUserInterfaceStyle = .light
+
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()
@@ -521,7 +524,7 @@ private let baseLabelStyle: LabelStyle = { label in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ .ksr_create_500
+    |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
@@ -529,7 +532,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
 
 private let separatorViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_support_300
+    |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 

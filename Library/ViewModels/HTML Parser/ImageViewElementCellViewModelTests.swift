@@ -25,7 +25,7 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
     self.expectedParagraphStyle.minimumLineHeight = 22
     self.expectedFontAttributes = [
       NSAttributedString.Key.font: self.expectedBaseFont,
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400,
+      NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor(),
       NSAttributedString.Key.paragraphStyle: self.expectedParagraphStyle
     ]
 
@@ -57,7 +57,8 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
 
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.link] = URL(string: "https://link.com")!
-    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = LegacyColors.ksr_create_700
+      .uiColor()
 
     let expectedLinkAttributedText = NSAttributedString(
       string: expectedSampleString,

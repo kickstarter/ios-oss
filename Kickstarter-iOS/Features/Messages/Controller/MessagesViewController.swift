@@ -55,6 +55,8 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   internal override func bindStyles() {
     super.bindStyles()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.replyBarButtonItem
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_reply() }
   }

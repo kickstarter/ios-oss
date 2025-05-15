@@ -57,12 +57,13 @@ private let discoveryOnboardingTitleStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.numberOfLines .~ 2
     |> \.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
+    |> \.textColor .~ Colors.Text.primary.uiColor()
 }
 
 private let discoveryOnboardingLogoStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit
-    |> \.tintColor .~ .ksr_create_500
+    |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
     |> \.backgroundColor .~ .clear
     |> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
     |> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required

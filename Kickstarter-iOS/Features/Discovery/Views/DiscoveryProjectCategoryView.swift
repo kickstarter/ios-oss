@@ -22,14 +22,11 @@ import UIKit
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.blurView
-      |> UIImageView.lens.image .~ Library.image(named: "white--gradient--layer")
-
     _ = self.categoryViewLabel
       |> postcardCategoryLabelStyle
 
     _ = self.categoryViewImageView
-      |> \.tintColor .~ .ksr_support_300
+      |> \.tintColor .~ LegacyColors.ksr_support_300.uiColor()
   }
 
   internal override func bindViewModel() {
