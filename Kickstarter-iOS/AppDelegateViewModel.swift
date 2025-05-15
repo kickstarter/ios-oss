@@ -779,7 +779,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       self.didUpdateRemoteConfigClientProperty.signal.ignoreValues()
     )
     .map { _ in featureDarkModeEnabled() }
-    // .skipRepeats(==)
+    .skipRepeats(==)
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
