@@ -688,6 +688,23 @@ public enum Strings {
     )
   }
   /**
+   "Allow tracking"
+
+   - **en**: "Allow tracking"
+   - **de**: "Allow tracking"
+   - **es**: "Allow tracking"
+   - **fr**: "Allow tracking"
+   - **ja**: "Allow tracking"
+  */
+  public static func Allow_tracking() -> String {
+    return localizedString(
+      key: "Allow_tracking",
+      defaultValue: "Allow tracking",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Almost there!"
 
    - **en**: "Almost there!"
@@ -1182,23 +1199,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backers"
+backer"
 
    - **en**: "%{backers_count}
-backers"
+backer"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinadores"
+patrocinador"
    - **fr**: "%{backers_count}
-contributeurs"
+contributeur"
    - **ja**: "%{backers_count}
 バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbackers",
+      defaultValue: "%{backers_count}\nbacker",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -2541,18 +2558,18 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Continue with %{quantity_count} add-ons"
+   "Continue with %{quantity_count} add-on"
 
-   - **en**: "Continue with %{quantity_count} add-ons"
-   - **de**: "Weiter mit %{quantity_count} Add-ons"
-   - **es**: "Continuar con %{quantity_count} complementos"
-   - **fr**: "Continuer avec %{quantity_count} compléments"
+   - **en**: "Continue with %{quantity_count} add-on"
+   - **de**: "Weiter mit %{quantity_count} Add-on"
+   - **es**: "Continuar con %{quantity_count} complemento"
+   - **fr**: "Continuer avec %{quantity_count} complément"
    - **ja**: "%{quantity_count} 個のアドオンで続行する"
   */
   public static func Continue_with_quantity_count_add_ons(quantity_count: Int) -> String {
     return localizedString(
       key: "Continue_with_quantity_count_add_ons",
-      defaultValue: "Continue with %{quantity_count} add-ons",
+      defaultValue: "Continue with %{quantity_count} add-on",
       count: quantity_count,
       substitutions: ["quantity_count": Format.wholeNumber(quantity_count)]
     )
@@ -4162,6 +4179,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Explore the app"
+
+   - **en**: "Explore the app"
+   - **de**: "Explore the app"
+   - **es**: "Explore the app"
+   - **fr**: "Explore the app"
+   - **ja**: "Explore the app"
+  */
+  public static func Explore_the_app() -> String {
+    return localizedString(
+      key: "Explore_the_app",
+      defaultValue: "Explore the app",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
 
    - **en**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
@@ -4417,18 +4451,18 @@ Cliquez pour réessayer."
     )
   }
   /**
-   "%{filter_name}: %{project_count} live projects"
+   "%{filter_name}: %{project_count} live project"
 
-   - **en**: "%{filter_name}: %{project_count} live projects"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
-   - **es**: "%{filter_name}: %{project_count} proyectos activos"
-   - **fr**: "%{filter_name} : %{project_count} projets en cours"
+   - **en**: "%{filter_name}: %{project_count} live project"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
+   - **es**: "%{filter_name}: %{project_count} proyecto activo"
+   - **fr**: "%{filter_name} : %{project_count} projet en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live projects",
+      defaultValue: "%{filter_name}: %{project_count} live project",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -5160,6 +5194,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Games_newsletter",
       defaultValue: "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Get notified"
+
+   - **en**: "Get notified"
+   - **de**: "Get notified"
+   - **es**: "Get notified"
+   - **fr**: "Get notified"
+   - **ja**: "Get notified"
+  */
+  public static func Get_notified() -> String {
+    return localizedString(
+      key: "Get_notified",
+      defaultValue: "Get notified",
       count: nil,
       substitutions: [:]
     )
@@ -6413,8 +6464,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restantes"
-   - **fr**: "%{left_count} restantes"
+   - **es**: "%{left_count} restante"
+   - **fr**: "%{left_count} restante"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -7563,6 +7614,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Not_raising_funds",
       defaultValue: "Not raising funds for a creative project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not right now"
+
+   - **en**: "Not right now"
+   - **de**: "Not right now"
+   - **es**: "Not right now"
+   - **fr**: "Not right now"
+   - **ja**: "Not right now"
+  */
+  public static func Not_right_now() -> String {
+    return localizedString(
+      key: "Not_right_now",
+      defaultValue: "Not right now",
       count: nil,
       substitutions: [:]
     )
@@ -9835,10 +9903,10 @@ daring ideas."
    "Reset all"
 
    - **en**: "Reset all"
-   - **de**: "Reset all"
-   - **es**: "Reset all"
-   - **fr**: "Reset all"
-   - **ja**: "Reset all"
+   - **de**: "Alle zurücksetzen"
+   - **es**: "Restablecer todo"
+   - **fr**: "Tout réinitialiser"
+   - **ja**: "すべてをリセット"
   */
   public static func Reset_all_filters() -> String {
     return localizedString(
@@ -10087,18 +10155,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} rewards"
+   "%{rewards_count} reward"
 
-   - **en**: "%{rewards_count} rewards"
-   - **de**: "%{rewards_count} Belohnungen"
-   - **es**: "%{rewards_count} recompensas"
-   - **fr**: "%{rewards_count} récompenses"
+   - **en**: "%{rewards_count} reward"
+   - **de**: "%{rewards_count} Belohnung"
+   - **es**: "%{rewards_count} recompensa"
+   - **fr**: "%{rewards_count} récompense"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} rewards",
+      defaultValue: "%{rewards_count} reward",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -10121,18 +10189,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} rewards:"
+   "%{rewards_count} reward:"
 
-   - **en**: "%{rewards_count} rewards:"
-   - **de**: "%{rewards_count} Belohnungen:"
-   - **es**: "%{rewards_count} recompensas:"
-   - **fr**: "%{rewards_count} récompenses :"
+   - **en**: "%{rewards_count} reward:"
+   - **de**: "%{rewards_count} Belohnung:"
+   - **es**: "%{rewards_count} recompensa:"
+   - **fr**: "%{rewards_count} récompense :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} rewards:",
+      defaultValue: "%{rewards_count} reward:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -10322,6 +10390,40 @@ daring ideas."
       defaultValue: "Scheduled",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{search_results_count} result"
+
+   - **en**: "%{search_results_count} result"
+   - **de**: "%{search_results_count} result"
+   - **es**: "%{search_results_count} result"
+   - **fr**: "%{search_results_count} result"
+   - **ja**: "%{search_results_count} result"
+  */
+  public static func Search_results(search_results_count: Int) -> String {
+    return localizedString(
+      key: "Search_results",
+      defaultValue: "%{search_results_count} result",
+      count: search_results_count,
+      substitutions: ["search_results_count": Format.wholeNumber(search_results_count)]
+    )
+  }
+  /**
+   "%{search_results_count} results"
+
+   - **en**: "%{search_results_count} results"
+   - **de**: "%{search_results_count} results"
+   - **es**: "%{search_results_count} results"
+   - **fr**: "%{search_results_count} results"
+   - **ja**: "%{search_results_count} results"
+  */
+  public static func Search_results_other(search_results_count: String) -> String {
+    return localizedString(
+      key: "Search_results.other",
+      defaultValue: "%{search_results_count} results",
+      count: nil,
+      substitutions: ["search_results_count": search_results_count]
     )
   }
   /**
@@ -11141,6 +11243,23 @@ daring ideas."
     )
   }
   /**
+   "Sign up or log in"
+
+   - **en**: "Sign up or log in"
+   - **de**: "Sign up or log in"
+   - **es**: "Sign up or log in"
+   - **fr**: "Sign up or log in"
+   - **ja**: "Sign up or log in"
+  */
+  public static func Sign_up_or_log_in() -> String {
+    return localizedString(
+      key: "Sign_up_or_log_in",
+      defaultValue: "Sign up or log in",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Signs up with Email."
 
    - **en**: "Signs up with Email."
@@ -11192,18 +11311,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} others"
+   "%{friend_name} and %{remaining_count} other"
 
-   - **en**: "%{friend_name} and %{remaining_count} others"
-   - **de**: "%{friend_name} und %{remaining_count} weitere"
-   - **es**: "%{friend_name} y %{remaining_count} otros"
-   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **en**: "%{friend_name} and %{remaining_count} other"
+   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
+   - **es**: "%{friend_name} y %{remaining_count} persona más"
+   - **fr**: "%{friend_name} et %{remaining_count} autre"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} others",
+      defaultValue: "%{friend_name} and %{remaining_count} other",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -12214,6 +12333,23 @@ catch your eye?"
     )
   }
   /**
+   "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+
+   - **en**: "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+   - **de**: "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+   - **es**: "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+   - **fr**: "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+   - **ja**: "This comment has been removed for violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+  */
+  public static func This_comment_has_been_removed_for_violating_kickstarters_community_guidelines(community_guidelines: String) -> String {
+    return localizedString(
+      key: "This_comment_has_been_removed_for_violating_kickstarters_community_guidelines",
+      defaultValue: "This comment has been removed for violating <a href=\"%{community_guidelines}\">Kickstarter’s Community Guidelines.</a>",
+      count: nil,
+      substitutions: ["community_guidelines": community_guidelines]
+    )
+  }
+  /**
    "This comment is under review."
 
    - **en**: "This comment is under review."
@@ -12991,6 +13127,23 @@ catch your eye?"
     return localizedString(
       key: "Use_of_ai",
       defaultValue: "Use of AI",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Use personalization"
+
+   - **en**: "Use personalization"
+   - **de**: "Use personalization"
+   - **es**: "Use personalization"
+   - **fr**: "Use personalization"
+   - **ja**: "Use personalization"
+  */
+  public static func Use_personalization() -> String {
+    return localizedString(
+      key: "Use_personalization",
+      defaultValue: "Use personalization",
       count: nil,
       substitutions: [:]
     )
@@ -16992,18 +17145,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comments"
+   "%{comments_count} comment"
 
-   - **en**: "%{comments_count} comments"
-   - **de**: "%{comments_count} Kommentare"
-   - **es**: "%{comments_count} commentarios"
-   - **fr**: "%{comments_count} commentaires"
+   - **en**: "%{comments_count} comment"
+   - **de**: "%{comments_count} Kommentar"
+   - **es**: "%{comments_count} commentario"
+   - **fr**: "%{comments_count} commentaire"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comments",
+      defaultValue: "%{comments_count} comment",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -20670,7 +20823,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22603,18 +22756,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{likes_count} likes"
+   "%{likes_count} like"
 
-   - **en**: "%{likes_count} likes"
-   - **de**: "%{likes_count} Personen gefällt das"
-   - **es**: "A %{likes_count} personas les gusta"
-   - **fr**: "%{likes_count} mentions J'aime"
+   - **en**: "%{likes_count} like"
+   - **de**: "%{likes_count} Person gefällt das"
+   - **es**: "A %{likes_count} persona le gusta"
+   - **fr**: "%{likes_count} mention J'aime"
    - **ja**: "いいね！%{likes_count}件"
   */
   public static func likes_count_likes(likes_count: Int) -> String {
     return localizedString(
       key: "likes_count_likes",
-      defaultValue: "%{likes_count} likes",
+      defaultValue: "%{likes_count} like",
       count: likes_count,
       substitutions: ["likes_count": Format.wholeNumber(likes_count)]
     )
@@ -23942,6 +24095,193 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
     )
   }
   /**
+   "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+
+   - **en**: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+   - **de**: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+   - **es**: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+   - **fr**: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+   - **ja**: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life."
+  */
+  public static func onboarding_join_the_community_subtitle() -> String {
+    return localizedString(
+      key: "onboarding.join_the_community.subtitle",
+      defaultValue: "Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Join the community"
+
+   - **en**: "Join the community"
+   - **de**: "Join the community"
+   - **es**: "Join the community"
+   - **fr**: "Join the community"
+   - **ja**: "Join the community"
+  */
+  public static func onboarding_join_the_community_title() -> String {
+    return localizedString(
+      key: "onboarding.join_the_community.title",
+      defaultValue: "Join the community",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Allow tracking to help us improve your in-app experience."
+
+   - **en**: "Allow tracking to help us improve your in-app experience."
+   - **de**: "Allow tracking to help us improve your in-app experience."
+   - **es**: "Allow tracking to help us improve your in-app experience."
+   - **fr**: "Allow tracking to help us improve your in-app experience."
+   - **ja**: "Allow tracking to help us improve your in-app experience."
+  */
+  public static func onboarding_personalize_your_experience_subtitle() -> String {
+    return localizedString(
+      key: "onboarding.personalize_your_experience.subtitle",
+      defaultValue: "Allow tracking to help us improve your in-app experience.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You can change your tracking preference anytime in your device settings."
+
+   - **en**: "You can change your tracking preference anytime in your device settings."
+   - **de**: "You can change your tracking preference anytime in your device settings."
+   - **es**: "You can change your tracking preference anytime in your device settings."
+   - **fr**: "You can change your tracking preference anytime in your device settings."
+   - **ja**: "You can change your tracking preference anytime in your device settings."
+  */
+  public static func onboarding_personalize_your_experience_subtitle_settings() -> String {
+    return localizedString(
+      key: "onboarding.personalize_your_experience.subtitle_settings",
+      defaultValue: "You can change your tracking preference anytime in your device settings.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Personalize your experience"
+
+   - **en**: "Personalize your experience"
+   - **de**: "Personalize your experience"
+   - **es**: "Personalize your experience"
+   - **fr**: "Personalize your experience"
+   - **ja**: "Personalize your experience"
+  */
+  public static func onboarding_personalize_your_experience_title() -> String {
+    return localizedString(
+      key: "onboarding.personalize_your_experience.title",
+      defaultValue: "Personalize your experience",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+
+   - **en**: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+   - **de**: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+   - **es**: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+   - **fr**: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+   - **ja**: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab."
+  */
+  public static func onboarding_save_projects_for_later_subtitle() -> String {
+    return localizedString(
+      key: "onboarding.save_projects_for_later.subtitle",
+      defaultValue: "Found a project that's caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Save projects for later"
+
+   - **en**: "Save projects for later"
+   - **de**: "Save projects for later"
+   - **es**: "Save projects for later"
+   - **fr**: "Save projects for later"
+   - **ja**: "Save projects for later"
+  */
+  public static func onboarding_save_projects_for_later_title() -> String {
+    return localizedString(
+      key: "onboarding.save_projects_for_later.title",
+      defaultValue: "Save projects for later",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+
+   - **en**: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+   - **de**: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+   - **es**: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+   - **fr**: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+   - **ja**: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings."
+  */
+  public static func onboarding_stay_in_the_know_subtitle() -> String {
+    return localizedString(
+      key: "onboarding.stay_in_the_know.subtitle",
+      defaultValue: "Turn on notifications to keep track of your backed projects and discover more you'll love. You can customize these anytime in your settings.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay in the know"
+
+   - **en**: "Stay in the know"
+   - **de**: "Stay in the know"
+   - **es**: "Stay in the know"
+   - **fr**: "Stay in the know"
+   - **ja**: "Stay in the know"
+  */
+  public static func onboarding_stay_in_the_know_title() -> String {
+    return localizedString(
+      key: "onboarding.stay_in_the_know.title",
+      defaultValue: "Stay in the know",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+
+   - **en**: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+   - **de**: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+   - **es**: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+   - **fr**: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+   - **ja**: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our "Projects We Love" picks."
+  */
+  public static func onboarding_welcome_to_kickstarter_subtitle() -> String {
+    return localizedString(
+      key: "onboarding.welcome_to_kickstarter.subtitle",
+      defaultValue: "Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our \"Projects We Love\" picks.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Welcome to Kickstarter"
+
+   - **en**: "Welcome to Kickstarter"
+   - **de**: "Welcome to Kickstarter"
+   - **es**: "Welcome to Kickstarter"
+   - **fr**: "Welcome to Kickstarter"
+   - **ja**: "Welcome to Kickstarter"
+  */
+  public static func onboarding_welcome_to_kickstarter_title() -> String {
+    return localizedString(
+      key: "onboarding.welcome_to_kickstarter.title",
+      defaultValue: "Welcome to Kickstarter",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{percentage} funded"
 
    - **en**: "%{percentage} funded"
@@ -24082,7 +24422,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -27216,18 +27556,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} projects"
+   "%{project_count} project"
 
-   - **en**: "%{project_count} projects"
-   - **de**: "%{project_count} Projekte"
-   - **es**: "%{project_count} proyectos"
-   - **fr**: "%{project_count} projets"
+   - **en**: "%{project_count} project"
+   - **de**: "%{project_count} Projekt"
+   - **es**: "%{project_count} proyecto"
+   - **fr**: "%{project_count} projet"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} projects",
+      defaultValue: "%{project_count} project",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -27261,7 +27601,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -28213,7 +28553,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -29085,18 +29425,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} updates"
+   "%{updates_count} update"
 
-   - **en**: "%{updates_count} updates"
-   - **de**: "%{updates_count} Updates"
-   - **es**: "%{updates_count} actualizaciones"
-   - **fr**: "%{updates_count} actus"
+   - **en**: "%{updates_count} update"
+   - **de**: "%{updates_count} Update"
+   - **es**: "%{updates_count} actualización"
+   - **fr**: "%{updates_count} actu"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} updates",
+      defaultValue: "%{updates_count} update",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )
