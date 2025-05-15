@@ -95,6 +95,12 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToBetaFeedback()
       }
 
+    self.viewModel.outputs.goToColors
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToColors()
+      }
+
     self.viewModel.outputs.showChangeEnvironmentSheetWithSourceViewIndex
       .observeForControllerAction()
       .observeValues { [weak self] index in
@@ -193,6 +199,11 @@ internal final class BetaToolsViewController: UITableViewController {
   private func goToDesignSystem() {
     let viewController = DesignSystemViewController.instantiate()
 
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  private func goToColors() {
+    let viewController = UIHostingController(rootView: ColorsView())
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
