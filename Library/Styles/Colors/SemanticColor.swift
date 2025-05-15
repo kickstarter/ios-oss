@@ -14,12 +14,12 @@ public struct SemanticColor {
     self.darkModeColor = darkMode
   }
 
-  public func uiColor() -> UIColor {
+  public func uiColor(opacity: CGFloat = 1.0) -> UIColor {
     return UIColor { traits in
       if traits.userInterfaceStyle == .dark && featureDarkModeEnabled() {
-        return UIColor(coreColor: self.darkModeColor)
+        return UIColor(coreColor: self.darkModeColor).withAlphaComponent(opacity)
       } else {
-        return UIColor(coreColor: self.lightModeColor)
+        return UIColor(coreColor: self.lightModeColor).withAlphaComponent(opacity)
       }
     }
   }
