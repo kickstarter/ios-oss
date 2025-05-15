@@ -269,7 +269,7 @@ internal final class SharedFunctionsTests: TestCase {
   }
 
   func testDiscoveryPageBackgroundColor() {
-    XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
+    XCTAssertEqual(discoveryPageBackgroundColor(), LegacyColors.ksr_white.uiColor())
   }
 
   func testSelectedRewardQuantities_NoAddOns() {
