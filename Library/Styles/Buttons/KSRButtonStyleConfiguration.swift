@@ -98,7 +98,7 @@ extension UIButton {
       buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     default:
       buttonConfiguration.background.backgroundColor = styleConfig.backgroundColor
-      buttonConfiguration.baseBackgroundColor = styleConfig.titleColor
+      buttonConfiguration.baseForegroundColor = styleConfig.titleColor
       buttonConfiguration.background.strokeColor = styleConfig.borderColor
       buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     }
