@@ -30,8 +30,8 @@ public struct Colors {
       public struct Red {
         public static let disabled = SemanticColor(
           "text/accent/red/disabled",
-          lightMode: .red_700,
-          darkMode: .red_400
+          lightMode: .red_400,
+          darkMode: .red_700
         )
 
         public static let bolder = SemanticColor(
@@ -52,13 +52,13 @@ public struct Colors {
 
     public struct Inverse {
       public static let primary = SemanticColor(
-        "text/primary/inverse",
+        "text/inverse/primary",
         lightMode: .white,
         darkMode: .gray_1000
       )
 
       public static let disabled = SemanticColor(
-        "text/disabled/inverse",
+        "text/inverse/disabled",
         lightMode: .gray_200,
         darkMode: .gray_900
       )
@@ -161,13 +161,13 @@ public struct Colors {
     }
 
     public struct Inverse {
-      public static let disabled = SemanticColor(
+      public static let pressed = SemanticColor(
         "background/inverse/disabled",
         lightMode: .gray_300,
         darkMode: .gray_800
       )
 
-      public static let pressed = SemanticColor(
+      public static let disabled = SemanticColor(
         "background/inverse/pressed",
         lightMode: .gray_200,
         darkMode: .gray_850
