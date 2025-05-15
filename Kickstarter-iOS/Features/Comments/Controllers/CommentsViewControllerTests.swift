@@ -238,4 +238,33 @@ internal final class CommentsViewControllerTests: TestCase {
       XCTAssert(commentsViewController(for: .template).isKind(of: CommentsViewController.self))
     }
   }
+
+  func testView_WithFlaggedComments() {
+    let mockService =
+      MockService(fetchProjectCommentsEnvelopeResult: .success(
+        CommentsEnvelope
+          .flaggedCommentsTemplate
+      ))
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentsViewController.configuredWith(project: .template)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
 }

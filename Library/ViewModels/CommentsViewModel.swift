@@ -246,7 +246,12 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let viewCommentReplies = self.commentCellDidTapViewRepliesProperty.signal
       .skipNil()
-      .filter { comment in comment.replyCount > 0 }
+      .filter { comment in
+        guard let replyCount = comment.replyCount else {
+          return false
+        }
+        return replyCount > 0
+      }
 
     let update = self.projectAndUpdateProperty.signal
       .skipNil()
@@ -508,16 +513,14 @@ private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
     AppEnvironment.current.apiService.fetchProjectComments(
       slug: project.slug,
       cursor: nil,
-      limit: nil,
-      withStoredCards: false
+      limit: nil
     )
   } ifRight: {
     AppEnvironment.current.apiService
       .fetchUpdateComments(
         id: $0.id.description,
         cursor: nil,
-        limit: nil,
-        withStoredCards: false
+        limit: nil
       )
   }
 }
@@ -529,11 +532,11 @@ private func commentsNextPage(
 ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   if let projectSlug = projectSlug {
     return AppEnvironment.current.apiService
-      .fetchProjectComments(slug: projectSlug, cursor: cursor, limit: nil, withStoredCards: false)
+      .fetchProjectComments(slug: projectSlug, cursor: cursor, limit: nil)
   } else {
     guard let id = updateID else { return .empty }
     return AppEnvironment.current.apiService
-      .fetchUpdateComments(id: id, cursor: cursor, limit: nil, withStoredCards: false)
+      .fetchUpdateComments(id: id, cursor: cursor, limit: nil)
   }
 }
 

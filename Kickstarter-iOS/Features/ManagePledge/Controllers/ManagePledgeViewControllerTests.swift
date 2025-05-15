@@ -253,6 +253,59 @@ final class ManagePledgeViewControllerTests: TestCase {
     }
   }
 
+  // Test SEPA, which is a bank account payment in the EU. This payment method is only available
+  // during pledge on web, but it should still show up if users look at their pledge on mobile.
+  func testView_SEPA() {
+    let user = User.template
+    let reward = Reward.template
+    let paymentSource = Backing.PaymentSource(id: "7", lastFour: "7890", paymentType: .bankAccount)
+
+    let backing = Backing.template
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ paymentSource
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
+        // Network request completes
+        self.scheduler.advance()
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testView_ErroredBacking() {
     let user = User.template
       |> User.lens.id .~ 1

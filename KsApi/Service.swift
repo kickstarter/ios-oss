@@ -338,15 +338,13 @@ public struct Service: ServiceType {
   public func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?,
-    withStoredCards: Bool
+    limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchProjectCommentsQuery(
         slug: slug,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
@@ -354,15 +352,13 @@ public struct Service: ServiceType {
   public func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?,
-    withStoredCards: Bool
+    limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUpdateCommentsQuery(
         postId: id,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
@@ -370,16 +366,14 @@ public struct Service: ServiceType {
   public func fetchCommentReplies(
     id: String,
     cursor: String?,
-    limit: Int,
-    withStoredCards: Bool
+    limit: Int
   )
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchCommentRepliesQuery(
         commentId: id,
         cursor: cursor,
-        limit: limit,
-        withStoredCards: withStoredCards
+        limit: limit
       ))
       .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
   }

@@ -1,13 +1,5 @@
 fragment CommentWithRepliesFragment on Comment {
-    author {
-      ...UserFragment
-    }
-    authorBadges
-    body
-    createdAt
-    deleted
-    id
-    parentId
+    ...CommentBaseFragment
     replies(before: $cursor, last: $limit) {
       edges {
         node {

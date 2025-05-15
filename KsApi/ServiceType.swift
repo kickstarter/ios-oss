@@ -141,24 +141,21 @@ public protocol ServiceType {
   func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?,
-    withStoredCards: Bool
+    limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comments for an update with an id, cursor, limit and comments' users' stored cards.
   func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?,
-    withStoredCards: Bool
+    limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with an id, limit, cursor and user information with stored cards.
   func fetchCommentReplies(
     id: String,
     cursor: String?,
-    limit: Int,
-    withStoredCards: Bool
+    limit: Int
   ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
 
   /// Fetch the config.

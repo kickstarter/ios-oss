@@ -6,7 +6,6 @@ extension Backing.PaymentSource {
     id: "1",
     lastFour: "1111",
     paymentType: .creditCard,
-    state: "",
     type: CreditCardType.visa
   )
 
@@ -15,7 +14,6 @@ extension Backing.PaymentSource {
     id: "2",
     lastFour: "1111",
     paymentType: .creditCard,
-    state: "",
     type: CreditCardType.visa
   )
 
@@ -24,7 +22,6 @@ extension Backing.PaymentSource {
     id: "6",
     lastFour: "8882",
     paymentType: .creditCard,
-    state: "",
     type: CreditCardType.amex
   )
 
@@ -33,7 +30,6 @@ extension Backing.PaymentSource {
     id: "1",
     lastFour: "1111",
     paymentType: .applePay,
-    state: "",
     type: CreditCardType.visa
   )
 
@@ -42,6 +38,6 @@ extension Backing.PaymentSource {
     id: "123",
     lastFour: "4111",
     paymentType: .googlePay,
-    state: "ACTIVE", type: .visa
+    type: .visa
   )
 }

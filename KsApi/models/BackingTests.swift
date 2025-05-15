@@ -30,7 +30,6 @@ final class BackingTests: XCTestCase {
         "id": "20",
         "last_four": "1234",
         "payment_type": "CREDIT_CARD",
-        "state": "ACTIVE",
         "type": "VISA"
       ],
       "pledged_at": 1_000,
@@ -60,7 +59,6 @@ final class BackingTests: XCTestCase {
     XCTAssertEqual("20", backing?.paymentSource?.id)
     XCTAssertEqual("1234", backing?.paymentSource?.lastFour)
     XCTAssertEqual("CREDIT_CARD", backing?.paymentSource?.paymentType.rawValue)
-    XCTAssertEqual("ACTIVE", backing?.paymentSource?.state)
     XCTAssertEqual(CreditCardType.visa, backing?.paymentSource?.type)
     XCTAssertEqual(1, backing?.locationId)
     XCTAssertEqual("United States", backing?.locationName)
