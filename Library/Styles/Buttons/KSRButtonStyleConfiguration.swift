@@ -88,17 +88,17 @@ extension UIButton {
     switch self.state {
     case .disabled:
       buttonConfiguration.background.backgroundColor = styleConfig.disabledBackgroundColor
-      self.tintColor = styleConfig.disabledTitleColor
+      buttonConfiguration.baseForegroundColor = styleConfig.disabledTitleColor
       buttonConfiguration.background.strokeColor = styleConfig.disabledBorderColor
       buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     case .highlighted:
       buttonConfiguration.background.backgroundColor = styleConfig.highlightedBackgroundColor
-      self.tintColor = styleConfig.highlightedTitleColor
+      buttonConfiguration.baseForegroundColor = styleConfig.highlightedTitleColor
       buttonConfiguration.background.strokeColor = styleConfig.highlightedBorderColor
       buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     default:
       buttonConfiguration.background.backgroundColor = styleConfig.backgroundColor
-      self.tintColor = styleConfig.titleColor
+      buttonConfiguration.baseBackgroundColor = styleConfig.titleColor
       buttonConfiguration.background.strokeColor = styleConfig.borderColor
       buttonConfiguration.background.strokeWidth = styleConfig.borderWidth
     }
