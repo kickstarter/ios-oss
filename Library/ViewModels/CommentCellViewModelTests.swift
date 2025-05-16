@@ -296,11 +296,12 @@ internal final class CommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(comment: comment, project: .template)
 
-    // FIXME: MBL-2428 - Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
-    self.body
-      .assertLastValue(
-        "This comment has been removed for violating <a href=\"https://www.kickstarter.com/help/community\">Kickstarter’s Community Guidelines.</a>"
+    let commentHasBeenRemovedString = Strings
+      .This_comment_has_been_removed_for_violating_kickstarters_community_guidelines(
+        community_guidelines: "https://www.kickstarter.com/help/community"
       )
+    self.body
+      .assertLastValue(commentHasBeenRemovedString)
   }
 
   func testOutputs_When_Flag_IsDeleted() {

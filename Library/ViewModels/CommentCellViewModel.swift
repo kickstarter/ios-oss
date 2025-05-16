@@ -265,8 +265,10 @@ private func commentRemovedPerGuidelines() -> String {
     return ""
   }
 
-  // FIXME: MBL-2428 - Use `Strings.This_comment_has_been_removed_for_violating_kickstarters_community_guidelines` when it's added to the strings file.
-  return "This comment has been removed for violating <a href=\"\(communityGuidelinesLink)\">Kickstarter’s Community Guidelines.</a>"
+  return Strings
+    .This_comment_has_been_removed_for_violating_kickstarters_community_guidelines(
+      community_guidelines: communityGuidelinesLink
+    )
 }
 
 private func commentDeletedText() -> String {
