@@ -69,7 +69,7 @@ private let contentViewStyle: ViewStyle = { view in
   view
     |> checkoutRoundedCornersStyle
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-    |> \.backgroundColor .~ LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06)
+    |> \.backgroundColor .~ LegacyColors.ksr_create_700.uiColor(opacity: 0.06)
 }
 
 private let labelStyle: LabelStyle = { label in

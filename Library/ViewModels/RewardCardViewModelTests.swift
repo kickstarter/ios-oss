@@ -568,7 +568,7 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
         text: "Add-ons",
         textColor: LegacyColors.ksr_create_700.uiColor()
       )]
@@ -629,7 +629,7 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
         text: "25 backers",
         textColor: LegacyColors.ksr_create_700.uiColor()
       )]
@@ -746,7 +746,7 @@ final class RewardCardViewModelTests: TestCase {
           textColor: LegacyColors.ksr_support_400.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "Ships worldwide",
           textColor: LegacyColors.ksr_create_700.uiColor()
         )
@@ -788,7 +788,7 @@ final class RewardCardViewModelTests: TestCase {
           textColor: LegacyColors.ksr_support_400.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "United States only",
           textColor: LegacyColors.ksr_create_700.uiColor()
         )
@@ -829,7 +829,7 @@ final class RewardCardViewModelTests: TestCase {
           textColor: LegacyColors.ksr_support_400.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "Limited shipping",
           textColor: LegacyColors.ksr_create_700.uiColor()
         )
@@ -873,7 +873,7 @@ final class RewardCardViewModelTests: TestCase {
           textColor: LegacyColors.ksr_support_400.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "Ships worldwide",
           textColor: LegacyColors.ksr_create_700.uiColor()
         )
@@ -907,12 +907,12 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "50 backers",
           textColor: LegacyColors.ksr_create_700.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
           text: "Ships worldwide",
           textColor: LegacyColors.ksr_create_700.uiColor()
         )
@@ -1038,7 +1038,7 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills
       .assertValues([[RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
         text: "50 backers",
         textColor: LegacyColors.ksr_create_700.uiColor()
       )]])

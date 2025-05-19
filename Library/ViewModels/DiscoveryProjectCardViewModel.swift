@@ -15,7 +15,7 @@ public enum DiscoveryProjectTagPillCellType: Equatable {
 
   public var backgroundColor: UIColor {
     switch self {
-    case .green: return LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.07)
+    case .green: return LegacyColors.ksr_create_700.uiColor(opacity: 0.07)
     case .grey: return LegacyColors.ksr_support_300.uiColor()
     }
   }
