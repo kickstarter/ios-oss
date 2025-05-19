@@ -95,7 +95,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         let isInPostCampaignPledging = featurePostCampaignPledgeEnabled() && project
           .isInPostCampaignPledgingPhase
 
-        let totalString = Format.currency(pledgeTotal, country: project.country)
+        let totalString = Format.currency(pledgeTotal, currencyCode: project.stats.currency)
 
         string = isInPostCampaignPledging
           ? Strings

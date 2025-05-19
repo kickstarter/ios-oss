@@ -51,12 +51,10 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       data.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
     .map { data in
-      let projectCurrencyCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project
-        .country
 
       let formattedAmount = Format.currency(
         data.pledgeAmount,
-        country: projectCurrencyCountry,
+        currencyCode: data.project.stats.currency,
         omitCurrencyCode: data.omitUSCurrencyCode
       )
       return (formattedAmount, data.projectName)

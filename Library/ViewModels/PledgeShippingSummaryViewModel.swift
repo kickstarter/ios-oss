@@ -6,7 +6,7 @@ import ReactiveSwift
 public struct PledgeShippingSummaryViewData: Equatable {
   public let locationName: String
   public let omitUSCurrencyCode: Bool
-  public let projectCountry: Project.Country
+  public let currencyCode: String
   public let total: Double
 }
 
@@ -32,7 +32,7 @@ public class PledgeShippingSummaryViewModel: PledgeShippingSummaryViewModelType,
     self.locationLabelText = configData.map(\.locationName)
 
     self.amountLabelAttributedText = configData.map {
-      data in (data.projectCountry, data.omitUSCurrencyCode, data.total)
+      data in (data.currencyCode, data.omitUSCurrencyCode, data.total)
     }
     .map(attributedCurrency)
     .skipNil()
@@ -51,7 +51,7 @@ public class PledgeShippingSummaryViewModel: PledgeShippingSummaryViewModelType,
 }
 
 private func attributedCurrency(
-  with projectCountry: Project.Country,
+  with currencyCode: String,
   omitCurrencyCode: Bool,
   total: Double
 ) -> NSAttributedString? {
@@ -60,7 +60,7 @@ private func attributedCurrency(
   guard
     let attributedCurrency = Format.attributedCurrency(
       total,
-      country: projectCountry,
+      currencyCode: currencyCode,
       omitCurrencyCode: omitCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes

@@ -241,19 +241,18 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         bonus = 0
       }
       let omitUSCurrencyCode = data.project.stats.omitUSCurrencyCode
-      let projectCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project.country
       let shippingSummary = data.selectedShippingRule.flatMap {
         PledgeShippingSummaryViewData(
           locationName: $0.location.localizedName,
           omitUSCurrencyCode: omitUSCurrencyCode,
-          projectCountry: projectCountry,
+          currencyCode: data.project.stats.currency,
           total: shippingTotal
         )
       }
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
-        projectCountry: projectCountry,
+        currencyCode: data.project.stats.currency,
         omitCurrencyCode: omitUSCurrencyCode,
         shipping: shippingSummary,
         useLatePledgeCosts: true

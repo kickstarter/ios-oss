@@ -295,10 +295,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
 
     let shippingSummaryViewDataNonnil = Signal.combineLatest(
       shippingLocation.skipNil(),
-      project.map(\.stats.omitUSCurrencyCode),
-      project.map { project in
-        projectCountry(forCurrency: project.stats.currency) ?? project.country
-      },
+      project.map { $0.stats.omitUSCurrencyCode },
+      project.map { $0.stats.currency },
       allRewardsShippingTotal
     )
     .map(PledgeShippingSummaryViewData.init)
@@ -324,12 +322,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
             data.project.personalization.backing?.isLatePledge == true
         )
 
-      let projectCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project.country
-
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
-        projectCountry: projectCountry,
+        currencyCode: data.project.stats.currency,
         omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
         shipping: shipping,
         useLatePledgeCosts: isLatePledge
@@ -1150,7 +1146,6 @@ private func pledgeAmountSummaryViewData(
   guard let backing = project.personalization.backing else { return nil }
 
   let rewardIsLocalPickup = isRewardLocalPickup(backing.reward)
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   return .init(
     bonusAmount: additionalPledgeAmount,
@@ -1158,7 +1153,7 @@ private func pledgeAmountSummaryViewData(
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    projectCurrencyCountry: projectCurrencyCountry,
+    currencyCode: project.stats.currency,
     pledgedOn: backing.pledgedAt,
     rewardMinimum: allRewardsTotal,
     shippingAmount: backing.shippingAmount.flatMap(Double.init),

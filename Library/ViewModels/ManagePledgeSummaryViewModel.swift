@@ -16,7 +16,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let omitUSCurrencyCode: Bool
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
-  public let projectCurrencyCountry: Project.Country
+  public let currencyCode: String
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
   public let rewardMinimum: Double
@@ -101,10 +101,10 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.backingDateText = data.map(\.pledgedOn)
       .map(formattedPledgeDate)
 
-    self.totalAmountText = data.map { ($0.projectCurrencyCountry, $0.pledgeAmount, $0.omitUSCurrencyCode) }
-      .map { projectCurrencyCountry, pledgeAmount, omitUSCurrencyCode in
+    self.totalAmountText = data.map { ($0.currencyCode, $0.pledgeAmount, $0.omitUSCurrencyCode) }
+      .map { currencyCode, pledgeAmount, omitUSCurrencyCode in
         attributedCurrency(
-          with: projectCurrencyCountry,
+          with: currencyCode,
           amount: pledgeAmount,
           omitUSCurrencyCode: omitUSCurrencyCode
         )
@@ -152,7 +152,7 @@ private func pledgeAmountSummaryViewData(
     isNoReward: data.isNoReward,
     locationName: data.locationName,
     omitUSCurrencyCode: data.omitUSCurrencyCode,
-    projectCurrencyCountry: data.projectCurrencyCountry,
+    currencyCode: data.currencyCode,
     pledgedOn: data.pledgedOn,
     rewardMinimum: data.rewardMinimum,
     shippingAmount: data.shippingAmount,
@@ -166,7 +166,7 @@ private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -
     currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
     needsConversion: data.needsConversion,
     pledgeAmount: data.pledgeAmount,
-    projectCurrencyCountry: data.projectCurrencyCountry,
+    currencyCode: data.currencyCode,
     projectDeadline: data.projectDeadline,
     projectState: data.projectState,
     backingState: data.backingState,
@@ -176,7 +176,7 @@ private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -
 }
 
 private func attributedCurrency(
-  with country: Project.Country,
+  with currencyCode: String,
   amount: Double,
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
@@ -186,7 +186,7 @@ private func attributedCurrency(
   guard
     let attributedCurrency = Format.attributedCurrency(
       amount,
-      country: country,
+      currencyCode: currencyCode,
       omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
