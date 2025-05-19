@@ -45,6 +45,9 @@ public struct Environment {
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
 
+  /// Turns a light/dark mode color pair and an alpha into an appropriate `UIColor` object.
+  public let colorResolver: ColorResolverType
+
   /// The currently logged in user.
   public let currentUser: User?
 
@@ -127,6 +130,7 @@ public struct Environment {
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = .current,
+    colorResolver: ColorResolverType = AppColorResolver(),
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
     coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
@@ -162,6 +166,7 @@ public struct Environment {
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
     self.calendar = calendar
+    self.colorResolver = colorResolver
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode

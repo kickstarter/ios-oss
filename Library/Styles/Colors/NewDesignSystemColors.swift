@@ -151,6 +151,12 @@ public struct Colors {
         darkMode: .red_1000
       )
 
+      public static let subtle = SemanticColor(
+        "background/danger/subtle",
+        lightMode: .red_200,
+        darkMode: .red_1000
+      )
+
       public struct Bold {
         public static let pressed = SemanticColor(
           "background/danger/bold/pressed",
@@ -222,6 +228,12 @@ public struct Colors {
       "icon/green",
       lightMode: .green_07,
       darkMode: .green_03
+    )
+
+    public static let danger = SemanticColor(
+      "icon/danger",
+      lightMode: .red_700,
+      darkMode: .red_400
     )
 
     public static let primary = SemanticColor(
