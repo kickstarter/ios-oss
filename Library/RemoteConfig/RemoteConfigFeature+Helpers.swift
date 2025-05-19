@@ -16,11 +16,11 @@ private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = f
 }
 
 public func featureDarkModeEnabled() -> Bool {
-  return true
+  return featureEnabled(feature: .darkModeEnabled)
 }
 
 public func featurePostCampaignPledgeEnabled() -> Bool {
-  true
+  featureEnabled(feature: .postCampaignPledgeEnabled)
 }
 
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
@@ -44,7 +44,7 @@ public func featureNetNewBackersWebViewEnabled() -> Bool {
 }
 
 public func featureNewDesignSystemEnabled() -> Bool {
-  true
+  featureEnabled(feature: .newDesignSystem)
 }
 
 public func featureRewardShipmentTrackingEnabled() -> Bool {
