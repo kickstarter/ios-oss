@@ -91,18 +91,26 @@ private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Re
 }
 
 private func backingPaymentSource(from backingFragment: GraphAPI.BackingFragment) -> Backing.PaymentSource? {
-  guard
-    let creditCard = backingFragment.creditCard?.fragments.creditCardFragment.asCreditCard,
-    let paymentType = PaymentType(rawValue: creditCard.paymentType.rawValue),
-    let type = CreditCardType(rawValue: creditCard.type.rawValue)
-  else { return nil }
+  if let creditCard = backingFragment.paymentSource?.fragments.paymentSourceFragment.asCreditCard {
+    guard let paymentType = PaymentType(rawValue: creditCard.paymentType.rawValue),
+          let type = CreditCardType(rawValue: creditCard.type.rawValue)
+    else { return nil }
 
+    return Backing.PaymentSource(
+      expirationDate: creditCard.expirationDate,
+      id: creditCard.id,
+      lastFour: creditCard.lastFour,
+      paymentType: paymentType,
+      type: type
+    )
+  }
+  guard let bankAccount = backingFragment.paymentSource?.fragments.paymentSourceFragment.asBankAccount
+  else { return nil }
   return Backing.PaymentSource(
-    expirationDate: creditCard.expirationDate,
-    id: creditCard.id,
-    lastFour: creditCard.lastFour,
-    paymentType: paymentType,
-    state: creditCard.state.rawValue,
-    type: type
+    expirationDate: nil,
+    id: bankAccount.id,
+    lastFour: bankAccount.lastFour,
+    paymentType: .bankAccount,
+    type: nil
   )
 }

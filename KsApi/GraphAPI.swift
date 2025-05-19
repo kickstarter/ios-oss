@@ -4099,108 +4099,6 @@ public enum GraphAPI {
     }
   }
 
-  /// Credit card payment types.
-  public enum CreditCardPaymentType: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-    public typealias RawValue = String
-    case androidPay
-    case applePay
-    case bankAccount
-    case creditCard
-    /// Auto generated constant for unknown enum values
-    case __unknown(RawValue)
-
-    public init?(rawValue: RawValue) {
-      switch rawValue {
-        case "ANDROID_PAY": self = .androidPay
-        case "APPLE_PAY": self = .applePay
-        case "BANK_ACCOUNT": self = .bankAccount
-        case "CREDIT_CARD": self = .creditCard
-        default: self = .__unknown(rawValue)
-      }
-    }
-
-    public var rawValue: RawValue {
-      switch self {
-        case .androidPay: return "ANDROID_PAY"
-        case .applePay: return "APPLE_PAY"
-        case .bankAccount: return "BANK_ACCOUNT"
-        case .creditCard: return "CREDIT_CARD"
-        case .__unknown(let value): return value
-      }
-    }
-
-    public static func == (lhs: CreditCardPaymentType, rhs: CreditCardPaymentType) -> Bool {
-      switch (lhs, rhs) {
-        case (.androidPay, .androidPay): return true
-        case (.applePay, .applePay): return true
-        case (.bankAccount, .bankAccount): return true
-        case (.creditCard, .creditCard): return true
-        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-        default: return false
-      }
-    }
-
-    public static var allCases: [CreditCardPaymentType] {
-      return [
-        .androidPay,
-        .applePay,
-        .bankAccount,
-        .creditCard,
-      ]
-    }
-  }
-
-  /// States of Credit Cards
-  public enum CreditCardState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-    public typealias RawValue = String
-    case unauthorized
-    case verifying
-    case active
-    case inactive
-    /// Auto generated constant for unknown enum values
-    case __unknown(RawValue)
-
-    public init?(rawValue: RawValue) {
-      switch rawValue {
-        case "UNAUTHORIZED": self = .unauthorized
-        case "VERIFYING": self = .verifying
-        case "ACTIVE": self = .active
-        case "INACTIVE": self = .inactive
-        default: self = .__unknown(rawValue)
-      }
-    }
-
-    public var rawValue: RawValue {
-      switch self {
-        case .unauthorized: return "UNAUTHORIZED"
-        case .verifying: return "VERIFYING"
-        case .active: return "ACTIVE"
-        case .inactive: return "INACTIVE"
-        case .__unknown(let value): return value
-      }
-    }
-
-    public static func == (lhs: CreditCardState, rhs: CreditCardState) -> Bool {
-      switch (lhs, rhs) {
-        case (.unauthorized, .unauthorized): return true
-        case (.verifying, .verifying): return true
-        case (.active, .active): return true
-        case (.inactive, .inactive): return true
-        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-        default: return false
-      }
-    }
-
-    public static var allCases: [CreditCardState] {
-      return [
-        .unauthorized,
-        .verifying,
-        .active,
-        .inactive,
-      ]
-    }
-  }
-
   /// The state of checkout, e.g. complete, in progress, incomplete.
   public enum CheckoutStateEnum: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -4342,6 +4240,57 @@ public enum GraphAPI {
     public static var allCases: [PaymentIncrementStateReason] {
       return [
         .requiresAction,
+      ]
+    }
+  }
+
+  /// Credit card payment types.
+  public enum CreditCardPaymentType: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case androidPay
+    case applePay
+    case bankAccount
+    case creditCard
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "ANDROID_PAY": self = .androidPay
+        case "APPLE_PAY": self = .applePay
+        case "BANK_ACCOUNT": self = .bankAccount
+        case "CREDIT_CARD": self = .creditCard
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .androidPay: return "ANDROID_PAY"
+        case .applePay: return "APPLE_PAY"
+        case .bankAccount: return "BANK_ACCOUNT"
+        case .creditCard: return "CREDIT_CARD"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: CreditCardPaymentType, rhs: CreditCardPaymentType) -> Bool {
+      switch (lhs, rhs) {
+        case (.androidPay, .androidPay): return true
+        case (.applePay, .applePay): return true
+        case (.bankAccount, .bankAccount): return true
+        case (.creditCard, .creditCard): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [CreditCardPaymentType] {
+      return [
+        .androidPay,
+        .applePay,
+        .bankAccount,
+        .creditCard,
       ]
     }
   }
@@ -6433,7 +6382,7 @@ public enum GraphAPI {
           isSuccessful
           paymentSource {
             __typename
-            ...CreditCardFragment
+            ...PaymentSourceFragment
           }
         }
       }
@@ -6443,7 +6392,7 @@ public enum GraphAPI {
 
     public var queryDocument: String {
       var document: String = operationDefinition
-      document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + PaymentSourceFragment.fragmentDefinition)
       return document
     }
 
@@ -6551,7 +6500,7 @@ public enum GraphAPI {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLFragmentSpread(CreditCardFragment.self),
+              GraphQLFragmentSpread(PaymentSourceFragment.self),
             ]
           }
 
@@ -6561,8 +6510,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
-            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) {
+            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
           }
 
           public var __typename: String {
@@ -6590,9 +6539,9 @@ public enum GraphAPI {
               self.resultMap = unsafeResultMap
             }
 
-            public var creditCardFragment: CreditCardFragment {
+            public var paymentSourceFragment: PaymentSourceFragment {
               get {
-                return CreditCardFragment(unsafeResultMap: resultMap)
+                return PaymentSourceFragment(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -8671,7 +8620,7 @@ public enum GraphAPI {
       document.append("\n" + BackingFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
-      document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + PaymentSourceFragment.fragmentDefinition)
       document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
@@ -13000,7 +12949,7 @@ public enum GraphAPI {
       document.append("\n" + BackingFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
-      document.append("\n" + CreditCardFragment.fragmentDefinition)
+      document.append("\n" + PaymentSourceFragment.fragmentDefinition)
       document.append("\n" + OrderFragment.fragmentDefinition)
       document.append("\n" + PaymentIncrementFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
@@ -14821,9 +14770,9 @@ public enum GraphAPI {
           ...MoneyFragment
         }
         cancelable
-        creditCard: paymentSource {
+        paymentSource {
           __typename
-          ...CreditCardFragment
+          ...PaymentSourceFragment
         }
         id
         isLatePledge
@@ -14872,7 +14821,7 @@ public enum GraphAPI {
         GraphQLField("backerCompleted", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("bonusAmount", type: .nonNull(.object(BonusAmount.selections))),
         GraphQLField("cancelable", type: .nonNull(.scalar(Bool.self))),
-        GraphQLField("paymentSource", alias: "creditCard", type: .object(CreditCard.selections)),
+        GraphQLField("paymentSource", type: .object(PaymentSource.selections)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isLatePledge", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
@@ -14895,8 +14844,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, creditCard: CreditCard? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState, backingDetailsPageRoute: String) {
-      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "creditCard": creditCard.flatMap { (value: CreditCard) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status, "backingDetailsPageRoute": backingDetailsPageRoute])
+    public init(amount: Amount, backer: Backer? = nil, backerCompleted: Bool, bonusAmount: BonusAmount, cancelable: Bool, paymentSource: PaymentSource? = nil, id: GraphQLID, isLatePledge: Bool, location: Location? = nil, order: Order? = nil, paymentIncrements: [PaymentIncrement]? = nil, pledgedOn: String? = nil, project: Project? = nil, reward: Reward? = nil, rewardsAmount: RewardsAmount, sequence: Int? = nil, shippingAmount: ShippingAmount? = nil, status: BackingState, backingDetailsPageRoute: String) {
+      self.init(unsafeResultMap: ["__typename": "Backing", "amount": amount.resultMap, "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }, "backerCompleted": backerCompleted, "bonusAmount": bonusAmount.resultMap, "cancelable": cancelable, "paymentSource": paymentSource.flatMap { (value: PaymentSource) -> ResultMap in value.resultMap }, "id": id, "isLatePledge": isLatePledge, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "order": order.flatMap { (value: Order) -> ResultMap in value.resultMap }, "paymentIncrements": paymentIncrements.flatMap { (value: [PaymentIncrement]) -> [ResultMap] in value.map { (value: PaymentIncrement) -> ResultMap in value.resultMap } }, "pledgedOn": pledgedOn, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "reward": reward.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "rewardsAmount": rewardsAmount.resultMap, "sequence": sequence, "shippingAmount": shippingAmount.flatMap { (value: ShippingAmount) -> ResultMap in value.resultMap }, "status": status, "backingDetailsPageRoute": backingDetailsPageRoute])
     }
 
     public var __typename: String {
@@ -14959,12 +14908,12 @@ public enum GraphAPI {
     }
 
     /// Payment source used on a backing.
-    public var creditCard: CreditCard? {
+    public var paymentSource: PaymentSource? {
       get {
-        return (resultMap["creditCard"] as? ResultMap).flatMap { CreditCard(unsafeResultMap: $0) }
+        return (resultMap["paymentSource"] as? ResultMap).flatMap { PaymentSource(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "creditCard")
+        resultMap.updateValue(newValue?.resultMap, forKey: "paymentSource")
       }
     }
 
@@ -15261,13 +15210,13 @@ public enum GraphAPI {
       }
     }
 
-    public struct CreditCard: GraphQLSelectionSet {
+    public struct PaymentSource: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["BankAccount", "CreditCard"]
 
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(CreditCardFragment.self),
+          GraphQLFragmentSpread(PaymentSourceFragment.self),
         ]
       }
 
@@ -15277,12 +15226,12 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeBankAccount() -> CreditCard {
-        return CreditCard(unsafeResultMap: ["__typename": "BankAccount"])
+      public static func makeBankAccount(id: String, lastFour: String, bankName: String? = nil) -> PaymentSource {
+        return PaymentSource(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
       }
 
-      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> CreditCard {
-        return CreditCard(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
+      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) -> PaymentSource {
+        return PaymentSource(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -15310,9 +15259,9 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public var creditCardFragment: CreditCardFragment {
+        public var paymentSourceFragment: PaymentSourceFragment {
           get {
-            return CreditCardFragment(unsafeResultMap: resultMap)
+            return PaymentSourceFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -16693,178 +16642,6 @@ public enum GraphAPI {
     }
   }
 
-  public struct CreditCardFragment: GraphQLFragment {
-    /// The raw GraphQL definition of this fragment.
-    public static let fragmentDefinition: String =
-      """
-      fragment CreditCardFragment on PaymentSource {
-        __typename
-        ... on CreditCard {
-          expirationDate
-          id
-          lastFour
-          paymentType
-          state
-          type
-          stripeCardId
-        }
-      }
-      """
-
-    public static let possibleTypes: [String] = ["BankAccount", "CreditCard"]
-
-    public static var selections: [GraphQLSelection] {
-      return [
-        GraphQLTypeCase(
-          variants: ["CreditCard": AsCreditCard.selections],
-          default: [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          ]
-        )
-      ]
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-
-    public static func makeBankAccount() -> CreditCardFragment {
-      return CreditCardFragment(unsafeResultMap: ["__typename": "BankAccount"])
-    }
-
-    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> CreditCardFragment {
-      return CreditCardFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
-    }
-
-    public var __typename: String {
-      get {
-        return resultMap["__typename"]! as! String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "__typename")
-      }
-    }
-
-    public var asCreditCard: AsCreditCard? {
-      get {
-        if !AsCreditCard.possibleTypes.contains(__typename) { return nil }
-        return AsCreditCard(unsafeResultMap: resultMap)
-      }
-      set {
-        guard let newValue = newValue else { return }
-        resultMap = newValue.resultMap
-      }
-    }
-
-    public struct AsCreditCard: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["CreditCard"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("expirationDate", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(String.self))),
-          GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
-          GraphQLField("paymentType", type: .nonNull(.scalar(CreditCardPaymentType.self))),
-          GraphQLField("state", type: .nonNull(.scalar(CreditCardState.self))),
-          GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
-          GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
-        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
-      }
-
-      public var __typename: String {
-        get {
-          return resultMap["__typename"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      /// When the credit card expires.
-      public var expirationDate: String {
-        get {
-          return resultMap["expirationDate"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "expirationDate")
-        }
-      }
-
-      /// The card ID
-      public var id: String {
-        get {
-          return resultMap["id"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "id")
-        }
-      }
-
-      /// The last four digits of the credit card number.
-      public var lastFour: String {
-        get {
-          return resultMap["lastFour"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "lastFour")
-        }
-      }
-
-      /// The card's payment type.
-      public var paymentType: CreditCardPaymentType {
-        get {
-          return resultMap["paymentType"]! as! CreditCardPaymentType
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "paymentType")
-        }
-      }
-
-      /// The card's state.
-      public var state: CreditCardState {
-        get {
-          return resultMap["state"]! as! CreditCardState
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "state")
-        }
-      }
-
-      /// The card type.
-      public var type: CreditCardTypes {
-        get {
-          return resultMap["type"]! as! CreditCardTypes
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "type")
-        }
-      }
-
-      /// Stripe card id
-      public var stripeCardId: String {
-        get {
-          return resultMap["stripeCardId"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "stripeCardId")
-        }
-      }
-    }
-  }
-
   public struct LocationFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
@@ -17250,6 +17027,243 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "currency")
+        }
+      }
+    }
+  }
+
+  public struct PaymentSourceFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PaymentSourceFragment on PaymentSource {
+        __typename
+        ... on CreditCard {
+          expirationDate
+          id
+          lastFour
+          paymentType
+          type
+          stripeCardId
+        }
+        ... on BankAccount {
+          id
+          lastFour
+          bankName
+        }
+      }
+      """
+
+    public static let possibleTypes: [String] = ["BankAccount", "CreditCard"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLTypeCase(
+          variants: ["CreditCard": AsCreditCard.selections, "BankAccount": AsBankAccount.selections],
+          default: [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          ]
+        )
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) -> PaymentSourceFragment {
+      return PaymentSourceFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
+    }
+
+    public static func makeBankAccount(id: String, lastFour: String, bankName: String? = nil) -> PaymentSourceFragment {
+      return PaymentSourceFragment(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var asCreditCard: AsCreditCard? {
+      get {
+        if !AsCreditCard.possibleTypes.contains(__typename) { return nil }
+        return AsCreditCard(unsafeResultMap: resultMap)
+      }
+      set {
+        guard let newValue = newValue else { return }
+        resultMap = newValue.resultMap
+      }
+    }
+
+    public struct AsCreditCard: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CreditCard"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("expirationDate", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
+          GraphQLField("paymentType", type: .nonNull(.scalar(CreditCardPaymentType.self))),
+          GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
+          GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, type: CreditCardTypes, stripeCardId: String) {
+        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "type": type, "stripeCardId": stripeCardId])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// When the credit card expires.
+      public var expirationDate: String {
+        get {
+          return resultMap["expirationDate"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "expirationDate")
+        }
+      }
+
+      /// The card ID
+      public var id: String {
+        get {
+          return resultMap["id"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The last four digits of the credit card number.
+      public var lastFour: String {
+        get {
+          return resultMap["lastFour"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastFour")
+        }
+      }
+
+      /// The card's payment type.
+      public var paymentType: CreditCardPaymentType {
+        get {
+          return resultMap["paymentType"]! as! CreditCardPaymentType
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "paymentType")
+        }
+      }
+
+      /// The card type.
+      public var type: CreditCardTypes {
+        get {
+          return resultMap["type"]! as! CreditCardTypes
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "type")
+        }
+      }
+
+      /// Stripe card id
+      public var stripeCardId: String {
+        get {
+          return resultMap["stripeCardId"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "stripeCardId")
+        }
+      }
+    }
+
+    public var asBankAccount: AsBankAccount? {
+      get {
+        if !AsBankAccount.possibleTypes.contains(__typename) { return nil }
+        return AsBankAccount(unsafeResultMap: resultMap)
+      }
+      set {
+        guard let newValue = newValue else { return }
+        resultMap = newValue.resultMap
+      }
+    }
+
+    public struct AsBankAccount: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["BankAccount"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
+          GraphQLField("bankName", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: String, lastFour: String, bankName: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "BankAccount", "id": id, "lastFour": lastFour, "bankName": bankName])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: String {
+        get {
+          return resultMap["id"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The last four digits of the account number.
+      public var lastFour: String {
+        get {
+          return resultMap["lastFour"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastFour")
+        }
+      }
+
+      /// The bank name if available.
+      public var bankName: String? {
+        get {
+          return resultMap["bankName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "bankName")
         }
       }
     }

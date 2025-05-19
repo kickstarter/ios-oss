@@ -174,7 +174,7 @@
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
 		06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F0269398CB00017845 /* MoneyFragment.graphql */; };
 		06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F4269398CB00017845 /* LocationFragment.graphql */; };
-		06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* CreditCardFragment.graphql */; };
+		06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */; };
 		06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F3269398CB00017845 /* CountryFragment.graphql */; };
 		06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */; };
 		06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EE269398CA00017845 /* CategoryFragment.graphql */; };
@@ -284,7 +284,6 @@
 		3385CF012CF6116B00A33D86 /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */; };
 		3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */; };
 		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
-		338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60242D6FE372008D42F9 /* AdaptiveColors.swift */; };
 		338E60272D70B7EA008D42F9 /* NewDesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */; };
 		338E602A2D70CB21008D42F9 /* KSRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E60292D70CB1D008D42F9 /* KSRButton.swift */; };
 		33914D6D2D07D24500A67C47 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */; };
@@ -1625,11 +1624,12 @@
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
 		E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675632DA58AB4007CCA24 /* PillButtons.swift */; };
 		E10675662DA5A6E9007CCA24 /* SearchFilterPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */; };
-		E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */; };
-		E10841702DCA7472000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */; };
-		E108416E2DCA6AC8000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */; };
 		E10841692DC2675D000E4F17 /* ObservedSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841682DC26753000E4F17 /* ObservedSignal.swift */; };
+		E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */; };
+		E108416E2DCA6AC8000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */; };
+		E10841702DCA7472000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */; };
 		E10841722DCBD874000E4F17 /* SearchResultsCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841712DCBD874000E4F17 /* SearchResultsCountCell.swift */; };
+		E10841742DCD2ECE000E4F17 /* ColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841732DCD2EC8000E4F17 /* ColorsView.swift */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10BE8DB2B14F1C100F73DC9 /* BlockUser.graphql */; };
@@ -1655,6 +1655,8 @@
 		E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06A72D838022002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json */; };
 		E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06AA2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json */; };
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
+		E127A0072DD502FF000289BA /* CoreColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E127A0052DD502FF000289BA /* CoreColor.swift */; };
+		E127A0082DD502FF000289BA /* SemanticColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E127A0062DD502FF000289BA /* SemanticColor.swift */; };
 		E12903C62DBBCA4000EE3DC1 /* FilterCategoryViewModel_PhaseOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12903C52DBBCA4000EE3DC1 /* FilterCategoryViewModel_PhaseOne.swift */; };
 		E12903C92DBBCBC000EE3DC1 /* FilterCategoryViewModelTest_PhaseOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12903C72DBBCB7B00EE3DC1 /* FilterCategoryViewModelTest_PhaseOne.swift */; };
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
@@ -1685,6 +1687,8 @@
 		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
 		E17611E42B751E8100DF2F50 /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E32B751E8100DF2F50 /* Paginator.swift */; };
 		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
+		E17D6F9F2DD24AB400EF440D /* SemanticColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D6F9E2DD24AB400EF440D /* SemanticColor.swift */; };
+		E17D6FA32DD24BD400EF440D /* CoreColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D6FA22DD24BCD00EF440D /* CoreColor.swift */; };
 		E1801FA72BA8EDB500EBB533 /* PaginatingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */; };
 		E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */; };
 		E182B7CA2DAFF529000C4067 /* FilterRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7C92DAFF525000C4067 /* FilterRootView.swift */; };
@@ -1705,6 +1709,7 @@
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
+		E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */; };
 		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B813C32BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */; };
 		E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */; };
@@ -2059,7 +2064,6 @@
 		3385CF002CF6115D00A33D86 /* UIStackView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Helper.swift"; sourceTree = "<group>"; };
 		3386546D2CE29AD500AB16A9 /* PledgePaymentPlansOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModel.swift; sourceTree = "<group>"; };
 		338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
-		338E60242D6FE372008D42F9 /* AdaptiveColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveColors.swift; sourceTree = "<group>"; };
 		338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSystemColors.swift; sourceTree = "<group>"; };
 		338E60292D70CB1D008D42F9 /* KSRButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButton.swift; sourceTree = "<group>"; };
 		33914D6C2D07D23B00A67C47 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
@@ -2556,7 +2560,7 @@
 		8A1556EF269398CB00017845 /* ProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectFragment.graphql; sourceTree = "<group>"; };
 		8A1556F0269398CB00017845 /* MoneyFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = MoneyFragment.graphql; sourceTree = "<group>"; };
 		8A1556F1269398CB00017845 /* UserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFragment.graphql; sourceTree = "<group>"; };
-		8A1556F2269398CB00017845 /* CreditCardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreditCardFragment.graphql; sourceTree = "<group>"; };
+		8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentSourceFragment.graphql; sourceTree = "<group>"; };
 		8A1556F3269398CB00017845 /* CountryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CountryFragment.graphql; sourceTree = "<group>"; };
 		8A1556F4269398CB00017845 /* LocationFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LocationFragment.graphql; sourceTree = "<group>"; };
 		8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingQuery.graphql; sourceTree = "<group>"; };
@@ -3425,11 +3429,12 @@
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
 		E10675632DA58AB4007CCA24 /* PillButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButtons.swift; sourceTree = "<group>"; };
 		E10675652DA5A6E9007CCA24 /* SearchFilterPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterPill.swift; sourceTree = "<group>"; };
-		E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
-		E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
-		E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
 		E10841682DC26753000E4F17 /* ObservedSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedSignal.swift; sourceTree = "<group>"; };
+		E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
+		E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
+		E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
 		E10841712DCBD874000E4F17 /* SearchResultsCountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCountCell.swift; sourceTree = "<group>"; };
+		E10841732DCD2EC8000E4F17 /* ColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsView.swift; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3453,6 +3458,8 @@
 		E11E06A72D838022002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_SearchViewControllerTests_Active.json; sourceTree = "<group>"; };
 		E11E06AA2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_SearchViewControllerTests_Prelaunch.json; sourceTree = "<group>"; };
 		E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CompleteOnSessionCheckoutMutation.graphql; sourceTree = "<group>"; };
+		E127A0052DD502FF000289BA /* CoreColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreColor.swift; sourceTree = "<group>"; };
+		E127A0062DD502FF000289BA /* SemanticColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticColor.swift; sourceTree = "<group>"; };
 		E12903C52DBBCA4000EE3DC1 /* FilterCategoryViewModel_PhaseOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewModel_PhaseOne.swift; sourceTree = "<group>"; };
 		E12903C72DBBCB7B00EE3DC1 /* FilterCategoryViewModelTest_PhaseOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewModelTest_PhaseOne.swift; sourceTree = "<group>"; };
 		E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateOrUpdateBackingAddressMutation.graphql; sourceTree = "<group>"; };
@@ -3481,6 +3488,8 @@
 		E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PKCE.swift"; sourceTree = "<group>"; };
 		E17611E32B751E8100DF2F50 /* Paginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
 		E17611E52B75242A00DF2F50 /* PaginatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatorTests.swift; sourceTree = "<group>"; };
+		E17D6F9E2DD24AB400EF440D /* SemanticColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticColor.swift; sourceTree = "<group>"; };
+		E17D6FA22DD24BCD00EF440D /* CoreColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreColor.swift; sourceTree = "<group>"; };
 		E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatingList.swift; sourceTree = "<group>"; };
 		E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceSelected.swift; sourceTree = "<group>"; };
 		E182B7C92DAFF525000C4067 /* FilterRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterRootView.swift; sourceTree = "<group>"; };
@@ -3499,6 +3508,7 @@
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCase.swift; sourceTree = "<group>"; };
 		E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
+		E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsViewTests.swift; sourceTree = "<group>"; };
 		E1B813C22BC833D100DF33CF /* FetchMyBackedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
@@ -6005,7 +6015,11 @@
 		338E601D2D6FE303008D42F9 /* Colors */ = {
 			isa = PBXGroup;
 			children = (
+				E127A0052DD502FF000289BA /* CoreColor.swift */,
+				E127A0062DD502FF000289BA /* SemanticColor.swift */,
 				338E60242D6FE372008D42F9 /* AdaptiveColors.swift */,
+				E17D6FA22DD24BCD00EF440D /* CoreColor.swift */,
+				E17D6F9E2DD24AB400EF440D /* SemanticColor.swift */,
 				338E60262D70B7E5008D42F9 /* NewDesignSystemColors.swift */,
 			);
 			path = Colors;
@@ -6107,6 +6121,8 @@
 		6049D00F2A9CF6610015BB0D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E10841732DCD2EC8000E4F17 /* ColorsView.swift */,
+				E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */,
 				6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */,
 			);
 			path = Controller;
@@ -6395,7 +6411,7 @@
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
 				068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */,
 				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
-				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
+				8A1556F2269398CB00017845 /* PaymentSourceFragment.graphql */,
 				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
 				8A1556F0269398CB00017845 /* MoneyFragment.graphql */,
 				60ED07BB2D9EFF66007779B5 /* OrderFragment.graphql */,
@@ -8281,7 +8297,7 @@
 				E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
-				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
+				06DAAE5726AA3CCD00194E58 /* PaymentSourceFragment.graphql in Resources */,
 				399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */,
 				068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */,
 				E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */,
@@ -8526,6 +8542,8 @@
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				94114D83265451FF0063E8F6 /* CommentCellViewModel.swift in Sources */,
 				E1801FA72BA8EDB500EBB533 /* PaginatingList.swift in Sources */,
+				E127A0072DD502FF000289BA /* CoreColor.swift in Sources */,
+				E127A0082DD502FF000289BA /* SemanticColor.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
 				8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */,
 				774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */,
@@ -8572,7 +8590,6 @@
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */,
 				064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */,
-				338E60252D6FE377008D42F9 /* AdaptiveColors.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,
@@ -8725,6 +8742,7 @@
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				E13D76762D41698500FB58CE /* ApplePayTokenUseCase.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
+				E17D6F9F2DD24AB400EF440D /* SemanticColor.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
 				8A32FE0624D233F000F79C72 /* EmptyStateViewModel.swift in Sources */,
@@ -8748,6 +8766,7 @@
 				A796A88F1D48DE79009B6EF6 /* ProjectPamphletContentViewModel.swift in Sources */,
 				77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */,
 				A71404391CAF215900A2795B /* KeyValueStoreType.swift in Sources */,
+				E17D6FA32DD24BD400EF440D /* CoreColor.swift in Sources */,
 				8A788F27263C80D600A89DAE /* BrazeDebounceMiddleware.swift in Sources */,
 				E10675662DA5A6E9007CCA24 /* SearchFilterPill.swift in Sources */,
 				33F55B532D5282F20007E50E /* CustomFont.swift in Sources */,
@@ -9155,6 +9174,7 @@
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,
 				013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
+				E10841742DCD2ECE000E4F17 /* ColorsView.swift in Sources */,
 				D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */,
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
@@ -9448,6 +9468,7 @@
 				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
+				E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */,

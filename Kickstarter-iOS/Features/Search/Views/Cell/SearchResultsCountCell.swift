@@ -21,13 +21,7 @@ internal final class SearchResultsCountCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value count: Int) {
     let formattedCount = Format.wholeNumber(count)
-
-    // TODO: Use translated strings (see #31242)
-    if count == 1 {
-      self.titleLabel.text = "1 result"
-    } else {
-      self.titleLabel.text = "\(formattedCount) results"
-    }
+    self.titleLabel.text = Strings.Search_results(search_results_count: count)
   }
 
   internal override func bindStyles() {
@@ -35,12 +29,12 @@ internal final class SearchResultsCountCell: UITableViewCell, ValueCell {
 
     self.selectionStyle = .none
     // FIXME: MBL-2423 this should be surfaceSecondary.
-    self.backgroundColor = Colors.Background.surfacePrimary.adaptive()
+    self.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
     self.titleLabel.constrainViewToMargins(in: self.contentView)
     self.contentView.layoutMargins = UIEdgeInsets(all: 18.0)
 
-    self.titleLabel.textColor = Colors.Text.secondary.adaptive()
+    self.titleLabel.textColor = Colors.Text.secondary.uiColor()
     self.titleLabel.textAlignment = .center
     self.titleLabel.font = InterFont.bodyMD.font()
   }

@@ -25,7 +25,7 @@ struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
       self.footerView
         .padding()
     }
-    .background(Colors.Background.surfacePrimary.swiftUIColor())
+    .background(Colors.Background.Surface.primary.swiftUIColor())
 
     // Handle actions
 
@@ -57,7 +57,7 @@ struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
       }
     }
     .padding(Constants.headerPadding)
-    .background(Colors.Background.surfacePrimary.swiftUIColor())
+    .background(Colors.Background.Surface.primary.swiftUIColor())
     self.separator
   }
 
@@ -77,7 +77,7 @@ struct FilterCategoryView_PhaseOne<T: FilterCategory>: View {
 
         self.separator
       }
-      .background(Colors.Background.surfacePrimary.swiftUIColor())
+      .background(Colors.Background.Surface.primary.swiftUIColor())
       .listRowInsets(EdgeInsets()) // Remove List internal insets
       .listRowSeparator(.hidden) // Hide default separators
       .contentShape(Rectangle())

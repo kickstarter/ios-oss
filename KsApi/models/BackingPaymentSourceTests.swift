@@ -10,7 +10,6 @@ final class BackingPaymentSourceTests: XCTestCase {
       "id": "2",
       "last_four": "4111",
       "payment_type": "CREDIT_CARD",
-      "state": "ACTIVE",
       "type": "VISA"
     ]
 
@@ -21,7 +20,6 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
     XCTAssertEqual(paymentSource?.paymentType, PaymentType.creditCard)
-    XCTAssertEqual(paymentSource?.state, "ACTIVE")
     XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
@@ -31,7 +29,6 @@ final class BackingPaymentSourceTests: XCTestCase {
       "id": nil,
       "last_four": nil,
       "payment_type": "CREDIT_CARD",
-      "state": "ACTIVE",
       "type": nil
     ]
 
@@ -43,7 +40,6 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertNil(paymentSource?.lastFour)
     XCTAssertNil(paymentSource?.type)
     XCTAssertEqual(paymentSource?.paymentType, PaymentType.creditCard)
-    XCTAssertEqual(paymentSource?.state, "ACTIVE")
   }
 
   func testJSONDecoding_ApplePay() {
@@ -52,7 +48,6 @@ final class BackingPaymentSourceTests: XCTestCase {
       "id": "2",
       "last_four": "4111",
       "payment_type": "APPLE_PAY",
-      "state": "ACTIVE",
       "type": "VISA"
     ]
 
@@ -63,7 +58,6 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
     XCTAssertEqual(paymentSource?.paymentType, PaymentType.applePay)
-    XCTAssertEqual(paymentSource?.state, "ACTIVE")
     XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
@@ -73,7 +67,6 @@ final class BackingPaymentSourceTests: XCTestCase {
       "id": "2",
       "last_four": "4111",
       "payment_type": "ANDROID_PAY",
-      "state": "ACTIVE",
       "type": "VISA"
     ]
 
@@ -84,7 +77,6 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
     XCTAssertEqual(paymentSource?.paymentType, PaymentType.googlePay)
-    XCTAssertEqual(paymentSource?.state, "ACTIVE")
     XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
@@ -94,7 +86,6 @@ final class BackingPaymentSourceTests: XCTestCase {
       "id": "2",
       "last_four": "4111",
       "payment_type": nil,
-      "state": nil,
       "type": "VISA"
     ]
 

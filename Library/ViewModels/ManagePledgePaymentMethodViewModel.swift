@@ -125,6 +125,8 @@ private func imageName(for paymentType: PaymentType?, creditCardType: CreditCard
     return "icon--apple-pay"
   case .googlePay:
     return "icon--google-pay"
+  case .bankAccount:
+    return "icon--credit-card"
   case nil:
     return nil
   }
