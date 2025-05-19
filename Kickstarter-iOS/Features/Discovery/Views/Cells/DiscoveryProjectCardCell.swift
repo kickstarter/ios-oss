@@ -499,7 +499,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private func addShadowLayers() {
     let projectStatusShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ LegacyColors.ksr_white.uiColor().withAlphaComponent(0.95).cgColor
+      |> \.fillColor .~ LegacyColors.ksr_white.uiColor(opacity: 0.95).cgColor
       |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4
@@ -510,7 +510,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectStatusContainerView.layer.insertSublayer(projectStatusShadowLayer, at: 0)
 
     let saveButtonShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ LegacyColors.ksr_white.uiColor().withAlphaComponent(0.95).cgColor
+      |> \.fillColor .~ LegacyColors.ksr_white.uiColor(opacity: 0.95).cgColor
       |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4

@@ -8,7 +8,7 @@ public let createNewAccountButtonStyle = greenButtonStyle
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
   .uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
-    LegacyColors.ksr_support_400.uiColor().withAlphaComponent(0.5)
+    LegacyColors.ksr_support_400.uiColor(opacity: 0.5)
   }
 
   <> UIButton.lens.titleLabel.font %~~ { _, label in
@@ -118,7 +118,7 @@ public let signupButtonStyle: ButtonStyle = { button in
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
   .uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
-    LegacyColors.ksr_support_400.uiColor().withAlphaComponent(0.5)
+    LegacyColors.ksr_support_400.uiColor(opacity: 0.5)
   }
 
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()

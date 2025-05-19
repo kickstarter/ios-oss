@@ -43,7 +43,7 @@ final class OverlayView: UIView {
 
 private let overlayViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ LegacyColors.ksr_black.uiColor().withAlphaComponent(OverlayViewLayout.Alpha.max)
+    |> \.backgroundColor .~ LegacyColors.ksr_black.uiColor(opacity: OverlayViewLayout.Alpha.max)
 }
 
 extension OverlayViewPresenting where Self: UIViewController {
@@ -84,7 +84,7 @@ extension OverlayViewPresenting where Self: UIViewController {
   }
 
   func updateOverlayView(with alpha: CGFloat) {
-    self.overlayView?.backgroundColor = LegacyColors.ksr_black.uiColor().withAlphaComponent(alpha)
+    self.overlayView?.backgroundColor = LegacyColors.ksr_black.uiColor(opacity: alpha)
   }
 
   func transformSubviews(with transform: CGAffineTransform) {

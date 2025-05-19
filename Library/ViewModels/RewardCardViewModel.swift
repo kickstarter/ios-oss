@@ -277,7 +277,7 @@ private func addOnsString(reward: Reward) -> RewardCardPillData? {
   guard reward.hasAddOns else { return nil }
 
   return RewardCardPillData(
-    backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+    backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
     text: Strings.Add_ons(),
     textColor: LegacyColors.ksr_create_700.uiColor()
   )
@@ -318,7 +318,7 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
     let backersCount = reward.backersCount ?? 0
 
     return backersCount > 0 ? RewardCardPillData(
-      backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+      backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
       text: Strings.general_backer_count_backers(backer_count: backersCount),
       textColor: LegacyColors.ksr_create_700.uiColor()
     ) : nil
@@ -339,7 +339,7 @@ private func shippingSummaryString(project: Project, reward: Reward) -> RewardCa
      reward.shipping.enabled,
      let shippingSummaryText = reward.shipping.summary {
     return RewardCardPillData(
-      backgroundColor: LegacyColors.ksr_create_700.uiColor().withAlphaComponent(0.06),
+      backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
       text: shippingSummaryText,
       textColor: LegacyColors.ksr_create_700.uiColor()
     )
