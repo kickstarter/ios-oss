@@ -36,7 +36,7 @@ final class AlertBanner: UIView {
 
     let icon = UIImageView()
     icon.image = Library.image(named: "icon--alert")
-    icon.tintColor = Colors.Icon.danger.uiColor()
+    icon.tintColor = Colors.Text.Accent.Red.bolder.uiColor()
     icon.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(icon)
 

@@ -7,7 +7,7 @@ import ReactiveSwift
 import XCTest
 
 internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
-  private let vm: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
+  private var vm: ProjectPamphletSubpageCellViewModelType!
 
   private let countLabelBackgroundColor = TestObserver<UIColor, Never>()
   private let countLabelBorderColor = TestObserver<UIColor, Never>()
@@ -20,6 +20,8 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = ProjectPamphletSubpageCellViewModel()
 
     self.vm.outputs.countLabelBackgroundColor.observe(self.countLabelBackgroundColor.observer)
     self.vm.outputs.countLabelBorderColor.observe(self.countLabelBorderColor.observer)
