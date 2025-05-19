@@ -20,7 +20,8 @@ final class ColorsViewTests: TestCase {
 
   func testView() {
     let colorsView = ColorsView()
-    let height: CGFloat = CGFloat(150 + colorsView.semanticColors.count * 104)
+    let height: CGFloat =
+      CGFloat(150 + (colorsView.semanticColors.count + colorsView.legacyColors.count) * 104)
 
     assertSnapshot(
       matching: colorsView.frame(width: 500, height: height),
