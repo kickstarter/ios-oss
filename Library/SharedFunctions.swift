@@ -759,7 +759,7 @@ public func estimatedShippingConversionText(
 
 public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700])
+    .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700.uiColor()])
   let currencyCode = project.statsCurrency
 
   return Format.attributedCurrency(
