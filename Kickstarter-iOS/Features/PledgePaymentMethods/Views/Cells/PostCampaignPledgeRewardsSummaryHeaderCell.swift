@@ -108,14 +108,14 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
   private let applySubtitleLabelStyle: LabelStyle = { label in
     label
       |> \.font .~ UIFont.ksr_caption1()
-      |> \.textColor .~ UIColor.ksr_support_400
+      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> \.numberOfLines .~ 0
   }
 
   private let applyTitleLabelStyle: LabelStyle = { label in
     label
       |> \.font .~ UIFont.ksr_headline().bolded
-      |> \.textColor .~ .ksr_support_700
+      |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> \.numberOfLines .~ 0
       |> \.text .~ Strings.Your_pledge()
   }
@@ -147,7 +147,7 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
   }
 
   private func applySeparatorViewStyle(_ view: UIView) {
-    view.backgroundColor = .ksr_support_200
+    view.backgroundColor = LegacyColors.ksr_support_200.uiColor()
     view.translatesAutoresizingMaskIntoConstraints = false
   }
 }

@@ -60,8 +60,8 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.layer.borderWidth .~ 2.0
-    |> \.backgroundColor .~ UIColor.ksr_support_100
-    |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
+    |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
     |> \.layoutMargins %~~ { _, _ in
       .init(topBottom: Styles.grid(3), leftRight: 0)
     }

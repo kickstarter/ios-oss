@@ -5,9 +5,10 @@ import UIKit
 public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
 
-public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
+public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
+  .uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
-    UIColor.ksr_support_400.withAlphaComponent(0.5)
+    LegacyColors.ksr_support_400.uiColor(opacity: 0.5)
   }
 
   <> UIButton.lens.titleLabel.font %~~ { _, label in
@@ -27,7 +28,7 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
-  <> UIButton.lens.tintColor .~ .ksr_support_300
+  <> UIButton.lens.tintColor .~ LegacyColors.ksr_support_300.uiColor()
   <> UIButton.lens.accessibilityLabel %~ { _ in
     Strings.Password_visibility()
   }
@@ -47,24 +48,24 @@ public let fbLoginButtonStyle = facebookButtonStyle
     Strings.login_tout_buttons_log_in_with_facebook()
   }
 
-public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
+public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens
   .text %~ { _ in Strings.By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account() }
 
-public let fbConfirmEmailLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
+public let fbConfirmEmailLabelStyle = UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
   <> UILabel.lens.font .~ .ksr_headline()
   <> UILabel.lens.textAlignment .~ .left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
 public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
-  <> UILabel.lens.textColor .~ .ksr_support_400
+  <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
   <> UILabel.lens.text %~ { _ in Strings.facebook_confirmation_wrong_account_title() }
 
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
-    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_700
+    <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
+    <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_support_700.uiColor()
     <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
@@ -73,7 +74,7 @@ public let loginWithEmailButtonStyle = greyButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in()
   }
 
-public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
+public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ LegacyColors.ksr_create_700.uiColor()
 
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
@@ -114,9 +115,10 @@ public let signupButtonStyle: ButtonStyle = { button in
     }
 }
 
-public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
+public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
+  .uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
-    UIColor.ksr_support_400.withAlphaComponent(0.5)
+    LegacyColors.ksr_support_400.uiColor(opacity: 0.5)
   }
 
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
@@ -136,7 +138,7 @@ public let signupWithEmailButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
-  <> UILabel.lens.textColor .~ .ksr_support_400
+  <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
   <> UILabel.lens.lineBreakMode .~ .byWordWrapping
   <> UILabel.lens.numberOfLines .~ 0
   <> UILabel.lens.text %~ { _ in
@@ -158,7 +160,7 @@ public func disclaimerAttributedString(
 
   let attributes: String.Attributes = [
     .font: useLargerText ? UIFont.ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0),
-    .foregroundColor: UIColor.ksr_support_400,
+    .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
     .underlineStyle: 0
   ]
 

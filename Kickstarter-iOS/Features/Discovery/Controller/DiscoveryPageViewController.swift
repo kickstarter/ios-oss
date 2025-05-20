@@ -509,7 +509,7 @@ private extension UIView {
 
 private let headerLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.textColor .~ LegacyColors.ksr_trust_700.uiColor()
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0

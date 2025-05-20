@@ -45,7 +45,7 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_body()
       |> \.numberOfLines .~ 0
-      |> \.textColor .~ .ksr_support_700
+      |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> \.text .~ titleTextLabelText
   }
 

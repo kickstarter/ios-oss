@@ -23,11 +23,11 @@ internal final class ProjectBannerCell: UITableViewCell, ValueCell {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.projectNameLabel
-      |> UILabel.lens.textColor .~ .ksr_white
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font .~ .ksr_title1(size: 16)
 
     _ = self.creatorNameLabel
-      |> UILabel.lens.textColor .~ .ksr_white
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
   }
 }

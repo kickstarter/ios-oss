@@ -45,7 +45,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_callout()
-      |> UILabel.lens.textColor .~ .ksr_create_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
       |> UILabel.lens.text .~ Strings.View_more_replies()
   }
 

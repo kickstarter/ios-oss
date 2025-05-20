@@ -23,7 +23,7 @@ final class String_AttributedTests: TestCase {
 
     let font = UIFont.ksr_body()
     let boldedFont = UIFont.ksr_body().bolded
-    let foregroundColor = UIColor.ksr_support_700
+    let foregroundColor = LegacyColors.ksr_support_700.uiColor()
 
     let attributed = string.attributed(
       with: font,

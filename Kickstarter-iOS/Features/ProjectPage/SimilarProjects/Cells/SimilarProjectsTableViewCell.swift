@@ -145,7 +145,7 @@ final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
 
 private func applyBaseCellStyle(_ cell: UITableViewCell) {
   cell.contentView.preservesSuperviewLayoutMargins = false
-  cell.backgroundColor = .ksr_white
+  cell.backgroundColor = LegacyColors.ksr_white.uiColor()
   cell.preservesSuperviewLayoutMargins = false
   cell.selectionStyle = .none
 }
@@ -164,8 +164,8 @@ private func applyCollectionViewLayoutStyle(_ layout: UICollectionViewFlowLayout
 
 private func applyPageControlStyle(_ pageControl: UIPageControl) {
   pageControl.currentPage = 0
-  pageControl.currentPageIndicatorTintColor = .ksr_support_700
-  pageControl.pageIndicatorTintColor = .ksr_support_300
+  pageControl.currentPageIndicatorTintColor = LegacyColors.ksr_support_700.uiColor()
+  pageControl.pageIndicatorTintColor = LegacyColors.ksr_support_300.uiColor()
   pageControl.hidesForSinglePage = true
   pageControl.isUserInteractionEnabled = false
   pageControl.translatesAutoresizingMaskIntoConstraints = false

@@ -76,13 +76,13 @@ final class PledgeStatusLabelView: UIView {
 
 private let containerViewStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ .ksr_support_200
+    |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
     |> \.layoutMargins .~ .init(all: Styles.grid(2))
     |> roundedStyle()
 }
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
-  stackView.backgroundColor = .ksr_support_200
+  stackView.backgroundColor = LegacyColors.ksr_support_200.uiColor()
   stackView.isLayoutMarginsRelativeArrangement = true
   stackView.layoutMargins = .init(all: Styles.grid(2))
   stackView.rounded()
@@ -93,7 +93,7 @@ private func applyRootStackViewStyle(_ stackView: UIStackView) {
 
 private func applyTextViewStyle(_ textView: UITextView) {
   textView.accessibilityTraits = [.staticText]
-  textView.backgroundColor = .ksr_support_200
+  textView.backgroundColor = LegacyColors.ksr_support_200.uiColor()
   textView.isScrollEnabled = false
   textView.isEditable = false
   textView.isUserInteractionEnabled = true
@@ -101,6 +101,6 @@ private func applyTextViewStyle(_ textView: UITextView) {
   textView.textContainerInset = .zero
   textView.textContainer.lineFragmentPadding = 0
   textView.linkTextAttributes = [
-    .foregroundColor: UIColor.ksr_create_700
+    .foregroundColor: LegacyColors.ksr_create_700.uiColor()
   ]
 }

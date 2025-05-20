@@ -44,7 +44,7 @@ internal final class MessageBannerViewModelTests: TestCase {
     self.bannerBackgroundColor.assertValue(MessageBannerType.error.backgroundColor)
     self.bannerMessage.assertValue(Strings.general_error_oops())
     self.iconIsHidden.assertValue(false)
-    self.iconTintColor.assertValue(UIColor.ksr_white)
+    self.iconTintColor.assertValue(LegacyColors.ksr_white.uiColor())
     self.messageTextAlignment.assertValue(.left)
     self.messageTextColor.assertValue(MessageBannerType.error.textColor)
   }

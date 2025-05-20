@@ -64,6 +64,6 @@ private func rootStackViewStyle(_ stackView: UIStackView) {
 
 private func labelStyle(_ label: UILabel) {
   label.numberOfLines = 1
-  label.textColor = UIColor.ksr_support_700
+  label.textColor = LegacyColors.ksr_support_700.uiColor()
   label.font = UIFont.ksr_title2().bolded
 }

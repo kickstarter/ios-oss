@@ -75,15 +75,15 @@ private enum Constants {
   static let label = (
     font: UIFont.ksr_subhead(),
     color: (
-      selected: UIColor.ksr_black,
-      deselected: UIColor.ksr_support_500
+      selected: LegacyColors.ksr_black.uiColor(),
+      deselected: LegacyColors.ksr_support_500.uiColor()
     ),
     truncation: Text.TruncationMode.tail
   )
 
   static let bottomBorder = (
-    selected: UIColor.ksr_black,
-    deselected: UIColor.ksr_support_300,
+    selected: LegacyColors.ksr_black.uiColor(),
+    deselected: LegacyColors.ksr_support_300.uiColor(),
     height: CGFloat(1)
   )
 

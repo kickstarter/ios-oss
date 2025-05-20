@@ -179,7 +179,7 @@ private func attributedHeaderCurrency(
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_400])
+    .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_400.uiColor()])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
@@ -211,7 +211,7 @@ private func attributedRewardCurrency(
   return NSAttributedString(
     string: currencyString,
     attributes: [
-      .foregroundColor: UIColor.ksr_support_400,
+      .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
       .font: UIFont.ksr_subhead().bolded
     ]
   )

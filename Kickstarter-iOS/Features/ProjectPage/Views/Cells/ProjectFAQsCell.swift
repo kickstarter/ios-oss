@@ -196,7 +196,7 @@ private let answerLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let answerStackViewStyle: StackViewStyle = { stackView in
@@ -209,7 +209,7 @@ private let answerStackViewStyle: StackViewStyle = { stackView in
 
 private let chevronDownImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_chevron_down")
     |> \.layer.cornerRadius .~ ProjectFAQsCellStyles.Layout.cornerRadius
@@ -217,7 +217,7 @@ private let chevronDownImageViewStyle: ImageViewStyle = { imageView in
 
 private let chevronUpImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_chevron_up")
     |> \.layer.cornerRadius .~ ProjectFAQsCellStyles.Layout.cornerRadius
@@ -234,7 +234,7 @@ private let questionLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_body().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
 }
 
 private let questionStackViewStyle: StackViewStyle = { stackView in
@@ -258,12 +258,12 @@ private let updatedLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_caption2().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_500
+    |> \.textColor .~ LegacyColors.ksr_support_500.uiColor()
 }
 
 private let updatedLabelContainerViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
     |> roundedStyle(cornerRadius: ProjectFAQsCellStyles.Layout.cornerRadius)
 }
 

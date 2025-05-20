@@ -15,15 +15,15 @@ public enum DiscoveryProjectTagPillCellType: Equatable {
 
   public var backgroundColor: UIColor {
     switch self {
-    case .green: return UIColor.ksr_create_700.withAlphaComponent(0.07)
-    case .grey: return .ksr_support_300
+    case .green: return LegacyColors.ksr_create_700.uiColor(opacity: 0.07)
+    case .grey: return LegacyColors.ksr_support_300.uiColor()
     }
   }
 
   public var textColor: UIColor {
     switch self {
-    case .green: return .ksr_create_700
-    case .grey: return .ksr_support_400
+    case .green: return LegacyColors.ksr_create_700.uiColor()
+    case .grey: return LegacyColors.ksr_support_400.uiColor()
     }
   }
 }

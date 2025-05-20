@@ -58,7 +58,7 @@ final class CommentTableViewFooterView: UIView {
 
   private func configureViews() {
     _ = self
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
@@ -115,8 +115,8 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")?
     .withRenderingMode(.alwaysTemplate)
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_celebrate_700.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_celebrate_700.uiColor()
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentVerticalAlignment .~ .top
     |> UIButton.lens.contentHorizontalAlignment .~ .left

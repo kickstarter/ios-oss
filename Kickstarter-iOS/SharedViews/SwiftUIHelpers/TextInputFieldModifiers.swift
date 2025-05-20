@@ -39,7 +39,7 @@ struct TextInputFieldModifier: ViewModifier {
 extension View {
   func currentEmail(
     keyboardType: UIKeyboardType = .default,
-    textColor: Color = Color(.ksr_support_700),
+    textColor: Color = LegacyColors.ksr_support_700.swiftUIColor(),
     submitLabel: SubmitLabel = .return,
     editable: Bool = false,
     titleText: String = Strings.Current_email(),
@@ -59,7 +59,7 @@ extension View {
 
   func newEmail(
     keyboardType: UIKeyboardType = .emailAddress,
-    textColor: Color = Color(.ksr_support_400),
+    textColor: Color = LegacyColors.ksr_support_400.swiftUIColor(),
     submitLabel: SubmitLabel = .next,
     editable: Bool = true,
     titleText: String = Strings.New_email(),
@@ -79,7 +79,7 @@ extension View {
 
   func currentPassword(
     keyboardType: UIKeyboardType = .default,
-    textColor: Color = Color(.ksr_support_400),
+    textColor: Color = LegacyColors.ksr_support_400.swiftUIColor(),
     submitLabel: SubmitLabel = .done,
     editable: Bool = true,
     titleText: String = Strings.Current_password(),

@@ -81,7 +81,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
       |> UITextField.lens.returnKeyType .~ .go
       |> roundedStyle(cornerRadius: Styles.grid(2))
       |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
-      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+      |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
       |> \.layer.borderWidth .~ 1
       |> \.accessibilityLabel .~ self.emailLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
@@ -132,7 +132,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   private func configureViews() {
     _ = self.view
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
@@ -235,8 +235,8 @@ private let textFieldLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ NSTextAlignment.left
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.backgroundColor .~ .ksr_white
-    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
+    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font %~ { _ in .ksr_callout(size: 13) }
 }
 
@@ -244,11 +244,11 @@ private let textFieldStyle: TextFieldStyle = { textField in
   textField
     |> settingsNewPasswordFormFieldAutoFillStyle
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> UITextField.lens.textColor .~ .ksr_black
+    |> UITextField.lens.textColor .~ LegacyColors.ksr_black.uiColor()
     |> UITextField.lens.font %~ { _ in UIFont.ksr_body(size: 13) }
     |> \.textAlignment .~ .left
     |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
-    |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
     |> \.layer.borderWidth .~ 1
     |> \.returnKeyType .~ .done
 }
@@ -257,7 +257,8 @@ private let savePasswordButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_support_300.mixLighter(0.12)
+    |> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.ksr_support_300.uiColor()
+    .mixLighter(0.12)
     |> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.Save()
     }

@@ -36,7 +36,7 @@ final class CommentInputTextView: UITextView {
 
     _ = self
       |> inputTextViewStyle
-      |> \.tintColor .~ UIColor.ksr_create_700
+      |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
     self.tintColorDidChange()
   }
 }
@@ -47,6 +47,6 @@ private let inputTextViewStyle: TextViewStyle = { textView in
     |> \.textContainerInset .~ .init(top: 0, left: -4, bottom: 0, right: 0)
     |> \.font .~ UIFont.ksr_body(size: 15)
     |> \.backgroundColor .~ UIColor.clear
-    |> \.textColor .~ UIColor.ksr_black
+    |> \.textColor .~ LegacyColors.ksr_black.uiColor()
     |> \.adjustsFontForContentSizeCategory .~ true
 }

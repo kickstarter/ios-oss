@@ -68,7 +68,7 @@ final class PledgeDisclaimerView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_support_200
+      |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -136,13 +136,13 @@ private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextVie
   textView
     |> tappableLinksViewStyle
     |> \.accessibilityTraits .~ [.staticText]
-    |> \.backgroundColor .~ .ksr_support_200
+    |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
 }
 
 private func iconImageViewStyle(_ isAccessibilityCategory: Bool) -> (ImageViewStyle) {
   return { (imageView: UIImageView) in
     imageView
-      |> \.tintColor .~ .ksr_create_700
+      |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
       |> \.contentMode .~ (isAccessibilityCategory ? .top : .center)
   }
 }

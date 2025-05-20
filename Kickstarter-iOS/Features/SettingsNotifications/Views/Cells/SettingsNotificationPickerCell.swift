@@ -28,7 +28,7 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
 
     _ = self.currentEmailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.separatorView
       |> separatorStyle

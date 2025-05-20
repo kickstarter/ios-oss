@@ -1,8 +1,8 @@
 import UIKit
 
-public let tabBarDeselectedColor = UIColor.ksr_support_400
-public let tabBarSelectedColor = UIColor.ksr_create_700
-public let tabBarTintColor = UIColor.ksr_white
+public let tabBarDeselectedColor = LegacyColors.ksr_support_400.uiColor()
+public let tabBarSelectedColor = LegacyColors.ksr_create_700.uiColor()
+public let tabBarTintColor = LegacyColors.ksr_white.uiColor()
 public let tabBarAvatarSize = CGSize(width: 25, height: 25)
 
 public typealias TabBarItemStyle = (UITabBarItem) -> UITabBarItem

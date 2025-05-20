@@ -87,7 +87,7 @@ private func applyDetailsStackViewStyle(_ stackview: UIStackView) {
 
 private func applyChargeNumberLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_footnote().bolded
-  label.textColor = .ksr_black
+  label.textColor = LegacyColors.ksr_black.uiColor()
   label.textAlignment = .left
   label.adjustsFontForContentSizeCategory = true
   label.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -95,7 +95,7 @@ private func applyChargeNumberLabelStyle(_ label: UILabel) {
 
 private func applyDateLabelStyle(_ label: UILabel) {
   label.font = UIFont.ksr_footnote()
-  label.textColor = .ksr_support_400
+  label.textColor = LegacyColors.ksr_support_400.uiColor()
   label.textAlignment = .left
   label.adjustsFontForContentSizeCategory = true
 }
