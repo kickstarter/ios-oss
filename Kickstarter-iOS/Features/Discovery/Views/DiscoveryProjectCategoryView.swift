@@ -22,6 +22,12 @@ import UIKit
   override func bindStyles() {
     super.bindStyles()
 
+    // There used to be a blur view behind the category icons -
+    // but now it's white-on-white, so no longer visible.
+    // Setting this constraint maintains the same height as the old image,
+    // but without having side effects in dark mode.
+    self.blurView.heightAnchor.constraint(equalToConstant: 28.0).isActive = true
+
     _ = self.categoryViewLabel
       |> postcardCategoryLabelStyle
 

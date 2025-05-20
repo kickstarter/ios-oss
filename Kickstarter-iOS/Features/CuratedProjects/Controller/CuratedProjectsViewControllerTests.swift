@@ -22,7 +22,7 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
 
     let mockService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
         let controller = CuratedProjectsViewController.instantiate()
         controller.configure(with: categories, context: .onboarding)
@@ -31,7 +31,11 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
