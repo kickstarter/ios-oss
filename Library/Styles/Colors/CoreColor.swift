@@ -1,5 +1,6 @@
 import UIKit
 
+/// Represents a color in our design system Core Colors palette.
 public enum CoreColor: Int {
   case white = 0xFFFFFF
   case black = 0x000000
