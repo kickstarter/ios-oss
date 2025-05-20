@@ -918,10 +918,6 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(ksr_pledgeAmount(700.50, subtractingShippingAmount: 100), 600.50)
   }
 
-  func testDiscoveryPageBackgroundColor() {
-    XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
-  }
-
   func testSelectedRewardQuantities_NoAddOns() {
     let reward = Reward.template
       |> Reward.lens.id .~ 99
