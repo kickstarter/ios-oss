@@ -219,38 +219,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func showCategories(_ sheet: SearchFilterOptions) {
-    if featureSearchFilterByProjectStatusEnabled() {
-      self.showFilters(sheet, filterType: .category)
-      return
-    }
-
-    let viewModel = FilterCategoryViewModel_PhaseOne<KsApi.Category>(
-      with: sheet.category.categories,
-      selectedCategory: self.viewModel.outputs.selectedFilters.category.category
-    )
-
-    let filterView = FilterCategoryView_PhaseOne(
-      viewModel: viewModel,
-      onSelectedCategory: { [weak self] category in
-
-        guard let category = category else {
-          self?.viewModel.inputs.selectedCategory(.none)
-          return
-        }
-
-        self?.viewModel.inputs.selectedCategory(.rootCategory(category))
-
-      },
-      onResults: { [weak self] in
-        self?.dismiss(animated: true)
-      },
-      onClose: { [weak self] in
-        self?.dismiss(animated: true)
-      }
-    )
-
-    let hostingController = UIHostingController(rootView: filterView)
-    self.present(hostingController, animated: true)
+    self.showFilters(sheet, filterType: .category)
   }
 
   fileprivate func showAllFilters(_ opts: SearchFilterOptions) {
@@ -258,14 +227,6 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func showFilters(_ options: SearchFilterOptions, filterType: SearchFilterModalType) {
-    if !featureSearchFilterByProjectStatusEnabled() {
-      assert(
-        false,
-        "It should not be possible to call showFilters without enabling featureSearchFilterByProjectStatus"
-      )
-      return
-    }
-
     var filterView = FilterRootView(
       filterOptions: options,
       filterType: filterType,
