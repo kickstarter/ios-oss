@@ -239,17 +239,19 @@ private func amountStringForReward(
   let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
   let foregroundColor: UIColor = LegacyColors.ksr_create_700.uiColor()
 
+  let projectCurrency = project.stats.currency
+
   let min = minPledgeAmount(forProject: project, reward: reward)
   let amountString = Format.currency(
     min,
-    currencyCode: project.stats.currency,
+    currencyCode: projectCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 
   if let shippingRule = shippingRule, shippingRule.cost > 0 {
     let shippingAmount = Format.currency(
       shippingRule.cost,
-      currencyCode: project.stats.currency,
+      currencyCode: projectCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
 

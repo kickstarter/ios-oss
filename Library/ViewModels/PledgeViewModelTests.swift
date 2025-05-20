@@ -27,8 +27,8 @@ final class PledgeViewModelTests: TestCase {
   private let configurePledgeRewardsSummaryViewRewards = TestObserver<[Reward], Never>()
   private let configurePledgeRewardsSummaryViewSelectedQuantities
     = TestObserver<SelectedRewardQuantities, Never>()
-  private let configurePledgeRewardsSummaryViewProjectCurrencyCountry = TestObserver<
-    Project.Country,
+  private let configurePledgeRewardsSummaryViewProjectCurrency = TestObserver<
+    String,
     Never
   >()
   private let configurePledgeRewardsSummaryViewOmitCurrencyCode = TestObserver<Bool, Never>()
@@ -92,8 +92,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePledgeRewardsSummaryViewRewards.observer)
     self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.selectedQuantities)
       .observe(self.configurePledgeRewardsSummaryViewSelectedQuantities.observer)
-    self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.projectCountry)
-      .observe(self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.observer)
+    self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.currencyCode)
+      .observe(self.configurePledgeRewardsSummaryViewProjectCurrency.observer)
     self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.omitCurrencyCode)
       .observe(self.configurePledgeRewardsSummaryViewOmitCurrencyCode.observer)
     self.vm.outputs.configurePledgeRewardsSummaryViewWithData.map(\.0.shipping)
@@ -197,7 +197,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Back this project"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -242,7 +242,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Back this project"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -287,7 +287,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Update pledge"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -349,7 +349,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Change payment method"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -419,7 +419,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -480,7 +480,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Change payment method"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -528,7 +528,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Change payment method"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
-      self.configurePledgeRewardsSummaryViewProjectCurrencyCountry.assertValues([.us])
+      self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
       self.configurePledgeRewardsSummaryViewOmitCurrencyCode.assertLastValue(true)
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -551,7 +551,7 @@ final class PledgeViewModelTests: TestCase {
       let expectedShipping = PledgeShippingSummaryViewData(
         locationName: backing.locationName!,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-        projectCountry: project.country,
+        currencyCode: project.stats.currency,
         total: backing.shippingAmount!
       )
       self.configurePledgeRewardsSummaryViewShipping.assertLastValue(expectedShipping)

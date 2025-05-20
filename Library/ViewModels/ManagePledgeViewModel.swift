@@ -594,8 +594,6 @@ private func managePledgeSummaryViewData(
 
   let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
 
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
     backerName: backer.name,
