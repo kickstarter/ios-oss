@@ -169,7 +169,7 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
   guard
     let attributedCurrency = Format.attributedCurrency(
       shippingRuleCost,
-      currencyCode: project.stats.currency,
+      currencyCode: project.statsCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes

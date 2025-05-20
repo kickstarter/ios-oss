@@ -220,7 +220,7 @@ public func formattedAmountForRewardOrBacking(
   project: Project,
   rewardOrBacking: Either<Reward, Backing>
 ) -> String {
-  let projectCurrency = project.stats.currency
+  let projectCurrency = project.statsCurrency
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)
@@ -693,7 +693,7 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let projectCurrency = project.country.currencyCode
+  let projectCurrency = project.stats.currency
 
   let formattedMin = Format.currency(
     estimatedMin,

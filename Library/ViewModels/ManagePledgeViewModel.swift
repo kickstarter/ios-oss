@@ -607,7 +607,7 @@ private func managePledgeSummaryViewData(
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,
-    currencyCode: project.stats.currency,
+    currencyCode: project.statsCurrency,
     projectDeadline: deadline,
     projectState: project.state,
     rewardMinimum: backing.rewardsAmount ?? allRewardsTotal(for: backing),

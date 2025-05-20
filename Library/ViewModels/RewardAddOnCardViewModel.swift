@@ -239,7 +239,7 @@ private func amountStringForReward(
   let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
   let foregroundColor: UIColor = LegacyColors.ksr_create_700.uiColor()
 
-  let projectCurrency = project.stats.currency
+  let projectCurrency = project.statsCurrency
 
   let min = minPledgeAmount(forProject: project, reward: reward)
   let amountString = Format.currency(

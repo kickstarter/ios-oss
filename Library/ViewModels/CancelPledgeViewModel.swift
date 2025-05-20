@@ -54,7 +54,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
 
       let formattedAmount = Format.currency(
         data.pledgeAmount,
-        currencyCode: data.project.stats.currency,
+        currencyCode: data.project.statsCurrency,
         omitCurrencyCode: data.omitUSCurrencyCode
       )
       return (formattedAmount, data.projectName)

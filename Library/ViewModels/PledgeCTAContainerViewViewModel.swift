@@ -264,7 +264,7 @@ private func formattedPledge(amount: Double, project: Project) -> String {
 
   return Format.formattedCurrency(
     formattedAmount,
-    currencyCode: project.stats.currency,
+    currencyCode: project.statsCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 }

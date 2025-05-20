@@ -325,7 +325,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       let rewardsData = PostCampaignRewardsSummaryViewData(
         rewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
-        currencyCode: data.project.stats.currency,
+        currencyCode: data.project.statsCurrency,
         omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
         shipping: shipping,
         useLatePledgeCosts: isLatePledge
@@ -1153,7 +1153,7 @@ private func pledgeAmountSummaryViewData(
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    currencyCode: project.stats.currency,
+    currencyCode: project.statsCurrency,
     pledgedOn: backing.pledgedAt,
     rewardMinimum: allRewardsTotal,
     shippingAmount: backing.shippingAmount.flatMap(Double.init),

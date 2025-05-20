@@ -551,7 +551,7 @@ final class PledgeViewModelTests: TestCase {
       let expectedShipping = PledgeShippingSummaryViewData(
         locationName: backing.locationName!,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-        currencyCode: project.stats.currency,
+        currencyCode: project.statsCurrency,
         total: backing.shippingAmount!
       )
       self.configurePledgeRewardsSummaryViewShipping.assertLastValue(expectedShipping)
