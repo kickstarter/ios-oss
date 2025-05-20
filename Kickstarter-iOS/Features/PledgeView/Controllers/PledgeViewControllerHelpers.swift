@@ -14,7 +14,7 @@ struct PledgeViewControllerHelpers {
     let attributedLine1String = Strings.Kickstarter_is_not_a_store()
       .attributed(
         with: UIFont.ksr_footnote(),
-        foregroundColor: .ksr_support_400,
+        foregroundColor: LegacyColors.ksr_support_400.uiColor(),
         attributes: [.paragraphStyle: paragraphStyle],
         bolding: [Strings.Kickstarter_is_not_a_store()]
       )
@@ -34,7 +34,7 @@ struct PledgeViewControllerHelpers {
 
     let attributes: String.Attributes = [
       .font: UIFont.ksr_footnote(),
-      .foregroundColor: UIColor.ksr_support_400,
+      .foregroundColor: LegacyColors.ksr_support_400.uiColor(),
       .paragraphStyle: paragraphStyle,
       .underlineStyle: 0
     ]

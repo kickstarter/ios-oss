@@ -21,7 +21,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomBorder: UIView = {
     UIView(frame: .zero)
-      |> \.backgroundColor .~ UIColor.ksr_support_200
+      |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 

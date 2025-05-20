@@ -36,7 +36,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }()
 
   private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_support_400)
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: LegacyColors.ksr_support_400.uiColor())
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
@@ -145,7 +145,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> checkoutBackgroundStyle
 
     _ = self.headerView
-      |> \.backgroundColor .~ .ksr_alert
+      |> \.backgroundColor .~ LegacyColors.ksr_alert.uiColor()
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.collectionView

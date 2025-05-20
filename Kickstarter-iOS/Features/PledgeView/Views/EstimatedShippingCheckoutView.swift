@@ -31,7 +31,7 @@ struct EstimatedShippingCheckoutView: View {
           .bold()
         Text(Strings.This_is_meant_to_give_you())
           .font(Constants.subHeaderFont)
-          .foregroundStyle(Color(UIColor.ksr_support_400))
+          .foregroundStyle(Color(LegacyColors.ksr_support_400.uiColor()))
       }
 
       VStack(alignment: .trailing, spacing: Constants.defaultSpacing) {
@@ -40,7 +40,7 @@ struct EstimatedShippingCheckoutView: View {
           .bold()
         Text(self.aboutConversion)
           .font(Constants.conversionSubHeaderFont)
-          .foregroundStyle(Color(UIColor.ksr_support_400))
+          .foregroundStyle(Color(LegacyColors.ksr_support_400.uiColor()))
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

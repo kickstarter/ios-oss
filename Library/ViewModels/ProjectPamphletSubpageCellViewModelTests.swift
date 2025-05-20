@@ -7,7 +7,7 @@ import ReactiveSwift
 import XCTest
 
 internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
-  private let vm: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
+  private var vm: ProjectPamphletSubpageCellViewModelType!
 
   private let countLabelBackgroundColor = TestObserver<UIColor, Never>()
   private let countLabelBorderColor = TestObserver<UIColor, Never>()
@@ -20,6 +20,8 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = ProjectPamphletSubpageCellViewModel()
 
     self.vm.outputs.countLabelBackgroundColor.observe(self.countLabelBackgroundColor.observer)
     self.vm.outputs.countLabelBorderColor.observe(self.countLabelBorderColor.observer)
@@ -34,12 +36,12 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testCommentsSubpage() {
     self.vm.inputs.configureWith(subpage: .comments(12, .middle))
 
-    self.countLabelTextColor.assertValue(.ksr_support_700)
+    self.countLabelTextColor.assertValue(LegacyColors.ksr_support_700.uiColor())
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
+    self.countLabelBackgroundColor.assertValue(LegacyColors.ksr_support_100.uiColor())
     self.labelText.assertValues(["Comments"])
-    self.labelTextColor.assertValue(.ksr_support_700)
+    self.labelTextColor.assertValue(LegacyColors.ksr_support_700.uiColor())
 
     self.topSeparatorViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(false)
@@ -48,12 +50,12 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testUpdatesSubpage() {
     self.vm.inputs.configureWith(subpage: .updates(12, .last))
 
-    self.countLabelTextColor.assertValue(.ksr_support_700)
+    self.countLabelTextColor.assertValue(LegacyColors.ksr_support_700.uiColor())
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
+    self.countLabelBackgroundColor.assertValue(LegacyColors.ksr_support_100.uiColor())
     self.labelText.assertValues(["Updates"])
-    self.labelTextColor.assertValue(.ksr_support_700)
+    self.labelTextColor.assertValue(LegacyColors.ksr_support_700.uiColor())
     self.topSeparatorViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(true)
   }

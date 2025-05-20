@@ -184,7 +184,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
     _ = self.bgView
-      |> UIView.lens.backgroundColor .~ .ksr_white
+      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
@@ -192,7 +192,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.exploreLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_body(size: 18)
@@ -213,7 +213,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UIImageView.lens.image .~ image(named: "icon--debug")
 
     _ = self.primaryLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_support_100
+      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 

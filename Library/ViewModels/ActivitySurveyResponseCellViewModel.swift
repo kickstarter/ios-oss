@@ -56,11 +56,11 @@ public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCe
       return text.simpleHtmlAttributedString(
         base: [
           NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14),
-          NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
+          NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor()
         ],
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14),
-          NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
+          NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_700.uiColor()
         ]
       )
         ?? NSAttributedString(string: "")

@@ -124,8 +124,8 @@ private func isProjectPrelaunch(_ project: ProjectCardProperties) -> Bool {
 private func progressBarColorForProject(_ project: ProjectCardProperties) -> UIColor {
   switch project.state {
   case .live, .successful:
-    return .ksr_create_500
+    return LegacyColors.ksr_create_500.uiColor()
   default:
-    return .ksr_support_200
+    return LegacyColors.ksr_support_200.uiColor()
   }
 }

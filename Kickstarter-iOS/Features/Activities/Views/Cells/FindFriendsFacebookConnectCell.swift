@@ -87,15 +87,15 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_support_700
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_support_400
+      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
     _ = self.closeButton
-      |> UIButton.lens.tintColor .~ .ksr_support_700
+      |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
       |> UIButton.lens.targets .~ [(self, action: #selector(self.closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(
         top: Styles.grid(1), left: Styles.grid(3),

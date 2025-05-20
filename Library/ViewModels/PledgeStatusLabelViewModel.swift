@@ -77,7 +77,7 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
   paragraphStyle.alignment = .center
 
   let font = UIFont.ksr_subhead()
-  let foregroundColor = UIColor.ksr_support_700
+  let foregroundColor = LegacyColors.ksr_support_700.uiColor()
   let underlineStyle = false
 
   let attributes: [NSAttributedString.Key: Any] = [
@@ -161,7 +161,7 @@ private func attributedConfirmationString(with data: PledgeStatusLabelViewData) 
   let isCreator = data.currentUserIsCreatorOfProject
 
   let font = UIFont.ksr_subhead()
-  let foregroundColor = UIColor.ksr_support_700
+  let foregroundColor = LegacyColors.ksr_support_700.uiColor()
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center
@@ -216,7 +216,7 @@ private func attributedPledgeOverTimeConfirmationString(with data: PledgeStatusL
   let paymentAmount = firstPaymentIncrement.amount.amountFormattedInProjectNativeCurrency
 
   let font = UIFont.ksr_subhead()
-  let foregroundColor = UIColor.ksr_support_700
+  let foregroundColor = LegacyColors.ksr_support_700.uiColor()
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center

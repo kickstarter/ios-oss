@@ -132,7 +132,7 @@ private let amountLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.adjustsFontSizeToFitWidth .~ true
     |> \.isAccessibilityElement .~ true
     |> \.minimumScaleFactor .~ 0.75
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
   return label
 }
@@ -140,7 +140,7 @@ private let amountLabelStyle: LabelStyle = { (label: UILabel) in
 private let titleAndTotalStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.layoutMargins .~ UIEdgeInsets(leftRight: Styles.gridHalf(4))
 }
 
@@ -148,7 +148,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> verticalStackViewStyle
     |> \.spacing .~ Styles.grid(3)
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
@@ -158,7 +158,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   _ = label
     |> checkoutTitleLabelStyle
     |> \.font .~ .ksr_subhead().bolded
-    |> \.backgroundColor .~ .ksr_white
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
   return label
 }
@@ -166,8 +166,8 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 private let totalConversionLabelStyle: LabelStyle = { label in
   _ = label
     |> \.font .~ .ksr_caption1()
-    |> \.textColor .~ .ksr_support_400
-    |> \.backgroundColor .~ .ksr_white
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
   return label
 }
@@ -176,7 +176,7 @@ private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewSt
   return { stackView in
     stackView
       |> verticalStackViewStyle
-      |> \.backgroundColor .~ .ksr_white
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> \.spacing .~ Styles.grid(1)
       |> \.alignment .~
       (isAccessibilityCategory ? UIStackView.Alignment.leading : UIStackView.Alignment.trailing)
@@ -185,5 +185,5 @@ private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewSt
 
 private func applyConfirmationLabelStyle(_ label: UILabel) {
   label.numberOfLines = 0
-  label.backgroundColor = UIColor.ksr_white
+  label.backgroundColor = LegacyColors.ksr_white.uiColor()
 }

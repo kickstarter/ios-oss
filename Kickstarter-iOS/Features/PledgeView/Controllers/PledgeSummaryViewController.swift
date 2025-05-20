@@ -163,7 +163,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 private let totalConversionLabelStyle: LabelStyle = { label in
   _ = label
     |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_support_400
+    |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
   _ = label |> checkoutBackgroundStyle
 

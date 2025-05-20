@@ -69,12 +69,12 @@ private let contentViewStyle: ViewStyle = { view in
   view
     |> checkoutRoundedCornersStyle
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
+    |> \.backgroundColor .~ LegacyColors.ksr_create_700.uiColor(opacity: 0.06)
 }
 
 private let labelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_create_700
+    |> \.textColor .~ LegacyColors.ksr_create_700.uiColor()
 }

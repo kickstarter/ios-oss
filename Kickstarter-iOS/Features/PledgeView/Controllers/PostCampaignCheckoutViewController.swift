@@ -175,7 +175,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
     self.titleLabel.text = Strings.Checkout()
     self.titleLabel.numberOfLines = 1
-    self.titleLabel.textColor = UIColor.ksr_support_700
+    self.titleLabel.textColor = LegacyColors.ksr_support_700.uiColor()
     self.titleLabel.font = UIFont.ksr_title2().bolded
     self.titleLabel.layoutMargins = UIEdgeInsets(
       topBottom: Layout.Margin.topBottom,

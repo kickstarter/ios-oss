@@ -17,7 +17,7 @@ public enum PledgeViewStyles {
   }
 
   public static func pledgeAmountStackViewStyle(_ stackView: UIStackView) {
-    stackView.backgroundColor = .ksr_white
+    stackView.backgroundColor = LegacyColors.ksr_white.uiColor()
     stackView.layoutMargins = UIEdgeInsets(leftRight: Styles.gridHalf(4))
   }
 

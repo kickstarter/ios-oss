@@ -18,7 +18,10 @@ extension PledgePaymentIncrementState {
     case .collected:
       return .success
     case .unattempted, .cancelled:
-      return .custom(foregroundColor: .ksr_support_400, backgroundColor: .ksr_support_200)
+      return .custom(
+        foregroundColor: LegacyColors.ksr_support_400.uiColor(),
+        backgroundColor: LegacyColors.ksr_support_200.uiColor()
+      )
     case .errored:
       return .error
     }

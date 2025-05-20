@@ -24,19 +24,19 @@ final class AlertBanner: UIView {
   }
 
   private func configureViews() {
-    self.backgroundColor = UIColor.ksr_alert_background
+    self.backgroundColor = Colors.Background.Danger.subtle.uiColor()
     self.layer.cornerRadius = Styles.cornerRadius
     self.layer.masksToBounds = true
     self.translatesAutoresizingMaskIntoConstraints = false
 
     let leadingEdgeBar = UIView()
-    leadingEdgeBar.backgroundColor = UIColor.ksr_alert_foreground
+    leadingEdgeBar.backgroundColor = Colors.Text.Accent.Red.bolder.uiColor()
     leadingEdgeBar.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(leadingEdgeBar)
 
     let icon = UIImageView()
     icon.image = Library.image(named: "icon--alert")
-    icon.tintColor = UIColor.ksr_alert_foreground
+    icon.tintColor = Colors.Text.Accent.Red.bolder.uiColor()
     icon.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(icon)
 
@@ -48,14 +48,14 @@ final class AlertBanner: UIView {
     self.subtitle.font = UIFont.ksr_body(size: 15)
 
     // Bordered button; can be moved to a shared class once the new design system is ready for it.
-    self.button.setBackgroundColor(.ksr_support_300, for: .highlighted)
-    self.button.layer.borderColor = UIColor.ksr_support_300.cgColor
+    self.button.setBackgroundColor(LegacyColors.ksr_support_300.uiColor(), for: .highlighted)
+    self.button.layer.borderColor = LegacyColors.ksr_support_300.uiColor().cgColor
     self.button.layer.borderWidth = 1
     self.button.layer.cornerRadius = Styles.cornerRadius
     self.button.configurationUpdateHandler = { button in
       switch button.state {
       case .highlighted, .selected:
-        button.configuration?.background.backgroundColor = .ksr_support_300
+        button.configuration?.background.backgroundColor = LegacyColors.ksr_support_300.uiColor()
       default:
         button.configuration?.background.backgroundColor = .clear
       }
@@ -110,7 +110,7 @@ final class AlertBanner: UIView {
       buttonTitle,
       attributes: AttributeContainer([
         NSAttributedString.Key.font: UIFont.ksr_body(size: 16).weighted(.medium),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_black
+        NSAttributedString.Key.foregroundColor: LegacyColors.ksr_black.uiColor()
       ])
     )
     self.button.configuration?.attributedTitle = attributedButtonTitle

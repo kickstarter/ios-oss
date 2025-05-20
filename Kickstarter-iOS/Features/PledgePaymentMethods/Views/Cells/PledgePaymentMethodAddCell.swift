@@ -108,19 +108,19 @@ private let addButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.New_payment_method() }
     |> UIButton.lens.isUserInteractionEnabled .~ false
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
-    |> UIButton.lens.tintColor .~ .ksr_create_700
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
+    |> UIButton.lens.tintColor .~ LegacyColors.ksr_create_700.uiColor()
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(3))
 }
 
 private let selectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
 }
 
 private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
   activityIndicator
-    |> \.color .~ UIColor.ksr_support_400
+    |> \.color .~ LegacyColors.ksr_support_400.uiColor()
     |> \.hidesWhenStopped .~ true
 }
 
