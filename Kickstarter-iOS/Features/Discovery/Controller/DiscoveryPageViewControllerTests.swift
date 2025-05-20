@@ -23,7 +23,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> Activity.lens.project .~ self.cosmicSurgeryNoPhoto
       |> Activity.lens.user .~ self.brandoNoAvatar
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [backing]),
@@ -50,7 +50,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: MockService(
           fetchActivitiesResponse: [],
@@ -87,7 +87,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(
@@ -117,7 +117,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let backedProject = self.anomalisaNoPhoto
       |> Project.lens.personalization.backing .~ Backing.template
 
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
       let discoveryResponse = .template
         |> DiscoveryEnvelope.lens.projects .~ [backedProject]
 
@@ -153,7 +153,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
 
-    combos(Language.allLanguages, devices, [("featured", featuredProj)])
+    orthogonalCombos(Language.allLanguages, devices, [("featured", featuredProj)])
       .forEach { language, device, labeledProj in
         let discoveryResponse = .template
           |> DiscoveryEnvelope.lens.projects .~ [labeledProj.1]
@@ -196,7 +196,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
 
-    combos(Language.allLanguages, devices, states)
+    orthogonalCombos(Language.allLanguages, devices, states)
       .forEach { language, device, state in
         let discoveryResponse = .template
           |> DiscoveryEnvelope.lens.projects .~ [projectTemplate |> Project.lens.state .~ state]
@@ -228,7 +228,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Onboarding() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(currentUser: nil, language: language) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
