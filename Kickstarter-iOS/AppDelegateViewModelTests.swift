@@ -38,6 +38,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let unregisterForRemoteNotifications = TestObserver<(), Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
   private let updateConfigInEnvironment = TestObserver<Config, Never>()
+  private let darkModeEnabled = TestObserver<Bool, Never>()
   private var disposables: [any Disposable] = []
 
   private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
@@ -86,6 +87,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
+    self.vm.outputs.darkModeEnabled.observe(self.darkModeEnabled.observer)
   }
 
   func testResetApplicationIconBadgeNumber_registeredForPushNotifications_WillEnterForeground() {
@@ -2350,6 +2352,52 @@ final class AppDelegateViewModelTests: TestCase {
       AppEnvironment.logout()
 
       XCTAssertNil(AppEnvironment.current.currentUserEmail)
+    }
+  }
+
+  func test_darkModeEnabled_startsOff_andIsTurnedOnRemotely() {
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true
+    ]
+
+    let darkModeOff = MockRemoteConfigClient()
+    darkModeOff.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: false
+    ]
+
+    withEnvironment(remoteConfigClient: darkModeOff) {
+      self.darkModeEnabled.assertDidNotEmitValue()
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.darkModeEnabled.assertLastValue(false)
+    }
+
+    withEnvironment(remoteConfigClient: darkModeOn) {
+      self.vm.inputs.didUpdateRemoteConfigClient()
+      self.darkModeEnabled.assertLastValue(true)
+    }
+  }
+
+  func test_darkModeEnabled_startsOn_andIsTurnedOffOnForeground() {
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true
+    ]
+
+    let darkModeOff = MockRemoteConfigClient()
+    darkModeOff.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: false
+    ]
+
+    withEnvironment(remoteConfigClient: darkModeOn) {
+      self.darkModeEnabled.assertDidNotEmitValue()
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.darkModeEnabled.assertLastValue(true)
+    }
+
+    withEnvironment(remoteConfigClient: darkModeOff) {
+      self.vm.inputs.applicationWillEnterForeground()
+      self.darkModeEnabled.assertLastValue(false)
     }
   }
 }

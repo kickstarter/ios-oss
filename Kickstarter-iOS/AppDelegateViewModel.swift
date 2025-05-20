@@ -174,6 +174,8 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, Never> { get }
+
+  var darkModeEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -768,6 +770,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .flatMap { () in
         AppEnvironment.current.appTrackingTransparency.authorizationStatus
       }
+
+    self.darkModeEnabled = Signal.merge(
+      self.applicationWillEnterForegroundProperty.signal,
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.didUpdateRemoteConfigClientProperty.signal.ignoreValues()
+    )
+    .map { _ in featureDarkModeEnabled() }
+    .skipRepeats(==)
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -937,6 +947,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
+  public let darkModeEnabled: Signal<Bool, Never>
 }
 
 /// Handles the deeplink route with both an id and text based name for a deeplink to categories.
