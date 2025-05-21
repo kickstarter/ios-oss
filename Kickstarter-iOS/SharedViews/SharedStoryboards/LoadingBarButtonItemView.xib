@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +24,7 @@
                                 <constraint firstAttribute="width" constant="20" id="jpA-AB-7sp"/>
                             </constraints>
                         </activityIndicatorView>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
+                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="fill" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="dqm-s1-l0D"/>
@@ -34,7 +32,7 @@
                             <state key="normal" title="Button"/>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="z8e-UA-Yn2" firstAttribute="top" secondItem="tcZ-2l-zCg" secondAttribute="top" id="3v5-1w-fdh"/>
                         <constraint firstItem="WeI-gS-cT0" firstAttribute="centerY" secondItem="z8e-UA-Yn2" secondAttribute="centerY" id="5Bh-HB-rLF"/>
@@ -46,18 +44,19 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="tcZ-2l-zCg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="249-wk-kD8"/>
                 <constraint firstItem="tcZ-2l-zCg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PJf-DN-uRd"/>
                 <constraint firstAttribute="bottom" secondItem="tcZ-2l-zCg" secondAttribute="bottom" id="bOo-Q7-BtT"/>
                 <constraint firstAttribute="trailing" secondItem="tcZ-2l-zCg" secondAttribute="trailing" id="nLz-lR-0Ag"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="activityIndicator" destination="WeI-gS-cT0" id="uDM-R8-TKc"/>
                 <outlet property="titleButton" destination="z8e-UA-Yn2" id="uKO-dH-TYH"/>
             </connections>
+            <point key="canvasLocation" x="-26" y="-42"/>
         </view>
     </objects>
 </document>

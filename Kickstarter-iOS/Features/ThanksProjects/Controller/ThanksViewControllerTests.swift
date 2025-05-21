@@ -27,7 +27,7 @@ class ThanksViewControllerTests: TestCase {
       fetchDiscoveryResponse: discoveryEnvelope
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, language: language) {
         let project = Project.cosmicSurgery

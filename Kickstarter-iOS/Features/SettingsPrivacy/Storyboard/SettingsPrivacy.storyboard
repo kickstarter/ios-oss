@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,7 +26,7 @@
                                     <subviews>
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5rd-F5-ydE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="white"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="5mx-ia-iUg"/>
                                             </constraints>
@@ -64,7 +65,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bSy-wv-Mzl">
                                             <rect key="frame" x="0.0" y="70.5" width="375" height="0.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="white"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="QLl-AE-ZRg"/>
                                             </constraints>
@@ -135,7 +136,7 @@
                                     <subviews>
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ghh-wA-aCJ">
                                             <rect key="frame" x="0.0" y="7" width="375" height="32"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="white"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="UWj-Xc-znX"/>
                                             </constraints>
@@ -174,7 +175,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vIw-lj-OpG">
                                             <rect key="frame" x="0.0" y="77.5" width="375" height="0.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="white"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="TAz-fO-0Bs"/>
                                             </constraints>
@@ -230,7 +231,7 @@
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7XT-79-fCP">
                                             <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="white"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="d0r-LZ-x9K"/>
                                             </constraints>
@@ -259,7 +260,7 @@
                                         <constraint firstItem="6FC-en-I0Q" firstAttribute="leading" secondItem="a4V-wq-rhE" secondAttribute="leading" id="s8Q-PB-mFU"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="white"/>
                                 <connections>
                                     <outlet property="deleteAccountButton" destination="VQ1-SN-E2X" id="p4B-VF-buu"/>
                                     <outlet property="deleteAccountLabel" destination="oK3-Tf-Z28" id="SND-ix-GL7"/>
@@ -279,4 +280,9 @@
             <point key="canvasLocation" x="-258.39999999999998" y="-165.06746626686657"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>
