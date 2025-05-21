@@ -87,14 +87,12 @@ public class SelectedSearchFilters: ObservableObject {
       buttonType: .image("icon-sort")
     ))
 
-    if featureSearchFilterByProjectStatusEnabled() {
-      pills.append(SearchFilterPill(
-        isHighlighted: self.hasFilters,
-        filterType: .allFilters,
-        buttonType: .image("icon-filters"),
-        count: filterCount
-      ))
-    }
+    pills.append(SearchFilterPill(
+      isHighlighted: self.hasFilters,
+      filterType: .allFilters,
+      buttonType: .image("icon-filters"),
+      count: filterCount
+    ))
 
     let selectedCategory = self.category.category
 
@@ -104,15 +102,13 @@ public class SelectedSearchFilters: ObservableObject {
       buttonType: .dropdown(selectedCategory?.name ?? Strings.Category())
     ))
 
-    if featureSearchFilterByProjectStatusEnabled() {
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: self.hasProjectState,
-          filterType: .projectState,
-          buttonType: .dropdown(self.hasProjectState ? self.projectState.title : Strings.Project_status())
-        )
+    pills.append(
+      SearchFilterPill(
+        isHighlighted: self.hasProjectState,
+        filterType: .projectState,
+        buttonType: .dropdown(self.hasProjectState ? self.projectState.title : Strings.Project_status())
       )
-    }
+    )
 
     self.pills = pills
   }

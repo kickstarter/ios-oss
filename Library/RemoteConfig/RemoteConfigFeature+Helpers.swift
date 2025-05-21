@@ -54,7 +54,3 @@ public func featureRewardShipmentTrackingEnabled() -> Bool {
 public func featureSimilarProjectsCarouselEnabled() -> Bool {
   featureEnabled(feature: .similarProjectsCarousel)
 }
-
-public func featureSearchFilterByProjectStatusEnabled() -> Bool {
-  featureEnabled(feature: .searchFilterByProjectStatus)
-}
