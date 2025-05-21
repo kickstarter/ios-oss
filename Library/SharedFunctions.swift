@@ -97,7 +97,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
   // project currency is more accurate to find the country to base the min/max values off of.
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.projectCurrency) ?? project.country
   let country = AppEnvironment.current.launchedCountries.countries
     .first { $0 == projectCurrencyCountry }
     .coalesceWith(projectCurrencyCountry)
@@ -693,7 +693,7 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let projectCurrency = project.stats.currency
+  let projectCurrency = project.stats.projectCurrency
 
   let formattedMin = Format.currency(
     estimatedMin,
@@ -732,9 +732,9 @@ public func estimatedShippingConversionText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
-  let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
-  let currencyCode = project.stats.currentCurrency ?? Project.Country.us.currencyCode
+  let convertedMin = estimatedMin * Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
+  let convertedMax = estimatedMax * Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
+  let currencyCode = project.stats.userCurrency ?? Project.Country.us.currencyCode
 
   let formattedMin = Format.currency(
     convertedMin,

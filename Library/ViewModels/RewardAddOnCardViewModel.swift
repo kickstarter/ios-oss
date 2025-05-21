@@ -74,17 +74,17 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
         let convertedAmount = reward.minimum
           .addingCurrency(shippingRule?.cost ?? 0)
           .multiplyingCurrency(
-            Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+            Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
           )
 
         return (project, reward, convertedAmount)
       }
       .map { project, _, amount in
-        let currentCurrency = project.stats.currentCurrency ?? Project.Country.us.currencyCode
+        let userCurrency = project.stats.userCurrency ?? Project.Country.us.currencyCode
 
         return Format.currency(
           amount,
-          currencyCode: currentCurrency,
+          currencyCode: userCurrency,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .up
         )

@@ -38,7 +38,7 @@ public struct ProjectPamphletMainCellProperties {
   public let pledged: Money
   public let convertedPledgedAmount: Float?
   public let currency: String
-  public let currentCurrencyCode: String?
+  public let userCurrency: String?
   public let country: Project.Country
   public let projectNotice: String?
   public let video: (hls: String?, high: String)?
@@ -68,7 +68,7 @@ public struct ProjectPamphletMainCellProperties {
     pledged: Money,
     convertedPledgedAmount: Float?,
     currency: String,
-    currentCurrencyCode: String?,
+    userCurrency: String?,
     country: Project.Country,
     projectNotice: String?,
     video: (hls: String?, high: String)?,
@@ -97,7 +97,7 @@ public struct ProjectPamphletMainCellProperties {
     self.pledged = pledged
     self.convertedPledgedAmount = convertedPledgedAmount
     self.currency = currency
-    self.currentCurrencyCode = currentCurrencyCode
+    self.userCurrency = userCurrency
     self.country = country
     self.projectNotice = projectNotice
     self.video = video
@@ -130,7 +130,7 @@ extension Project: HasProjectPamphletMainCellProperties {
       categoryName: self.category.name,
       locationName: self.location.displayableName,
       deadline: self.dates.deadline,
-      fxRate: self.stats.currentCurrencyRate ?? self.stats.staticUsdRate,
+      fxRate: self.stats.userCurrencyRate ?? self.stats.staticUsdRate,
       usdExchangeRate: self.stats.staticUsdRate,
       projectUsdExchangeRate: self.stats.usdExchangeRate ?? self.stats.staticUsdRate,
       goal: (amount: self.stats.goal, currency: self.statsCurrency, symbol: self.country.currencySymbol),
@@ -140,8 +140,8 @@ extension Project: HasProjectPamphletMainCellProperties {
         symbol: self.country.currencySymbol
       ),
       convertedPledgedAmount: self.stats.convertedPledgedAmount,
-      currency: self.stats.currency,
-      currentCurrencyCode: self.stats.currentCurrency,
+      currency: self.stats.projectCurrency,
+      userCurrency: self.stats.userCurrency,
       country: self.country,
       projectNotice: self.extendedProjectProperties?.projectNotice,
       video: self.video.map { ($0.hls, $0.high) },
@@ -183,7 +183,7 @@ extension ProjectPamphletMainCellProperties {
 
   /// Country determined by current currency.
   public var currentCountry: Project.Country? {
-    self.currentCurrencyCode.flatMap(Project.Country.init(currencyCode:))
+    self.userCurrency.flatMap(Project.Country.init(currencyCode:))
   }
 
   /// Omit US currency code
@@ -201,7 +201,7 @@ extension ProjectPamphletMainCellProperties {
   }
 
   public var currentCurrency: String {
-    self.currentCurrencyCode ?? getCurrentCurrency()
+    self.userCurrency ?? getCurrentCurrency()
   }
 }
 

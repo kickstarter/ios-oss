@@ -846,16 +846,16 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats .. lens(\Project.Stats.convertedPledgedAmount)
   }
 
-  public var currency: Lens<Project, String> {
-    return Project.lens.stats .. lens(\Project.Stats.currency)
+  public var projectCurrency: Lens<Project, String> {
+    return Project.lens.stats .. lens(\Project.Stats.projectCurrency)
   }
 
-  public var currentCurrency: Lens<Project, String?> {
-    return Project.lens.stats .. lens(\Project.Stats.currentCurrency)
+  public var userCurrency: Lens<Project, String?> {
+    return Project.lens.stats .. lens(\Project.Stats.userCurrency)
   }
 
-  public var currentCurrencyRate: Lens<Project, Float?> {
-    return Project.lens.stats .. lens(\Project.Stats.currentCurrencyRate)
+  public var userCurrencyRate: Lens<Project, Float?> {
+    return Project.lens.stats .. lens(\Project.Stats.userCurrencyRate)
   }
 
   public var goal: Lens<Project, Int> {

@@ -49,9 +49,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.stats.currentCurrency .~ "USD"
+      |> Project.lens.stats.userCurrency .~ "USD"
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
@@ -70,9 +70,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.stats.currentCurrency .~ "USD"
+      |> Project.lens.stats.userCurrency .~ "USD"
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
@@ -92,9 +92,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.stats.currentCurrency .~ "USD"
+      |> Project.lens.stats.userCurrency .~ "USD"
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
@@ -149,9 +149,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.stats.currentCurrency .~ "USD"
+      |> Project.lens.stats.userCurrency .~ "USD"
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])

@@ -65,12 +65,12 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     self.totalConversionLabelText = projectAndPledgeTotal
       .filter { project, _ in project.stats.needsConversion }
       .map { project, total in
-        let convertedTotal = total * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
-        let currentCurrency = project.stats.currentCurrency ?? Project.Country.us.currencyCode
+        let convertedTotal = total * Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
+        let userCurrency = project.stats.userCurrency ?? Project.Country.us.currencyCode
 
         return Format.currency(
           convertedTotal,
-          currencyCode: currentCurrency,
+          currencyCode: userCurrency,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .halfUp,
           maximumFractionDigits: 2,
@@ -158,7 +158,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700.uiColor()])
-  
+
   return Format.attributedCurrency(
     total,
     currencyCode: project.statsCurrency,

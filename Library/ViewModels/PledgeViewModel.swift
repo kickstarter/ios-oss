@@ -296,7 +296,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
     let shippingSummaryViewDataNonnil = Signal.combineLatest(
       shippingLocation.skipNil(),
       project.map { $0.stats.omitUSCurrencyCode },
-      project.map { $0.stats.currency },
+      project.map { $0.stats.projectCurrency },
       allRewardsShippingTotal
     )
     .map(PledgeShippingSummaryViewData.init)

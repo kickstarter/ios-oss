@@ -49,7 +49,7 @@ final class ApplePayCapabilitiesTests: XCTestCase {
   func test_supportedNetworksForProject_AvailableCardTypes_IsNil_US_ProjectCurrency() {
     let project = Project.template
       |> \.availableCardTypes .~ nil
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
@@ -65,7 +65,7 @@ final class ApplePayCapabilitiesTests: XCTestCase {
   func test_supportedNetworksForProject_AvailableCardTypes_IsNil_NonUS_ProjectCurrency() {
     let project = Project.template
       |> \.availableCardTypes .~ nil
-      |> Project.lens.stats.currency .~ Project.Country.de.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.de.currencyCode
 
     let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 

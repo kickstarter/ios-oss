@@ -121,7 +121,7 @@ extension Project: ProjectAnalyticsProperties {
   }
 
   public var statsCurrency: String {
-    self.stats.currency
+    self.stats.projectCurrency
   }
 
   public var statsPercentFunded: Int {

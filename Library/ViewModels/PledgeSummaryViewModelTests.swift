@@ -47,7 +47,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testAmountAttributedText_US_ProjectCurrency_RegularReward() {
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
     self.vm.inputs.configure(with: (project, total: 30, false, false))
@@ -58,7 +58,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testAmountAttributedText_NonUS_ProjectCurrency_RegularReward() {
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
     self.vm.inputs.configure(with: (project, total: 30, false, false))
@@ -69,7 +69,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testAmountAttributedText_US_ProjectCurrency_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
     self.vm.inputs.configure(with: (project, total: 10, false, true))
 
@@ -80,7 +80,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testAmountAttributedText_NonUS_ProjectCurrency_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
     let pledgeSummaryViewData = PledgeSummaryViewData(project, total: 10, false, true)
 
@@ -93,9 +93,9 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testTotalConversionText_NeedsConversion_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 2.0
 
     self.vm.inputs.configure(with: (project, total: 10, false, true))
     self.vm.inputs.viewDidLoad()
@@ -105,9 +105,9 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testTotalConversionText_NeedsConversion_RegularReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 2.0
 
     self.vm.inputs.configure(with: (project, total: 20, false, false))
     self.vm.inputs.viewDidLoad()
@@ -117,9 +117,9 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
   func testTotalConversionText_NoConversionNeeded() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrency .~ nil
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ nil
+      |> Project.lens.stats.userCurrencyRate .~ nil
 
     self.vm.inputs.configure(with: (project, total: 10, false, false))
     self.vm.inputs.viewDidLoad()
@@ -142,8 +142,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
       let project = Project.template
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
+        |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false))
       self.vm.inputs.configureWith(pledgeOverTimeData: nil)
@@ -172,8 +172,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
       let project = Project.template
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
+        |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
       self.vm.inputs.configure(with: (project: project, total: 10, true, false))
       self.vm.inputs.configureWith(pledgeOverTimeData: nil)
@@ -202,8 +202,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
       let project = Project.template
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
+        |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.projectCurrency .~ Currency.HKD.rawValue
         |> Project.lens.country .~ .us
 
       self.vm.inputs.configure(with: (project: project, total: 10, false, false))
@@ -233,8 +233,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
 
       let project = Project.template
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
+        |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
       let plotData = PledgePaymentPlansAndSelectionData(
         selectedPlan: .pledgeInFull,
@@ -260,8 +260,8 @@ internal final class PledgeSummaryViewModelTests: TestCase {
   func testPledgeOverTime_PledgeOverTime() {
     withEnvironment(locale: Locale(identifier: "en")) {
       let project = Project.template
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
+        |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
       let plotData = PledgePaymentPlansAndSelectionData(
         selectedPlan: .pledgeOverTime,
