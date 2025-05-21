@@ -4464,7 +4464,7 @@ final class PledgeViewModelTests: TestCase {
         |> \.category.analyticsName .~ Project.Category.illustration.name
         |> \.category.parentId .~ Project.Category.art.id
         |> \.category.parentName .~ Project.Category.art.name
-        |> Project.lens.stats.currentCurrency .~ "USD"
+        |> Project.lens.stats.userCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 
       let reward = Reward.template

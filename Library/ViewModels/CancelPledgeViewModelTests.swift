@@ -34,7 +34,7 @@ final class CancelPledgeViewModelTests: TestCase {
 
   func testConfigureCancelPledgeView() {
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let data = CancelPledgeViewData(
       project: project,

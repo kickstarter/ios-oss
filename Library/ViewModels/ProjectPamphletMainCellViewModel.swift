@@ -427,11 +427,11 @@ private func pledgeAmountAndGoalAndCountry(
 
   guard let goalCurrentCurrency = properties.goalCurrentCurrency,
         let pledgedCurrentCurrency = properties.convertedPledgedAmount,
-        let currentCurrencyCode = properties.currentCurrencyCode else {
+        let userCurrency = properties.userCurrency else {
     return (Int(properties.pledgedUsd), Int(properties.goalUsd), Project.Country.us.currencyCode)
   }
 
-  return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), currentCurrencyCode)
+  return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), userCurrency)
 }
 
 private func goalText(for properties: ProjectPamphletMainCellProperties, _ needsConversion: Bool) -> String {

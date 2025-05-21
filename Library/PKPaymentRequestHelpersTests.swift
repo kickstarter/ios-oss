@@ -40,7 +40,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_WithShipping() {
     var project = Project.template
     project.country = .ca
-    project.stats.currency = Project.Country.ca.currencyCode
+    project.stats.projectCurrency = Project.Country.ca.currencyCode
     project.isInPostCampaignPledgingPhase = false
 
     let reward = Reward.template
@@ -83,7 +83,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_WithShipping_CountryDifferentFromCurrency() {
     var project = Project.template
     project.country = .ca
-    project.stats.currency = Project.Country.us.currencyCode
+    project.stats.projectCurrency = Project.Country.us.currencyCode
     project.isInPostCampaignPledgingPhase = false
 
     let reward = Reward.template
@@ -126,7 +126,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_WithShipping_NonWholeNumberPledgeAmount() {
     var project = Project.template
     project.country = .ca
-    project.stats.currency = Project.Country.ca.currencyCode
+    project.stats.projectCurrency = Project.Country.ca.currencyCode
     project.isInPostCampaignPledgingPhase = false
 
     let reward = Reward.template
@@ -169,7 +169,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_fromPostCampaignPaymentAuthorizationData_withReward() {
     var project = Project.template
     project.country = .jp
-    project.stats.currency = Project.Country.jp.currencyCode
+    project.stats.projectCurrency = Project.Country.jp.currencyCode
     project.isInPostCampaignPledgingPhase = true
 
     let merchantId = "merchant_id"
@@ -209,7 +209,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_fromPostCampaignPaymentAuthorizationData_noReward() {
     var project = Project.template
     project.country = .ca
-    project.stats.currency = Project.Country.ca.currencyCode
+    project.stats.projectCurrency = Project.Country.ca.currencyCode
     project.isInPostCampaignPledgingPhase = true
 
     let merchantId = "merchant_id"

@@ -282,7 +282,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfigureProjectPageViewControllerDataSourceProject_US_ProjectCurrency_US_ProjectCountry() {
     let USCurrencyProject = self.projectWithEmptyProperties
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let backing = Backing.template
       |> Backing.lens.id .~ 543
@@ -312,7 +312,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.left?.stats.currency,
+        self.configureDataSourceProject.lastValue?.left?.stats.projectCurrency,
         Project.Country.us.currencyCode
       )
       XCTAssertEqual(
@@ -372,7 +372,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfigureProjectPageViewControllerDataSourceProject_NonUS_ProjectCurrency_US_ProjectCountry() {
     let USCurrencyProject = self.projectWithEmptyProperties
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
       |> Backing.lens.id .~ 543
@@ -402,7 +402,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(
-        self.configureDataSourceProject.lastValue?.left?.stats.currency,
+        self.configureDataSourceProject.lastValue?.left?.stats.projectCurrency,
         Project.Country.mx.currencyCode
       )
       XCTAssertEqual(

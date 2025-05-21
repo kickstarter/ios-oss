@@ -50,7 +50,7 @@ final class PledgeAmountViewControllerTests: TestCase {
   func testView_ShowsCurrencySymbol_NonUS_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.ca.currencyCode
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
@@ -66,7 +66,7 @@ final class PledgeAmountViewControllerTests: TestCase {
   func testView_ShowsCurrencySymbol_US_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()

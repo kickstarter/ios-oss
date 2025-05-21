@@ -1237,7 +1237,6 @@
 		AAE7C9A82C75948B00800E03 /* PPOProjectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */; };
 		AAE7C9AB2C75949600800E03 /* PPOProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */; };
 		AAE7C9AC2C75949600800E03 /* PPOProjectCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */; };
-		AAEABEA12DA7350400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */; };
 		AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */; };
 		AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */; };
 		AAEABEA82DA8C03D00B09688 /* VideoViewProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */; };
@@ -3031,8 +3030,6 @@
 		AAE7C9A62C75948B00800E03 /* PPOProjectCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCard.swift; sourceTree = "<group>"; };
 		AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardViewModelTests.swift; sourceTree = "<group>"; };
 		AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPOProjectCardTests.swift; sourceTree = "<group>"; };
-		AAEABE9E2DA6F49900B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
-		AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
 		AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWebURL.swift; sourceTree = "<group>"; };
 		AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
 		AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewProperties.swift; sourceTree = "<group>"; };
@@ -7156,8 +7153,6 @@
 				D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */,
 				D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */,
 				AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */,
-				AAEABE9E2DA6F49900B09688 /* ProjectPamphletMainCellProperties.swift */,
-				AAEABEA02DA7350400B09688 /* ProjectPamphletMainCellProperties.swift */,
 				A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */,
 				A7ED1F9F1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift */,
 				D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */,
@@ -8731,7 +8726,6 @@
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
-				AAEABEA12DA7350400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */,
