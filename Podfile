@@ -14,7 +14,18 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+
 target 'Kickstarter-iOS' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}"
+  )
+end
+
+target 'Kickstarter-Framework-iOS' do
   config = use_native_modules!
 
   use_react_native!(

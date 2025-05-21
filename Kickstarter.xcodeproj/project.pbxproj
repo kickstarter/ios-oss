@@ -249,6 +249,7 @@
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
+		1C4DA59F5B1BB658A892A235 /* libPods-Kickstarter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 370C0E61CBEA59AE8A370979 /* libPods-Kickstarter-iOS.a */; };
 		203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
@@ -260,6 +261,7 @@
 		20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
+		2E2B42BB11051DD303B64494 /* libPods-Kickstarter-Framework-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3488BE9B237AEDBF5AC9F51 /* libPods-Kickstarter-Framework-iOS.a */; };
 		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */; };
 		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
@@ -429,7 +431,6 @@
 		39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E222D543A2700090D6C /* AlertBanner.swift */; };
 		39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E242D5521BE00090D6C /* AlertBannerTests.swift */; };
 		39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */; };
-		3A0919F42C16F4265605CC12 /* libPods-Kickstarter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D621105977C89E5796DE52C /* libPods-Kickstarter-iOS.a */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
@@ -1242,6 +1243,7 @@
 		AAEABEA42DA8BDCD00B09688 /* ProjectWebURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */; };
 		AAEABEA62DA8BFA400B09688 /* ProjectPamphletMainCellProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */; };
 		AAEABEA82DA8C03D00B09688 /* VideoViewProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */; };
+		AAFB29CC2DDE7ABA00D8924D /* ReactNativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFB29CB2DDE7AB400D8924D /* ReactNativeViewController.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
@@ -2003,7 +2005,6 @@
 		06FE2D7526CD851300A4C0F4 /* MockGraphQLClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGraphQLClient.swift; sourceTree = "<group>"; };
 		06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift"; sourceTree = "<group>"; };
 		06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFAnimatedImageView.swift; sourceTree = "<group>"; };
-		0B5809C43B14646843F10892 /* Pods-Kickstarter-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.release.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		1611EF6623B2752A0051CDCC /* UUIDType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDType.swift; sourceTree = "<group>"; };
 		1611EF6823B275700051CDCC /* MockUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUID.swift; sourceTree = "<group>"; };
 		19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateSetupIntent.graphql; sourceTree = "<group>"; };
@@ -2118,6 +2119,7 @@
 		370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountViewController.swift; sourceTree = "<group>"; };
 		370BE71522541C8100B44DB2 /* UIViewController+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URL.swift"; sourceTree = "<group>"; };
 		370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URLTests.swift"; sourceTree = "<group>"; };
+		370C0E61CBEA59AE8A370979 /* libPods-Kickstarter-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kickstarter-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		370C8B63234FCC6F00DE75DD /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
 		370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModel.swift; sourceTree = "<group>"; };
 		370C8B6723590CC200DE75DD /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
@@ -2279,6 +2281,7 @@
 		47F4CA57267A7AD100356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
+		552024EE3D181D39B3E5600C /* Pods-Kickstarter-Framework-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-Framework-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewController.swift; sourceTree = "<group>"; };
 		59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModel.swift; sourceTree = "<group>"; };
 		595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardViewModel.swift; sourceTree = "<group>"; };
@@ -2398,12 +2401,12 @@
 		60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
 		60FF34692DA7F97D003598A9 /* PledgeManagementDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementDetailsViewModel.swift; sourceTree = "<group>"; };
 		60FF346C2DA802DB003598A9 /* PledgeManagementViewPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagementViewPledgeViewModelTests.swift; sourceTree = "<group>"; };
-		677F5B1CFE17A3886CC0798F /* Pods-Kickstarter-iOS.internal beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.internal beta.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.internal beta.xcconfig"; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
 		706656D629C7E72B00BAE7D4 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelSwiftUIIntegrationTest.swift; sourceTree = "<group>"; };
 		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		71A6BED8CCB29A2022B40A50 /* Pods-Kickstarter-Framework-iOS.internal alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-Framework-iOS.internal alpha.xcconfig"; path = "Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS.internal alpha.xcconfig"; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -2534,6 +2537,7 @@
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
 		8479CF2B2530A5D700FD13F1 /* Service+DecodeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+DecodeHelpers.swift"; sourceTree = "<group>"; };
 		84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateActivityItemProviderTests.swift; sourceTree = "<group>"; };
+		89C0F8FD406A6F52EBBE7761 /* Pods-Kickstarter-iOS.internal beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.internal beta.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.internal beta.xcconfig"; sourceTree = "<group>"; };
 		8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
@@ -2718,6 +2722,7 @@
 		94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellHeaderStackViewTests.swift; sourceTree = "<group>"; };
 		941710B426557A6A00F5954E /* CommentCellStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellStyles.swift; sourceTree = "<group>"; };
+		94A8F7BA8826DC89F3DA9F48 /* Pods-Kickstarter-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.release.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		94BA168D2667C37F0034CC3F /* CommentTableViewFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterView.swift; sourceTree = "<group>"; };
 		94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModel.swift; sourceTree = "<group>"; };
 		94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
@@ -2725,14 +2730,14 @@
 		94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
 		94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601DateTests.swift"; sourceTree = "<group>"; };
-		9A1CEECE00EA77E5B086B9FE /* Pods-Kickstarter-iOS.internal alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.internal alpha.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.internal alpha.xcconfig"; sourceTree = "<group>"; };
+		9BBAB7C6D8A3DFC1F0698A12 /* Pods-Kickstarter-iOS.internal alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.internal alpha.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.internal alpha.xcconfig"; sourceTree = "<group>"; };
+		9CD721A2B029D1ADAB447701 /* Pods-Kickstarter-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9D10B91A1D35407C008B8045 /* String+Truncate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
-		9D621105977C89E5796DE52C /* libPods-Kickstarter-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kickstarter-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewController.swift; sourceTree = "<group>"; };
 		9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModel.swift; sourceTree = "<group>"; };
 		9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityStyles.swift; sourceTree = "<group>"; };
 		9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityData.swift; sourceTree = "<group>"; };
-		A0344C7A811268FD2BA9FE66 /* Pods-Kickstarter-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A3488BE9B237AEDBF5AC9F51 /* libPods-Kickstarter-Framework-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kickstarter-Framework-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A707BAD31CFFAB9400653B2F /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpType.swift; sourceTree = "<group>"; };
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		A707BAD51CFFAB9400653B2F /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -3042,6 +3047,8 @@
 		AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWebURL.swift; sourceTree = "<group>"; };
 		AAEABEA52DA8BF9F00B09688 /* ProjectPamphletMainCellProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellProperties.swift; sourceTree = "<group>"; };
 		AAEABEA72DA8C03B00B09688 /* VideoViewProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewProperties.swift; sourceTree = "<group>"; };
+		AAFB29CB2DDE7AB400D8924D /* ReactNativeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeViewController.swift; sourceTree = "<group>"; };
+		CA55D70C1C5C57948AD44182 /* Pods-Kickstarter-Framework-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-Framework-iOS.release.xcconfig"; path = "Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
 		D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
@@ -3533,6 +3540,7 @@
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
+		EBEDBAE33871C59CF89958F3 /* Pods-Kickstarter-Framework-iOS.internal beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-Framework-iOS.internal beta.xcconfig"; path = "Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS.internal beta.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3575,6 +3583,7 @@
 			files = (
 				E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				2E2B42BB11051DD303B64494 /* libPods-Kickstarter-Framework-iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3586,7 +3595,7 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				3A0919F42C16F4265605CC12 /* libPods-Kickstarter-iOS.a in Frameworks */,
+				1C4DA59F5B1BB658A892A235 /* libPods-Kickstarter-iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5073,6 +5082,7 @@
 		19838AAE28C82F75003DD5BB /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				AAFB29CA2DDE7AAF00D8924D /* ReactNative */,
 				19A97CDC28C7D77D0031B857 /* Activities */,
 				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
 				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
@@ -6896,7 +6906,8 @@
 			isa = PBXGroup;
 			children = (
 				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
-				9D621105977C89E5796DE52C /* libPods-Kickstarter-iOS.a */,
+				A3488BE9B237AEDBF5AC9F51 /* libPods-Kickstarter-Framework-iOS.a */,
+				370C0E61CBEA59AE8A370979 /* libPods-Kickstarter-iOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -7305,6 +7316,14 @@
 				AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */,
 			);
 			path = types;
+			sourceTree = "<group>";
+		};
+		AAFB29CA2DDE7AAF00D8924D /* ReactNative */ = {
+			isa = PBXGroup;
+			children = (
+				AAFB29CB2DDE7AB400D8924D /* ReactNativeViewController.swift */,
+			);
+			path = ReactNative;
 			sourceTree = "<group>";
 		};
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
@@ -7800,12 +7819,15 @@
 		E8D8EE841E607949C182B800 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A0344C7A811268FD2BA9FE66 /* Pods-Kickstarter-iOS.debug.xcconfig */,
-				0B5809C43B14646843F10892 /* Pods-Kickstarter-iOS.release.xcconfig */,
-				677F5B1CFE17A3886CC0798F /* Pods-Kickstarter-iOS.internal beta.xcconfig */,
-				9A1CEECE00EA77E5B086B9FE /* Pods-Kickstarter-iOS.internal alpha.xcconfig */,
+				552024EE3D181D39B3E5600C /* Pods-Kickstarter-Framework-iOS.debug.xcconfig */,
+				CA55D70C1C5C57948AD44182 /* Pods-Kickstarter-Framework-iOS.release.xcconfig */,
+				EBEDBAE33871C59CF89958F3 /* Pods-Kickstarter-Framework-iOS.internal beta.xcconfig */,
+				71A6BED8CCB29A2022B40A50 /* Pods-Kickstarter-Framework-iOS.internal alpha.xcconfig */,
+				9CD721A2B029D1ADAB447701 /* Pods-Kickstarter-iOS.debug.xcconfig */,
+				94A8F7BA8826DC89F3DA9F48 /* Pods-Kickstarter-iOS.release.xcconfig */,
+				89C0F8FD406A6F52EBBE7761 /* Pods-Kickstarter-iOS.internal beta.xcconfig */,
+				9BBAB7C6D8A3DFC1F0698A12 /* Pods-Kickstarter-iOS.internal alpha.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -7898,10 +7920,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7C795B11C873A870081977F /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOS" */;
 			buildPhases = (
+				91416E940AE4CC0F591D3782 /* [CP] Check Pods Manifest.lock */,
 				A7C795991C873A870081977F /* Sources */,
 				A7C7959A1C873A870081977F /* Frameworks */,
 				A7C7959B1C873A870081977F /* Headers */,
 				A7C7959C1C873A870081977F /* Resources */,
+				EAEAA40D9F8D342F506A48E8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -7920,15 +7944,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7D1F9611C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOS" */;
 			buildPhases = (
-				36135C71BE7716EC71900B35 /* [CP] Check Pods Manifest.lock */,
+				A2F5C57A7FF3241ACFC6562C /* [CP] Check Pods Manifest.lock */,
 				A7D1F9411C850B7C000D41D5 /* Sources */,
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
 				E10BE8D52B02975C00F73DC9 /* Embed Foundation Extensions */,
 				8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */,
-				DFFBDCEA2B0DC902EA3804EC /* [CP] Embed Pods Frameworks */,
-				A8CC29A7F03B17DC2CB354EE /* [CP] Copy Pods Resources */,
+				11F5B5FF5891602B40DD69C8 /* [CP] Embed Pods Frameworks */,
+				207DC1D79DE0E107381481F9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -8369,26 +8393,48 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		36135C71BE7716EC71900B35 /* [CP] Check Pods Manifest.lock */ = {
+		11F5B5FF5891602B40DD69C8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Kickstarter-iOS-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		207DC1D79DE0E107381481F9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */ = {
@@ -8429,48 +8475,48 @@
 			shellPath = /bin/sh;
 			shellScript = "# Don't run this during index builds\nif [ $ACTION = \"indexbuild\" ]; then exit 0; fi\n\n# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" --namespace=GraphAPI GraphAPI.swift\n";
 		};
-		A8CC29A7F03B17DC2CB354EE /* [CP] Copy Pods Resources */ = {
+		91416E940AE4CC0F591D3782 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
+			inputFileListPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
+				"$(DERIVED_FILE_DIR)/Pods-Kickstarter-Framework-iOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DFFBDCEA2B0DC902EA3804EC /* [CP] Embed Pods Frameworks */ = {
+		A2F5C57A7FF3241ACFC6562C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+				"$(DERIVED_FILE_DIR)/Pods-Kickstarter-iOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E1F63FC22BA0A419007B2B2B /* Make list of GraphQL dependencies */ = {
@@ -8491,6 +8537,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$PROJECT_DIR/bin/find-graphql-files.sh\n";
+		};
+		EAEAA40D9F8D342F506A48E8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -9414,6 +9486,7 @@
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
+				AAFB29CC2DDE7ABA00D8924D /* ReactNativeViewController.swift in Sources */,
 				06FFE98827C67C8800E3A929 /* GIFAnimatedImageView.swift in Sources */,
 				06B02BED26680D4300903A83 /* CommentCell.swift in Sources */,
 				60F03AC12D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift in Sources */,
@@ -10225,7 +10298,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
 				PRODUCT_NAME = Kickstarter;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -10239,7 +10312,7 @@
 		};
 		A745D1D51CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 677F5B1CFE17A3886CC0798F /* Pods-Kickstarter-iOS.internal beta.xcconfig */;
+			baseConfigurationReference = 89C0F8FD406A6F52EBBE7761 /* Pods-Kickstarter-iOS.internal beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
@@ -10353,6 +10426,7 @@
 		};
 		A745D1D91CAAD0A400C12802 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBEDBAE33871C59CF89958F3 /* Pods-Kickstarter-Framework-iOS.internal beta.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
@@ -10500,6 +10574,7 @@
 		};
 		A7C795A71C873A870081977F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 552024EE3D181D39B3E5600C /* Pods-Kickstarter-Framework-iOS.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
@@ -10537,6 +10612,7 @@
 		};
 		A7C795A81C873A870081977F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA55D70C1C5C57948AD44182 /* Pods-Kickstarter-Framework-iOS.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
@@ -10575,7 +10651,7 @@
 		};
 		A7D1F9621C850B7C000D41D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0344C7A811268FD2BA9FE66 /* Pods-Kickstarter-iOS.debug.xcconfig */;
+			baseConfigurationReference = 9CD721A2B029D1ADAB447701 /* Pods-Kickstarter-iOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
@@ -10608,7 +10684,7 @@
 		};
 		A7D1F9631C850B7C000D41D5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B5809C43B14646843F10892 /* Pods-Kickstarter-iOS.release.xcconfig */;
+			baseConfigurationReference = 94A8F7BA8826DC89F3DA9F48 /* Pods-Kickstarter-iOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
@@ -10746,7 +10822,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D DEBUG -Xfrontend -warn-long-function-bodies=1000";
 				PRODUCT_NAME = Kickstarter;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -10815,7 +10891,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
 				PRODUCT_NAME = Kickstarter;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -11083,7 +11159,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
 				PRODUCT_NAME = Kickstarter;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -11097,7 +11173,7 @@
 		};
 		D083B1041F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A1CEECE00EA77E5B086B9FE /* Pods-Kickstarter-iOS.internal alpha.xcconfig */;
+			baseConfigurationReference = 9BBAB7C6D8A3DFC1F0698A12 /* Pods-Kickstarter-iOS.internal alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-alpha";
@@ -11185,6 +11261,7 @@
 		};
 		D083B1071F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71A6BED8CCB29A2022B40A50 /* Pods-Kickstarter-Framework-iOS.internal alpha.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
