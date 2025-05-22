@@ -25,10 +25,11 @@ public protocol SearchFiltersUseCaseInputs {
 
 public protocol SearchFiltersUseCaseUIOutputs {
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
-  var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
+  var showFilters: Signal<SearchFilterModalType, Never> { get }
 
-  /// An @ObservableObject model which SwiftUI can use to observe the selected filters. Owned and automatically updated by this use case.
-  var selectedFilters: SelectedSearchFilters { get }
+  /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
+  /// Owned and automatically updated by this `SearchFiltersUseCase`.
+  var searchFilters: SearchFilters { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
@@ -50,22 +51,9 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     self.showFilters = self.categoriesProperty.producer
       .takePairWhen(self.tappedFilterTypeSignal)
-      .map { [sortOptions, stateOptions] categories, pill in
-        let options = SearchFilterOptions(
-          category: SearchFilterOptions.CategoryOptions(
-            categories: categories
-          ),
-          sort: SearchFilterOptions.SortOptions(
-            sortOptions: sortOptions
-          ),
-          projectState: SearchFilterOptions.ProjectStateOptions(
-            stateOptions: stateOptions
-          )
-        )
-
+      .map { _, pill in
         let modalType = filterModal(toShowForPill: pill)
-
-        return (options, modalType)
+        return modalType
       }
 
     self.selectedSort = Signal.merge(
@@ -83,10 +71,25 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedStateProperty.signal
     )
 
-    self.selectedFilters = SelectedSearchFilters(
-      sort: self.selectedSortProperty.value,
-      category: self.selectedCategoryProperty.value,
-      projectState: self.selectedStateProperty.value
+    let sortOptions = SearchFilters.SortOptions(
+      sortOptions: self.sortOptions,
+      selectedSort: self.selectedSortProperty.value
+    )
+
+    let categoryOptions = SearchFilters.CategoryOptions(
+      categories: self.categoriesProperty.value,
+      selectedCategory: self.selectedCategoryProperty.value
+    )
+
+    let projectStateOptions = SearchFilters.ProjectStateOptions(
+      stateOptions: self.stateOptions,
+      selectedProjectState: self.selectedStateProperty.value
+    )
+
+    self.searchFilters = SearchFilters(
+      sort: sortOptions,
+      category: categoryOptions,
+      projectState: projectStateOptions
     )
 
     Signal.combineLatest(
@@ -95,9 +98,16 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.dataOutputs.selectedState
     )
     .observeForUI()
-    .observeValues { [weak selectedFilters] sort, category, state in
-      selectedFilters?.update(withSort: sort, category: category, projectState: state)
+    .observeValues { [weak searchFilters] sort, category, state in
+      searchFilters?.update(withSort: sort, category: category, projectState: state)
     }
+
+    self.categoriesProperty
+      .signal
+      .observeForUI()
+      .observeValues { [weak searchFilters] categories in
+        searchFilters?.update(withCategories: categories)
+      }
   }
 
   fileprivate let (tappedFilterTypeSignal, tappedFilterTypeObserver) = Signal<
@@ -143,13 +153,13 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     DiscoveryParams.State.successful
   ]
 
-  public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never>
+  public var showFilters: Signal<SearchFilterModalType, Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<SearchFiltersCategory, Never>
   public var selectedState: Signal<DiscoveryParams.State, Never>
 
-  public private(set) var selectedFilters: SelectedSearchFilters
+  public private(set) var searchFilters: SearchFilters
 
   public func clearedQueryText() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption

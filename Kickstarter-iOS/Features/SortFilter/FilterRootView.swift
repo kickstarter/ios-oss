@@ -3,10 +3,9 @@ import Library
 import SwiftUI
 
 struct FilterRootView: View {
-  let filterOptions: SearchFilterOptions
   @State var navigationState: [SearchFilterModalType]
 
-  @ObservedObject var selectedFilters: SelectedSearchFilters
+  @ObservedObject var searchFilters: SearchFilters
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
@@ -16,7 +15,7 @@ struct FilterRootView: View {
 
   private var selectedCategory: Binding<SearchFiltersCategory> {
     Binding {
-      self.selectedFilters.category
+      self.searchFilters.category.selectedCategory
     } set: { newValue in
       if let action = self.onSelectedCategory {
         action(newValue)
@@ -29,11 +28,9 @@ struct FilterRootView: View {
   }
 
   init(
-    filterOptions: SearchFilterOptions,
     filterType: SearchFilterModalType,
-    selectedFilters: SelectedSearchFilters
+    searchFilters: SearchFilters
   ) {
-    self.filterOptions = filterOptions
     if filterType == .allFilters {
       // Show the root view
       self.navigationState = []
@@ -41,7 +38,7 @@ struct FilterRootView: View {
       self.navigationState = [filterType]
     }
 
-    self.selectedFilters = selectedFilters
+    self.searchFilters = searchFilters
   }
 
   @ViewBuilder
@@ -51,7 +48,7 @@ struct FilterRootView: View {
         Text(Strings.Category())
           .font(InterFont.headingLG.swiftUIFont())
           .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        if let selectedCategory = self.selectedFilters.category.name {
+        if let selectedCategory = self.searchFilters.category.selectedCategory.name {
           Text(selectedCategory)
             .font(InterFont.bodyMD.swiftUIFont())
             .foregroundStyle(Colors.Text.secondary.swiftUIColor())
@@ -74,7 +71,7 @@ struct FilterRootView: View {
         .font(InterFont.headingLG.swiftUIFont())
         .foregroundStyle(Colors.Text.primary.swiftUIColor())
       FlowLayout(spacing: Constants.flowLayoutSpacing) {
-        ForEach(self.filterOptions.projectState.stateOptions) { state in
+        ForEach(self.searchFilters.projectState.stateOptions) { state in
           Button(action: {
             if let action = onSelectedProjectState {
               action(state)
@@ -84,7 +81,7 @@ struct FilterRootView: View {
           })
           .buttonStyle(
             SearchFiltersPillStyle(
-              isHighlighted: state == self.selectedFilters.projectState
+              isHighlighted: state == self.searchFilters.projectState.selectedProjectState
             )
           )
         }
@@ -96,7 +93,7 @@ struct FilterRootView: View {
   @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
-      categories: self.filterOptions.category.categories,
+      categories: self.searchFilters.category.categories,
       selectedCategory: self.selectedCategory
     )
   }
@@ -112,7 +109,7 @@ struct FilterRootView: View {
       }
       .buttonStyle(KSRButtonStyleModifier(style: .outlined))
       .frame(maxWidth: Constants.resetButtonMaxWidth)
-      .disabled(!self.selectedFilters.canReset(filter: self.modalType))
+      .disabled(!self.searchFilters.canReset(filter: self.modalType))
 
       Button(Strings.See_results()) {
         if let action = self.onResults {

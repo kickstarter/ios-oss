@@ -1,6 +1,6 @@
 import Library
 
-extension SelectedSearchFilters {
+extension SearchFilters {
   var sortPill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .sort })
   }

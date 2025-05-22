@@ -2,7 +2,7 @@ import Library
 import SwiftUI
 
 struct SelectedSearchFiltersHeaderView: View {
-  @ObservedObject var selectedFilters: SelectedSearchFilters
+  @ObservedObject var selectedFilters: SearchFilters
   let didTapPill: (SearchFilterPill) -> Void
 
   var body: some View {

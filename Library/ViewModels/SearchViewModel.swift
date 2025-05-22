@@ -98,10 +98,11 @@ public protocol SearchViewModelOutputs {
   var showSortAndFilterHeader: Signal<Bool, Never> { get }
 
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
-  var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
+  var showFilters: Signal<SearchFilterModalType, Never> { get }
 
-  /// An @ObservableObject model which SwiftUI can use to observe the selected filters. Owned and automatically updated by the `SearchFiltersUseCase`, which this view model itself owns.
-  var selectedFilters: SelectedSearchFilters { get }
+  /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
+  /// Owned and automatically updated by the `SearchFiltersUseCase`.
+  var searchFilters: SearchFilters { get }
 }
 
 public protocol SearchViewModelType {
@@ -446,7 +447,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let showSortAndFilterHeader: Signal<Bool, Never>
   public let searchResults: Signal<SearchResults, Never>
 
-  public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> {
+  public var showFilters: Signal<SearchFilterModalType, Never> {
     return self.searchFiltersUseCase.showFilters
   }
 
@@ -462,8 +463,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchFiltersUseCase.selectedProjectState(state)
   }
 
-  public var selectedFilters: SelectedSearchFilters {
-    return self.searchFiltersUseCase.selectedFilters
+  public var searchFilters: SearchFilters {
+    return self.searchFiltersUseCase.searchFilters
   }
 
   public var inputs: SearchViewModelInputs { return self }
