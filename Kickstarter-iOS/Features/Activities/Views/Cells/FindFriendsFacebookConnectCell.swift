@@ -85,6 +85,8 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
+    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
