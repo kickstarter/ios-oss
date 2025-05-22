@@ -124,6 +124,7 @@ final class ThanksViewModelTests: TestCase {
     project.name = "Test Project"
     project.isInPostCampaignPledgingPhase = true
     project.country = Project.Country.jp
+    project.stats.currency = Project.Country.jp.currencyCode
 
     withEnvironment(Environment(currentUserEmail: "test@user.com", remoteConfigClient: mockConfigClient)) {
       self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))

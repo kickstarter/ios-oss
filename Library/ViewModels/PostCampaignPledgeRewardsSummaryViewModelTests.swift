@@ -155,7 +155,7 @@ final class PostCampaignPledgeRewardsSummaryViewModelTests: TestCase {
     let rewardsData = PostCampaignRewardsSummaryViewData(
       rewards: [reward1, reward2, reward3],
       selectedQuantities: [reward1.id: 1, reward2.id: 2, reward3.id: 3],
-      projectCountry: .us,
+      currencyCode: Project.Country.us.currencyCode,
       omitCurrencyCode: false,
       shipping: nil,
       useLatePledgeCosts: useLatePledgeCosts

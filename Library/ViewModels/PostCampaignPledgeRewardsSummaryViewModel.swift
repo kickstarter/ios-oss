@@ -32,7 +32,7 @@ public enum PostCampaignRewardsSummaryItem {
 public struct PostCampaignRewardsSummaryViewData {
   let rewards: [Reward]
   let selectedQuantities: SelectedRewardQuantities
-  let projectCountry: Project.Country
+  let currencyCode: String
   let omitCurrencyCode: Bool
   let shipping: PledgeShippingSummaryViewData?
   let useLatePledgeCosts: Bool
@@ -191,7 +191,7 @@ private func items(
     let itemCost = data.useLatePledgeCosts ? reward.latePledgeAmount : reward.pledgeAmount
     let amount = quantity > 1 ? itemCost * Double(quantity) : itemCost
     let amountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
+      with: data.currencyCode, amount: amount, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PostCampaignRewardsSummaryItem.reward(.init(
@@ -208,7 +208,7 @@ private func items(
 
   if let shipping = data.shipping, shipping.total > 0 {
     let shippingAmountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
+      with: data.currencyCode, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     let shippingItem = PostCampaignRewardsSummaryItem.reward(.init(
@@ -226,7 +226,7 @@ private func items(
 
   if let bonus = bonusAmount, bonus > 0, rewardItems.isEmpty == false {
     let bonusAmountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
+      with: data.currencyCode, amount: bonus, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     let bonusItem = PostCampaignRewardsSummaryItem.reward(.init(
@@ -244,13 +244,13 @@ private func items(
 }
 
 private func attributedRewardCurrency(
-  with projectCountry: Project.Country,
+  with currencyCode: String,
   amount: Double,
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString {
   let currencyString = Format.currency(
     amount,
-    country: projectCountry,
+    currencyCode: currencyCode,
     omitCurrencyCode: omitUSCurrencyCode,
     maximumFractionDigits: 0,
     minimumFractionDigits: 0

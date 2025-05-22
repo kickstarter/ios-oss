@@ -166,11 +166,10 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 private func shippingValue(of project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
   guard
     let attributedCurrency = Format.attributedCurrency(
       shippingRuleCost,
-      country: projectCurrencyCountry,
+      currencyCode: project.statsCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
