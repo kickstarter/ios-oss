@@ -31,6 +31,7 @@ $(PROJECT_DIR)/KsApi/mutations/PostComment.graphql
 $(PROJECT_DIR)/KsApi/mutations/CompleteOnSessionCheckoutMutation.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateCheckout.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreatePaymentIntent.graphql
+$(PROJECT_DIR)/KsApi/mutations/AddUserToSecretRewardGroup.graphql
 $(PROJECT_DIR)/KsApi/mutations/UpdateUserAccount.graphql
 $(PROJECT_DIR)/KsApi/mutations/UnwatchProject.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateAttributionEvent.graphql
