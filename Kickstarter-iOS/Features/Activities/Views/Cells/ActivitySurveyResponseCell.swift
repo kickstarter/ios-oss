@@ -49,6 +49,8 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
+    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.creatorImageView
       |> ignoresInvertColorsImageViewStyle
 

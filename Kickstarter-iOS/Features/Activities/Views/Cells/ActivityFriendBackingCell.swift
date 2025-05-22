@@ -95,5 +95,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
         topBottom: Styles.gridHalf(5),
         leftRight: Styles.grid(2)
       )
+
+    self.projectTextContainerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
   }
 }
