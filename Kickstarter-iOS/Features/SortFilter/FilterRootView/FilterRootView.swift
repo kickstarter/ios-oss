@@ -2,33 +2,6 @@ import KsApi
 import Library
 import SwiftUI
 
-struct FilterSectionButton: View {
-  let title: String
-  let subtitle: String?
-
-  var body: some View {
-    HStack {
-      VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
-        Text(self.title)
-          .font(InterFont.headingLG.swiftUIFont())
-          .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        if let subtitle = self.subtitle {
-          Text(subtitle)
-            .font(InterFont.bodyMD.swiftUIFont())
-            .foregroundStyle(Colors.Text.secondary.swiftUIColor())
-        }
-      }
-      if let icon = Library.image(named: "chevron-right") {
-        Spacer()
-        Image(uiImage: icon)
-          .renderingMode(.template)
-          .tint(Colors.Text.primary.swiftUIColor())
-      }
-    }
-    .padding(Constants.sectionPadding)
-  }
-}
-
 struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
 
@@ -114,6 +87,7 @@ struct FilterRootView: View {
       subtitle:
       self.searchFilters.percentRaised.selectedBucket?.title
     )
+    .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
@@ -122,6 +96,7 @@ struct FilterRootView: View {
       title: Strings.Category(),
       subtitle: self.searchFilters.category.selectedCategory.name
     )
+    .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
@@ -202,6 +177,13 @@ struct FilterRootView: View {
       self.footerView
     }
   }
+
+  internal enum Constants {
+    static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
+    static let sectionSpacing: CGFloat = 12.0
+    static let flowLayoutSpacing: CGFloat = 8.0
+    static let resetButtonMaxWidth: CGFloat = 130.0
+  }
 }
 
 extension View {
@@ -230,11 +212,4 @@ extension DiscoveryParams.State: @retroactive Identifiable {
   public var id: Int {
     return self.rawValue.hashValue
   }
-}
-
-private enum Constants {
-  static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
-  static let sectionSpacing: CGFloat = 12.0
-  static let flowLayoutSpacing: CGFloat = 8.0
-  static let resetButtonMaxWidth: CGFloat = 130.0
 }
