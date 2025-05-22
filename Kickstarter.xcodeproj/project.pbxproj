@@ -1691,6 +1691,7 @@
 		E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
 		E19D49C52DB7F075004A74D5 /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19D49C42DB7F075004A74D5 /* FilterCategoryView.swift */; };
 		E19D49C72DB7F07A004A74D5 /* FilterCategoryViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19D49C62DB7F07A004A74D5 /* FilterCategoryViewTest.swift */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
@@ -3486,6 +3487,7 @@
 		E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams+SearchFilters.swift"; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
+		E19900A22DDE26C10082F05E /* PercentRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentRaisedView.swift; sourceTree = "<group>"; };
 		E19D49C42DB7F075004A74D5 /* FilterCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryView.swift; sourceTree = "<group>"; };
 		E19D49C62DB7F07A004A74D5 /* FilterCategoryViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewTest.swift; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
@@ -5942,6 +5944,7 @@
 			isa = PBXGroup;
 			children = (
 				E182B7C92DAFF525000C4067 /* FilterRootView.swift */,
+				E19900A12DDE26A60082F05E /* PercentRaisedView */,
 				E1CFB6B62D91E99F004AB0D6 /* HeaderView */,
 				336194E12D8A95BB00BED4BD /* SortView */,
 				336193EE2D825C6500BED4BD /* FilterCategory */,
@@ -7709,6 +7712,14 @@
 			path = FetchCategories;
 			sourceTree = "<group>";
 		};
+		E19900A12DDE26A60082F05E /* PercentRaisedView */ = {
+			isa = PBXGroup;
+			children = (
+				E19900A22DDE26C10082F05E /* PercentRaisedView.swift */,
+			);
+			path = PercentRaisedView;
+			sourceTree = "<group>";
+		};
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -9183,6 +9194,7 @@
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
 				39F48E212D528D5B00090D6C /* RestrictedCreatorViewController.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
+				E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */,

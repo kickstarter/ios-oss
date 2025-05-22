@@ -2,6 +2,33 @@ import KsApi
 import Library
 import SwiftUI
 
+struct FilterSectionButton: View {
+  let title: String
+  let subtitle: String?
+
+  var body: some View {
+    HStack {
+      VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
+        Text(self.title)
+          .font(InterFont.headingLG.swiftUIFont())
+          .foregroundStyle(Colors.Text.primary.swiftUIColor())
+        if let subtitle = self.subtitle {
+          Text(subtitle)
+            .font(InterFont.bodyMD.swiftUIFont())
+            .foregroundStyle(Colors.Text.secondary.swiftUIColor())
+        }
+      }
+      if let icon = Library.image(named: "chevron-right") {
+        Spacer()
+        Image(uiImage: icon)
+          .renderingMode(.template)
+          .tint(Colors.Text.primary.swiftUIColor())
+      }
+    }
+    .padding(Constants.sectionPadding)
+  }
+}
+
 struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
 
@@ -9,6 +36,7 @@ struct FilterRootView: View {
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
+  var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
@@ -19,6 +47,17 @@ struct FilterRootView: View {
     } set: { newValue in
       if let action = self.onSelectedCategory {
         action(newValue)
+      }
+    }
+  }
+
+  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
+    Binding {
+      self.searchFilters.percentRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onSelectedPercentRaisedBucket,
+         let bucket = newValue {
+        action(bucket)
       }
     }
   }
@@ -39,29 +78,6 @@ struct FilterRootView: View {
     }
 
     self.searchFilters = searchFilters
-  }
-
-  @ViewBuilder
-  var categorySection: some View {
-    HStack {
-      VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
-        Text(Strings.Category())
-          .font(InterFont.headingLG.swiftUIFont())
-          .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        if let selectedCategory = self.searchFilters.category.selectedCategory.name {
-          Text(selectedCategory)
-            .font(InterFont.bodyMD.swiftUIFont())
-            .foregroundStyle(Colors.Text.secondary.swiftUIColor())
-        }
-      }
-      if let icon = Library.image(named: "chevron-right") {
-        Spacer()
-        Image(uiImage: icon)
-          .renderingMode(.template)
-          .tint(Colors.Text.primary.swiftUIColor())
-      }
-    }
-    .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
@@ -88,6 +104,32 @@ struct FilterRootView: View {
       }
     }
     .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
+  var percentRaisedSection: some View {
+    FilterSectionButton(
+      // FIXME: MBL-2465 Add translations
+      title: "Percent Raised",
+      subtitle:
+      self.searchFilters.percentRaised.selectedBucket?.title
+    )
+  }
+
+  @ViewBuilder
+  var categorySection: some View {
+    FilterSectionButton(
+      title: Strings.Category(),
+      subtitle: self.searchFilters.category.selectedCategory.name
+    )
+  }
+
+  @ViewBuilder
+  var percentRaisedModal: some View {
+    PercentRaisedView(
+      buckets: self.searchFilters.percentRaised.buckets,
+      selectedBucket: self.selectedPercentRaisedBucket
+    )
   }
 
   @ViewBuilder
@@ -132,14 +174,25 @@ struct FilterRootView: View {
           }
           Divider()
           self.projectStateSection
+          if featureSearchFilterByPercentRaisedEnabled() {
+            Divider()
+            NavigationLink(value: SearchFilterModalType.percentRaised) {
+              self.percentRaisedSection
+            }
+          }
           Divider()
           Spacer()
         }
         .navigationDestination(for: SearchFilterModalType.self, destination: { modalType in
-          if modalType == .category {
+          switch modalType {
+          case .category:
             self.categoryModal
               .modalHeader(withTitle: Strings.Category(), onClose: self.onClose)
-          } else {
+          case .percentRaised:
+            // FIXME: MBL-2465 Add translations
+            self.percentRaisedModal
+              .modalHeader(withTitle: "Percent Raised", onClose: self.onClose)
+          default:
             EmptyView()
           }
         })

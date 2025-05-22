@@ -25,18 +25,35 @@ public class SearchFilters: ObservableObject {
     public var selectedProjectState: DiscoveryParams.State
   }
 
+  public struct PercentRaisedOptions {
+    public let buckets: [DiscoveryParams.PercentRaisedBucket]
+    public var selectedBucket: DiscoveryParams.PercentRaisedBucket?
+  }
+
   public private(set) var category: CategoryOptions
   public private(set) var sort: SortOptions
   public private(set) var projectState: ProjectStateOptions
+  public private(set) var percentRaised: PercentRaisedOptions
   public fileprivate(set) var pills: [SearchFilterPill]
 
   public let objectWillChange = ObservableObjectPublisher()
 
-  public var hasFilters: Bool {
-    return self.hasCategory || self.hasProjectState
+  var filterCount: Int {
+    // Note that sort is a special case and is not included in
+    // reset or the filter count functionality.
+    [
+      self.hasCategory,
+      self.hasProjectState,
+      self.hasPercentRaised
+    ]
+    .count(where: { $0 == true })
   }
 
-  public var hasCategory: Bool {
+  var hasFilters: Bool {
+    self.filterCount > 0
+  }
+
+  var hasCategory: Bool {
     switch self.category.selectedCategory {
     case .none:
       return false
@@ -47,22 +64,28 @@ public class SearchFilters: ObservableObject {
     }
   }
 
-  public var hasProjectState: Bool {
+  var hasProjectState: Bool {
     return self.projectState.selectedProjectState != SearchFiltersUseCase.defaultStateOption
   }
 
-  public var hasSort: Bool {
+  var hasSort: Bool {
     return self.sort.selectedSort != SearchFiltersUseCase.defaultSortOption
+  }
+
+  var hasPercentRaised: Bool {
+    return self.percentRaised.selectedBucket != nil
   }
 
   internal init(
     sort: SortOptions,
     category: CategoryOptions,
-    projectState: ProjectStateOptions
+    projectState: ProjectStateOptions,
+    percentRaised: PercentRaisedOptions
   ) {
     self.sort = sort
     self.category = category
     self.projectState = projectState
+    self.percentRaised = percentRaised
 
     self.pills = []
     self.updatePills()
@@ -71,13 +94,15 @@ public class SearchFilters: ObservableObject {
   internal func update(
     withSort sort: DiscoveryParams.Sort,
     category: SearchFiltersCategory,
-    projectState: DiscoveryParams.State
+    projectState: DiscoveryParams.State,
+    percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?
   ) {
     self.objectWillChange.send()
 
     self.sort.selectedSort = sort
     self.category.selectedCategory = category
     self.projectState.selectedProjectState = projectState
+    self.percentRaised.selectedBucket = percentRaisedBucket
 
     self.updatePills()
   }
@@ -97,13 +122,12 @@ public class SearchFilters: ObservableObject {
       return self.hasCategory
     case .sort:
       return self.hasSort
+    case .percentRaised:
+      return self.hasPercentRaised
     }
   }
 
   private func updatePills() {
-    let filterCount = [self.hasCategory, self.hasProjectState]
-      .count(where: { $0 == true })
-
     var pills: [SearchFilterPill] = []
 
     pills.append(SearchFilterPill(
@@ -116,7 +140,7 @@ public class SearchFilters: ObservableObject {
       isHighlighted: self.hasFilters,
       filterType: .allFilters,
       buttonType: .image("icon-filters"),
-      count: filterCount
+      count: self.filterCount
     ))
 
     let selectedCategory = self.category.selectedCategory.category
@@ -138,6 +162,17 @@ public class SearchFilters: ObservableObject {
         buttonType: .dropdown(projectStatePillTitle)
       )
     )
+
+    if featureSearchFilterByPercentRaisedEnabled() {
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.hasPercentRaised,
+          filterType: .percentRaised,
+          // FIXME: MBL-2465 Add translated strings
+          buttonType: .dropdown("% Raised")
+        )
+      )
+    }
 
     self.pills = pills
   }
