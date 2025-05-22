@@ -114,7 +114,7 @@ public class SearchFilters: ObservableObject {
     self.category.categories = categories
   }
 
-  public func canReset(filter type: SearchFilterModalType) -> Bool {
+  public func has(filter type: SearchFilterModalType) -> Bool {
     switch type {
     case .allFilters:
       return self.hasFilters
@@ -125,6 +125,10 @@ public class SearchFilters: ObservableObject {
     case .percentRaised:
       return self.hasPercentRaised
     }
+  }
+
+  public func canReset(filter type: SearchFilterModalType) -> Bool {
+    return self.has(filter: type)
   }
 
   private func updatePills() {
@@ -164,12 +168,14 @@ public class SearchFilters: ObservableObject {
     )
 
     if featureSearchFilterByPercentRaisedEnabled() {
+      // FIXME: MBL-2465 Add translated strings
+      let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? "% Raised"
+
       pills.append(
         SearchFilterPill(
           isHighlighted: self.hasPercentRaised,
           filterType: .percentRaised,
-          // FIXME: MBL-2465 Add translated strings
-          buttonType: .dropdown("% Raised")
+          buttonType: .dropdown(percentRaisedTitle)
         )
       )
     }

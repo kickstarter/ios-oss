@@ -188,6 +188,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     self.selectedCategoryProperty.value = .none
     self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
+    self.selectedPercentRaisedBucketProperty.value = nil
   }
 
   public func resetFilters(for modal: SearchFilterModalType) {
@@ -263,7 +264,7 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
   return modalType
 }
 
-public enum SearchFilterModalType: Hashable {
+public enum SearchFilterModalType: Hashable, CaseIterable {
   case allFilters
   case category
   case sort

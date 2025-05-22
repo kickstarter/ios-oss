@@ -10,6 +10,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedSort = TestObserver<DiscoveryParams.Sort, Never>()
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
   private let selectedState = TestObserver<DiscoveryParams.State, Never>()
+  private let selectedPercentRaisedBucket = TestObserver<DiscoveryParams.PercentRaisedBucket?, Never>()
   private let showFilters = TestObserver<SearchFilterModalType, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
@@ -26,6 +27,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOutputs.selectedCategory.map { $0.category }.observe(self.selectedCategory.observer)
     self.useCase.dataOutputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.dataOutputs.selectedState.observe(self.selectedState.observer)
+    self.useCase.dataOutputs.selectedPercentRaisedBucket.observe(self.selectedPercentRaisedBucket.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
 
@@ -39,6 +41,10 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   func assert_selectedCategory_isDefault() {
     self.selectedCategory.assertLastValue(nil, "Selected category should be default value")
+  }
+
+  func assert_selectedPercentRaisedBucket_isDefault() {
+    self.selectedPercentRaisedBucket.assertLastValue(nil, "Selected % raised should be default value")
   }
 
   func test_category_onInitialSignal_isNil() {
@@ -63,6 +69,14 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.assert_selectedProjectState_isDefault()
+  }
+
+  func test_selectedPercentRaisedBucket_onInitialSignal_isNil() {
+    self.selectedPercentRaisedBucket.assertDidNotEmitValue()
+
+    self.initialObserver.send(value: ())
+
+    self.assert_selectedPercentRaisedBucket_isDefault()
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -146,6 +160,31 @@ final class SearchFiltersUseCaseTests: TestCase {
     )
   }
 
+  func test_tappedPercentRaised_showsPercentRaised() {
+    self.initialObserver.send(value: ())
+
+    self.showFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedButton(forFilterType: .percentRaised)
+
+    self.showFilters.assertDidEmitValue()
+
+    if let type = self.showFilters.lastValue {
+      XCTAssertEqual(type, .percentRaised, "Tapping percent raised button should percent raised options")
+      XCTAssertGreaterThan(
+        self.useCase.uiOutputs.searchFilters.percentRaised.buckets.count,
+        0,
+        "There should be multiple percent raised options"
+      )
+    }
+
+    XCTAssertEqual(
+      self.useCase.uiOutputs.searchFilters.percentRaised.selectedBucket,
+      nil,
+      "No option should be selected by default"
+    )
+  }
+
   func test_tappedAllFilters_showsAllOptions() {
     self.initialObserver.send(value: ())
 
@@ -220,6 +259,21 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(newSelectedState, .late_pledge, "State value should change when new state is selected")
+  }
+
+  func test_selectingPercentRaisedBucket_updatesBucket() {
+    self.initialObserver.send(value: ())
+
+    self.assert_selectedPercentRaisedBucket_isDefault()
+
+    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_1)
+
+    guard let newSelectedBucket = self.selectedPercentRaisedBucket.lastValue else {
+      XCTFail("There should be a new selected bucket")
+      return
+    }
+
+    XCTAssertEqual(newSelectedBucket, .bucket_1, "Percent raised value should change when bucket is selected")
   }
 
   func test_selectingSort_updatesSortPill() {
@@ -306,32 +360,117 @@ final class SearchFiltersUseCaseTests: TestCase {
     )
   }
 
-  func test_clearOptions_resetsSort_andClearsCategory() {
+  func test_selectingPercentRaised_updatesPercentRaisedPill() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.searchFilterByPercentRaised.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      self.initialObserver.send(value: ())
+
+      self.assert_selectedPercentRaisedBucket_isDefault()
+
+      if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          false,
+          "Percent raised pill should not be highlighted when no bucket is selected"
+        )
+      } else {
+        XCTFail("Expected percent raised pill to be set")
+      }
+
+      self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+
+      if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          true,
+          "Percent raised pill should be highlighted when a non-default option is selected"
+        )
+
+        guard case let .dropdown(title) = pill.buttonType else {
+          XCTFail("Pill is not a dropdown")
+          return
+        }
+
+        XCTAssertEqual(
+          title,
+          DiscoveryParams.PercentRaisedBucket.bucket_2.title,
+          "Dropdown should have description of selected % raised option in its title"
+        )
+
+      } else {
+        XCTFail("Expected percent raised pill to be set")
+      }
+    }
+  }
+
+  func setAllFilters_toNonDefault_andAssert() {
+    self.categoriesObserver.send(value: [
+      .art,
+      .documentary,
+      .documentarySpanish
+    ])
+
+    self.useCase.inputs.selectedCategory(.rootCategory(.art))
+    self.selectedCategory.assertLastValue(.art)
+
+    self.useCase.inputs.selectedProjectState(.late_pledge)
+    self.selectedState.assertLastValue(.late_pledge)
+
+    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+    self.selectedPercentRaisedBucket.assertLastValue(.bucket_2)
+
+    for type in SearchFilterModalType.allCases {
+      if type == .sort {
+        // Sort is a special case and not a "filter" per se
+        return
+      }
+      XCTAssertTrue(
+        self.useCase.uiOutputs.searchFilters.has(filter: type),
+        "Expected setAllFilters_toNonDefault_andAssert to set non-default value for \(type)"
+      )
+    }
+  }
+
+  func assertAllFilters_areSetToDefaults() {
+    self.assert_selectedCategory_isDefault()
+    self.assert_selectedProjectState_isDefault()
+    self.assert_selectedPercentRaisedBucket_isDefault()
+
+    for type in SearchFilterModalType.allCases {
+      if type == .sort {
+        // Sort is a special case and not a "filter" per se
+        return
+      }
+      XCTAssertFalse(
+        self.useCase.uiOutputs.searchFilters.has(filter: type),
+        "Expected default value to be set for \(type)"
+      )
+    }
+  }
+
+  func test_clearQueryText_resetsSort_andClearsFilters() {
     self.initialObserver.send(value: ())
     self.categoriesObserver.send(value: [
       .art
     ])
 
     self.assert_selectedSort_isDefault()
-    self.assert_selectedCategory_isDefault()
-    self.assert_selectedProjectState_isDefault()
+    self.assertAllFilters_areSetToDefaults()
 
-    self.useCase.inputs.selectedSortOption(.popular)
-    self.useCase.inputs.selectedCategory(.rootCategory(.art))
-    self.useCase.inputs.selectedProjectState(.late_pledge)
-
-    self.selectedSort.assertLastValue(.popular)
-    self.selectedCategory.assertLastValue(.art)
-    self.selectedState.assertLastValue(.late_pledge)
+    self.useCase.inputs.selectedSortOption(.endingSoon)
+    self.setAllFilters_toNonDefault_andAssert()
 
     self.useCase.inputs.clearedQueryText()
 
     self.assert_selectedSort_isDefault()
-    self.assert_selectedCategory_isDefault()
-    self.assert_selectedProjectState_isDefault()
+    self.assertAllFilters_areSetToDefaults()
   }
 
-  func test_resetFiltersForType_resetsOnlySpecificFilters() {
+  func test_resetAllFilters_resetsAllFilters() {
     self.initialObserver.send(value: ())
     self.categoriesObserver.send(value: [
       .art,
@@ -339,75 +478,48 @@ final class SearchFiltersUseCaseTests: TestCase {
       .documentarySpanish
     ])
 
-    XCTAssertFalse(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .allFilters),
-      "Reset should be disabled because no filters were set"
-    )
-    XCTAssertFalse(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .category),
-      "Reset should be disabled because no category was set"
-    )
-    XCTAssertFalse(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .sort),
-      "Reset should be disabled because no sort was set"
-    )
+    self.setAllFilters_toNonDefault_andAssert()
 
-    // Select some options
-    self.useCase.inputs.selectedSortOption(.popular)
-    self.selectedSort.assertLastValue(.popular)
+    XCTAssertTrue(self.useCase.searchFilters.canReset(filter: .allFilters))
 
-    self.useCase.inputs.selectedCategory(.subcategory(
-      rootCategory: .documentary,
-      subcategory: .documentarySpanish
-    ))
-    self.selectedCategory.assertLastValue(.documentarySpanish)
+    self.useCase.resetFilters(for: .allFilters)
 
-    self.useCase.inputs.selectedProjectState(.late_pledge)
-    self.selectedState.assertLastValue(.late_pledge)
+    self.assertAllFilters_areSetToDefaults()
+  }
 
-    XCTAssertTrue(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .allFilters),
-      "Reset should be enabled because some filters were set"
-    )
-    XCTAssertTrue(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .category),
-      "Reset should be enabled because some filters were set"
-    )
-    XCTAssertTrue(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .sort),
-      "Reset should be enabled because some sort was set"
-    )
+  func test_resetFiltersForType_resetsOnlySpecificFilters() {
+    self.initialObserver.send(value: ())
 
-    self.useCase.inputs.resetFilters(for: .category)
-    self.assert_selectedCategory_isDefault()
-    XCTAssertFalse(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .category),
-      "Resetting the category should disable the reset button afterwards"
-    )
+    for type in SearchFilterModalType.allCases {
+      XCTAssertFalse(
+        self.useCase.uiOutputs.searchFilters.canReset(filter: type),
+        "Reset should be disabled because no filters were set"
+      )
+    }
 
-    self.selectedSort.assertLastValue(.popular, "Resetting category shouldn't affect sort")
-    self.selectedState.assertLastValue(.late_pledge, "Resetting category shouldn't affect project state")
+    let filterTypes = [SearchFilterModalType.category, SearchFilterModalType.percentRaised]
 
-    self.useCase.inputs.resetFilters(for: .allFilters)
-    self.assert_selectedProjectState_isDefault()
-    XCTAssertFalse(
-      self.useCase.uiOutputs.searchFilters.canReset(filter: .allFilters),
-      "Resetting all filters should disable the reset button afterwards"
-    )
+    for type in filterTypes {
+      self.setAllFilters_toNonDefault_andAssert()
 
-    self.selectedSort.assertLastValue(
-      .popular,
-      "Sort isn't on the all filters page, so it shouldn't be reset by all filters"
-    )
-    self.assert_selectedCategory_isDefault()
+      XCTAssertTrue(self.useCase.uiOutputs.searchFilters.has(filter: type))
+      XCTAssertTrue(self.useCase.uiOutputs.searchFilters.canReset(filter: type))
+      self.useCase.inputs.resetFilters(for: type)
+      XCTAssertFalse(
+        self.useCase.uiOutputs.searchFilters.has(filter: type),
+        "Resetting filter of type \(type) should have set it back to its default value"
+      )
 
-    self.useCase.inputs.resetFilters(for: .sort)
-    self.assert_selectedSort_isDefault()
-    self.assert_selectedCategory_isDefault()
-    self.assert_selectedProjectState_isDefault()
-
-    XCTAssertFalse(self.useCase.uiOutputs.searchFilters.canReset(filter: .allFilters))
-    XCTAssertFalse(self.useCase.uiOutputs.searchFilters.canReset(filter: .category))
-    XCTAssertFalse(self.useCase.uiOutputs.searchFilters.canReset(filter: .sort))
+      // Make sure the other filters didn't get reset, too
+      for otherFilterType in filterTypes {
+        if otherFilterType == type {
+          continue
+        }
+        XCTAssertTrue(
+          self.useCase.uiOutputs.searchFilters.canReset(filter: otherFilterType),
+          "Resetting a filter of type \(type) should not have reset the filter of type \(otherFilterType)"
+        )
+      }
+    }
   }
 }
