@@ -207,6 +207,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         _ = self.tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
       case let .activity(index):
         _ = self.tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
+      case let .reactNativeDemo(index):
+        _ = self.tabBarItem(atIndex: index) ?|> reactNativeTabBarItemStyle
       case let .search(index):
         _ = self.tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .profile(avatarUrl, index):
@@ -277,6 +279,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       return ActivitiesViewController.instantiate()
     case .pledgedProjectsAndActivities:
       return PPOContainerViewController.instantiate()
+    case .reactNativeDemo:
+      return ReactViewController.instantiate()
     case .search:
       return SearchViewController.instantiate()
     case let .profile(isLoggedIn):

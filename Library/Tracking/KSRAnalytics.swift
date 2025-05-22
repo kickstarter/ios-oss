@@ -501,6 +501,7 @@ public final class KSRAnalytics {
     case search
     case dashboard
     case profile
+    case reactNativeDemo
 
     var trackingString: String {
       return self.rawValue

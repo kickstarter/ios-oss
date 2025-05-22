@@ -12,7 +12,7 @@ class ReactViewController: UIViewController {
     reactNativeFactoryDelegate = ReactNativeDelegate()
     reactNativeFactoryDelegate!.dependencyProvider = RCTAppDependencyProvider()
     reactNativeFactory = RCTReactNativeFactory(delegate: reactNativeFactoryDelegate!)
-    view = reactNativeFactory!.rootViewFactory.view(withModuleName: "HelloWorld")
+    view = reactNativeFactory!.rootViewFactory.view(withModuleName: "KickstarterMobile")
   }
 }
 

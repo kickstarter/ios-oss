@@ -10,6 +10,7 @@ public enum RootViewControllerData: Equatable {
   case discovery
   case activities
   case pledgedProjectsAndActivities
+  case reactNativeDemo
   case search
   case profile(isLoggedIn: Bool)
 
@@ -18,6 +19,7 @@ public enum RootViewControllerData: Equatable {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
     case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
+    case (.reactNativeDemo, .reactNativeDemo): return true
     case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
@@ -39,7 +41,7 @@ public enum RootViewControllerData: Equatable {
     switch self {
     case .activities, .pledgedProjectsAndActivities:
       return true
-    case .discovery, .profile, .search:
+    case .discovery, .profile, .search, .reactNativeDemo:
       return false
     }
   }
@@ -55,6 +57,7 @@ public enum TabBarItem {
   case home(index: RootViewControllerIndex)
   case profile(avatarUrl: URL?, index: RootViewControllerIndex)
   case search(index: RootViewControllerIndex)
+  case reactNativeDemo(index: RootViewControllerIndex)
 }
 
 public protocol RootViewModelInputs {
@@ -156,9 +159,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       self.applicationWillEnterForegroundSignal
     )
 
-    let standardViewControllers = loginState.map { isLoggedIn -> [RootViewControllerData] in
-      generateViewControllers(isLoggedIn: isLoggedIn)
-    }
+    let standardViewControllers = loginState.map(generateViewControllers(isLoggedIn:))
 
     // We could detect when this feature changes in more places - like listening for notifications
     // that the remote config loaded - but that might change the tab bar at a strange time.
@@ -468,6 +469,7 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
     controllers.append(.activities)
   }
 
+  controllers.append(.reactNativeDemo)
   controllers.append(.search)
   controllers.append(.profile(isLoggedIn: isLoggedIn))
 
@@ -476,8 +478,8 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
   let items: [TabBarItem] = [
-    .home(index: 0), .activity(index: 1), .search(index: 2),
-    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+    .home(index: 0), .activity(index: 1), .reactNativeDemo(index: 2), .search(index: 3),
+    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
   ]
 
   return TabBarItemsData(
@@ -515,6 +517,8 @@ private func tabBarItemLabel(for tabBarItem: TabBarItem) -> KSRAnalytics.TabBarI
     return .discovery
   case .profile:
     return .profile
+  case .reactNativeDemo:
+    return .reactNativeDemo
   case .search:
     return .search
   }

@@ -13,6 +13,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   case paginatedScrollView
   case changeEnvironment
   case changeLanguage
+  case reactNativeDemo
 
   public var cellStyle: UITableViewCell.CellStyle {
     switch self {
@@ -38,6 +39,7 @@ public enum BetaToolsRow: Int, CaseIterable {
     case .paginatedScrollView: return "Paginated Scroll View"
     case .changeEnvironment: return "Change Environment"
     case .changeLanguage: return "Change Language"
+    case .reactNativeDemo: return "React Native Demo"
     }
   }
 
@@ -77,6 +79,7 @@ public protocol BetaToolsViewModelOutputs {
   var goToPaginatedScrollView: Signal<(), Never> { get }
   var goToDesignSystem: Signal<(), Never> { get }
   var goToColors: Signal<(), Never> { get }
+  var goToReactNativeDemo: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
   var showChangeEnvironmentSheetWithSourceViewIndex: Signal<Int, Never> { get }
@@ -183,6 +186,12 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
         .filter { $0 == BetaToolsRow.colors }
         .ignoreValues()
 
+    self.goToReactNativeDemo =
+      self.didSelectBetaToolsRowProperty.signal
+        .skipNil()
+        .filter { $0 == BetaToolsRow.reactNativeDemo }
+        .ignoreValues()
+
     self.logoutWithParams = self.didUpdateEnvironmentProperty.signal
       .map {
         .defaults
@@ -228,6 +237,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let goToPaginatedScrollView: Signal<(), Never>
   public let goToDesignSystem: Signal<(), Never>
   public let goToColors: Signal<(), Never>
+  public let goToReactNativeDemo: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>
   public let logoutWithParams: Signal<DiscoveryParams, Never>

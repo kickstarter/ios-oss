@@ -17,6 +17,14 @@ public let activityTabBarItemStyle: TabBarItemStyle = { button in
   return button
 }
 
+public let reactNativeTabBarItemStyle: TabBarItemStyle = { button in
+  button.title = "React Native"
+  button.image = image(named: "tabbar-icon-backings")
+  button.image = image(named: "tabbar-icon-backings-selected")
+  button.accessibilityLabel = "React Native"
+  return button
+}
+
 public let dashboardTabBarItemStyle: TabBarItemStyle = { button in
   button.title = Strings.tabbar_dashboard()
   button.image = image(named: "tabbar-icon-dashboard")

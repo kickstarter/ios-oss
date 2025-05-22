@@ -136,6 +136,12 @@ internal final class BetaToolsViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.showMailDisabledAlert()
       }
+
+    self.viewModel.outputs.goToReactNativeDemo
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToReactNativeDemo()
+      }
   }
 
   // MARK: - Selectors
@@ -205,6 +211,13 @@ internal final class BetaToolsViewController: UITableViewController {
   private func goToColors() {
     let viewController = UIHostingController(rootView: ColorsView())
     self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  private func goToReactNativeDemo() {
+    let viewController = ReactViewController.instantiate()
+    let navigator = UINavigationController(rootViewController: viewController)
+    navigator.modalPresentationStyle = .fullScreen
+    self.present(navigator, animated: true)
   }
 
   private func showLanguageActionSheet(sourceViewIndex: Int) {
