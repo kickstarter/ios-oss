@@ -104,6 +104,7 @@ final class ProjectCardViewTests: TestCase {
       id: 1,
       name: "Project 1",
       state: "live",
+      isLaunched: false,
       prelaunchActivated: true,
       launchedAt: "-5"
     )
