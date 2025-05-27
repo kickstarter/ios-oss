@@ -1692,6 +1692,7 @@
 		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
 		E19900A62DDF9BFD0082F05E /* FilterSectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A52DDF9BFD0082F05E /* FilterSectionButton.swift */; };
 		E19900A82DDFA4F10082F05E /* MessageBannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E19900A72DDFA4F10082F05E /* MessageBannerViewController.xib */; };
+		E19900AB2DE634F10082F05E /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900AA2DE634F10082F05E /* RadioButton.swift */; };
 		E19D49C52DB7F075004A74D5 /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19D49C42DB7F075004A74D5 /* FilterCategoryView.swift */; };
 		E19D49C72DB7F07A004A74D5 /* FilterCategoryViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19D49C62DB7F07A004A74D5 /* FilterCategoryViewTest.swift */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
@@ -3487,6 +3488,7 @@
 		E19900A22DDE26C10082F05E /* PercentRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentRaisedView.swift; sourceTree = "<group>"; };
 		E19900A52DDF9BFD0082F05E /* FilterSectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSectionButton.swift; sourceTree = "<group>"; };
 		E19900A72DDFA4F10082F05E /* MessageBannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageBannerViewController.xib; sourceTree = "<group>"; };
+		E19900AA2DE634F10082F05E /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		E19D49C42DB7F075004A74D5 /* FilterCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryView.swift; sourceTree = "<group>"; };
 		E19D49C62DB7F07A004A74D5 /* FilterCategoryViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewTest.swift; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
@@ -5942,6 +5944,7 @@
 		336193ED2D825C4F00BED4BD /* SortFilter */ = {
 			isa = PBXGroup;
 			children = (
+				E19900A92DE634E20082F05E /* Components */,
 				E19900A42DDF9BF50082F05E /* FilterRootView */,
 				E19900A12DDE26A60082F05E /* PercentRaisedView */,
 				E1CFB6B62D91E99F004AB0D6 /* HeaderView */,
@@ -7726,6 +7729,14 @@
 			path = FilterRootView;
 			sourceTree = "<group>";
 		};
+		E19900A92DE634E20082F05E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E19900AA2DE634F10082F05E /* RadioButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -9190,6 +9201,7 @@
 				60F03AC42D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift in Sources */,
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
 				7727494923FC8C2A0065E9F2 /* CategorySelectionDataSource.swift in Sources */,
+				E19900AB2DE634F10082F05E /* RadioButton.swift in Sources */,
 				A75798911D6A201F0063CEEC /* DebugPushNotificationsViewController.swift in Sources */,
 				1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */,
 				06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */,
