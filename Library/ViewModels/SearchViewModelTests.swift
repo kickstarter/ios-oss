@@ -22,7 +22,7 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
-  fileprivate let showFilters = TestObserver<(SearchFilterOptions, SearchFilterModalType), Never>()
+  fileprivate let showFilters = TestObserver<SearchFilterModalType, Never>()
   fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -250,8 +250,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           false,
@@ -268,8 +268,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
         XCTAssertEqual(
           categoryPill.isHighlighted,
@@ -282,8 +282,8 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.clearSearchText()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
         XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
       } else {
@@ -315,8 +315,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           false,
@@ -334,8 +334,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
         XCTAssertEqual(
           categoryPill.isHighlighted,
@@ -348,8 +348,8 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.cancelButtonPressed()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
         XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
       } else {
@@ -382,8 +382,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           false,
@@ -401,8 +401,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
         XCTAssertEqual(
           categoryPill.isHighlighted,
@@ -417,8 +417,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(sortPill.isHighlighted, false, "Canceling search should clear sort")
         XCTAssertEqual(categoryPill.isHighlighted, false, "Canceling search should clear category")
       } else {
@@ -451,8 +451,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           false,
@@ -470,8 +470,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.selectedCategory(.rootCategory(.art))
       self.vm.inputs.selectedSortOption(.endingSoon)
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           true,
@@ -491,8 +491,8 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("test two")
       self.vm.inputs.searchTextEditingDidEnd()
 
-      if let sortPill = self.vm.outputs.selectedFilters.sortPill,
-         let categoryPill = self.vm.outputs.selectedFilters.categoryPill {
+      if let sortPill = self.vm.outputs.searchFilters.sortPill,
+         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
         XCTAssertEqual(
           sortPill.isHighlighted,
           true, "Changing text shouldn't change sort"
@@ -696,14 +696,17 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.tappedButton(forFilterType: .sort)
       self.showFilters.assertDidEmitValue()
 
-      guard let (options, type) = self.showFilters.lastValue else {
+      guard let type = self.showFilters.lastValue else {
         XCTFail("Sort sheet should have been shown after sort button was tapped")
         return
       }
 
-      XCTAssertTrue(options.sort.sortOptions.count > 1, "Sort sheet should have multiple sort options")
       XCTAssertTrue(
-        self.vm.outputs.selectedFilters.sort == .magic,
+        self.vm.outputs.searchFilters.sort.sortOptions.count > 1,
+        "Sort sheet should have multiple sort options"
+      )
+      XCTAssertTrue(
+        self.vm.outputs.searchFilters.sort.selectedSort == .magic,
         "Sort sheet should have first option selected by default"
       )
 
@@ -821,14 +824,17 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.tappedButton(forFilterType: .category)
       self.showFilters.assertDidEmitValue()
 
-      guard let (options, type) = self.showFilters.lastValue else {
+      guard let type = self.showFilters.lastValue else {
         XCTFail("Category sheet should have been shown after tappedCategoryFilters was called")
         return
       }
 
-      XCTAssertTrue(options.category.categories.count == 4, "Category sheet should have 4 options")
       XCTAssertTrue(
-        self.vm.outputs.selectedFilters.category == .none,
+        self.vm.outputs.searchFilters.category.categories.count == 4,
+        "Category sheet should have 4 options"
+      )
+      XCTAssertTrue(
+        self.vm.outputs.searchFilters.category.selectedCategory == .none,
         "Category sheet should have empty option selected by default"
       )
 
