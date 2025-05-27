@@ -140,7 +140,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedState
     )
     .map { query, sort, category, state in
-      DiscoveryParams.withQuery(query, sort: sort, category: category.category, state: state)
+      DiscoveryParams.withQuery(
+        query,
+        sort: sort,
+        category: category.category,
+        state: state,
+        // TODO: MBL-2351 Make this selectable from the UI
+        percentRaised: nil
+      )
     }
 
     // Every time the user changes their query, sort or filters, we set an empty
