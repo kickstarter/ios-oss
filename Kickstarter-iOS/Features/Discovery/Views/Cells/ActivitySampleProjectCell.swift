@@ -47,6 +47,8 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyleMedium()
 
+    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.projectImageAndInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
