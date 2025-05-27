@@ -52,7 +52,7 @@ struct SortView<T: SortOption>: View {
             .font(Font.ksr_bodyMD())
             .foregroundStyle(Colors.Text.primary.swiftUIColor())
           Spacer()
-          self.radioButton(isSelected: self.viewModel.isSortOptionSelected(sortOption))
+          RadioButton(isSelected: self.viewModel.isSortOptionSelected(sortOption))
         }
         .padding(.vertical, Constants.rowPaddingVertical)
         .padding(.horizontal, Constants.rowPaddingHorizontal)
@@ -68,28 +68,8 @@ struct SortView<T: SortOption>: View {
     .listStyle(.plain)
   }
 
-  @ViewBuilder
-  private func radioButton(isSelected: Bool) -> some View {
-    ZStack {
-      Circle()
-        .strokeBorder(
-          isSelected ? Colors.Border.subtle.swiftUIColor() : Colors.Border.bold.swiftUIColor(),
-          lineWidth: Constants.radioButtonOuterBorder
-        )
-
-      if isSelected {
-        Circle()
-          .strokeBorder(
-            Colors.Background.selected.swiftUIColor(),
-            lineWidth: Constants.radioButtonInnerBorder
-          )
-      }
-    }
-    .frame(width: Constants.radioButtonSize, height: Constants.radioButtonSize)
-  }
-
   internal func dynamicHeight() -> CGFloat {
-    let itemHeight = Constants.rowPaddingVertical * 2 + Constants.radioButtonSize
+    let itemHeight = Constants.rowPaddingVertical * 2 + RadioButton.Constants.radioButtonSize
     let maxHeight = UIScreen.main.bounds.height
     let totalHeight = CGFloat(self.viewModel.sortOptions.count) * itemHeight + Constants.extraDynamicHeight
     return min(totalHeight, maxHeight)
@@ -98,9 +78,6 @@ struct SortView<T: SortOption>: View {
 
 private enum Constants {
   static let headerPadding: CGFloat = Styles.grid(4)
-  static let radioButtonSize: CGFloat = Styles.grid(4)
-  static let radioButtonOuterBorder: CGFloat = 1.0
-  static let radioButtonInnerBorder: CGFloat = 8.0
   static let rowPaddingHorizontal: CGFloat = Styles.grid(4)
   static let rowPaddingVertical: CGFloat = 9.0
   static let extraDynamicHeight: CGFloat = 30.0
