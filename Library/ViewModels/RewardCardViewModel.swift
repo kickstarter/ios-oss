@@ -73,11 +73,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.conversionLabelText = projectAndReward
       .filter(first >>> needsConversion(project:))
       .map { project, reward in
-        let currentCurrencyCode = project.stats.currentCurrency ?? Project.Country.us.currencyCode
+        let userCurrencyCode = project.stats.userCurrency ?? Project.Country.us.currencyCode
 
         return Format.currency(
           reward.convertedMinimum,
-          currencyCode: currentCurrencyCode,
+          currencyCode: userCurrencyCode,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .up
         )

@@ -126,7 +126,7 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
       pledged: moneyFragmentToMoney(self.pledged.fragments.moneyFragment),
       convertedPledgedAmount: nil,
       currency: self.currency.rawValue,
-      currentCurrencyCode: nil,
+      userCurrency: nil,
       country: Project.Country(currencyCode: self.country.code.rawValue) ?? .us,
       projectNotice: "",
       video: video,
