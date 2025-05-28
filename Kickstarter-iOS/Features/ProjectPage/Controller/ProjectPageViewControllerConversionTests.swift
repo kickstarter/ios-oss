@@ -81,8 +81,8 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   func test_USProject_USUser_USLocation() {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ "USD"
-      |> Project.lens.stats.currentCurrencyRate .~ 1.0
+      |> Project.lens.stats.projectCurrency .~ "USD"
+      |> Project.lens.stats.userCurrencyRate .~ 1.0
 
     let mockService = MockService(
       fetchProjectResult: .success(self.cosmicSurgery)
@@ -109,8 +109,8 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   func test_USProject_USUser_NonUSLocation() {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ "USD"
-      |> Project.lens.stats.currentCurrencyRate .~ 1.0
+      |> Project.lens.stats.projectCurrency .~ "USD"
+      |> Project.lens.stats.userCurrencyRate .~ 1.0
 
     let mockService = MockService(
       fetchProjectResult: .success(self.cosmicSurgery)
@@ -147,8 +147,8 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ "USD"
-      |> Project.lens.stats.currentCurrencyRate .~ 1.0
+      |> Project.lens.stats.projectCurrency .~ "USD"
+      |> Project.lens.stats.userCurrencyRate .~ 1.0
       |> Project.lens.personalization.backing .~ backing
 
     let mockService = MockService(
@@ -180,9 +180,9 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.rewardData.rewards .~ rewards
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ "USD"
-      |> Project.lens.stats.currentCurrency .~ "SEK"
-      |> Project.lens.stats.currentCurrencyRate .~ 3.0
+      |> Project.lens.stats.projectCurrency .~ "USD"
+      |> Project.lens.stats.userCurrency .~ "SEK"
+      |> Project.lens.stats.userCurrencyRate .~ 3.0
       |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
     let mockService = MockService(
@@ -210,9 +210,9 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   func test_UKProject_UndefinedUser_USLocation() {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ nil
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ nil
+      |> Project.lens.stats.userCurrencyRate .~ nil
 
     let mockService = MockService(
       fetchProjectResult: .success(self.cosmicSurgery)
@@ -239,9 +239,9 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   func test_UKProject_UndefinedUser_NonUSLocation() {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ nil
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ nil
+      |> Project.lens.stats.userCurrencyRate .~ nil
 
     let mockService = MockService(
       fetchProjectResult: .success(self.cosmicSurgery)
@@ -268,9 +268,9 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   func test_UKProject_UndefinedUser_UndefinedLocation() {
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ nil
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ nil
+      |> Project.lens.stats.userCurrencyRate .~ nil
 
     let mockService = MockService(
       fetchProjectResult: .success(self.cosmicSurgery)

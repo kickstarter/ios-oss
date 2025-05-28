@@ -3,23 +3,34 @@ import Library
 import SwiftUI
 
 struct FilterRootView: View {
-  let filterOptions: SearchFilterOptions
   @State var navigationState: [SearchFilterModalType]
 
-  @ObservedObject var selectedFilters: SelectedSearchFilters
+  @ObservedObject var searchFilters: SearchFilters
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
+  var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
   private var selectedCategory: Binding<SearchFiltersCategory> {
     Binding {
-      self.selectedFilters.category
+      self.searchFilters.category.selectedCategory
     } set: { newValue in
       if let action = self.onSelectedCategory {
         action(newValue)
+      }
+    }
+  }
+
+  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
+    Binding {
+      self.searchFilters.percentRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onSelectedPercentRaisedBucket,
+         let bucket = newValue {
+        action(bucket)
       }
     }
   }
@@ -29,11 +40,9 @@ struct FilterRootView: View {
   }
 
   init(
-    filterOptions: SearchFilterOptions,
     filterType: SearchFilterModalType,
-    selectedFilters: SelectedSearchFilters
+    searchFilters: SearchFilters
   ) {
-    self.filterOptions = filterOptions
     if filterType == .allFilters {
       // Show the root view
       self.navigationState = []
@@ -41,30 +50,7 @@ struct FilterRootView: View {
       self.navigationState = [filterType]
     }
 
-    self.selectedFilters = selectedFilters
-  }
-
-  @ViewBuilder
-  var categorySection: some View {
-    HStack {
-      VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
-        Text(Strings.Category())
-          .font(InterFont.headingLG.swiftUIFont())
-          .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        if let selectedCategory = self.selectedFilters.category.name {
-          Text(selectedCategory)
-            .font(InterFont.bodyMD.swiftUIFont())
-            .foregroundStyle(Colors.Text.secondary.swiftUIColor())
-        }
-      }
-      if let icon = Library.image(named: "chevron-right") {
-        Spacer()
-        Image(uiImage: icon)
-          .renderingMode(.template)
-          .tint(Colors.Text.primary.swiftUIColor())
-      }
-    }
-    .padding(Constants.sectionPadding)
+    self.searchFilters = searchFilters
   }
 
   @ViewBuilder
@@ -74,7 +60,7 @@ struct FilterRootView: View {
         .font(InterFont.headingLG.swiftUIFont())
         .foregroundStyle(Colors.Text.primary.swiftUIColor())
       FlowLayout(spacing: Constants.flowLayoutSpacing) {
-        ForEach(self.filterOptions.projectState.stateOptions) { state in
+        ForEach(self.searchFilters.projectState.stateOptions) { state in
           Button(action: {
             if let action = onSelectedProjectState {
               action(state)
@@ -84,7 +70,7 @@ struct FilterRootView: View {
           })
           .buttonStyle(
             SearchFiltersPillStyle(
-              isHighlighted: state == self.selectedFilters.projectState
+              isHighlighted: state == self.searchFilters.projectState.selectedProjectState
             )
           )
         }
@@ -94,9 +80,37 @@ struct FilterRootView: View {
   }
 
   @ViewBuilder
+  var percentRaisedSection: some View {
+    FilterSectionButton(
+      // FIXME: MBL-2465 Add translations
+      title: "Percent Raised",
+      subtitle:
+      self.searchFilters.percentRaised.selectedBucket?.title
+    )
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
+  var categorySection: some View {
+    FilterSectionButton(
+      title: Strings.Category(),
+      subtitle: self.searchFilters.category.selectedCategory.name
+    )
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
+  var percentRaisedModal: some View {
+    PercentRaisedView(
+      buckets: self.searchFilters.percentRaised.buckets,
+      selectedBucket: self.selectedPercentRaisedBucket
+    )
+  }
+
+  @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
-      categories: self.filterOptions.category.categories,
+      categories: self.searchFilters.category.categories,
       selectedCategory: self.selectedCategory
     )
   }
@@ -112,7 +126,7 @@ struct FilterRootView: View {
       }
       .buttonStyle(KSRButtonStyleModifier(style: .outlined))
       .frame(maxWidth: Constants.resetButtonMaxWidth)
-      .disabled(!self.selectedFilters.canReset(filter: self.modalType))
+      .disabled(!self.searchFilters.canReset(filter: self.modalType))
 
       Button(Strings.See_results()) {
         if let action = self.onResults {
@@ -135,14 +149,25 @@ struct FilterRootView: View {
           }
           Divider()
           self.projectStateSection
+          if featureSearchFilterByPercentRaisedEnabled() {
+            Divider()
+            NavigationLink(value: SearchFilterModalType.percentRaised) {
+              self.percentRaisedSection
+            }
+          }
           Divider()
           Spacer()
         }
         .navigationDestination(for: SearchFilterModalType.self, destination: { modalType in
-          if modalType == .category {
+          switch modalType {
+          case .category:
             self.categoryModal
               .modalHeader(withTitle: Strings.Category(), onClose: self.onClose)
-          } else {
+          case .percentRaised:
+            // FIXME: MBL-2465 Add translations
+            self.percentRaisedModal
+              .modalHeader(withTitle: "Percent Raised", onClose: self.onClose)
+          default:
             EmptyView()
           }
         })
@@ -151,6 +176,13 @@ struct FilterRootView: View {
       Divider()
       self.footerView
     }
+  }
+
+  enum Constants {
+    static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
+    static let sectionSpacing: CGFloat = 12.0
+    static let flowLayoutSpacing: CGFloat = 8.0
+    static let resetButtonMaxWidth: CGFloat = 130.0
   }
 }
 
@@ -180,11 +212,4 @@ extension DiscoveryParams.State: @retroactive Identifiable {
   public var id: Int {
     return self.rawValue.hashValue
   }
-}
-
-private enum Constants {
-  static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
-  static let sectionSpacing: CGFloat = 12.0
-  static let flowLayoutSpacing: CGFloat = 8.0
-  static let resetButtonMaxWidth: CGFloat = 130.0
 }

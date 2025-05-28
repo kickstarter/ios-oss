@@ -1,6 +1,6 @@
 import Library
 
-extension SelectedSearchFilters {
+extension SearchFilters {
   var sortPill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .sort })
   }
@@ -15,5 +15,9 @@ extension SelectedSearchFilters {
 
   var projectStatePill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .projectState })
+  }
+
+  var percentRaisedPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .percentRaised })
   }
 }

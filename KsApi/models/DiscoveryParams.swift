@@ -19,6 +19,7 @@ public struct DiscoveryParams {
   public var staffPicks: Bool?
   public var starred: Bool?
   public var state: State?
+  public var percentRaised: PercentRaisedBucket?
 
   public enum State: String, Decodable {
     case all
@@ -46,6 +47,15 @@ public struct DiscoveryParams {
       case .most_backed: return "most_backed"
       }
     }
+  }
+
+  public enum PercentRaisedBucket: CaseIterable {
+    /// 0 to 75%
+    case bucket_0
+    /// 75% - 100%
+    case bucket_1
+    /// 100% or more
+    case bucket_2
   }
 
   public static let defaults = DiscoveryParams(
@@ -208,6 +218,10 @@ extension DiscoveryParams {
       case .upcoming:
         return false
       }
+    }
+
+    if let raised = self.percentRaised {
+      return false
     }
     return true
   }

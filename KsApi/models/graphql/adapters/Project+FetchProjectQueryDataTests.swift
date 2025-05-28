@@ -71,7 +71,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
 
     /// Project Stats
     XCTAssertEqual(project.stats.backersCount, 148)
-    XCTAssertEqual(project.stats.currency, "EUR")
+    XCTAssertEqual(project.stats.projectCurrency, "EUR")
     XCTAssertEqual(project.stats.goal, 2_000)
     XCTAssertEqual(project.stats.pledged, 7_827)
     XCTAssertEqual(project.stats.staticUsdRate, 1.18302594)
@@ -79,8 +79,8 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.stats.updatesCount, 5)
     XCTAssertEqual(project.stats.commentsCount, 0)
     XCTAssertEqual(project.stats.convertedPledgedAmount, 11_706.016586616)
-    XCTAssertEqual(project.stats.currentCurrency, "CAD")
-    XCTAssertEqual(project.stats.currentCurrencyRate, 1.49547966)
+    XCTAssertEqual(project.stats.userCurrency, "CAD")
+    XCTAssertEqual(project.stats.userCurrencyRate, 1.49547966)
 
     /// Project Location
     XCTAssertEqual(project.location.country, "DE")

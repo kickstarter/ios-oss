@@ -2677,6 +2677,55 @@ public enum GraphAPI {
     }
   }
 
+  /// Buckets of percentage raised
+  public enum RaisedBuckets: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// Range from 0 to 75 percent
+    case bucket_0
+    /// Range from 75 to 100 percent
+    case bucket_1
+    /// Range from 100 to Infinity percent
+    case bucket_2
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "BUCKET_0": self = .bucket_0
+        case "BUCKET_1": self = .bucket_1
+        case "BUCKET_2": self = .bucket_2
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .bucket_0: return "BUCKET_0"
+        case .bucket_1: return "BUCKET_1"
+        case .bucket_2: return "BUCKET_2"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: RaisedBuckets, rhs: RaisedBuckets) -> Bool {
+      switch (lhs, rhs) {
+        case (.bucket_0, .bucket_0): return true
+        case (.bucket_1, .bucket_1): return true
+        case (.bucket_2, .bucket_2): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [RaisedBuckets] {
+      return [
+        .bucket_0,
+        .bucket_1,
+        .bucket_2,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -14080,12 +14129,13 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
           categoryId: $categoryId
           state: $state
+          raised: $raised
           after: $cursor
           first: $first
         ) {
@@ -14122,20 +14172,22 @@ public enum GraphAPI {
     public var sort: ProjectSort?
     public var categoryId: String?
     public var state: PublicProjectState?
+    public var raised: RaisedBuckets?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
       self.state = state
+      self.raised = raised
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14143,7 +14195,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 

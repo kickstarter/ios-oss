@@ -81,12 +81,12 @@ public struct Project {
     public var commentsCount: Int?
     public var convertedPledgedAmount: Float?
     /// The currency code of the project ex. USD
-    public var currency: String
+    public var projectCurrency: String
     /// The currency code of the User's preferred currency ex. SEK
-    public var currentCurrency: String?
+    public var userCurrency: String?
     /// The currency conversion rate between the User's preferred currency
     /// and the Project's currency
-    public var currentCurrencyRate: Float?
+    public var userCurrencyRate: Float?
     public var goal: Int
     public var pledged: Int
     public var staticUsdRate: Float
@@ -119,9 +119,9 @@ public struct Project {
       return floor(Float(self.goal) * self.staticUsdRate)
     }
 
-    /// Goal amount converted to current currency.
-    public var goalCurrentCurrency: Float? {
-      return self.currentCurrencyRate.map { floor(Float(self.goal) * $0) }
+    /// Goal amount converted to user's currency.
+    public var goalUserCurrency: Float? {
+      return self.userCurrencyRate.map { floor(Float(self.goal) * $0) }
     }
 
     /// Goal amount, converted to USD, irrespective of the users selected currency
@@ -129,27 +129,27 @@ public struct Project {
       return Float(self.goal) * (self.usdExchangeRate ?? 0)
     }
 
-    /// Country determined by current currency.
-    public var currentCountry: Project.Country? {
-      guard let currentCurrency = self.currentCurrency else {
+    /// Country determined by user's currency.
+    public var userCountry: Project.Country? {
+      guard let userCurrency = self.userCurrency else {
         return nil
       }
 
-      return Project.Country(currencyCode: currentCurrency)
+      return Project.Country(currencyCode: userCurrency)
     }
 
     /// Omit US currency code
     public var omitUSCurrencyCode: Bool {
-      let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
+      let userCurrency = self.userCurrency ?? Project.Country.us.currencyCode
 
-      return currentCurrency == Project.Country.us.currencyCode
+      return userCurrency == Project.Country.us.currencyCode
     }
 
     /// Project pledge & goal values need conversion
     public var needsConversion: Bool {
-      let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
+      let userCurrency = self.userCurrency ?? Project.Country.us.currencyCode
 
-      return self.currency != currentCurrency
+      return self.projectCurrency != userCurrency
     }
 
     public var goalMet: Bool {
@@ -389,9 +389,9 @@ extension Project.Stats: Decodable {
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
     self.convertedPledgedAmount = try values.decodeIfPresent(Float.self, forKey: .convertedPledgedAmount)
-    self.currency = try values.decode(String.self, forKey: .currency)
-    self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
-    self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
+    self.projectCurrency = try values.decode(String.self, forKey: .currency)
+    self.userCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
+    self.userCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
     self.goal = try values.decode(Int.self, forKey: .goal)
     let value = try values.decode(Double.self, forKey: .pledged)
     self.pledged = Int(value)

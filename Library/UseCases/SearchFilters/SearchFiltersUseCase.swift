@@ -19,16 +19,19 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedCategory(_ category: SearchFiltersCategory)
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
+  /// Call this when the user selects a new percent raised filter.
+  func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 }
 
 public protocol SearchFiltersUseCaseUIOutputs {
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
-  var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never> { get }
+  var showFilters: Signal<SearchFilterModalType, Never> { get }
 
-  /// An @ObservableObject model which SwiftUI can use to observe the selected filters. Owned and automatically updated by this use case.
-  var selectedFilters: SelectedSearchFilters { get }
+  /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
+  /// Owned and automatically updated by this `SearchFiltersUseCase`.
+  var searchFilters: SearchFilters { get }
 }
 
 public protocol SearchFiltersUseCaseDataOutputs {
@@ -38,6 +41,8 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedCategory: Signal<SearchFiltersCategory, Never> { get }
   /// The currently selected project state. Defaults to `.all`. Default value only sent after `initialSignal` occurs.
   var selectedState: Signal<DiscoveryParams.State, Never> { get }
+  /// The currently selected percent raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
+  var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -50,22 +55,9 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     self.showFilters = self.categoriesProperty.producer
       .takePairWhen(self.tappedFilterTypeSignal)
-      .map { [sortOptions, stateOptions] categories, pill in
-        let options = SearchFilterOptions(
-          category: SearchFilterOptions.CategoryOptions(
-            categories: categories
-          ),
-          sort: SearchFilterOptions.SortOptions(
-            sortOptions: sortOptions
-          ),
-          projectState: SearchFilterOptions.ProjectStateOptions(
-            stateOptions: stateOptions
-          )
-        )
-
+      .map { _, pill in
         let modalType = filterModal(toShowForPill: pill)
-
-        return (options, modalType)
+        return modalType
       }
 
     self.selectedSort = Signal.merge(
@@ -83,21 +75,59 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedStateProperty.signal
     )
 
-    self.selectedFilters = SelectedSearchFilters(
-      sort: self.selectedSortProperty.value,
-      category: self.selectedCategoryProperty.value,
-      projectState: self.selectedStateProperty.value
+    self.selectedPercentRaisedBucket = Signal.merge(
+      self.selectedPercentRaisedBucketProperty.producer.takeWhen(initialSignal),
+      self.selectedPercentRaisedBucketProperty.signal
+    )
+
+    let sortOptions = SearchFilters.SortOptions(
+      sortOptions: self.sortOptions,
+      selectedSort: self.selectedSortProperty.value
+    )
+
+    let categoryOptions = SearchFilters.CategoryOptions(
+      categories: self.categoriesProperty.value,
+      selectedCategory: self.selectedCategoryProperty.value
+    )
+
+    let projectStateOptions = SearchFilters.ProjectStateOptions(
+      stateOptions: self.stateOptions,
+      selectedProjectState: self.selectedStateProperty.value
+    )
+
+    let percentRaisedOptions = SearchFilters.PercentRaisedOptions(
+      buckets: DiscoveryParams.PercentRaisedBucket.allCases
+    )
+
+    self.searchFilters = SearchFilters(
+      sort: sortOptions,
+      category: categoryOptions,
+      projectState: projectStateOptions,
+      percentRaised: percentRaisedOptions
     )
 
     Signal.combineLatest(
       self.dataOutputs.selectedSort,
       self.dataOutputs.selectedCategory,
-      self.dataOutputs.selectedState
+      self.dataOutputs.selectedState,
+      self.dataOutputs.selectedPercentRaisedBucket
     )
     .observeForUI()
-    .observeValues { [weak selectedFilters] sort, category, state in
-      selectedFilters?.update(withSort: sort, category: category, projectState: state)
+    .observeValues { [weak searchFilters] sort, category, state, bucket in
+      searchFilters?.update(
+        withSort: sort,
+        category: category,
+        projectState: state,
+        percentRaisedBucket: bucket
+      )
     }
+
+    self.categoriesProperty
+      .signal
+      .observeForUI()
+      .observeValues { [weak searchFilters] categories in
+        searchFilters?.update(withCategories: categories)
+      }
   }
 
   fileprivate let (tappedFilterTypeSignal, tappedFilterTypeObserver) = Signal<
@@ -118,6 +148,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     SearchFiltersUseCase
       .defaultStateOption
   )
+  fileprivate let selectedPercentRaisedBucketProperty =
+    MutableProperty<DiscoveryParams.PercentRaisedBucket?>(nil)
 
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
@@ -143,18 +175,20 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     DiscoveryParams.State.successful
   ]
 
-  public var showFilters: Signal<(SearchFilterOptions, SearchFilterModalType), Never>
+  public var showFilters: Signal<SearchFilterModalType, Never>
 
   public var selectedSort: Signal<DiscoveryParams.Sort, Never>
   public var selectedCategory: Signal<SearchFiltersCategory, Never>
   public var selectedState: Signal<DiscoveryParams.State, Never>
+  public var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
 
-  public private(set) var selectedFilters: SelectedSearchFilters
+  public private(set) var searchFilters: SearchFilters
 
   public func clearedQueryText() {
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     self.selectedCategoryProperty.value = .none
     self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
+    self.selectedPercentRaisedBucketProperty.value = nil
   }
 
   public func resetFilters(for modal: SearchFilterModalType) {
@@ -163,10 +197,13 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       // Sort isn't a filter, so it's not included here.
       self.selectedCategoryProperty.value = .none
       self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
+      self.selectedPercentRaisedBucketProperty.value = nil
     case .category:
       self.selectedCategoryProperty.value = .none
     case .sort:
       self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
+    case .percentRaised:
+      self.selectedPercentRaisedBucketProperty.value = nil
     }
   }
 
@@ -201,6 +238,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedStateProperty.value = state
   }
 
+  public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
+    self.selectedPercentRaisedBucketProperty.value = bucket
+  }
+
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
   public var dataOutputs: SearchFiltersUseCaseDataOutputs { return self }
@@ -217,12 +258,15 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
     modalType = .sort
   case .projectState:
     modalType = .allFilters
+  case .percentRaised:
+    modalType = .percentRaised
   }
   return modalType
 }
 
-public enum SearchFilterModalType: Hashable {
+public enum SearchFilterModalType: Hashable, CaseIterable {
   case allFilters
   case category
   case sort
+  case percentRaised
 }

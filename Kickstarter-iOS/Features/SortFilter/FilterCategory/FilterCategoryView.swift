@@ -58,7 +58,7 @@ struct FilterCategoryView: View {
   @ViewBuilder
   private func subcategories(for category: KsApi.Category) -> some View {
     if self.selectedCategory.isRootCategorySelected(category),
-       let subcategories = category.availableSubcategories {
+       let subcategories = category.subcategories?.nodes {
       FlowLayout(horizontalSpacing: 8, verticalSpacing: 8, alignment: .leading) {
         TitlePillButton(
           title: Strings.Project_status_all(),
@@ -125,6 +125,8 @@ private enum Constants {
   static let rowPaddingVertical: CGFloat = 20.0
   static let separatorHeight: CGFloat = 1.0
 }
+
+extension KsApi.Category: @retroactive Identifiable {}
 
 #if targetEnvironment(simulator)
 

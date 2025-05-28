@@ -160,7 +160,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
       )
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
     let envelope = ProjectAndBackingEnvelope.template
@@ -186,7 +186,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: envelope.backing.amount,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCurrencyCountry: Project.Country.mx,
+      currencyCode: Project.Country.mx.currencyCode,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 10.0,
@@ -689,7 +689,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
       )
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
     let backing = Backing.template
@@ -714,7 +714,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 25,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCurrencyCountry: Project.Country.mx,
+      currencyCode: Project.Country.mx.currencyCode,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
@@ -748,7 +748,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 50,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCurrencyCountry: Project.Country.mx,
+      currencyCode: Project.Country.mx.currencyCode,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
@@ -1515,7 +1515,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
       )
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
 
     let addOn = Reward.template

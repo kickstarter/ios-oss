@@ -37,6 +37,23 @@ extension GraphAPI.PublicProjectState {
   }
 }
 
+extension GraphAPI.RaisedBuckets {
+  static func from(discovery raised: DiscoveryParams.PercentRaisedBucket?) -> GraphAPI.RaisedBuckets? {
+    guard let raised = raised else {
+      return nil
+    }
+
+    switch raised {
+    case .bucket_0:
+      return GraphAPI.RaisedBuckets.bucket_0
+    case .bucket_1:
+      return GraphAPI.RaisedBuckets.bucket_1
+    case .bucket_2:
+      return GraphAPI.RaisedBuckets.bucket_2
+    }
+  }
+}
+
 extension GraphAPI.SearchQuery {
   static func from(
     discoveryParams params: DiscoveryParams,
@@ -50,12 +67,14 @@ extension GraphAPI.SearchQuery {
       categoryId = nil
     }
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
+    let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
 
     return GraphAPI.SearchQuery(
       term: params.query,
       sort: sort,
       categoryId: categoryId,
       state: state,
+      raised: raised,
       first: params.perPage,
       cursor: cursor
     )
@@ -75,7 +94,8 @@ extension DiscoveryParams {
     _ query: String,
     sort: DiscoveryParams.Sort,
     category: Category?,
-    state: DiscoveryParams.State?
+    state: DiscoveryParams.State?,
+    percentRaised: DiscoveryParams.PercentRaisedBucket?
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
@@ -83,6 +103,7 @@ extension DiscoveryParams {
     params.category = category
     params.perPage = 15
     params.state = state
+    params.percentRaised = percentRaised
     return params
   }
 }

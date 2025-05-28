@@ -40,7 +40,7 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
 
     let pillView = SelectedSearchFiltersHeaderView(
-      selectedFilters: self.viewModel.outputs.selectedFilters,
+      selectedFilters: self.viewModel.outputs.searchFilters,
       didTapPill: { [weak self] pill in
         self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
       }
@@ -179,15 +179,15 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.outputs.showFilters
       .observeForControllerAction()
-      .observeValues { [weak self] options, type in
-        switch type {
-        case .allFilters:
-          self?.showAllFilters(options)
-        case .category:
-          self?.showCategories(options)
-        case .sort:
-          self?.showSort(options.sort)
+      .observeValues { [weak self] type in
+        if type == .sort {
+          // Sort is a special case modal, not part of the root filter view.
+          self?.showSort()
+          return
         }
+
+        // All other filters go to the same modal.
+        self?.showFilters(filterType: type)
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
@@ -198,10 +198,10 @@ internal final class SearchViewController: UITableViewController {
     presenter.present(viewController: viewController, from: self)
   }
 
-  fileprivate func showSort(_ sheet: SearchFilterOptions.SortOptions) {
+  fileprivate func showSort() {
     let sortViewModel = SortViewModel(
-      sortOptions: sheet.sortOptions,
-      selectedSortOption: self.viewModel.outputs.selectedFilters.sort
+      sortOptions: self.viewModel.outputs.searchFilters.sort.sortOptions,
+      selectedSortOption: self.viewModel.outputs.searchFilters.sort.selectedSort
     )
 
     let sortView = SortView(
@@ -218,64 +218,19 @@ internal final class SearchViewController: UITableViewController {
     self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
-  fileprivate func showCategories(_ sheet: SearchFilterOptions) {
-    if featureSearchFilterByProjectStatusEnabled() {
-      self.showFilters(sheet, filterType: .category)
-      return
-    }
-
-    let viewModel = FilterCategoryViewModel_PhaseOne<KsApi.Category>(
-      with: sheet.category.categories,
-      selectedCategory: self.viewModel.outputs.selectedFilters.category.category
-    )
-
-    let filterView = FilterCategoryView_PhaseOne(
-      viewModel: viewModel,
-      onSelectedCategory: { [weak self] category in
-
-        guard let category = category else {
-          self?.viewModel.inputs.selectedCategory(.none)
-          return
-        }
-
-        self?.viewModel.inputs.selectedCategory(.rootCategory(category))
-
-      },
-      onResults: { [weak self] in
-        self?.dismiss(animated: true)
-      },
-      onClose: { [weak self] in
-        self?.dismiss(animated: true)
-      }
-    )
-
-    let hostingController = UIHostingController(rootView: filterView)
-    self.present(hostingController, animated: true)
-  }
-
-  fileprivate func showAllFilters(_ opts: SearchFilterOptions) {
-    self.showFilters(opts, filterType: .allFilters)
-  }
-
-  fileprivate func showFilters(_ options: SearchFilterOptions, filterType: SearchFilterModalType) {
-    if !featureSearchFilterByProjectStatusEnabled() {
-      assert(
-        false,
-        "It should not be possible to call showFilters without enabling featureSearchFilterByProjectStatus"
-      )
-      return
-    }
-
+  fileprivate func showFilters(filterType: SearchFilterModalType) {
     var filterView = FilterRootView(
-      filterOptions: options,
       filterType: filterType,
-      selectedFilters: self.viewModel.outputs.selectedFilters
+      searchFilters: self.viewModel.outputs.searchFilters
     )
     filterView.onSelectedProjectState = { [weak self] state in
       self?.viewModel.inputs.selectedProjectState(state)
     }
     filterView.onSelectedCategory = { [weak self] category in
       self?.viewModel.inputs.selectedCategory(category)
+    }
+    filterView.onSelectedPercentRaisedBucket = { [weak self] bucket in
+      self?.viewModel.inputs.selectedPercentRaisedBucket(bucket)
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)

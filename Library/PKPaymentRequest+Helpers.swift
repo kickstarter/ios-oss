@@ -9,7 +9,7 @@ extension PKPaymentRequest {
     request.supportedNetworks = AppEnvironment.current.applePayCapabilities.supportedNetworks(for: project)
     request.merchantCapabilities = .capability3DS
     request.countryCode = project.country.countryCode
-    request.currencyCode = projectCountry(forCurrency: project.stats.currency)?.currencyCode ?? project
+    request.currencyCode = projectCountry(forCurrency: project.stats.projectCurrency)?.currencyCode ?? project
       .country.currencyCode
     request.shippingType = .shipping
     return request

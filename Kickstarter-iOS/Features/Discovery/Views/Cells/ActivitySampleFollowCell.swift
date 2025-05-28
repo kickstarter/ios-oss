@@ -46,6 +46,8 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyleMedium()
 
+    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.friendFollowLabel
       |> activitySampleFriendFollowLabelStyle
 
