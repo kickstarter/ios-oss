@@ -74,15 +74,17 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
         let convertedAmount = reward.minimum
           .addingCurrency(shippingRule?.cost ?? 0)
           .multiplyingCurrency(
-            Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
+            Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
           )
 
         return (project, reward, convertedAmount)
       }
       .map { project, _, amount in
-        Format.currency(
+        let userCurrency = project.stats.userCurrency ?? Project.Country.us.currencyCode
+
+        return Format.currency(
           amount,
-          country: project.stats.currentCountry ?? .us,
+          currencyCode: userCurrency,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .up
         )
@@ -237,19 +239,19 @@ private func amountStringForReward(
   let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
   let foregroundColor: UIColor = LegacyColors.ksr_create_700.uiColor()
 
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let projectCurrency = project.statsCurrency
 
   let min = minPledgeAmount(forProject: project, reward: reward)
   let amountString = Format.currency(
     min,
-    country: projectCurrencyCountry,
+    currencyCode: projectCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 
   if let shippingRule = shippingRule, shippingRule.cost > 0 {
     let shippingAmount = Format.currency(
       shippingRule.cost,
-      country: projectCurrencyCountry,
+      currencyCode: projectCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
 

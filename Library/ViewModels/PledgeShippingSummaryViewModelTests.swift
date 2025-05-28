@@ -23,7 +23,7 @@ final class PledgeShippingSummaryViewModelTests: TestCase {
     let data = PledgeShippingSummaryViewData(
       locationName: "Canada",
       omitUSCurrencyCode: true,
-      projectCountry: .us,
+      currencyCode: Project.Country.us.currencyCode,
       total: 100
     )
 
@@ -38,7 +38,7 @@ final class PledgeShippingSummaryViewModelTests: TestCase {
     let data = PledgeShippingSummaryViewData(
       locationName: "Canada",
       omitUSCurrencyCode: false,
-      projectCountry: .us,
+      currencyCode: Project.Country.us.currencyCode,
       total: 100
     )
 
@@ -53,7 +53,7 @@ final class PledgeShippingSummaryViewModelTests: TestCase {
     let data = PledgeShippingSummaryViewData(
       locationName: "Canada",
       omitUSCurrencyCode: false,
-      projectCountry: .us,
+      currencyCode: Project.Country.us.currencyCode,
       total: 100
     )
 

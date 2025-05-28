@@ -65,12 +65,12 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     self.totalConversionLabelText = projectAndPledgeTotal
       .filter { project, _ in project.stats.needsConversion }
       .map { project, total in
-        let convertedTotal = total * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
-        let currentCountry = project.stats.currentCountry ?? Project.Country.us
+        let convertedTotal = total * Double(project.stats.userCurrencyRate ?? project.stats.staticUsdRate)
+        let userCurrency = project.stats.userCurrency ?? Project.Country.us.currencyCode
 
         return Format.currency(
           convertedTotal,
-          country: currentCountry,
+          currencyCode: userCurrency,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .halfUp,
           maximumFractionDigits: 2,
@@ -158,11 +158,10 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700.uiColor()])
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   return Format.attributedCurrency(
     total,
-    country: projectCurrencyCountry,
+    currencyCode: project.statsCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     defaultAttributes: defaultAttributes,
     superscriptAttributes: checkoutCurrencySuperscriptAttributes()
@@ -176,8 +175,7 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
     date = Format.date(secondsInUTC: deadline, template: Constants.dateFormat)
   }
 
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-  let pledgeTotal = Format.currency(pledgeTotal, country: projectCurrencyCountry)
+  let pledgeTotal = Format.currency(pledgeTotal, currencyCode: project.statsCurrency)
 
   let font = UIFont.ksr_caption1()
   let foregroundColor = LegacyColors.ksr_support_400.uiColor()
@@ -200,7 +198,7 @@ private func attributedConfirmationPledgeOverTimeString(
 
   let date = Format.date(secondsInUTC: firstIncrement.scheduledCollection, template: Constants.dateFormat)
 
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let projectCurrencyCountry = projectCountry(forCurrency: project.statsCurrency) ?? project.country
   let chargeAmount = firstIncrement.amount.amountFormattedInProjectNativeCurrency
 
   let font = UIFont.ksr_caption1()

@@ -261,11 +261,10 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
 private func formattedPledge(amount: Double, project: Project) -> String {
   let numberOfDecimalPlaces = amount.truncatingRemainder(dividingBy: 1) == 0 ? 0 : 2
   let formattedAmount = String(format: "%.\(numberOfDecimalPlaces)f", amount)
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   return Format.formattedCurrency(
     formattedAmount,
-    country: projectCurrencyCountry,
+    currencyCode: project.statsCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 }

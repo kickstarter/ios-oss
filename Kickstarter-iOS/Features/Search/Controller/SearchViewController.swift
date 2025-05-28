@@ -180,14 +180,14 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.showFilters
       .observeForControllerAction()
       .observeValues { [weak self] type in
-        switch type {
-        case .allFilters:
-          self?.showAllFilters()
-        case .category:
-          self?.showCategories()
-        case .sort:
+        if type == .sort {
+          // Sort is a special case modal, not part of the root filter view.
           self?.showSort()
+          return
         }
+
+        // All other filters go to the same modal.
+        self?.showFilters(filterType: type)
       }
 
     self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
@@ -218,14 +218,6 @@ internal final class SearchViewController: UITableViewController {
     self.present(sheet: hostingController, withHeight: sortView.dynamicHeight())
   }
 
-  fileprivate func showCategories() {
-    self.showFilters(filterType: .category)
-  }
-
-  fileprivate func showAllFilters() {
-    self.showFilters(filterType: .allFilters)
-  }
-
   fileprivate func showFilters(filterType: SearchFilterModalType) {
     var filterView = FilterRootView(
       filterType: filterType,
@@ -236,6 +228,9 @@ internal final class SearchViewController: UITableViewController {
     }
     filterView.onSelectedCategory = { [weak self] category in
       self?.viewModel.inputs.selectedCategory(category)
+    }
+    filterView.onSelectedPercentRaisedBucket = { [weak self] bucket in
+      self?.viewModel.inputs.selectedPercentRaisedBucket(bucket)
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)

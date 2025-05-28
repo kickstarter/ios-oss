@@ -9,7 +9,7 @@ public struct PledgeAmountSummaryViewData {
   public let isNoReward: Bool
   public let locationName: String?
   public let omitUSCurrencyCode: Bool
-  public let projectCurrencyCountry: Project.Country
+  public let currencyCode: String
   public let pledgedOn: TimeInterval
   public let rewardMinimum: Double
   public let shippingAmount: Double?
@@ -48,7 +48,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
     self.pledgeAmountText = data
       .map {
         (
-          $0.projectCurrencyCountry,
+          $0.currencyCode,
           $0.isNoReward ? ($0.bonusAmount ?? 0) : $0.rewardMinimum,
           $0.omitUSCurrencyCode
         )
@@ -57,12 +57,12 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .skipNil()
 
     self.bonusAmountText = data
-      .map { data in (data.projectCurrencyCountry, data.bonusAmount ?? 0, data.omitUSCurrencyCode) }
+      .map { data in (data.currencyCode, data.bonusAmount ?? 0, data.omitUSCurrencyCode) }
       .map(plusSignAmount)
       .skipNil()
 
     self.shippingAmountText = data
-      .map { ($0.projectCurrencyCountry, $0.shippingAmount ?? 0, $0.omitUSCurrencyCode) }
+      .map { ($0.currencyCode, $0.shippingAmount ?? 0, $0.omitUSCurrencyCode) }
       .map(plusSignAmount)
       .skipNil()
 
@@ -109,7 +109,7 @@ private func formattedPledgeDate(_ backing: Backing) -> String {
 }
 
 private func attributedCurrency(
-  with projectCountry: Project.Country,
+  with currencyCode: String,
   amount: Double,
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
@@ -118,7 +118,7 @@ private func attributedCurrency(
   guard
     let attributedCurrency = Format.attributedCurrency(
       amount,
-      country: projectCountry,
+      currencyCode: currencyCode,
       omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
@@ -128,7 +128,7 @@ private func attributedCurrency(
 }
 
 private func plusSignAmount(
-  with projectCountry: Project.Country,
+  with currencyCode: String,
   amount: Double,
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
@@ -137,7 +137,7 @@ private func plusSignAmount(
   guard
     let attributedCurrency = Format.attributedCurrency(
       amount,
-      country: projectCountry,
+      currencyCode: currencyCode,
       omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes

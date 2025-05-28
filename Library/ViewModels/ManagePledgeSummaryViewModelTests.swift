@@ -49,7 +49,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCurrencyCountry: Project.Country.us,
+      currencyCode: Project.Country.us.currencyCode,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -91,7 +91,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCurrencyCountry: Project.Country.mx,
+      currencyCode: Project.Country.mx.currencyCode,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -137,7 +137,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCurrencyCountry: Project.Country.us,
+      currencyCode: Project.Country.us.currencyCode,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -186,7 +186,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCurrencyCountry: Project.Country.us,
+      currencyCode: Project.Country.us.currencyCode,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -232,7 +232,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCurrencyCountry: Project.Country.us,
+      currencyCode: Project.Country.us.currencyCode,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -266,7 +266,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     XCTAssertFalse(pledgeAmountSummaryValue.isNoReward)
     XCTAssertNil(pledgeAmountSummaryValue.locationName)
     XCTAssertNil(pledgeAmountSummaryValue.shippingAmount)
-    XCTAssertEqual(pledgeAmountSummaryValue.projectCurrencyCountry, .us)
+    XCTAssertEqual(pledgeAmountSummaryValue.currencyCode, Project.Country.us.currencyCode)
     XCTAssertEqual(pledgeAmountSummaryValue.pledgedOn, 1_568_666_243.0)
     XCTAssertEqual(pledgeAmountSummaryValue.rewardMinimum, 30)
     XCTAssertTrue(pledgeAmountSummaryValue.shippingAmountHidden)
