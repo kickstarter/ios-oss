@@ -70,6 +70,8 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
           )
       }
 
+    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     _ = self.containerView
       |> cardStyle()
 
