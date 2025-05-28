@@ -55,6 +55,6 @@ public func featureSimilarProjectsCarouselEnabled() -> Bool {
   featureEnabled(feature: .similarProjectsCarousel)
 }
 
-public func featureSearchFilterByProjectStatusEnabled() -> Bool {
-  featureEnabled(feature: .searchFilterByProjectStatus)
+public func featureSearchFilterByPercentRaisedEnabled() -> Bool {
+  featureEnabled(feature: .searchFilterByPercentRaised)
 }
