@@ -126,7 +126,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.currency = project
       .map {
-        currencySymbol(forCurrencyCode: $0.stats.currency).trimmed()
+        currencySymbol(forCurrencyCode: $0.stats.projectCurrency).trimmed()
       }
 
     let textFieldValue = self.textFieldValueProperty.signal

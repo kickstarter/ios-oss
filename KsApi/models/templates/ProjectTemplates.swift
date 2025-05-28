@@ -78,7 +78,7 @@ extension Project {
     |> Project.lens.stats.pledged .~ 212_870
     |> Project.lens.stats.goal .~ 24_000
 
-  internal static let cosmicSurgery = .template
+  internal static let cosmicSurgery = Project.template
     |> Project.lens.photo.full .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
     |> Project.lens.photo.med .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
     |> Project.lens.photo.small .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
@@ -89,9 +89,9 @@ extension Project {
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
     |> Project.lens.stats.staticUsdRate .~ 1.31
-    |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-    |> Project.lens.stats.currentCurrency .~ "USD"
-    |> Project.lens.stats.currentCurrencyRate .~ 1.31
+    |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+    |> Project.lens.stats.userCurrency .~ "USD"
+    |> Project.lens.stats.userCurrencyRate .~ 1.31
     |> (Project.lens.location .. Location.lens.displayableName) .~ "Hastings, UK"
     |> Project.lens.country .~ .gb
     |> Project.lens.creator .~ (

@@ -1091,7 +1091,7 @@ final class SharedFunctionsTests: TestCase {
 
   func testFormattedAmountForRewardOrBacking() {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
 
@@ -1116,7 +1116,7 @@ final class SharedFunctionsTests: TestCase {
   func testMinAndMaxPledgeAmount_NoReward_ProjectCurrencyCountry_isNotLatePledge_MinMaxPledgeReturned_Success(
   ) {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: nil)
 
@@ -1127,7 +1127,7 @@ final class SharedFunctionsTests: TestCase {
   func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_isNotLatePledge_MinimumPledgeReturned_Success(
   ) {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 12.00
@@ -1141,7 +1141,7 @@ final class SharedFunctionsTests: TestCase {
   func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_NoBacking_ProjectIsLatePledge_MinimumPledgeReturned_Success(
   ) {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.isInPostCampaignPledgingPhase .~ true
       |> Project.lens.personalization.backing .~ nil
 
@@ -1161,7 +1161,7 @@ final class SharedFunctionsTests: TestCase {
     let backing = Backing.template
       |> Backing.lens.isLatePledge .~ true
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.personalization.backing .~ backing
 
     let reward = Reward.template
@@ -1179,7 +1179,7 @@ final class SharedFunctionsTests: TestCase {
     let backing = Backing.template
       |> Backing.lens.isLatePledge .~ false
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.personalization.backing .~ backing
 
     let reward = Reward.template
@@ -1196,7 +1196,7 @@ final class SharedFunctionsTests: TestCase {
   func testMinAndMaxPledgeAmount_NoReward_NoProjectCurrencyCountry_isNotLatePledge__DefaultMinMaxPledgeReturned_Success(
   ) {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let emptyLaunchedCountries = LaunchedCountries(countries: [])
 
@@ -1210,8 +1210,8 @@ final class SharedFunctionsTests: TestCase {
 
   func testEstimatedShippingText() {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
 
@@ -1234,7 +1234,7 @@ final class SharedFunctionsTests: TestCase {
 
   func testEstimatedShippingConversionText() {
     let mexicanCurrencyProjectTemplate = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
 

@@ -79,9 +79,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let nonUSProject = project
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 1.2
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 1.2
       |> Project.lens.stats.convertedPledgedAmount .~ 1_200
     self.vm.inputs.configureWith(value: (nonUSProject, nil))
 
@@ -94,9 +94,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let nonUSProjectCurrencyProject = project
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.es.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 1.2
+      |> Project.lens.stats.projectCurrency .~ Project.Country.es.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 1.2
       |> Project.lens.stats.convertedPledgedAmount .~ 1_200
     self.vm.inputs.configureWith(value: (nonUSProjectCurrencyProject, nil))
 
@@ -109,8 +109,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     )
 
     let nonUSUserCurrency = project
-      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.userCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 2.0
 
     self.vm.inputs.configureWith(value: (nonUSUserCurrency, nil))
 
@@ -127,7 +127,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testStatsStackViewAccessibilityLabel_defaultCurrency_nonUSUser() {
     let defaultUserCurrency = Project.template
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 2.0
 
     withEnvironment(countryCode: "CA") {
@@ -261,7 +261,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testConversionLabel_WhenConversionNotNeeded_US_Project_US_ProjectCurrency_US_User() {
     let project = Project.template
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(value: (project, nil))
@@ -277,9 +277,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.pledged .~ 1_000
       |> Project.lens.stats.goal .~ 2_000
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 1.3
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 1.3
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(value: (project, nil))
@@ -293,7 +293,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testConversionLabel_WhenConversionNeeded_NonUS_Project_NonUS_ProjectCurrency_US_User() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.pledged .~ 1
 
@@ -309,7 +309,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testConversionLabel_WhenConversionNeeded_NonUS_Project_DifferentNonUS_ProjectCurrency_US_User() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.es.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.es.currencyCode
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.pledged .~ 1
 
@@ -378,7 +378,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.pledged .~ 1_000
       |> Project.lens.stats.goal .~ 2_000
 
@@ -410,9 +410,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testPledgedLabels_WhenConversionNeeded() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrencyRate .~ 2.0
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(value: (project, nil))
@@ -426,8 +426,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testPledgedLabels_ConversionNotNeeded_NonUSCountry() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.goal .~ 2
 
@@ -443,12 +443,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testPledgedLabels_ConversionNeeded_NonUSCountry_DifferentNonUS_ProjectCurrency() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
-      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.convertedPledgedAmount .~ 4
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.goal .~ 20
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.userCurrencyRate .~ 2.0
 
     withEnvironment(countryCode: "GB") {
       self.vm.inputs.configureWith(value: (project, nil))

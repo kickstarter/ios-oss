@@ -171,7 +171,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 1
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: reward, 0))
 
@@ -197,7 +197,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
         |> Project.Country.lens.minPledge .~ nil
 
       let project = Project.template
-        |> Project.lens.stats.currency .~ country.currencyCode
+        |> Project.lens.stats.projectCurrency .~ country.currencyCode
         |> Project.lens.country .~ country
 
       let reward = Reward.noReward
@@ -233,7 +233,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testAmountCurrencyAndStepper_Reward_Minimum_Custom() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.jp.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.jp.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
@@ -294,7 +294,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testDoneButtonIsEnabled_Stepper_ProjectCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -322,7 +322,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -402,7 +402,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -434,7 +434,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -486,7 +486,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testDoneButtonIsEnabled_TextField_ProjectCountryCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -514,7 +514,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -591,7 +591,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -623,7 +623,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
@@ -675,7 +675,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testDoneButtonIsEnabled_Combined_ProjectCountryCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -703,7 +703,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -780,7 +780,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let launchedCountries = LaunchedCountries(countries: [country])
 
@@ -812,7 +812,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ country.currencyCode
+      |> Project.lens.stats.projectCurrency .~ country.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
@@ -965,7 +965,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testMaxPledgeAmountErrorLabelText_WithNonUS_CountryCurrency_Success() {
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
     let reward = Reward.template
       |> Reward.lens.minimum .~ 25
 
@@ -1383,7 +1383,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
@@ -1425,7 +1425,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward

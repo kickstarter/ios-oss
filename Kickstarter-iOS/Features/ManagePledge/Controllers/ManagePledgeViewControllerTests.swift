@@ -509,7 +509,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 

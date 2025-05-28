@@ -103,7 +103,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let projectRewards = [reward]
 
     let project = Project.template
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
       |> Project.lens.rewardData.rewards .~ projectRewards
 

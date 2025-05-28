@@ -452,9 +452,9 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
@@ -505,9 +505,9 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
@@ -558,9 +558,9 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
@@ -611,9 +611,9 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.cosmicSurgery
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.country .~ Project.Country.us
-      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.userCurrency .~ Project.Country.mx.currencyCode
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
