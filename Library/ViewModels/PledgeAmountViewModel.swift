@@ -126,9 +126,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.currency = project
       .map {
-        let projectCurrencyCountry = projectCountry(forCurrency: $0.stats.currency) ?? $0.country
-
-        return currencySymbol(forCountry: projectCurrencyCountry).trimmed()
+        currencySymbol(forCurrencyCode: $0.stats.currency).trimmed()
       }
 
     let textFieldValue = self.textFieldValueProperty.signal
@@ -183,8 +181,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(second)
       .combineLatest(with: project)
       .map { max, project in
-        let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-        let maxPledge = Format.currency(max, country: projectCurrencyCountry, omitCurrencyCode: false)
+        let maxPledge = Format.currency(max, currencyCode: project.statsCurrency, omitCurrencyCode: false)
 
         return Strings.Enter_an_amount_less_than_max_pledge(max_pledge: maxPledge)
       }

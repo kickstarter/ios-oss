@@ -367,12 +367,12 @@ private func statsStackViewAccessibilityLabelForProperties(
 
   let pledged = Format.currency(
     projectCurrencyData.pledgedAmount,
-    country: projectCurrencyData.country,
+    currencyCode: projectCurrencyData.currency,
     omitCurrencyCode: properties.omitUSCurrencyCode
   )
   let goal = Format.currency(
     projectCurrencyData.goalAmount,
-    country: projectCurrencyData.country,
+    currencyCode: projectCurrencyData.currency,
     omitCurrencyCode: properties.omitUSCurrencyCode
   )
 
@@ -415,24 +415,23 @@ private func fundingStatus(forProperties properties: ProjectPamphletMainCellProp
   }
 }
 
-typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
+typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, currency: String)
 
 private func pledgeAmountAndGoalAndCountry(
   forProperties properties: ProjectPamphletMainCellProperties,
   needsConversion: Bool
 ) -> ConvertedCurrrencyProjectData {
   guard needsConversion else {
-    let pledgedCurrencyCountry = projectCountry(forCurrency: properties.currency) ?? properties.country
-    return (properties.pledged.amount, properties.goal.amount, pledgedCurrencyCountry)
+    return (properties.pledged.amount, properties.goal.amount, properties.currency)
   }
 
   guard let goalCurrentCurrency = properties.goalCurrentCurrency,
         let pledgedCurrentCurrency = properties.convertedPledgedAmount,
-        let currentCountry = properties.currentCountry else {
-    return (Int(properties.pledgedUsd), Int(properties.goalUsd), Project.Country.us)
+        let currentCurrencyCode = properties.currentCurrencyCode else {
+    return (Int(properties.pledgedUsd), Int(properties.goalUsd), Project.Country.us.currencyCode)
   }
 
-  return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), currentCountry)
+  return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), currentCurrencyCode)
 }
 
 private func goalText(for properties: ProjectPamphletMainCellProperties, _ needsConversion: Bool) -> String {
@@ -444,7 +443,7 @@ private func goalText(for properties: ProjectPamphletMainCellProperties, _ needs
   return Strings.activity_project_state_change_pledged_of_goal(
     goal: Format.currency(
       projectCurrencyData.goalAmount,
-      country: projectCurrencyData.country,
+      currencyCode: projectCurrencyData.currency,
       omitCurrencyCode: properties.omitUSCurrencyCode
     )
   )
@@ -461,26 +460,21 @@ private func pledgedText(
 
   return Format.currency(
     projectCurrencyData.pledgedAmount,
-    country: projectCurrencyData.country,
+    currencyCode: projectCurrencyData.currency,
     omitCurrencyCode: properties.omitUSCurrencyCode
   )
 }
 
 private func conversionText(for properties: ProjectPamphletMainCellProperties) -> String {
-  let pledgedCurrencyCountry = projectCountry(forCurrency: properties.currency) ?? properties.country
-
-  let goalCurrencyCountry = projectCountry(forCurrency: properties.currency) ??
-    pledgedCurrencyCountry
-
   return Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(
     pledged: Format.currency(
       properties.pledged.amount,
-      country: pledgedCurrencyCountry,
+      currencyCode: properties.currency,
       omitCurrencyCode: properties.omitUSCurrencyCode
     ),
     goal: Format.currency(
       properties.goal.amount,
-      country: goalCurrencyCountry,
+      currencyCode: properties.currency,
       omitCurrencyCode: properties.omitUSCurrencyCode
     )
   )

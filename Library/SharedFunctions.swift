@@ -137,20 +137,22 @@ internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> D
 }
 
 /**
- Returns the full currency symbol for a country. Special logic is added around prefixing currency symbols
+ Returns the full currency symbol for a currencyCode. Special logic is added around prefixing currency symbols
  with country/currency codes based on a variety of factors.
 
- - parameter country: The country.
+ - parameter currencyCode: The currency code.
  - parameter omitCurrencyCode: Safe to omit the US currencyCode
  - parameter env: Current Environment.
 
  - returns: The currency symbol that can be used for currency display.
  */
 public func currencySymbol(
-  forCountry country: Project.Country,
+  forCurrencyCode currencyCode: String,
   omitCurrencyCode: Bool = true,
   env: Environment = AppEnvironment.current
 ) -> String {
+  let country = projectCountry(forCurrency: currencyCode, env: env) ?? .us
+
   guard env.launchedCountries.currencyNeedsCode(country.currencySymbol) else {
     // Currencies that dont have ambigious currencies can just use their symbol.
     return country.currencySymbol
@@ -218,20 +220,19 @@ public func formattedAmountForRewardOrBacking(
   project: Project,
   rewardOrBacking: Either<Reward, Backing>
 ) -> String {
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
+  let projectCurrency = project.statsCurrency
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)
     return Format.currency(
       min,
-      country: projectCurrencyCountry,
+      currencyCode: projectCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   case let .right(backing):
     return Format.formattedCurrency(
       backing.amount,
-      country: projectCurrencyCountry,
+      currencyCode: projectCurrency,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   }
@@ -692,18 +693,18 @@ public func estimatedShippingText(
 
   guard estimatedMin > 0, estimatedMax > 0 else { return nil }
 
-  let projectCountry = project.country
+  let projectCurrency = project.stats.currency
 
   let formattedMin = Format.currency(
     estimatedMin,
-    country: projectCountry,
+    currencyCode: projectCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     estimatedMax,
-    country: projectCountry,
+    currencyCode: projectCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
@@ -733,18 +734,18 @@ public func estimatedShippingConversionText(
 
   let convertedMin = estimatedMin * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
   let convertedMax = estimatedMax * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
-  let currentCountry = project.stats.currentCountry ?? Project.Country.us
+  let currencyCode = project.stats.currentCurrency ?? Project.Country.us.currencyCode
 
   let formattedMin = Format.currency(
     convertedMin,
-    country: currentCountry,
+    currencyCode: currencyCode,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
 
   let formattedMax = Format.currency(
     convertedMax,
-    country: currentCountry,
+    currencyCode: currencyCode,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     roundingMode: .halfUp
   )
@@ -759,11 +760,11 @@ public func estimatedShippingConversionText(
 public func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: LegacyColors.ksr_support_700.uiColor()])
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+  let currencyCode = project.statsCurrency
 
   return Format.attributedCurrency(
     total,
-    country: projectCurrencyCountry,
+    currencyCode: currencyCode,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     defaultAttributes: defaultAttributes,
     superscriptAttributes: checkoutCurrencySuperscriptAttributes()

@@ -7,7 +7,7 @@ public struct PledgeStatusLabelViewData {
   public let currentUserIsCreatorOfProject: Bool
   public let needsConversion: Bool
   public let pledgeAmount: Double
-  public let projectCurrencyCountry: Project.Country
+  public let currencyCode: String
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
   public let backingState: Backing.Status
@@ -157,7 +157,7 @@ private func projectStatusLabelText(with projectState: Project.State, isCreator:
 
 private func attributedConfirmationString(with data: PledgeStatusLabelViewData) -> NSAttributedString {
   let date = Format.date(secondsInUTC: data.projectDeadline, template: "MMMM d, yyyy")
-  let pledgeTotal = Format.currency(data.pledgeAmount, country: data.projectCurrencyCountry)
+  let pledgeTotal = Format.currency(data.pledgeAmount, currencyCode: data.currencyCode)
   let isCreator = data.currentUserIsCreatorOfProject
 
   let font = UIFont.ksr_subhead()
