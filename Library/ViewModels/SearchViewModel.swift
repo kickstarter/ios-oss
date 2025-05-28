@@ -59,6 +59,9 @@ public protocol SearchViewModelInputs {
   /// Call this when the user selects a new project state filter.
   func selectedProjectState(_ state: DiscoveryParams.State)
 
+  /// Call this when the user selects a new percent raised filter.
+  func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
+
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 
@@ -137,16 +140,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       queryText,
       self.searchFiltersUseCase.selectedSort,
       self.searchFiltersUseCase.selectedCategory,
-      self.searchFiltersUseCase.selectedState
+      self.searchFiltersUseCase.selectedState,
+      self.searchFiltersUseCase.selectedPercentRaisedBucket
     )
-    .map { query, sort, category, state in
+    .map { query, sort, category, state, raised in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
         category: category.category,
         state: state,
-        // TODO: MBL-2351 Make this selectable from the UI
-        percentRaised: nil
+        percentRaised: raised
       )
     }
 
@@ -468,6 +471,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func selectedProjectState(_ state: DiscoveryParams.State) {
     self.searchFiltersUseCase.selectedProjectState(state)
+  }
+
+  public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
+    self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
   }
 
   public var searchFilters: SearchFilters {

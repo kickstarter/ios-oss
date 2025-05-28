@@ -16,4 +16,8 @@ extension SearchFilters {
   var projectStatePill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .projectState })
   }
+
+  var percentRaisedPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .percentRaised })
+  }
 }
