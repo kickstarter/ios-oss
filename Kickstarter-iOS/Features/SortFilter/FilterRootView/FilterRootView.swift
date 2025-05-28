@@ -82,8 +82,7 @@ struct FilterRootView: View {
   @ViewBuilder
   var percentRaisedSection: some View {
     FilterSectionButton(
-      // FIXME: MBL-2465 Add translations
-      title: "Percent Raised",
+      title: Strings.Percentage_raised(),
       subtitle:
       self.searchFilters.percentRaised.selectedBucket?.title
     )
@@ -118,7 +117,6 @@ struct FilterRootView: View {
   @ViewBuilder
   var footerView: some View {
     HStack(spacing: Styles.grid(2)) {
-      // FIXME: MBL-2232 Translate this string
       Button(self.navigationState == [] ? Strings.Reset_all_filters() : Strings.Reset_filters()) {
         if let action = self.onReset {
           action(self.modalType)
@@ -164,9 +162,8 @@ struct FilterRootView: View {
             self.categoryModal
               .modalHeader(withTitle: Strings.Category(), onClose: self.onClose)
           case .percentRaised:
-            // FIXME: MBL-2465 Add translations
             self.percentRaisedModal
-              .modalHeader(withTitle: "Percent Raised", onClose: self.onClose)
+              .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
           default:
             EmptyView()
           }

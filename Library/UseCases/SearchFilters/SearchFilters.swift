@@ -168,8 +168,7 @@ public class SearchFilters: ObservableObject {
     )
 
     if featureSearchFilterByPercentRaisedEnabled() {
-      // FIXME: MBL-2465 Add translated strings
-      let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? "% Raised"
+      let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
 
       pills.append(
         SearchFilterPill(
