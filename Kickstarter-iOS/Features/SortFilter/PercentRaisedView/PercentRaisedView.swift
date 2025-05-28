@@ -6,19 +6,29 @@ public struct PercentRaisedView: View {
   var buckets: [DiscoveryParams.PercentRaisedBucket]
   @Binding var selectedBucket: DiscoveryParams.PercentRaisedBucket?
 
-  // FIXME: MBL-2348 Bring this page up to design spec
   public var body: some View {
-    VStack {
+    VStack(alignment: .leading, spacing: Constants.spacing) {
       ForEach(self.buckets) { bucket in
         Button {
           self.selectedBucket = bucket
         } label: {
-          Text(bucket.title)
+          HStack(spacing: Constants.buttonLabelSpacing) {
+            RadioButton(isSelected: bucket == self.selectedBucket)
+            Text(bucket.title)
+              .font(InterFont.bodyLG.swiftUIFont())
+              .foregroundStyle(Colors.Text.primary.swiftUIColor())
+          }
         }
-        .buttonStyle(.borderedProminent)
-        .tint(bucket == self.selectedBucket ? .red : .blue)
       }
     }
+    .padding(Constants.padding)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+  }
+
+  internal enum Constants {
+    static let padding: CGFloat = 24.0
+    static let spacing: CGFloat = 24.0
+    static let buttonLabelSpacing: CGFloat = 8.0
   }
 }
 
