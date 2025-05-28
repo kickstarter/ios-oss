@@ -178,7 +178,7 @@ struct FilterRootView: View {
     }
   }
 
-  internal enum Constants {
+  enum Constants {
     static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
     static let sectionSpacing: CGFloat = 12.0
     static let flowLayoutSpacing: CGFloat = 8.0
