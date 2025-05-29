@@ -34,6 +34,10 @@ public protocol ServiceType {
     apolloClient: ApolloClientType?
   )
 
+  /// Adds a user to a secret reward user group
+  func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput) ->
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
   /// Fetches a GraphQL query and returns the data.
   func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope>
 

@@ -109,6 +109,18 @@ public struct Service: ServiceType {
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
+  public func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(
+        mutation: GraphAPI
+          .AddUserToSecretRewardGroupMutation(input: GraphAPI.AddUserToSecretRewardGroupInput.from(input))
+      )
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
+  }
+
   public func triggerThirdPartyEventInput(input: TriggerThirdPartyEventInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

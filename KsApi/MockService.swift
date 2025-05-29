@@ -19,6 +19,8 @@
 
     fileprivate let addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
+    fileprivate let addUserToSecretRewardGroup: Result<EmptyResponseEnvelope, ErrorEnvelope>?
+
     fileprivate let blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>?
@@ -237,6 +239,7 @@
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
+      addUserToSecretRewardGroup: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       apolloClient: ApolloClientType? = nil,
       blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>? = nil,
@@ -359,6 +362,8 @@
       self.addNewCreditCardResult = addNewCreditCardResult
 
       self.addPaymentSheetPaymentSourceResult = addPaymentSheetPaymentSourceResult
+
+      self.addUserToSecretRewardGroup = addUserToSecretRewardGroup
 
       self.apolloClient = apolloClient ?? MockGraphQLClient.shared.client
 
@@ -588,6 +593,18 @@
         .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.addPaymentSheetPaymentSourceResult)
+    }
+
+    public func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .AddUserToSecretRewardGroupMutation(input: GraphAPI.AddUserToSecretRewardGroupInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.addUserToSecretRewardGroup)
     }
 
     public func blockUser(input: BlockUserInput)
