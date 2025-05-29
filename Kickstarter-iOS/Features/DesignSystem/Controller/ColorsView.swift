@@ -20,6 +20,7 @@ struct ColorsView: View {
     Colors.Background.Inverse.pressed,
     Colors.Background.Inverse.disabled,
     Colors.Background.Surface.primary,
+    Colors.Background.Surface.secondary,
     Colors.Border.active,
     Colors.Border.bold,
     Colors.Border.subtle,

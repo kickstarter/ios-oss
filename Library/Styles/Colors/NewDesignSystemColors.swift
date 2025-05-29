@@ -186,6 +186,12 @@ public struct Colors {
         lightMode: .white,
         darkMode: .gray_1000
       )
+
+      public static let secondary = SemanticColor(
+        "background/surface/secondary",
+        lightMode: .gray_100,
+        darkMode: .black
+      )
     }
   }
 

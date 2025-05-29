@@ -12,10 +12,11 @@ public struct LegacyColors {
     darkMode: UIColor(coreColor: .white)
   )
 
+  /// `support_100` functions mostly like surface/primary
   public static let ksr_white = LegacyColor(
     "legacy/ksr_white",
     lightMode: UIColor(coreColor: .white),
-    darkMode: UIColor(coreColor: .black)
+    darkMode: UIColor(coreColor: .gray_1000)
   )
 
   public static let ksr_alert = LegacyColor(
@@ -66,10 +67,11 @@ public struct LegacyColors {
     darkMode: UIColor.hex(0x05CE78)
   )
 
+  /// `support_100` functions mostly like surface/secondary
   public static let ksr_support_100 = LegacyColor(
     "legacy/ksr_support_100",
     lightMode: UIColor.hex(0xF3F3F3),
-    darkMode: UIColor(coreColor: .gray_900)
+    darkMode: UIColor(coreColor: .black)
   )
 
   public static let ksr_support_200 = LegacyColor(
