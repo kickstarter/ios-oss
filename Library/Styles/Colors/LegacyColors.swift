@@ -89,7 +89,7 @@ public struct LegacyColors {
   public static let ksr_support_400 = LegacyColor(
     "legacy/ksr_support_400",
     lightMode: UIColor.hex(0x696969),
-    darkMode: UIColor(coreColor: .gray_600)
+    darkMode: UIColor.hex(0xA1A1A1)
   )
 
   public static let ksr_support_500 = LegacyColor(
