@@ -237,9 +237,9 @@ private func canMakePhoneCall() -> Bool {
 private func projectUpdateParams(fromRequest request: URLRequest) -> (projectParam: Param, updateId: Int)? {
   guard let nav = Navigation.match(request) else { return nil }
   switch nav {
-  case .project(_, .update(_, .comments), _):
+  case .project(_, .update(_, .comments), _, _):
     return Navigation.Project.updateCommentsWithRequest(request)
-  case .project(_, .update(_, .root), _):
+  case .project(_, .update(_, .root), _, _):
     return Navigation.Project.updateWithRequest(request)
   default:
     return nil
@@ -255,12 +255,12 @@ private func isEmailLink(action: WKNavigationActionData) -> Bool {
 }
 
 private func isGoToCommentsRequest(request: URLRequest) -> Bool {
-  if let nav = Navigation.match(request), case .project(_, .update(_, .comments), _) = nav { return true }
+  if let nav = Navigation.match(request), case .project(_, .update(_, .comments), _, _) = nav { return true }
   return false
 }
 
 private func isGoToUpdateRequest(request: URLRequest) -> Bool {
-  if let nav = Navigation.match(request), case .project(_, .update(_, .root), _) = nav { return true }
+  if let nav = Navigation.match(request), case .project(_, .update(_, .root), _, _) = nav { return true }
   return false
 }
 
@@ -269,7 +269,7 @@ private func isPhoneLink(action: WKNavigationActionData) -> Bool {
 }
 
 private func isUpdatesRequest(request: URLRequest) -> Bool {
-  if let nav = Navigation.match(request), case .project(_, .updates, _) = nav { return true }
+  if let nav = Navigation.match(request), case .project(_, .updates, _, _) = nav { return true }
   return false
 }
 

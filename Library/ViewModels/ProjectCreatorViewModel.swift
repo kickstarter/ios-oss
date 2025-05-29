@@ -142,6 +142,6 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
 }
 
 private func isMessageCreator(request: URLRequest) -> Bool {
-  if let nav = Navigation.match(request), case .project(_, .messageCreator, _) = nav { return true }
+  if let nav = Navigation.match(request), case .project(_, .messageCreator, _, _) = nav { return true }
   return false
 }
