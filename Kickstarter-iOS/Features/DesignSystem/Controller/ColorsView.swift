@@ -13,6 +13,9 @@ struct ColorsView: View {
     Colors.Background.Accent.Red.subtle,
     Colors.Background.Action.disabled,
     Colors.Background.Action.pressed,
+    Colors.Background.Action.primary,
+    Colors.Background.Action.Primary.disabled,
+    Colors.Background.Action.Primary.pressed,
     Colors.Background.Danger.bold,
     Colors.Background.Danger.Bold.pressed,
     Colors.Background.Danger.disabled,
@@ -59,7 +62,8 @@ struct ColorsView: View {
     LegacyColors.ksr_support_700,
     LegacyColors.ksr_trust_100,
     LegacyColors.ksr_trust_500,
-    LegacyColors.ksr_trust_700
+    LegacyColors.ksr_trust_700,
+    LegacyColors.Background.Action.primary
   ]
 
   @ViewBuilder

@@ -67,6 +67,17 @@ public struct LegacyColors {
     darkMode: UIColor(coreColor: .green_05)
   )
 
+  public struct Background {
+    public struct Action {
+      /// Most of the buttons in our app used `create_700` as their background color. This has a light mode color equal to `create_700` but the inverted dark mode color of `background/action/primary`. Eventually this can be replaced with `background/action/primary`.
+      public static let primary = LegacyColor(
+        "legacy/background/action/primary",
+        lightMode: UIColor.hex(0x028858),
+        darkMode: UIColor(coreColor: .white)
+      )
+    }
+  }
+
   /// `support_100` functions mostly like surface/secondary
   public static let ksr_support_100 = LegacyColor(
     "legacy/ksr_support_100",

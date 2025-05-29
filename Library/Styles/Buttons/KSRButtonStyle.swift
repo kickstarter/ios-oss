@@ -14,7 +14,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
   public var backgroundColor: UIColor {
     switch self {
     case .filled: Colors.Background.action.uiColor()
-    case .green: Colors.Background.Accent.Green.bold.uiColor()
+    case .green: Colors.Background.Action.primary.uiColor()
     case .filledInverted: Colors.Background.Surface.primary.uiColor()
     case .filledDestructive: Colors.Background.Danger.bold.uiColor()
     case .facebook:
@@ -26,7 +26,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
   public var highlightedBackgroundColor: UIColor {
     switch self {
     case .filled: Colors.Background.Action.pressed.uiColor()
-    case .green: Colors.Background.Accent.Green.Bold.pressed.uiColor()
+    case .green: Colors.Background.Action.Primary.pressed.uiColor()
     case .filledDestructive: Colors.Background.Danger.Bold.pressed.uiColor()
     case .borderlessDestructive, .outlinedDestructive: Colors.Background.Accent.Red.subtle.uiColor()
     case .facebook: self.backgroundColor.mixDarker(0.35)
@@ -37,7 +37,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
   public var disabledBackgroundColor: UIColor {
     switch self {
     case .filled: Colors.Background.Action.disabled.uiColor()
-    case .green: Colors.Background.Accent.Green.disabled.uiColor()
+    case .green: Colors.Background.Action.Primary.disabled.uiColor()
     case .filledInverted: Colors.Background.Inverse.disabled.uiColor()
     case .filledDestructive: Colors.Background.Danger.disabled.uiColor()
     case .facebook: self.backgroundColor.mixLighter(0.35)
