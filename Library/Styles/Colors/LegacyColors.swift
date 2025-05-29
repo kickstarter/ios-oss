@@ -137,7 +137,7 @@ public struct LegacyColors {
     public struct Success {
       public static let background = LegacyColor(
         "legacy/tags/success/background",
-        lightMode: UIColor.hex(0xF2F8F5),
+        lightMode: UIColor.hex(0xEFF8F5),
         darkMode: UIColor(coreColor: .green_02)
       )
 
