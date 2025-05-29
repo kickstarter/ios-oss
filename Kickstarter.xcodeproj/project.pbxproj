@@ -301,6 +301,10 @@
 		33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */; };
 		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
 		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
+		33AF66C82DDE3B8B00558D49 /* AddUserToSecretRewardGroup.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33AF66C72DDE3B7600558D49 /* AddUserToSecretRewardGroup.graphql */; };
+		33AF66CA2DDE505D00558D49 /* AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */; };
+		33AF66CC2DDE545500558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */; };
+		33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */; };
 		33B098762DCAF96D000CE6AE /* CommentBaseFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */; };
@@ -2076,6 +2080,10 @@
 		33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentIncrementState+Extension.swift"; sourceTree = "<group>"; };
 		33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
 		33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewControllerTest.swift; sourceTree = "<group>"; };
+		33AF66C72DDE3B7600558D49 /* AddUserToSecretRewardGroup.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AddUserToSecretRewardGroup.graphql; sourceTree = "<group>"; };
+		33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInput.swift; sourceTree = "<group>"; };
+		33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift"; sourceTree = "<group>"; };
+		33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInputTests.swift; sourceTree = "<group>"; };
 		33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentBaseFragment.graphql; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
 		33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyle.swift; sourceTree = "<group>"; };
@@ -6206,6 +6214,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
+				33AF66C72DDE3B7600558D49 /* AddUserToSecretRewardGroup.graphql */,
 				47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */,
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */,
@@ -6447,6 +6456,7 @@
 				062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */,
 				E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */,
 				E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */,
+				33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */,
 				8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */,
 				4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */,
 				47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */,
@@ -7614,6 +7624,8 @@
 			children = (
 				8AF34C8323440327000B211D /* ApplePayParams.swift */,
 				8AF34C8523440565000B211D /* ApplePayParamsTests.swift */,
+				33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */,
+				33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */,
 				77776BC7234BA76400A42388 /* CancelBackingInput.swift */,
 				77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
@@ -8315,6 +8327,7 @@
 				4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
 				393E8DA72C5BF35B00AEA968 /* FetchPPOQuery.graphql in Resources */,
+				33AF66C82DDE3B8B00558D49 /* AddUserToSecretRewardGroup.graphql in Resources */,
 				AA5480E92D77ECB200EC2849 /* SimilarProjectQuery.graphql in Resources */,
 				AA59AFF22D39BD7B00644627 /* PPOUserSetupFragment.graphql in Resources */,
 				475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */,
@@ -9623,6 +9636,7 @@
 				D015886F1EEB2ED7006E7684 /* ErrorEnvelope.swift in Sources */,
 				D01588E11EEB2ED7006E7684 /* UserLenses.swift in Sources */,
 				D01588B91EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsLenses.swift in Sources */,
+				33AF66CC2DDE545500558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift in Sources */,
 				D01588B31EEB2ED7006E7684 /* ProjectNotification.ProjectLenses.swift in Sources */,
 				8AC3E100269F498900168BF8 /* Checkout+CheckoutFragment.swift in Sources */,
 				D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */,
@@ -9836,6 +9850,7 @@
 				D68F0B16243CFF3F009FC948 /* SignInWithAppleEnvelope.swift in Sources */,
 				D6B686EB2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift in Sources */,
 				D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */,
+				33AF66CA2DDE505D00558D49 /* AddUserToSecretRewardGroupInput.swift in Sources */,
 				D67B6CD8221F46D700B63A6B /* Project.Country+Encode.swift in Sources */,
 				8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
@@ -9866,6 +9881,7 @@
 				47D7D09C26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift in Sources */,
 				06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */,
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
+				33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */,
 				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
 				19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */,
 				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
