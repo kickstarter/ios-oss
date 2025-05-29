@@ -63,7 +63,7 @@ public struct LegacyColors {
   public static let ksr_create_700 = LegacyColor(
     "legacy/ksr_create_700",
     lightMode: UIColor.hex(0x028858),
-    darkMode: UIColor(coreColor: .green_03)
+    darkMode: UIColor.hex(0x05CE78)
   )
 
   public static let ksr_support_100 = LegacyColor(
