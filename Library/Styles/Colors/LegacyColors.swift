@@ -57,14 +57,14 @@ public struct LegacyColors {
 
   public static let ksr_create_500 = LegacyColor(
     "legacy/ksr_create_500",
-    lightMode: UIColor.hex(0x05CE78),
+    lightMode: UIColor(coreColor: .green_05),
     darkMode: UIColor(coreColor: .green_06)
   )
 
   public static let ksr_create_700 = LegacyColor(
     "legacy/ksr_create_700",
     lightMode: UIColor.hex(0x028858),
-    darkMode: UIColor.hex(0x05CE78)
+    darkMode: UIColor(coreColor: .green_05)
   )
 
   /// `support_100` functions mostly like surface/secondary
