@@ -5,8 +5,8 @@ import SwiftUI
 enum PPOStyles {
   static let header = (
     font: UIFont.ksr_title2(),
-    foreground: LegacyColors.ksr_black.uiColor(),
-    background: LegacyColors.ksr_white.uiColor(),
+    foreground: Colors.Text.primary.uiColor(),
+    background: Colors.Background.Surface.primary.uiColor(),
     padding: Edge.Set.top
   )
 
@@ -53,7 +53,7 @@ enum PPOStyles {
 
   static let bannerPadding = 7
 
-  static let background = LegacyColors.ksr_white.uiColor()
+  static let background = Colors.Background.Surface.primary.uiColor()
 
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice

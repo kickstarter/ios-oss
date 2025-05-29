@@ -151,6 +151,7 @@ struct PPOView: View {
             await self.viewModel.refresh()
           }
         }
+        .background(Color(PPOStyles.background))
     }
   }
 }
