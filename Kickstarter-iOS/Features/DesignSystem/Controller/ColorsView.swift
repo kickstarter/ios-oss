@@ -47,7 +47,6 @@ struct ColorsView: View {
     LegacyColors.ksr_alert,
     LegacyColors.ksr_black,
     LegacyColors.ksr_white,
-    LegacyColors.ksr_celebrate_100,
     LegacyColors.ksr_celebrate_500,
     LegacyColors.ksr_celebrate_700,
     LegacyColors.ksr_create_100,
@@ -63,7 +62,13 @@ struct ColorsView: View {
     LegacyColors.ksr_trust_100,
     LegacyColors.ksr_trust_500,
     LegacyColors.ksr_trust_700,
-    LegacyColors.Background.Action.primary
+    LegacyColors.Background.Action.primary,
+    LegacyColors.Tags.Success.background,
+    LegacyColors.Tags.Success.foreground,
+    LegacyColors.Tags.Warn.background,
+    LegacyColors.Tags.Warn.foreground,
+    LegacyColors.Tags.Error.background,
+    LegacyColors.Tags.Error.foreground
   ]
 
   @ViewBuilder

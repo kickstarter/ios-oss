@@ -25,12 +25,6 @@ public struct LegacyColors {
     darkMode: UIColor(coreColor: .red_500)
   )
 
-  public static let ksr_celebrate_100 = LegacyColor(
-    "legacy/ksr_celebrate_100",
-    lightMode: UIColor.hex(0xFFF2EC),
-    darkMode: UIColor(coreColor: .orange_09)
-  )
-
   public static let ksr_celebrate_500 = LegacyColor(
     "legacy/ksr_celebrate_500",
     lightMode: UIColor.hex(0xF97B62),
@@ -138,4 +132,48 @@ public struct LegacyColors {
     lightMode: UIColor.hex(0xDCDEDD),
     darkMode: UIColor(coreColor: .gray_800)
   )
+
+  public struct Tags {
+    public struct Success {
+      public static let background = LegacyColor(
+        "legacy/tags/success/background",
+        lightMode: UIColor.hex(0xF2F8F5),
+        darkMode: UIColor(coreColor: .green_02)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/success/foreground",
+        lightMode: UIColor.hex(0x028858),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+
+    public struct Warn {
+      public static let background = LegacyColor(
+        "legacy/tags/warn/background",
+        lightMode: UIColor.hex(0xFFF2EC),
+        darkMode: UIColor.hex(0xFFF2EC)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/warn/foreground",
+        lightMode: UIColor.hex(0x696969),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+
+    public struct Error {
+      public static let background = LegacyColor(
+        "legacy/tags/error/background",
+        lightMode: UIColor(coreColor: .red_200),
+        darkMode: UIColor(coreColor: .red_200)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/error/foreground",
+        lightMode: UIColor(coreColor: .red_800),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+  }
 }

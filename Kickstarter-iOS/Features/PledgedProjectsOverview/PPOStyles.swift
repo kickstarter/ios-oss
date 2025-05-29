@@ -24,13 +24,13 @@ enum PPOStyles {
   )
 
   static let warningColor = (
-    foreground: LegacyColors.ksr_support_400.uiColor(),
-    background: LegacyColors.ksr_celebrate_100.uiColor()
+    foreground: LegacyColors.Tags.Warn.foreground.uiColor(),
+    background: LegacyColors.Tags.Warn.background.uiColor()
   )
 
   static let alertColor = (
-    foreground: Colors.Text.Accent.Red.bolder.uiColor(),
-    background: Colors.Background.Danger.subtle.uiColor()
+    foreground: LegacyColors.Tags.Error.foreground.uiColor(),
+    background: LegacyColors.Tags.Error.background.uiColor()
   )
 
   static let title = (
