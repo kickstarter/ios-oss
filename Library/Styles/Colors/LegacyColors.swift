@@ -12,7 +12,7 @@ public struct LegacyColors {
     darkMode: UIColor(coreColor: .white)
   )
 
-  /// `support_100` functions mostly like surface/primary
+  /// `ksr_white` functions mostly like surface/primary
   public static let ksr_white = LegacyColor(
     "legacy/ksr_white",
     lightMode: UIColor(coreColor: .white),
