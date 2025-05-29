@@ -37,6 +37,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let didBlockUserError = TestObserver<(), Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToComments = TestObserver<Project, Never>()
+  private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
@@ -106,6 +107,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
+    self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementViewPledge.observer)
@@ -894,8 +896,8 @@ final class ProjectPageViewModelTests: TestCase {
     XCTAssertEqual(self.goToReportProject.lastValue?.2, project.urls.web.project)
   }
 
-  func testGoToRewards() {
-    withEnvironment(config: .template, mainBundle: self.releaseBundle) {
+  func testGoToRewards_withUserLoggedIn() {
+    withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
 
       self.configureInitialState(.left(project))
@@ -929,6 +931,83 @@ final class ProjectPageViewModelTests: TestCase {
         [.discovery, .discovery, .discovery],
         "Tapping 'View your rewards' emits the refTag"
       )
+    }
+  }
+
+  func testGoToRewards_withUserLoggedOut() {
+    withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
+      let project = Project.template
+
+      self.configureInitialState(.left(project))
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+
+      self.goToRewardsProject.assertValues(
+        [project, project],
+        "Tapping 'View rewards' emits the project"
+      )
+      self.goToRewardsRefTag.assertValues(
+        [.discovery, .discovery],
+        "Tapping 'View rewards' emits the refTag"
+      )
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
+
+      self.goToRewardsProject.assertValues(
+        [project, project, project],
+        "Tapping 'View your rewards' emits the project"
+      )
+      self.goToRewardsRefTag.assertValues(
+        [.discovery, .discovery, .discovery],
+        "Tapping 'View your rewards' emits the refTag"
+      )
+    }
+  }
+
+  func testSecretRewards_GoToRewards() {
+    withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
+      let project = Project.template
+
+      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testSecretRewards_GoToLogin() {
+    withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
+      let project = Project.template
+
+      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      self.self.goToLoginWithIntent.assertValues(
+        [.backProject],
+        "Tapping 'Back this project' emits the project"
+      )
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
     }
   }
 
@@ -2223,8 +2302,15 @@ final class ProjectPageViewModelTests: TestCase {
 
   // MARK: - Functions
 
-  private func configureInitialState(_ projectOrParam: Either<Project, any ProjectPageParam>) {
-    self.vm.inputs.configureWith(projectOrParam: projectOrParam, refInfo: RefInfo(.discovery))
+  private func configureInitialState(
+    _ projectOrParam: Either<Project, any ProjectPageParam>,
+    secretRewardToken: String? = nil
+  ) {
+    self.vm.inputs.configureWith(
+      projectOrParam: projectOrParam,
+      refInfo: RefInfo(.discovery),
+      secretRewardToken: secretRewardToken
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear(animated: false)
   }
