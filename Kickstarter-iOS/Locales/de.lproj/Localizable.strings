@@ -498,10 +498,10 @@
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
 "Payment_schedule" = "Zahlungsübersicht";
-"Percentage_raised" = "% raised";
-"Percentage_raised_bucket_0" = "Under 75%";
-"Percentage_raised_bucket_1" = "75% to 100%";
-"Percentage_raised_bucket_2" = "More than 100%";
+"Percentage_raised" = "% finanziert";
+"Percentage_raised_bucket_0" = "Unter 75 %";
+"Percentage_raised_bucket_1" = "75–100 %";
+"Percentage_raised_bucket_2" = "Mehr als 100 %";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Bitte gebe einen Betrag zwischen %{min} und %{max} ein.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
