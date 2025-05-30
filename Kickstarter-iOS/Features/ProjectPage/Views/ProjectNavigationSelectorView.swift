@@ -178,7 +178,8 @@ final class ProjectNavigationSelectorView: UIView {
         |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
         |> UIButton.lens.accessibilityLabel %~ { _ in section.displayString }
         |> UIButton.lens.titleColor(for: .normal) %~ { _ in LegacyColors.ksr_support_400.uiColor() }
-        |> UIButton.lens.titleColor(for: .selected) %~ { _ in LegacyColors.ksr_trust_500.uiColor() }
+        |> UIButton.lens
+        .titleColor(for: .selected) %~ { _ in LegacyColors.Project.Navigation.selected.uiColor() }
         |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().weighted(.semibold)
         |> UIButton.lens.titleLabel.textAlignment .~ .center
 
@@ -304,7 +305,7 @@ final class ProjectNavigationSelectorView: UIView {
 
 private let selectedButtonBorderViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ LegacyColors.ksr_trust_500.uiColor()
+    |> \.backgroundColor .~ LegacyColors.Project.Navigation.selected.uiColor()
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
