@@ -63,6 +63,8 @@ struct ColorsView: View {
     LegacyColors.ksr_trust_500,
     LegacyColors.ksr_trust_700,
     LegacyColors.Background.Action.primary,
+    LegacyColors.Background.Action.Primary.disabled,
+    LegacyColors.Background.Action.Primary.pressed,
     LegacyColors.Tags.Success.background,
     LegacyColors.Tags.Success.foreground,
     LegacyColors.Tags.Warn.background,
