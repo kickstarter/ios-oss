@@ -6,19 +6,6 @@ public enum PaymentType: String, Decodable {
   case googlePay = "ANDROID_PAY"
   case bankAccount = "BANK_ACCOUNT"
 
-  public var accessibilityLabel: String? {
-    switch self {
-    case .applePay:
-      return "Apple Pay"
-    case .googlePay:
-      return "Google Pay"
-    case .bankAccount:
-      return nil // TODO(MBL-2434): Use translated "bank account" string.
-    case .creditCard:
-      return nil
-    }
-  }
-
   public var trackingString: String? {
     switch self {
     case .applePay:

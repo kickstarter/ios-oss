@@ -56,28 +56,22 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
 
     let paymentType = self.configureWithDataSignal
       .map(\.paymentType)
-      .skipNil()
 
     let cardType = self.configureWithDataSignal
       .map(\.creditCardType)
-      .skipNil()
 
     let lastFour = self.configureWithDataSignal
       .map(\.lastFour)
-      .skipNil()
 
     self.cardNumberAccessibilityLabel = Signal.combineLatest(
       paymentType,
       cardType,
       lastFour
     )
-    .map {
-      [$0.0.accessibilityLabel, $0.1.description, Strings.Card_ending_in_last_four(last_four: $0.2)]
-        .compact()
-        .joined(separator: ", ")
-    }
+    .map(paymentMethodAccessibilityLabel)
 
     self.cardNumberTextShortStyle = lastFour
+      .skipNil()
       .map { Strings.Ending_in_last_four(last_four: $0) }
 
     self.expirationDateText = self.configureWithDataSignal
@@ -130,6 +124,31 @@ private func imageName(for paymentType: PaymentType?, creditCardType: CreditCard
   case nil:
     return nil
   }
+}
+
+private func paymentMethodAccessibilityLabel(
+  for paymentType: PaymentType?,
+  cardType: CreditCardType?,
+  lastFour: String?
+) -> String {
+  let paymentTypeDescription = paymentType.flatMap { paymentType in
+    switch paymentType {
+    case .applePay:
+      return Strings.accessibility_payment_types_apple_pay()
+    case .googlePay:
+      return Strings.accessibility_payment_types_google_pay()
+    case .bankAccount:
+      return Strings.accessibility_payment_types_bank_account()
+    case .creditCard:
+      return nil
+    }
+  }
+
+  let lastFourDescription = lastFour.map(Strings.Card_ending_in_last_four)
+
+  return [paymentTypeDescription, cardType?.description, lastFourDescription]
+    .compact()
+    .joined(separator: ", ")
 }
 
 private func formatted(dateString: String) -> String {
