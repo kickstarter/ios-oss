@@ -1,0 +1,47 @@
+fragment ProjectCardFragment on Project {
+  id
+  name
+  description
+  state
+  category {
+    id
+    name
+  }
+  creator {
+    id
+    name
+  }
+  pledged {
+    amount
+    currency
+  }
+  goal {
+    amount
+    currency
+  }
+  deadlineAt
+  launchedAt
+  backersCount
+  lastUploadedVideo {
+    videoSources {
+      hls {
+        src
+      }
+    }
+  }
+  image {
+    url(width: 800)
+  }
+  rewards {
+    nodes {
+      id
+      name
+      description
+      amount {
+        amount
+        currency
+      }
+      backersCount
+    }
+  }
+} 

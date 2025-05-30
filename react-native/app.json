@@ -1,4 +1,7 @@
 {
   "name": "KickstarterMobile",
-  "displayName": "KickstarterMobile"
+  "displayName": "KickstarterMobile",
+  "plugins": [
+    "expo-video"
+  ]
 }

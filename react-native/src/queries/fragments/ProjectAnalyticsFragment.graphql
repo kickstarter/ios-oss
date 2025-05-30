@@ -1,0 +1,3 @@
+fragment ProjectAnalyticsFragment on Project {
+  id
+} 

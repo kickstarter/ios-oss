@@ -1,0 +1,25 @@
+fragment BackerDashboardProjectCellFragment on Project {
+  id
+  name
+  description
+  state
+  category {
+    id
+    name
+  }
+  creator {
+    id
+    name
+  }
+  pledged {
+    amount
+    currency
+  }
+  goal {
+    amount
+    currency
+  }
+  deadlineAt
+  launchedAt
+  backersCount
+} 
