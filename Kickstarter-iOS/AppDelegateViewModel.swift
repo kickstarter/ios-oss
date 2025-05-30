@@ -455,12 +455,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefInfo?)? in
-        guard case let .project(param, subpage, refInfo) = link else { return nil }
-        return (param, subpage, refInfo)
+      .map { link -> (Param, Navigation.Project, RefInfo?, secretRewardToken: String?)? in
+        guard case let .project(param, subpage, refInfo, secretRewardToken) = link else { return nil }
+        return (param, subpage, refInfo, secretRewardToken)
       }
       .skipNil()
-      .switchMap { param, subpage, refInfo in
+      .switchMap { param, subpage, refInfo, secretRewardToken in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
           .observeForUI()
@@ -468,7 +468,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
             let projectParam = Either<Project, any ProjectPageParam>(left: project)
             let vc = ProjectPageViewController.configuredWith(
               projectOrParam: projectParam,
-              refInfo: refInfo
+              refInfo: refInfo,
+              secretRewardToken: secretRewardToken
             )
 
             return (
@@ -604,7 +605,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let surveyUrlFromProjectLink = deepLink
       .map { link -> String? in
-        if case let .project(_, .surveyWebview(surveyUrl), _) = link {
+        if case let .project(_, .surveyWebview(surveyUrl), _, _) = link {
           return surveyUrl
         }
         return nil
