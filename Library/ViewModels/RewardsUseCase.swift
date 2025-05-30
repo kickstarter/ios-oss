@@ -32,7 +32,6 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
 
     let isSecretReward = secretRewardToken
       .map { secretRewardToken -> Bool in
-        print("secretRewardToken: \(secretRewardToken ?? "nil")")
         guard let secretRewardToken = secretRewardToken else {
           return false
         }
@@ -45,10 +44,6 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
       .compactMap { isSecretReward, isLoggedIn -> Bool in
         isSecretReward && !isLoggedIn
       }
-
-    requiresLoginForSecretRewards.observeValues { requiresLogin in
-      print("requiresLoginForSecretRewards: \(requiresLogin)")
-    }
 
     self.goToRewards = requiresLoginForSecretRewards
       .takeWhen(goToRewardsTappedSignal)
