@@ -51,6 +51,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.sequence, 148)
       XCTAssertEqual(backing.shippingAmount, 10.0)
       XCTAssertEqual(backing.status, .pledged)
+      XCTAssertEqual(backing.reward?.audienceData.isSecretReward, false)
 
       guard let reward = backing.reward else {
         XCTFail("reward should exist")
@@ -224,6 +225,10 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "Photo",
             "altText": "Some image",
             "url": "https://www.ksr.com/image.jpg"
+          },
+          "audienceData": {
+            "__typename": "ResourceAudience",
+            "secret": false
           }
         },
         {
@@ -345,6 +350,10 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "Photo",
             "altText": "Some image",
             "url": "https://www.ksr.com/image.jpg"
+          },
+          "audienceData": {
+            "__typename": "ResourceAudience",
+            "secret": false
           }
         },
         {
@@ -466,6 +475,10 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "Photo",
             "altText": "Some image",
             "url": "https://www.ksr.com/image.jpg"
+          },
+          "audienceData": {
+            "__typename": "ResourceAudience",
+            "secret": false
           }
         },
         {
@@ -587,6 +600,10 @@ private func backingDictionary() -> [String: Any] {
             "__typename": "Photo",
             "altText": "Some image",
             "url": "https://www.ksr.com/image.jpg"
+          },
+          "audienceData": {
+            "__typename": "ResourceAudience",
+            "secret": false
           }
         }
       ]
@@ -1117,6 +1134,10 @@ private func backingDictionary() -> [String: Any] {
         "__typename": "Photo",
         "altText": "Some image",
         "url": "https://www.ksr.com/image.jpg"
+      },
+      "audienceData": {
+        "__typename": "ResourceAudience",
+        "secret": false
       }
     },
     "rewardsAmount": {

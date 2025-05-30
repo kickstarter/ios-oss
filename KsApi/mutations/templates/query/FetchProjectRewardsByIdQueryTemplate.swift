@@ -85,7 +85,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "shippingRules":[
 
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -202,7 +206,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -304,7 +312,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -421,7 +433,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -523,7 +539,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -625,7 +645,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -736,7 +760,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -847,7 +875,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -958,7 +990,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -1069,7 +1105,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -1180,7 +1220,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -1291,7 +1335,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                   "available" : true,
@@ -1654,7 +1702,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                   "limit" : null,
                   "isMaxPledge" : false,
                   "shippingPreference" : "restricted",
-                  "startsAt" : null
+                  "startsAt" : null,
+                  "audienceData": {
+                    "__typename": "ResourceAudience",
+                    "secret": false
+                  }
                 },
                 {
                    "amount":{
@@ -1706,19 +1758,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
-                       "latePledgeAmount": {
-                          "amount":"5.0",
-                          "currency":"EUR",
-                          "symbol":"€"
-                       },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Das erste Eis)",
-                       "pledgeAmount": {
-                          "amount":"5.0",
-                          "currency":"EUR",
-                          "symbol":"€"
-                       },
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1765,7 +1817,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
                 {
                    "amount":{
@@ -1823,19 +1879,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                        }
                      ]
                    },
-                       "latePledgeAmount": {
-                          "amount":"5.0",
-                          "currency":"EUR",
-                          "symbol":"€"
-                       },
+                   "latePledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + GALLERY PRINT (30x45cm)",
-                       "pledgeAmount": {
-                          "amount":"5.0",
-                          "currency":"EUR",
-                          "symbol":"€"
-                       },
+                   "pledgeAmount": {
+                      "amount":"5.0",
+                      "currency":"EUR",
+                      "symbol":"€"
+                   },
                    "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
@@ -1912,7 +1968,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                          }
                       }
                    ],
-                   "startsAt":null
+                   "startsAt":null,
+                   "audienceData": {
+                     "__typename": "ResourceAudience",
+                     "secret": false
+                   }
                 },
              ]
           },

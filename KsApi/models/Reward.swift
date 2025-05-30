@@ -29,6 +29,9 @@ public struct Reward {
   /// - Source: `Reward.image.url`
   public let image: Image?
 
+  /// Data related to the audience for the reward
+  public let audienceData: AudienceData
+
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
     return self.id == Reward.noReward.id
@@ -58,6 +61,12 @@ public struct Reward {
 
   public var hasNoShippingPreference: Bool {
     return self.shipping.preference == Reward.Shipping.Preference.none
+  }
+
+  /// Returns `true` if the reward is marked as secret.
+  /// This is determined from the `audienceData.isSecretReward` flag.
+  public var isSecretReward: Bool {
+    return self.audienceData.isSecretReward
   }
 
   /**
@@ -111,6 +120,10 @@ public struct Reward {
     /// URL of the image
     public let url: String?
   }
+
+  public struct AudienceData {
+    public let isSecretReward: Bool
+  }
 }
 
 extension Reward: Equatable {}
@@ -127,6 +140,7 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
 
 extension Reward: Decodable {
   enum CodingKeys: String, CodingKey {
+    case audienceData
     case backersCount = "backers_count"
     case convertedMinimum = "converted_minimum"
     case description
@@ -151,6 +165,7 @@ extension Reward: Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.audienceData = try AudienceData(from: decoder)
     self.backersCount = try values.decodeIfPresent(Int.self, forKey: .backersCount)
     self.convertedMinimum = try values.decode(Double.self, forKey: .convertedMinimum)
     if let description = try? values.decode(String.self, forKey: .description) {
@@ -209,5 +224,17 @@ extension Reward.Shipping {
 extension Reward: GraphIDBridging {
   public static var modelName: String {
     return "Reward"
+  }
+}
+
+extension Reward.AudienceData: Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case secret
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+
+    self.isSecretReward = try values.decodeIfPresent(Bool.self, forKey: .secret) ?? false
   }
 }

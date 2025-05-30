@@ -53,5 +53,8 @@ fragment RewardFragment on Reward {
   image {
     altText
     url(width: 1024)
+  },
+  audienceData {
+    secret
   }
 }
