@@ -1,9 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { ActivityIndicator, FlatList, SafeAreaView, StatusBar, Text, TextInput, useColorScheme, View, ViewToken } from 'react-native';
-import { GraphQLProvider } from '../src/context/GraphQLContext';
-import { AppProps } from '../src/types/AppProps';
-import { useGraphQLQuery } from '../src/hooks/useGraphQLQuery';
-import { SearchDocument, SearchQuery, SearchQueryVariables, ProjectSort, PublicProjectState } from '../src/generated/graphql';
+import { GraphQLProvider } from '../context/GraphQLContext';
+import { AppProps } from '../types/AppProps';
+import { useGraphQLQuery } from '../hooks/useGraphQLQuery';
+import { SearchDocument, SearchQuery, SearchQueryVariables, ProjectSort, PublicProjectState } from '../generated/graphql';
 import { SearchCell } from '../components/SearchCell';
 
 function SearchResults({ searchTerm }: { searchTerm: string }) {
