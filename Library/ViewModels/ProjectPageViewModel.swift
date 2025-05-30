@@ -930,7 +930,7 @@ private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPage
 
 private func fetchProject(
   projectOrParam: Either<Project, any ProjectPageParam>,
-  secretRewardToken _: String?,
+  secretRewardToken secretRewardToken: String?,
   shouldPrefix: Bool
 )
   -> SignalProducer<Project, ErrorEnvelope> {
@@ -945,7 +945,11 @@ private func fetchProject(
   let projectAndBackingProducer = projectAndBackingIdProducer
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
-        return fetchProjectRewards(project: projectPamphletData.project)
+        return addUserToSecretRewardGroupIfNeeded(
+          project: projectPamphletData.project,
+          secretRewardToken: secretRewardToken
+        )
+        .then(fetchProjectRewards(project: projectPamphletData.project))
       }
 
       let projectWithBackingAndRewards = AppEnvironment.current.apiService
@@ -959,7 +963,11 @@ private func fetchProject(
             // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
             |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
-          return fetchProjectRewards(project: updatedProjectWithBacking)
+          return addUserToSecretRewardGroupIfNeeded(
+            project: updatedProjectWithBacking,
+            secretRewardToken: secretRewardToken
+          )
+          .then(fetchProjectRewards(project: updatedProjectWithBacking))
         }
 
       return projectWithBackingAndRewards
@@ -976,15 +984,18 @@ private func fetchProject(
 // Ticket: [MBL-2478](https://kickstarter.atlassian.net/browse/MBL-2478)
 private func addUserToSecretRewardGroupIfNeeded(
   project: Project,
-  secretReward: String?
+  secretRewardToken: String?
 ) -> SignalProducer<Void, ErrorEnvelope> {
   let isUserLoggedIn = AppEnvironment.current.currentUser != nil
 
-  guard isUserLoggedIn, let secretReward = secretReward, !secretReward.isEmpty else {
+  guard isUserLoggedIn, let secretRewardToken = secretRewardToken, !secretRewardToken.isEmpty else {
     return SignalProducer(value: ())
   }
 
-  let input = AddUserToSecretRewardGroupInput(projectId: project.graphID, secretRewardToken: secretReward)
+  let input = AddUserToSecretRewardGroupInput(
+    projectId: project.graphID,
+    secretRewardToken: secretRewardToken
+  )
   return AppEnvironment.current.apiService
     .addUserToSecretRewardGroup(input: input)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
