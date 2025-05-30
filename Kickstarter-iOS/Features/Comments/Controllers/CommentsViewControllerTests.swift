@@ -246,7 +246,7 @@ internal final class CommentsViewControllerTests: TestCase {
           .flaggedCommentsTemplate
       ))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
