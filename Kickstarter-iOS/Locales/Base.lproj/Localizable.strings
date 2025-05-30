@@ -498,6 +498,10 @@
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
 "Payment_schedule" = "Payment schedule";
+"Percentage_raised" = "% raised";
+"Percentage_raised_bucket_0" = "Under 75%";
+"Percentage_raised_bucket_1" = "75% to 100%";
+"Percentage_raised_bucket_2" = "More than 100%";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Please enter a pledge amount between %{min} and %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
@@ -641,6 +645,7 @@
 "Search_results.other" = "%{search_results_count} results";
 "Search_results.two" = "%{search_results_count} results";
 "Search_results.zero" = "No results";
+"Secret_reward" = "Secret reward";
 "Security_code" = "Security code";
 "See_all_backed__projects" = "See all backed projects";
 "See_all_category_name_projects" = "See all %{category_name} projects";
@@ -939,6 +944,9 @@
 "accessibility.discovery.buttons.log_in" = "Log in";
 "accessibility.discovery.buttons.search" = "Search";
 "accessibility.discovery.buttons.user_profile" = "User profile";
+"accessibility.payment_types.apple_pay" = "Apple Pay";
+"accessibility.payment_types.bank_account" = "Bank account";
+"accessibility.payment_types.google_pay" = "Google Pay";
 "accessibility.projects.buttons.close" = "Close";
 "accessibility.projects.buttons.close_video_player" = "Close video player";
 "accessibility.projects.buttons.pause_video" = "Pause video";

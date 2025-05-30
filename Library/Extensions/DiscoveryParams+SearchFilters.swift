@@ -17,16 +17,15 @@ extension DiscoveryParams.State {
   }
 }
 
-// FIXME: MBL-2464 Add translated strings
 extension DiscoveryParams.PercentRaisedBucket {
   public var title: String {
     switch self {
     case .bucket_0:
-      return "Under 75%"
+      return Strings.Percentage_raised_bucket_0()
     case .bucket_1:
-      return "75% to 100%"
+      return Strings.Percentage_raised_bucket_1()
     case .bucket_2:
-      return "More than 100%"
+      return Strings.Percentage_raised_bucket_2()
     }
   }
 }
