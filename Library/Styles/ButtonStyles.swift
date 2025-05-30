@@ -119,8 +119,10 @@ private let _greenButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
   <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.Background.Action.primary.uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ Colors.Background.Action.Primary.pressed.uiColor()
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ Colors.Background.Action.Primary.disabled.uiColor()
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.Background.Action.Primary.pressed
+  .uiColor()
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.Background.Action.Primary.disabled
+  .uiColor()
 
 // MARK: - Grey
 

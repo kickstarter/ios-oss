@@ -69,6 +69,20 @@ public struct LegacyColors {
         lightMode: UIColor.hex(0x028858),
         darkMode: UIColor(coreColor: .white)
       )
+
+      public struct Primary {
+        public static let pressed = LegacyColor(
+          "legacy/background/action/primary/pressed",
+          lightMode: UIColor.hex(0x015738),
+          darkMode: UIColor(coreColor: .gray_300)
+        )
+
+        public static let disabled = LegacyColor(
+          "legacy/background/action/primary/disabled",
+          lightMode: UIColor.hex(0x5DB294),
+          darkMode: UIColor(coreColor: .gray_600)
+        )
+      }
     }
   }
 
