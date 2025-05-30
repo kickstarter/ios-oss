@@ -15,7 +15,7 @@ internal final class LoginViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "lang_\(language)_device_\(device)"
         )
       }

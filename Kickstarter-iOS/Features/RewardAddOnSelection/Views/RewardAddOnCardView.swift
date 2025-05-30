@@ -265,11 +265,11 @@ public final class RewardAddOnCardView: UIView {
   private func configurePillsView(_ pills: [String]) {
     let pillData = pills.map { text -> PillData in
       PillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
         text: text,
-        textColor: LegacyColors.ksr_support_400.uiColor(),
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor(),
         imageName: nil
       )
     }

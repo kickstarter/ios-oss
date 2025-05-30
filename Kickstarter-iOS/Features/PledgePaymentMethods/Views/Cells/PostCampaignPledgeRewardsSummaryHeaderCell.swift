@@ -40,6 +40,8 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
 
     self.applyContainerStackViewStyle(self.containerStackView)
 
+    self.contentView.backgroundColor = LegacyColors.ksr_white.uiColor()
+
     _ = self.rootStackView
       |> self
       .applyRcootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)

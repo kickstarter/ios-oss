@@ -11,6 +11,7 @@ public struct PagedTabBar<Page: TabBarPage>: View {
       }
     }
     .frame(height: Constants.height)
+    .background(Colors.Background.Surface.primary.swiftUIColor())
   }
 
   @ViewBuilder

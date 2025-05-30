@@ -12,6 +12,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
     self.title = Strings.tabbar_activity()
 
     let ppoView = PPOView(

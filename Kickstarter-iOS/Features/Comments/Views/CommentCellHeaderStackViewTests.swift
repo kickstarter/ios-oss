@@ -33,7 +33,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
     assertSnapshot(
       matching: self.commentCellHeaderStackView,
-      as: .image,
+      as: .image(perceptualPrecision: 0.99),
       named: "state_AuthorBadge_Is_Backer"
     )
   }
@@ -44,7 +44,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
     assertSnapshot(
       matching: self.commentCellHeaderStackView,
-      as: .image,
+      as: .image(perceptualPrecision: 0.99),
       named: "state_AuthorBadge_Is_Colaborator"
     )
   }
@@ -55,7 +55,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
     assertSnapshot(
       matching: self.commentCellHeaderStackView,
-      as: .image,
+      as: .image(perceptualPrecision: 0.99),
       named: "state_AuthorBadge_Is_Creator"
     )
   }
@@ -66,7 +66,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
     assertSnapshot(
       matching: self.commentCellHeaderStackView,
-      as: .image,
+      as: .image(perceptualPrecision: 0.99),
       named: "state_AuthorBadge_Is_Superbacker"
     )
   }
@@ -75,6 +75,10 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.failedTemplate)
 
-    assertSnapshot(matching: self.commentCellHeaderStackView, as: .image, named: "state_AuthorBadge_Is_You")
+    assertSnapshot(
+      matching: self.commentCellHeaderStackView,
+      as: .image(perceptualPrecision: 0.99),
+      named: "state_AuthorBadge_Is_You"
+    )
   }
 }

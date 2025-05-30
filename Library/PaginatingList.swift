@@ -45,6 +45,7 @@ public struct PaginatingList<Data, Cell, Header>: View where
   public var body: some View {
     List(selection: self.selectedItem) {
       self.header()
+        .listRowBackground(Color.clear)
       ForEach(self.data) { item in
         self.content(item)
           .tag(item)

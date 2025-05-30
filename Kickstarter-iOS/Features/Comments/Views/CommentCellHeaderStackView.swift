@@ -154,8 +154,8 @@ private func setStyleForCreatorAndCollaborator(text: String) -> PaddingLabelStyl
     label
       |> \.text .~ text
       |> \.font .~ UIFont.ksr_footnote()
-      |> \.textColor .~ LegacyColors.ksr_create_700.uiColor()
-      |> \.backgroundColor .~ LegacyColors.ksr_create_700.uiColor(opacity: 0.06)
+      |> \.textColor .~ LegacyColors.Tags.Success.foreground.uiColor()
+      |> \.backgroundColor .~ LegacyColors.Tags.Success.background.uiColor()
       |> roundedStyle(cornerRadius: Styles.grid(1))
       |> \.adjustsFontForContentSizeCategory .~ true
   }

@@ -279,9 +279,9 @@ private func addOnsString(reward: Reward) -> RewardCardPillData? {
   guard reward.hasAddOns else { return nil }
 
   return RewardCardPillData(
-    backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+    backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
     text: Strings.Add_ons(),
-    textColor: LegacyColors.ksr_create_700.uiColor()
+    textColor: LegacyColors.Tags.Success.foreground.uiColor()
   )
 }
 
@@ -301,9 +301,9 @@ private func timeLeftString(project: Project, reward: Reward) -> RewardCardPillD
     )
 
     return RewardCardPillData(
-      backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+      backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
       text: Strings.Time_left_left(time_left: time + " " + unit),
-      textColor: LegacyColors.ksr_support_400.uiColor()
+      textColor: LegacyColors.Tags.Warn.foreground.uiColor()
     )
   }
 
@@ -320,19 +320,19 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
     let backersCount = reward.backersCount ?? 0
 
     return backersCount > 0 ? RewardCardPillData(
-      backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+      backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
       text: Strings.general_backer_count_backers(backer_count: backersCount),
-      textColor: LegacyColors.ksr_create_700.uiColor()
+      textColor: LegacyColors.Tags.Success.foreground.uiColor()
     ) : nil
   }
 
   return RewardCardPillData(
-    backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+    backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
     text: Strings.remaining_count_left_of_limit_count(
       remaining_count: "\(remaining)",
       limit_count: "\(limit)"
     ),
-    textColor: LegacyColors.ksr_support_400.uiColor()
+    textColor: LegacyColors.Tags.Warn.foreground.uiColor()
   )
 }
 
@@ -341,9 +341,9 @@ private func shippingSummaryString(project: Project, reward: Reward) -> RewardCa
      reward.shipping.enabled,
      let shippingSummaryText = reward.shipping.summary {
     return RewardCardPillData(
-      backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+      backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
       text: shippingSummaryText,
-      textColor: LegacyColors.ksr_create_700.uiColor()
+      textColor: LegacyColors.Tags.Success.foreground.uiColor()
     )
     /** FIXME: No longer used on iOS. Might still be needed on Android/Web before removing from: `Kickstarter` `config/locales/native/en.yml`
      Strings.Ships_worldwide()

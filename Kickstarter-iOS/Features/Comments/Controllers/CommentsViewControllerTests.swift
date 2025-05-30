@@ -40,7 +40,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -71,7 +71,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -94,7 +94,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -119,7 +119,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -141,7 +141,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -170,7 +170,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.99),
             named: "Comments - lang_\(language)_device_\(device)"
           )
         }
@@ -197,7 +197,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -222,7 +222,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -261,7 +261,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }

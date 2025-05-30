@@ -12,22 +12,17 @@ public struct LegacyColors {
     darkMode: UIColor(coreColor: .white)
   )
 
+  /// `ksr_white` functions mostly like surface/primary
   public static let ksr_white = LegacyColor(
     "legacy/ksr_white",
     lightMode: UIColor(coreColor: .white),
-    darkMode: UIColor(coreColor: .black)
+    darkMode: UIColor(coreColor: .gray_1000)
   )
 
   public static let ksr_alert = LegacyColor(
     "legacy/ksr_alert",
     lightMode: UIColor.hex(0xA12027),
     darkMode: UIColor(coreColor: .red_500)
-  )
-
-  public static let ksr_celebrate_100 = LegacyColor(
-    "legacy/ksr_celebrate_100",
-    lightMode: UIColor.hex(0xFFF2EC),
-    darkMode: UIColor(coreColor: .orange_09)
   )
 
   public static let ksr_celebrate_500 = LegacyColor(
@@ -56,20 +51,46 @@ public struct LegacyColors {
 
   public static let ksr_create_500 = LegacyColor(
     "legacy/ksr_create_500",
-    lightMode: UIColor.hex(0x05CE78),
+    lightMode: UIColor(coreColor: .green_05),
     darkMode: UIColor(coreColor: .green_06)
   )
 
   public static let ksr_create_700 = LegacyColor(
     "legacy/ksr_create_700",
     lightMode: UIColor.hex(0x028858),
-    darkMode: UIColor.hex(0x05CE78)
+    darkMode: UIColor(coreColor: .green_05)
   )
 
+  public struct Background {
+    public struct Action {
+      /// Most of the buttons in our app used `create_700` as their background color. This has a light mode color equal to `create_700` but the inverted dark mode color of `background/action/primary`. Eventually this can be replaced with `background/action/primary`.
+      public static let primary = LegacyColor(
+        "legacy/background/action/primary",
+        lightMode: UIColor.hex(0x028858),
+        darkMode: UIColor(coreColor: .white)
+      )
+
+      public struct Primary {
+        public static let pressed = LegacyColor(
+          "legacy/background/action/primary/pressed",
+          lightMode: UIColor.hex(0x015738),
+          darkMode: UIColor(coreColor: .gray_300)
+        )
+
+        public static let disabled = LegacyColor(
+          "legacy/background/action/primary/disabled",
+          lightMode: UIColor.hex(0x5DB294),
+          darkMode: UIColor(coreColor: .gray_600)
+        )
+      }
+    }
+  }
+
+  /// `support_100` functions mostly like surface/secondary
   public static let ksr_support_100 = LegacyColor(
     "legacy/ksr_support_100",
     lightMode: UIColor.hex(0xF3F3F3),
-    darkMode: UIColor(coreColor: .gray_900)
+    darkMode: UIColor(coreColor: .black)
   )
 
   public static let ksr_support_200 = LegacyColor(
@@ -87,7 +108,7 @@ public struct LegacyColors {
   public static let ksr_support_400 = LegacyColor(
     "legacy/ksr_support_400",
     lightMode: UIColor.hex(0x696969),
-    darkMode: UIColor(coreColor: .gray_600)
+    darkMode: UIColor.hex(0xA1A1A1)
   )
 
   public static let ksr_support_500 = LegacyColor(
@@ -125,4 +146,48 @@ public struct LegacyColors {
     lightMode: UIColor.hex(0xDCDEDD),
     darkMode: UIColor(coreColor: .gray_800)
   )
+
+  public struct Tags {
+    public struct Success {
+      public static let background = LegacyColor(
+        "legacy/tags/success/background",
+        lightMode: UIColor.hex(0xEFF8F5),
+        darkMode: UIColor(coreColor: .green_02)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/success/foreground",
+        lightMode: UIColor.hex(0x028858),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+
+    public struct Warn {
+      public static let background = LegacyColor(
+        "legacy/tags/warn/background",
+        lightMode: UIColor.hex(0xFFF2EC),
+        darkMode: UIColor.hex(0xFFF2EC)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/warn/foreground",
+        lightMode: UIColor.hex(0x696969),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+
+    public struct Error {
+      public static let background = LegacyColor(
+        "legacy/tags/error/background",
+        lightMode: UIColor(coreColor: .red_200),
+        darkMode: UIColor(coreColor: .red_200)
+      )
+
+      public static let foreground = LegacyColor(
+        "legacy/tags/error/foreground",
+        lightMode: UIColor(coreColor: .red_800),
+        darkMode: UIColor(coreColor: .black)
+      )
+    }
+  }
 }

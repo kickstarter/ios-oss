@@ -54,6 +54,8 @@ final class PostCampaignPledgeRewardsSummaryCell: UITableViewCell, ValueCell {
     self.selectionStyle = .none
     self.separatorInset = UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 
+    self.contentView.backgroundColor = LegacyColors.ksr_white.uiColor()
+
     self.amountLabel.adjustsFontForContentSizeCategory = true
 
     self.applyContainerStackViewStyle(self.containerStackView)
