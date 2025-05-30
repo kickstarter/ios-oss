@@ -1,4 +1,5 @@
 import AppboyKit
+import Expo
 import FBSDKCoreKit
 import Firebase
 import Foundation

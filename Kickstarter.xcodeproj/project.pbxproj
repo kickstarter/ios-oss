@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001A13CFEA12993B737D1EE0 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C4F67AF59BF5C49A846B68 /* ExpoModulesProvider.swift */; };
 		013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
 		013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */; };
 		013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 013744C01D999BE200E50C78 /* EmptyStates.storyboard */; };
@@ -361,6 +362,7 @@
 		3742036F22DD45A2007AA86E /* PillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742036E22DD45A2007AA86E /* PillCell.swift */; };
 		374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB94E22C17D4E00B84219 /* CharacterSet.swift */; };
 		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
+		375116C8FC6B05F9E648D93A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECB573D7FD6411053B80357 /* ExpoModulesProvider.swift */; };
 		3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */; };
 		3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E42A2335E7CE00047E9A /* TraitCollection.swift */; };
 		3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D0CD228E51F800241AE6 /* UIFont.swift */; };
@@ -2282,6 +2284,7 @@
 		47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
 		552024EE3D181D39B3E5600C /* Pods-Kickstarter-Framework-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickstarter-Framework-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		56C4F67AF59BF5C49A846B68 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Kickstarter-Framework-iOS/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewController.swift; sourceTree = "<group>"; };
 		59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModel.swift; sourceTree = "<group>"; };
 		595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardViewModel.swift; sourceTree = "<group>"; };
@@ -2526,6 +2529,7 @@
 		77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsHeaderView.xib; sourceTree = "<group>"; };
 		77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingBarButtonItemView.xib; sourceTree = "<group>"; };
 		77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemView.swift; sourceTree = "<group>"; };
+		7ECB573D7FD6411053B80357 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Kickstarter-iOS/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
 		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
@@ -6232,6 +6236,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		759C480DE8A38361DCF06D08 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				D5DE19E1A588F360C36C1649 /* Kickstarter-Framework-iOS */,
+				C007998108FB5FCEA1AD4FDF /* Kickstarter-iOS */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
@@ -6880,6 +6893,7 @@
 				A7C725771C85D36D005A016B /* Library */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 				E8D8EE841E607949C182B800 /* Pods */,
+				759C480DE8A38361DCF06D08 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -7326,6 +7340,14 @@
 			path = ReactNative;
 			sourceTree = "<group>";
 		};
+		C007998108FB5FCEA1AD4FDF /* Kickstarter-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7ECB573D7FD6411053B80357 /* ExpoModulesProvider.swift */,
+			);
+			name = "Kickstarter-iOS";
+			sourceTree = "<group>";
+		};
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
@@ -7650,6 +7672,14 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		D5DE19E1A588F360C36C1649 /* Kickstarter-Framework-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				56C4F67AF59BF5C49A846B68 /* ExpoModulesProvider.swift */,
+			);
+			name = "Kickstarter-Framework-iOS";
+			sourceTree = "<group>";
+		};
 		D6ED1B3C216D617E007F7547 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
@@ -7921,6 +7951,7 @@
 			buildConfigurationList = A7C795B11C873A870081977F /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOS" */;
 			buildPhases = (
 				91416E940AE4CC0F591D3782 /* [CP] Check Pods Manifest.lock */,
+				F5ABB1FA82654117135B8326 /* [Expo] Configure project */,
 				A7C795991C873A870081977F /* Sources */,
 				A7C7959A1C873A870081977F /* Frameworks */,
 				A7C7959B1C873A870081977F /* Headers */,
@@ -7945,6 +7976,7 @@
 			buildConfigurationList = A7D1F9611C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOS" */;
 			buildPhases = (
 				A2F5C57A7FF3241ACFC6562C /* [CP] Check Pods Manifest.lock */,
+				867D212E6316204C30B95681 /* [Expo] Configure project */,
 				A7D1F9411C850B7C000D41D5 /* Sources */,
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
@@ -8418,6 +8450,9 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
@@ -8426,6 +8461,9 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
@@ -8436,6 +8474,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-iOS/Pods-Kickstarter-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		867D212E6316204C30B95681 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Kickstarter-iOS/expo-configure-project.sh\"\n";
 		};
 		8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8545,6 +8602,9 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
@@ -8553,6 +8613,9 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
@@ -8563,6 +8626,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kickstarter-Framework-iOS/Pods-Kickstarter-Framework-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F5ABB1FA82654117135B8326 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Kickstarter-Framework-iOS/expo-configure-project.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -9535,6 +9617,7 @@
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
 				601342EC2C81414000B851FA /* PostCampaignCheckoutViewController.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
+				001A13CFEA12993B737D1EE0 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9543,6 +9626,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
+				375116C8FC6B05F9E648D93A /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10335,6 +10419,7 @@
 				MARKETING_VERSION = 5.24.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
@@ -10359,6 +10444,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10390,6 +10476,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10415,6 +10502,7 @@
 					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10452,6 +10540,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10485,6 +10574,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10519,6 +10609,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10541,6 +10632,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -10563,6 +10655,7 @@
 					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10599,6 +10692,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10638,6 +10732,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10658,9 +10753,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 48YBP49Y5N;
 				ENABLE_MODULE_VERIFIER = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
@@ -10672,10 +10769,12 @@
 				MARKETING_VERSION = 5.24.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.kickstarter.kickstarter.debug";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_WORKSPACE = NO;
@@ -10705,6 +10804,7 @@
 				MARKETING_VERSION = 5.24.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
@@ -10725,6 +10825,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -10747,6 +10848,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10929,6 +11031,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10969,6 +11072,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11009,6 +11113,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11036,6 +11141,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11063,6 +11169,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11090,6 +11197,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11194,6 +11302,7 @@
 				MARKETING_VERSION = 5.24.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickAlpha;
@@ -11225,6 +11334,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11250,6 +11360,7 @@
 					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11287,6 +11398,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11312,6 +11424,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11349,6 +11462,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11378,6 +11492,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11420,6 +11535,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug.RichPushNotifications;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11464,6 +11580,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.RichPushNotifications;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11508,6 +11625,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta.RichPushNotifications;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11551,6 +11669,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha.RichPushNotifications;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -11582,6 +11701,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kickstarter.Library-Keychain-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -11613,6 +11733,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kickstarter.Library-Keychain-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -11643,6 +11764,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kickstarter.Library-Keychain-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -11673,6 +11795,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kickstarter.Library-Keychain-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;

@@ -152,5 +152,7 @@
 		<string>Inter-VariableFont.ttf</string>
 		<string>Inter-Italic-VariableFont.ttf</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

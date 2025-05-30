@@ -144,6 +144,11 @@
             value = "disable"
             isEnabled = "NO">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "RCT_NEW_ARCH_ENABLED"
+            value = "0"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
