@@ -472,7 +472,7 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 
 private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
   let notReward = project.rewards.filter { $0.isNoReward }
-  let secretRewards = project.rewards.filter { $0.isSecretReward }
+  let secretRewards = project.rewards.filter { $0.isSecretReward && rewardIsAvailable($0) }
 
   let availableRewards = project.rewards.filter {
     rewardIsAvailable($0)
@@ -482,8 +482,6 @@ private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
 
   let unAvailableRewards = project.rewards.filter {
     !rewardIsAvailable($0)
-      && !$0.isNoReward
-      && !$0.isSecretReward
   }
 
   return notReward + secretRewards + availableRewards + unAvailableRewards
