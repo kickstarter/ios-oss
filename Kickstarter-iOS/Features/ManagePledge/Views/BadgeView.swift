@@ -100,21 +100,17 @@ final class BadgeView: UIView {
 
   private func imageViewSetup(_ image: UIImage) {
     guard self.imageView == nil else { return }
-    
+
     self.imageView = UIImageView(image: image)
     self.rootStackView.insertArrangedSubview(self.imageView!, at: 0)
 
-    self.imageView?.setContentHuggingPriority(.required, for: .horizontal)
-    self.imageView?.setContentCompressionResistancePriority(.required, for: .horizontal)
-    self.imageView?.setContentHuggingPriority(.required, for: .vertical)
-    self.imageView?.setContentCompressionResistancePriority(.required, for: .vertical)
+    applyImageViewStyle(self.imageView!)
   }
 }
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .horizontal
   stackView.spacing = Styles.grid(1)
-  stackView.alignment = .leading
 }
 
 private func applyBadgeViewStyle(_ view: UIView) {
@@ -126,4 +122,12 @@ private func applyBadgeLabelStyle(_ label: UILabel) {
   label.textAlignment = .center
   label.numberOfLines = 1
   label.adjustsFontForContentSizeCategory = true
+}
+
+private func applyImageViewStyle(_ imageView: UIImageView) {
+  imageView.contentMode = .scaleAspectFit
+  imageView.setContentHuggingPriority(.required, for: .horizontal)
+  imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+  imageView.setContentHuggingPriority(.required, for: .vertical)
+  imageView.setContentCompressionResistancePriority(.required, for: .vertical)
 }
