@@ -14,6 +14,8 @@ private enum Constants {
 final class BadgeView: UIView {
   // MARK: - Properties
 
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private var imageView: UIImageView?
   private lazy var badgeLabel: UILabel = { UILabel(frame: .zero) }()
   private var style: BadgeStyle = .success
 
@@ -35,39 +37,47 @@ final class BadgeView: UIView {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    self.addSubview(self.badgeLabel)
+    self.addSubview(self.rootStackView)
+
+    self.rootStackView.addArrangedSubview(self.badgeLabel)
   }
 
   private func setupConstraints() {
-    self.badgeLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.rootStackView.translatesAutoresizingMaskIntoConstraints = false
+
     self.badgeLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.badgeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     self.badgeLabel.setContentHuggingPriority(.required, for: .vertical)
     self.badgeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
     NSLayoutConstraint.activate([
-      self.badgeLabel.topAnchor.constraint(
+      self.rootStackView.topAnchor.constraint(
         equalTo: self.topAnchor,
         constant: Constants.badgeTopButtonPadding
       ),
-      self.badgeLabel.bottomAnchor.constraint(
+      self.rootStackView.bottomAnchor.constraint(
         equalTo: self.bottomAnchor,
         constant: -Constants.badgeTopButtonPadding
       ),
-      self.badgeLabel.leadingAnchor.constraint(
+      self.rootStackView.leadingAnchor.constraint(
         equalTo: self.leadingAnchor,
         constant: Constants.badgeLeadingTrailingPadding
       ),
-      self.badgeLabel.trailingAnchor.constraint(
+      self.rootStackView.trailingAnchor.constraint(
         equalTo: self.trailingAnchor,
         constant: -Constants.badgeLeadingTrailingPadding
       )
     ])
   }
 
-  public func configure(with text: String, style: BadgeStyle = .success) {
+  public func configure(with text: String, image: UIImage? = nil, style: BadgeStyle = .success) {
     self.badgeLabel.text = text
     self.style = style
+
+    if let image = image {
+      self.imageViewSetup(image)
+    }
+
     self.updateStyle()
   }
 
@@ -76,6 +86,7 @@ final class BadgeView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
+    applyRootStackViewStyle(self.rootStackView)
     applyBadgeViewStyle(self)
     applyBadgeLabelStyle(self.badgeLabel)
     self.updateStyle()
@@ -84,7 +95,22 @@ final class BadgeView: UIView {
   private func updateStyle() {
     self.badgeLabel.textColor = self.style.foregroundColor
     self.backgroundColor = self.style.backgroundColor
+    self.imageView?.tintColor = self.style.foregroundColor
   }
+
+  private func imageViewSetup(_ image: UIImage) {
+    guard self.imageView == nil else { return }
+
+    self.imageView = UIImageView(image: image)
+    self.rootStackView.insertArrangedSubview(self.imageView!, at: 0)
+
+    applyImageViewStyle(self.imageView!)
+  }
+}
+
+private func applyRootStackViewStyle(_ stackView: UIStackView) {
+  stackView.axis = .horizontal
+  stackView.spacing = Styles.grid(1)
 }
 
 private func applyBadgeViewStyle(_ view: UIView) {
@@ -96,4 +122,12 @@ private func applyBadgeLabelStyle(_ label: UILabel) {
   label.textAlignment = .center
   label.numberOfLines = 1
   label.adjustsFontForContentSizeCategory = true
+}
+
+private func applyImageViewStyle(_ imageView: UIImageView) {
+  imageView.contentMode = .scaleAspectFit
+  imageView.setContentHuggingPriority(.required, for: .horizontal)
+  imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+  imageView.setContentHuggingPriority(.required, for: .vertical)
+  imageView.setContentCompressionResistancePriority(.required, for: .vertical)
 }
