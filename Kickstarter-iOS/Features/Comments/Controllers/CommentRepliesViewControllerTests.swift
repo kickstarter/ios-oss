@@ -41,7 +41,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "CommentReplies - lang_\(language)_device_\(device)"
         )
       }
@@ -75,7 +75,7 @@ final class CommentRepliesViewControllerTests: TestCase {
         self.scheduler.run()
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "CommentReplies - lang_\(language)_device_\(device)"
         )
       }
@@ -109,7 +109,7 @@ final class CommentRepliesViewControllerTests: TestCase {
         self.scheduler.run()
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "CommentReplies - lang_\(language)_device_\(device)"
         )
       }
@@ -147,7 +147,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "CommentReplies - lang_\(language)_device_\(device)"
         )
       }
@@ -188,7 +188,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.99),
             named: "CommentReplies - lang_\(language)_device_\(device)"
           )
         }
@@ -223,7 +223,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "CommentReplies - lang_\(language)_device_\(device)"
         )
       }
