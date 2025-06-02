@@ -47,6 +47,7 @@ public protocol RewardCardViewModelOutputs {
   var rewardTitleLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var rewardImage: Signal<Reward.Image, Never> { get }
   var rewardImageHidden: Signal<Bool, Never> { get }
+  var secretRewardBadgeHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -152,6 +153,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.rewardImage = reward.map { $0.image }.skipNil()
     self.rewardImageHidden = reward.map { $0.image == nil }
+    self.secretRewardBadgeHidden = reward.map { !$0.isSecretReward }
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -184,6 +186,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardTitleLabelAttributedText: Signal<NSAttributedString, Never>
   public let rewardImage: Signal<Reward.Image, Never>
   public let rewardImageHidden: Signal<Bool, Never>
+  public let secretRewardBadgeHidden: Signal<Bool, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }

@@ -123,4 +123,8 @@ extension Reward {
             |> Item.lens.name .~ "Post card \(number)"
         )
     }
+
+  public static let secretRewardTemplate = Reward.template
+    |> Reward.lens.id .~ 9_876
+    |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
 }

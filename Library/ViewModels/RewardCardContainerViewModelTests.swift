@@ -14,6 +14,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   private let pledgeButtonHidden = TestObserver<Bool, Never>()
   private let pledgeButtonTitleText = TestObserver<String?, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
+  private let requiresTopMarginInset = TestObserver<Bool, Never>()
 
   let availableHasAddOns = Reward.postcards
     |> Reward.lens.hasAddOns .~ true
@@ -79,6 +80,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.vm.outputs.pledgeButtonHidden.observe(self.pledgeButtonHidden.observer)
     self.vm.outputs.pledgeButtonTitleText.observe(self.pledgeButtonTitleText.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
+    self.vm.outputs.requiresTopMarginInset.observe(self.requiresTopMarginInset.observer)
   }
 
   func testLive_BackedProject_BackedReward() {
@@ -635,5 +637,71 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.vm.inputs.pledgeButtonTapped()
 
     self.rewardSelected.assertValues([Reward.template.id])
+  }
+
+  func testRequiredTopMarginInset_IsTrue_WhenIsSecretReward_AndIsBacked() {
+    let reward = Reward.secretRewardTemplate
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+      )
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.requiresTopMarginInset.assertValues([true])
+  }
+
+  func testRequiredTopMarginInset_IsFalse_WhenIsSecretReward_AndIsBacked_AndHasImage() {
+    let reward = Reward.secretRewardTemplate
+      |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+      )
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.requiresTopMarginInset.assertValues([false])
+  }
+
+  func testRequiredTopMarginInset_IsFalse_WhenIsSecretReward_AndIsNotBacked() {
+    let reward = Reward.secretRewardTemplate
+
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.requiresTopMarginInset.assertValues([false])
+  }
+
+  func testRequiredTopMarginInset_IsFalse_WhenIsStandardReward_AndIsBacked() {
+    let reward = Reward.template
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+      )
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.requiresTopMarginInset.assertValues([false])
+  }
+
+  func testRequiredTopMarginInset_IsFalse_WhenIsStandardReward_AndIsNotBacked() {
+    let reward = Reward.template
+
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.requiresTopMarginInset.assertValues([false])
   }
 }
