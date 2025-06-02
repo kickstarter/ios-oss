@@ -59,7 +59,8 @@ extension Reward {
       title: rewardFragment.name,
       localPickup: location,
       isAvailable: rewardFragment.available,
-      image: rewardPhoto(from: rewardFragment.image)
+      image: rewardPhoto(from: rewardFragment.image),
+      audienceData: rewardAudienceData(from: rewardFragment.audienceData)
     )
   }
 }
@@ -141,4 +142,9 @@ private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.I
   guard let image = image else { return nil }
 
   return Reward.Image(altText: image.altText, url: image.url)
+}
+
+private func rewardAudienceData(from audienceData: GraphAPI.RewardFragment.AudienceDatum) -> Reward
+  .AudienceData {
+  return Reward.AudienceData(isSecretReward: audienceData.secret)
 }

@@ -59,6 +59,8 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertNotNil(v1Reward.image)
       XCTAssertEqual(v1Reward.image?.altText, "Some image")
       XCTAssertEqual(v1Reward.image?.url, "https://www.ksr.com/image.jpg")
+
+      XCTAssertEqual(v1Reward.audienceData.isSecretReward, false)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -216,6 +218,10 @@ private func rewardDictionary() -> [String: Any] {
       "__typename": "Photo",
       "altText": "Some image",
       "url": "https://www.ksr.com/image.jpg"
+    },
+    "audienceData": {
+      "__typename": "ResourceAudience",
+      "secret": false
     }
   }
   """
