@@ -471,20 +471,31 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 }
 
 private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
-  let notReward = project.rewards.filter { $0.isNoReward }
-  let secretRewards = project.rewards.filter { $0.isSecretReward && rewardIsAvailable($0) }
+  var notReward: [Reward] = []
+  var unavailableRewards: [Reward] = []
+  var secretRewards: [Reward] = []
+  var availableRewards: [Reward] = []
 
-  let availableRewards = project.rewards.filter {
-    rewardIsAvailable($0)
-      && !$0.isNoReward
-      && !$0.isSecretReward
+  for reward in project.rewards {
+    if reward.isNoReward {
+      notReward.append(reward)
+      continue
+    }
+
+    if reward.isAvailable != true {
+      unavailableRewards.append(reward)
+      continue
+    }
+
+    if reward.isSecretReward {
+      secretRewards.append(reward)
+      continue
+    }
+
+    availableRewards.append(reward)
   }
 
-  let unAvailableRewards = project.rewards.filter {
-    !rewardIsAvailable($0)
-  }
-
-  return notReward + secretRewards + availableRewards + unAvailableRewards
+  return notReward + secretRewards + availableRewards + unavailableRewards
 }
 
 private func filteredRewardsByLocation(

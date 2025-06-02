@@ -126,5 +126,6 @@ extension Reward {
 
   public static let secretRewardTemplate = Reward.template
     |> Reward.lens.id .~ 9_876
+    |> Reward.lens.isAvailable .~ true
     |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
 }
