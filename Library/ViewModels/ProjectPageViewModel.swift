@@ -926,7 +926,7 @@ private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPage
 
 private func fetchProject(
   projectOrParam: Either<Project, any ProjectPageParam>,
-  secretRewardToken secretRewardToken: String?,
+  secretRewardToken: String?,
   shouldPrefix: Bool
 )
   -> SignalProducer<Project, ErrorEnvelope> {
@@ -978,14 +978,18 @@ private func fetchProject(
 
 // TODO: Consider relocating this logic to `RewardsUseCase` to consolidate secret reward handling.
 // Ticket: [MBL-2478](https://kickstarter.atlassian.net/browse/MBL-2478)
+//
+/// Attempts to add the user to the secret reward group if logged in and a valid token is present.
+/// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
+///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
 private func addUserToSecretRewardGroupIfNeeded(
   project: Project,
   secretRewardToken: String?
-) -> SignalProducer<Void, ErrorEnvelope> {
+) -> SignalProducer<Bool, ErrorEnvelope> {
   let isUserLoggedIn = AppEnvironment.current.currentUser != nil
 
   guard isUserLoggedIn, let secretRewardToken = secretRewardToken, !secretRewardToken.isEmpty else {
-    return SignalProducer(value: ())
+    return SignalProducer(value: false)
   }
 
   let input = AddUserToSecretRewardGroupInput(
@@ -995,8 +999,8 @@ private func addUserToSecretRewardGroupIfNeeded(
   return AppEnvironment.current.apiService
     .addUserToSecretRewardGroup(input: input)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .switchMap { _ -> SignalProducer<Void, ErrorEnvelope> in
-      SignalProducer(value: ())
+    .switchMap { _ -> SignalProducer<Bool, ErrorEnvelope> in
+      SignalProducer(value: true)
     }
 }
 
