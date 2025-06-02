@@ -12,8 +12,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   ProcessingViewPresenting {
   // MARK: - Properties
 
-  private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
-    ASAuthorizationAppleIDButton(type: .continue, style: .black)
+  private lazy var appleLoginButton: AdaptiveAppleIDButton = {
+    AdaptiveAppleIDButton()
   }()
 
   private lazy var backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -69,9 +69,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-
-    // Need a dark version of the background image for this page to work.
-    self.overrideUserInterfaceStyle = .light
 
     self.configureViews()
     self.setupConstraints()
@@ -597,5 +594,47 @@ extension LoginToutViewController: ASWebAuthenticationPresentationContextProvidi
     }
 
     return window
+  }
+}
+
+// There's no light/dark mode for `ASAuthorizationAppleIDButton`, so this is an elaborate workaround.
+// See: http://www.openradar.appspot.com/7459440
+private class AdaptiveAppleIDButton: UIView {
+  let stackview = UIStackView()
+  let lightModeButton = ASAuthorizationAppleIDButton(type: .continue, style: .black)
+  let darkModeButton = ASAuthorizationAppleIDButton(type: .continue, style: .white)
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    self.addSubview(self.stackview)
+    self.stackview.constrainViewToEdges(in: self)
+    self.stackview.addArrangedSubviews(self.lightModeButton, self.darkModeButton)
+
+    self.updateVisibility()
+  }
+
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func updateVisibility() {
+    if self.traitCollection.userInterfaceStyle == .dark {
+      self.lightModeButton.isHidden = true
+      self.darkModeButton.isHidden = false
+    } else {
+      self.lightModeButton.isHidden = false
+      self.darkModeButton.isHidden = true
+    }
+  }
+
+  override func traitCollectionDidChange(_: UITraitCollection?) {
+    self.updateVisibility()
+  }
+
+  func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+    self.lightModeButton.addTarget(target, action: action, for: controlEvents)
+    self.darkModeButton.addTarget(target, action: action, for: controlEvents)
   }
 }
