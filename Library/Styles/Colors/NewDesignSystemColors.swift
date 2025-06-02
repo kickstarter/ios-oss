@@ -48,6 +48,14 @@ public struct Colors {
           )
         }
       }
+
+      public struct Green {
+        public static let bolder = SemanticColor(
+          "text/accent/green/bolder",
+          lightMode: .green_08,
+          darkMode: .green_02
+        )
+      }
     }
 
     public struct Inverse {
@@ -104,6 +112,12 @@ public struct Colors {
           "background/accent/green/disabled",
           lightMode: .green_01,
           darkMode: .green_09
+        )
+
+        public static let subtle = SemanticColor(
+          "background/accent/green/subtle",
+          lightMode: .green_02,
+          darkMode: .green_08
         )
 
         public struct Bold {
