@@ -33,8 +33,19 @@ public protocol ProjectPageViewModelInputs {
   /// Call when block user is tapped
   func blockUser(id: Int)
 
-  /// Call with the project given to the view controller.
+  /// Convenience overload for `configureWith` that defaults the `secretRewardToken` to `nil`.
+  /// This version is primarily used in tests to avoid passing unnecessary parameters,
+  /// which helps prevent widespread changes across all existing test cases in `ProjectPageViewModelTests`.
+  /// Use this when the `secretRewardToken` context is not required.
   func configureWith(projectOrParam: Either<Project, any ProjectPageParam>, refInfo: RefInfo?)
+
+  /// Call with the project given to the view controller, including an optional `secretRewardToken`.
+  /// Use this when loading a project that include access to secret rewards for authenticated users.
+  func configureWith(
+    projectOrParam: Either<Project, any ProjectPageParam>,
+    refInfo: RefInfo?,
+    secretRewardToken: String?
+  )
 
   /// Call when the Thank you page is dismissed after finishing backing the project
   func didBackProject()
@@ -123,6 +134,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a `Project` when the comments are to be rendered.
   var goToComments: Signal<Project, Never> { get }
+
+  /// Emits `LoginIntent` to take the user to the `LoginToutViewController`
+  var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
 
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
@@ -216,7 +230,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
 
-    let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTagEvent = self.configDataProperty.signal
+      .skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
         self.userSessionStartedProperty.signal.mapConst(true),
@@ -224,24 +239,32 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
-      .map(unpack)
-      .switchMap { projectOrParam, refInfo, shouldPrefix in
-        fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
-          .on(
-            starting: { isLoading.value = true },
-            terminated: { isLoading.value = false }
-          )
-          .map { project in
-            (project, refInfo?.refTag.map(cleanUp(refTag:)))
-          }
-          .materialize()
+      .map { data, shouldPrefix -> (Either<Project, any ProjectPageParam>, RefInfo?, String?, Bool) in
+        let (projectOrParam, refInfo, secretRewardToken) = data
+
+        return (projectOrParam, refInfo, secretRewardToken, shouldPrefix)
+      }
+      .switchMap { projectOrParam, refInfo, secretRewardToken, shouldPrefix in
+        fetchProject(
+          projectOrParam: projectOrParam,
+          secretRewardToken: secretRewardToken,
+          shouldPrefix: shouldPrefix
+        )
+        .on(
+          starting: { isLoading.value = true },
+          terminated: { isLoading.value = false }
+        )
+        .map { project in
+          (project, refInfo?.refTag.map(cleanUp(refTag:)))
+        }
+        .materialize()
       }
 
     let projectFriends = MutableProperty([User]())
 
     projectFriends <~ self.configDataProperty.signal.skipNil()
       .switchMap { projectParamAndRefTag -> SignalProducer<[User], Never> in
-        let (projectOrParam, _) = projectParamAndRefTag
+        let (projectOrParam, _, _) = projectParamAndRefTag
         return fetchProjectFriends(projectOrParam: projectOrParam).demoteErrors()
       }
 
@@ -306,10 +329,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.viewDidLoadProperty.signal)
       .compactMap { data -> (Either<Project, any ProjectPageParam>, RefTag?)? in
         guard
-          let (either, refInfo) = data,
+          let (either, refInfo, _) = data,
           let right = either.right,
           let project = right.initialProject
         else { return nil }
+
         return (either, refInfo?.refTag)
       }
 
@@ -340,17 +364,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let ctaButtonTappedWithType = self.pledgeCTAButtonTappedProperty.signal
       .skipNil()
 
-    let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { state in
-        switch state {
-        case .pledge, .viewRewards, .viewYourRewards:
-          return true
-        default:
-          return false
-        }
-      }
-      .ignoreValues()
-
     let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
       .filter { state in
         switch state {
@@ -371,9 +384,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         }
       }
       .skipNil()
-
-    self.goToRewards = freshProjectAndRefTag
-      .takeWhen(shouldGoToRewards)
 
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
@@ -484,7 +494,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
       .combineLatest(with: freshProjectAndRefTag)
       .map { projectAndRefInfo, freshProjectAndRefTag in
-        let (_, refInfo) = projectAndRefInfo
+        let (_, refInfo, _) = projectAndRefInfo
         let (project, _) = freshProjectAndRefTag
         return (project.graphID, refInfo)
       }
@@ -646,6 +656,36 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           )
       }
 
+    // MARK: Rewards
+
+    let secretRewardToken = self.configDataProperty.signal
+      .skipNil()
+      .map { _, _, secretRewardToken -> String? in
+        secretRewardToken
+      }
+
+    let shouldGoToRewards = ctaButtonTappedWithType
+      .filter { state in
+        switch state {
+        case .pledge, .viewRewards, .viewYourRewards:
+          return true
+        default:
+          return false
+        }
+      }
+      .ignoreValues()
+
+    self.rewardsUseCase = RewardsUseCase(
+      secretRewardToken: secretRewardToken,
+      userSessionStarted: self.userSessionStartedProperty.signal,
+      goToRewardsTapped: shouldGoToRewards
+    )
+
+    self.goToRewards = freshProjectAndRefTag
+      .takeWhen(
+        self.rewardsUseCase.goToRewards
+      )
+
     // MARK: - Pledge View
 
     self.viewPledgeUseCase = .init(with: projectAndBacking)
@@ -680,9 +720,25 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.blockUserProperty.value = id
   }
 
-  private let configDataProperty = MutableProperty<(Either<Project, any ProjectPageParam>, RefInfo?)?>(nil)
+  private let configDataProperty = MutableProperty<(
+    Either<Project, any ProjectPageParam>,
+    RefInfo?,
+    String?
+  )?>(nil)
+  public func configureWith(
+    projectOrParam: Either<Project, any ProjectPageParam>,
+    refInfo: RefInfo?,
+    secretRewardToken: String?
+  ) {
+    self.configDataProperty.value = (projectOrParam, refInfo, secretRewardToken)
+  }
+
+  /// Convenience overload for `configureWith` that defaults the `secretRewardToken` to `nil`.
+  /// This version is primarily used in tests to avoid passing unnecessary parameters,
+  /// which helps prevent widespread changes across all existing test cases in `ProjectPageViewModelTests`.
+  /// Use this when the `secretRewardToken` context is not required.
   public func configureWith(projectOrParam: Either<Project, any ProjectPageParam>, refInfo: RefInfo?) {
-    self.configDataProperty.value = (projectOrParam, refInfo)
+    self.configureWith(projectOrParam: projectOrParam, refInfo: refInfo, secretRewardToken: nil)
   }
 
   private let didBackProjectProperty = MutableProperty<Void>(())
@@ -796,6 +852,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
+
+  public var goToLoginWithIntent: Signal<LoginIntent, Never> {
+    self.rewardsUseCase.goToLoginWithIntent
+  }
+
   public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
     self.viewPledgeUseCase.goToNativePledgeView
   }
@@ -847,6 +908,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public var navigateToSimilarProject: Signal<ProjectCardProperties, Never> {
     self.similarProjectsUseCase.navigateToProject
   }
+
+  // MARK: - RewardsUseCase
+
+  private let rewardsUseCase: RewardsUseCase
 }
 
 private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPageParam>)
@@ -859,7 +924,11 @@ private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPage
   return projectFriendsProducer
 }
 
-private func fetchProject(projectOrParam: Either<Project, any ProjectPageParam>, shouldPrefix: Bool)
+private func fetchProject(
+  projectOrParam: Either<Project, any ProjectPageParam>,
+  secretRewardToken: String?,
+  shouldPrefix: Bool
+)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
   let configCurrency = AppEnvironment.current.launchedCountries.countries
@@ -872,7 +941,11 @@ private func fetchProject(projectOrParam: Either<Project, any ProjectPageParam>,
   let projectAndBackingProducer = projectAndBackingIdProducer
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
-        return fetchProjectRewards(project: projectPamphletData.project)
+        return addUserToSecretRewardGroupIfNeeded(
+          project: projectPamphletData.project,
+          secretRewardToken: secretRewardToken
+        )
+        .then(fetchProjectRewards(project: projectPamphletData.project))
       }
 
       let projectWithBackingAndRewards = AppEnvironment.current.apiService
@@ -886,7 +959,11 @@ private func fetchProject(projectOrParam: Either<Project, any ProjectPageParam>,
             // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
             |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
-          return fetchProjectRewards(project: updatedProjectWithBacking)
+          return addUserToSecretRewardGroupIfNeeded(
+            project: updatedProjectWithBacking,
+            secretRewardToken: secretRewardToken
+          )
+          .then(fetchProjectRewards(project: updatedProjectWithBacking))
         }
 
       return projectWithBackingAndRewards
@@ -897,6 +974,34 @@ private func fetchProject(projectOrParam: Either<Project, any ProjectPageParam>,
   }
 
   return projectAndBackingProducer
+}
+
+// TODO: Consider relocating this logic to `RewardsUseCase` to consolidate secret reward handling.
+// Ticket: [MBL-2478](https://kickstarter.atlassian.net/browse/MBL-2478)
+//
+/// Attempts to add the user to the secret reward group if logged in and a valid token is present.
+/// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
+///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
+private func addUserToSecretRewardGroupIfNeeded(
+  project: Project,
+  secretRewardToken: String?
+) -> SignalProducer<Bool, ErrorEnvelope> {
+  let isUserLoggedIn = AppEnvironment.current.currentUser != nil
+
+  guard isUserLoggedIn, let secretRewardToken = secretRewardToken, !secretRewardToken.isEmpty else {
+    return SignalProducer(value: false)
+  }
+
+  let input = AddUserToSecretRewardGroupInput(
+    projectId: project.graphID,
+    secretRewardToken: secretRewardToken
+  )
+  return AppEnvironment.current.apiService
+    .addUserToSecretRewardGroup(input: input)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { _ -> SignalProducer<Bool, ErrorEnvelope> in
+      SignalProducer(value: true)
+    }
 }
 
 private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {

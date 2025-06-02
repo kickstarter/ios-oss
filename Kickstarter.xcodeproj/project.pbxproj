@@ -261,6 +261,8 @@
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
 		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
+		333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */; };
+		333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */; };
 		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */; };
 		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
@@ -2039,6 +2041,8 @@
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
 		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCase.swift; sourceTree = "<group>"; };
+		333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCaseTests.swift; sourceTree = "<group>"; };
 		3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsView.swift; sourceTree = "<group>"; };
 		3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModel.swift; sourceTree = "<group>"; };
 		3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewTest.swift; sourceTree = "<group>"; };
@@ -7114,6 +7118,8 @@
 				477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */,
 				597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */,
 				A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */,
+				333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */,
+				333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */,
 				597073511D05FE6B00B00444 /* ProjectNotificationsViewModel.swift */,
 				A7ED1F9D1E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift */,
 				06B0FDAC27021D4500147E3E /* ProjectPageViewModel.swift */,
@@ -8459,6 +8465,7 @@
 				60E5FF112D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift in Sources */,
 				60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
+				333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
 				D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */,
 				A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */,
@@ -8953,6 +8960,7 @@
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
 				A7A627171E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift in Sources */,
 				AA7452B22D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift in Sources */,
+				333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */,
 				AA7452B32D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift in Sources */,
 				AA7452B42D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift in Sources */,
 				A7ED1F2A1E830FDC00BFFA01 /* FormatTests.swift in Sources */,

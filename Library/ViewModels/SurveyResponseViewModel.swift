@@ -87,7 +87,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.goToProject = newRequest
       .map { request -> (Param, RefTag?)? in
-        if case let (.project(param, .root, refInfo))? = Navigation.match(request) {
+        if case let (.project(param, .root, refInfo, _))? = Navigation.match(request) {
           return (param, refInfo?.refTag)
         }
         return nil
@@ -96,7 +96,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.goToPledge = newRequest
       .map { request -> (Param)? in
-        if case let (.project(param, .pledge, refInfo))? = Navigation.match(request) {
+        if case let (.project(param, .pledge, refInfo, _))? = Navigation.match(request) {
           return param
         }
         return nil
@@ -105,7 +105,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.goToUpdate = newRequest
       .map { (request: URLRequest) -> (Param, Int)? in
-        if case let (.project(param, .update(id, _), _))? = Navigation.match(request) {
+        if case let (.project(param, .update(id, _), _, _))? = Navigation.match(request) {
           return (param, id)
         }
         return nil
@@ -187,7 +187,7 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 }
 
 private func isSurvey(request: URLRequest) -> Bool {
-  guard case (.project(_, .surveyWebview, _))? = Navigation.match(request) else { return false }
+  guard case (.project(_, .surveyWebview, _, _))? = Navigation.match(request) else { return false }
   return true
 }
 

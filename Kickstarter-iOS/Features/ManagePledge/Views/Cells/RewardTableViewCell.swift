@@ -64,8 +64,6 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
 
 private let containerViewStyle: ViewStyle = { (view: UIView) in
   view
-    |> checkoutWhiteBackgroundStyle
-    |> roundedStyle(cornerRadius: Styles.grid(3))
     |> \.layoutMargins .~ .zero
 }
 

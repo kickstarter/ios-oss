@@ -63,11 +63,16 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   public static func configuredWith(
     projectOrParam: Either<Project, any ProjectPageParam>,
-    refInfo: RefInfo?
+    refInfo: RefInfo?,
+    secretRewardToken: String? = nil
   ) -> ProjectPageViewController {
     let vc = ProjectPageViewController.instantiate()
 
-    vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refInfo: refInfo)
+    vc.viewModel.inputs.configureWith(
+      projectOrParam: projectOrParam,
+      refInfo: refInfo,
+      secretRewardToken: secretRewardToken
+    )
 
     return vc
   }
@@ -380,6 +385,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToComments(project: $0)
+      }
+
+    self.viewModel.outputs.goToLoginWithIntent
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
+
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+        let nav = UINavigationController(rootViewController: loginTout)
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
+
+        self?.present(nav, animated: true, completion: nil)
       }
 
     self.viewModel.outputs.goToReportProject
