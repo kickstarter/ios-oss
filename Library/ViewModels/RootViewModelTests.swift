@@ -7,6 +7,9 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+/// Tabs are now Explore (aka Discover), Backings, Activity, Search, Profile.
+private let activityIndex = 2
+
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], Never>()
@@ -53,7 +56,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -68,7 +71,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["5"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -83,7 +86,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -98,21 +101,21 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { true }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "100"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "100", "99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -127,14 +130,14 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
       mockApplication.applicationIconBadgeNumber = 50
 
       self.vm.inputs.applicationWillEnterForeground()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -160,19 +163,19 @@ final class RootViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
-      self.vm.inputs.didSelect(index: 1)
+      self.vm.inputs.didSelect(index: activityIndex)
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.scheduler.advance()
 
       XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -195,19 +198,19 @@ final class RootViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
-      self.vm.inputs.didSelect(index: 1)
+      self.vm.inputs.didSelect(index: activityIndex)
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.scheduler.advance()
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -222,7 +225,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
 
     let user = .template
@@ -233,14 +236,14 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.currentUserUpdated()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       AppEnvironment.logout()
 
       self.vm.inputs.userSessionEnded()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "50", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -255,17 +258,17 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
       self.vm.inputs.didReceiveBadgeValue(10)
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "10"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.vm.inputs.didReceiveBadgeValue(0)
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "10", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -280,7 +283,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
 
     let user = .template
@@ -292,14 +295,14 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.currentUserUpdated()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       AppEnvironment.logout()
 
       self.vm.inputs.userSessionEnded()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "54", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -326,19 +329,19 @@ final class RootViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
-      self.vm.inputs.didSelect(index: 1)
+      self.vm.inputs.didSelect(index: activityIndex)
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.scheduler.advance()
 
       XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
 
     let userAddressedErroredPledges = User.template
@@ -354,7 +357,7 @@ final class RootViewModelTests: TestCase {
 
       XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       self.setBadgeValueAtIndexValue.assertValues(["99+", "9", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -368,7 +371,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "EmptyStates", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -378,8 +381,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "EmptyStates", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
       ],
       "Show the logged in tabs."
     )
@@ -389,8 +392,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "EmptyStates", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
     )
@@ -400,9 +403,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "EmptyStates", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "EmptyStates", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"],
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -442,67 +445,6 @@ final class RootViewModelTests: TestCase {
         "The view controllers should be regenerated when the user language or currency changes."
       )
       self.tabBarItemsData.assertValueCount(2)
-    }
-  }
-
-  func testAppToForeground_ChangesActivityTabIfNecessary() {
-    let viewControllerNames = TestObserver<[String], Never>()
-    self.vm.outputs.setViewControllers.map(extractRootNames)
-      .observe(viewControllerNames.observer)
-
-    let configClientPPO_Off = MockRemoteConfigClient()
-    configClientPPO_Off.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
-    ]
-
-    let configClientPPO_On = MockRemoteConfigClient()
-    configClientPPO_On.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
-
-    withEnvironment(currentUser: .template, remoteConfigClient: configClientPPO_Off) {
-      self.vm.inputs.viewDidLoad()
-
-      self.viewControllerNames.assertValueCount(1)
-      self.tabBarItemsData.assertValueCount(1)
-
-      self.setBadgeValueAtIndexIndex.assertLastValue(1)
-      self.setBadgeValueAtIndexValue.assertLastValue(
-        nil,
-        "Current user should have a cleared badge on activity"
-      )
-    }
-
-    withEnvironment(
-      currentUser: .template,
-      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
-      remoteConfigClient: configClientPPO_On
-    ) {
-      self.vm.inputs.applicationWillEnterForeground()
-
-      self.viewControllerNames.assertValueCount(
-        2,
-        "Turning on PPO and returning the app to foreground should change the view controller tabs."
-      )
-      self.tabBarItemsData.assertValueCount(
-        2,
-        "Turning on PPO and returning the app to foreground should refresh the tab bar data."
-      )
-
-      self.setBadgeValueAtIndexValue.assertLastValue(
-        nil,
-        "Turning on PPO should show a badge, eventually, but that is coming in a follow-up PR."
-      )
-
-      self.vm.inputs.applicationWillEnterForeground()
-      self.viewControllerNames.assertValueCount(
-        2,
-        "PPO hasn't changed, so no new view controllers should be set."
-      )
-      self.tabBarItemsData.assertValueCount(
-        2,
-        "PPO hasn't changed, so no new tab bar data should be set."
-      )
     }
   }
 
@@ -680,101 +622,33 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  /*
-   // FIXME: MBL-2151 Implement PPO badging using backingActionsCount
-     func testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
-       let user = User.template
-         |> \.unseenActivityCount .~ 50
-         |> \.erroredBackingsCount .~ 4
-
-       let remoteConfig = MockRemoteConfigClient()
-       remoteConfig.features = [
-         RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-       ]
-
-       self.setBadgeValueAtIndexValue.assertValues([])
-       self.setBadgeValueAtIndexIndex.assertValues([])
-
-       withEnvironment(
-         currentUserPPOSettings: nil,
-         remoteConfigClient: remoteConfig
-       ) {
-         self.vm.inputs.viewDidLoad()
-
-         AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-         withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
-           self.vm.inputs.currentUserUpdated()
-         }
-
-         self.setBadgeValueAtIndexValue.assertValues([nil, ""])
-         self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-       }
-     }
-
-     func testPPOTabBarBadging_FeatureFlagEnabledWithPersistence() {
-       let user = User.template
-         |> \.unseenActivityCount .~ 50
-         |> \.erroredBackingsCount .~ 4
-
-       let remoteConfig = MockRemoteConfigClient()
-       remoteConfig.features = [
-         RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-       ]
-
-       self.setBadgeValueAtIndexValue.assertValues([])
-       self.setBadgeValueAtIndexIndex.assertValues([])
-
-       withEnvironment(
-         currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
-         remoteConfigClient: remoteConfig
-       ) {
-         self.vm.inputs.viewDidLoad()
-
-         AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-         self.vm.inputs.currentUserUpdated()
-
-         self.setBadgeValueAtIndexValue.assertValues(["", ""])
-         self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-       }
-     }
-      */
-
-  func testPPOTabBarBadging_FeatureFlagDisabled() {
+  // FIXME: MBL-2151 Implement PPO badging using backingActionsCount
+  func disabled_testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
-
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
-    ]
 
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     withEnvironment(
-      currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1),
-      remoteConfigClient: remoteConfig
+      currentUserPPOSettings: nil
     ) {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      self.vm.inputs.currentUserUpdated()
+      withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
+        self.vm.inputs.currentUserUpdated()
+      }
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
+      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
       self.setBadgeValueAtIndexIndex.assertValues([1, 1])
     }
   }
 
   func testSetViewControllers_PledgedProjectsOverview_LoggedIn() {
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: true
-    ]
-
     withEnvironment(
-      currentUser: nil,
-      remoteConfigClient: remoteConfig
+      currentUser: nil
     ) {
       self.vm.inputs.viewDidLoad()
 
@@ -806,30 +680,6 @@ final class RootViewModelTests: TestCase {
           ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab when logged out again"
-      )
-    }
-  }
-
-  func testSetViewControllers_PledgedProjectsOverview_FeatureFlagDisabled() {
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewEnabled.rawValue: false
-    ]
-
-    withEnvironment(
-      remoteConfigClient: remoteConfig
-    ) {
-      self.vm.inputs.viewDidLoad()
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-      self.vm.inputs.userSessionStarted()
-
-      self.viewControllerNames.assertValues(
-        [
-          ["Discovery", "EmptyStates", "Search", "LoginTout"],
-          ["Discovery", "Activities", "Search", "BackerDashboard"]
-        ],
-        "Shows regular Activities tab when feature flag disabled, even when logged in"
       )
     }
   }
