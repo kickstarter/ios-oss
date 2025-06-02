@@ -260,6 +260,7 @@
 		20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
+		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
 		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */; };
 		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
@@ -2037,6 +2038,7 @@
 		20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModel.swift; sourceTree = "<group>"; };
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
+		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsView.swift; sourceTree = "<group>"; };
 		3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModel.swift; sourceTree = "<group>"; };
 		3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewTest.swift; sourceTree = "<group>"; };
@@ -7155,6 +7157,7 @@
 				77BC00F523301BD300808E75 /* RewardCellViewModel.swift */,
 				77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */,
 				6035AFA32C516B75007E28FC /* RewardsCollectionViewModel.swift */,
+				333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
 				A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
@@ -9010,6 +9013,7 @@
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
 				E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */,
 				E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */,
+				333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */,
 				1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */,
 				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
 				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,

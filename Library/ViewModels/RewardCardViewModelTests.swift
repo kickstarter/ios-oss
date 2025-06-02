@@ -568,9 +568,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+        backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
         text: "Add-ons",
-        textColor: LegacyColors.ksr_create_700.uiColor()
+        textColor: LegacyColors.Tags.Success.foreground.uiColor()
       )]
     ])
   }
@@ -588,9 +588,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         text: "25 left of 100",
-        textColor: LegacyColors.ksr_support_400.uiColor()
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor()
       )]
     ])
   }
@@ -609,9 +609,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         text: "25 left of 100",
-        textColor: LegacyColors.ksr_support_400.uiColor()
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor()
       )]
     ])
   }
@@ -629,9 +629,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+        backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
         text: "25 backers",
-        textColor: LegacyColors.ksr_create_700.uiColor()
+        textColor: LegacyColors.Tags.Success.foreground.uiColor()
       )]
     ])
   }
@@ -651,9 +651,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         text: "24 hrs left",
-        textColor: LegacyColors.ksr_support_400.uiColor()
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor()
       )]
     ])
   }
@@ -675,9 +675,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         text: "4 days left",
-        textColor: LegacyColors.ksr_support_400.uiColor()
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor()
       )]
     ])
   }
@@ -700,14 +700,14 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "4 days left",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "75 left of 100",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         )
       ]
     ])
@@ -736,19 +736,19 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "4 days left",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "75 left of 100",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "Ships worldwide",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         )
       ]
     ])
@@ -778,19 +778,19 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "4 days left",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "75 left of 100",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "United States only",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         )
       ]
     ])
@@ -819,19 +819,19 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "4 days left",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "75 left of 100",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "Limited shipping",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         )
       ]
     ])
@@ -863,19 +863,19 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "4 days left",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+          backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
           text: "25 left of 100",
-          textColor: LegacyColors.ksr_support_400.uiColor()
+          textColor: LegacyColors.Tags.Warn.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "Ships worldwide",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         )
       ]
     ])
@@ -907,14 +907,14 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "50 backers",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         ),
         RewardCardPillData(
-          backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+          backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
           text: "Ships worldwide",
-          textColor: LegacyColors.ksr_create_700.uiColor()
+          textColor: LegacyColors.Tags.Success.foreground.uiColor()
         )
       ]
     ])
@@ -1015,9 +1015,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills
       .assertValues([[RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_celebrate_100.uiColor(),
+        backgroundColor: LegacyColors.Tags.Warn.background.uiColor(),
         text: "50 left of 100",
-        textColor: LegacyColors.ksr_support_400.uiColor()
+        textColor: LegacyColors.Tags.Warn.foreground.uiColor()
       )]])
   }
 
@@ -1038,9 +1038,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills
       .assertValues([[RewardCardPillData(
-        backgroundColor: LegacyColors.ksr_create_700.uiColor(opacity: 0.06),
+        backgroundColor: LegacyColors.Tags.Success.background.uiColor(),
         text: "50 backers",
-        textColor: LegacyColors.ksr_create_700.uiColor()
+        textColor: LegacyColors.Tags.Success.foreground.uiColor()
       )]])
   }
 

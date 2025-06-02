@@ -159,7 +159,11 @@ public enum FetchAddsOnsQueryTemplate {
                     }
                   }
                 ],
-                "startsAt": null
+                "startsAt": null,
+                "audienceData": {
+                  "__typename": "ResourceAudience",
+                  "secret": false
+                }
               },
               {
                 "__typename": "Reward",
@@ -487,7 +491,11 @@ public enum FetchAddsOnsQueryTemplate {
                     }
                   }
                 ],
-                "startsAt": null
+                "startsAt": null,
+                "audienceData": {
+                  "__typename": "ResourceAudience",
+                  "secret": false
+                }
               }
             ]
           },

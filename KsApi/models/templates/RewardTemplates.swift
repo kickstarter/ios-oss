@@ -33,7 +33,8 @@ extension Reward {
     title: "My Reward",
     localPickup: nil,
     isAvailable: nil,
-    image: nil
+    image: nil,
+    audienceData: AudienceData(isSecretReward: false)
   )
 
   public static let noReward = Reward(
@@ -65,7 +66,8 @@ extension Reward {
     title: nil,
     localPickup: nil,
     isAvailable: nil,
-    image: nil
+    image: nil,
+    audienceData: AudienceData(isSecretReward: false)
   )
 
   public static let otherReward = Reward(
@@ -97,7 +99,8 @@ extension Reward {
     title: nil,
     localPickup: nil,
     isAvailable: nil,
-    image: nil
+    image: nil,
+    audienceData: AudienceData(isSecretReward: false)
   )
 
   public static let postcards = Reward.template
@@ -120,4 +123,9 @@ extension Reward {
             |> Item.lens.name .~ "Post card \(number)"
         )
     }
+
+  public static let secretRewardTemplate = Reward.template
+    |> Reward.lens.id .~ 9_876
+    |> Reward.lens.isAvailable .~ true
+    |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
 }
