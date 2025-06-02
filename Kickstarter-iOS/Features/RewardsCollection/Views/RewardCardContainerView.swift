@@ -4,6 +4,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+private enum Constants {
+  static let rewardCardMaskViewTopMarginInset = 38.0
+}
+
 public final class RewardCardContainerView: UIView {
   internal var delegate: RewardCardViewDelegate? {
     didSet {
@@ -101,6 +105,21 @@ public final class RewardCardContainerView: UIView {
   internal func configure(with data: RewardCardViewData) {
     self.viewModel.inputs.configureWith(project: data.project, rewardOrBacking: .left(data.reward))
     self.rewardCardView.configure(with: data)
+    self.adjustTopMarginForRewardCard(data)
+  }
+
+  /// Adjusts the top margin of the reward card view depending on whether additional spacing is needed.
+  /// This margin (38.0 pts) is applied when both the "Your selection" and "Secret reward" badges are shown simultaneously,
+  /// in order to prevent visual overlap and ensure proper layout spacing.
+  /// If `requiresTopMarginInset` is false, no additional top margin is applied.
+  private func adjustTopMarginForRewardCard(_ data: RewardCardViewData) {
+    let requiresTopMarginInset = data.reward.isSecretReward
+      && data.reward.image == nil
+      && userIsBacking(reward: data.reward, inProject: data.project)
+
+    var margings = self.rewardCardMaskView.layoutMargins
+    margings.top = requiresTopMarginInset ? Constants.rewardCardMaskViewTopMarginInset : .zero
+    self.rewardCardMaskView.layoutMargins = margings
   }
 
   // MARK: - Functions
@@ -110,7 +129,7 @@ public final class RewardCardContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.rewardCardView, self.rewardCardMaskView)
+    _ = (self.rewardCardView, self)
       |> ksr_addSubviewToParent()
 
     _ = (self.pledgeButtonLayoutGuide, self)

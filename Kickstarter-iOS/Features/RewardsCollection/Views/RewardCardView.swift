@@ -18,6 +18,7 @@ public final class RewardCardView: UIView {
   private let detailsStackView: UIStackView = UIStackView(frame: .zero)
 
   private let rewardImageView = UIImageView(frame: .zero)
+  private let secretRewardBadgeView = BadgeView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let estimatedDeliveryStackView = UIStackView(frame: .zero)
@@ -61,8 +62,6 @@ public final class RewardCardView: UIView {
 
   public override func bindStyles() {
     super.bindStyles()
-
-    _ = checkoutWhiteBackgroundStyle(self)
 
     let stackViews = [
       self.detailsStackView,
@@ -138,6 +137,17 @@ public final class RewardCardView: UIView {
     applyMinimumPriceConversionLabelStyle(self.minimumPriceConversionLabel)
     applyPillsViewStyle(self.pillsView)
     applyRewardImageViewStyle(self.rewardImageView)
+
+    let badgeStyle = BadgeStyle.custom(
+      foregroundColor: Colors.Text.Accent.Green.bolder.uiColor(),
+      backgroundColor: Colors.Background.Accent.Green.subtle.uiColor()
+    )
+
+    self.secretRewardBadgeView.configure(
+      with: Strings.Secret_reward(),
+      image: Library.image(named: "Locked"),
+      style: badgeStyle
+    )
   }
 
   public override func bindViewModel() {
@@ -202,6 +212,8 @@ public final class RewardCardView: UIView {
         guard let url = image.url, let imageURL = URL(string: url) else { return }
         rewardImageView?.ksr_setImageWithURL(imageURL)
       }
+
+    self.secretRewardBadgeView.rac.hidden = self.viewModel.outputs.secretRewardBadgeHidden
   }
 
   // MARK: - Private Helpers
@@ -210,6 +222,8 @@ public final class RewardCardView: UIView {
     self.addSubview(self.rootStackView)
     self.rootStackView.constrainViewToEdges(in: self)
     self.rootStackView.addArrangedSubviews(self.rewardImageView, self.detailsStackView)
+
+    self.addSubview(self.secretRewardBadgeView)
 
     self.rewardImageView.isHidden = true
 
@@ -268,6 +282,19 @@ public final class RewardCardView: UIView {
     )
     constratint.priority = UILayoutPriority(rawValue: 999)
     constratint.isActive = true
+
+    self.secretRewardBadgeView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      self.secretRewardBadgeView.bottomAnchor.constraint(
+        equalTo: self.detailsStackView.topAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.secretRewardBadgeView.leadingAnchor.constraint(
+        equalTo: self.leadingAnchor,
+        constant: Styles.grid(3)
+      )
+    ])
   }
 
   private func configurePillsView(_ pills: [RewardCardPillData]) {
@@ -437,4 +464,6 @@ extension RewardCardView: UICollectionViewDelegate {
 
 private func applyRootStackViewStyle(_ stackView: UIStackView) {
   stackView.axis = .vertical
+  stackView.backgroundColor = Colors.Background.Surface.primary.uiColor()
+  stackView.rounded(with: Styles.grid(3))
 }
