@@ -150,6 +150,26 @@ public struct Colors {
         lightMode: .gray_800,
         darkMode: .gray_300
       )
+
+      public static let primary = SemanticColor(
+        "background/action/primary",
+        lightMode: .green_06,
+        darkMode: .white
+      )
+
+      public struct Primary {
+        public static let pressed = SemanticColor(
+          "background/action/primary/pressed",
+          lightMode: .green_08,
+          darkMode: .gray_300
+        )
+
+        public static let disabled = SemanticColor(
+          "background/action/primary/disabled",
+          lightMode: .green_01,
+          darkMode: .gray_600
+        )
+      }
     }
 
     public struct Danger {
@@ -199,6 +219,12 @@ public struct Colors {
         "background/surface/primary",
         lightMode: .white,
         darkMode: .gray_1000
+      )
+
+      public static let secondary = SemanticColor(
+        "background/surface/secondary",
+        lightMode: .gray_100,
+        darkMode: .black
       )
     }
   }
