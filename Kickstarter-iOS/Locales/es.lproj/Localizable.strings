@@ -498,10 +498,10 @@
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
 "Payment_schedule" = "Calendario de pagos";
-"Percentage_raised" = "% raised";
-"Percentage_raised_bucket_0" = "Under 75%";
-"Percentage_raised_bucket_1" = "75% to 100%";
-"Percentage_raised_bucket_2" = "More than 100%";
+"Percentage_raised" = "% recaudado";
+"Percentage_raised_bucket_0" = "Menos del 75 %";
+"Percentage_raised_bucket_1" = "Del 75 % al 100 %";
+"Percentage_raised_bucket_2" = "Más del 100 %";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Por favor ingresa un monto de contribución entre %{min} y %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";

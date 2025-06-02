@@ -13,6 +13,9 @@ struct ColorsView: View {
     Colors.Background.Accent.Red.subtle,
     Colors.Background.Action.disabled,
     Colors.Background.Action.pressed,
+    Colors.Background.Action.primary,
+    Colors.Background.Action.Primary.disabled,
+    Colors.Background.Action.Primary.pressed,
     Colors.Background.Danger.bold,
     Colors.Background.Danger.Bold.pressed,
     Colors.Background.Danger.disabled,
@@ -20,6 +23,7 @@ struct ColorsView: View {
     Colors.Background.Inverse.pressed,
     Colors.Background.Inverse.disabled,
     Colors.Background.Surface.primary,
+    Colors.Background.Surface.secondary,
     Colors.Border.active,
     Colors.Border.bold,
     Colors.Border.subtle,
@@ -43,7 +47,6 @@ struct ColorsView: View {
     LegacyColors.ksr_alert,
     LegacyColors.ksr_black,
     LegacyColors.ksr_white,
-    LegacyColors.ksr_celebrate_100,
     LegacyColors.ksr_celebrate_500,
     LegacyColors.ksr_celebrate_700,
     LegacyColors.ksr_create_100,
@@ -58,7 +61,16 @@ struct ColorsView: View {
     LegacyColors.ksr_support_700,
     LegacyColors.ksr_trust_100,
     LegacyColors.ksr_trust_500,
-    LegacyColors.ksr_trust_700
+    LegacyColors.ksr_trust_700,
+    LegacyColors.Background.Action.primary,
+    LegacyColors.Background.Action.Primary.disabled,
+    LegacyColors.Background.Action.Primary.pressed,
+    LegacyColors.Tags.Success.background,
+    LegacyColors.Tags.Success.foreground,
+    LegacyColors.Tags.Warn.background,
+    LegacyColors.Tags.Warn.foreground,
+    LegacyColors.Tags.Error.background,
+    LegacyColors.Tags.Error.foreground
   ]
 
   @ViewBuilder

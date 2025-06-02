@@ -498,10 +498,10 @@
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Payment_methods" = "Moyens de paiement ";
 "Payment_schedule" = "Calendrier des règlements";
-"Percentage_raised" = "% raised";
-"Percentage_raised_bucket_0" = "Under 75%";
-"Percentage_raised_bucket_1" = "75% to 100%";
-"Percentage_raised_bucket_2" = "More than 100%";
+"Percentage_raised" = "% de financement";
+"Percentage_raised_bucket_0" = "Inférieur à 75 %";
+"Percentage_raised_bucket_1" = "Entre 75 % et 100 %";
+"Percentage_raised_bucket_2" = "Supérieur à 100 %";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Veuillez saisir un engagement entre %{min} et %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";

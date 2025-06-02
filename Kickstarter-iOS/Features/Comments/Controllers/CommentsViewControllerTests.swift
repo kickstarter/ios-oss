@@ -23,7 +23,7 @@ internal final class CommentsViewControllerTests: TestCase {
           .failedRemovedSuccessfulCommentsTemplate
       ))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -40,7 +40,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -54,7 +54,7 @@ internal final class CommentsViewControllerTests: TestCase {
           .successFailedRetryingRetrySuccessCommentsTemplate
       ))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: Project.template)
@@ -71,7 +71,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -82,7 +82,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: nil, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -94,7 +94,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -108,7 +108,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: project)
@@ -119,7 +119,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -130,7 +130,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -141,7 +141,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -152,7 +152,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -170,7 +170,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.99),
             named: "Comments - lang_\(language)_device_\(device)"
           )
         }
@@ -186,7 +186,7 @@ internal final class CommentsViewControllerTests: TestCase {
       currentUser: User.template
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -197,7 +197,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -212,7 +212,7 @@ internal final class CommentsViewControllerTests: TestCase {
       currentUser: User.template
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -222,7 +222,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
@@ -261,7 +261,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.99),
           named: "Comments - lang_\(language)_device_\(device)"
         )
       }
