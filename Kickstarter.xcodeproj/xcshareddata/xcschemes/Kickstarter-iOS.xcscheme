@@ -147,7 +147,7 @@
          <EnvironmentVariable
             key = "KSR_JS_LOCATION"
             value = "10.0.1.20:8081"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
