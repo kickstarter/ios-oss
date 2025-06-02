@@ -12,8 +12,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   ProcessingViewPresenting {
   // MARK: - Properties
 
-  private lazy var appleLoginButton: AdaptiveApplePayButton = {
-    AdaptiveApplePayButton()
+  private lazy var appleLoginButton: AdaptiveAppleIDButton = {
+    AdaptiveAppleIDButton()
   }()
 
   private lazy var backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -597,8 +597,9 @@ extension LoginToutViewController: ASWebAuthenticationPresentationContextProvidi
   }
 }
 
-// There's no light/dark mode for `ASAuthorizationAppleIDButton`, so this is an elaborate workaround. See: http://www.openradar.appspot.com/7459440
-private class AdaptiveApplePayButton: UIView {
+// There's no light/dark mode for `ASAuthorizationAppleIDButton`, so this is an elaborate workaround.
+// See: http://www.openradar.appspot.com/7459440
+private class AdaptiveAppleIDButton: UIView {
   let stackview = UIStackView()
   let lightModeButton = ASAuthorizationAppleIDButton(type: .continue, style: .black)
   let darkModeButton = ASAuthorizationAppleIDButton(type: .continue, style: .white)
