@@ -14,7 +14,6 @@ public protocol RewardCardContainerViewModelOutputs {
   var pledgeButtonTitleText: Signal<String?, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   func currentReward(is reward: Reward) -> Bool
-  var requiresTopMarginInset: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCardContainerViewModelType {
@@ -62,15 +61,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
-
-    // Applies a top margin to the reward card view when needed
-    // like when both "Your selection" and "Secret reward" badges are visible,
-    // to avoid visual overlap.
-    self.requiresTopMarginInset = projectAndReward.map { project, reward -> Bool in
-      reward.isSecretReward
-        && reward.image == nil
-        && userIsBacking(reward: reward, inProject: project)
-    }
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
@@ -88,7 +78,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
   public let pledgeButtonHidden: Signal<Bool, Never>
   public let pledgeButtonTitleText: Signal<String?, Never>
   public let rewardSelected: Signal<Int, Never>
-  public let requiresTopMarginInset: Signal<Bool, Never>
 
   private let currentRewardProperty = MutableProperty<Reward?>(nil)
   public func currentReward(is reward: Reward) -> Bool {
