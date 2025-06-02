@@ -56,6 +56,7 @@ struct SearchFiltersHeaderView: View {
       ))
     }
     .scrollIndicators(.never)
+    .background(Colors.Background.Surface.primary.swiftUIColor())
   }
 }
 

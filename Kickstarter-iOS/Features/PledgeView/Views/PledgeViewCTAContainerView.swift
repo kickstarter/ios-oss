@@ -24,7 +24,10 @@ final class PledgeViewCTAContainerView: UIView {
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private(set) lazy var titleAndAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
+  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton(
+    paymentButtonType: .plain,
+    paymentButtonStyle: .automatic
+  ) }()
 
   private lazy var ctaStackView: UIStackView = {
     UIStackView(frame: .zero)
