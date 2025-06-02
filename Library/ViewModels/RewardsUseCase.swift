@@ -18,6 +18,7 @@ public protocol RewardsUseCaseType {
 
 public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, RewardsUseCaseOutputs {
   public init(secretRewardToken: Signal<String?, Never>, userSessionStarted: Signal<Void, Never>) {
+    // Emits when the "View rewards", "View your rewards" or "Back this project" button is tapped.
     let goToRewardsTappedSignal = self.goToRewardsTappedProperty.signal
 
     let initialIsLoggedIn = goToRewardsTappedSignal
@@ -39,6 +40,9 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
         return !secretRewardToken.isEmpty
       }
 
+    // Determines if login is required.
+    // This is necessary when a secret reward token is present,
+    // since calling `addUserToSecretRewardGroup` requires the user to be logged in.
     let requiresLoginForSecretRewards = isSecretReward
       .combineLatest(with: isLoggedIn)
       .compactMap { isSecretReward, isLoggedIn -> Bool in
@@ -50,6 +54,8 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
       .filter { $0 == false }
       .ignoreValues()
 
+    // This signal emits to prompt login when accessing a secret reward token
+    // while the user is currently logged out.
     self.goToLoginWithIntent = requiresLoginForSecretRewards
       .takeWhen(goToRewardsTappedSignal)
       .filter { $0 == true }
