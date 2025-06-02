@@ -1209,8 +1209,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -8268,10 +8267,10 @@ n'ont rien soutenu."
    "% raised"
 
    - **en**: "% raised"
-   - **de**: "% raised"
-   - **es**: "% raised"
-   - **fr**: "% raised"
-   - **ja**: "% raised"
+   - **de**: "% finanziert"
+   - **es**: "% recaudado"
+   - **fr**: "% de financement"
+   - **ja**: "％ 達成"
   */
   public static func Percentage_raised() -> String {
     return localizedString(
@@ -8285,10 +8284,10 @@ n'ont rien soutenu."
    "Under 75%"
 
    - **en**: "Under 75%"
-   - **de**: "Under 75%"
-   - **es**: "Under 75%"
-   - **fr**: "Under 75%"
-   - **ja**: "Under 75%"
+   - **de**: "Unter 75 %"
+   - **es**: "Menos del 75 %"
+   - **fr**: "Inférieur à 75 %"
+   - **ja**: "75%未満"
   */
   public static func Percentage_raised_bucket_0() -> String {
     return localizedString(
@@ -8302,10 +8301,10 @@ n'ont rien soutenu."
    "75% to 100%"
 
    - **en**: "75% to 100%"
-   - **de**: "75% to 100%"
-   - **es**: "75% to 100%"
-   - **fr**: "75% to 100%"
-   - **ja**: "75% to 100%"
+   - **de**: "75–100 %"
+   - **es**: "Del 75 % al 100 %"
+   - **fr**: "Entre 75 % et 100 %"
+   - **ja**: "75%から100%"
   */
   public static func Percentage_raised_bucket_1() -> String {
     return localizedString(
@@ -8319,10 +8318,10 @@ n'ont rien soutenu."
    "More than 100%"
 
    - **en**: "More than 100%"
-   - **de**: "More than 100%"
-   - **es**: "More than 100%"
-   - **fr**: "More than 100%"
-   - **ja**: "More than 100%"
+   - **de**: "Mehr als 100 %"
+   - **es**: "Más del 100 %"
+   - **fr**: "Supérieur à 100 %"
+   - **ja**: "100%以上"
   */
   public static func Percentage_raised_bucket_2() -> String {
     return localizedString(
