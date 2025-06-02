@@ -1,53 +1,62 @@
-import UIKit
+import Foundation
+import KsApi
+import Library
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
-import KsApi
-import Library
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
+import UIKit
 
 class ReactViewController: UIViewController {
   var reactNativeFactory: RCTReactNativeFactory?
   var reactNativeFactoryDelegate: RCTReactNativeFactoryDelegate?
-  private var environmentObserver: Disposable?
   private var rootView: RCTRootView?
-  private var bridge: RCTBridge?
+  private static var sharedBridge: RCTBridge?
+  private var bridge: RCTBridge? {
+    get { Self.sharedBridge }
+    set { Self.sharedBridge = newValue }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupReactNative()
-    observeEnvironmentChanges()
-  }
-
-  deinit {
-    environmentObserver?.dispose()
-    bridge?.invalidate()
+    self.setupReactNative()
+    self.observeEnvironmentChanges()
   }
 
   private func setupReactNative() {
-    reactNativeFactoryDelegate = ReactNativeDelegate()
-    reactNativeFactoryDelegate!.dependencyProvider = RCTAppDependencyProvider()
-    reactNativeFactory = RCTReactNativeFactory(delegate: reactNativeFactoryDelegate!)
-    
+    self.reactNativeFactoryDelegate = ReactNativeDelegate()
+    self.reactNativeFactoryDelegate!.dependencyProvider = RCTAppDependencyProvider()
+    self.reactNativeFactory = RCTReactNativeFactory(delegate: self.reactNativeFactoryDelegate!)
+
     // Create initial props
-    let props = getEnvironmentProps()
-    
-    // Create bridge
-    let bridge = RCTBridge(delegate: reactNativeFactoryDelegate!, launchOptions: nil)!
-    self.bridge = bridge
-    
+    let props = self.getEnvironmentProps()
+
+    let environmentLocation = ProcessInfo.processInfo
+      .environment["KSR_JS_LOCATION"]
+    if let environmentLocation {
+      UserDefaults.standard.set(environmentLocation, forKey: "KSR_JS_LOCATION")
+    }
+    let localStorageLocation = UserDefaults.standard.string(forKey: "KSR_JS_LOCATION")
+    RCTBundleURLProvider.sharedSettings().jsLocation = environmentLocation ?? localStorageLocation
+
+    // Use or create shared bridge
+    if Self.sharedBridge == nil {
+      Self.sharedBridge = RCTBridge(delegate: self.reactNativeFactoryDelegate!, launchOptions: nil)
+    }
+    self.bridge = Self.sharedBridge
+
     // Create root view explicitly
     rootView = RCTRootView(
-      bridge: bridge,
+      bridge: self.bridge!,
       moduleName: "KickstarterMobile",
       initialProperties: props
     )
-    
+
     // Configure root view
     rootView?.backgroundColor = .systemBackground
     rootView?.loadingView = UIActivityIndicatorView(style: .large)
-    
+
     // Add to view hierarchy
     if let rootView = rootView {
       view.addSubview(rootView)
@@ -62,24 +71,21 @@ class ReactViewController: UIViewController {
   }
 
   private func observeEnvironmentChanges() {
-    // Observe AppEnvironment changes
-    environmentObserver = NotificationCenter.default
+    NotificationCenter.default
       .reactive
       .notifications(forName: .ksr_sessionStarted)
       .observeValues { [weak self] _ in
         self?.updateEnvironmentProps()
       }
 
-    environmentObserver?.dispose()
-    environmentObserver = NotificationCenter.default
+    NotificationCenter.default
       .reactive
       .notifications(forName: .ksr_sessionEnded)
       .observeValues { [weak self] _ in
         self?.updateEnvironmentProps()
       }
 
-    environmentObserver?.dispose()
-    environmentObserver = NotificationCenter.default
+    NotificationCenter.default
       .reactive
       .notifications(forName: .ksr_userUpdated)
       .observeValues { [weak self] _ in
@@ -88,13 +94,13 @@ class ReactViewController: UIViewController {
   }
 
   private func updateEnvironmentProps() {
-    let props = getEnvironmentProps()
-    rootView?.appProperties = props
+    let props = self.getEnvironmentProps()
+    self.rootView?.appProperties = props
   }
 
   private func getEnvironmentProps() -> [String: Any] {
     let env = AppEnvironment.current
-    
+
     return [
       "oauthToken": env!.apiService.oauthToken?.token ?? "",
       "graphQLEndpoint": env!.apiService.serverConfig.graphQLEndpointUrl.absoluteString,
@@ -111,15 +117,15 @@ class ReactViewController: UIViewController {
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
-    override func sourceURL(for bridge: RCTBridge) -> URL? {
-      self.bundleURL()
-    }
+  override func sourceURL(for _: RCTBridge) -> URL? {
+    self.bundleURL()
+  }
 
-    override func bundleURL() -> URL? {
-      #if DEBUG
+  override func bundleURL() -> URL? {
+    #if DEBUG
       RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-      #else
+    #else
       Bundle.main.url(forResource: "main", withExtension: "jsbundle")
-      #endif
-    }
+    #endif
+  }
 }

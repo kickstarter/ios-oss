@@ -216,6 +216,7 @@ internal final class BetaToolsViewController: UITableViewController {
   private func goToReactNativeDemo() {
     let viewController = ReactViewController.instantiate()
     let navigator = UINavigationController(rootViewController: viewController)
+    navigator.isNavigationBarHidden = true
     navigator.modalPresentationStyle = .fullScreen
     self.present(navigator, animated: true)
   }

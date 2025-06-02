@@ -98,6 +98,11 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
+<key>localhost</key>
+  <dict>
+    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+    <true/>
+  </dict>
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>

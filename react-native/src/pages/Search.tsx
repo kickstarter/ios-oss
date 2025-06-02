@@ -12,7 +12,7 @@ function SearchResults({ searchTerm }: { searchTerm: string }) {
     {
       variables: {
         term: searchTerm || undefined,
-        first: 10,
+        first: 40,
         sort: ProjectSort.Popularity,
         state: PublicProjectState.Live
       }
