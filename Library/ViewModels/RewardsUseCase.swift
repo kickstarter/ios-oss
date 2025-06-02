@@ -2,26 +2,24 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public protocol RewardsUseCaseInputs {
-  func goToRewardsTapped()
-}
-
 public protocol RewardsUseCaseOutputs {
   var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
   var goToRewards: Signal<Void, Never> { get }
 }
 
 public protocol RewardsUseCaseType {
-  var inputs: RewardsUseCaseInputs { get }
   var outputs: RewardsUseCaseOutputs { get }
 }
 
-public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, RewardsUseCaseOutputs {
-  public init(secretRewardToken: Signal<String?, Never>, userSessionStarted: Signal<Void, Never>) {
-    // Emits when the "View rewards", "View your rewards" or "Back this project" button is tapped.
-    let goToRewardsTappedSignal = self.goToRewardsTappedProperty.signal
-
-    let initialIsLoggedIn = goToRewardsTappedSignal
+public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
+  public init(
+    secretRewardToken: Signal<String?, Never>,
+    userSessionStarted: Signal<Void, Never>,
+    goToRewardsTapped: Signal<Void, Never>
+  ) {
+    // `goToRewardsTapped` emits when the "View rewards", "View your rewards"
+    // or "Back this project" button is tapped.
+    let initialIsLoggedIn = goToRewardsTapped
       .compactMap {
         AppEnvironment.current.currentUser != nil
       }
@@ -50,25 +48,18 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
       }
 
     self.goToRewards = requiresLoginForSecretRewards
-      .takeWhen(goToRewardsTappedSignal)
+      .takeWhen(goToRewardsTapped)
       .filter { $0 == false }
       .ignoreValues()
 
     // This signal emits to prompt login when accessing a secret reward token
     // while the user is currently logged out.
     self.goToLoginWithIntent = requiresLoginForSecretRewards
-      .takeWhen(goToRewardsTappedSignal)
+      .takeWhen(goToRewardsTapped)
       .filter { $0 == true }
       .map { _ -> LoginIntent in
         LoginIntent.backProject
       }
-  }
-
-  // MARK: - Inputs
-
-  private let goToRewardsTappedProperty = MutableProperty(())
-  public func goToRewardsTapped() {
-    self.goToRewardsTappedProperty.value = ()
   }
 
   // MARK: Properties
@@ -78,6 +69,5 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseInputs, Rew
 
   // MARK: Type
 
-  public var inputs: any RewardsUseCaseInputs { return self }
   public var outputs: any RewardsUseCaseOutputs { return self }
 }

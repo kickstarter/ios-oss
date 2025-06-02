@@ -664,9 +664,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         secretRewardToken
       }
 
+    let shouldGoToRewards = ctaButtonTappedWithType
+      .filter { state in
+        switch state {
+        case .pledge, .viewRewards, .viewYourRewards:
+          return true
+        default:
+          return false
+        }
+      }
+      .ignoreValues()
+
     self.rewardsUseCase = RewardsUseCase(
       secretRewardToken: secretRewardToken,
-      userSessionStarted: self.userSessionStartedProperty.signal
+      userSessionStarted: self.userSessionStartedProperty.signal,
+      goToRewardsTapped: shouldGoToRewards
     )
 
     self.goToRewards = freshProjectAndRefTag
@@ -691,22 +703,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { [weak self] projectID in
         self?.similarProjectsUseCase.inputs.projectIDLoaded(projectID: projectID)
       }
-
-    // MARK: Rewards Setup (pre-initialization)
-
-    let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { state in
-        switch state {
-        case .pledge, .viewRewards, .viewYourRewards:
-          return true
-        default:
-          return false
-        }
-      }
-      .ignoreValues()
-
-    shouldGoToRewards
-      .observeValues { _ in self.rewardsUseCase.goToRewardsTapped() }
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())

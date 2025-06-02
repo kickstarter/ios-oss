@@ -1,6 +1,5 @@
 @testable import KsApi
 @testable import Library
-// import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
@@ -15,6 +14,7 @@ final class RewardsUseCaseTests: TestCase {
 
   private let (secretRewardTokenSignal, secretRewardTokenObserver) = Signal<String?, Never>.pipe()
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  private let (goToRewardsTappedSignal, goToRewardsTappedObserver) = Signal<Void, Never>.pipe()
 
   override func setUp() {
     super.setUp()
@@ -24,7 +24,8 @@ final class RewardsUseCaseTests: TestCase {
 
     self.vm = .init(
       secretRewardToken: self.secretRewardTokenSignal,
-      userSessionStarted: self.userSessionStartedSignal
+      userSessionStarted: self.userSessionStartedSignal,
+      goToRewardsTapped: self.goToRewardsTappedSignal
     )
 
     self.vm.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
@@ -38,7 +39,7 @@ final class RewardsUseCaseTests: TestCase {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidNotEmitValue()
 
-      self.vm.goToRewardsTapped()
+      self.goToRewardsTappedObserver.send(value: ())
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidEmitValue()
@@ -52,7 +53,7 @@ final class RewardsUseCaseTests: TestCase {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidNotEmitValue()
 
-      self.vm.goToRewardsTapped()
+      self.goToRewardsTappedObserver.send(value: ())
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidEmitValue()
@@ -66,7 +67,7 @@ final class RewardsUseCaseTests: TestCase {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidNotEmitValue()
 
-      self.vm.goToRewardsTapped()
+      self.goToRewardsTappedObserver.send(value: ())
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidEmitValue()
@@ -80,7 +81,7 @@ final class RewardsUseCaseTests: TestCase {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.goToRewards.assertDidNotEmitValue()
 
-      self.vm.goToRewardsTapped()
+      self.goToRewardsTappedObserver.send(value: ())
 
       self.goToLoginWithIntent.assertValues([.backProject])
       self.goToRewards.assertDidNotEmitValue()
