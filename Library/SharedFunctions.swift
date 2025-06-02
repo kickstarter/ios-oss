@@ -14,7 +14,7 @@ import UserNotifications
 
  - returns: A boolean.
  */
-internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool {
+public func userIsBacking(reward: Reward, inProject project: Project) -> Bool {
   guard let backing = project.personalization.backing else { return false }
 
   return backing.reward?.id == reward.id
