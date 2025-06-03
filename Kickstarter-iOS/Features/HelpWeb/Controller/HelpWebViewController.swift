@@ -32,7 +32,7 @@ internal final class HelpWebViewController: WebViewController {
     super.bindStyles()
 
     _ = self.logoImageView
-      |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
+      |> \.tintColor .~ Colors.Brand.logo.uiColor()
   }
 
   internal override func bindViewModel() {

@@ -229,6 +229,15 @@ public struct Colors {
     }
   }
 
+  public struct Brand {
+    /// Kickstarter brand green. Inverts to the same brand color in dark mode.
+    public static let logo = SemanticColor(
+      "brand/logo",
+      lightMode: .green_05,
+      darkMode: .green_05
+    )
+  }
+
   public struct Border {
     public static let active = SemanticColor(
       "border/active",

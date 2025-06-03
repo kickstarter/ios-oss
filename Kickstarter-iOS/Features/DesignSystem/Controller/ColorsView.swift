@@ -24,6 +24,7 @@ struct ColorsView: View {
     Colors.Background.Inverse.disabled,
     Colors.Background.Surface.primary,
     Colors.Background.Surface.secondary,
+    Colors.Brand.logo,
     Colors.Border.active,
     Colors.Border.bold,
     Colors.Border.subtle,

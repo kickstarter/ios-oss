@@ -63,7 +63,7 @@ private let discoveryOnboardingTitleStyle: LabelStyle = { label in
 private let discoveryOnboardingLogoStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit
-    |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
+    |> \.tintColor .~ Colors.Brand.logo.uiColor()
     |> \.backgroundColor .~ .clear
     |> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
     |> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
