@@ -38,6 +38,11 @@ public final class RewardCardContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  /// Stores the top margin value to be applied to `rewardCardMaskView`.
+  /// This is dynamically adjusted based on whether the reward requires additional spacing
+  /// (e.g., to avoid overlapping badges like "Secret Reward" and "Your selection").
+  private var currentRewardCardMaskViewTopMarginInset = CGFloat.zero
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -60,8 +65,9 @@ public final class RewardCardContainerView: UIView {
 
     _ = self.rewardCardMaskView
       |> checkoutWhiteBackgroundStyle
-      |> \.layoutMargins .~ .zero
       |> roundedStyle(cornerRadius: Styles.grid(3))
+
+    self.updateRewardCardMaskViewLayout()
   }
 
   public override func bindViewModel() {
@@ -117,9 +123,21 @@ public final class RewardCardContainerView: UIView {
       && data.reward.image == nil
       && userIsBacking(reward: data.reward, inProject: data.project)
 
-    var margings = self.rewardCardMaskView.layoutMargins
-    margings.top = requiresTopMarginInset ? Constants.rewardCardMaskViewTopMarginInset : .zero
-    self.rewardCardMaskView.layoutMargins = margings
+    self.currentRewardCardMaskViewTopMarginInset = requiresTopMarginInset ? Constants
+      .rewardCardMaskViewTopMarginInset : .zero
+
+    self.updateRewardCardMaskViewLayout()
+  }
+
+  private func updateRewardCardMaskViewLayout() {
+    let layoutMargins = UIEdgeInsets(
+      top: self.currentRewardCardMaskViewTopMarginInset,
+      left: .zero,
+      bottom: .zero,
+      right: .zero
+    )
+
+    self.rewardCardMaskView.layoutMargins = layoutMargins
   }
 
   // MARK: - Functions
