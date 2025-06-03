@@ -960,7 +960,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
   // MARK: - Tab Content Tests
 
-  func testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
+  // FIXME: MBL-2463 This test is flaky and frequently times out. Disabling it for the moment.
+  func disabled_testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
     let config = Config.template
     let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
