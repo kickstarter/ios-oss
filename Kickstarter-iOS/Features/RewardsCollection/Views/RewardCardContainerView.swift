@@ -60,7 +60,6 @@ public final class RewardCardContainerView: UIView {
 
     _ = self.rewardCardMaskView
       |> checkoutWhiteBackgroundStyle
-      |> \.layoutMargins .~ .zero
       |> roundedStyle(cornerRadius: Styles.grid(3))
   }
 
@@ -117,9 +116,13 @@ public final class RewardCardContainerView: UIView {
       && data.reward.image == nil
       && userIsBacking(reward: data.reward, inProject: data.project)
 
-    var margings = self.rewardCardMaskView.layoutMargins
-    margings.top = requiresTopMarginInset ? Constants.rewardCardMaskViewTopMarginInset : .zero
-    self.rewardCardMaskView.layoutMargins = margings
+    let topMarginInset = requiresTopMarginInset ? Constants.rewardCardMaskViewTopMarginInset : .zero
+    self.rewardCardMaskView.layoutMargins = UIEdgeInsets(
+      top: topMarginInset,
+      left: .zero,
+      bottom: .zero,
+      right: .zero
+    )
   }
 
   // MARK: - Functions
