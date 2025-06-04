@@ -99,11 +99,17 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       buckets: DiscoveryParams.PercentRaisedBucket.allCases
     )
 
+    let locationOptions = SearchFilters.LocationOptions(
+      defaultLocations: [],
+      searchLocations: []
+    )
+
     self.searchFilters = SearchFilters(
       sort: sortOptions,
       category: categoryOptions,
       projectState: projectStateOptions,
-      percentRaised: percentRaisedOptions
+      percentRaised: percentRaisedOptions,
+      location: locationOptions
     )
 
     Signal.combineLatest(
@@ -127,6 +133,29 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       .observeForUI()
       .observeValues { [weak searchFilters] categories in
         searchFilters?.update(withCategories: categories)
+      }
+
+    initialSignal
+      .switchMap {
+        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 5)
+        return AppEnvironment.current.apiService.fetch(query: defaultLocations).materialize()
+      }
+      .values()
+      .observeForUI()
+      .observeValues { [weak searchFilters] data in
+        guard let nodes = data.locations?.nodes else {
+          return
+        }
+
+        let locations = nodes.compactMap { node in
+          if let fragment = node?.fragments.locationFragment {
+            Location.location(from: fragment)
+          } else {
+            nil
+          }
+        }
+
+        searchFilters?.update(withDefaultSearchLocations: locations)
       }
   }
 
