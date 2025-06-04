@@ -8545,6 +8545,166 @@ public enum GraphAPI {
     }
   }
 
+  public final class DefaultLocationsQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query DefaultLocations($first: Int) {
+        locations(useSessionLocation: true, first: $first) {
+          __typename
+          nodes {
+            __typename
+            ...LocationFragment
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "DefaultLocations"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      return document
+    }
+
+    public var first: Int?
+
+    public init(first: Int? = nil) {
+      self.first = first
+    }
+
+    public var variables: GraphQLMap? {
+      return ["first": first]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("locations", arguments: ["useSessionLocation": true, "first": GraphQLVariable("first")], type: .object(Location.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(locations: Location? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "locations": locations.flatMap { (value: Location) -> ResultMap in value.resultMap }])
+      }
+
+      /// Searches locations.
+      public var locations: Location? {
+        get {
+          return (resultMap["locations"] as? ResultMap).flatMap { Location(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "locations")
+        }
+      }
+
+      public struct Location: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["LocationsConnection"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("nodes", type: .list(.object(Node.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(nodes: [Node?]? = nil) {
+          self.init(unsafeResultMap: ["__typename": "LocationsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// A list of nodes.
+        public var nodes: [Node?]? {
+          get {
+            return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+          }
+          set {
+            resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Location"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLFragmentSpread(LocationFragment.self),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(country: String, countryName: String? = nil, displayableName: String, id: GraphQLID, name: String) {
+            self.init(unsafeResultMap: ["__typename": "Location", "country": country, "countryName": countryName, "displayableName": displayableName, "id": id, "name": name])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var fragments: Fragments {
+            get {
+              return Fragments(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public struct Fragments {
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var locationFragment: LocationFragment {
+              get {
+                return LocationFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchAddOnsQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -14125,17 +14285,180 @@ public enum GraphAPI {
     }
   }
 
+  public final class LocationsByTermQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query LocationsByTerm($term: String, $first: Int) {
+        locations(term: $term, first: $first) {
+          __typename
+          nodes {
+            __typename
+            ...LocationFragment
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "LocationsByTerm"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      return document
+    }
+
+    public var term: String?
+    public var first: Int?
+
+    public init(term: String? = nil, first: Int? = nil) {
+      self.term = term
+      self.first = first
+    }
+
+    public var variables: GraphQLMap? {
+      return ["term": term, "first": first]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first")], type: .object(Location.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(locations: Location? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "locations": locations.flatMap { (value: Location) -> ResultMap in value.resultMap }])
+      }
+
+      /// Searches locations.
+      public var locations: Location? {
+        get {
+          return (resultMap["locations"] as? ResultMap).flatMap { Location(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "locations")
+        }
+      }
+
+      public struct Location: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["LocationsConnection"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("nodes", type: .list(.object(Node.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(nodes: [Node?]? = nil) {
+          self.init(unsafeResultMap: ["__typename": "LocationsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// A list of nodes.
+        public var nodes: [Node?]? {
+          get {
+            return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+          }
+          set {
+            resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Location"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLFragmentSpread(LocationFragment.self),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(country: String, countryName: String? = nil, displayableName: String, id: GraphQLID, name: String) {
+            self.init(unsafeResultMap: ["__typename": "Location", "country": country, "countryName": countryName, "displayableName": displayableName, "id": id, "name": name])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var fragments: Fragments {
+            get {
+              return Fragments(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public struct Fragments {
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var locationFragment: LocationFragment {
+              get {
+                return LocationFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class SearchQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
           categoryId: $categoryId
           state: $state
           raised: $raised
+          locationId: $locationId
           after: $cursor
           first: $first
         ) {
@@ -14173,21 +14496,23 @@ public enum GraphAPI {
     public var categoryId: String?
     public var state: PublicProjectState?
     public var raised: RaisedBuckets?
+    public var locationId: GraphQLID?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
       self.state = state
       self.raised = raised
+      self.locationId = locationId
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14195,7 +14520,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 

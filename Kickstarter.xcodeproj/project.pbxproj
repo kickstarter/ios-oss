@@ -1668,6 +1668,8 @@
 		E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */; };
 		E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */; };
 		E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
+		E16127642DF0AE800080B448 /* DefaultLocationsQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E16127632DF0AE6A0080B448 /* DefaultLocationsQuery.graphql */; };
+		E16127662DF0AF230080B448 /* LocationsByTermQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = E16127652DF0AF140080B448 /* LocationsByTermQuery.graphql */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
@@ -3465,6 +3467,8 @@
 		E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
 		E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
+		E16127632DF0AE6A0080B448 /* DefaultLocationsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = DefaultLocationsQuery.graphql; sourceTree = "<group>"; };
+		E16127652DF0AF140080B448 /* LocationsByTermQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LocationsByTermQuery.graphql; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
@@ -6255,6 +6259,8 @@
 			children = (
 				AA5480E82D77ECB200EC2849 /* SimilarProjectQuery.graphql */,
 				604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */,
+				E16127632DF0AE6A0080B448 /* DefaultLocationsQuery.graphql */,
+				E16127652DF0AF140080B448 /* LocationsByTermQuery.graphql */,
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
 				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
@@ -9543,6 +9549,7 @@
 				D01589051EEB2ED7006E7684 /* ProjectActivityEnvelope.swift in Sources */,
 				47A662F326AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift in Sources */,
 				06232D3B2795EC2100A81755 /* HTMLParser.swift in Sources */,
+				E16127662DF0AF230080B448 /* LocationsByTermQuery.graphql in Sources */,
 				D015899F1EEB2ED7006E7684 /* ServiceType.swift in Sources */,
 				D7774466217A345D008D679F /* UpdateUserProfileMutation .swift in Sources */,
 				0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */,
@@ -9690,6 +9697,7 @@
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
+				E16127642DF0AE800080B448 /* DefaultLocationsQuery.graphql in Sources */,
 				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
