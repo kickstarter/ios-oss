@@ -84,6 +84,12 @@ public struct LegacyColors {
         )
       }
     }
+
+    public static let search = LegacyColor(
+      "legacy/background/search",
+      lightMode: UIColor.hex(0xF3F3F3),
+      darkMode: UIColor.hex(0x2C2C2C)
+    )
   }
 
   public struct Facebook {
