@@ -99,6 +99,15 @@ struct FilterRootView: View {
   }
 
   @ViewBuilder
+  var locationSection: some View {
+    FilterSectionButton(
+      title: "FPO: Location",
+      subtitle: nil
+    )
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
   var percentRaisedModal: some View {
     PercentRaisedView(
       buckets: self.searchFilters.percentRaised.buckets,
@@ -111,6 +120,14 @@ struct FilterRootView: View {
     FilterCategoryView(
       categories: self.searchFilters.category.categories,
       selectedCategory: self.selectedCategory
+    )
+  }
+
+  var locationModal: some View {
+    LocationView(
+      defaultLocations: self.searchFilters.location.defaultLocations,
+      searchLocations: self.searchFilters.location.searchLocations,
+      selectedLocationId: Binding.constant(nil)
     )
   }
 
@@ -153,6 +170,12 @@ struct FilterRootView: View {
               self.percentRaisedSection
             }
           }
+          if featureSearchFilterByLocation() {
+            Divider()
+            NavigationLink(value: SearchFilterModalType.location) {
+              self.locationSection
+            }
+          }
           Divider()
           Spacer()
         }
@@ -164,6 +187,8 @@ struct FilterRootView: View {
           case .percentRaised:
             self.percentRaisedModal
               .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
+          case .location:
+            EmptyView()
           default:
             EmptyView()
           }

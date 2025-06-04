@@ -22,6 +22,7 @@ public struct SearchFilterPill: Identifiable {
     case sort
     case projectState
     case percentRaised
+    case location
   }
 
   /// How the pill should be rendered.

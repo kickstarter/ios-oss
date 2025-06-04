@@ -30,10 +30,18 @@ public class SearchFilters: ObservableObject {
     public var selectedBucket: DiscoveryParams.PercentRaisedBucket?
   }
 
+  public struct LocationOptions {
+    public let defaultLocations: [Location]
+    public let searchLocations: [Location]
+    public var selectedLocation: Location?
+  }
+
   public private(set) var category: CategoryOptions
   public private(set) var sort: SortOptions
   public private(set) var projectState: ProjectStateOptions
   public private(set) var percentRaised: PercentRaisedOptions
+  public private(set) var location: LocationOptions
+
   public fileprivate(set) var pills: [SearchFilterPill]
 
   public let objectWillChange = ObservableObjectPublisher()
@@ -44,7 +52,8 @@ public class SearchFilters: ObservableObject {
     [
       self.hasCategory,
       self.hasProjectState,
-      self.hasPercentRaised
+      self.hasPercentRaised,
+      self.hasLocation
     ]
     .count(where: { $0 == true })
   }
@@ -76,16 +85,22 @@ public class SearchFilters: ObservableObject {
     return self.percentRaised.selectedBucket != nil
   }
 
+  var hasLocation: Bool {
+    return self.location.selectedLocation != nil
+  }
+
   internal init(
     sort: SortOptions,
     category: CategoryOptions,
     projectState: ProjectStateOptions,
-    percentRaised: PercentRaisedOptions
+    percentRaised: PercentRaisedOptions,
+    location: LocationOptions
   ) {
     self.sort = sort
     self.category = category
     self.projectState = projectState
     self.percentRaised = percentRaised
+    self.location = location
 
     self.pills = []
     self.updatePills()
@@ -124,6 +139,8 @@ public class SearchFilters: ObservableObject {
       return self.hasSort
     case .percentRaised:
       return self.hasPercentRaised
+    case .location:
+      return self.hasLocation
     }
   }
 
@@ -175,6 +192,16 @@ public class SearchFilters: ObservableObject {
           isHighlighted: self.hasPercentRaised,
           filterType: .percentRaised,
           buttonType: .dropdown(percentRaisedTitle)
+        )
+      )
+    }
+
+    if featureSearchFilterByLocation() {
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.hasLocation,
+          filterType: .location,
+          buttonType: .dropdown("FPO: Location")
         )
       )
     }

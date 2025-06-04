@@ -204,6 +204,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
     case .percentRaised:
       self.selectedPercentRaisedBucketProperty.value = nil
+    case .location:
+      print("do something")
     }
   }
 
@@ -260,6 +262,8 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
     modalType = .allFilters
   case .percentRaised:
     modalType = .percentRaised
+  case .location:
+    modalType = .location
   }
   return modalType
 }
@@ -269,4 +273,5 @@ public enum SearchFilterModalType: Hashable, CaseIterable {
   case category
   case sort
   case percentRaised
+  case location
 }

@@ -64,5 +64,5 @@ public func featureSecretRewardsEnabled() -> Bool {
 }
 
 public func featureSearchFilterByLocation() -> Bool {
-  featureEnabled(feature: .searchFilterByLocation)
+  true // featureEnabled(feature: .searchFilterByLocation)
 }
