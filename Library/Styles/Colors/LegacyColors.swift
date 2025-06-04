@@ -86,6 +86,26 @@ public struct LegacyColors {
     }
   }
 
+  public struct Facebook {
+    public static let primary = LegacyColor(
+      "legacy/facebook/primary",
+      lightMode: UIColor.hex(0x1877F2),
+      darkMode: UIColor(coreColor: .white)
+    )
+
+    public static let pressed = LegacyColor(
+      "legacy/facebook/pressed",
+      lightMode: UIColor.hex(0x1877F2).mixDarker(0.36),
+      darkMode: UIColor(coreColor: .gray_300)
+    )
+
+    public static let disabled = LegacyColor(
+      "legacy/facebook/disabled",
+      lightMode: UIColor.hex(0x1877F2).mixLighter(0.36),
+      darkMode: UIColor(coreColor: .gray_600)
+    )
+  }
+
   /// `support_100` functions mostly like surface/secondary
   public static let ksr_support_100 = LegacyColor(
     "legacy/ksr_support_100",

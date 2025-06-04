@@ -171,10 +171,10 @@ public let facebookButtonStyle: ButtonStyle = { button in
 
 private let _facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
+  <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.Facebook.primary.uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.Facebook.pressed.uiColor()
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.Facebook.disabled.uiColor()
   <> UIButton.lens.tintColor .~ LegacyColors.ksr_white.uiColor()
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
