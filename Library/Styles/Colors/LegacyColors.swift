@@ -190,4 +190,14 @@ public struct LegacyColors {
       )
     }
   }
+
+  public struct Project {
+    public struct Navigation {
+      public static let selected = LegacyColor(
+        "legacy/project/navigation/selected",
+        lightMode: UIColor.hex(0x5555FF),
+        darkMode: UIColor(coreColor: .white)
+      )
+    }
+  }
 }
