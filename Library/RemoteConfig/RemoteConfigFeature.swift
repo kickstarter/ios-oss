@@ -13,6 +13,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case similarProjectsCarousel = "similar_projects_carousel"
   case searchFilterByPercentRaised = "search_filter_by_percent_raised"
   case secretRewards = "secret_rewards"
+  case searchFilterByLocation = "search_filter_by_location"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -30,6 +31,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .similarProjectsCarousel: return "Similar Projects Carousel"
     case .searchFilterByPercentRaised: return "Filter Search by Percent Raised"
     case .secretRewards: return "Secret Rewards"
+    case .searchFilterByLocation: return "Filter Search by Project Location"
     }
   }
 }
