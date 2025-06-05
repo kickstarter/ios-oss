@@ -110,7 +110,7 @@ final class RewardsUseCaseTests: TestCase {
 
   // MARK: - Feature flag Off
 
-  func test_goToRewards_whenUserIsLoggedIn_andHasSecretRewardToken_FeatureflagOff() {
+  func test_goToRewards_whenUserIsLoggedIn_andHasSecretRewardToken_FeatureFlagOff() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.secretRewards.rawValue: false
@@ -129,7 +129,7 @@ final class RewardsUseCaseTests: TestCase {
     }
   }
 
-  func test_goToRewards_whenUserIsLoggedOut_andHasSecretRewardToken_FeatureflagOff() {
+  func test_goToRewards_whenUserIsLoggedOut_andHasSecretRewardToken_FeatureFlagOff() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.secretRewards.rawValue: false
