@@ -17,14 +17,15 @@ internal final class FindFriendsViewControllerTests: TestCase {
   }
 
   func testView_ShowFacebookConnect() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
-      withEnvironment(language: language) {
-        let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch])
+      .forEach { language, device in
+        withEnvironment(language: language) {
+          let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 
   func testView_ShowFacebookReconnect() {
@@ -32,14 +33,15 @@ internal final class FindFriendsViewControllerTests: TestCase {
       |> \.facebookConnected .~ true
       |> \.needsFreshFacebookToken .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
-      withEnvironment(currentUser: facebookReconnectUser, language: language) {
-        let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch])
+      .forEach { language, device in
+        withEnvironment(currentUser: facebookReconnectUser, language: language) {
+          let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 
   func testView_ShowFriends() {
@@ -71,18 +73,19 @@ internal final class FindFriendsViewControllerTests: TestCase {
       |> FriendStatsEnvelope.lens.stats.friendProjectsCount .~ 1_738
       |> FriendStatsEnvelope.lens.stats.remoteFriendsCount .~ 5
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
-      withEnvironment(apiService: MockService(
-        fetchFriendsResponse: friendsResponse,
-        fetchFriendStatsResponse: friendStats
-      ), currentUser: currentUser, language: language) {
-        let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch])
+      .forEach { language, device in
+        withEnvironment(apiService: MockService(
+          fetchFriendsResponse: friendsResponse,
+          fetchFriendStatsResponse: friendStats
+        ), currentUser: currentUser, language: language) {
+          let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+          self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 }

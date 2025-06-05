@@ -18,7 +18,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
     case .filledInverted: Colors.Background.Surface.primary.uiColor()
     case .filledDestructive: Colors.Background.Danger.bold.uiColor()
     case .facebook:
-      UIColor.hex(0x1877F2)
+      LegacyColors.Facebook.primary.uiColor()
     default: .clear
     }
   }
@@ -29,7 +29,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
     case .green: Colors.Background.Action.Primary.pressed.uiColor()
     case .filledDestructive: Colors.Background.Danger.Bold.pressed.uiColor()
     case .borderlessDestructive, .outlinedDestructive: Colors.Background.Accent.Red.subtle.uiColor()
-    case .facebook: self.backgroundColor.mixDarker(0.35)
+    case .facebook: LegacyColors.Facebook.pressed.uiColor()
     default: Colors.Background.Inverse.pressed.uiColor()
     }
   }
@@ -40,7 +40,7 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
     case .green: Colors.Background.Action.Primary.disabled.uiColor()
     case .filledInverted: Colors.Background.Inverse.disabled.uiColor()
     case .filledDestructive: Colors.Background.Danger.disabled.uiColor()
-    case .facebook: self.backgroundColor.mixLighter(0.35)
+    case .facebook: LegacyColors.Facebook.disabled.uiColor()
     default: .clear
     }
   }
