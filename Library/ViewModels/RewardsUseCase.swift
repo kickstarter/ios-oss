@@ -44,7 +44,7 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
     let requiresLoginForSecretRewards = isSecretReward
       .combineLatest(with: isLoggedIn)
       .compactMap { isSecretReward, isLoggedIn -> Bool in
-        guard featureSecretRewardEnabled() else { return false }
+        guard featureSecretRewardsEnabled() else { return false }
 
         return isSecretReward && !isLoggedIn
       }

@@ -988,7 +988,7 @@ private func addUserToSecretRewardGroupIfNeeded(
 ) -> SignalProducer<Bool, ErrorEnvelope> {
   let isUserLoggedIn = AppEnvironment.current.currentUser != nil
 
-  guard featureSecretRewardEnabled(), isUserLoggedIn, let secretRewardToken = secretRewardToken,
+  guard featureSecretRewardsEnabled(), isUserLoggedIn, let secretRewardToken = secretRewardToken,
         !secretRewardToken.isEmpty else {
     return SignalProducer(value: false)
   }
