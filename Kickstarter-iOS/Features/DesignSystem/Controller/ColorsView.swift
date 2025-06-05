@@ -66,13 +66,17 @@ struct ColorsView: View {
     LegacyColors.Background.Action.primary,
     LegacyColors.Background.Action.Primary.disabled,
     LegacyColors.Background.Action.Primary.pressed,
+    LegacyColors.Facebook.primary,
+    LegacyColors.Facebook.disabled,
+    LegacyColors.Facebook.pressed,
     LegacyColors.Project.Navigation.selected,
     LegacyColors.Tags.Success.background,
     LegacyColors.Tags.Success.foreground,
     LegacyColors.Tags.Warn.background,
     LegacyColors.Tags.Warn.foreground,
     LegacyColors.Tags.Error.background,
-    LegacyColors.Tags.Error.foreground
+    LegacyColors.Tags.Error.foreground,
+    LegacyColors.Background.search
   ]
 
   @ViewBuilder

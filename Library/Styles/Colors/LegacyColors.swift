@@ -84,6 +84,32 @@ public struct LegacyColors {
         )
       }
     }
+
+    public static let search = LegacyColor(
+      "legacy/background/search",
+      lightMode: UIColor.hex(0xF3F3F3),
+      darkMode: UIColor.hex(0x2C2C2C)
+    )
+  }
+
+  public struct Facebook {
+    public static let primary = LegacyColor(
+      "legacy/facebook/primary",
+      lightMode: UIColor.hex(0x1877F2),
+      darkMode: UIColor(coreColor: .white)
+    )
+
+    public static let pressed = LegacyColor(
+      "legacy/facebook/pressed",
+      lightMode: UIColor.hex(0x1877F2).mixDarker(0.36),
+      darkMode: UIColor(coreColor: .gray_300)
+    )
+
+    public static let disabled = LegacyColor(
+      "legacy/facebook/disabled",
+      lightMode: UIColor.hex(0x1877F2).mixLighter(0.36),
+      darkMode: UIColor(coreColor: .gray_600)
+    )
   }
 
   /// `support_100` functions mostly like surface/secondary
