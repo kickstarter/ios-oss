@@ -58,3 +58,7 @@ public func featureSimilarProjectsCarouselEnabled() -> Bool {
 public func featureSearchFilterByPercentRaisedEnabled() -> Bool {
   featureEnabled(feature: .searchFilterByPercentRaised)
 }
+
+public func featureSecretRewardEnabled() -> Bool {
+  featureEnabled(feature: .secretReward)
+}

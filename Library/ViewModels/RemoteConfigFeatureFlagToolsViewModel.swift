@@ -107,6 +107,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureSimilarProjectsCarouselEnabled()
   case .searchFilterByPercentRaised:
     return featureSearchFilterByPercentRaisedEnabled()
+  case .secretReward:
+    return featureSecretRewardEnabled()
   }
 }
 
