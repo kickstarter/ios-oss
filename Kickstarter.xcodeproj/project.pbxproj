@@ -418,6 +418,8 @@
 		395A3BC22B8E54C90091A379 /* AttributionTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC12B8E54C90091A379 /* AttributionTracking.swift */; };
 		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
+		3964FC8E2DF89966003B12FC /* ProjectPageBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3964FC8D2DF89966003B12FC /* ProjectPageBridge.m */; };
+		3964FC902DF89C14003B12FC /* ProjectPageBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3964FC8F2DF89C14003B12FC /* ProjectPageBridge.swift */; };
 		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
 		399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
@@ -2192,6 +2194,9 @@
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
 		395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerHelpers.swift; sourceTree = "<group>"; };
+		3964FC8A2DF89912003B12FC /* ProjectPageBridge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProjectPageBridge-Bridging-Header.h"; sourceTree = "<group>"; };
+		3964FC8D2DF89966003B12FC /* ProjectPageBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectPageBridge.m; sourceTree = "<group>"; };
+		3964FC8F2DF89C14003B12FC /* ProjectPageBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageBridge.swift; sourceTree = "<group>"; };
 		39B5E10D2B86C56600FFB720 /* RefInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfo.swift; sourceTree = "<group>"; };
 		39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfoTests.swift; sourceTree = "<group>"; };
 		39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreateAttributionEvent.graphql; sourceTree = "<group>"; };
@@ -5069,6 +5074,9 @@
 				39F48E202D528D5B00090D6C /* RestrictedCreatorViewController.swift */,
 				39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
+				3964FC8F2DF89C14003B12FC /* ProjectPageBridge.swift */,
+				3964FC8D2DF89966003B12FC /* ProjectPageBridge.m */,
+				3964FC8A2DF89912003B12FC /* ProjectPageBridge-Bridging-Header.h */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8127,11 +8135,11 @@
 					};
 					A7C7959D1C873A870081977F = {
 						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1600;
 					};
 					A7D1F9441C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1600;
 						SystemCapabilities = {
 							com.apple.OMC = {
 								enabled = 1;
@@ -8180,6 +8188,38 @@
 				es,
 				fr,
 				ja,
+				he,
+				ar,
+				el,
+				"zh-Hans",
+				"zh-Hant-HK",
+				uk,
+				nb,
+				"en-GB",
+				da,
+				it,
+				sk,
+				"es-ES",
+				ms,
+				sv,
+				cs,
+				ko,
+				"zh-Hant",
+				hu,
+				tr,
+				pl,
+				vi,
+				ru,
+				fi,
+				id,
+				nl,
+				th,
+				pt,
+				zu,
+				"pt-PT",
+				ro,
+				hr,
+				hi,
 			);
 			mainGroup = A7E06C701C5A6EB300EBDCC2;
 			packageReferences = (
@@ -9307,6 +9347,7 @@
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				7727494523F350EE0065E9F2 /* CategorySelectionViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
+				3964FC902DF89C14003B12FC /* ProjectPageBridge.swift in Sources */,
 				8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */,
 				77EFBAE72268E37200DA5C3C /* RewardsCollectionViewDataSource.swift in Sources */,
 				8A6C978E24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift in Sources */,
@@ -9522,6 +9563,7 @@
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				E1BAA03A2C1A1CCD004F8B06 /* PPOViewModel.swift in Sources */,
 				E10841722DCBD874000E4F17 /* SearchResultsCountCell.swift in Sources */,
+				3964FC8E2DF89966003B12FC /* ProjectPageBridge.m in Sources */,
 				3767EDAB22CFFED40088E8E4 /* ShippingRuleCell.swift in Sources */,
 				47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */,
 				D63BBCD0217E5460007E01F0 /* PaymentMethodSettingsViewController.swift in Sources */,

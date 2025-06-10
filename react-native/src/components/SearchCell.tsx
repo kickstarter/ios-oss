@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, TouchableHighlight, NativeModules } from 'react-native';
 import { ProjectCardFragmentFragment } from '../src/generated/graphql';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const CARD_HEIGHT = 320;
 const CARD_RADIUS = 18;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const {ProjectPageBridgeModule} = NativeModules;
 
 interface SearchCellProps {
   project: ProjectCardFragmentFragment;
@@ -18,6 +19,12 @@ export function SearchCell({ project, isVisible }: SearchCellProps): React.JSX.E
   const imageUrl = project.image?.url ?? null;
   const player = useVideoPlayer(videoUrl || null);
   player.muted = true;
+  
+  const onCardPress = () => {
+    print("test");
+   ProjectPageBridgeModule.presentProjectPage(project.id);
+    // HERE!
+  };
 
   useEffect(() => {
     if (!player || !videoUrl) return;
@@ -30,51 +37,53 @@ export function SearchCell({ project, isVisible }: SearchCellProps): React.JSX.E
 
   return (
     <View style={styles.cardShadow}>
-      <View style={styles.card}>
-        {videoUrl ? (
-          <VideoView
-            player={player}
-            style={styles.backgroundMedia}
-            contentFit="cover"
+      <TouchableHighlight onPress={onCardPress} underlayColor="#fff" style={styles.card}>
+        <View style={styles.card}>
+          {videoUrl ? (
+            <VideoView
+              player={player}
+              style={styles.backgroundMedia}
+              contentFit="cover"
+            />
+          ) : imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.backgroundMedia} resizeMode="cover" />
+          ) : (
+            <View style={[styles.backgroundMedia, { backgroundColor: '#222' }]} />
+          )}
+          <View style={styles.overlay} />
+          <LinearGradient
+            colors={["rgba(0,0,0,0.55)", "rgba(0,0,0,0)"]}
+            start={{ x: 0.5, y: 1 }}
+            end={{ x: 0.5, y: 0 }}
+            style={styles.gradientOverlay}
           />
-        ) : imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.backgroundMedia} resizeMode="cover" />
-        ) : (
-          <View style={[styles.backgroundMedia, { backgroundColor: '#222' }]} />
-        )}
-        <View style={styles.overlay} />
-        <LinearGradient
-          colors={["rgba(0,0,0,0.55)", "rgba(0,0,0,0)"]}
-          start={{ x: 0.5, y: 1 }}
-          end={{ x: 0.5, y: 0 }}
-          style={styles.gradientOverlay}
-        />
-        <View style={styles.contentRow}>
-          <View style={styles.textColumn}>
-            <View style={styles.categoryRow}>
-              <View style={styles.categoryPill}>
-                <Text style={styles.categoryText}>{project.category?.name ?? 'Uncategorized'}</Text>
+          <View style={styles.contentRow}>
+            <View style={styles.textColumn}>
+              <View style={styles.categoryRow}>
+                <View style={styles.categoryPill}>
+                  <Text style={styles.categoryText}>{project.category?.name ?? 'Uncategorized'}</Text>
+                </View>
+                <View style={styles.bookmarkIcon} />
               </View>
-              <View style={styles.bookmarkIcon} />
+              <Text style={styles.title} numberOfLines={1}>{project.name}</Text>
+              <Text style={styles.subtitle} numberOfLines={1}>{project.description}</Text>
+              <View style={styles.metaRow}>
+                <Text style={styles.metaText}>{project.creator?.name ?? 'Unknown Creator'}</Text>
+                <Text style={styles.metaDot}>•</Text>
+                <Text style={styles.metaText}>{getDaysLeft(project.deadlineAt)} days left</Text>
+                <Text style={styles.metaDot}>•</Text>
+                <Text style={styles.metaText}>{formatCurrency(project.pledged.amount, project.pledged.currency)} raised</Text>
+              </View>
             </View>
-            <Text style={styles.title} numberOfLines={1}>{project.name}</Text>
-            <Text style={styles.subtitle} numberOfLines={1}>{project.description}</Text>
-            <View style={styles.metaRow}>
-              <Text style={styles.metaText}>{project.creator?.name ?? 'Unknown Creator'}</Text>
-              <Text style={styles.metaDot}>•</Text>
-              <Text style={styles.metaText}>{getDaysLeft(project.deadlineAt)} days left</Text>
-              <Text style={styles.metaDot}>•</Text>
-              <Text style={styles.metaText}>{formatCurrency(project.pledged.amount, project.pledged.currency)} raised</Text>
-            </View>
-          </View>
-          <View style={styles.progressColumn}>
-            <View style={styles.progressCircle}>
-              <Text style={styles.progressText}>{getPercentFunded(project)}</Text>
-              <Text style={styles.progressPercent}>%</Text>
+            <View style={styles.progressColumn}>
+              <View style={styles.progressCircle}>
+                <Text style={styles.progressText}>{getPercentFunded(project)}</Text>
+                <Text style={styles.progressPercent}>%</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </TouchableHighlight>
     </View>
   );
 }
