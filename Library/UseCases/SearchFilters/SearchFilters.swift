@@ -32,7 +32,7 @@ public class SearchFilters: ObservableObject {
 
   public struct LocationOptions {
     public var defaultLocations: [Location]
-    public let searchLocations: [Location]
+    public var searchLocations: [Location]
     public var selectedLocation: Location?
   }
 
@@ -134,6 +134,13 @@ public class SearchFilters: ObservableObject {
   ) {
     self.objectWillChange.send()
     self.location.defaultLocations = locations
+  }
+
+  internal func update(
+    withSearchQueryLocations locations: [Location]
+  ) {
+    self.objectWillChange.send()
+    self.location.searchLocations = locations
   }
 
   public func has(filter type: SearchFilterModalType) -> Bool {

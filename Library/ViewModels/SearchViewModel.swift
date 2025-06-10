@@ -62,6 +62,9 @@ public protocol SearchViewModelInputs {
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
 
+  /// Call this when the user types a location query string in the location filter
+  func searchedForLocation(_ query: String)
+
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 
@@ -475,6 +478,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
     self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
+  }
+
+  public func searchedForLocation(_ query: String) {
+    self.searchFiltersUseCase.searchedForLocation(query)
   }
 
   public var searchFilters: SearchFilters {

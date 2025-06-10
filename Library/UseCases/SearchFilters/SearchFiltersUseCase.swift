@@ -21,6 +21,8 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedProjectState(_ state: DiscoveryParams.State)
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
+  /// Call this when the user types a location query string in the location filter
+  func searchedForLocation(_ query: String)
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 }
@@ -137,25 +139,59 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     initialSignal
       .switchMap {
-        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 10)
+        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 5)
         return AppEnvironment.current.apiService.fetch(query: defaultLocations).materialize()
       }
       .values()
-      .observeForUI()
-      .observeValues { [weak searchFilters] data in
+      .map { data in
         guard let nodes = data.locations?.nodes else {
-          return
+          return []
         }
 
-        let locations = nodes.compactMap { node in
+        return nodes.compactMap { node in
           if let fragment = node?.fragments.locationFragment {
             Location.location(from: fragment)
           } else {
             nil
           }
         }
-
+      }
+      .observeForUI()
+      .observeValues { [weak searchFilters] locations in
         searchFilters?.update(withDefaultSearchLocations: locations)
+      }
+
+    let emptyLocationQuery = self.locationQuerySignal.filter { $0.isEmpty }
+    let locationQuery = self.locationQuerySignal.filter { !$0.isEmpty }
+
+    emptyLocationQuery
+      .observeForUI()
+      .observeValues { [weak searchFilters] _ in
+        searchFilters?.update(withSearchQueryLocations: [])
+      }
+
+    locationQuery
+      .switchMap { queryText in
+        let query = GraphAPI.LocationsByTermQuery(term: queryText, first: 25)
+        return AppEnvironment.current.apiService.fetch(query: query).materialize()
+      }
+      .values()
+      .map { data in
+        guard let nodes = data.locations?.nodes else {
+          return []
+        }
+
+        return nodes.compactMap { node in
+          if let fragment = node?.fragments.locationFragment {
+            Location.location(from: fragment)
+          } else {
+            nil
+          }
+        }
+      }
+      .observeForUI()
+      .observeValues { [weak searchFilters] locations in
+        searchFilters?.update(withSearchQueryLocations: locations)
       }
   }
 
@@ -273,6 +309,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedPercentRaisedBucketProperty.value = bucket
   }
 
+  private let (locationQuerySignal, locationQueryObserver) = Signal<String, Never>.pipe()
+  public func searchedForLocation(_ query: String) {
+    self.locationQueryObserver.send(value: query)
+  }
+
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
   public var dataOutputs: SearchFiltersUseCaseDataOutputs { return self }
@@ -304,3 +345,5 @@ public enum SearchFilterModalType: Hashable, CaseIterable {
   case percentRaised
   case location
 }
+
+private extension GraphAPI.LocationsByTermQuery.Data.Location {}

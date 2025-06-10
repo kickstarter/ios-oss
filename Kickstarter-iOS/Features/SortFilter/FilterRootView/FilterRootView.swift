@@ -10,6 +10,7 @@ struct FilterRootView: View {
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
+  var onSearchedForLocation: ((String) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
@@ -107,7 +108,6 @@ struct FilterRootView: View {
     .padding(Constants.sectionPadding)
   }
 
-  @ViewBuilder
   var percentRaisedModal: some View {
     PercentRaisedView(
       buckets: self.searchFilters.percentRaised.buckets,
@@ -115,7 +115,6 @@ struct FilterRootView: View {
     )
   }
 
-  @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
       categories: self.searchFilters.category.categories,
@@ -127,7 +126,8 @@ struct FilterRootView: View {
     LocationView(
       defaultLocations: self.searchFilters.location.defaultLocations,
       searchLocations: self.searchFilters.location.searchLocations,
-      selectedLocationId: Binding.constant(nil)
+      selectedLocationId: Binding.constant(nil),
+      onSearchedForLocation: self.onSearchedForLocation ?? { _ in }
     )
   }
 
