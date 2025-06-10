@@ -232,6 +232,9 @@ internal final class SearchViewController: UITableViewController {
     filterView.onSelectedPercentRaisedBucket = { [weak self] bucket in
       self?.viewModel.inputs.selectedPercentRaisedBucket(bucket)
     }
+    filterView.onSelectedLocation = { [weak self] location in
+      self?.viewModel.inputs.filteredLocation(location)
+    }
     filterView.onSearchedForLocation = { [weak self] locationQuery in
       self?.viewModel.inputs.searchedForLocation(locationQuery)
     }

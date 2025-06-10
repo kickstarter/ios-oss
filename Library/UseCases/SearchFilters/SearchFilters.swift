@@ -110,7 +110,8 @@ public class SearchFilters: ObservableObject {
     withSort sort: DiscoveryParams.Sort,
     category: SearchFiltersCategory,
     projectState: DiscoveryParams.State,
-    percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?
+    percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?,
+    location: Location?
   ) {
     self.objectWillChange.send()
 
@@ -118,6 +119,7 @@ public class SearchFilters: ObservableObject {
     self.category.selectedCategory = category
     self.projectState.selectedProjectState = projectState
     self.percentRaised.selectedBucket = percentRaisedBucket
+    self.location.selectedLocation = location
 
     self.updatePills()
   }
@@ -211,11 +213,12 @@ public class SearchFilters: ObservableObject {
     }
 
     if featureSearchFilterByLocation() {
+      let locationTitle = self.location.selectedLocation?.displayableName ?? "FPO: Location"
       pills.append(
         SearchFilterPill(
           isHighlighted: self.hasLocation,
           filterType: .location,
-          buttonType: .dropdown("FPO: Location")
+          buttonType: .dropdown(locationTitle)
         )
       )
     }

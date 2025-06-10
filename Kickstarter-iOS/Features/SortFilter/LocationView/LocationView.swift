@@ -5,7 +5,7 @@ import SwiftUI
 public struct LocationView: View {
   var defaultLocations: [Location]
   var searchLocations: [Location]
-  @Binding var selectedLocationId: String?
+  @Binding var selectedLocation: Location?
 
   @State var searchText = ""
   var onSearchedForLocation: (String) -> Void
@@ -13,15 +13,14 @@ public struct LocationView: View {
   public var body: some View {
     ScrollView {
       if self.searchLocations.count > 0 {
-        SearchResults(items: self.searchLocations.map { location in
-          Item(id: location.graphID, title: location.displayableName)
-        })
+        SearchResults(
+          items: self.searchLocations,
+          selectedItem: self.$selectedLocation
+        )
       } else if self.defaultLocations.count > 0 {
         ItemList(
-          items: self.defaultLocations.map { location in
-            Item(id: location.graphID, title: location.displayableName)
-          },
-          selectedItemId: self.$selectedLocationId
+          items: self.defaultLocations,
+          selectedItem: self.$selectedLocation
         )
       } else {
         ProgressView()
@@ -43,15 +42,16 @@ private struct Item: Identifiable {
 }
 
 private struct SearchResults: View {
-  var items: [Item]
+  var items: [Location]
+  @Binding var selectedItem: Location?
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {
       ForEach(self.items) { item in
         Button {
-          // self.selectedItemId = item.id
+          self.selectedItem = item
         } label: {
-          Text(item.title)
+          Text(item.displayableName)
             .font(InterFont.bodyLG.swiftUIFont())
             .foregroundStyle(Colors.Text.primary.swiftUIColor())
         }
@@ -63,18 +63,18 @@ private struct SearchResults: View {
 }
 
 private struct ItemList: View {
-  var items: [Item]
-  @Binding var selectedItemId: String?
+  let items: [Location]
+  @Binding var selectedItem: Location?
 
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {
       ForEach(self.items) { item in
         Button {
-          self.selectedItemId = item.id
+          self.selectedItem = item
         } label: {
           HStack(spacing: Constants.buttonLabelSpacing) {
-            RadioButton(isSelected: item.id == self.selectedItemId)
-            Text(item.title)
+            RadioButton(isSelected: self.selectedItem?.id == item.id)
+            Text(item.displayableName)
               .font(InterFont.bodyLG.swiftUIFont())
               .foregroundStyle(Colors.Text.primary.swiftUIColor())
           }
@@ -86,22 +86,27 @@ private struct ItemList: View {
   }
 }
 
+extension Location: @retroactive Identifiable {}
+
 private enum Constants {
   static let padding: CGFloat = 24.0
   static let spacing: CGFloat = 24.0
   static let buttonLabelSpacing: CGFloat = 8.0
 }
 
-#Preview("Location") {
-  NavigationStack {
-    ItemList(
-      items: [
-        Item(id: "1", title: "Item One"),
-        Item(id: "2", title: "Item Two"),
-        Item(id: "3", title: "Item Three")
+/*
+ private let previewItems = [
+   Item(id: "1", title: "Item One"),
+   Item(id: "2", title: "Item Two"),
+   Item(id: "3", title: "Item Three")
+ ]
 
-      ],
-      selectedItemId: Binding.constant("2")
-    )
-  }
-}
+ #Preview("Location") {
+   NavigationStack {
+     ItemList(
+       items: previewItems,
+       selectedItem: .constant(previewItems[2])
+     )
+   }
+ }
+ */

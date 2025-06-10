@@ -62,6 +62,9 @@ public protocol SearchViewModelInputs {
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
 
+  /// Cal this when the user selects a filter location.
+  func filteredLocation(_: Location)
+
   /// Call this when the user types a location query string in the location filter
   func searchedForLocation(_ query: String)
 
@@ -144,15 +147,17 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedSort,
       self.searchFiltersUseCase.selectedCategory,
       self.searchFiltersUseCase.selectedState,
-      self.searchFiltersUseCase.selectedPercentRaisedBucket
+      self.searchFiltersUseCase.selectedPercentRaisedBucket,
+      self.searchFiltersUseCase.selectedLocation
     )
-    .map { query, sort, category, state, raised in
+    .map { query, sort, category, state, raised, location in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
         category: category.category,
         state: state,
-        percentRaised: raised
+        percentRaised: raised,
+        location: location
       )
     }
 
@@ -478,6 +483,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
     self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
+  }
+
+  public func filteredLocation(_ location: Location) {
+    self.searchFiltersUseCase.filteredLocation(location)
   }
 
   public func searchedForLocation(_ query: String) {

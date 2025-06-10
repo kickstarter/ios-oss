@@ -20,6 +20,7 @@ public struct DiscoveryParams {
   public var starred: Bool?
   public var state: State?
   public var percentRaised: PercentRaisedBucket?
+  public var location: Location?
 
   public enum State: String, Decodable {
     case all
@@ -223,6 +224,11 @@ extension DiscoveryParams {
     if let raised = self.percentRaised {
       return false
     }
+
+    if let location = self.location {
+      return false
+    }
+
     return true
   }
 }

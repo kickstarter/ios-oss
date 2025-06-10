@@ -21,6 +21,8 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedProjectState(_ state: DiscoveryParams.State)
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
+  /// Cal this when the user selects a filter location.
+  func filteredLocation(_: Location)
   /// Call this when the user types a location query string in the location filter
   func searchedForLocation(_ query: String)
   /// Call this when the user taps reset on a filter modal
@@ -45,6 +47,7 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedState: Signal<DiscoveryParams.State, Never> { get }
   /// The currently selected percent raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never> { get }
+  var selectedLocation: Signal<Location?, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -80,6 +83,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedPercentRaisedBucket = Signal.merge(
       self.selectedPercentRaisedBucketProperty.producer.takeWhen(initialSignal),
       self.selectedPercentRaisedBucketProperty.signal
+    )
+
+    self.selectedLocation = Signal.merge(
+      self.selectedLocationProperty.producer.takeWhen(initialSignal),
+      self.selectedLocationProperty.signal
     )
 
     let sortOptions = SearchFilters.SortOptions(
@@ -118,15 +126,17 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.dataOutputs.selectedSort,
       self.dataOutputs.selectedCategory,
       self.dataOutputs.selectedState,
-      self.dataOutputs.selectedPercentRaisedBucket
+      self.dataOutputs.selectedPercentRaisedBucket,
+      self.dataOutputs.selectedLocation
     )
     .observeForUI()
-    .observeValues { [weak searchFilters] sort, category, state, bucket in
+    .observeValues { [weak searchFilters] sort, category, state, bucket, location in
       searchFilters?.update(
         withSort: sort,
         category: category,
         projectState: state,
-        percentRaisedBucket: bucket
+        percentRaisedBucket: bucket,
+        location: location
       )
     }
 
@@ -215,6 +225,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   )
   fileprivate let selectedPercentRaisedBucketProperty =
     MutableProperty<DiscoveryParams.PercentRaisedBucket?>(nil)
+  fileprivate let selectedLocationProperty = MutableProperty<Location?>(nil)
 
   // Used for some extra sanity assertions.
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
@@ -246,14 +257,13 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var selectedCategory: Signal<SearchFiltersCategory, Never>
   public var selectedState: Signal<DiscoveryParams.State, Never>
   public var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
+  public var selectedLocation: Signal<Location?, Never>
 
   public private(set) var searchFilters: SearchFilters
 
   public func clearedQueryText() {
+    self.resetFilters(for: .allFilters)
     self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
-    self.selectedCategoryProperty.value = .none
-    self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
-    self.selectedPercentRaisedBucketProperty.value = nil
   }
 
   public func resetFilters(for modal: SearchFilterModalType) {
@@ -270,7 +280,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     case .percentRaised:
       self.selectedPercentRaisedBucketProperty.value = nil
     case .location:
-      print("do something")
+      self.selectedLocationProperty.value = nil
     }
   }
 
@@ -307,6 +317,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
   public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
     self.selectedPercentRaisedBucketProperty.value = bucket
+  }
+
+  public func filteredLocation(_ location: Location) {
+    self.selectedLocationProperty.value = location
   }
 
   private let (locationQuerySignal, locationQueryObserver) = Signal<String, Never>.pipe()

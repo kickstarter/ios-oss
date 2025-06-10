@@ -10,6 +10,7 @@ struct FilterRootView: View {
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
+  var onSelectedLocation: ((Location) -> Void)? = nil
   var onSearchedForLocation: ((String) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
@@ -32,6 +33,17 @@ struct FilterRootView: View {
       if let action = self.onSelectedPercentRaisedBucket,
          let bucket = newValue {
         action(bucket)
+      }
+    }
+  }
+
+  private var selectedLocation: Binding<Location?> {
+    Binding {
+      self.searchFilters.location.selectedLocation
+    } set: { newValue in
+      if let action = self.onSelectedLocation,
+         let location = newValue {
+        action(location)
       }
     }
   }
@@ -126,7 +138,7 @@ struct FilterRootView: View {
     LocationView(
       defaultLocations: self.searchFilters.location.defaultLocations,
       searchLocations: self.searchFilters.location.searchLocations,
-      selectedLocationId: Binding.constant(nil),
+      selectedLocation: self.selectedLocation,
       onSearchedForLocation: self.onSearchedForLocation ?? { _ in }
     )
   }
