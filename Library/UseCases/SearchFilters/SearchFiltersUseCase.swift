@@ -185,10 +185,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public private(set) var searchFilters: SearchFilters
 
   public func clearedQueryText() {
-    self.selectedSortProperty.value = SearchFiltersUseCase.defaultSortOption
-    self.selectedCategoryProperty.value = .none
-    self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
-    self.selectedPercentRaisedBucketProperty.value = nil
+    self.resetFilters(for: .allFilters)
+    self.resetFilters(for: .sort)
   }
 
   public func resetFilters(for modal: SearchFilterModalType) {
