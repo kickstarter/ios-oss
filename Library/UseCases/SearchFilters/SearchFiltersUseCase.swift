@@ -137,7 +137,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     initialSignal
       .switchMap {
-        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 5)
+        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 10)
         return AppEnvironment.current.apiService.fetch(query: defaultLocations).materialize()
       }
       .values()

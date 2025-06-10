@@ -188,7 +188,8 @@ struct FilterRootView: View {
             self.percentRaisedModal
               .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
           case .location:
-            EmptyView()
+            self.locationModal
+              .modalHeader(withTitle: "FPO: Location", onClose: self.onClose)
           default:
             EmptyView()
           }

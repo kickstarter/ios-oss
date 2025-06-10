@@ -9,13 +9,19 @@ public struct LocationView: View {
   @State var searchText = ""
 
   public var body: some View {
-    ItemList(
-      items: self.defaultLocations.map { location in
-        Item(id: location.graphID, title: location.displayableName)
-      },
-      selectedItemId: self.$selectedLocationId,
-      searchText: self.$searchText
-    )
+    ScrollView {
+      if self.defaultLocations.count > 0 {
+        ItemList(
+          items: self.defaultLocations.map { location in
+            Item(id: location.graphID, title: location.displayableName)
+          },
+          selectedItemId: self.$selectedLocationId
+        )
+        .searchable(text: self.$searchText)
+      } else {
+        ProgressView()
+      }
+    }
   }
 }
 
@@ -27,11 +33,9 @@ private struct Item: Identifiable {
 private struct ItemList: View {
   var items: [Item]
   @Binding var selectedItemId: String?
-  @Binding var searchText: String
 
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {
-      Text("Searching locations for \"\(self.searchText)\"")
       ForEach(self.items) { item in
         Button {
           self.selectedItemId = item.id
@@ -47,7 +51,6 @@ private struct ItemList: View {
     }
     .padding(Constants.padding)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    .searchable(text: self.$searchText)
   }
 
   internal enum Constants {
@@ -66,8 +69,7 @@ private struct ItemList: View {
         Item(id: "3", title: "Item Three")
 
       ],
-      selectedItemId: Binding.constant("2"),
-      searchText: Binding.constant("Hello world")
+      selectedItemId: Binding.constant("2")
     )
   }
 }
