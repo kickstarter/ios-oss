@@ -32,6 +32,7 @@ internal final class TwoFactorViewController: UIViewController {
 
     _ = self
       |> twoFactorControllerStyle
+      |> UIViewController.lens.view.backgroundColor .~ LegacyColors.ksr_white.uiColor()
       |> UIViewController.lens.view.layoutMargins %~~ { _, _ in
         isPad ? .init(all: Styles.grid(20)) : .init(all: Styles.grid(3))
       }
