@@ -161,7 +161,7 @@ public let facebookButtonStyle: ButtonStyle = { button in
       NSDirectionalEdgeInsets(top: 10.0, leading: 12.0, bottom: 10.0, trailing: 12.0) :
       NSDirectionalEdgeInsets(top: 12.0, leading: 16.0, bottom: 12.0, trailing: 16.0)
 
-    button.configuration?.image = image(named: "fb-logo-white")
+    button.configuration?.image = image(named: "fb-logo-white")?.withRenderingMode(.alwaysTemplate)
 
     return button
   }
@@ -171,10 +171,10 @@ public let facebookButtonStyle: ButtonStyle = { button in
 
 private let _facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
+  <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.Facebook.primary.uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.Facebook.pressed.uiColor()
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.Facebook.disabled.uiColor()
   <> UIButton.lens.tintColor .~ LegacyColors.ksr_white.uiColor()
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
@@ -183,7 +183,8 @@ private let _facebookButtonStyle = baseButtonStyle
       : .init(topBottom: 12.0, leftRight: 16.0)
   }
 
-  <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
+  <> UIButton.lens
+  .image(for: .normal) %~ { _ in image(named: "fb-logo-white")?.withRenderingMode(.alwaysTemplate) }
 
 // MARK: - Save
 

@@ -260,9 +260,9 @@
 		20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */; };
 		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
-		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
 		333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */; };
 		333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */; };
+		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
 		3344A7732D9B3A2900D7DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */; };
 		3344A7792D9C559200D7DE91 /* RewardTrackingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */; };
@@ -976,7 +976,6 @@
 		A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73378FA1D0AE33B00C91445 /* BaseStyles.swift */; };
 		A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73378FD1D0AE36400C91445 /* LoginStyles.swift */; };
 		A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73379101D0E33A600C91445 /* ButtonStyles.swift */; };
-		A73379451D0E36A600C91445 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73379441D0E36A600C91445 /* Colors.swift */; };
 		A73379481D0E36CA00C91445 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73379471D0E36CA00C91445 /* Fonts.swift */; };
 		A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */; };
 		A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */; };
@@ -2040,9 +2039,9 @@
 		20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModel.swift; sourceTree = "<group>"; };
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
-		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCase.swift; sourceTree = "<group>"; };
 		333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCaseTests.swift; sourceTree = "<group>"; };
+		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		3344A7762D9C4DC700D7DE91 /* RewardTrackingDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsView.swift; sourceTree = "<group>"; };
 		3344A7782D9C557A00D7DE91 /* RewardTrackingDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModel.swift; sourceTree = "<group>"; };
 		3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewTest.swift; sourceTree = "<group>"; };
@@ -2755,7 +2754,6 @@
 		A73378FA1D0AE33B00C91445 /* BaseStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseStyles.swift; sourceTree = "<group>"; };
 		A73378FD1D0AE36400C91445 /* LoginStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginStyles.swift; sourceTree = "<group>"; };
 		A73379101D0E33A600C91445 /* ButtonStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
-		A73379441D0E36A600C91445 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		A73379471D0E36CA00C91445 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController-Preparation.swift"; sourceTree = "<group>"; };
 		A734A2161D9BF8B800E05454 /* Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Beta.entitlements; sourceTree = "<group>"; };
@@ -6516,7 +6514,6 @@
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
-				A73379441D0E36A600C91445 /* Colors.swift */,
 				941710B426557A6A00F5954E /* CommentCellStyles.swift */,
 				064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
@@ -8424,7 +8421,6 @@
 				1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */,
 				014D629B1E6E31790033D2BD /* BackerDashboardProjectsViewModel.swift in Sources */,
 				D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */,
-				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				D04AAC32218BB70D00CF713E /* MessageBannerViewModel.swift in Sources */,
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
@@ -10162,7 +10158,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.24.0;
+				MARKETING_VERSION = 5.26.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
@@ -10495,7 +10491,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.24.0;
+				MARKETING_VERSION = 5.26.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
@@ -10527,7 +10523,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.24.0;
+				MARKETING_VERSION = 5.26.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
@@ -11008,7 +11004,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.24.0;
+				MARKETING_VERSION = 5.26.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;

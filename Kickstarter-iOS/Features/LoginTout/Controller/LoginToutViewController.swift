@@ -109,8 +109,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     _ = self.backgroundImageView
       |> backgroundImageViewStyle
 
-    _ = self.appleLoginButton
-      |> roundedStyle(cornerRadius: Styles.grid(2))
+    applyAppleLoginButtonStyle(self.appleLoginButton)
 
     _ = self.bringCreativeProjectsToLifeLabel
       |> baseLabelStyle
@@ -531,6 +530,12 @@ private let separatorViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+private func applyAppleLoginButtonStyle(_ button: AdaptiveAppleIDButton) {
+  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Styles.cornerRadius : Styles.grid(2)
+
+  button.rounded(with: cornerRadius)
 }
 
 // MARK: - ASAuthorizationControllerDelegate

@@ -991,7 +991,17 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testSecretRewards_GoToLogin() {
-    withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.secretRewards.rawValue: true
+    ]
+
+    withEnvironment(
+      config: .template,
+      currentUser: nil,
+      mainBundle: self.releaseBundle,
+      remoteConfigClient: mockConfigClient
+    ) {
       let project = Project.template
 
       self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
@@ -1008,6 +1018,34 @@ final class ProjectPageViewModelTests: TestCase {
       )
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
+    }
+  }
+
+  func testSecretRewards_GoToReward_WhenFeatureFlagOff() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.secretRewards.rawValue: false
+    ]
+
+    withEnvironment(
+      config: .template,
+      currentUser: nil,
+      mainBundle: self.releaseBundle,
+      remoteConfigClient: mockConfigClient
+    ) {
+      let project = Project.template
+
+      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+      self.goToLoginWithIntent.assertDidNotEmitValue()
     }
   }
 
