@@ -40,7 +40,7 @@ public enum InterFont: CustomFont, CaseIterable {
     case .bodySM: return 12
     case .bodyXS: return 11
     case .bodyXXS: return 10
-    case .buttonLabel: return 14
+    case .buttonLabel: return 16
     }
   }
 
