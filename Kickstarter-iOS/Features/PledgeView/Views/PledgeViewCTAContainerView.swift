@@ -78,6 +78,7 @@ final class PledgeViewCTAContainerView: UIView {
     // This fixes a crash when `bindStyles` is triggered by a background
     // trait update during app snapshotting.
     self.termsTextView.attributedText = attributedTermsText()
+    self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
   }
 
   @available(*, unavailable)
@@ -106,7 +107,6 @@ final class PledgeViewCTAContainerView: UIView {
 
     termsTextViewStyle(self.termsTextView)
 
-    self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
     self.pledgeImmediatelyLabel.numberOfLines = 0
     self.pledgeImmediatelyLabel.textAlignment = .center
     self.pledgeImmediatelyLabel.textColor = LegacyColors.ksr_support_400.uiColor()
