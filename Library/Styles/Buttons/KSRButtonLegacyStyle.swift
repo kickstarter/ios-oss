@@ -9,21 +9,21 @@ public enum KSRButtonLegacyStyle: KSRButtonStyleConfiguration, CaseIterable {
 
   public var backgroundColor: UIColor {
     switch self {
-    case .blue: LegacyColors.ksr_trust_500.uiColor()
+    case .blue: LegacyColors.Buttons.blue.uiColor()
     case .grey: LegacyColors.ksr_support_300.uiColor()
     }
   }
 
   public var highlightedBackgroundColor: UIColor {
     switch self {
-    case .blue: LegacyColors.ksr_trust_500.uiColor().mixDarker(0.36)
+    case .blue: LegacyColors.Buttons.blue.uiColor().mixDarker(0.36)
     case .grey: LegacyColors.ksr_support_300.uiColor().mixDarker(0.36)
     }
   }
 
   public var disabledBackgroundColor: UIColor {
     switch self {
-    case .blue: LegacyColors.ksr_trust_500.uiColor().mixLighter(0.36)
+    case .blue: LegacyColors.Buttons.blue.uiColor().mixLighter(0.36)
     case .grey: LegacyColors.ksr_support_300.uiColor().mixLighter(0.12)
     }
   }

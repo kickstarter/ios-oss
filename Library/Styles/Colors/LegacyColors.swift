@@ -226,4 +226,12 @@ public struct LegacyColors {
       )
     }
   }
+
+  public struct Buttons {
+    public static let blue = LegacyColor(
+      "legacy/buttons/blue",
+      lightMode: UIColor.hex(0x5555FF),
+      darkMode: UIColor(coreColor: .white)
+    )
+  }
 }
