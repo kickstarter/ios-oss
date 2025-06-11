@@ -22,7 +22,7 @@ public protocol SearchFiltersUseCaseInputs {
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
   /// Cal this when the user selects a filter location.
-  func filteredLocation(_: Location)
+  func filteredLocation(_: Location?)
   /// Call this when the user types a location query string in the location filter
   func searchedForLocation(_ query: String)
   /// Call this when the user taps reset on a filter modal
@@ -320,7 +320,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedPercentRaisedBucketProperty.value = bucket
   }
 
-  public func filteredLocation(_ location: Location) {
+  public func filteredLocation(_ location: Location?) {
     self.selectedLocationProperty.value = location
   }
 

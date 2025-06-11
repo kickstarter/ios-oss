@@ -63,7 +63,7 @@ public protocol SearchViewModelInputs {
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
 
   /// Cal this when the user selects a filter location.
-  func filteredLocation(_: Location)
+  func filteredLocation(_: Location?)
 
   /// Call this when the user types a location query string in the location filter
   func searchedForLocation(_ query: String)
@@ -485,7 +485,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
   }
 
-  public func filteredLocation(_ location: Location) {
+  public func filteredLocation(_ location: Location?) {
     self.searchFiltersUseCase.filteredLocation(location)
   }
 

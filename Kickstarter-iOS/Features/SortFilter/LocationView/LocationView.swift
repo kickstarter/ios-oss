@@ -3,6 +3,12 @@ import Library
 import SwiftUI
 
 public struct LocationView: View {
+  private enum ViewState {
+    case loading
+    case results
+    case defaults
+  }
+
   var defaultLocations: [Location]
   var searchLocations: [Location]
   @Binding var selectedLocation: Location?
@@ -10,20 +16,35 @@ public struct LocationView: View {
   @State var searchText = ""
   var onSearchedForLocation: (String) -> Void
 
+  private var viewState: ViewState {
+    if !self.searchText.isEmpty && self.searchLocations.count > 0 {
+      return .results
+    } else if self.defaultLocations.count > 0 {
+      return .defaults
+    } else {
+      return .loading
+    }
+  }
+
+  var searching: Bool {
+    return !self.searchText.isEmpty
+  }
+
   public var body: some View {
     ScrollView {
-      if self.searchLocations.count > 0 {
+      switch self.viewState {
+      case .loading:
+        ProgressView()
+      case .results:
         SearchResults(
           items: self.searchLocations,
           selectedItem: self.$selectedLocation
         )
-      } else if self.defaultLocations.count > 0 {
+      case .defaults:
         ItemList(
           items: self.defaultLocations,
           selectedItem: self.$selectedLocation
         )
-      } else {
-        ProgressView()
       }
     }
     .searchable(
@@ -34,11 +55,6 @@ public struct LocationView: View {
       self.onSearchedForLocation(newValue)
     }
   }
-}
-
-private struct Item: Identifiable {
-  var id: String
-  var title: String
 }
 
 private struct SearchResults: View {
@@ -66,18 +82,33 @@ private struct ItemList: View {
   let items: [Location]
   @Binding var selectedItem: Location?
 
+  func buttonLabel(title: String, isSelected: Bool) -> some View {
+    HStack(spacing: Constants.buttonLabelSpacing) {
+      RadioButton(isSelected: isSelected)
+      Text(title)
+        .font(InterFont.bodyLG.swiftUIFont())
+        .foregroundStyle(Colors.Text.primary.swiftUIColor())
+    }
+  }
+
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {
+      Button {
+        self.selectedItem = nil
+      } label: {
+        self.buttonLabel(
+          title: "FPO: Anywhere",
+          isSelected: self.selectedItem.isNil
+        )
+      }
       ForEach(self.items) { item in
         Button {
           self.selectedItem = item
         } label: {
-          HStack(spacing: Constants.buttonLabelSpacing) {
-            RadioButton(isSelected: self.selectedItem?.id == item.id)
-            Text(item.displayableName)
-              .font(InterFont.bodyLG.swiftUIFont())
-              .foregroundStyle(Colors.Text.primary.swiftUIColor())
-          }
+          self.buttonLabel(
+            title: item.displayableName,
+            isSelected: self.selectedItem?.id == item.id
+          )
         }
       }
     }
