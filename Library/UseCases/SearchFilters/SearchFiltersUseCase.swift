@@ -149,7 +149,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     initialSignal
       .switchMap {
-        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 5)
+        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 1)
         return AppEnvironment.current.apiService.fetch(query: defaultLocations).materialize()
       }
       .values()
@@ -182,7 +182,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
 
     locationQuery
       .switchMap { queryText in
-        let query = GraphAPI.LocationsByTermQuery(term: queryText, first: 25)
+        let query = GraphAPI.LocationsByTermQuery(term: queryText, first: 10)
         return AppEnvironment.current.apiService.fetch(query: query).materialize()
       }
       .values()
@@ -273,6 +273,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedCategoryProperty.value = .none
       self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
       self.selectedPercentRaisedBucketProperty.value = nil
+      self.selectedLocationProperty.value = nil
     case .category:
       self.selectedCategoryProperty.value = .none
     case .sort:
