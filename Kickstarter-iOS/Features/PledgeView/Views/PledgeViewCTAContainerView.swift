@@ -73,6 +73,11 @@ final class PledgeViewCTAContainerView: UIView {
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
+
+    // Do this once, on `viewDidLoad`, instead of in `bindStyles`.
+    // This fixes a crash when `bindStyles` is triggered by a background
+    // trait update during app snapshotting.
+    self.termsTextView.attributedText = attributedTermsText()
   }
 
   @available(*, unavailable)
@@ -298,7 +303,6 @@ private func termsTextViewStyle(_ textView: UITextView) {
   textView.linkTextAttributes = [
     .foregroundColor: LegacyColors.ksr_create_700.uiColor()
   ]
-  textView.attributedText = attributedTermsText()
   textView.accessibilityTraits = [.staticText]
   textView.textAlignment = .center
 }
