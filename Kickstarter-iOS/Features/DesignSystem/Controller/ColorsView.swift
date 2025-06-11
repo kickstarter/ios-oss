@@ -76,7 +76,8 @@ struct ColorsView: View {
     LegacyColors.Tags.Warn.foreground,
     LegacyColors.Tags.Error.background,
     LegacyColors.Tags.Error.foreground,
-    LegacyColors.Background.search
+    LegacyColors.Background.search,
+    LegacyColors.Buttons.blue
   ]
 
   @ViewBuilder
