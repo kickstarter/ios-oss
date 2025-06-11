@@ -96,10 +96,10 @@ public let blueButtonStyle: ButtonStyle = { button in
 
 private let _blueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.ksr_trust_500.uiColor()
+  <> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.Buttons.blue.uiColor()
   <> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.ksr_trust_500.uiColor().mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.ksr_trust_500.uiColor().mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.Buttons.blue.uiColor().mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.Buttons.blue.uiColor().mixLighter(0.36)
 
 // MARK: - Green
 
