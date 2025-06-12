@@ -147,11 +147,9 @@ struct FilterRootView: View {
           }
           Divider()
           self.projectStateSection
-          if featureSearchFilterByPercentRaisedEnabled() {
-            Divider()
-            NavigationLink(value: SearchFilterModalType.percentRaised) {
-              self.percentRaisedSection
-            }
+          Divider()
+          NavigationLink(value: SearchFilterModalType.percentRaised) {
+            self.percentRaisedSection
           }
           Divider()
           Spacer()
