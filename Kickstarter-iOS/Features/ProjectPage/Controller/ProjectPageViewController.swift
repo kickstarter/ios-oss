@@ -322,9 +322,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] params in
-        let (project, refTag) = params
+        let (project, refTag, secretRewardToken) = params
 
-        self?.goToRewards(project: project, refTag: refTag)
+        self?.goToRewards(project: project, refTag: refTag, secretRewardToken: secretRewardToken)
       }
 
     self.viewModel.outputs.goToManagePledge
@@ -688,8 +688,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToRewards(project: Project, refTag: RefTag?) {
-    let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
+  private func goToRewards(project: Project, refTag: RefTag?, secretRewardToken: String?) {
+    let vc = RewardsCollectionViewController.controller(
+      with: project,
+      refTag: refTag,
+      secretRewardToken: secretRewardToken
+    )
     self.present(vc, animated: true)
   }
 
