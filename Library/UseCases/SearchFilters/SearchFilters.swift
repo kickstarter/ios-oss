@@ -167,17 +167,15 @@ public class SearchFilters: ObservableObject {
       )
     )
 
-    if featureSearchFilterByPercentRaisedEnabled() {
-      let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
+    let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
 
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: self.hasPercentRaised,
-          filterType: .percentRaised,
-          buttonType: .dropdown(percentRaisedTitle)
-        )
+    pills.append(
+      SearchFilterPill(
+        isHighlighted: self.hasPercentRaised,
+        filterType: .percentRaised,
+        buttonType: .dropdown(percentRaisedTitle)
       )
-    }
+    )
 
     self.pills = pills
   }

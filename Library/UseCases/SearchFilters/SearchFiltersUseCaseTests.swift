@@ -361,49 +361,42 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_selectingPercentRaised_updatesPercentRaisedPill() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.searchFilterByPercentRaised.rawValue: true
-    ]
+    self.initialObserver.send(value: ())
 
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.initialObserver.send(value: ())
+    self.assert_selectedPercentRaisedBucket_isDefault()
 
-      self.assert_selectedPercentRaisedBucket_isDefault()
+    if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        false,
+        "Percent raised pill should not be highlighted when no bucket is selected"
+      )
+    } else {
+      XCTFail("Expected percent raised pill to be set")
+    }
 
-      if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          false,
-          "Percent raised pill should not be highlighted when no bucket is selected"
-        )
-      } else {
-        XCTFail("Expected percent raised pill to be set")
+    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+
+    if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        true,
+        "Percent raised pill should be highlighted when a non-default option is selected"
+      )
+
+      guard case let .dropdown(title) = pill.buttonType else {
+        XCTFail("Pill is not a dropdown")
+        return
       }
 
-      self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+      XCTAssertEqual(
+        title,
+        DiscoveryParams.PercentRaisedBucket.bucket_2.title,
+        "Dropdown should have description of selected % raised option in its title"
+      )
 
-      if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          true,
-          "Percent raised pill should be highlighted when a non-default option is selected"
-        )
-
-        guard case let .dropdown(title) = pill.buttonType else {
-          XCTFail("Pill is not a dropdown")
-          return
-        }
-
-        XCTAssertEqual(
-          title,
-          DiscoveryParams.PercentRaisedBucket.bucket_2.title,
-          "Dropdown should have description of selected % raised option in its title"
-        )
-
-      } else {
-        XCTFail("Expected percent raised pill to be set")
-      }
+    } else {
+      XCTFail("Expected percent raised pill to be set")
     }
   }
 
