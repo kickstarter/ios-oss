@@ -33,7 +33,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     let testProject = Project.template
       |> Project.lens.rewardData.rewards .~ rewards
 
-    self.vm.configure(with: testProject, refTag: nil, context: .createPledge)
+    self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: "34342")
     self.vm.shippingRuleSelected(nil)
     self.vm.viewDidLoad()
 
