@@ -59,6 +59,7 @@ $(PROJECT_DIR)/KsApi/queries/FetchRootCategories.graphql
 $(PROJECT_DIR)/KsApi/queries/BuildPaymentPlanQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/ValidateCheckout.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCommentReplies.graphql
+$(PROJECT_DIR)/KsApi/queries/DefaultLocationsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUpdateComments.graphql
 $(PROJECT_DIR)/KsApi/queries/SimilarProjectQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserBackings.graphql
@@ -66,6 +67,7 @@ $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsById.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectComments.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserSetup.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchUserStoredCards.graphql
+$(PROJECT_DIR)/KsApi/queries/LocationsByTermQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchMyBackedProjectsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectFriendsBySlug.graphql
 $(PROJECT_DIR)/KsApi/queries/SearchQuery.graphql

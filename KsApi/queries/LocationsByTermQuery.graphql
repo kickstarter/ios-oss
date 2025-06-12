@@ -1,0 +1,7 @@
+query LocationsByTerm($term: String, $first: Int) {
+  locations(term: $term, first: $first) {
+    nodes {
+      ...LocationFragment
+    }
+  }
+}
