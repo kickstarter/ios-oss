@@ -310,5 +310,5 @@ private func createMockProjectNode(
     ]
   }
 
-  return GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node(unsafeResultMap: resultMap)
+  return testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
 }

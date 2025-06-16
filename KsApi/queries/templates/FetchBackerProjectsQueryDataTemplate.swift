@@ -22,7 +22,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
         forResource: "FetchMySavedProjectsQuery",
         withExtension: "json"
       )
-      return try! GraphAPI.FetchMySavedProjectsQuery.Data(
+      return try! testGraphObject<GraphAPI.FetchMySavedProjectsQuery.Data>(
         fromResource: url!,
         variables: ["withStoredCards": false]
       )
@@ -36,7 +36,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
         forResource: "FetchMyBackedProjectsQuery",
         withExtension: "json"
       )
-      return try! GraphAPI.FetchMyBackedProjectsQuery.Data(
+      return try! testGraphObject<GraphAPI.FetchMySavedProjectsQuery.Data>(
         fromResource: url!,
         variables: ["withStoredCards": false]
       )

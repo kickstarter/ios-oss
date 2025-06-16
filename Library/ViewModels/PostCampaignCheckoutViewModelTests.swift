@@ -471,8 +471,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       }
     }
     """
-    let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
-      .Data(jsonString: completeSessionJsonString)
+    let completeSessionData: GraphAPI.CompleteOnSessionCheckoutMutation
+      .Data = try! testGraphObject(jsonString: completeSessionJsonString)
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
       createCheckoutResult: .success(self.checkoutResponse),

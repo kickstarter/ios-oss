@@ -9,9 +9,9 @@ public enum FetchCategoryQueryTemplate {
   var data: GraphAPI.FetchCategoryQuery.Data {
     switch self {
     case .valid:
-      return GraphAPI.FetchCategoryQuery.Data(unsafeResultMap: self.validResultMap)
+      return testGraphObject<GraphAPI.FetchCategoryQuery.Data>(data: self.validResultMap)
     case .errored:
-      return GraphAPI.FetchCategoryQuery.Data(unsafeResultMap: self.erroredResultMap)
+      return testGraphObject<GraphAPI.FetchCategoryQuery.Data>(data: self.erroredResultMap)
     }
   }
 

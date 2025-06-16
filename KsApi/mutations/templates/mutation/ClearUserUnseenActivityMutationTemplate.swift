@@ -8,11 +8,15 @@ public enum ClearUserUnseenActivityMutationTemplate {
   var data: GraphAPI.ClearUserUnseenActivityMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.ClearUserUnseenActivityMutation
-        .Data(unsafeResultMap: self.createClearUserUnseenActivityMutationResultMap)
+      return testGraphObject<
+        GraphAPI.ClearUserUnseenActivityMutation
+          .Data
+      >(data: self.createClearUserUnseenActivityMutationResultMap)
     case .errored:
-      return GraphAPI.ClearUserUnseenActivityMutation
-        .Data(unsafeResultMap: self.createClearUserUnseenActivityMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.ClearUserUnseenActivityMutation
+          .Data
+      >(data: self.createClearUserUnseenActivityMutationErroredResultMap)
     }
   }
 
