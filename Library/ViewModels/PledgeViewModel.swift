@@ -35,7 +35,8 @@ public typealias UpdateBackingData = (
   paymentSourceId: String?,
   setupIntentClientSecret: String?,
   applePayParams: ApplePayParams?,
-  pledgeContext: PledgeViewContext
+  pledgeContext: PledgeViewContext,
+  incremental: Bool
 )
 public typealias PaymentAuthorizationData = (
   project: Project,
@@ -588,7 +589,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       selectedShippingRule,
       self.paymentMethodsUseCase.dataOutputs.selectedPaymentSource,
       applePayParamsData,
-      context
+      context,
+      self.pledgeOverTimeUseCase.outputs
+        .showPledgeOverTimeUI /// Used in UpdateBackingData.increment to inform the backend if the updated pledge is a PLOT pledge.
     )
     .map {
       backing,
@@ -598,7 +601,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         selectedShippingRule,
         selectedPaymentSource,
         applePayParams,
-        context
+        context,
+        isPledgeOverTime
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
@@ -611,7 +615,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         paymentSourceId: paymentSourceId,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
-        context
+        context,
+        isPledgeOverTime
       )
     }
 

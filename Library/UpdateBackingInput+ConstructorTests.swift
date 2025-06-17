@@ -16,7 +16,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: nil,
       setupIntentClientSecret: "seti_1Lq2At4VvJ2PtfhKRtPWTnKh_secret_MZAVRP2SXO5bvZzZ2bi1W7o5Wsz4BuN",
       applePayParams: nil,
-      pledgeContext: .updateReward
+      pledgeContext: .updateReward,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -52,7 +53,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .changePaymentMethod
+      pledgeContext: .changePaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -84,7 +86,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .changePaymentMethod
+      pledgeContext: .changePaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -109,7 +112,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: nil,
-      pledgeContext: .changePaymentMethod
+      pledgeContext: .changePaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -141,7 +145,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .changePaymentMethod
+      pledgeContext: .changePaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -176,7 +181,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .latePledge
+      pledgeContext: .latePledge,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -204,7 +210,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: UserCreditCards.amex.id,
       setupIntentClientSecret: nil,
       applePayParams: nil,
-      pledgeContext: .latePledge
+      pledgeContext: .latePledge,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -244,7 +251,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: "123",
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .updateReward
+      pledgeContext: .updateReward,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
@@ -275,7 +283,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: "123",
       setupIntentClientSecret: "fake_secret",
       applePayParams: nil,
-      pledgeContext: .fixPaymentMethod
+      pledgeContext: .fixPaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: false)
@@ -311,7 +320,8 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       paymentSourceId: "123",
       setupIntentClientSecret: nil,
       applePayParams: applePayParams,
-      pledgeContext: .fixPaymentMethod
+      pledgeContext: .fixPaymentMethod,
+      incremental: false
     )
 
     let input = UpdateBackingInput.input(from: data, isApplePay: true)
