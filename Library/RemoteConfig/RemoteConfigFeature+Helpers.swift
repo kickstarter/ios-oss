@@ -19,6 +19,10 @@ public func featureDarkModeEnabled() -> Bool {
   return featureEnabled(feature: .darkModeEnabled)
 }
 
+public func featureEditPledgeOverTimeEnabled() -> Bool {
+  return featureEnabled(feature: .editPledgeOverTimeEnabled)
+}
+
 public func featurePostCampaignPledgeEnabled() -> Bool {
   featureEnabled(feature: .postCampaignPledgeEnabled)
 }
