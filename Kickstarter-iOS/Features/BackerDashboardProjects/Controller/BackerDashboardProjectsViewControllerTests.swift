@@ -55,15 +55,27 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       totalCount: 5
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true
+    ]
+
+    orthogonalCombos(
+      Language.allLanguages,
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    ).forEach {
+      language, device, style in
       withEnvironment(
         apiService: MockService(fetchBackerBackedProjectsResponse: env),
+        colorResolver: AppColorResolver(),
         currentUser: User.template,
-        language: language
+        language: language,
+        remoteConfigClient: darkModeOn
       ) {
         let controller = BackerDashboardProjectsViewController
           .configuredWith(projectsType: .backed, sort: .endingSoon)
+        controller.overrideUserInterfaceStyle = style
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,
@@ -71,7 +83,13 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         )
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        let styleDescription = style == .light ? "light" : "dark"
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "lang_\(language)_device_\(device)_\(styleDescription)"
+        )
       }
     }
   }
