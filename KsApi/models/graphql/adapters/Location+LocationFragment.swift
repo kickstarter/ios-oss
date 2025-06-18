@@ -13,4 +13,32 @@ extension Location {
       name: locationFragment.name
     )
   }
+
+  public static func locations(from data: GraphAPI.DefaultLocationsQuery.Data) -> [Location] {
+    guard let nodes = data.locations?.nodes else {
+      return []
+    }
+
+    return nodes.compactMap { node in
+      if let fragment = node?.fragments.locationFragment {
+        KsApi.Location.location(from: fragment)
+      } else {
+        nil
+      }
+    }
+  }
+
+  public static func locations(from data: GraphAPI.LocationsByTermQuery.Data) -> [Location] {
+    guard let nodes = data.locations?.nodes else {
+      return []
+    }
+
+    return nodes.compactMap { node in
+      if let fragment = node?.fragments.locationFragment {
+        KsApi.Location.location(from: fragment)
+      } else {
+        nil
+      }
+    }
+  }
 }
