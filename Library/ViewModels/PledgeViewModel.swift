@@ -590,8 +590,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
       self.paymentMethodsUseCase.dataOutputs.selectedPaymentSource,
       applePayParamsData,
       context,
-      self.pledgeOverTimeUseCase.outputs
-        .showPledgeOverTimeUI /// Used in UpdateBackingData.increment to inform the backend if the updated pledge is a PLOT pledge.
+      selectedPaymentPlan
     )
     .map {
       backing,
@@ -602,7 +601,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         selectedPaymentSource,
         applePayParams,
         context,
-        isPledgeOverTime
+        selectedPaymentPlan
         -> UpdateBackingData in
       var paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
@@ -616,7 +615,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         context,
-        isPledgeOverTime
+        selectedPaymentPlan == .pledgeOverTime
       )
     }
 
