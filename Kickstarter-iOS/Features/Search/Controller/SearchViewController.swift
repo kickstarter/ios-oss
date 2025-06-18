@@ -19,6 +19,8 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchTextField: UITextField!
   @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
+  private lazy var clearButton: UIButton = { UIButton(frame: .zero) }()
+
   private let backgroundView = UIView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
@@ -46,10 +48,15 @@ internal final class SearchViewController: UITableViewController {
       }
     )
 
+    // We can remove `centeringStackView`, it's not more necessary
+    self.centeringStackView.alignment = .fill
+
     let sortAndFilterHeader = UIHostingController(rootView: pillView)
     self.addChild(sortAndFilterHeader)
 
     self.sortAndFilterHeader = sortAndFilterHeader
+
+    self.configureClearButton()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -92,40 +99,48 @@ internal final class SearchViewController: UITableViewController {
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
-      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
-      |> UIButton.lens.titleLabel.font .~ .ksr_callout(size: 15)
+      |> UIButton.lens.titleColor(for: .normal) .~ Colors.Background.Accent.Green.bold.uiColor()
+      |> UIButton.lens.titleLabel.font .~ .ksr_bodyLG()
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
-    _ = self.searchBarContainerView
-      |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ LegacyColors.Background.search.uiColor()
-
     _ = self.searchIconImageView
-      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UIImageView.lens.image .~ image(named: "search-icon")
+      |> UIImageView.lens.tintColor .~ Colors.Icon.primary.uiColor()
+      |> UIImageView.lens.image .~ Library.image(named: "Search")
+      |> UIImageView.lens.contentMode .~ .scaleAspectFit
 
     _ = self.searchStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: Styles.gridHalf(1),
+        left: 0,
+        bottom: Styles.gridHalf(2),
+        right: 0
+      )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.innerSearchStackView
+      |> roundedStyle()
       |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> UIView.lens.layer.borderColor .~ Colors.Border.bold.uiColor().cgColor
+      |> UIView.lens.layer.borderWidth .~ 1.0
 
     _ = self.searchTextField
-      |> UITextField.lens.font .~ .ksr_body(size: 14)
-      |> UITextField.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
+      |> UITextField.lens.font .~ .ksr_bodyLG()
+      |> UITextField.lens.textColor .~ Colors.Text.primary.uiColor()
+      |> UITextField.lens.tintColor .~ Colors.Background.Accent.Green.bold.uiColor()
 
     self.searchTextField.attributedPlaceholder = NSAttributedString(
       string: Strings.tabbar_search(),
-      attributes: [NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()]
+      attributes: [NSAttributedString.Key.foregroundColor: Colors.Text.placeholder.uiColor()]
     )
 
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
 
     self.searchTextFieldHeightConstraint.constant = Styles.grid(5)
-    self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.8
+    self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.9
 
     self.tableView.sectionHeaderTopPadding = 0
   }
@@ -169,6 +184,8 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
+    self.clearButton.rac.hidden = self.viewModel.outputs.isClearButtonHidden
+
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
 
     self.viewModel.outputs.changeSearchFieldFocus
@@ -196,6 +213,22 @@ internal final class SearchViewController: UITableViewController {
   fileprivate func present(sheet viewController: UIViewController, withHeight _: CGFloat) {
     let presenter = BottomSheetPresenter()
     presenter.present(viewController: viewController, from: self)
+  }
+
+  private func configureClearButton() {
+    self.searchTextField.clearButtonMode = .never
+
+    self.clearButton.isHidden = true
+    self.clearButton.setImage(Library.image(named: "icon--cross"), for: .normal)
+    self.clearButton.contentMode = .scaleAspectFit
+    self.clearButton.tintColor = Colors.Icon.primary.uiColor()
+    self.clearButton.addTarget(
+      self,
+      action: #selector(SearchViewController.clearButtonPressed),
+      for: .touchUpInside
+    )
+
+    self.innerSearchStackView.addArrangedSubview(self.clearButton)
   }
 
   fileprivate func showSort() {
@@ -255,23 +288,21 @@ internal final class SearchViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func changeSearchFieldFocus(focus: Bool, animated _: Bool) {
-    if focus {
-      self.cancelButton.isHidden = false
+  fileprivate func changeSearchFieldFocus(focus: Bool, animated: Bool) {
+    let duration: TimeInterval = animated ? 0.15 : 0.0
 
-      self.centeringStackView.alignment = .fill
+    UIView.animate(withDuration: duration, delay: 0.0, options: [.curveEaseInOut], animations: {
+      self.cancelButton.isHidden = !focus
+      self.cancelButton.alpha = focus ? 1.0 : 0.0
+      self.innerSearchStackView.layer.borderColor = focus
+        ? Colors.Border.active.uiColor().cgColor
+        : Colors.Border.bold.uiColor().cgColor
+    })
 
-      if !self.searchTextField.isFirstResponder {
-        self.searchTextField.becomeFirstResponder()
-      }
-    } else {
-      self.cancelButton.isHidden = true
-
-      self.centeringStackView.alignment = .center
-
-      if self.searchTextField.isFirstResponder {
-        self.searchTextField.resignFirstResponder()
-      }
+    if focus, !self.searchTextField.isFirstResponder {
+      self.searchTextField.becomeFirstResponder()
+    } else if !focus, self.searchTextField.isFirstResponder {
+      self.searchTextField.resignFirstResponder()
     }
   }
 
@@ -330,6 +361,10 @@ internal final class SearchViewController: UITableViewController {
 
   @objc fileprivate func searchBarContainerTapped() {
     self.viewModel.inputs.searchFieldDidBeginEditing()
+  }
+
+  @objc fileprivate func clearButtonPressed() {
+    self.viewModel.inputs.clearSearchText()
   }
 }
 
