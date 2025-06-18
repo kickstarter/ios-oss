@@ -11,23 +11,29 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedCategory = TestObserver<KsApi.Category?, Never>()
   private let selectedState = TestObserver<DiscoveryParams.State, Never>()
   private let selectedPercentRaisedBucket = TestObserver<DiscoveryParams.PercentRaisedBucket?, Never>()
+  private let selectedLocation = TestObserver<Location?, Never>()
   private let showFilters = TestObserver<SearchFilterModalType, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
+  private let (defaultLocationsSignal, defaultLocationsObserver) = Signal<[KsApi.Location], Never>.pipe()
+  private let (suggestedLocationsSignal, suggestedLocationsObserver) = Signal<[KsApi.Location], Never>.pipe()
 
   override func setUp() {
     super.setUp()
 
     self.useCase = SearchFiltersUseCase(
       initialSignal: self.initialSignal,
-      categories: self.categoriesSignal
+      categories: self.categoriesSignal,
+      defaultLocations: self.defaultLocationsSignal,
+      suggestedLocations: self.suggestedLocationsSignal
     )
 
     self.useCase.dataOutputs.selectedCategory.map { $0.category }.observe(self.selectedCategory.observer)
     self.useCase.dataOutputs.selectedSort.observe(self.selectedSort.observer)
     self.useCase.dataOutputs.selectedState.observe(self.selectedState.observer)
     self.useCase.dataOutputs.selectedPercentRaisedBucket.observe(self.selectedPercentRaisedBucket.observer)
+    self.useCase.dataOutputs.selectedLocation.observe(self.selectedLocation.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
 
@@ -47,12 +53,14 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.selectedPercentRaisedBucket.assertLastValue(nil, "Selected % raised should be default value")
   }
 
-  func test_category_onInitialSignal_isNil() {
-    self.selectedCategory.assertDidNotEmitValue()
+  func assert_selectedLocation_isDefault() {
+    self.selectedLocation.assertLastValue(nil, "Selected location should be default value")
+  }
 
+  func test_allFilters_onInitialSignal_areDefaults() {
     self.initialObserver.send(value: ())
 
-    self.assert_selectedCategory_isDefault()
+    self.assertAllFilters_areSetToDefaults()
   }
 
   func test_sort_onInitialSignal_isRecommended() {
@@ -61,22 +69,6 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.initialObserver.send(value: ())
 
     self.selectedSort.assertLastValue(.magic)
-  }
-
-  func test_projectState_onInitialSignal_isAll() {
-    self.selectedState.assertDidNotEmitValue()
-
-    self.initialObserver.send(value: ())
-
-    self.assert_selectedProjectState_isDefault()
-  }
-
-  func test_selectedPercentRaisedBucket_onInitialSignal_isNil() {
-    self.selectedPercentRaisedBucket.assertDidNotEmitValue()
-
-    self.initialObserver.send(value: ())
-
-    self.assert_selectedPercentRaisedBucket_isDefault()
   }
 
   func test_tappedSort_showsSortOptions() {
@@ -199,6 +191,35 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
   }
 
+  func test_tappedLocation_showsLocation() {
+    self.initialObserver.send(value: ())
+
+    self.defaultLocationsObserver.send(value: threeLocations)
+    self.suggestedLocationsObserver.send(value: threeLocations)
+
+    self.showFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedButton(forFilterType: .location)
+
+    self.showFilters.assertDidEmitValue()
+
+    if let type = self.showFilters.lastValue {
+      XCTAssertEqual(type, .location, "Tapping percent raised button should percent raised options")
+      XCTAssertEqual(
+        self.useCase.uiOutputs.searchFilters.location.defaultLocations.count,
+        3,
+        "There should be three default locations set"
+      )
+      XCTAssertEqual(
+        self.useCase.uiOutputs.searchFilters.location.suggestedLocations.count,
+        3,
+        "There should be three suggested locations set"
+      )
+    }
+
+    self.assert_selectedLocation_isDefault()
+  }
+
   func test_selectingCategory_updatesCategory() {
     self.initialObserver.send(value: ())
 
@@ -274,6 +295,27 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(newSelectedBucket, .bucket_1, "Percent raised value should change when bucket is selected")
+  }
+
+  func test_selectingLocation_updatesLocation() {
+    self.initialObserver.send(value: ())
+
+    self.assert_selectedLocation_isDefault()
+
+    let location = threeLocations[1]
+
+    self.useCase.inputs.filteredLocation(location)
+
+    guard let newSelectedLocation = self.selectedLocation.lastValue else {
+      XCTFail("There should be a new selected location")
+      return
+    }
+
+    XCTAssertEqual(
+      newSelectedLocation,
+      location,
+      "Selected location value should change when location is selected"
+    )
   }
 
   func test_selectingSort_updatesSortPill() {
@@ -400,6 +442,48 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
   }
 
+  func test_selectingLocation_updatesLocationPill() {
+    self.initialObserver.send(value: ())
+
+    self.assert_selectedPercentRaisedBucket_isDefault()
+
+    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        false,
+        "Percent raised pill should not be highlighted when no location is selected"
+      )
+    } else {
+      XCTFail("Expected location pill to be set")
+    }
+
+    let location = threeLocations[0]
+
+    self.useCase.inputs.filteredLocation(location)
+
+    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        true,
+        "Location pill should be highlighted when a non-default option is selected"
+      )
+
+      guard case let .dropdown(title) = pill.buttonType else {
+        XCTFail("Pill is not a dropdown")
+        return
+      }
+
+      XCTAssertEqual(
+        title,
+        location.displayableName,
+        "Dropdown should have description of selected location in its title"
+      )
+
+    } else {
+      XCTFail("Expected location pill to be set")
+    }
+  }
+
   func setAllFilters_toNonDefault_andAssert() {
     self.categoriesObserver.send(value: [
       .art,
@@ -432,6 +516,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedCategory_isDefault()
     self.assert_selectedProjectState_isDefault()
     self.assert_selectedPercentRaisedBucket_isDefault()
+    self.assert_selectedLocation_isDefault()
 
     for type in SearchFilterModalType.allCases {
       if type == .sort {
@@ -516,3 +601,27 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
   }
 }
+
+private let threeLocations = [
+  Location(
+    country: "US",
+    displayableName: "Somerville, MA",
+    id: 1,
+    localizedName: "Somerville, MA",
+    name: "Somerville, MA"
+  ),
+  Location(
+    country: "US",
+    displayableName: "Cambridge, MA",
+    id: 2,
+    localizedName: "Cambridge, MA",
+    name: "Cambridge, MA"
+  ),
+  Location(
+    country: "US",
+    displayableName: "Allston, MA",
+    id: 3,
+    localizedName: "Allston, MA",
+    name: "Allston, MA"
+  )
+]
