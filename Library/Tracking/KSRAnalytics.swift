@@ -501,6 +501,7 @@ public final class KSRAnalytics {
     case search
     case dashboard
     case profile
+    case backings
 
     var trackingString: String {
       return self.rawValue
