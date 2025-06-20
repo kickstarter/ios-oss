@@ -2,6 +2,7 @@ import Foundation
 
 public enum RemoteConfigFeature: String, CaseIterable {
   case darkModeEnabled = "dark_mode"
+  case editPledgeOverTimeEnabled = "edit_pledge_over_time"
   case postCampaignPledgeEnabled = "post_campaign_pledge"
   case useKeychainForOAuthToken = "use_keychain_for_oauth_token"
   case onboardingFlow = "onboarding_flow"
@@ -19,6 +20,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
   public var description: String {
     switch self {
     case .darkModeEnabled: return "Dark Mode"
+    case .editPledgeOverTimeEnabled: return "Edit Pledge Over Time"
     case .postCampaignPledgeEnabled: return "Post Campaign Pledging"
     case .useKeychainForOAuthToken: return "Use Keychain for OAuth token"
     case .onboardingFlow: return "Onboarding Flow"
