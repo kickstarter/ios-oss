@@ -6,17 +6,16 @@ public enum ClearUserUnseenActivityMutationTemplate {
   case errored
 
   var data: GraphAPI.ClearUserUnseenActivityMutation.Data {
+    let type = GraphAPI.ClearUserUnseenActivityMutation.Data.self
     switch self {
     case .valid:
-      return testGraphObject<
-        GraphAPI.ClearUserUnseenActivityMutation
-          .Data
-      >(data: self.createClearUserUnseenActivityMutationResultMap)
+      return testGraphObject<type>(
+        data: self.createClearUserUnseenActivityMutationResultMap
+      )
     case .errored:
-      return testGraphObject<
-        GraphAPI.ClearUserUnseenActivityMutation
-          .Data
-      >(data: self.createClearUserUnseenActivityMutationErroredResultMap)
+      return testGraphObject<type>(
+        data: self.createClearUserUnseenActivityMutationErroredResultMap
+      )
     }
   }
 
