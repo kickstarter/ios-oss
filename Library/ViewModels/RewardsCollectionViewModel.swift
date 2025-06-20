@@ -9,7 +9,12 @@ public enum RewardsCollectionViewContext {
 }
 
 public protocol RewardsCollectionViewModelInputs {
-  func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
+  func configure(
+    with project: Project,
+    refTag: RefTag?,
+    context: RewardsCollectionViewContext,
+    secretRewardToken: String?
+  )
   func confirmedEditReward()
   func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool)
   func rewardCellShouldShowDividerLine(_ show: Bool)
@@ -33,7 +38,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewIsHidden: Signal<Bool, Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
-  var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
+  var scrollToRewardIndexPath: Signal<IndexPath, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showEditRewardConfirmationPrompt: Signal<(String, String), Never> { get }
   var title: Signal<String, Never> { get }
@@ -57,7 +62,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .map(first)
 
     let project = configData
-      .map(first)
+      .map { $0.0 }
+
+    let secretRewardToken = configData
+      .map { _, _, _, secretRewardToken in
+        secretRewardToken
+      }
 
     let rewards = project
       .map(allowableSortedProjectRewards)
@@ -66,21 +76,27 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(filteredRewardsByLocation)
 
     self.title = configData
-      .map { project, _, context in (context, project) }
+      .map { project, _, context, _ in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
       .map(first)
       .map(titleForContext)
 
-    self.scrollToBackedRewardIndexPath = Signal.combineLatest(project, rewards, filteredByLocationRewards)
-      .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
-      .map { project, rewards, filteredRewardsByLocation in
-        backedReward(
-          project,
-          rewards: filteredRewardsByLocation.isEmpty ? rewards : filteredRewardsByLocation
-        )
-      }
-      .skipNil()
-      .take(first: 1)
+    self.scrollToRewardIndexPath = Signal.combineLatest(
+      project,
+      rewards,
+      filteredByLocationRewards,
+      secretRewardToken
+    )
+    .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
+    .map { project, rewards, filteredRewardsByLocation, secretRewardToken in
+      rewardToScrollIndexPath(
+        project,
+        rewards: filteredRewardsByLocation.isEmpty ? rewards : filteredRewardsByLocation,
+        secretRewardToken: secretRewardToken
+      )
+    }
+    .skipNil()
+    .take(first: 1)
 
     self.reloadDataWithValues = Signal.combineLatest(
       project,
@@ -131,7 +147,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.selectedRewardProperty <~ selectedRewardFromId
 
     let refTag = configData
-      .map(second)
+      .map { $0.1 }
 
     let goToPledge: Signal<(PledgeViewData, Bool), Never> = Signal.combineLatest(
       project,
@@ -337,9 +353,19 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
   }
 
-  private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
-  public func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext) {
-    self.configDataProperty.value = (project, refTag, context)
+  private let configDataProperty = MutableProperty<(
+    Project,
+    RefTag?,
+    RewardsCollectionViewContext,
+    String?
+  )?>(nil)
+  public func configure(
+    with project: Project,
+    refTag: RefTag?,
+    context: RewardsCollectionViewContext,
+    secretRewardToken: String?
+  ) {
+    self.configDataProperty.value = (project, refTag, context, secretRewardToken)
   }
 
   private let confirmedEditRewardProperty = MutableProperty(())
@@ -406,7 +432,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewIsHidden: Signal<Bool, Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
-  public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
+  public let scrollToRewardIndexPath: Signal<IndexPath, Never>
   public var shippingLocationViewHidden: Signal<Bool, Never>
   public let showEditRewardConfirmationPrompt: Signal<(String, String), Never>
   public let title: Signal<String, Never>
@@ -452,7 +478,27 @@ private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
   return backing.addOns?.isEmpty == false && rewardChanged
 }
 
-private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
+/// Returns the `IndexPath` of the reward to auto-scroll to in the collection view.
+/// If a `secretRewardToken` is provided, it returns the first secret reward's index.
+/// Otherwise, it returns the index of the backed reward (if the project is backed).
+private func rewardToScrollIndexPath(
+  _ project: Project,
+  rewards: [Reward],
+  secretRewardToken: String?
+) -> IndexPath? {
+  if let secretRewardToken = secretRewardToken, !secretRewardToken.isEmpty {
+    return firstSecretRewardIndexPath(rewards: rewards)
+  }
+
+  return backedRewardIndexPath(project, rewards: rewards)
+}
+
+private func firstSecretRewardIndexPath(rewards: [Reward]) -> IndexPath? {
+  return rewards.firstIndex(where: { $0.isSecretReward })
+    .flatMap { IndexPath(row: $0, section: 0) }
+}
+
+private func backedRewardIndexPath(_ project: Project, rewards: [Reward]) -> IndexPath? {
   guard let backing = project.personalization.backing else {
     return nil
   }
