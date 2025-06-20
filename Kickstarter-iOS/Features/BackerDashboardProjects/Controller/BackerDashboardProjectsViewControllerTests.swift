@@ -57,7 +57,8 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     let darkModeOn = MockRemoteConfigClient()
     darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
     orthogonalCombos(

@@ -27,7 +27,8 @@ internal final class LoginToutViewControllerTests: TestCase {
   func testDarkMode() {
     let darkModeOn = MockRemoteConfigClient()
     darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
     let language = Language.en
