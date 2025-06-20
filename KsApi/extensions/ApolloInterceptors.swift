@@ -2,10 +2,10 @@ import Apollo
 import Foundation
 
 /// This is based on `LegacyInterceptorProvider` from Apollo version 0.x.
+/// See: http://www.github.com/apollographql/apollo-ios/blob/0.44.0/Sources/Apollo/InterceptorProvider.swift#L31-L72
 /// That's provider is longer included in Apollo 1.x, but we want to continue to have the same
 /// behavior. This could, potentailly, be cleaned up to remove unnecessary interceptors.
-class
-NetworkInterceptorProvider: InterceptorProvider {
+class NetworkInterceptorProvider: InterceptorProvider {
   private let additionalHeaders: () -> [String: String]
   private let client: URLSessionClient
   private let store: ApolloStore
@@ -41,6 +41,7 @@ NetworkInterceptorProvider: InterceptorProvider {
   }
 
   func additionalErrorInterceptor<Operation: GraphQLOperation>(for _: Operation) -> ApolloErrorInterceptor? {
+    // FIXME: It would be useful to add some additional logging for failed queries here.
     return nil
   }
 }
