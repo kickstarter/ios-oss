@@ -8,11 +8,15 @@ public enum CreatePaymentSourceMutationTemplate {
   var data: GraphAPI.CreatePaymentSourceMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.CreatePaymentSourceMutation
-        .Data(unsafeResultMap: self.createPaymentSourceMutationResultMap)
+      return testGraphObject<
+        GraphAPI.CreatePaymentSourceMutation
+          .Data
+      >(data: self.createPaymentSourceMutationResultMap)
     case .errored:
-      return GraphAPI.CreatePaymentSourceMutation
-        .Data(unsafeResultMap: self.createPaymentSourceMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.CreatePaymentSourceMutation
+          .Data
+      >(data: self.createPaymentSourceMutationErroredResultMap)
     }
   }
 

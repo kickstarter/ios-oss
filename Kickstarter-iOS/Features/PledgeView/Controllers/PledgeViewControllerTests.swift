@@ -277,8 +277,8 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_ShowCollectionPlans_PledgeInFull() {
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let paymentPlanResponse: GraphAPI.BuildPaymentPlanQuery.Data =
+      try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(
       buildPaymentPlanResult: .success(paymentPlanResponse),
       fetchGraphUserResult: .success(userResponse)
@@ -332,8 +332,8 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_ShowCollectionPlans_Ineligible() {
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: false))
+    let paymentPlanResponse: GraphAPI.BuildPaymentPlanQuery.Data =
+      try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: false))
     let mockService = MockService(
       buildPaymentPlanResult: .success(paymentPlanResponse),
       fetchGraphUserResult: .success(userResponse)
@@ -387,8 +387,8 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_ShowCollectionPlans_PledgeOverTime() {
     let userResponse = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let paymentPlanResponse = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let paymentPlanResponse: GraphAPI.BuildPaymentPlanQuery.Data =
+      try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(
       buildPaymentPlanResult: .success(paymentPlanResponse),
       fetchGraphUserResult: .success(userResponse)

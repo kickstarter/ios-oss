@@ -1720,7 +1720,9 @@
 		E1BAA03C2C1A1CCD004F8B06 /* PPOContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */; };
 		E1BAA03E2C1A1CE4004F8B06 /* PPOViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA03D2C1A1CE4004F8B06 /* PPOViewModelTests.swift */; };
 		E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */; };
-		E1C880AF2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */; };
+		E1BBB65D2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
+		E1BBB65E2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
+		E1BBB65F2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
@@ -3515,7 +3517,7 @@
 		E1BAA0382C1A1C56004F8B06 /* PPOContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewController.swift; sourceTree = "<group>"; };
 		E1BAA03D2C1A1CE4004F8B06 /* PPOViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOViewModelTests.swift; sourceTree = "<group>"; };
 		E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Service.swift"; sourceTree = "<group>"; };
-		E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphQLSelectionSet+String.swift"; sourceTree = "<group>"; };
+		E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI+TestHelpers.swift"; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
@@ -7278,7 +7280,6 @@
 			children = (
 				D01587531EEB2DE4006E7684 /* Info.plist */,
 				8ADCCD4E2654281E0079D308 /* GraphAPI.swift */,
-				E1C880AE2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
@@ -7290,6 +7291,7 @@
 				D01588261EEB2ED7006E7684 /* ServerConfig.swift */,
 				D01588271EEB2ED7006E7684 /* Service.swift */,
 				E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */,
+				E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */,
 				8479CF2B2530A5D700FD13F1 /* Service+DecodeHelpers.swift */,
 				775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */,
 				D01588281EEB2ED7006E7684 /* ServiceTests.swift */,
@@ -8882,6 +8884,7 @@
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
+				E1BBB65D2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
@@ -9401,6 +9404,7 @@
 				77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
+				E1BBB65E2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
 				8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
@@ -9619,7 +9623,6 @@
 				D01588AD1EEB2ED7006E7684 /* Project.StatsLenses.swift in Sources */,
 				D0158A211EEB30A2006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift in Sources */,
 				D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */,
-				E1C880AF2BBC6CDA008B9612 /* GraphQLSelectionSet+String.swift in Sources */,
 				06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */,
 				8ADCCD812655CA290079D308 /* ApolloInterceptors.swift in Sources */,
 				D79440902208970E00D0A747 /* CreatePaymentSourceTemplate.swift in Sources */,
@@ -9883,6 +9886,7 @@
 				E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
 				8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */,
+				E1BBB65F2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
 				19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */,
 				06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,

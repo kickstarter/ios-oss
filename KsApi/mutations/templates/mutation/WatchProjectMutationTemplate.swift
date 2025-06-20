@@ -8,22 +8,30 @@ public enum WatchProjectResponseMutationTemplate {
   var watchData: GraphAPI.WatchProjectMutation.Data {
     switch self {
     case let .valid(watched):
-      return GraphAPI.WatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationResultMap(watched: watched))
+      return testGraphObject<
+        GraphAPI.WatchProjectMutation
+          .Data
+      >(data: self.watchProjectMutationResultMap(watched: watched))
     case let .errored(watched):
-      return GraphAPI.WatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap(watched: watched))
+      return testGraphObject<
+        GraphAPI.WatchProjectMutation
+          .Data
+      >(data: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
 
   var unwatchData: GraphAPI.UnwatchProjectMutation.Data {
     switch self {
     case let .valid(watched):
-      return GraphAPI.UnwatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationResultMap(watched: watched))
+      return testGraphObject<
+        GraphAPI.UnwatchProjectMutation
+          .Data
+      >(data: self.watchProjectMutationResultMap(watched: watched))
     case let .errored(watched):
-      return GraphAPI.UnwatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap(watched: watched))
+      return testGraphObject<
+        GraphAPI.UnwatchProjectMutation
+          .Data
+      >(data: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
 
