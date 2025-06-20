@@ -7,6 +7,7 @@ class GraphAPI_UpdateBackingInput_UpdateBackingInputTests: XCTestCase {
       amount: "50.00",
       applePay: nil,
       id: "backing-id",
+      incremental: false,
       locationId: "1234",
       paymentSourceId: "1111",
       rewardIds: ["reward-1", "reward-2"],
@@ -34,6 +35,7 @@ class GraphAPI_UpdateBackingInput_UpdateBackingInputTests: XCTestCase {
         token: "token"
       ),
       id: "backing-id",
+      incremental: false,
       locationId: "1234",
       paymentSourceId: "1111",
       rewardIds: ["reward-1", "reward-2"],
@@ -59,6 +61,7 @@ class GraphAPI_UpdateBackingInput_UpdateBackingInputTests: XCTestCase {
       amount: "50.00",
       applePay: nil,
       id: "backing-id",
+      incremental: false,
       locationId: "1234",
       paymentSourceId: nil,
       rewardIds: ["reward-1", "reward-2"],

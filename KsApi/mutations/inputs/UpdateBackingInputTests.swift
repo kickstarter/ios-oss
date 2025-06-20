@@ -12,6 +12,7 @@ final class UpdateBackingInputTests: XCTestCase {
         token: "token"
       ),
       id: "id-123",
+      incremental: false,
       locationId: "12345",
       paymentSourceId: "33234234",
       rewardIds: ["234442"],
@@ -28,6 +29,7 @@ final class UpdateBackingInputTests: XCTestCase {
     XCTAssertEqual(applePayDictionary?["transactionIdentifier"] as? String, "tx-identifier")
     XCTAssertEqual(applePayDictionary?["token"] as? String, "token")
     XCTAssertEqual(inputDictionary["id"] as? String, "id-123")
+    XCTAssertEqual(inputDictionary["incremental"] as? Bool, false)
     XCTAssertEqual(inputDictionary["locationId"] as? String, "12345")
     XCTAssertEqual(inputDictionary["paymentSourceId"] as? String, "33234234")
     XCTAssertEqual(inputDictionary["rewardIds"] as? [String], ["234442"])
@@ -41,6 +43,7 @@ final class UpdateBackingInputTests: XCTestCase {
       amount: "800",
       applePay: nil,
       id: "id-123",
+      incremental: false,
       locationId: "12345",
       paymentSourceId: "33234234",
       rewardIds: ["234442"],
@@ -54,6 +57,7 @@ final class UpdateBackingInputTests: XCTestCase {
 
     XCTAssertEqual(inputDictionary["amount"] as? String, "800")
     XCTAssertEqual(inputDictionary["id"] as? String, "id-123")
+    XCTAssertEqual(inputDictionary["incremental"] as? Bool, false)
     XCTAssertEqual(inputDictionary["locationId"] as? String, "12345")
     XCTAssertEqual(inputDictionary["paymentSourceId"] as? String, "33234234")
     XCTAssertEqual(inputDictionary["rewardIds"] as? [String], ["234442"])
@@ -64,6 +68,7 @@ final class UpdateBackingInputTests: XCTestCase {
       amount: "800",
       applePay: nil,
       id: "id-123",
+      incremental: false,
       locationId: "12345",
       paymentSourceId: nil,
       rewardIds: ["234442"],
@@ -77,6 +82,7 @@ final class UpdateBackingInputTests: XCTestCase {
 
     XCTAssertEqual(inputDictionary["amount"] as? String, "800")
     XCTAssertEqual(inputDictionary["id"] as? String, "id-123")
+    XCTAssertEqual(inputDictionary["incremental"] as? Bool, false)
     XCTAssertEqual(inputDictionary["locationId"] as? String, "12345")
     XCTAssertNil(inputDictionary["paymentSourceId"] as? String)
     XCTAssertEqual(inputDictionary["rewardIds"] as? [String], ["234442"])
