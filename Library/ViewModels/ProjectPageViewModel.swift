@@ -154,7 +154,7 @@ public protocol ProjectPageViewModelOutputs {
   var goToReportProject: Signal<(Bool, String, String), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
-  var goToRewards: Signal<(Project, RefTag?), Never> { get }
+  var goToRewards: Signal<(Project, RefTag?, String?), Never> { get }
 
   /// Emits a URL that will be opened by an external Safari browser.
   var goToURL: Signal<URL, Never> { get }
@@ -682,6 +682,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
 
     self.goToRewards = freshProjectAndRefTag
+      .combineLatest(with: secretRewardToken)
+      .map(unpack)
       .takeWhen(
         self.rewardsUseCase.goToRewards
       )
@@ -866,7 +868,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   }
 
   public let goToRestrictedCreator: Signal<String, Never>
-  public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let goToRewards: Signal<(Project, RefTag?, String?), Never>
   public let goToUpdates: Signal<Project, Never>
   public let goToReportProject: Signal<(Bool, String, String), Never>
   public let goToURL: Signal<URL, Never>
