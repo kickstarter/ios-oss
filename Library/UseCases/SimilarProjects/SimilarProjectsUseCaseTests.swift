@@ -421,6 +421,6 @@ final class SimilarProjectsUseCaseTests: TestCase {
       ]
     }
 
-    return GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node(unsafeResultMap: resultMap)
+    return testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
   }
 }

@@ -461,7 +461,7 @@ class PPOViewModelTests: XCTestCase {
   ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
     let edges = cursors?.map { index in self.projectEdgeJSON(cursor: "\(index)") } ?? []
     let edgesJson = "[\(edges.joined(separator: ", "))]"
-    return try GraphAPI.FetchPledgedProjectsQuery.Data(jsonString: """
+    let result: GraphAPI.FetchPledgedProjectsQuery.Data = try testGraphObject(jsonString: """
     {
       "pledgeProjectsOverview": {
         "__typename": "PledgeProjectsOverview",
@@ -480,6 +480,8 @@ class PPOViewModelTests: XCTestCase {
       }
     }
     """)
+
+    return result
   }
 
   private func projectEdgeJSON(

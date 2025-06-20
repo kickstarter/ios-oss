@@ -8,11 +8,15 @@ public enum SignInWithAppleMutationTemplate {
   var data: GraphAPI.SignInWithAppleMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.SignInWithAppleMutation
-        .Data(unsafeResultMap: self.signInWithAppleMutationResultMap)
+      return testGraphObject<
+        GraphAPI.SignInWithAppleMutation
+          .Data
+      >(data: self.signInWithAppleMutationResultMap)
     case .errored:
-      return GraphAPI.SignInWithAppleMutation
-        .Data(unsafeResultMap: self.signInWithAppleMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.SignInWithAppleMutation
+          .Data
+      >(data: self.signInWithAppleMutationErroredResultMap)
     }
   }
 

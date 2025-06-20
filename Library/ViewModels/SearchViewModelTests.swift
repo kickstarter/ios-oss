@@ -1265,7 +1265,8 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_FiveResults",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    let result: Self = try! testGraphObject(fromResource: url!)
+    return result
   }
 
   static var differentFiveResults: GraphAPI.SearchQuery.Data {
@@ -1273,7 +1274,8 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_AnotherFiveResults",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    let result: Self = try! testGraphObject(fromResource: url!)
+    return result
   }
 
   static var emptyResults: GraphAPI.SearchQuery.Data {
@@ -1281,6 +1283,7 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    let result: Self = try! testGraphObject(fromResource: url!)
+    return result
   }
 }
