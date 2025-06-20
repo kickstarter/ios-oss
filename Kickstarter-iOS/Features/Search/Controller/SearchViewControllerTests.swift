@@ -156,27 +156,41 @@ internal final class SearchViewContollerTests: TestCase {
       GraphAPI.SearchQuery.Data.activeResults
     )]
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
-      .forEach { language, device in
-        withEnvironment(
-          apiService: MockService(fetchGraphQLResponses: searchResponse), language: language
-        ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
-          let _ = controller.view
-          controller.viewWillAppear(true)
-          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
+    ]
 
-          controller.viewModel.inputs.searchTextChanged("abcdefgh")
+    orthogonalCombos(
+      Language.allLanguages,
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    )
+    .forEach { language, device, style in
+      withEnvironment(
+        apiService: MockService(fetchGraphQLResponses: searchResponse), colorResolver: AppColorResolver(),
+        language: language, remoteConfigClient: darkModeOn
+      ) {
+        let controller = Storyboard.Search.instantiate(SearchViewController.self)
+        controller.overrideUserInterfaceStyle = style
+        let _ = controller.view
+        controller.viewWillAppear(true)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-          self.scheduler.run()
+        controller.viewModel.inputs.searchTextChanged("abcdefgh")
 
-          assertSnapshot(
-            matching: parent.view,
-            as: .image(perceptualPrecision: 0.98),
-            named: "lang_\(language)_device_\(device)"
-          )
-        }
+        self.scheduler.run()
+
+        let styleDescription = style == .light ? "light" : "dark"
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)_\(styleDescription)"
+        )
       }
+    }
   }
 
   func testView_PrelaunchProject_InSearch_Success() {
