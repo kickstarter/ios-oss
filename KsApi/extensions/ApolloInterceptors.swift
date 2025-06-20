@@ -36,7 +36,7 @@ class NetworkInterceptorProvider: InterceptorProvider {
       ResponseCodeInterceptor(),
       LegacyParsingInterceptor(cacheKeyForObject: self.store.cacheKeyForObject),
       AutomaticPersistedQueryInterceptor(),
-      LegacyCacheReadInterceptor(store: self.store)
+      LegacyCacheWriteInterceptor(store: self.store)
     ]
   }
 
