@@ -4650,8 +4650,8 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockQuery: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4686,8 +4686,8 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockQuery: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4722,8 +4722,8 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let mockQuery = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockQuery: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4853,8 +4853,8 @@ final class PledgeViewModelTests: TestCase {
       )
     )
 
-    let buildPaymentPlan = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let buildPaymentPlan: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
 
     let mockService = MockService(
       buildPaymentPlanResult: Result.success(buildPaymentPlan),

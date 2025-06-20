@@ -8,11 +8,15 @@ public enum DeletePaymentSourceMutationTemplate {
   var data: GraphAPI.DeletePaymentSourceMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.DeletePaymentSourceMutation
-        .Data(unsafeResultMap: self.deletePaymentSourceMutationResultMap)
+      return testGraphObject<
+        GraphAPI.DeletePaymentSourceMutation
+          .Data
+      >(data: self.deletePaymentSourceMutationResultMap)
     case .errored:
-      return GraphAPI.DeletePaymentSourceMutation
-        .Data(unsafeResultMap: self.deletePaymentSourceMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.DeletePaymentSourceMutation
+          .Data
+      >(data: self.deletePaymentSourceMutationErroredResultMap)
     }
   }
 

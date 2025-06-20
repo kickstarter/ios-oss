@@ -9,9 +9,9 @@ public enum FetchAddsOnsQueryTemplate {
   var data: GraphAPI.FetchAddOnsQuery.Data {
     switch self {
     case .valid:
-      return GraphAPI.FetchAddOnsQuery.Data(unsafeResultMap: self.validResultMap)
+      return testGraphObject<GraphAPI.FetchAddOnsQuery.Data>(data: self.validResultMap)
     case .errored:
-      return GraphAPI.FetchAddOnsQuery.Data(unsafeResultMap: self.erroredResultMap)
+      return testGraphObject<GraphAPI.FetchAddOnsQuery.Data>(data: self.erroredResultMap)
     }
   }
 

@@ -8,11 +8,15 @@ public enum CreateSetupIntentMutationTemplate {
   var data: GraphAPI.CreateSetupIntentMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.CreateSetupIntentMutation
-        .Data(unsafeResultMap: self.createSetupIntentMutationResultMap)
+      return testGraphObject<
+        GraphAPI.CreateSetupIntentMutation
+          .Data
+      >(data: self.createSetupIntentMutationResultMap)
     case .errored:
-      return GraphAPI.CreateSetupIntentMutation
-        .Data(unsafeResultMap: self.createSetupIntentMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.CreateSetupIntentMutation
+          .Data
+      >(data: self.createSetupIntentMutationErroredResultMap)
     }
   }
 
