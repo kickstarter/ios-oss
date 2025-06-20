@@ -10,11 +10,15 @@ public enum UpdateBackingMutationTemplate {
     case let .valid(checkoutState, sca):
       let resultMap = self.updateBackingMutationResultMap(checkoutState: checkoutState, sca: sca)
 
-      return GraphAPI.UpdateBackingMutation
-        .Data(unsafeResultMap: resultMap)
+      return testGraphObject<
+        GraphAPI.UpdateBackingMutation
+          .Data
+      >(data: resultMap)
     case .errored:
-      return GraphAPI.UpdateBackingMutation
-        .Data(unsafeResultMap: self.updateBackingMutationErroredResultMap)
+      return testGraphObject<
+        GraphAPI.UpdateBackingMutation
+          .Data
+      >(data: self.updateBackingMutationErroredResultMap)
     }
   }
 

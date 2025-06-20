@@ -203,7 +203,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 
@@ -249,7 +249,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
         }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 
@@ -295,7 +295,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
         }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 
@@ -343,7 +343,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 
@@ -389,7 +389,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
         }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 
@@ -429,7 +429,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
         }
     """
 
-    let fragment = try! GraphAPI.BackerDashboardProjectCellFragment(jsonString: jsonString)
+    let fragment: GraphAPI.BackerDashboardProjectCellFragment = try! testGraphObject(jsonString: jsonString)
 
     self.vm.inputs.configureWith(project: fragment)
 

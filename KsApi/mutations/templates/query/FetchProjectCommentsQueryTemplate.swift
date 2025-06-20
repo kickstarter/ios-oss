@@ -9,9 +9,9 @@ public enum FetchProjectCommentsQueryTemplate {
   var data: GraphAPI.FetchProjectCommentsQuery.Data {
     switch self {
     case .valid:
-      return GraphAPI.FetchProjectCommentsQuery.Data(unsafeResultMap: self.validResultMap)
+      return testGraphObject<GraphAPI.FetchProjectCommentsQuery.Data>(data: self.validResultMap)
     case .errored:
-      return GraphAPI.FetchProjectCommentsQuery.Data(unsafeResultMap: self.erroredResultMap)
+      return testGraphObject<GraphAPI.FetchProjectCommentsQuery.Data>(data: self.erroredResultMap)
     }
   }
 

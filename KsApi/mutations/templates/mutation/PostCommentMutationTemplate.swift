@@ -8,11 +8,15 @@ public enum PostCommentMutationTemplate {
   var data: GraphAPI.PostCommentMutation.Data {
     switch self {
     case .valid:
-      return GraphAPI.PostCommentMutation
-        .Data(unsafeResultMap: self.postCommentMutationSourceResultMap)
+      return testGraphObject<
+        GraphAPI.PostCommentMutation
+          .Data
+      >(data: self.postCommentMutationSourceResultMap)
     case .errored:
-      return GraphAPI.PostCommentMutation
-        .Data(unsafeResultMap: self.postCommentMutationSourceErroredResultMap)
+      return testGraphObject<
+        GraphAPI.PostCommentMutation
+          .Data
+      >(data: self.postCommentMutationSourceErroredResultMap)
     }
   }
 

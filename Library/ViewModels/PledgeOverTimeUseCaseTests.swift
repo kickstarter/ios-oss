@@ -83,8 +83,8 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_sendsLoadingEvent_whenPledgeOverTimeIsEnabled() {
-    let queryData = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let queryData: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -106,8 +106,8 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_doesntLoad_whenPledgeOverTimeIsDisabled() {
-    let queryData = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let queryData: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -200,8 +200,8 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let result = try! GraphAPI.BuildPaymentPlanQuery
-      .Data(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let result: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
     let mockService = MockService(buildPaymentPlanResult: .success(result))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {

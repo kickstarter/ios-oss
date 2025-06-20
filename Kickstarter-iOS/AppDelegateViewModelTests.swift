@@ -2323,9 +2323,9 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testUserSessionStarted_fetchesUserEmail_andClearsOnLogout() {
-    let fetchUserSetupQueryData = GraphAPI.FetchUserSetupQuery
-      .Data(
-        unsafeResultMap: [
+    let fetchUserSetupQueryData: GraphAPI.FetchUserSetupQuery
+      .Data = testGraphObject(
+        data: [
           "me": [
             "email": "user@example.com",
             "enabledFeatures": []

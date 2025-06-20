@@ -8,9 +8,9 @@ public enum FetchUserBackingsQueryTemplate {
   var data: GraphAPI.FetchUserBackingsQuery.Data {
     switch self {
     case .valid:
-      return GraphAPI.FetchUserBackingsQuery.Data(unsafeResultMap: self.validResultMap)
+      return testGraphObject<GraphAPI.FetchUserBackingsQuery.Data>(data: self.validResultMap)
     case .errored:
-      return GraphAPI.FetchUserBackingsQuery.Data(unsafeResultMap: self.erroredResultMap)
+      return testGraphObject<GraphAPI.FetchUserBackingsQuery.Data>(data: self.erroredResultMap)
     }
   }
 

@@ -222,7 +222,7 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    return try! testGraphObject(fromResource: url!)
   }
 
   static var activeResults: GraphAPI.SearchQuery.Data {
@@ -230,7 +230,7 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_SearchViewControllerTests_Active",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    return try! testGraphObject(fromResource: url!)
   }
 
   static var prelaunchResults: GraphAPI.SearchQuery.Data {
@@ -238,6 +238,6 @@ internal extension GraphAPI.SearchQuery.Data {
       forResource: "SearchQuery_SearchViewControllerTests_Prelaunch",
       withExtension: "json"
     )
-    return try! Self(fromResource: url!)
+    return try! testGraphObject(fromResource: url!)
   }
 }

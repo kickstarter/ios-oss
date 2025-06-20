@@ -17,8 +17,8 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
       }
     """
 
-    let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement(jsonString: jsonString)
+    let fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
+      .PaymentIncrement = try! testGraphObject(jsonString: jsonString)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNotNil(increment)
@@ -45,8 +45,8 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
       }
     """
 
-    let fragment = try! GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement(jsonString: jsonString)
+    let fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
+      .PaymentIncrement = try! testGraphObject(jsonString: jsonString)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNil(increment)
