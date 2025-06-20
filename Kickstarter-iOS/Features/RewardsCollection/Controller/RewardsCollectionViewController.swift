@@ -51,10 +51,16 @@ final class RewardsCollectionViewController: UICollectionViewController {
   static func instantiate(
     with project: Project,
     refTag: RefTag?,
-    context: RewardsCollectionViewContext
+    context: RewardsCollectionViewContext,
+    secretRewardToken: String? = nil
   ) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()
-    rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag, context: context)
+    rewardsCollectionVC.viewModel.inputs.configure(
+      with: project,
+      refTag: refTag,
+      context: context,
+      secretRewardToken: secretRewardToken
+    )
 
     return rewardsCollectionVC
   }
@@ -170,7 +176,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.collectionView.reloadData()
       }
 
-    self.viewModel.outputs.scrollToBackedRewardIndexPath
+    self.viewModel.outputs.scrollToRewardIndexPath
       .observeForUI()
       .observeValues { [weak self] indexPath in
         self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
@@ -407,10 +413,16 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
 extension RewardsCollectionViewController {
   public static func controller(
     with project: Project,
-    refTag: RefTag?
+    refTag: RefTag?,
+    secretRewardToken: String?
   ) -> UINavigationController {
     let rewardsCollectionViewController = RewardsCollectionViewController
-      .instantiate(with: project, refTag: refTag, context: .createPledge)
+      .instantiate(
+        with: project,
+        refTag: refTag,
+        context: .createPledge,
+        secretRewardToken: secretRewardToken
+      )
 
     let closeButton = UIBarButtonItem(
       image: image(named: "icon--cross"),
