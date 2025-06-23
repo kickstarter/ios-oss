@@ -20,6 +20,7 @@ struct PPOProjectCard: View {
       self.divider
       self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.actionButtons
+      self.actionDetails
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
@@ -159,6 +160,16 @@ struct PPOProjectCard: View {
       self.button(for: self.viewModel.primaryAction)
     }
     .padding([.horizontal])
+  }
+
+  @ViewBuilder
+  private var actionDetails: some View {
+    if let actionDetails = self.viewModel.actionDetails {
+      Text(actionDetails)
+        .font(Font(PPOStyles.subtitle.font))
+        .foregroundStyle(Color(PPOStyles.subtitle.color))
+        .padding([.horizontal])
+    }
   }
 
   @ViewBuilder
