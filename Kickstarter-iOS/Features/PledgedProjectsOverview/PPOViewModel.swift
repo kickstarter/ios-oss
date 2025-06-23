@@ -25,6 +25,7 @@ protocol PPOViewModelInputs {
     onProgress: @escaping (PPOActionState) -> Void
   )
   func openSurvey(from: PPOProjectCardModel)
+  func managePledge(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel, address: String, addressId: String)
@@ -41,6 +42,7 @@ enum PPONavigationEvent: Equatable {
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
+  case managePledge(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
   case confirmAddress(
@@ -141,13 +143,19 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge8(
-      self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
-      self.viewBackingDetailsSubject
-        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
-      self.editAddressSubject
-        .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
+    // Merging with two separate `Merge5` calls as there is no `Merge9`.
+    Publishers.Merge5(
+      Publishers.Merge5(
+        self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
+        self.openSurveySubject
+          .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+        self.managePledgeSubject
+          .map { viewModel in PPONavigationEvent.managePledge(url: viewModel.backingDetailsUrl) },
+        self.viewBackingDetailsSubject
+          .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+        self.editAddressSubject
+          .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) }
+      ),
       self.confirmAddressSubject.map { viewModel, address, addressId in
         PPONavigationEvent.confirmAddress(
           backingId: viewModel.backingGraphId,
@@ -217,6 +225,17 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .withFirst(from: latestLoadedResults)
       .sink { card, overallProperties in
         AppEnvironment.current.ksrAnalytics.trackPPOOpeningSurvey(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
+    // Analytics: Open pledge manager
+    self.managePledgeSubject
+      .withFirst(from: latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOManagePledge(
           project: card.projectAnalytics,
           properties: overallProperties
         )
@@ -298,6 +317,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openSurveySubject.send(from)
   }
 
+  func managePledge(from: PPOProjectCardModel) {
+    self.managePledgeSubject.send(from)
+  }
+
   func viewBackingDetails(from: PPOProjectCardModel) {
     self.viewBackingDetailsSubject.send(from)
   }
@@ -336,6 +359,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     Never
   >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let managePledgeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
@@ -359,6 +383,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var cardAuthRequiredCount: Int = 0
     var surveyAvailableCount: Int = 0
     var addressLocksSoonCount: Int = 0
+    var pledgeManagementCount: Int = 0
 
     for viewModel in self {
       switch viewModel.card.tierType {
@@ -370,12 +395,15 @@ extension Sequence where Element == PPOProjectCardViewModel {
         surveyAvailableCount += 1
       case .confirmAddress:
         addressLocksSoonCount += 1
+      case .pledgeManagement:
+        pledgeManagementCount += 1
       }
     }
 
     return KSRAnalytics.PledgedProjectOverviewProperties(
       addressLocksSoonCount: addressLocksSoonCount,
       surveyAvailableCount: surveyAvailableCount,
+      pledgeManagementCount: pledgeManagementCount,
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
       total: total,

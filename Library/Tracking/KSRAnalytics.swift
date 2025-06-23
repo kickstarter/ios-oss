@@ -145,6 +145,7 @@ public final class KSRAnalytics {
     case discoverFilter
     case discoverSort
     case edit
+    case finalizePledgeInitiate
     case fixPledgeInitiate
     case forgotPassword
     case logInInitiate
@@ -176,6 +177,7 @@ public final class KSRAnalytics {
       case .discoverFilter: return "discover_filter"
       case .discoverSort: return "discover_sort"
       case .edit: return "edit"
+      case .finalizePledgeInitiate: return "finalize_pledge_initiate"
       case .fixPledgeInitiate: return "fix_pledge_initiate"
       case .forgotPassword: return "forgot_password"
       case .messageCreatorInitiate: return "message_creator_initiate"
@@ -527,6 +529,7 @@ public final class KSRAnalytics {
   public struct PledgedProjectOverviewProperties {
     let addressLocksSoonCount: Int
     let surveyAvailableCount: Int
+    let pledgeManagementCount: Int
     let paymentFailedCount: Int
     let cardAuthRequiredCount: Int
     let total: Int?
@@ -535,6 +538,7 @@ public final class KSRAnalytics {
     public init(
       addressLocksSoonCount: Int,
       surveyAvailableCount: Int,
+      pledgeManagementCount: Int,
       paymentFailedCount: Int,
       cardAuthRequiredCount: Int,
       total: Int?,
@@ -542,6 +546,7 @@ public final class KSRAnalytics {
     ) {
       self.addressLocksSoonCount = addressLocksSoonCount
       self.surveyAvailableCount = surveyAvailableCount
+      self.pledgeManagementCount = pledgeManagementCount
       self.paymentFailedCount = paymentFailedCount
       self.cardAuthRequiredCount = cardAuthRequiredCount
       self.total = total
@@ -637,6 +642,23 @@ public final class KSRAnalytics {
   ) {
     let props = contextProperties(
       ctaContext: .surveyResponseInitiate,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOManagePledge(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .finalizePledgeInitiate,
       page: .projectAlerts
     )
     .withAllValuesFrom(projectProperties(from: project))
