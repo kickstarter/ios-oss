@@ -6472,6 +6472,22 @@
             "deprecationReason": null
           },
           {
+            "name": "canOptInToPledgeManager",
+            "description": "Whether or not the project can be opted into pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "canPrelaunchEarly",
             "description": "Whether the project is eligible for early prelaunch",
             "args": [],
@@ -7359,6 +7375,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasShopifyShop",
+            "description": "Whether the project has successfully linked a Shopify shop",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "hasSlug",
             "description": "Whether a project has its slug set.",
             "args": [],
@@ -7938,6 +7970,18 @@
                   }
                 }
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mappingsCreatedAt",
+            "description": "When the sku mappings were finalzied",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -16172,6 +16216,12 @@
           },
           {
             "name": "no_currency_selector",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pl_usd_currency_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -24943,6 +24993,38 @@
             "deprecationReason": null
           },
           {
+            "name": "baseOrderableVoucherAmount",
+            "description": "The voucher amount for the base orderable, or 0 if there is no base orderable",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "baseOrderableVoucherAmountFormatted",
+            "description": "The voucher amount for the base orderable, or 0 if there is no base orderable, formatted",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "cart",
             "description": "Contains the backer's item preferences and responses to survey questions",
             "args": [],
@@ -25073,10 +25155,50 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "OrderCrossSellWithQuantity",
+                    "name": "OrderOrderableWithQuantity",
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "crowdfundingAddonsWithQuantity",
+            "description": "Add-ons selected for this order during Crowdfunding with quantity",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "OrderOrderableWithQuantity",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "crowdfundingAndUpgradeTotal",
+            "description": "The total amount for crowdfunding and upgrade rewards",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -25195,6 +25317,22 @@
             "deprecationReason": null
           },
           {
+            "name": "itemTaxIncluded",
+            "description": "Whether the rewards have tax included in the price",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "location",
             "description": "The order location.",
             "args": [],
@@ -25257,6 +25395,22 @@
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "orderableVoucherTotalFormatted",
+            "description": "The total voucher amount for all orderables, formatted",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -26674,6 +26828,22 @@
             "deprecationReason": null
           },
           {
+            "name": "refundedBaseAmount",
+            "description": "The amount refunded for the base amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "refundedCost",
             "description": "The amount refunded for the cost",
             "args": [],
@@ -26683,6 +26853,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingBaseAmountFormatted",
+            "description": "The remaining base amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -26731,6 +26917,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "voucherAmountFormatted",
+            "description": "The amount of the voucher",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -26816,12 +27018,12 @@
       },
       {
         "kind": "OBJECT",
-        "name": "OrderCrossSellWithQuantity",
-        "description": "An add-on reward included in an Order during Pledge Redemption as a Cross Sell.",
+        "name": "OrderOrderableWithQuantity",
+        "description": "All rewards of a particular kind included in an Order, bundled together with their quantity and price information",
         "fields": [
           {
             "name": "orderable",
-            "description": "The orderable of the cross sell",
+            "description": "The orderable of the reward",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26837,7 +27039,7 @@
           },
           {
             "name": "quantity",
-            "description": "The quantity of the add-on in the Order",
+            "description": "The quantity of the reward in the Order",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26853,7 +27055,7 @@
           },
           {
             "name": "totalPrice",
-            "description": "The total price of the cross-sell",
+            "description": "The total price of the reward",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26869,7 +27071,7 @@
           },
           {
             "name": "totalPriceFormatted",
-            "description": "The total price of the cross-sell, formatted",
+            "description": "The total price of the reward, formatted",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26884,8 +27086,24 @@
             "deprecationReason": null
           },
           {
+            "name": "unitPrice",
+            "description": "The price of one unit of the reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "unitPriceFormatted",
-            "description": "The price of one unit of the cross-sell",
+            "description": "The price of one unit of the reward, formatted",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -34201,6 +34419,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "priceFormatted",
+            "description": "The price formatted for display",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -43709,6 +43939,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createVariantMappings",
+            "description": "Creates a batch of variant mappings between Kickstarter & Shopify item variant (skus)",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateVariantMappingsInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateVariantMappingsPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createVideoTrack",
             "description": "Create a video track (caption) for a Project Video",
             "args": [
@@ -44675,6 +44932,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "MigrateToFulfillmentStatusPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "optInToPledgeManager",
+            "description": "Opt in to a pledge manager",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OptInToPledgeManagerInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "OptInToPledgeManagerPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -55166,6 +55450,141 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CreateVariantMappingsInput",
+        "description": "Autogenerated input type of CreateVariantMappings",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "mappings",
+            "description": "Array of variant mappings to have records created for",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "VariantMappingInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "VariantMappingInput",
+        "description": "A kickstarter item variant id and a shopify variant id",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "itemVariantId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shopifyVariantId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateVariantMappingsPayload",
+        "description": "Autogenerated return type of CreateVariantMappings",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateVideoTrackInput",
         "description": "Autogenerated input type of CreateVideoTrack",
         "fields": null,
@@ -58539,6 +58958,80 @@
           {
             "name": "success",
             "description": "Succeeds if backings are being updated in backend.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "OptInToPledgeManagerInput",
+        "description": "Autogenerated input type of OptInToPledgeManager",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "OptInToPledgeManagerPayload",
+        "description": "Autogenerated return type of OptInToPledgeManager",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": "Success if opted in to pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
