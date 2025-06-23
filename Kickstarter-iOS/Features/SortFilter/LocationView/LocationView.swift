@@ -3,10 +3,10 @@ import Library
 import SwiftUI
 
 public struct LocationView: View {
-  var defaultLocations: [Location]
-  var suggestedLocations: [Location]
+  let defaultLocations: [Location]
+  let suggestedLocations: [Location]
   @Binding var selectedLocation: Location?
-  var onSearchedForLocations: (String) -> Void
+  let onSearchedForLocations: (String) -> Void
   @Binding var searchText: String
 
   public var body: some View {
@@ -19,6 +19,7 @@ public struct LocationView: View {
     .searchable(
       text: self.$searchText,
       placement: .navigationBarDrawer(displayMode: .always),
+      // FIXME: MBL-2343 Add translations
       prompt: "FPO: Search by city, state, country..."
     )
     .searchSuggestions {

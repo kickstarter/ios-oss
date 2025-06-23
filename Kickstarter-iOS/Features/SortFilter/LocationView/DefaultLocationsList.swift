@@ -20,6 +20,7 @@ struct DefaultLocationsList: View {
       Button {
         self.selectedLocation = nil
       } label: {
+        // FIXME: MBL-2343 Add translations
         self.buttonLabel(
           title: "FPO: Anywhere",
           isSelected: self.selectedLocation.isNil
