@@ -10,6 +10,7 @@ public typealias ManagePledgeViewParamConfigData = (
 )
 
 public enum ManagePledgeAlertAction: CaseIterable {
+  case editPledgeOverTimePledge
   case changePaymentMethod
   case chooseAnotherReward
   case contactCreator
@@ -38,14 +39,14 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
+  var goToEditPledgeOverTime: Signal<Project, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var paymentMethodViewHidden: Signal<Bool, Never> { get }
   var pledgeDetailsSectionLabelText: Signal<String, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
-  /// Provides a list of `ManagePledgeAlertAction`s for the action sheet and a `Bool` indicating if the current project has PLOT enabled.
-  var showActionSheetMenuWithOptions: Signal<([ManagePledgeAlertAction], Bool), Never> { get }
+  var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -269,24 +270,19 @@ public final class ManagePledgeViewModel:
 
     // MARK: - Menu options
 
-    self.showActionSheetMenuWithOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
+    let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
+      .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
+
+    self.showActionSheetMenuWithOptions = menuOptions
       .takeWhen(self.menuButtonTappedSignal)
-      .map { project, backing, userIsCreatorOfProject in
-        let options = actionSheetMenuOptionsFor(
-          project: project,
-          backing: backing,
-          userIsCreatorOfProject: userIsCreatorOfProject
-        )
-
-        let isPLOTEnabled = backing.paymentIncrements.isEmpty == false
-
-        return (options, isPLOTEnabled)
-      }
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
+
+    self.goToEditPledgeOverTime = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .editPledgeOverTimePledge })
 
     let cancelPledgeSelected = self.menuOptionSelectedSignal
       .filter { $0 == .cancelPledge }
@@ -455,6 +451,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
+  public let goToEditPledgeOverTime: Signal<Project, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
@@ -462,7 +459,7 @@ public final class ManagePledgeViewModel:
   public let plotPaymentScheduleViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rightBarButtonItemHidden: Signal<Bool, Never>
-  public let showActionSheetMenuWithOptions: Signal<([ManagePledgeAlertAction], Bool), Never>
+  public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
@@ -529,11 +526,19 @@ private func actionSheetMenuOptionsFor(
     return [.contactCreator]
   }
 
-  var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+  var actions = ManagePledgeAlertAction.allCases
+    .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
-  /// Remove the 'Edit Reward' action if PLOT pledge and the Edit PLOT Feature Flag is turned off.
-  if isPledgeOverTime(with: backing), featureEditPledgeOverTimeEnabled() == false {
-    actions = actions.filter { $0 != .chooseAnotherReward }
+  if isPledgeOverTime(with: backing) {
+    /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
+    /// /// If the Edit Pledge Over Time feature flag is `false`, simple remove 'Edit reward' as usual.
+    switch featureEditPledgeOverTimeEnabled() {
+    case true:
+      actions = actions.filter { $0 != .chooseAnotherReward }
+      actions.insert(.editPledgeOverTimePledge, at: 1)
+    case false:
+      actions = actions.filter { $0 != .chooseAnotherReward }
+    }
   }
 
   return actions
@@ -553,6 +558,7 @@ private func navigationBarTitle(
 private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAlertAction)
   -> KSRAnalytics.ManagePledgeMenuCTAType {
   switch managePledgeAlertAction {
+  case .editPledgeOverTimePledge: return .editPledgeOverTimePledge
   case .cancelPledge: return .cancelPledge
   case .changePaymentMethod: return .changePaymentMethod
   case .chooseAnotherReward: return .chooseAnotherReward

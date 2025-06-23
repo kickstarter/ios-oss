@@ -28,7 +28,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
-  private let showActionSheetMenuWithOptions = TestObserver<([ManagePledgeAlertAction], Bool), Never>()
+  private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let startRefreshing = TestObserver<(), Never>()
@@ -266,16 +266,13 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [
-        ManagePledgeAlertAction.changePaymentMethod,
-        ManagePledgeAlertAction.chooseAnotherReward,
-        ManagePledgeAlertAction.contactCreator,
-        ManagePledgeAlertAction.cancelPledge
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
       ])
     }
   }
@@ -300,16 +297,13 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [
-        ManagePledgeAlertAction.changePaymentMethod,
-        ManagePledgeAlertAction.chooseAnotherReward,
-        ManagePledgeAlertAction.contactCreator,
-        ManagePledgeAlertAction.cancelPledge
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
       ])
     }
   }
@@ -336,12 +330,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards])
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
     }
   }
 
@@ -365,12 +354,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards, ManagePledgeAlertAction.contactCreator])
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
     }
   }
 
@@ -397,12 +381,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [ManagePledgeAlertAction.contactCreator])
+      self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
     }
   }
 
@@ -431,59 +410,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertFalse(isPLOTEnabled)
-
-      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards])
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
-    let project = Project.template
-      |> Project.lens.state .~ .live
-
-    let backing = Backing.templatePlot
-
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true,
-      RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
-    ]
-
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
-
-      self.vm.inputs.menuButtonTapped()
-
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
-
-      XCTAssertTrue(isPLOTEnabled)
-
-      XCTAssertEqual(options, [
-        ManagePledgeAlertAction.changePaymentMethod,
-        ManagePledgeAlertAction.contactCreator,
-        ManagePledgeAlertAction.cancelPledge
-      ])
-    }
-  }
-
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_chooseAnotherReward_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
+  func testMenuButtonTapped_WhenProject_IsEditPledgeOverTime_doesNotInclude_chooseAnotherReward_includes_EditPledge(
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -514,16 +445,52 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
-      let options = self.showActionSheetMenuWithOptions.values[0].0
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.editPledgeOverTimePledge,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
+    }
+  }
 
-      XCTAssertTrue(isPLOTEnabled)
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
 
-      XCTAssertEqual(options, [
-        ManagePledgeAlertAction.changePaymentMethod,
-        ManagePledgeAlertAction.chooseAnotherReward,
-        ManagePledgeAlertAction.contactCreator,
-        ManagePledgeAlertAction.cancelPledge
+    let backing = Backing.templatePlot
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
       ])
     }
   }

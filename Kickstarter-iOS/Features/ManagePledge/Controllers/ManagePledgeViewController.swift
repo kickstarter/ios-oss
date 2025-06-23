@@ -260,11 +260,17 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
-      .observeValues { [weak self] options, isPledgeOverTimeEnabled in
-        self?.showActionSheetMenuWithOptions(options, isPledgeOverTimeEnabled)
+      .observeValues { [weak self] options in
+        self?.showActionSheetMenuWithOptions(options)
       }
 
     self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToEditPledgeOverTime
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToRewards(project)
@@ -450,8 +456,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func showActionSheetMenuWithOptions(
-    _ options: [ManagePledgeAlertAction],
-    _ isPledgeOverTimeEnabled: Bool
+    _ options: [ManagePledgeAlertAction]
   ) {
     let actionSheet = UIAlertController.alert(
       title: Strings.Select_an_option(),
@@ -459,16 +464,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       barButtonItem: self.menuButton
     )
 
-    let canEditLivePLOTProject = isPledgeOverTimeEnabled && featureEditPledgeOverTimeEnabled() == true
-
     options.forEach { option in
       let title: String
 
       switch option {
+      case .editPledgeOverTimePledge:
+        title = Strings.Edit_pledge()
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
-        title = canEditLivePLOTProject ? Strings.Edit_pledge() : Strings.Edit_reward()
+        title = Strings.Edit_reward()
       case .contactCreator:
         title = Strings.Contact_creator()
       case .cancelPledge:
