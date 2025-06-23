@@ -116,6 +116,7 @@ struct FilterRootView: View {
   @ViewBuilder
   var locationSection: some View {
     FilterSectionButton(
+      // FIXME: MBL-2343 Add translations.
       title: "FPO: Location",
       subtitle: self.searchFilters.location.selectedLocation?.displayableName
     )
@@ -201,6 +202,7 @@ struct FilterRootView: View {
             self.percentRaisedModal
               .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
           case .location:
+            // FIXME: MBL-2343 Add translations.
             self.locationModal
               .modalHeader(withTitle: "FPO: Location", onClose: self.onClose)
           default:

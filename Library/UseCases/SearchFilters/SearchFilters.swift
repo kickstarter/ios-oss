@@ -211,6 +211,7 @@ public class SearchFilters: ObservableObject {
     )
 
     if featureSearchFilterByLocation() {
+      // FIXME: MBL-2343 Add translations.
       let locationTitle = self.location.selectedLocation?.displayableName ?? "FPO: Location"
       pills.append(
         SearchFilterPill(
