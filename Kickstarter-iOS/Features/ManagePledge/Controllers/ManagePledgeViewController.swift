@@ -260,7 +260,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
-      .observeValues { [weak self] isPledgeOverTimeEnabled, options in
+      .observeValues { [weak self] options, isPledgeOverTimeEnabled in
         self?.showActionSheetMenuWithOptions(options, isPledgeOverTimeEnabled)
       }
 

@@ -28,7 +28,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
-  private let showActionSheetMenuWithOptions = TestObserver<(Bool, [ManagePledgeAlertAction]), Never>()
+  private let showActionSheetMenuWithOptions = TestObserver<([ManagePledgeAlertAction], Bool), Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let startRefreshing = TestObserver<(), Never>()
@@ -266,8 +266,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -300,8 +300,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -336,8 +336,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -365,8 +365,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -397,8 +397,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -431,8 +431,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertFalse(isPLOTEnabled)
 
@@ -470,8 +470,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertTrue(isPLOTEnabled)
 
@@ -514,8 +514,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
-      let options = self.showActionSheetMenuWithOptions.values[0].1
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].1
+      let options = self.showActionSheetMenuWithOptions.values[0].0
 
       XCTAssertTrue(isPLOTEnabled)
 
