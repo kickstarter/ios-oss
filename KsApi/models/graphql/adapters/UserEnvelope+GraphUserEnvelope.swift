@@ -60,7 +60,7 @@ extension UserEnvelope {
     guard
       let userFragment = data.me?.fragments.userEmailFragment,
       let featuresFragment = data.me?.fragments.userFeaturesFragment,
-      let ppoUserFragment = data.me?.fragments.ppoUserSetupFragment
+      let ppoUserFragment = data.me?.fragments.pPOUserSetupFragment
     else { return nil }
 
     let graphUser = GraphUserSetup(

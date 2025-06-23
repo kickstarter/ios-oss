@@ -208,10 +208,10 @@ public struct Service: ServiceType {
         input: GraphAPI
           .CreateCheckoutInput(
             projectId: input.projectId,
-            amount: input.amount,
-            locationId: input.locationId,
-            rewardIds: input.rewardIds,
-            refParam: input.refParam
+            amount: .someOrNil(input.amount),
+            locationId: .someOrNil(input.locationId),
+            rewardIds: .someOrNil(input.rewardIds),
+            refParam: .someOrNil(input.refParam)
           )
       ))
       .flatMap(CreateCheckoutEnvelope.producer(from:))
