@@ -44,7 +44,8 @@ public protocol ManagePledgeViewModelOutputs {
   var paymentMethodViewHidden: Signal<Bool, Never> { get }
   var pledgeDetailsSectionLabelText: Signal<String, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
-  var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
+  /// Provides a list of `ManagePledgeAlertAction`s for the action sheet and a `Bool` indicating if the current project has  PLOT enabled
+  var showActionSheetMenuWithOptions: Signal<(Bool, [ManagePledgeAlertAction]), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -268,11 +269,19 @@ public final class ManagePledgeViewModel:
 
     // MARK: - Menu options
 
-    let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
-      .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
-
-    self.showActionSheetMenuWithOptions = menuOptions
+    self.showActionSheetMenuWithOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .takeWhen(self.menuButtonTappedSignal)
+      .map { project, backing, userIsCreatorOfProject in
+        let options = actionSheetMenuOptionsFor(
+          project: project,
+          backing: backing,
+          userIsCreatorOfProject: userIsCreatorOfProject
+        )
+
+        let isPLOTEnabled = backing.paymentIncrements.isEmpty == false
+
+        return (isPLOTEnabled, options)
+      }
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
@@ -453,7 +462,7 @@ public final class ManagePledgeViewModel:
   public let plotPaymentScheduleViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rightBarButtonItemHidden: Signal<Bool, Never>
-  public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
+  public let showActionSheetMenuWithOptions: Signal<(Bool, [ManagePledgeAlertAction]), Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>

@@ -28,7 +28,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
-  private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
+  private let showActionSheetMenuWithOptions = TestObserver<(Bool, [ManagePledgeAlertAction]), Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let startRefreshing = TestObserver<(), Never>()
@@ -266,13 +266,16 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([
-        [
-          ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.chooseAnotherReward,
-          ManagePledgeAlertAction.contactCreator,
-          ManagePledgeAlertAction.cancelPledge
-        ]
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
       ])
     }
   }
@@ -297,13 +300,16 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([
-        [
-          ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.chooseAnotherReward,
-          ManagePledgeAlertAction.contactCreator,
-          ManagePledgeAlertAction.cancelPledge
-        ]
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
       ])
     }
   }
@@ -330,7 +336,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards])
     }
   }
 
@@ -354,7 +365,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards, ManagePledgeAlertAction.contactCreator])
     }
   }
 
@@ -381,7 +397,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [ManagePledgeAlertAction.contactCreator])
     }
   }
 
@@ -410,7 +431,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertFalse(isPLOTEnabled)
+
+      XCTAssertEqual(options, [ManagePledgeAlertAction.viewRewards])
     }
   }
 
@@ -444,12 +470,15 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([
-        [
-          ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.contactCreator,
-          ManagePledgeAlertAction.cancelPledge
-        ]
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertTrue(isPLOTEnabled)
+
+      XCTAssertEqual(options, [
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
       ])
     }
   }
@@ -485,13 +514,16 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([
-        [
-          ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.chooseAnotherReward,
-          ManagePledgeAlertAction.contactCreator,
-          ManagePledgeAlertAction.cancelPledge
-        ]
+      let isPLOTEnabled = self.showActionSheetMenuWithOptions.values[0].0
+      let options = self.showActionSheetMenuWithOptions.values[0].1
+
+      XCTAssertTrue(isPLOTEnabled)
+
+      XCTAssertEqual(options, [
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
       ])
     }
   }
