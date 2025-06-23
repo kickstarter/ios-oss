@@ -8565,7 +8565,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query DefaultLocations($first: Int) {
-        locations(useSessionLocation: true, first: $first) {
+        locations(useSessionLocation: true, discoverable: true, first: $first) {
           __typename
           nodes {
             __typename
@@ -8598,7 +8598,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["useSessionLocation": true, "first": GraphQLVariable("first")], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["useSessionLocation": true, "discoverable": true, "first": GraphQLVariable("first")], type: .object(Location.selections)),
         ]
       }
 
@@ -14305,7 +14305,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query LocationsByTerm($term: String, $first: Int) {
-        locations(term: $term, first: $first) {
+        locations(term: $term, first: $first, discoverable: true) {
           __typename
           nodes {
             __typename
@@ -14340,7 +14340,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first")], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first"), "discoverable": true], type: .object(Location.selections)),
         ]
       }
 
