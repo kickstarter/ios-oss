@@ -463,7 +463,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
-        title = Strings.Edit_reward()
+        title = Strings.Edit_pledge()
       case .contactCreator:
         title = Strings.Contact_creator()
       case .cancelPledge:
