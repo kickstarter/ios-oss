@@ -117,7 +117,6 @@
 		065E6BAC26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */; };
 		06634FBE2807A4C300950F60 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBD2807A4C300950F60 /* Apollo */; };
 		06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBF2807A4C300950F60 /* ApolloAPI */; };
-		06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC12807A4C300950F60 /* ApolloUtils */; };
 		06634FC52807A4EB00950F60 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC42807A4EB00950F60 /* Prelude */; };
 		06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC62807A4EB00950F60 /* Prelude_UIKit */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
@@ -4075,7 +4074,6 @@
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
-				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
 				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
 			);
