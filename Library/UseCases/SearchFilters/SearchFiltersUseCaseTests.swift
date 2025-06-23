@@ -443,44 +443,51 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_selectingLocation_updatesLocationPill() {
-    self.initialObserver.send(value: ())
+    let locationOn = MockRemoteConfigClient()
+    locationOn.features = [
+      RemoteConfigFeature.searchFilterByLocation.rawValue: true
+    ]
 
-    self.assert_selectedPercentRaisedBucket_isDefault()
+    withEnvironment(remoteConfigClient: locationOn) {
+      self.initialObserver.send(value: ())
 
-    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
-      XCTAssertEqual(
-        pill.isHighlighted,
-        false,
-        "Percent raised pill should not be highlighted when no location is selected"
-      )
-    } else {
-      XCTFail("Expected location pill to be set")
-    }
+      self.assert_selectedLocation_isDefault()
 
-    let location = threeLocations[0]
-
-    self.useCase.inputs.filteredLocation(location)
-
-    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
-      XCTAssertEqual(
-        pill.isHighlighted,
-        true,
-        "Location pill should be highlighted when a non-default option is selected"
-      )
-
-      guard case let .dropdown(title) = pill.buttonType else {
-        XCTFail("Pill is not a dropdown")
-        return
+      if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          false,
+          "Percent raised pill should not be highlighted when no location is selected"
+        )
+      } else {
+        XCTFail("Expected location pill to be set")
       }
 
-      XCTAssertEqual(
-        title,
-        location.displayableName,
-        "Dropdown should have description of selected location in its title"
-      )
+      let location = threeLocations[0]
 
-    } else {
-      XCTFail("Expected location pill to be set")
+      self.useCase.inputs.filteredLocation(location)
+
+      if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          true,
+          "Location pill should be highlighted when a non-default option is selected"
+        )
+
+        guard case let .dropdown(title) = pill.buttonType else {
+          XCTFail("Pill is not a dropdown")
+          return
+        }
+
+        XCTAssertEqual(
+          title,
+          location.displayableName,
+          "Dropdown should have description of selected location in its title"
+        )
+
+      } else {
+        XCTFail("Expected location pill to be set")
+      }
     }
   }
 
