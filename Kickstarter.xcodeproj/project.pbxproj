@@ -1961,6 +1961,7 @@
 		E1CDA9FD2E099CC600B8EA46 /* PPOUserSetupFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA8242E099CC600B8EA46 /* PPOUserSetupFragment.graphql.swift */; };
 		E1CDA9FE2E099CC600B8EA46 /* SignInWithAppleInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA8942E099CC600B8EA46 /* SignInWithAppleInput.graphql.swift */; };
 		E1CDA9FF2E099CC600B8EA46 /* Postable.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA8A02E099CC600B8EA46 /* Postable.graphql.swift */; };
+		E1CDAA012E09AA9300B8EA46 /* GraphQLNullable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CDAA002E09AA8F00B8EA46 /* GraphQLNullable.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
@@ -3995,6 +3996,7 @@
 		E1CDA90B2E099CC600B8EA46 /* SchemaConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		E1CDA90C2E099CC600B8EA46 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		E1CDA90E2E099CC600B8EA46 /* GraphAPI.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphAPI.graphql.swift; sourceTree = "<group>"; };
+		E1CDAA002E09AA8F00B8EA46 /* GraphQLNullable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLNullable.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
@@ -7788,6 +7790,7 @@
 		D01587691EEB2ED6006E7684 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E1CDAA002E09AA8F00B8EA46 /* GraphQLNullable.swift */,
 				06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */,
 				8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */,
 				8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */,
@@ -10466,6 +10469,7 @@
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
 				0622C92A273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift in Sources */,
+				E1CDAA012E09AA9300B8EA46 /* GraphQLNullable.swift in Sources */,
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */,
