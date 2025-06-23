@@ -256,23 +256,40 @@ final class PledgeViewControllerTests: TestCase {
       context: .pledge
     )
 
-    orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
-      .forEach { language, device in
-        withEnvironment(language: language) {
-          let controller = PledgeViewController.instantiate()
-          controller.configure(with: data)
-          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-          self.scheduler.advance(by: .seconds(1))
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
+    ]
 
-          self.allowLayoutPass()
+    orthogonalCombos(
+      [Language.en],
+      [Device.phone4_7inch, Device.pad],
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    )
+    .forEach { language, device, style in
+      withEnvironment(
+        colorResolver: AppColorResolver(),
+        language: language,
+        remoteConfigClient: darkModeOn
+      ) {
+        let controller = PledgeViewController.instantiate()
+        controller.configure(with: data)
+        controller.overrideUserInterfaceStyle = style
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        self.scheduler.advance(by: .seconds(1))
 
-          assertSnapshot(
-            matching: parent.view,
-            as: .image(perceptualPrecision: 0.98),
-            named: "lang_\(language)_device_\(device)"
-          )
-        }
+        self.allowLayoutPass()
+
+        let styleDescription = style == .light ? "light" : "dark"
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)_\(styleDescription)"
+        )
       }
+    }
   }
 
   func testView_ShowCollectionPlans_PledgeInFull() {

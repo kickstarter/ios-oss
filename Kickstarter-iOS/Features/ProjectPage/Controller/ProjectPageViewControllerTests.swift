@@ -273,6 +273,61 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
+  func testLoggedIn_NonBacker_LiveProject_DarkMode() {
+    let config = Config.template
+    let currentUser = User.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.watchesCount .~ 10
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData)
+    )
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
+    ]
+
+    let language = Language.en
+    let device = Device.phone5_8inch
+
+    withEnvironment(
+      apiService: mockService,
+      colorResolver: AppColorResolver(),
+      config: config,
+      currentUser: currentUser,
+      language: language,
+      remoteConfigClient: darkModeOn
+    ) {
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .left(project), refInfo: nil
+      )
+
+      vc.overrideUserInterfaceStyle = .dark
+
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+      scheduler.run()
+
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)_dark"
+      )
+    }
+  }
+
   func testLoggedIn_Backer_NonLiveProject() {
     let config = Config.template
     let project = Project.cosmicSurgery

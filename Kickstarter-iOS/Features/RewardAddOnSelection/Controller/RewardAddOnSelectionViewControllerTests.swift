@@ -35,12 +35,25 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+    let darkModeOn = MockRemoteConfigClient()
+    darkModeOn.features = [
+      RemoteConfigFeature.darkModeEnabled.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
+    ]
+
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases,
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    ).forEach { language, device, style in
       withEnvironment(
         apiService: mockService,
-        language: language
+        colorResolver: AppColorResolver(),
+        language: language,
+        remoteConfigClient: darkModeOn
       ) {
         let controller = RewardAddOnSelectionViewController.instantiate()
+        controller.overrideUserInterfaceStyle = style
 
         let data = PledgeViewData(
           project: project,
@@ -57,11 +70,12 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
+        let styleDescription = style == .light ? "light" : "dark"
 
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
+          named: "lang_\(language)_device_\(device)_\(styleDescription)"
         )
       }
     }
