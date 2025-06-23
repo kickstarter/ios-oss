@@ -1,0 +1,30 @@
+{
+  "schemaNamespace" : "GraphAPI",
+  "input" : {
+    "operationSearchPaths" : [
+      "**/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "KsApi/graphql-schema.json"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./GraphAPI",
+      "moduleType" : {
+        "embeddedInTarget" : {
+          "accessModifier" : "public",
+          "name" : "KsApi"
+        }
+      }
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}
