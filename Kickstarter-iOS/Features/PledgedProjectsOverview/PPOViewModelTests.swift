@@ -317,6 +317,13 @@ class PPOViewModelTests: XCTestCase {
     )
   }
 
+  func testNavigationManagePledge() {
+    self.verifyNavigationEvent(
+      { self.viewModel.managePledge(from: PPOProjectCardModel.managePledgeTemplate) },
+      event: .managePledge(url: PPOProjectCardModel.managePledgeTemplate.backingDetailsUrl)
+    )
+  }
+
   func testNavigationViewBackingDetails() {
     self.verifyNavigationEvent(
       // This could be tested with any template. All cards allow the user to view backing details.
