@@ -928,6 +928,11 @@ private func backingDictionary() -> [String: Any] {
       "isWatched": false,
       "launchedAt": 1617886771,
       "isLaunched": true,
+      "lastWave": {
+        "__typename":"CheckoutWave",
+        "id": "Q2hlY2tvdXRXYXZlLTI1OQ==",
+        "active": true
+      },
       "location": {
         "__typename": "Location",
         "country": "US",
@@ -939,6 +944,11 @@ private func backingDictionary() -> [String: Any] {
       "maxPledge": 8500,
       "minPledge": 1,
       "name": "WEE WILLIAM WITCHLING",
+      "pledgeManager": {
+         "__typename":"PledgeManager",
+         "id": "UGxlZGdlTWFuYWdlci05MQ==",
+         "acceptsNewBackers": true
+      },
       "pid": 1596594463,
       "pledged": {
         "__typename": "Money",
@@ -953,6 +963,7 @@ private func backingDictionary() -> [String: Any] {
         "totalCount": 3
       },
       "prelaunchActivated": true,
+      "redemptionPageUrl": "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",
       "projectNotice": null,
       "slug": "parliament-of-rooks/wee-william-witchling",
       "state": "LIVE",
