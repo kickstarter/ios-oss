@@ -20,11 +20,8 @@ extension Location {
     }
 
     return nodes.compactMap { node in
-      if let fragment = node?.fragments.locationFragment {
-        KsApi.Location.location(from: fragment)
-      } else {
-        nil
-      }
+      guard let fragment = node?.fragments.locationFragment else { return nil }
+      return KsApi.Location.location(from: fragment)
     }
   }
 
@@ -34,11 +31,8 @@ extension Location {
     }
 
     return nodes.compactMap { node in
-      if let fragment = node?.fragments.locationFragment {
-        KsApi.Location.location(from: fragment)
-      } else {
-        nil
-      }
+      guard let fragment = node?.fragments.locationFragment else { return nil }
+      return KsApi.Location.location(from: fragment)
     }
   }
 }

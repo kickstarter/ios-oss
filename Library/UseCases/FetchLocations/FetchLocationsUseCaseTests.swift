@@ -29,7 +29,8 @@ final class FetchLocationsUseCaseTests: TestCase {
   }
 
   func test_initialSignal_triggersDefaultLocationsToLoad() {
-    let response = try! GraphAPI.DefaultLocationsQuery.Data(jsonString: threeLocationsResponseJSON)
+    let response: GraphAPI.DefaultLocationsQuery.Data =
+      try! testGraphObject(jsonString: threeLocationsResponseJSON)
     let mockService = MockService(fetchGraphQLResponses: [(
       GraphAPI.DefaultLocationsQuery.self,
       response
@@ -47,7 +48,8 @@ final class FetchLocationsUseCaseTests: TestCase {
   }
 
   func test_settingQuery_triggersSuggestedLocationsToLoad() {
-    let response = try! GraphAPI.LocationsByTermQuery.Data(jsonString: threeLocationsResponseJSON)
+    let response: GraphAPI.LocationsByTermQuery.Data =
+      try! testGraphObject(jsonString: threeLocationsResponseJSON)
     let mockService = MockService(fetchGraphQLResponses: [(
       GraphAPI.LocationsByTermQuery.self,
       response
