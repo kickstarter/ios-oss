@@ -89,7 +89,7 @@ public class SearchFilters: ObservableObject {
     return self.location.selectedLocation != nil
   }
 
-  internal init(
+  init(
     sort: SortOptions,
     category: CategoryOptions,
     projectState: ProjectStateOptions,
@@ -106,7 +106,7 @@ public class SearchFilters: ObservableObject {
     self.updatePills()
   }
 
-  internal func update(
+  func update(
     withSort sort: DiscoveryParams.Sort,
     category: SearchFiltersCategory,
     projectState: DiscoveryParams.State,
@@ -124,21 +124,21 @@ public class SearchFilters: ObservableObject {
     self.updatePills()
   }
 
-  internal func update(
+  func update(
     withCategories categories: [KsApi.Category]
   ) {
     self.objectWillChange.send()
     self.category.categories = categories
   }
 
-  internal func update(
+  func update(
     withDefaultSearchLocations locations: [Location]
   ) {
     self.objectWillChange.send()
     self.location.defaultLocations = locations
   }
 
-  internal func update(
+  func update(
     withSuggestedLocations locations: [Location]
   ) {
     self.objectWillChange.send()
