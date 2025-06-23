@@ -9,7 +9,7 @@ class ApolloInterceptorsTests: XCTestCase {
       "test-header-key-2": "test-header-value-2"
     ]
     let interceptor = HeadersInterceptor { headers }
-    let query = MockApolloQuery()
+    let query = GraphAPI.DefaultLocationsQuery(first: 2)
     let url = URL(string: "https://www.kickstarter.com")!
     let request = HTTPRequest(
       graphQLEndpoint: url,
@@ -21,7 +21,7 @@ class ApolloInterceptorsTests: XCTestCase {
     )
 
     interceptor.interceptAsync(
-      chain: RequestChain(interceptors: []),
+      chain: InterceptorRequestChain(interceptors: []),
       request: request,
       response: nil
     ) { _ in }
