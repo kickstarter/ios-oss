@@ -737,10 +737,10 @@
         input: GraphAPI
           .CreateCheckoutInput(
             projectId: input.projectId,
-            amount: input.amount,
-            locationId: input.locationId,
-            rewardIds: input.rewardIds,
-            refParam: input.refParam
+            amount: GraphQLNullable.someOrNil(input.amount),
+            locationId: GraphQLNullable.someOrNil(input.locationId),
+            rewardIds: GraphQLNullable.someOrNil(input.rewardIds),
+            refParam: GraphQLNullable.someOrNil(input.refParam)
           )
       )
 
@@ -781,7 +781,7 @@
         .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
           projectId: input.projectId,
           amount: input.amountDollars,
-          digitalMarketingAttributed: input.digitalMarketingAttributed
+          digitalMarketingAttributed: GraphQLNullable.someOrNil(input.digitalMarketingAttributed)
         ))
 
       return client.performWithResult(mutation: mutation, result: self.createPaymentIntentResult)
@@ -846,8 +846,8 @@
 
       let fetchProjectCommentsQuery = GraphAPI.FetchProjectCommentsQuery(
         slug: slug,
-        cursor: cursor,
-        limit: limit
+        cursor: GraphQLNullable.someOrNil(cursor),
+        limit: GraphQLNullable.someOrNil(limit)
       )
 
       return client
@@ -865,8 +865,8 @@
 
       let fetchUpdateCommentsQuery = GraphAPI.FetchUpdateCommentsQuery(
         postId: id,
-        cursor: cursor,
-        limit: limit
+        cursor: GraphQLNullable.someOrNil(cursor),
+        limit: GraphQLNullable.someOrNil(limit)
       )
 
       return client
@@ -884,7 +884,7 @@
 
       let fetchCommentRepliesQuery = GraphAPI.FetchCommentRepliesQuery(
         commentId: id,
-        cursor: cursor,
+        cursor: GraphQLNullable.someOrNil(cursor),
         limit: limit
       )
 
@@ -1145,7 +1145,7 @@
       let fetchRewardAddOnsSelectionViewRewardsQuery = GraphAPI.FetchAddOnsQuery(
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
-        locationId: locationId,
+        locationId: GraphQLNullable.someOrNil(locationId),
         withStoredCards: false,
         includeShippingRules: true,
         includeLocalPickup: true
