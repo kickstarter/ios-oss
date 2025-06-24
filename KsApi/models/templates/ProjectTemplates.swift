@@ -52,7 +52,7 @@ extension Project {
     isInPostCampaignPledgingPhase: false,
     postCampaignPledgingEnabled: false,
     prelaunchActivated: nil,
-    redemptionPageUrl: "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",
+    redemptionPageUrl: "/projects/creator/a-fun-project/backing/redeem",
     rewardData: RewardData(addOns: nil, rewards: []),
     sendMetaCapiEvents: false,
     slug: "a-fun-project",
@@ -119,6 +119,12 @@ extension Project {
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000
     |> (Project.lens.location .. Location.lens.displayableName) .~ "Burbank, CA"
+
+  internal static let netNewBacker = Project.template
+    |> Project.lens.personalization.backing .~ nil
+    |> Project.lens.personalization.isBacking .~ false
+    |> Project.lens.lastWave .~ LastWave(id: 1, active: true)
+    |> Project.lens.pledgeManager .~ PledgeManager(id: 1, acceptsNewBackers: true)
 }
 
 private let cosmicSurgeryRewards: [Reward] = [
