@@ -7,14 +7,47 @@ public struct LocationView: View {
   let suggestedLocations: [Location]
   @Binding var selectedLocation: Location?
   let onSearchedForLocations: (String) -> Void
-  @Binding var searchText: String
+
+  @State var searchText: String = ""
+
+  func buttonLabel(title: String, isSelected: Bool) -> some View {
+    HStack(spacing: Constants.buttonLabelSpacing) {
+      RadioButton(isSelected: isSelected)
+      Text(title)
+        .font(InterFont.bodyLG.swiftUIFont())
+        .foregroundStyle(Colors.Text.primary.swiftUIColor())
+    }
+  }
+
+  @ViewBuilder var defaultLocationsList: some View {
+    VStack(alignment: .leading, spacing: Constants.spacing) {
+      Button {
+        self.selectedDefaultLocation(nil)
+      } label: {
+        // FIXME: MBL-2343 Add translations
+        self.buttonLabel(
+          title: "FPO: Anywhere",
+          isSelected: self.selectedLocation.isNil
+        )
+      }
+      ForEach(self.defaultLocations) { item in
+        Button {
+          self.selectedDefaultLocation(item)
+        } label: {
+          self.buttonLabel(
+            title: item.displayableName,
+            isSelected: self.selectedLocation?.id == item.id
+          )
+        }
+      }
+    }
+    .padding(Constants.padding)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+  }
 
   public var body: some View {
     ScrollView {
-      DefaultLocationsList(
-        defaultLocations: self.defaultLocations,
-        selectedLocation: self.$selectedLocation
-      )
+      self.defaultLocationsList
     }
     .searchable(
       text: self.$searchText,
@@ -30,23 +63,48 @@ public struct LocationView: View {
           .searchCompletion(location.displayableName)
       }
     }
-    .onChange(of: self.searchText) { newValue in
-      // If the new search text is the displayableName of a suggested location,
-      // then they selected an option from auto-complete.
-      if let location = self.suggestedLocations.first(where: { $0.displayableName == newValue }) {
-        self.selectedLocation = location
-        return
-      }
-
-      // Otherwise, they have some partial search results.
-      // Update the suggested locations.
-      self.selectedLocation = nil
-      self.onSearchedForLocations(newValue)
-    }
-    .onChange(of: self.selectedLocation) { _ in
-      // If a location is selected in the UI, update the search bar.
+    .onAppear {
       self.searchText = self.selectedLocation?.displayableName ?? ""
     }
+    .onChange(of: self.searchText) { newValue in
+      self.didChangeSearchText(newValue)
+    }
+  }
+
+  func didChangeSearchText(_ newValue: String) {
+    // If the search bar is already showing the displayableName
+    // of the selected location, no action is needed.
+    if let location = self.selectedLocation {
+      if location.displayableName == newValue {
+        return
+      }
+    }
+
+    // If the new search text is the displayableName of a suggested location,
+    // then they selected an option from auto-complete.
+    // Set the selected location.
+    if let location = self.suggestedLocations.first(where: { $0.displayableName == newValue }) {
+      self.selectedLocation = location
+      return
+    }
+
+    // Otherwise, they have some partial location text entered
+    // in the search bar.
+    // Update the suggested locations.
+    self.selectedLocation = nil
+    self.onSearchedForLocations(newValue)
+  }
+
+  func selectedDefaultLocation(_ location: Location?) {
+    self.selectedLocation = location
+
+    // If a location is selected from the default location list,
+    // update the search bar.
+    // This will also trigger `didChangeSearchText`.
+    self.searchText = self.selectedLocation?.displayableName ?? ""
+
+    // Clear the autosuggest results, too.
+    self.onSearchedForLocations("")
   }
 
   internal enum Constants {
@@ -55,3 +113,5 @@ public struct LocationView: View {
     static let buttonLabelSpacing: CGFloat = 8.0
   }
 }
+
+extension KsApi.Location: @retroactive Identifiable {}
