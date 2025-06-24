@@ -55,6 +55,7 @@ extension UpdateBackingInput {
       amount: amount,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: updateBackingData.backing.graphID,
+      incremental: updateBackingData.incremental,
       locationId: locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
       rewardIds: rewardIds,
