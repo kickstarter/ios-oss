@@ -28,7 +28,7 @@ public final class FetchLocationsUseCase: FetchLocationsUseCaseType, FetchLocati
 
     let defaultLocationsQuery = initialSignal
       .switchMap {
-        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 1)
+        let defaultLocations = GraphAPI.DefaultLocationsQuery(first: 5)
         return AppEnvironment.current.apiService.fetch(query: defaultLocations).materialize()
       }
       .values()
