@@ -62,6 +62,12 @@ public protocol SearchViewModelInputs {
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
 
+  /// Cal this when the user selects a filter location.
+  func filteredLocation(_: Location?)
+
+  /// Call this when the user types a location query string in the location filter
+  func searchedForLocations(_ query: String)
+
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 
@@ -119,9 +125,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       initialSignal: self.viewDidLoadProperty.signal
     )
 
+    self.locationsUseCase = FetchLocationsUseCase(
+      initialSignal:
+      self.viewDidLoadProperty.signal
+    )
+
     self.searchFiltersUseCase = SearchFiltersUseCase(
       initialSignal: self.viewDidLoadProperty.signal,
-      categories: self.categoriesUseCase.categories
+      categories: self.categoriesUseCase.dataOutputs.categories,
+      defaultLocations: self.locationsUseCase.dataOutputs.defaultLocations,
+      suggestedLocations: self.locationsUseCase.dataOutputs.suggestedLocations
     )
 
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
@@ -141,15 +154,17 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedSort,
       self.searchFiltersUseCase.selectedCategory,
       self.searchFiltersUseCase.selectedState,
-      self.searchFiltersUseCase.selectedPercentRaisedBucket
+      self.searchFiltersUseCase.selectedPercentRaisedBucket,
+      self.searchFiltersUseCase.selectedLocation
     )
-    .map { query, sort, category, state, raised in
+    .map { query, sort, category, state, raised, location in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
         category: category.category,
         state: state,
-        percentRaised: raised
+        percentRaised: raised,
+        location: location
       )
     }
 
@@ -446,6 +461,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   private let categoriesUseCase: FetchCategoriesUseCase
   private let searchFiltersUseCase: SearchFiltersUseCase
+  private let locationsUseCase: FetchLocationsUseCase
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
   public let goToProject: Signal<(Int, RefTag), Never>
@@ -475,6 +491,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
     self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
+  }
+
+  public func filteredLocation(_ location: Location?) {
+    self.searchFiltersUseCase.filteredLocation(location)
+  }
+
+  public func searchedForLocations(_ query: String) {
+    self.locationsUseCase.searchedForLocations(query)
   }
 
   public var searchFilters: SearchFilters {
