@@ -530,14 +530,11 @@ private func actionSheetMenuOptionsFor(
     .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
   if isPledgeOverTime(with: backing) {
+    actions = actions.filter { $0 != .chooseAnotherReward }
+
     /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
-    /// /// If the Edit Pledge Over Time feature flag is `false`, simple remove 'Edit reward' as usual.
-    switch featureEditPledgeOverTimeEnabled() {
-    case true:
-      actions = actions.filter { $0 != .chooseAnotherReward }
+    if featureEditPledgeOverTimeEnabled() == true {
       actions.insert(.editPledgeOverTimePledge, at: 1)
-    case false:
-      actions = actions.filter { $0 != .chooseAnotherReward }
     }
   }
 

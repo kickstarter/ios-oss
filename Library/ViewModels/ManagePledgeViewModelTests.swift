@@ -456,7 +456,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward_Or_editPledge_WhenEditPledgeOverTimeFeatureFlag_isFalse(
+  ) {
     let project = Project.template
       |> Project.lens.state .~ .live
 
@@ -496,7 +497,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_chooseAnotherReward_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_editPledge_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -530,7 +531,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showActionSheetMenuWithOptions.assertValues([
         [
           ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.editPledgeOverTimePledge,
           ManagePledgeAlertAction.contactCreator,
           ManagePledgeAlertAction.cancelPledge
         ]
