@@ -30,10 +30,18 @@ public class SearchFilters: ObservableObject {
     public var selectedBucket: DiscoveryParams.PercentRaisedBucket?
   }
 
+  public struct LocationOptions {
+    public var defaultLocations: [Location]
+    public var suggestedLocations: [Location]
+    public var selectedLocation: Location?
+  }
+
   public private(set) var category: CategoryOptions
   public private(set) var sort: SortOptions
   public private(set) var projectState: ProjectStateOptions
   public private(set) var percentRaised: PercentRaisedOptions
+  public private(set) var location: LocationOptions
+
   public fileprivate(set) var pills: [SearchFilterPill]
 
   public let objectWillChange = ObservableObjectPublisher()
@@ -44,7 +52,8 @@ public class SearchFilters: ObservableObject {
     [
       self.hasCategory,
       self.hasProjectState,
-      self.hasPercentRaised
+      self.hasPercentRaised,
+      self.hasLocation
     ]
     .count(where: { $0 == true })
   }
@@ -76,26 +85,33 @@ public class SearchFilters: ObservableObject {
     return self.percentRaised.selectedBucket != nil
   }
 
-  internal init(
+  var hasLocation: Bool {
+    return self.location.selectedLocation != nil
+  }
+
+  init(
     sort: SortOptions,
     category: CategoryOptions,
     projectState: ProjectStateOptions,
-    percentRaised: PercentRaisedOptions
+    percentRaised: PercentRaisedOptions,
+    location: LocationOptions
   ) {
     self.sort = sort
     self.category = category
     self.projectState = projectState
     self.percentRaised = percentRaised
+    self.location = location
 
     self.pills = []
     self.updatePills()
   }
 
-  internal func update(
+  func update(
     withSort sort: DiscoveryParams.Sort,
     category: SearchFiltersCategory,
     projectState: DiscoveryParams.State,
-    percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?
+    percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?,
+    location: Location?
   ) {
     self.objectWillChange.send()
 
@@ -103,15 +119,30 @@ public class SearchFilters: ObservableObject {
     self.category.selectedCategory = category
     self.projectState.selectedProjectState = projectState
     self.percentRaised.selectedBucket = percentRaisedBucket
+    self.location.selectedLocation = location
 
     self.updatePills()
   }
 
-  internal func update(
+  func update(
     withCategories categories: [KsApi.Category]
   ) {
     self.objectWillChange.send()
     self.category.categories = categories
+  }
+
+  func update(
+    withDefaultSearchLocations locations: [Location]
+  ) {
+    self.objectWillChange.send()
+    self.location.defaultLocations = locations
+  }
+
+  func update(
+    withSuggestedLocations locations: [Location]
+  ) {
+    self.objectWillChange.send()
+    self.location.suggestedLocations = locations
   }
 
   public func has(filter type: SearchFilterModalType) -> Bool {
@@ -124,6 +155,8 @@ public class SearchFilters: ObservableObject {
       return self.hasSort
     case .percentRaised:
       return self.hasPercentRaised
+    case .location:
+      return self.hasLocation
     }
   }
 
@@ -176,6 +209,18 @@ public class SearchFilters: ObservableObject {
         buttonType: .dropdown(percentRaisedTitle)
       )
     )
+
+    if featureSearchFilterByLocation() {
+      // FIXME: MBL-2343 Add translations.
+      let locationTitle = self.location.selectedLocation?.displayableName ?? "FPO: Location"
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.hasLocation,
+          filterType: .location,
+          buttonType: .dropdown(locationTitle)
+        )
+      )
+    }
 
     self.pills = pills
   }

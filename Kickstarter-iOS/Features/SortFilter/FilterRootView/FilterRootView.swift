@@ -4,12 +4,14 @@ import SwiftUI
 
 struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
-
   @ObservedObject var searchFilters: SearchFilters
+  @State var locationSearchText: String
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
+  var onSelectedLocation: ((Location?) -> Void)? = nil
+  var onSearchedForLocations: ((String) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
@@ -35,6 +37,16 @@ struct FilterRootView: View {
     }
   }
 
+  private var selectedLocation: Binding<Location?> {
+    Binding {
+      self.searchFilters.location.selectedLocation
+    } set: { newValue in
+      if let action = self.onSelectedLocation {
+        action(newValue)
+      }
+    }
+  }
+
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
   }
@@ -51,6 +63,9 @@ struct FilterRootView: View {
     }
 
     self.searchFilters = searchFilters
+
+    let selectedLocationName = searchFilters.location.selectedLocation?.displayableName
+    _locationSearchText = State(initialValue: selectedLocationName ?? "")
   }
 
   @ViewBuilder
@@ -99,6 +114,15 @@ struct FilterRootView: View {
   }
 
   @ViewBuilder
+  var locationSection: some View {
+    FilterSectionButton(
+      // FIXME: MBL-2343 Add translations.
+      title: "FPO: Location",
+      subtitle: self.searchFilters.location.selectedLocation?.displayableName
+    )
+    .padding(Constants.sectionPadding)
+  }
+
   var percentRaisedModal: some View {
     PercentRaisedView(
       buckets: self.searchFilters.percentRaised.buckets,
@@ -106,11 +130,20 @@ struct FilterRootView: View {
     )
   }
 
-  @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
       categories: self.searchFilters.category.categories,
       selectedCategory: self.selectedCategory
+    )
+  }
+
+  var locationModal: some View {
+    LocationView(
+      defaultLocations: self.searchFilters.location.defaultLocations,
+      suggestedLocations: self.searchFilters.location.suggestedLocations,
+      selectedLocation: self.selectedLocation,
+      onSearchedForLocations: self.onSearchedForLocations ?? { _ in },
+      searchText: self.$locationSearchText
     )
   }
 
@@ -151,6 +184,12 @@ struct FilterRootView: View {
           NavigationLink(value: SearchFilterModalType.percentRaised) {
             self.percentRaisedSection
           }
+          if featureSearchFilterByLocation() {
+            Divider()
+            NavigationLink(value: SearchFilterModalType.location) {
+              self.locationSection
+            }
+          }
           Divider()
           Spacer()
         }
@@ -162,6 +201,10 @@ struct FilterRootView: View {
           case .percentRaised:
             self.percentRaisedModal
               .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
+          case .location:
+            // FIXME: MBL-2343 Add translations.
+            self.locationModal
+              .modalHeader(withTitle: "FPO: Location", onClose: self.onClose)
           default:
             EmptyView()
           }
