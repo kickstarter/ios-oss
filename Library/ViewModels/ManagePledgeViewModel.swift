@@ -522,7 +522,8 @@ private func actionSheetMenuOptionsFor(
 
   var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 
-  if isPledgeOverTime(with: backing) {
+  /// Remove the 'Edit Reward' action if PLOT pledge and the Edit PLOT Feature Flag is turned off.
+  if isPledgeOverTime(with: backing), featureEditPledgeOverTimeEnabled() == false {
     actions = actions.filter { $0 != .chooseAnotherReward }
   }
 
