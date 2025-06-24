@@ -270,6 +270,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToRewards(project)
       }
 
+    self.viewModel.outputs.goToEditPledgeOverTime
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
       .observeValues { [weak self] data in
@@ -449,7 +455,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.beginRefresh()
   }
 
-  private func showActionSheetMenuWithOptions(_ options: [ManagePledgeAlertAction]) {
+  private func showActionSheetMenuWithOptions(
+    _ options: [ManagePledgeAlertAction]
+  ) {
     let actionSheet = UIAlertController.alert(
       title: Strings.Select_an_option(),
       preferredStyle: .actionSheet,
@@ -460,6 +468,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       let title: String
 
       switch option {
+      case .editPledgeOverTimePledge:
+        title = Strings.Edit_pledge()
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:

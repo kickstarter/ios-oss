@@ -10,6 +10,7 @@ public typealias ManagePledgeViewParamConfigData = (
 )
 
 public enum ManagePledgeAlertAction: CaseIterable {
+  case editPledgeOverTimePledge
   case changePaymentMethod
   case chooseAnotherReward
   case contactCreator
@@ -38,6 +39,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
+  var goToEditPledgeOverTime: Signal<Project, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -279,6 +281,9 @@ public final class ManagePledgeViewModel:
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
 
+    self.goToEditPledgeOverTime = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .editPledgeOverTimePledge })
+
     let cancelPledgeSelected = self.menuOptionSelectedSignal
       .filter { $0 == .cancelPledge }
       .ignoreValues()
@@ -446,6 +451,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
+  public let goToEditPledgeOverTime: Signal<Project, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
@@ -520,10 +526,16 @@ private func actionSheetMenuOptionsFor(
     return [.contactCreator]
   }
 
-  var actions = ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+  var actions = ManagePledgeAlertAction.allCases
+    .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
   if isPledgeOverTime(with: backing) {
     actions = actions.filter { $0 != .chooseAnotherReward }
+
+    /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
+    if featureEditPledgeOverTimeEnabled() == true {
+      actions.insert(.editPledgeOverTimePledge, at: 1)
+    }
   }
 
   return actions
@@ -543,6 +555,7 @@ private func navigationBarTitle(
 private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAlertAction)
   -> KSRAnalytics.ManagePledgeMenuCTAType {
   switch managePledgeAlertAction {
+  case .editPledgeOverTimePledge: return .editPledgeOverTimePledge
   case .cancelPledge: return .cancelPledge
   case .changePaymentMethod: return .changePaymentMethod
   case .chooseAnotherReward: return .chooseAnotherReward

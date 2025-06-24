@@ -236,6 +236,7 @@ public final class KSRAnalytics {
   }
 
   public enum ManagePledgeMenuCTAType {
+    case editPledgeOverTimePledge
     case cancelPledge
     case changePaymentMethod
     case chooseAnotherReward
@@ -244,6 +245,7 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
+      case .editPledgeOverTimePledge: return "edit_pledge_over_time_pledge"
       case .cancelPledge: return "cancel_pledge"
       case .changePaymentMethod: return "change_payment_method"
       case .chooseAnotherReward: return "choose_another_reward"

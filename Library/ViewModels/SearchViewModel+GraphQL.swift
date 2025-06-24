@@ -68,6 +68,7 @@ extension GraphAPI.SearchQuery {
     }
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
+    let locationId = params.location?.graphID
 
     return GraphAPI.SearchQuery(
       term: params.query,
@@ -75,6 +76,7 @@ extension GraphAPI.SearchQuery {
       categoryId: categoryId,
       state: state,
       raised: raised,
+      locationId: locationId,
       first: params.perPage,
       cursor: cursor
     )
@@ -95,7 +97,8 @@ extension DiscoveryParams {
     sort: DiscoveryParams.Sort,
     category: Category?,
     state: DiscoveryParams.State?,
-    percentRaised: DiscoveryParams.PercentRaisedBucket?
+    percentRaised: DiscoveryParams.PercentRaisedBucket?,
+    location: Location?
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
@@ -104,6 +107,7 @@ extension DiscoveryParams {
     params.perPage = 15
     params.state = state
     params.percentRaised = percentRaised
+    params.location = location
     return params
   }
 }
