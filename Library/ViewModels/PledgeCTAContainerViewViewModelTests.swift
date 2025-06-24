@@ -130,7 +130,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(value: (.left((project, nil)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.black])
-      self.buttonTitleText.assertValues([Strings.Pledge_manager()])
+      self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
       self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
     }

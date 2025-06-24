@@ -27,7 +27,7 @@ public enum PledgeStateCTAType: Equatable {
     case let .prelaunch(saved, _):
       return saved ? Strings.Saved() : Strings.Notify_me_on_launch()
     case .pledgeManager:
-      return Strings.Pledge_manager()
+      return Strings.Go_to_pledge_manager()
     }
   }
 
