@@ -95,7 +95,7 @@ public final class ManagePledgeViewModel:
             fetchProjectRewards(project: project)
           }
           .switchMap { project in
-            fetchProjectPlotData(project: project)
+            fetchProjectPledgeOverTimeData(project: project)
           }
           .materialize()
       }
@@ -494,9 +494,9 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     }
 }
 
-private func fetchProjectPlotData(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
-    .fetchProjectPlotData(projectId: project.id)
+    .fetchProjectPledgeOverTimeData(projectId: project.id)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
 
@@ -615,7 +615,7 @@ private func managePledgePaymentMethodViewData(
   )
 }
 
-private func isPledgeOverTime(with backing: Backing) -> Bool {
+private func isPledgeOverTimePledge(with backing: Backing) -> Bool {
   return !backing.paymentIncrements.isEmpty
 }
 

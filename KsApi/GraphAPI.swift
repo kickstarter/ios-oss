@@ -12297,11 +12297,11 @@ public enum GraphAPI {
     }
   }
 
-  public final class FetchProjectPlotDataQuery: GraphQLQuery {
+  public final class FetchProjectPledgeOverTimeDataQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectPLOTData($projectId: Int!) {
+      query FetchProjectPledgeOverTimeData($projectId: Int!) {
         project(pid: $projectId) {
           __typename
           isPledgeOverTimeAllowed
@@ -12313,7 +12313,7 @@ public enum GraphAPI {
       }
       """
 
-    public let operationName: String = "FetchProjectPLOTData"
+    public let operationName: String = "FetchProjectPledgeOverTimeData"
 
     public var projectId: Int
 

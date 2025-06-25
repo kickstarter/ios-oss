@@ -1,4 +1,4 @@
-query FetchProjectPLOTData($projectId: Int!) {
+query FetchProjectPledgeOverTimeData($projectId: Int!) {
   project(pid: $projectId) {
     __typename
     isPledgeOverTimeAllowed

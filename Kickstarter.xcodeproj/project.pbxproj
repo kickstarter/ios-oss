@@ -269,7 +269,7 @@
 		331746852E09AC5C00C5FC1C /* LastWave+LastWaveFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */; };
 		331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */; };
 		3330E7C72E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */; };
-		3330E7C92E0BE5A7004B0730 /* ProjectPLOTDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7C82E0BE592004B0730 /* ProjectPLOTDataEnvelope.swift */; };
+		3330E7C92E0BE5A7004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */; };
 		333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */; };
 		333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */; };
 		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
@@ -2066,7 +2066,7 @@
 		331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastWave+LastWaveFragmentTests.swift"; sourceTree = "<group>"; };
 		331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgeManager+PledgeManagerFragmentTests.swift"; sourceTree = "<group>"; };
 		3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectPLOTQuery.graphql; sourceTree = "<group>"; };
-		3330E7C82E0BE592004B0730 /* ProjectPLOTDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPLOTDataEnvelope.swift; sourceTree = "<group>"; };
+		3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPledgeOverTimeDataEnvelope.swift; sourceTree = "<group>"; };
 		333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCase.swift; sourceTree = "<group>"; };
 		333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCaseTests.swift; sourceTree = "<group>"; };
 		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -7477,7 +7477,7 @@
 				3317467D2E0355D800C5FC1C /* PledgeManager.swift */,
 				3317467B2E03527400C5FC1C /* LastWave.swift */,
 				D01587D81EEB2ED7006E7684 /* Project.swift */,
-				3330E7C82E0BE592004B0730 /* ProjectPLOTDataEnvelope.swift */,
+				3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */,
 				067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */,
 				D01587DA1EEB2ED7006E7684 /* Project.VideoTests.swift */,
 				D01587DB1EEB2ED7006E7684 /* ProjectActivityEnvelope.swift */,
@@ -9866,7 +9866,7 @@
 				8AC3E105269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift in Sources */,
 				E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */,
 				D01588331EEB2ED7006E7684 /* Decodable.swift in Sources */,
-				3330E7C92E0BE5A7004B0730 /* ProjectPLOTDataEnvelope.swift in Sources */,
+				3330E7C92E0BE5A7004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift in Sources */,
 				06232D3E2795EC2C00A81755 /* Element+Helpers.swift in Sources */,
 				8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */,
 				8A07D00C26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift in Sources */,
