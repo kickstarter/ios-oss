@@ -25,6 +25,7 @@ protocol PPOViewModelInputs {
     onProgress: @escaping (PPOActionState) -> Void
   )
   func openSurvey(from: PPOProjectCardModel)
+  func managePledge(from: PPOProjectCardModel)
   func viewBackingDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel, address: String, addressId: String)
@@ -41,6 +42,7 @@ enum PPONavigationEvent: Equatable {
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
+  case managePledge(url: String)
   case backingDetails(url: String)
   case editAddress(url: String)
   case confirmAddress(
@@ -54,6 +56,8 @@ enum PPONavigationEvent: Equatable {
   static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
+      return lhsUrl == rhsUrl
+    case let (.managePledge(lhsUrl), .managePledge(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.backingDetails(lhsUrl), .backingDetails(rhsUrl)):
       return lhsUrl == rhsUrl
@@ -141,13 +145,22 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Route navigation events
-    Publishers.Merge8(
-      self.openBackedProjectsSubject.map { PPONavigationEvent.backedProjects },
-      self.openSurveySubject.map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+    Publishers.MergeMany([
+      self.openBackedProjectsSubject
+        .map { PPONavigationEvent.backedProjects }
+        .eraseToAnyPublisher(),
+      self.openSurveySubject
+        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) }
+        .eraseToAnyPublisher(),
+      self.managePledgeSubject
+        .map { viewModel in PPONavigationEvent.managePledge(url: viewModel.backingDetailsUrl) }
+        .eraseToAnyPublisher(),
       self.viewBackingDetailsSubject
-        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) },
+        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) }
+        .eraseToAnyPublisher(),
       self.editAddressSubject
-        .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) },
+        .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) }
+        .eraseToAnyPublisher(),
       self.confirmAddressSubject.map { viewModel, address, addressId in
         PPONavigationEvent.confirmAddress(
           backingId: viewModel.backingGraphId,
@@ -157,22 +170,22 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
             self?.confirmAddressProgressSubject.send((viewModel, state))
           }
         )
-      },
+      }.eraseToAnyPublisher(),
       self.contactCreatorSubject.map { viewModel in
         let messageSubject = MessageSubject.project(id: viewModel.projectId, name: viewModel.projectName)
         return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
-      },
+      }.eraseToAnyPublisher(),
       self.fixPaymentMethodSubject.map { model in PPONavigationEvent.fixPaymentMethod(
         projectId: model.projectId,
         backingId: model.backingId
-      ) },
+      ) }.eraseToAnyPublisher(),
       self.fix3DSChallengeSubject.map { _, clientSecret, onProgress in
         PPONavigationEvent.fix3DSChallenge(
           clientSecret: clientSecret,
           onProgress: onProgress
         )
-      }
-    )
+      }.eraseToAnyPublisher()
+    ])
     .subscribe(self.navigationEventSubject)
     .store(in: &self.cancellables)
 
@@ -298,6 +311,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openSurveySubject.send(from)
   }
 
+  func managePledge(from: PPOProjectCardModel) {
+    self.managePledgeSubject.send(from)
+  }
+
   func viewBackingDetails(from: PPOProjectCardModel) {
     self.viewBackingDetailsSubject.send(from)
   }
@@ -336,6 +353,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     Never
   >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let managePledgeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
@@ -370,6 +388,9 @@ extension Sequence where Element == PPOProjectCardViewModel {
         surveyAvailableCount += 1
       case .confirmAddress:
         addressLocksSoonCount += 1
+      case .pledgeManagement:
+        // TODO(MBL-2093): Add analytics.
+        break
       }
     }
 

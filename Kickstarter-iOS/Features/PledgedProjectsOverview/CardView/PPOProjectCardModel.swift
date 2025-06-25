@@ -58,12 +58,14 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     case authenticateCard
     case openSurvey
     case confirmAddress
+    case pledgeManagement
   }
 
   public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case editAddress
     case completeSurvey
+    case managePledge
     case fixPayment
     case authenticateCard(clientSecret: String)
 
@@ -75,6 +77,8 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
         Strings.Edit()
       case .completeSurvey:
         Strings.Take_survey()
+      case .managePledge:
+        "FPO: Finalize Pledge" // TODO(MBL-2093): Use translated strings when they're ready.
       case .fixPayment:
         Strings.Fix_payment()
       case .authenticateCard:
@@ -89,6 +93,8 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       case .editAddress:
         .black
       case .completeSurvey:
+        .green
+      case .managePledge:
         .green
       case .fixPayment:
         .red
