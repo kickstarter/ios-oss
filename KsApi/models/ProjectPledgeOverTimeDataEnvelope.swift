@@ -3,10 +3,10 @@ import ReactiveSwift
 
 public struct ProjectPledgeOverTimeDataEnvelope {
   public let isPledgeOverTimeAllowed: Bool
-  public let pledgeOverTimeCollectionPlanChargeExplanation: String
-  public let pledgeOverTimeCollectionPlanChargedAsNPayments: String
-  public let pledgeOverTimeCollectionPlanShortPitch: String
-  public let pledgeOverTimeMinimumExplanation: String
+  public let pledgeOverTimeCollectionPlanChargeExplanation: String?
+  public let pledgeOverTimeCollectionPlanChargedAsNPayments: String?
+  public let pledgeOverTimeCollectionPlanShortPitch: String?
+  public let pledgeOverTimeMinimumExplanation: String?
 }
 
 // MARK: - GraphQL Adapters
@@ -23,11 +23,11 @@ extension ProjectPledgeOverTimeDataEnvelope {
     let envelope = ProjectPledgeOverTimeDataEnvelope(
       isPledgeOverTimeAllowed: project.isPledgeOverTimeAllowed,
       pledgeOverTimeCollectionPlanChargeExplanation: project
-        .pledgeOverTimeCollectionPlanChargeExplanation ?? "",
+        .pledgeOverTimeCollectionPlanChargeExplanation,
       pledgeOverTimeCollectionPlanChargedAsNPayments: project
-        .pledgeOverTimeCollectionPlanChargedAsNPayments ?? "",
-      pledgeOverTimeCollectionPlanShortPitch: project.pledgeOverTimeCollectionPlanShortPitch ?? "",
-      pledgeOverTimeMinimumExplanation: project.pledgeOverTimeMinimumExplanation ?? ""
+        .pledgeOverTimeCollectionPlanChargedAsNPayments,
+      pledgeOverTimeCollectionPlanShortPitch: project.pledgeOverTimeCollectionPlanShortPitch,
+      pledgeOverTimeMinimumExplanation: project.pledgeOverTimeMinimumExplanation
     )
 
     return SignalProducer(value: envelope)
