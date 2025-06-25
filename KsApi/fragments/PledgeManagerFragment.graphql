@@ -1,0 +1,4 @@
+fragment PledgeManagerFragment on PledgeManager {
+  id
+  acceptsNewBackers
+}

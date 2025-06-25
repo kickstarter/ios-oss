@@ -591,6 +591,11 @@ public enum FetchAddsOnsQueryTemplate {
           "isLaunched": true,
           "isWatched": false,
           "launchedAt": 1619603758,
+          "lastWave": {
+             "__typename":"CheckoutWave",
+             "id": "Q2hlY2tvdXRXYXZlLTI1OQ==",
+             "active": true
+          },
           "location": {
             "__typename": "Location",
             "country": "AU",
@@ -602,6 +607,11 @@ public enum FetchAddsOnsQueryTemplate {
           "maxPledge": 8500,
           "minPledge": 1,
           "name": "Peppermint Fox Press: Notebooks & Stationery",
+          "pledgeManager": {
+             "__typename":"PledgeManager",
+             "id": "UGxlZGdlTWFuYWdlci05MQ==",
+             "acceptsNewBackers": true
+          },
           "pid": 1606532881,
           "pledged": {
             "__typename": "Money",
@@ -612,6 +622,7 @@ public enum FetchAddsOnsQueryTemplate {
           "isInPostCampaignPledgingPhase": false,
           "postCampaignPledgingEnabled": false,
           "prelaunchActivated": true,
+          "redemptionPageUrl": "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",
           "projectNotice": null,
           "slug": "peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "state": "LIVE",
