@@ -29,3 +29,20 @@ extension DiscoveryParams.PercentRaisedBucket {
     }
   }
 }
+
+extension DiscoveryParams.AmountRaisedBucket {
+  public var title: String {
+    switch self {
+    case .bucket_0:
+      return Strings.Amount_raised_bucket_0()
+    case .bucket_1:
+      return Strings.Amount_raised_bucket_1()
+    case .bucket_2:
+      return Strings.Amount_raised_bucket_2()
+    case .bucket_3:
+      return Strings.Amount_raised_bucket_3()
+    case .bucket_4:
+      return Strings.Amount_raised_bucket_4()
+    }
+  }
+}
