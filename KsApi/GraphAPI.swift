@@ -2726,6 +2726,67 @@ public enum GraphAPI {
     }
   }
 
+  /// Buckets of amount pledged
+  public enum PledgedBuckets: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// Range from 0 to 1000 USD
+    case bucket_0
+    /// Range from 1000 to 10000 USD
+    case bucket_1
+    /// Range from 10000 to 100000 USD
+    case bucket_2
+    /// Range from 100000 to 1000000 USD
+    case bucket_3
+    /// Range from 1000000 to Infinity USD
+    case bucket_4
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "BUCKET_0": self = .bucket_0
+        case "BUCKET_1": self = .bucket_1
+        case "BUCKET_2": self = .bucket_2
+        case "BUCKET_3": self = .bucket_3
+        case "BUCKET_4": self = .bucket_4
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .bucket_0: return "BUCKET_0"
+        case .bucket_1: return "BUCKET_1"
+        case .bucket_2: return "BUCKET_2"
+        case .bucket_3: return "BUCKET_3"
+        case .bucket_4: return "BUCKET_4"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: PledgedBuckets, rhs: PledgedBuckets) -> Bool {
+      switch (lhs, rhs) {
+        case (.bucket_0, .bucket_0): return true
+        case (.bucket_1, .bucket_1): return true
+        case (.bucket_2, .bucket_2): return true
+        case (.bucket_3, .bucket_3): return true
+        case (.bucket_4, .bucket_4): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [PledgedBuckets] {
+      return [
+        .bucket_0,
+        .bucket_1,
+        .bucket_2,
+        .bucket_3,
+        .bucket_4,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -14451,7 +14512,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $pledged: PledgedBuckets, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
@@ -14459,6 +14520,7 @@ public enum GraphAPI {
           state: $state
           raised: $raised
           locationId: $locationId
+          pledged: $pledged
           after: $cursor
           first: $first
         ) {
@@ -14497,22 +14559,24 @@ public enum GraphAPI {
     public var state: PublicProjectState?
     public var raised: RaisedBuckets?
     public var locationId: GraphQLID?
+    public var pledged: PledgedBuckets?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, pledged: PledgedBuckets? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
       self.state = state
       self.raised = raised
       self.locationId = locationId
+      self.pledged = pledged
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "pledged": pledged, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14520,7 +14584,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "pledged": GraphQLVariable("pledged"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 
