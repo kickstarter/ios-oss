@@ -503,14 +503,14 @@ private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<
       let projectWithPlotData = project
         |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
         |> Project.lens
-        .pledgeOverTimeCollectionPlanChargeExplanation .~
-        (envelope.pledgeOverTimeCollectionPlanChargeExplanation ?? "")
+        .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
+        .pledgeOverTimeCollectionPlanChargeExplanation
         |> Project.lens
-        .pledgeOverTimeCollectionPlanChargedAsNPayments .~
-        (envelope.pledgeOverTimeCollectionPlanChargedAsNPayments ?? "")
+        .pledgeOverTimeCollectionPlanChargedAsNPayments .~ envelope
+        .pledgeOverTimeCollectionPlanChargedAsNPayments
         |> Project.lens
-        .pledgeOverTimeCollectionPlanShortPitch .~ (envelope.pledgeOverTimeCollectionPlanShortPitch ?? "")
-        |> Project.lens.pledgeOverTimeMinimumExplanation .~ (envelope.pledgeOverTimeMinimumExplanation ?? "")
+        .pledgeOverTimeCollectionPlanShortPitch .~ envelope.pledgeOverTimeCollectionPlanShortPitch
+        |> Project.lens.pledgeOverTimeMinimumExplanation .~ envelope.pledgeOverTimeMinimumExplanation
 
       return SignalProducer(value: projectWithPlotData)
     }
@@ -615,7 +615,7 @@ private func managePledgePaymentMethodViewData(
   )
 }
 
-private func isPledgeOverTimePledge(with backing: Backing) -> Bool {
+private func isPledgeOverTime(with backing: Backing) -> Bool {
   return !backing.paymentIncrements.isEmpty
 }
 
