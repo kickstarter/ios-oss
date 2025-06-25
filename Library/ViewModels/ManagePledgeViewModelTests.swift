@@ -414,7 +414,50 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward() {
+  func testMenuButtonTapped_WhenProject_IsEditPledgeOverTime_doesNotInclude_chooseAnotherReward_includes_EditPledge(
+  ) {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    let backing = Backing.templatePlot
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true,
+      RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.editPledgeOverTimePledge,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
+    }
+  }
+
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward_Or_editPledge_WhenEditPledgeOverTimeFeatureFlag_isFalse(
+  ) {
     let project = Project.template
       |> Project.lens.state .~ .live
 
@@ -454,7 +497,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_chooseAnotherReward_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_editPledge_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -488,7 +531,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showActionSheetMenuWithOptions.assertValues([
         [
           ManagePledgeAlertAction.changePaymentMethod,
-          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.editPledgeOverTimePledge,
           ManagePledgeAlertAction.contactCreator,
           ManagePledgeAlertAction.cancelPledge
         ]

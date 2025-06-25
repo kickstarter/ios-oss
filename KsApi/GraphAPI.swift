@@ -1676,9 +1676,10 @@ public enum GraphAPI {
     ///   - paymentSourceId: new payment source id
     ///   - intentClientSecret: Stripe SetupIntent client secret
     ///   - applePay
+    ///   - incremental
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(id: GraphQLID, amount: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, locationId: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, intentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["id": id, "amount": amount, "rewardId": rewardId, "rewardIds": rewardIds, "locationId": locationId, "paymentSourceId": paymentSourceId, "intentClientSecret": intentClientSecret, "applePay": applePay, "clientMutationId": clientMutationId]
+    public init(id: GraphQLID, amount: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, locationId: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, intentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, incremental: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["id": id, "amount": amount, "rewardId": rewardId, "rewardIds": rewardIds, "locationId": locationId, "paymentSourceId": paymentSourceId, "intentClientSecret": intentClientSecret, "applePay": applePay, "incremental": incremental, "clientMutationId": clientMutationId]
     }
 
     public var id: GraphQLID {
@@ -1754,6 +1755,15 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "applePay")
+      }
+    }
+
+    public var incremental: Swift.Optional<Bool?> {
+      get {
+        return graphQLMap["incremental"] as? Swift.Optional<Bool?> ?? Swift.Optional<Bool?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "incremental")
       }
     }
 
@@ -4648,8 +4658,6 @@ public enum GraphAPI {
     case enableSpotlightBgImage
     case ecovadisComponent_2023
     case webBraze
-    case latePledgesLearnMoreCta
-    case postCampaignBackings_2024
     case ckeditorProjectUpdates
     case paymentsStripeLinkOnCheckout
     case addressCollection_2024
@@ -4658,7 +4666,6 @@ public enum GraphAPI {
     case resetBackerSurvey_2024
     case pledgeProjectsOverview_2024
     case pledgeProjectsOverviewIos_2024
-    case surveyRewardQuestions_2024
     case prelaunchStoryEditor
     case prelaunchStoryException
     case creatorNavRefresh
@@ -4676,19 +4683,23 @@ public enum GraphAPI {
     case pledgeManagementRewardSetup
     case creatorExperience_2025
     case backingsDashV2_2025
-    case secretRewards_2025
     case featuredRewards_2025
     case creatorTab_2025
     case showCreativeDownload_2024ReportInNav
     case recentSearches_2025
     case projectClassifiers_2025
-    case backerReportTrackingNumbers_2025
     case pledgeOverTimeGa_2025
     case pledgeOverTimeMonthlyCadence_2025
     case removeEventSourcing_2025
     case digitalRewards_2025
     case digitalRewardsUploadButton_2025
-    case pmPledgeShippingSupported_2025
+    case pledgeOverTimeEditPledge_2025
+    case gatePmForPlot_2025
+    case eufymakeBackerReport
+    case multiVatIds_2025
+    case shopifySyncIntegration_2025
+    case creatorTaxReporting_2025
+    case allowSurveyResponseEdits_2025
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4773,8 +4784,6 @@ public enum GraphAPI {
         case "enable_spotlight_bg_image": self = .enableSpotlightBgImage
         case "ecovadis_component_2023": self = .ecovadisComponent_2023
         case "web_braze": self = .webBraze
-        case "late_pledges_learn_more_cta": self = .latePledgesLearnMoreCta
-        case "post_campaign_backings_2024": self = .postCampaignBackings_2024
         case "ckeditor_project_updates": self = .ckeditorProjectUpdates
         case "payments_stripe_link_on_checkout": self = .paymentsStripeLinkOnCheckout
         case "address_collection_2024": self = .addressCollection_2024
@@ -4783,7 +4792,6 @@ public enum GraphAPI {
         case "reset_backer_survey_2024": self = .resetBackerSurvey_2024
         case "pledge_projects_overview_2024": self = .pledgeProjectsOverview_2024
         case "pledge_projects_overview_ios_2024": self = .pledgeProjectsOverviewIos_2024
-        case "survey_reward_questions_2024": self = .surveyRewardQuestions_2024
         case "prelaunch_story_editor": self = .prelaunchStoryEditor
         case "prelaunch_story_exception": self = .prelaunchStoryException
         case "creator_nav_refresh": self = .creatorNavRefresh
@@ -4801,19 +4809,23 @@ public enum GraphAPI {
         case "pledge_management_reward_setup": self = .pledgeManagementRewardSetup
         case "creator_experience_2025": self = .creatorExperience_2025
         case "backings_dash_v2_2025": self = .backingsDashV2_2025
-        case "secret_rewards_2025": self = .secretRewards_2025
         case "featured_rewards_2025": self = .featuredRewards_2025
         case "creator_tab_2025": self = .creatorTab_2025
         case "show_creative_download_2024_report_in_nav": self = .showCreativeDownload_2024ReportInNav
         case "recent_searches_2025": self = .recentSearches_2025
         case "project_classifiers_2025": self = .projectClassifiers_2025
-        case "backer_report_tracking_numbers_2025": self = .backerReportTrackingNumbers_2025
         case "pledge_over_time_ga_2025": self = .pledgeOverTimeGa_2025
         case "pledge_over_time_monthly_cadence_2025": self = .pledgeOverTimeMonthlyCadence_2025
         case "remove_event_sourcing_2025": self = .removeEventSourcing_2025
         case "digital_rewards_2025": self = .digitalRewards_2025
         case "digital_rewards__upload_button_2025": self = .digitalRewardsUploadButton_2025
-        case "pm_pledge_shipping_supported_2025": self = .pmPledgeShippingSupported_2025
+        case "pledge_over_time_edit_pledge_2025": self = .pledgeOverTimeEditPledge_2025
+        case "gate_pm_for_plot_2025": self = .gatePmForPlot_2025
+        case "eufymake_backer_report": self = .eufymakeBackerReport
+        case "multi_vat_ids_2025": self = .multiVatIds_2025
+        case "shopify_sync_integration_2025": self = .shopifySyncIntegration_2025
+        case "creator_tax_reporting_2025": self = .creatorTaxReporting_2025
+        case "allow_survey_response_edits_2025": self = .allowSurveyResponseEdits_2025
         default: self = .__unknown(rawValue)
       }
     }
@@ -4899,8 +4911,6 @@ public enum GraphAPI {
         case .enableSpotlightBgImage: return "enable_spotlight_bg_image"
         case .ecovadisComponent_2023: return "ecovadis_component_2023"
         case .webBraze: return "web_braze"
-        case .latePledgesLearnMoreCta: return "late_pledges_learn_more_cta"
-        case .postCampaignBackings_2024: return "post_campaign_backings_2024"
         case .ckeditorProjectUpdates: return "ckeditor_project_updates"
         case .paymentsStripeLinkOnCheckout: return "payments_stripe_link_on_checkout"
         case .addressCollection_2024: return "address_collection_2024"
@@ -4909,7 +4919,6 @@ public enum GraphAPI {
         case .resetBackerSurvey_2024: return "reset_backer_survey_2024"
         case .pledgeProjectsOverview_2024: return "pledge_projects_overview_2024"
         case .pledgeProjectsOverviewIos_2024: return "pledge_projects_overview_ios_2024"
-        case .surveyRewardQuestions_2024: return "survey_reward_questions_2024"
         case .prelaunchStoryEditor: return "prelaunch_story_editor"
         case .prelaunchStoryException: return "prelaunch_story_exception"
         case .creatorNavRefresh: return "creator_nav_refresh"
@@ -4927,19 +4936,23 @@ public enum GraphAPI {
         case .pledgeManagementRewardSetup: return "pledge_management_reward_setup"
         case .creatorExperience_2025: return "creator_experience_2025"
         case .backingsDashV2_2025: return "backings_dash_v2_2025"
-        case .secretRewards_2025: return "secret_rewards_2025"
         case .featuredRewards_2025: return "featured_rewards_2025"
         case .creatorTab_2025: return "creator_tab_2025"
         case .showCreativeDownload_2024ReportInNav: return "show_creative_download_2024_report_in_nav"
         case .recentSearches_2025: return "recent_searches_2025"
         case .projectClassifiers_2025: return "project_classifiers_2025"
-        case .backerReportTrackingNumbers_2025: return "backer_report_tracking_numbers_2025"
         case .pledgeOverTimeGa_2025: return "pledge_over_time_ga_2025"
         case .pledgeOverTimeMonthlyCadence_2025: return "pledge_over_time_monthly_cadence_2025"
         case .removeEventSourcing_2025: return "remove_event_sourcing_2025"
         case .digitalRewards_2025: return "digital_rewards_2025"
         case .digitalRewardsUploadButton_2025: return "digital_rewards__upload_button_2025"
-        case .pmPledgeShippingSupported_2025: return "pm_pledge_shipping_supported_2025"
+        case .pledgeOverTimeEditPledge_2025: return "pledge_over_time_edit_pledge_2025"
+        case .gatePmForPlot_2025: return "gate_pm_for_plot_2025"
+        case .eufymakeBackerReport: return "eufymake_backer_report"
+        case .multiVatIds_2025: return "multi_vat_ids_2025"
+        case .shopifySyncIntegration_2025: return "shopify_sync_integration_2025"
+        case .creatorTaxReporting_2025: return "creator_tax_reporting_2025"
+        case .allowSurveyResponseEdits_2025: return "allow_survey_response_edits_2025"
         case .__unknown(let value): return value
       }
     }
@@ -5025,8 +5038,6 @@ public enum GraphAPI {
         case (.enableSpotlightBgImage, .enableSpotlightBgImage): return true
         case (.ecovadisComponent_2023, .ecovadisComponent_2023): return true
         case (.webBraze, .webBraze): return true
-        case (.latePledgesLearnMoreCta, .latePledgesLearnMoreCta): return true
-        case (.postCampaignBackings_2024, .postCampaignBackings_2024): return true
         case (.ckeditorProjectUpdates, .ckeditorProjectUpdates): return true
         case (.paymentsStripeLinkOnCheckout, .paymentsStripeLinkOnCheckout): return true
         case (.addressCollection_2024, .addressCollection_2024): return true
@@ -5035,7 +5046,6 @@ public enum GraphAPI {
         case (.resetBackerSurvey_2024, .resetBackerSurvey_2024): return true
         case (.pledgeProjectsOverview_2024, .pledgeProjectsOverview_2024): return true
         case (.pledgeProjectsOverviewIos_2024, .pledgeProjectsOverviewIos_2024): return true
-        case (.surveyRewardQuestions_2024, .surveyRewardQuestions_2024): return true
         case (.prelaunchStoryEditor, .prelaunchStoryEditor): return true
         case (.prelaunchStoryException, .prelaunchStoryException): return true
         case (.creatorNavRefresh, .creatorNavRefresh): return true
@@ -5053,19 +5063,23 @@ public enum GraphAPI {
         case (.pledgeManagementRewardSetup, .pledgeManagementRewardSetup): return true
         case (.creatorExperience_2025, .creatorExperience_2025): return true
         case (.backingsDashV2_2025, .backingsDashV2_2025): return true
-        case (.secretRewards_2025, .secretRewards_2025): return true
         case (.featuredRewards_2025, .featuredRewards_2025): return true
         case (.creatorTab_2025, .creatorTab_2025): return true
         case (.showCreativeDownload_2024ReportInNav, .showCreativeDownload_2024ReportInNav): return true
         case (.recentSearches_2025, .recentSearches_2025): return true
         case (.projectClassifiers_2025, .projectClassifiers_2025): return true
-        case (.backerReportTrackingNumbers_2025, .backerReportTrackingNumbers_2025): return true
         case (.pledgeOverTimeGa_2025, .pledgeOverTimeGa_2025): return true
         case (.pledgeOverTimeMonthlyCadence_2025, .pledgeOverTimeMonthlyCadence_2025): return true
         case (.removeEventSourcing_2025, .removeEventSourcing_2025): return true
         case (.digitalRewards_2025, .digitalRewards_2025): return true
         case (.digitalRewardsUploadButton_2025, .digitalRewardsUploadButton_2025): return true
-        case (.pmPledgeShippingSupported_2025, .pmPledgeShippingSupported_2025): return true
+        case (.pledgeOverTimeEditPledge_2025, .pledgeOverTimeEditPledge_2025): return true
+        case (.gatePmForPlot_2025, .gatePmForPlot_2025): return true
+        case (.eufymakeBackerReport, .eufymakeBackerReport): return true
+        case (.multiVatIds_2025, .multiVatIds_2025): return true
+        case (.shopifySyncIntegration_2025, .shopifySyncIntegration_2025): return true
+        case (.creatorTaxReporting_2025, .creatorTaxReporting_2025): return true
+        case (.allowSurveyResponseEdits_2025, .allowSurveyResponseEdits_2025): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -5152,8 +5166,6 @@ public enum GraphAPI {
         .enableSpotlightBgImage,
         .ecovadisComponent_2023,
         .webBraze,
-        .latePledgesLearnMoreCta,
-        .postCampaignBackings_2024,
         .ckeditorProjectUpdates,
         .paymentsStripeLinkOnCheckout,
         .addressCollection_2024,
@@ -5162,7 +5174,6 @@ public enum GraphAPI {
         .resetBackerSurvey_2024,
         .pledgeProjectsOverview_2024,
         .pledgeProjectsOverviewIos_2024,
-        .surveyRewardQuestions_2024,
         .prelaunchStoryEditor,
         .prelaunchStoryException,
         .creatorNavRefresh,
@@ -5180,19 +5191,23 @@ public enum GraphAPI {
         .pledgeManagementRewardSetup,
         .creatorExperience_2025,
         .backingsDashV2_2025,
-        .secretRewards_2025,
         .featuredRewards_2025,
         .creatorTab_2025,
         .showCreativeDownload_2024ReportInNav,
         .recentSearches_2025,
         .projectClassifiers_2025,
-        .backerReportTrackingNumbers_2025,
         .pledgeOverTimeGa_2025,
         .pledgeOverTimeMonthlyCadence_2025,
         .removeEventSourcing_2025,
         .digitalRewards_2025,
         .digitalRewardsUploadButton_2025,
-        .pmPledgeShippingSupported_2025,
+        .pledgeOverTimeEditPledge_2025,
+        .gatePmForPlot_2025,
+        .eufymakeBackerReport,
+        .multiVatIds_2025,
+        .shopifySyncIntegration_2025,
+        .creatorTaxReporting_2025,
+        .allowSurveyResponseEdits_2025,
       ]
     }
   }
@@ -8611,7 +8626,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query DefaultLocations($first: Int) {
-        locations(useSessionLocation: true, first: $first) {
+        locations(useSessionLocation: true, discoverable: true, first: $first) {
           __typename
           nodes {
             __typename
@@ -8644,7 +8659,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["useSessionLocation": true, "first": GraphQLVariable("first")], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["useSessionLocation": true, "discoverable": true, "first": GraphQLVariable("first")], type: .object(Location.selections)),
         ]
       }
 
@@ -14351,7 +14366,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query LocationsByTerm($term: String, $first: Int) {
-        locations(term: $term, first: $first) {
+        locations(term: $term, first: $first, discoverable: true) {
           __typename
           nodes {
             __typename
@@ -14386,7 +14401,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first")], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first"), "discoverable": true], type: .object(Location.selections)),
         ]
       }
 
