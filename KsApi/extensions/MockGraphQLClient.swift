@@ -18,14 +18,14 @@ class MockGraphQLClient: ApolloClientType {
 
   /// Placeholder implementation because protocol definition used in `Service`
   public func fetch<Query: GraphQLQuery>(query _: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
-    .init(value: Query.Data(unsafeResultMap: [:]))
+    return SignalProducer<Query.Data, ErrorEnvelope>.never
   }
 
   /// Placeholder implementation because protocol definition used in `Service`
   public func perform<Mutation: GraphQLMutation>(
     mutation _: Mutation
   ) -> SignalProducer<Mutation.Data, ErrorEnvelope> {
-    .init(value: Mutation.Data(unsafeResultMap: [:]))
+    return SignalProducer<Mutation.Data, ErrorEnvelope>.never
   }
 }
 
@@ -108,31 +108,6 @@ private extension Result {
     switch self {
     case .success: return nil
     case let .failure(error): return error
-    }
-  }
-}
-
-public final class MockApolloQuery: GraphQLQuery {
-  public let operationDefinition: String = ""
-  public let operationName: String = "OperationName"
-  public let operationIdentifier: String? = "operation-identifier"
-
-  public init() {}
-
-  public var variables: GraphQLMap? {
-    return [:]
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes: [String] = ["Query"]
-    public static var selections: [GraphQLSelection] {
-      return []
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
     }
   }
 }
