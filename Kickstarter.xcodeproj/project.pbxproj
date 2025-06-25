@@ -1735,6 +1735,8 @@
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
+		E1D569BC2E09D5CB00C78297 /* DefaultLocationsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B82E09D5CB00C78297 /* DefaultLocationsList.swift */; };
+		E1D569C32E0C720E00C78297 /* RadioButtonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C22E0C720E00C78297 /* RadioButtonList.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
@@ -3541,6 +3543,7 @@
 		E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1D569B92E09D5CB00C78297 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		E1D569C22E0C720E00C78297 /* RadioButtonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonList.swift; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
@@ -7756,6 +7759,7 @@
 		E19900A92DE634E20082F05E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E1D569C22E0C720E00C78297 /* RadioButtonList.swift */,
 				E19900AA2DE634F10082F05E /* RadioButton.swift */,
 			);
 			path = Components;
@@ -9303,6 +9307,7 @@
 				E1BAA03B2C1A1CCD004F8B06 /* PPOView.swift in Sources */,
 				336194E32D8A95D200BED4BD /* SortView.swift in Sources */,
 				6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */,
+				E1D569C32E0C720E00C78297 /* RadioButtonList.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				E10675642DA58AB4007CCA24 /* PillButtons.swift in Sources */,
