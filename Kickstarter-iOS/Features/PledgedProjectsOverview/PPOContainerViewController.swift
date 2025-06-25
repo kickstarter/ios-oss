@@ -73,7 +73,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case let .editAddress(url), let .survey(url), let .backingDetails(url):
+      case let .editAddress(url), let .survey(url), let .backingDetails(url), let .managePledge(url):
         self?.openSurvey(url)
       case let .contactCreator(messageSubject):
         self?.messageCreator(messageSubject)
