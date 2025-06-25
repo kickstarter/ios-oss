@@ -970,6 +970,46 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
+  func testNetNewBacker_GoToPledgeManager() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.netNewBackersGoToPM.rawValue: true
+    ]
+
+    let config = Config.template
+    let project = Project.netNewBacker
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData)
+    )
+
+    orthogonalCombos([Language.en], [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: nil, language: language,
+        remoteConfigClient: mockConfigClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refInfo: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   // MARK: - Error fetching project
 
   func testErrorFetchingProject() {
