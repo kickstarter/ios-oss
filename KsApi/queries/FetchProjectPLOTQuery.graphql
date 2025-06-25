@@ -1,0 +1,10 @@
+query FetchProjectPLOTData($projectId: Int!) {
+  project(pid: $projectId) {
+    __typename
+    isPledgeOverTimeAllowed
+    pledgeOverTimeCollectionPlanChargeExplanation
+    pledgeOverTimeCollectionPlanChargedAsNPayments
+    pledgeOverTimeCollectionPlanShortPitch
+    pledgeOverTimeMinimumExplanation
+  }
+}

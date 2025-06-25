@@ -588,6 +588,15 @@ public struct Service: ServiceType {
     return request(.project(param))
   }
 
+  public func fetchProjectPlotData(projectId: Int) -> SignalProducer<ProjectPLOTDataEnvelope, ErrorEnvelope> {
+    let query = GraphAPI
+      .FetchProjectPlotDataQuery(projectId: projectId)
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(ProjectPLOTDataEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchProjectRewards(projectId: Int)
     -> SignalProducer<[Reward], ErrorEnvelope> {
     let query = GraphAPI
