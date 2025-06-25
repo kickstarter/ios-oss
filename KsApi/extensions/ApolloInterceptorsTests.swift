@@ -9,7 +9,9 @@ class ApolloInterceptorsTests: XCTestCase {
       "test-header-key-2": "test-header-value-2"
     ]
     let interceptor = HeadersInterceptor { headers }
-    let query = MockApolloQuery()
+    // Any (concrete) query will do for this test -
+    // just grabbed one off the top of my autocomplete.
+    let query = GraphAPI.DefaultLocationsQuery(first: 1)
     let url = URL(string: "https://www.kickstarter.com")!
     let request = HTTPRequest(
       graphQLEndpoint: url,
