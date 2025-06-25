@@ -270,6 +270,7 @@
 		331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */; };
 		3330E7C72E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */; };
 		3330E7C92E0BE5A7004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */; };
+		3330E7CB2E0C7CE5004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7CA2E0C7CDF004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift */; };
 		333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */; };
 		333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */; };
 		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
@@ -2067,6 +2068,7 @@
 		331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgeManager+PledgeManagerFragmentTests.swift"; sourceTree = "<group>"; };
 		3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectPLOTQuery.graphql; sourceTree = "<group>"; };
 		3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPledgeOverTimeDataEnvelope.swift; sourceTree = "<group>"; };
+		3330E7CA2E0C7CDF004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPledgeOverTimeDataEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCase.swift; sourceTree = "<group>"; };
 		333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCaseTests.swift; sourceTree = "<group>"; };
 		333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -7608,6 +7610,7 @@
 				D01588011EEB2ED7006E7684 /* Project.VideoTemplates.swift */,
 				8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */,
 				D01588021EEB2ED7006E7684 /* ProjectNotificationTemplates.swift */,
+				3330E7CA2E0C7CDF004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift */,
 				D01588031EEB2ED7006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift */,
 				D01588041EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift */,
 				D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */,
@@ -9746,6 +9749,7 @@
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */,
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
+				3330E7CB2E0C7CE5004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				47D7D09A26C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift in Sources */,
 				06232D3F2795EC3000A81755 /* TextNode+Helpers.swift in Sources */,

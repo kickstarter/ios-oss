@@ -95,7 +95,12 @@ public final class ManagePledgeViewModel:
             fetchProjectRewards(project: project)
           }
           .switchMap { project in
-            fetchProjectPledgeOverTimeData(project: project)
+            // Only fetch pledge over time data if the feature flag is enabled
+            guard featureEditPledgeOverTimeEnabled() else {
+              return SignalProducer(value: project)
+            }
+
+            return fetchProjectPledgeOverTimeData(project: project)
           }
           .materialize()
       }
