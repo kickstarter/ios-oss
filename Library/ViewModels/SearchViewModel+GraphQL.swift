@@ -55,7 +55,7 @@ extension GraphAPI.RaisedBuckets {
 }
 
 extension GraphAPI.PledgedBuckets {
-  static func from(discovery pledged: DiscoveryParams.PledgedBucket?) -> GraphAPI.PledgedBuckets? {
+  static func from(discovery pledged: DiscoveryParams.AmountRaisedBucket?) -> GraphAPI.PledgedBuckets? {
     guard let pledged = pledged else {
       return nil
     }

@@ -21,7 +21,7 @@ public struct DiscoveryParams {
   public var state: State?
   public var percentRaised: PercentRaisedBucket?
   public var location: Location?
-  public var pledged: PledgedBucket?
+  public var pledged: AmountRaisedBucket?
 
   public enum State: String, Decodable {
     case all
@@ -60,7 +60,7 @@ public struct DiscoveryParams {
     case bucket_2
   }
 
-  public enum PledgedBucket: CaseIterable {
+  public enum AmountRaisedBucket: CaseIterable {
     /// Range from 0 to 1,000 USD
     case bucket_0
 
