@@ -7,28 +7,18 @@ public struct PercentRaisedView: View {
   @Binding var selectedBucket: DiscoveryParams.PercentRaisedBucket?
 
   public var body: some View {
-    VStack(alignment: .leading, spacing: Constants.spacing) {
-      ForEach(self.buckets) { bucket in
-        Button {
-          self.selectedBucket = bucket
-        } label: {
-          HStack(spacing: Constants.buttonLabelSpacing) {
-            RadioButton(isSelected: bucket == self.selectedBucket)
-            Text(bucket.title)
-              .font(InterFont.bodyLG.swiftUIFont())
-              .foregroundStyle(Colors.Text.primary.swiftUIColor())
-          }
-        }
+    RadioButtonList<DiscoveryParams.PercentRaisedBucket>(
+      items: self.buckets,
+      didSelectItem: { bucket in
+        self.selectedBucket = bucket
+      },
+      itemConfiguration: { bucket in
+        RadioButtonList.Configuration(
+          title: bucket.title,
+          isSelected: bucket == self.selectedBucket
+        )
       }
-    }
-    .padding(Constants.padding)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-  }
-
-  internal enum Constants {
-    static let padding: CGFloat = 24.0
-    static let spacing: CGFloat = 24.0
-    static let buttonLabelSpacing: CGFloat = 8.0
+    )
   }
 }
 
