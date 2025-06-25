@@ -67,6 +67,8 @@ struct PPOView: View {
             )
           case .completeSurvey:
             self.viewModel.openSurvey(from: model)
+          case .managePledge:
+            self.viewModel.managePledge(from: model)
           case let .confirmAddress(address, addressId):
             self.viewModel.confirmAddress(from: model, address: address, addressId: addressId)
           case .editAddress:
