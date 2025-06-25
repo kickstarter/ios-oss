@@ -90,7 +90,7 @@ extension GraphAPI.SearchQuery {
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
     let locationId = params.location?.graphID
-    let pledged = GraphAPI.PledgedBuckets.from(discovery: params.pledged)
+    let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
 
     return GraphAPI.SearchQuery(
       term: params.query,

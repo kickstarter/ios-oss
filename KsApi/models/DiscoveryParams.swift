@@ -21,7 +21,7 @@ public struct DiscoveryParams {
   public var state: State?
   public var percentRaised: PercentRaisedBucket?
   public var location: Location?
-  public var pledged: AmountRaisedBucket?
+  public var amountRaised: AmountRaisedBucket?
 
   public enum State: String, Decodable {
     case all
@@ -247,7 +247,7 @@ extension DiscoveryParams {
       return false
     }
 
-    if let _ = self.pledged {
+    if let _ = self.amountRaised {
       return false
     }
 
