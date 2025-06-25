@@ -1738,6 +1738,9 @@
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
+		E1D569BC2E09D5CB00C78297 /* DefaultLocationsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B82E09D5CB00C78297 /* DefaultLocationsList.swift */; };
+		E1D569C32E0C720E00C78297 /* RadioButtonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C22E0C720E00C78297 /* RadioButtonList.swift */; };
+		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
@@ -3547,6 +3550,8 @@
 		E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1D569B92E09D5CB00C78297 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		E1D569C22E0C720E00C78297 /* RadioButtonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonList.swift; sourceTree = "<group>"; };
+		E1D569C52E0C787800C78297 /* AmountRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRaisedView.swift; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
@@ -5961,6 +5966,7 @@
 				E1D569BA2E09D5CB00C78297 /* LocationView */,
 				E19900A92DE634E20082F05E /* Components */,
 				E19900A42DDF9BF50082F05E /* FilterRootView */,
+				E1D569C42E0C786B00C78297 /* AmountRaisedView */,
 				E19900A12DDE26A60082F05E /* PercentRaisedView */,
 				E1CFB6B62D91E99F004AB0D6 /* HeaderView */,
 				336194E12D8A95BB00BED4BD /* SortView */,
@@ -7848,6 +7854,14 @@
 			path = LocationView;
 			sourceTree = "<group>";
 		};
+		E1D569C42E0C786B00C78297 /* AmountRaisedView */ = {
+			isa = PBXGroup;
+			children = (
+				E1D569C52E0C787800C78297 /* AmountRaisedView.swift */,
+			);
+			path = AmountRaisedView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -9128,6 +9142,7 @@
 				3344A7772D9C4DCF00D7DE91 /* RewardTrackingDetailsView.swift in Sources */,
 				39E436F52C7FA5F3009707BE /* SharedPledgeViewStyles.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
+				E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
 				8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */,
 				77EFBAE72268E37200DA5C3C /* RewardsCollectionViewDataSource.swift in Sources */,

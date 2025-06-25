@@ -21,6 +21,8 @@ public protocol SearchFiltersUseCaseInputs {
   func selectedProjectState(_ state: DiscoveryParams.State)
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
+  /// Call this when the user selects a new amount raised filter.
+  func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket)
   /// Cal this when the user selects a filter location.
   func filteredLocation(_: Location?)
   /// Call this when the user taps reset on a filter modal
@@ -46,6 +48,7 @@ public protocol SearchFiltersUseCaseDataOutputs {
   /// The currently selected percent raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never> { get }
   var selectedLocation: Signal<Location?, Never> { get }
+  var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -94,6 +97,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedLocationProperty.signal
     )
 
+    self.selectedAmountRaisedBucket = Signal.merge(
+      self.selectedAmountRaisedBucketProperty.producer.takeWhen(initialSignal),
+      self.selectedAmountRaisedBucketProperty.signal
+    )
+
     let sortOptions = SearchFilters.SortOptions(
       sortOptions: self.sortOptions,
       selectedSort: self.selectedSortProperty.value
@@ -118,12 +126,17 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       suggestedLocations: self.suggestedLocationsProperty.value
     )
 
+    let amountRaisedOptions = SearchFilters.AmountRaisedOptions(
+      buckets: DiscoveryParams.AmountRaisedBucket.allCases
+    )
+
     self.searchFilters = SearchFilters(
       sort: sortOptions,
       category: categoryOptions,
       projectState: projectStateOptions,
       percentRaised: percentRaisedOptions,
-      location: locationOptions
+      location: locationOptions,
+      amountRaised: amountRaisedOptions
     )
 
     Signal.combineLatest(
@@ -131,16 +144,20 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.dataOutputs.selectedCategory,
       self.dataOutputs.selectedState,
       self.dataOutputs.selectedPercentRaisedBucket,
-      self.dataOutputs.selectedLocation
+      self.dataOutputs.selectedLocation,
+      self.dataOutputs.selectedAmountRaisedBucket
     )
     .observeForUI()
-    .observeValues { [weak searchFilters] sort, category, state, bucket, location in
+    .observeValues { [
+      weak searchFilters
+    ] sort, category, state, percentRaisedBucket, location, amountRaisedBucket in
       searchFilters?.update(
         withSort: sort,
         category: category,
         projectState: state,
-        percentRaisedBucket: bucket,
-        location: location
+        percentRaisedBucket: percentRaisedBucket,
+        location: location,
+        amountRaisedBucket: amountRaisedBucket
       )
     }
 
@@ -187,6 +204,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   fileprivate let selectedPercentRaisedBucketProperty =
     MutableProperty<DiscoveryParams.PercentRaisedBucket?>(nil)
   fileprivate let selectedLocationProperty = MutableProperty<Location?>(nil)
+  fileprivate let selectedAmountRaisedBucketProperty =
+    MutableProperty<DiscoveryParams.AmountRaisedBucket?>(nil)
 
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
   fileprivate let defaultLocationsProperty = MutableProperty<[KsApi.Location]>([])
@@ -220,6 +239,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public var selectedState: Signal<DiscoveryParams.State, Never>
   public var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
   public var selectedLocation: Signal<Location?, Never>
+  public var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never>
 
   public private(set) var searchFilters: SearchFilters
 
@@ -236,6 +256,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedStateProperty.value = SearchFiltersUseCase.defaultStateOption
       self.selectedPercentRaisedBucketProperty.value = nil
       self.selectedLocationProperty.value = nil
+      self.selectedAmountRaisedBucketProperty.value = nil
     case .category:
       self.selectedCategoryProperty.value = .none
     case .sort:
@@ -244,6 +265,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedPercentRaisedBucketProperty.value = nil
     case .location:
       self.selectedLocationProperty.value = nil
+    case .amountRaised:
+      self.selectedAmountRaisedBucketProperty.value = nil
     }
   }
 
@@ -286,6 +309,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedLocationProperty.value = location
   }
 
+  public func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket) {
+    self.selectedAmountRaisedBucketProperty.value = bucket
+  }
+
   public var inputs: SearchFiltersUseCaseInputs { return self }
   public var uiOutputs: SearchFiltersUseCaseUIOutputs { return self }
   public var dataOutputs: SearchFiltersUseCaseDataOutputs { return self }
@@ -306,6 +333,8 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
     modalType = .percentRaised
   case .location:
     modalType = .location
+  case .amountRaised:
+    modalType = .amountRaised
   }
   return modalType
 }
@@ -316,6 +345,7 @@ public enum SearchFilterModalType: Hashable, CaseIterable {
   case sort
   case percentRaised
   case location
+  case amountRaised
 }
 
 private extension GraphAPI.LocationsByTermQuery.Data.Location {}
