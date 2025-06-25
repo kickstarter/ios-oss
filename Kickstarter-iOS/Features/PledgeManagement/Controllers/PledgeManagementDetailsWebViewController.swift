@@ -6,8 +6,12 @@ import UIKit
 internal final class PledgeManagementDetailsWebViewController: WebViewController {
   private let viewModel: PledgeManagementDetailsViewModelType = PledgeManagementDetailsViewModel()
 
-  internal static func configured(with backingDetailsURL: URL) -> PledgeManagementDetailsWebViewController {
+  internal static func configured(
+    with backingDetailsURL: URL,
+    title: String? = nil
+  ) -> PledgeManagementDetailsWebViewController {
     let vc = PledgeManagementDetailsWebViewController()
+    vc.title = title
     vc.viewModel.inputs.configure(with: backingDetailsURL)
     return vc
   }
@@ -15,7 +19,9 @@ internal final class PledgeManagementDetailsWebViewController: WebViewController
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationItem.title = Strings.Backing_details()
+    if self.navigationItem.title == nil {
+      self.navigationItem.title = Strings.Backing_details()
+    }
 
     if self.navigationController?.viewControllers.count == .some(1) {
       self.navigationItem.leftBarButtonItem = UIBarButtonItem(

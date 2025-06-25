@@ -336,7 +336,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.goToPledgeManagementPledgeView
       .observeForControllerAction()
       .observeValues { [weak self] url in
-        self?.goToPledgeManagementWebViewController(with: url)
+        self?.goToPledgeManagementWebViewController(with: url, title: Strings.Backing_details())
+      }
+
+    self.viewModel.outputs.goToPledgeManager
+      .observeForControllerAction()
+      .observeValues { [weak self] url in
+        self?.goToPledgeManagementWebViewController(with: url, title: Strings.Pledge_manager())
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
@@ -712,8 +718,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nc, animated: true)
   }
 
-  private func goToPledgeManagementWebViewController(with backingDetailsURL: URL) {
-    let vc = PledgeManagementDetailsWebViewController.configured(with: backingDetailsURL)
+  private func goToPledgeManagementWebViewController(with backingDetailsURL: URL, title: String? = nil) {
+    let vc = PledgeManagementDetailsWebViewController.configured(with: backingDetailsURL, title: title)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 
