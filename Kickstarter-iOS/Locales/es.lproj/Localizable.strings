@@ -41,6 +41,12 @@
 "Allow_tracking" = "Permitir seguimiento";
 "Almost_there" = "Cerca de la meta!";
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
+"Amount_raised" = "Monto recaudado";
+"Amount_raised_bucket_0" = "Under $1,000";
+"Amount_raised_bucket_1" = "$1,000 to $10,000";
+"Amount_raised_bucket_2" = "$10,000 to $100,000";
+"Amount_raised_bucket_3" = "$100,000 to $1,000,000";
+"Amount_raised_bucket_4" = "More than $1,000,000";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
 "Announcements" = "Anuncios";
@@ -77,7 +83,7 @@
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Patrocinadores se han registrado para ayudar a los creadores de Kickstarter a hacer realidad sus ideas.";
 "Backing_details" = "Detalles de la contribución";
 "Backing_means_supporting" = "Patrocinar un proyecto significa apoyar una idea creativa, independientemente del resultado.";
-"Backings" = "Backings";
+"Backings" = "Contribuciones";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
 "Beta" = "Beta";
 "Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
@@ -137,7 +143,7 @@
 "Collection_plan" = "Plan de pagos";
 "Collections" = "Colecciones";
 "Coming_soon" = "Próximamente";
-"Coming_soon_with_colon" = "Coming soon:";
+"Coming_soon_with_colon" = "Próximamente:";
 "Comment_reply_digest" = "Resumen de respuestas a comentarios";
 "Complete_payment" = "Completar pago";
 "Confirm" = "Confirmar";
@@ -222,7 +228,7 @@
 "Download_your_personal_data" = "Descarga tus datos personales";
 "Earth" = "Tierra";
 "Edit" = "Editar";
-"Edit_pledge" = "Edit pledge";
+"Edit_pledge" = "Editar contribución";
 "Edit_profile" = "Editar perfil";
 "Edit_reward" = "Editar recompensa";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
@@ -415,6 +421,8 @@
 "Live_with_creator_name" = "En vivo con <b>%{creator_name}</b>";
 "Loading" = "Cargando";
 "Location" = "Ubicación";
+"Location_anywhere" = "Cualquier lugar";
+"Location_searchbox_placeholder" = "Búsqueda por ciudad, estado, país...";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice.";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_ask_the_project_creator_directly" = "Inicia sesión para preguntarle al creador del proyecto directamente.";
@@ -782,7 +790,7 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
 "This_is_meant_to_give_you" = "Te da una idea del costo del envío. Una vez que el creador esté listo para entregar la recompensa, volverás aquí para pagar el envío y los impuestos aplicables.";
-"This_may_involve_submitting_a_delivery_address" = "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes.";
+"This_may_involve_submitting_a_delivery_address" = "Podrías tener que indicar la dirección de entrega, seleccionar tus preferencias respecto a los artículos, responder preguntas del cuestionario o pagar los costos de envío o impuestos.";
 "This_person_canceled_their_pledge" = "Esta persona canceló su contribución.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
 "This_post_is_for_backers_only" = "Esta publicación es únicamente para patrocinadores";

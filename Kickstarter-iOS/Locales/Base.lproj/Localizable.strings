@@ -41,6 +41,12 @@
 "Allow_tracking" = "Allow tracking";
 "Almost_there" = "Almost there!";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
+"Amount_raised" = "Amount raised";
+"Amount_raised_bucket_0" = "Under $1,000";
+"Amount_raised_bucket_1" = "$1,000 to $10,000";
+"Amount_raised_bucket_2" = "$10,000 to $100,000";
+"Amount_raised_bucket_3" = "$100,000 to $1,000,000";
+"Amount_raised_bucket_4" = "More than $1,000,000";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
 "Announcements" = "Announcements";
@@ -415,6 +421,8 @@
 "Live_with_creator_name" = "Live with <b>%{creator_name}</b>";
 "Loading" = "Loading";
 "Location" = "Location";
+"Location_anywhere" = "Anywhere";
+"Location_searchbox_placeholder" = "Search by city, state, country...";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Log in or sign up to save this project. We’ll remind you 48 hours before it ends.";
 "Log_in_or_sign_up_to_subscribe" = "Log in or sign up to subscribe";
 "Log_in_to_ask_the_project_creator_directly" = "Log in to ask the project creator directly.";

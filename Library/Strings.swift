@@ -739,6 +739,108 @@ public enum Strings {
     )
   }
   /**
+   "Amount raised"
+
+   - **en**: "Amount raised"
+   - **de**: "Gesammelter Betrag"
+   - **es**: "Monto recaudado"
+   - **fr**: "Montant recueilli"
+   - **ja**: "達成額"
+  */
+  public static func Amount_raised() -> String {
+    return localizedString(
+      key: "Amount_raised",
+      defaultValue: "Amount raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Under $1,000"
+
+   - **en**: "Under $1,000"
+   - **de**: "Under $1,000"
+   - **es**: "Under $1,000"
+   - **fr**: "Moins de 1 000 $"
+   - **ja**: "Under $1,000"
+  */
+  public static func Amount_raised_bucket_0() -> String {
+    return localizedString(
+      key: "Amount_raised_bucket_0",
+      defaultValue: "Under $1,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$1,000 to $10,000"
+
+   - **en**: "$1,000 to $10,000"
+   - **de**: "$1,000 to $10,000"
+   - **es**: "$1,000 to $10,000"
+   - **fr**: "Entre 1 000 $ et 10 000 $"
+   - **ja**: "$1,000 to $10,000"
+  */
+  public static func Amount_raised_bucket_1() -> String {
+    return localizedString(
+      key: "Amount_raised_bucket_1",
+      defaultValue: "$1,000 to $10,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$10,000 to $100,000"
+
+   - **en**: "$10,000 to $100,000"
+   - **de**: "$10,000 to $100,000"
+   - **es**: "$10,000 to $100,000"
+   - **fr**: "Entre 10 000 $ et 100 000 $"
+   - **ja**: "$10,000 to $100,000"
+  */
+  public static func Amount_raised_bucket_2() -> String {
+    return localizedString(
+      key: "Amount_raised_bucket_2",
+      defaultValue: "$10,000 to $100,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$100,000 to $1,000,000"
+
+   - **en**: "$100,000 to $1,000,000"
+   - **de**: "$100,000 to $1,000,000"
+   - **es**: "$100,000 to $1,000,000"
+   - **fr**: "Entre 100 000 $ et 1 000 000 $"
+   - **ja**: "$100,000 to $1,000,000"
+  */
+  public static func Amount_raised_bucket_3() -> String {
+    return localizedString(
+      key: "Amount_raised_bucket_3",
+      defaultValue: "$100,000 to $1,000,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "More than $1,000,000"
+
+   - **en**: "More than $1,000,000"
+   - **de**: "More than $1,000,000"
+   - **es**: "More than $1,000,000"
+   - **fr**: "Plus de 1 000 000 $"
+   - **ja**: "More than $1,000,000"
+  */
+  public static func Amount_raised_bucket_4() -> String {
+    return localizedString(
+      key: "Amount_raised_bucket_4",
+      defaultValue: "More than $1,000,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Amount: %{amount}, %{reward}"
 
    - **en**: "Amount: %{amount}, %{reward}"
@@ -1209,8 +1311,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1297,10 +1398,10 @@ contributeurs"
    "Backings"
 
    - **en**: "Backings"
-   - **de**: "Backings"
-   - **es**: "Backings"
-   - **fr**: "Backings"
-   - **ja**: "Backings"
+   - **de**: "Unterstützte Projekte"
+   - **es**: "Contribuciones"
+   - **fr**: "Engagements"
+   - **ja**: "バッキング"
   */
   public static func Backings() -> String {
     return localizedString(
@@ -2317,10 +2418,10 @@ contributeurs"
    "Coming soon:"
 
    - **en**: "Coming soon:"
-   - **de**: "Coming soon:"
-   - **es**: "Coming soon:"
-   - **fr**: "Coming soon:"
-   - **ja**: "Coming soon:"
+   - **de**: "Demnächst:"
+   - **es**: "Próximamente:"
+   - **fr**: "Bientôt en ligne:"
+   - **ja**: "近日公開:"
   */
   public static func Coming_soon_with_colon() -> String {
     return localizedString(
@@ -3298,9 +3399,9 @@ Cliquez pour réessayer."
    "Currently supported:"
 
    - **en**: "Currently supported:"
-   - **de**: "Currently supported:"
+   - **de**: "Derzeit unterstützt:"
    - **es**: "Currently supported:"
-   - **fr**: "Currently supported:"
+   - **fr**: "Pris en charge :"
    - **ja**: "Currently supported:"
   */
   public static func Currently_supported() -> String {
@@ -3706,10 +3807,10 @@ Cliquez pour réessayer."
    "Edit pledge"
 
    - **en**: "Edit pledge"
-   - **de**: "Edit pledge"
-   - **es**: "Edit pledge"
-   - **fr**: "Edit pledge"
-   - **ja**: "Edit pledge"
+   - **de**: "Beitrag bearbeiten"
+   - **es**: "Editar contribución"
+   - **fr**: "Modifier mon engagement"
+   - **ja**: "プレッジを編集する"
   */
   public static func Edit_pledge() -> String {
     return localizedString(
@@ -5866,10 +5967,10 @@ Cliquez pour réessayer."
    "Important project alerts"
 
    - **en**: "Important project alerts"
-   - **de**: "Important project alerts"
+   - **de**: "Wichtige Projektbenachrichtigungen"
    - **es**: "Important project alerts"
-   - **fr**: "Important project alerts"
-   - **ja**: "Important project alerts"
+   - **fr**: "Alertes de projet importantes"
+   - **ja**: "プロジェクトに関する重要なアラート"
   */
   public static func Important_project_alerts() -> String {
     return localizedString(
@@ -6002,10 +6103,10 @@ Cliquez pour réessayer."
    "Introducing the Backings tab"
 
    - **en**: "Introducing the Backings tab"
-   - **de**: "Introducing the Backings tab"
+   - **de**: "Jetzt neu: Der Tab „Meine Beiträge“"
    - **es**: "Introducing the Backings tab"
-   - **fr**: "Introducing the Backings tab"
-   - **ja**: "Introducing the Backings tab"
+   - **fr**: "Bienvenue dans l'onglet Engagements"
+   - **ja**: "「バッキング」タブのご紹介"
   */
   public static func Introducing_the_backings_tab() -> String {
     return localizedString(
@@ -6684,9 +6785,9 @@ with friends."
    "Live and unsuccessful backings can currently be viewed in the Profile tab."
 
    - **en**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
-   - **de**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
+   - **de**: "Derzeit findest du aktuelle und nicht erfolgreiche Beiträge auf dem Tab „Profil“."
    - **es**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
-   - **fr**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
+   - **fr**: "Les engagements en cours et non financés sont visibles actuellement visibles dans l'onglet Profil."
    - **ja**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
   */
   public static func Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab() -> String {
@@ -6701,7 +6802,7 @@ with friends."
    "Live backings"
 
    - **en**: "Live backings"
-   - **de**: "Live backings"
+   - **de**: "Beiträge für laufende Projekte"
    - **es**: "Live backings"
    - **fr**: "Live backings"
    - **ja**: "Live backings"
@@ -6846,6 +6947,40 @@ with friends."
     return localizedString(
       key: "Location",
       defaultValue: "Location",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Anywhere"
+
+   - **en**: "Anywhere"
+   - **de**: "Weltweit"
+   - **es**: "Cualquier lugar"
+   - **fr**: "N'importe où"
+   - **ja**: "すべての場所"
+  */
+  public static func Location_anywhere() -> String {
+    return localizedString(
+      key: "Location_anywhere",
+      defaultValue: "Anywhere",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Search by city, state, country..."
+
+   - **en**: "Search by city, state, country..."
+   - **de**: "Suche nach Stadt, Region, Land…"
+   - **es**: "Búsqueda por ciudad, estado, país..."
+   - **fr**: "Rechercher par ville, état, pays..."
+   - **ja**: "都市、州、国で検索…"
+  */
+  public static func Location_searchbox_placeholder() -> String {
+    return localizedString(
+      key: "Location_searchbox_placeholder",
+      defaultValue: "Search by city, state, country...",
       count: nil,
       substitutions: [:]
     )
@@ -7551,9 +7686,9 @@ with friends."
    "No funded backings"
 
    - **en**: "No funded backings"
-   - **de**: "No funded backings"
+   - **de**: "Keine Beiträge für finanzierte Projekte"
    - **es**: "No funded backings"
-   - **fr**: "No funded backings"
+   - **fr**: "Pas de contributions prélevées"
    - **ja**: "No funded backings"
   */
   public static func No_funded_backings() -> String {
@@ -11758,9 +11893,9 @@ catch your eye?"
    "Sorting and filtering"
 
    - **en**: "Sorting and filtering"
-   - **de**: "Sorting and filtering"
+   - **de**: "Sortieren und filtern"
    - **es**: "Sorting and filtering"
-   - **fr**: "Sorting and filtering"
+   - **fr**: "Tri et filtrage"
    - **ja**: "Sorting and filtering"
   */
   public static func Sorting_and_filtering() -> String {
@@ -11996,9 +12131,9 @@ catch your eye?"
    "Successfully funded backings"
 
    - **en**: "Successfully funded backings"
-   - **de**: "Successfully funded backings"
+   - **de**: "Beiträge für erfolgreich finanzierte Projekte"
    - **es**: "Successfully funded backings"
-   - **fr**: "Successfully funded backings"
+   - **fr**: "Projets soutenus et intégralement financés"
    - **ja**: "Successfully funded backings"
   */
   public static func Successfully_funded_backings() -> String {
@@ -12761,10 +12896,10 @@ catch your eye?"
    "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
 
    - **en**: "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
-   - **de**: "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
-   - **es**: "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
-   - **fr**: "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
-   - **ja**: "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes."
+   - **de**: "Dazu musst du möglicherweise eine Versandadresse angeben, eine Auswahl für deinen Artikel treffen, die Befragung ausfüllen und/oder Versandkosten oder Steuern bezahlen."
+   - **es**: "Podrías tener que indicar la dirección de entrega, seleccionar tus preferencias respecto a los artículos, responder preguntas del cuestionario o pagar los costos de envío o impuestos."
+   - **fr**: "Il pourra vous être demandé de fournir votre adresse de livraison, de choisir vos composantes, de répondre à des questions ou encore de régler vos frais de port ou vos taxes."
+   - **ja**: "これには、配送先の入力、アイテムの選択、サーベイへの回答、そして送料や税金の支払いが含まれる場合があります。"
   */
   public static func This_may_involve_submitting_a_delivery_address() -> String {
     return localizedString(
@@ -13189,7 +13324,7 @@ catch your eye?"
    - **de**: "Folge deinen unterstützten Projekten"
    - **es**: "Sigue los proyectos que has patrocinado"
    - **fr**: "Suivi de vos engagements"
-   - **ja**: "バックしたプロジェクトを追跡"
+   - **ja**: "バッキングを追跡"
   */
   public static func Track_your_backings() -> String {
     return localizedString(
@@ -13356,7 +13491,7 @@ catch your eye?"
    "Unsuccessful and canceled backings"
 
    - **en**: "Unsuccessful and canceled backings"
-   - **de**: "Unsuccessful and canceled backings"
+   - **de**: "Beiträge für nicht erfolgreiche und stornierte Projekte"
    - **es**: "Unsuccessful and canceled backings"
    - **fr**: "Unsuccessful and canceled backings"
    - **ja**: "Unsuccessful and canceled backings"
@@ -13611,10 +13746,10 @@ catch your eye?"
    "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
 
    - **en**: "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
-   - **de**: "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
+   - **de**: "Du kannst deine Beiträge jetzt über unser neues Dashboard „Meine Beiträge“ sehen und verwalten. Im Laufe der Beta-Version werden wir weitere Funktionen hinzufügen."
    - **es**: "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
-   - **fr**: "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
-   - **ja**: "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves."
+   - **fr**: "Vos engagements sont maintenant visibles et gérables sur ce nouveau tableau de bord ! D'autres fonctionnalités seront ajoutées avec l'évolution de la version bêta."
+   - **ja**: "新しい「バッキングダッシュボード」から、自分のバックした内容を確認し管理できます！ベータ版の進展に伴い、さらに多くの機能が追加される予定です。"
   */
   public static func View_and_manage_your_backings_from_our_new_backings_dashboard() -> String {
     return localizedString(
@@ -14433,9 +14568,9 @@ Veuillez réessayer ultérieurement."
    "When projects you've backed have successfully funded, you'll see them here."
 
    - **en**: "When projects you've backed have successfully funded, you'll see them here."
-   - **de**: "When projects you've backed have successfully funded, you'll see them here."
+   - **de**: "Wenn Projekte, die du unterstützt hast, erfolgreich finanziert wurden, erscheinen sie hier."
    - **es**: "When projects you've backed have successfully funded, you'll see them here."
-   - **fr**: "When projects you've backed have successfully funded, you'll see them here."
+   - **fr**: "Lorsqu'un projet que vous avez soutenu atteint son objectif de financement, il apparaît ici."
    - **ja**: "When projects you've backed have successfully funded, you'll see them here."
   */
   public static func When_projects_youve_backed_have_successfully_funded_youll_see_them_here() -> String {
@@ -21265,7 +21400,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -24864,7 +24999,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -28043,7 +28178,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -28995,7 +29130,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -29431,7 +29566,7 @@ projets enregistrés"
    - **de**: "Unterstützte Projekte"
    - **es**: "Contribuciones"
    - **fr**: "Engagements"
-   - **ja**: "バック済み"
+   - **ja**: "バッキング"
   */
   public static func tabbar_backings() -> String {
     return localizedString(
