@@ -236,6 +236,17 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
+    // Analytics: Open pledge manager
+    self.managePledgeSubject
+      .withFirst(from: latestLoadedResults)
+      .sink { card, overallProperties in
+        AppEnvironment.current.ksrAnalytics.trackPPOManagePledge(
+          project: card.projectAnalytics,
+          properties: overallProperties
+        )
+      }
+      .store(in: &self.cancellables)
+
     // Analytics: Initiate confirming address
     self.confirmAddressSubject
       .withFirst(from: latestLoadedResults)
@@ -377,6 +388,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var cardAuthRequiredCount: Int = 0
     var surveyAvailableCount: Int = 0
     var addressLocksSoonCount: Int = 0
+    var pledgeManagementCount: Int = 0
 
     for viewModel in self {
       switch viewModel.card.tierType {
@@ -389,14 +401,14 @@ extension Sequence where Element == PPOProjectCardViewModel {
       case .confirmAddress:
         addressLocksSoonCount += 1
       case .pledgeManagement:
-        // TODO(MBL-2093): Add analytics.
-        break
+        pledgeManagementCount += 1
       }
     }
 
     return KSRAnalytics.PledgedProjectOverviewProperties(
       addressLocksSoonCount: addressLocksSoonCount,
       surveyAvailableCount: surveyAvailableCount,
+      pledgeManagementCount: pledgeManagementCount,
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
       total: total,
