@@ -5,7 +5,6 @@ import SwiftUI
 struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
   @ObservedObject var searchFilters: SearchFilters
-  @State var locationSearchText: String
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
@@ -63,9 +62,6 @@ struct FilterRootView: View {
     }
 
     self.searchFilters = searchFilters
-
-    let selectedLocationName = searchFilters.location.selectedLocation?.displayableName
-    _locationSearchText = State(initialValue: selectedLocationName ?? "")
   }
 
   @ViewBuilder
@@ -142,8 +138,7 @@ struct FilterRootView: View {
       defaultLocations: self.searchFilters.location.defaultLocations,
       suggestedLocations: self.searchFilters.location.suggestedLocations,
       selectedLocation: self.selectedLocation,
-      onSearchedForLocations: self.onSearchedForLocations ?? { _ in },
-      searchText: self.$locationSearchText
+      onSearchedForLocations: self.onSearchedForLocations ?? { _ in }
     )
   }
 
