@@ -218,6 +218,10 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
       return PledgeStateCTAType.viewYourRewards
     }
 
+    if featureNetNewBackersGoToPMEnabled() && project.acceptsNetNewBackersForPM {
+      return PledgeStateCTAType.pledgeManager
+    }
+
     if isInPostCampaign {
       return PledgeStateCTAType.pledge
     }

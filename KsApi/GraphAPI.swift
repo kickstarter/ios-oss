@@ -8818,6 +8818,8 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       return document
@@ -9170,6 +9172,8 @@ public enum GraphAPI {
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -10136,6 +10140,8 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -10404,6 +10410,8 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -11036,6 +11044,8 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -11332,6 +11342,8 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -13499,6 +13511,8 @@ public enum GraphAPI {
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
+      document.append("\n" + LastWaveFragment.fragmentDefinition)
+      document.append("\n" + PledgeManagerFragment.fragmentDefinition)
       return document
     }
 
@@ -17357,6 +17371,66 @@ public enum GraphAPI {
     }
   }
 
+  public struct LastWaveFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment LastWaveFragment on CheckoutWave {
+        __typename
+        id
+        active
+      }
+      """
+
+    public static let possibleTypes: [String] = ["CheckoutWave"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("active", type: .nonNull(.scalar(Bool.self))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, active: Bool) {
+      self.init(unsafeResultMap: ["__typename": "CheckoutWave", "id": id, "active": active])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// Whether the wave is currently active
+    public var active: Bool {
+      get {
+        return resultMap["active"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "active")
+      }
+    }
+  }
+
   public struct LocationFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
@@ -17980,6 +18054,66 @@ public enum GraphAPI {
         set {
           resultMap.updateValue(newValue, forKey: "bankName")
         }
+      }
+    }
+  }
+
+  public struct PledgeManagerFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PledgeManagerFragment on PledgeManager {
+        __typename
+        id
+        acceptsNewBackers
+      }
+      """
+
+    public static let possibleTypes: [String] = ["PledgeManager"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("acceptsNewBackers", type: .nonNull(.scalar(Bool.self))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, acceptsNewBackers: Bool) {
+      self.init(unsafeResultMap: ["__typename": "PledgeManager", "id": id, "acceptsNewBackers": acceptsNewBackers])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// Whether the pledge manager accepts new backers or not
+    public var acceptsNewBackers: Bool {
+      get {
+        return resultMap["acceptsNewBackers"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "acceptsNewBackers")
       }
     }
   }
@@ -20260,6 +20394,10 @@ public enum GraphAPI {
         isWatched
         isLaunched
         isInPostCampaignPledgingPhase
+        lastWave {
+          __typename
+          ...LastWaveFragment
+        }
         launchedAt
         location {
           __typename
@@ -20269,6 +20407,10 @@ public enum GraphAPI {
         minPledge
         name
         pid
+        pledgeManager {
+          __typename
+          ...PledgeManagerFragment
+        }
         pledgeOverTimeCollectionPlanChargeExplanation
         pledgeOverTimeCollectionPlanChargedAsNPayments
         pledgeOverTimeCollectionPlanShortPitch
@@ -20284,6 +20426,7 @@ public enum GraphAPI {
         }
         prelaunchActivated
         projectNotice
+        redemptionPageUrl
         risks
         sendMetaCapiEvents
         slug
@@ -20343,12 +20486,14 @@ public enum GraphAPI {
         GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("isLaunched", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("isInPostCampaignPledgingPhase", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("lastWave", type: .object(LastWave.selections)),
         GraphQLField("launchedAt", type: .scalar(String.self)),
         GraphQLField("location", type: .object(Location.selections)),
         GraphQLField("maxPledge", type: .nonNull(.scalar(Int.self))),
         GraphQLField("minPledge", type: .nonNull(.scalar(Int.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("pid", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("pledgeManager", type: .object(PledgeManager.selections)),
         GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
         GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
         GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
@@ -20358,6 +20503,7 @@ public enum GraphAPI {
         GraphQLField("posts", type: .object(Post.selections)),
         GraphQLField("prelaunchActivated", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("projectNotice", type: .scalar(String.self)),
+        GraphQLField("redemptionPageUrl", type: .nonNull(.scalar(String.self))),
         GraphQLField("risks", type: .nonNull(.scalar(String.self))),
         GraphQLField("sendMetaCapiEvents", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("slug", type: .nonNull(.scalar(String.self))),
@@ -20378,8 +20524,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, projectNotice: String? = nil, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "projectNotice": projectNotice, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isPledgeOverTimeAllowed: Bool, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, isInPostCampaignPledgingPhase: Bool, lastWave: LastWave? = nil, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledgeManager: PledgeManager? = nil, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil, pledged: Pledged, postCampaignPledgingEnabled: Bool, posts: Post? = nil, prelaunchActivated: Bool, projectNotice: String? = nil, redemptionPageUrl: String, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase, "lastWave": lastWave.flatMap { (value: LastWave) -> ResultMap in value.resultMap }, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledgeManager": pledgeManager.flatMap { (value: PledgeManager) -> ResultMap in value.resultMap }, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation, "pledged": pledged.resultMap, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "projectNotice": projectNotice, "redemptionPageUrl": redemptionPageUrl, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -20620,6 +20766,16 @@ public enum GraphAPI {
       }
     }
 
+    /// The last checkout_wave, if there is one
+    public var lastWave: LastWave? {
+      get {
+        return (resultMap["lastWave"] as? ResultMap).flatMap { LastWave(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "lastWave")
+      }
+    }
+
     /// When the project launched
     public var launchedAt: String? {
       get {
@@ -20677,6 +20833,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "pid")
+      }
+    }
+
+    /// The project's pledge manager
+    public var pledgeManager: PledgeManager? {
+      get {
+        return (resultMap["pledgeManager"] as? ResultMap).flatMap { PledgeManager(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "pledgeManager")
       }
     }
 
@@ -20767,6 +20933,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "projectNotice")
+      }
+    }
+
+    /// URL for redeeming the backing
+    public var redemptionPageUrl: String {
+      get {
+        return resultMap["redemptionPageUrl"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "redemptionPageUrl")
       }
     }
 
@@ -21458,6 +21634,62 @@ public enum GraphAPI {
       }
     }
 
+    public struct LastWave: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CheckoutWave"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(LastWaveFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, active: Bool) {
+        self.init(unsafeResultMap: ["__typename": "CheckoutWave", "id": id, "active": active])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var lastWaveFragment: LastWaveFragment {
+          get {
+            return LastWaveFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
     public struct Location: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Location"]
 
@@ -21506,6 +21738,62 @@ public enum GraphAPI {
         public var locationFragment: LocationFragment {
           get {
             return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct PledgeManager: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PledgeManager"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(PledgeManagerFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, acceptsNewBackers: Bool) {
+        self.init(unsafeResultMap: ["__typename": "PledgeManager", "id": id, "acceptsNewBackers": acceptsNewBackers])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var pledgeManagerFragment: PledgeManagerFragment {
+          get {
+            return PledgeManagerFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
