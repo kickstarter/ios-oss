@@ -529,7 +529,8 @@ private func actionSheetMenuOptionsFor(
   var actions = ManagePledgeAlertAction.allCases
     .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
-  if isPledgeOverTime(with: backing) {
+  /// Enable the 'Edit pledge' option for all PLOT-enabled projects.
+  if project.isPledgeOverTimeAllowed == true {
     actions = actions.filter { $0 != .chooseAnotherReward }
 
     /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.

@@ -418,6 +418,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
+      |> Project.lens.isPledgeOverTimeAllowed .~ true
 
     let backing = Backing.templatePlot
 
@@ -460,6 +461,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
+      |> Project.lens.isPledgeOverTimeAllowed .~ true
 
     let backing = Backing.templatePlot
 
@@ -497,10 +499,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_editPledge_WhenEditPledgeOverTimeFeatureFlag_IsTrue(
+  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_Includes_editPledge_WhenProjectIsPLOTAllowed_IsTrue(
   ) {
     let project = Project.template
       |> Project.lens.state .~ .live
+      |> Project.lens.isPledgeOverTimeAllowed .~ true
 
     let backing = Backing.templatePlot
 
