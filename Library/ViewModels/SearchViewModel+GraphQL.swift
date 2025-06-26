@@ -121,7 +121,8 @@ extension DiscoveryParams {
     category: Category?,
     state: DiscoveryParams.State?,
     percentRaised: DiscoveryParams.PercentRaisedBucket?,
-    location: Location?
+    location: Location?,
+    amountRaised: DiscoveryParams.AmountRaisedBucket?
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
@@ -131,6 +132,7 @@ extension DiscoveryParams {
     params.state = state
     params.percentRaised = percentRaised
     params.location = location
+    params.amountRaised = amountRaised
     return params
   }
 }

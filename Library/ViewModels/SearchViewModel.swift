@@ -62,11 +62,14 @@ public protocol SearchViewModelInputs {
   /// Call this when the user selects a new percent raised filter.
   func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
 
-  /// Cal this when the user selects a filter location.
+  /// Call this when the user selects a filter location.
   func filteredLocation(_: Location?)
 
   /// Call this when the user types a location query string in the location filter
   func searchedForLocations(_ query: String)
+
+  /// Call this when the user selects a new amount raised filter.
+  func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket)
 
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
@@ -155,16 +158,18 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.selectedCategory,
       self.searchFiltersUseCase.selectedState,
       self.searchFiltersUseCase.selectedPercentRaisedBucket,
-      self.searchFiltersUseCase.selectedLocation
+      self.searchFiltersUseCase.selectedLocation,
+      self.searchFiltersUseCase.selectedAmountRaisedBucket
     )
-    .map { query, sort, category, state, raised, location in
+    .map { query, sort, category, state, percentRaised, location, amountRaised in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
         category: category.category,
         state: state,
-        percentRaised: raised,
-        location: location
+        percentRaised: percentRaised,
+        location: location,
+        amountRaised: amountRaised
       )
     }
 
@@ -499,6 +504,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public func searchedForLocations(_ query: String) {
     self.locationsUseCase.searchedForLocations(query)
+  }
+
+  public func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket) {
+    self.searchFiltersUseCase.inputs.selectedAmountRaisedBucket(bucket)
   }
 
   public var searchFilters: SearchFilters {
