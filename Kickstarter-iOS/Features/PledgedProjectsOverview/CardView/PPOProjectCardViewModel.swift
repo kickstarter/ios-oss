@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import KsApi
+import Library
 
 protocol PPOProjectCardViewModelInputs {
   func viewBackingDetails()
@@ -25,6 +26,16 @@ extension PPOProjectCardViewModelOutputs {
   var secondaryAction: PPOProjectCardModel.Action? {
     let (_, secondary) = self.card.actions
     return secondary
+  }
+
+  // Action details related to the primary action, if any.
+  var actionDetails: String? {
+    switch self.card.actions.0 {
+    case .managePledge:
+      return Strings.This_may_involve_submitting_a_delivery_address()
+    default:
+      return nil
+    }
   }
 }
 

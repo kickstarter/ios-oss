@@ -78,7 +78,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       case .completeSurvey:
         Strings.Take_survey()
       case .managePledge:
-        "FPO: Finalize Pledge" // TODO(MBL-2093): Use translated strings when they're ready.
+        Strings.Finalize_pledge()
       case .fixPayment:
         Strings.Fix_payment()
       case .authenticateCard:
