@@ -189,7 +189,8 @@ final class PPOProjectCardModelTests: XCTestCase {
                     "message": "Pledge will be dropped in 0 days",
                     "type": "alert"
                   }
-                ]
+                ],
+                "webviewUrl": "https://staging.kickstarter.com/projects/2071399561/ppo-failed-payment-0/backing/custom"
               }
         """)
       return PPOProjectCardModel(node: node)

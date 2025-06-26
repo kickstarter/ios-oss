@@ -8,4 +8,5 @@ fragment PPOCardFragment on PledgeProjectOverviewItem {
     message
     type
   }
+  webviewUrl
 }
