@@ -129,6 +129,25 @@ import KsApi
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
     )
 
+    internal static let managePledgeTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .warning, icon: .alert, message: "Finalize your pledge")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay truncate if longer than this extra long string",
+      address: nil,
+      actions: (.managePledge, nil),
+      tierType: .pledgeManagement,
+      backingDetailsUrl: "fakeBackingDetailsUrl",
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
     internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
       addOns: nil,
       backersCount: 42,

@@ -39,8 +39,18 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.memberData.permissions.last, .comment)
       XCTAssertEqual(project.dates.deadline, 1_630_591_053)
       XCTAssertEqual(project.id, 1_841_936_784)
+
+      XCTAssertNotNil(project.lastWave)
+      XCTAssertEqual(project.lastWave!.id, 259)
+      XCTAssertTrue(project.lastWave!.active)
+
       XCTAssertEqual(project.location.country, "US")
       XCTAssertEqual(project.name, "FINAL GAMBLE Issue #1")
+
+      XCTAssertNotNil(project.pledgeManager)
+      XCTAssertEqual(project.pledgeManager!.id, 91)
+      XCTAssertTrue(project.pledgeManager!.acceptsNewBackers)
+
       XCTAssertEqual(project.slug, "final-gamble-issue-1")
       XCTAssertEqual(
         project.photo.full,
@@ -60,6 +70,12 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertTrue(project.rewardData.rewards.isEmpty)
       XCTAssertTrue(project.staffPick)
       XCTAssertTrue(project.prelaunchActivated!)
+
+      XCTAssertEqual(
+        project.redemptionPageUrl,
+        "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem"
+      )
+
       XCTAssertFalse(project.displayPrelaunch!)
       XCTAssertEqual(project.flagging, false)
       XCTAssertNil(project.personalization.backing)
@@ -390,6 +406,11 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "isWatched":false,
        "isLaunched":true,
        "launchedAt":1627999053,
+       "lastWave": {
+          "__typename":"CheckoutWave",
+          "id": "Q2hlY2tvdXRXYXZlLTI1OQ==",
+          "active": true
+       },
        "location":{
           "__typename":"Location",
           "country":"US",
@@ -401,6 +422,11 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "maxPledge": 8500,
        "minPledge": 23,
        "name":"FINAL GAMBLE Issue #1",
+       "pledgeManager": {
+          "__typename":"PledgeManager",
+          "id": "UGxlZGdlTWFuYWdlci05MQ==",
+          "acceptsNewBackers": true
+       },
        "pid":1841936784,
       "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
       "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as four payments",
@@ -418,7 +444,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "__typename":"PostConnection",
           "totalCount":3
        },
-       "prelaunchActivated":true,
+       "prelaunchActivated": true,
+       "redemptionPageUrl": "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",
        "projectNotice": null,
        "sendMetaCapiEvents": false,
        "slug":"bandofbards/final-gamble-issue-1",

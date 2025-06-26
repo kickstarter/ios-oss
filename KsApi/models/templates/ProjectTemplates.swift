@@ -34,8 +34,10 @@ extension Project {
     displayPrelaunch: nil,
     flagging: false,
     id: 1,
+    lastWave: nil,
     location: .template,
     name: "The Project",
+    pledgeManager: nil,
     pledgeOverTimeCollectionPlanChargeExplanation: "The first charge will occur when the project ends successfully, then every 2 weeks until fully paid. When this option is selected no further edits can be made to your pledge.",
     pledgeOverTimeCollectionPlanChargedAsNPayments: "charged as four payments",
     pledgeOverTimeCollectionPlanShortPitch: "You will be charged for your pledge over four payments, at no extra cost.",
@@ -50,6 +52,7 @@ extension Project {
     isInPostCampaignPledgingPhase: false,
     postCampaignPledgingEnabled: false,
     prelaunchActivated: nil,
+    redemptionPageUrl: "/projects/creator/a-fun-project/backing/redeem",
     rewardData: RewardData(addOns: nil, rewards: []),
     sendMetaCapiEvents: false,
     slug: "a-fun-project",
@@ -116,6 +119,12 @@ extension Project {
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000
     |> (Project.lens.location .. Location.lens.displayableName) .~ "Burbank, CA"
+
+  internal static let netNewBacker = Project.template
+    |> Project.lens.personalization.backing .~ nil
+    |> Project.lens.personalization.isBacking .~ false
+    |> Project.lens.lastWave .~ LastWave(id: 1, active: true)
+    |> Project.lens.pledgeManager .~ PledgeManager(id: 1, acceptsNewBackers: true)
 }
 
 private let cosmicSurgeryRewards: [Reward] = [

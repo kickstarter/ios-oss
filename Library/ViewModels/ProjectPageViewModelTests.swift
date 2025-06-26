@@ -41,6 +41,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
+  private let goToPledgeManager = TestObserver<URL, Never>()
   private let goToReportProject = TestObserver<(Bool, String, String), Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
@@ -111,6 +112,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementViewPledge.observer)
+    self.vm.outputs.goToPledgeManager.observe(self.goToPledgeManager.observer)
     self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
@@ -1183,6 +1185,22 @@ final class ProjectPageViewModelTests: TestCase {
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
       self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
     }
+  }
+
+  func testGoToPledgeManager() {
+    let project = Project.netNewBacker
+
+    let urlString = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
+      .redemptionPageUrl
+    let redemptionPageUrl = URL(string: urlString)!
+
+    self.configureInitialState(.left(project))
+
+    self.goToPledgeManager.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeCTAButtonTapped(with: .pledgeManager)
+
+    self.goToPledgeManager.assertLastValue(redemptionPageUrl)
   }
 
   func testGoToUpdates() {

@@ -67,6 +67,12 @@ extension Project {
 
     let extendedProjectProperties = extendedProject(from: projectFragment)
 
+    let lastWave = projectFragment.lastWave
+      .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
+
+    let pledgeManager = projectFragment.pledgeManager
+      .flatMap { PledgeManager(fromFragment: $0.fragments.pledgeManagerFragment) }
+
     return
       Project(
         availableCardTypes: availableCardTypes,
@@ -80,8 +86,10 @@ extension Project {
         displayPrelaunch: displayPrelaunch,
         flagging: flagging,
         id: projectFragment.pid,
+        lastWave: lastWave,
         location: location,
         name: projectFragment.name,
+        pledgeManager: pledgeManager,
         pledgeOverTimeCollectionPlanChargeExplanation: projectFragment
           .pledgeOverTimeCollectionPlanChargeExplanation ?? "",
         pledgeOverTimeCollectionPlanChargedAsNPayments: projectFragment
@@ -97,6 +105,7 @@ extension Project {
         isInPostCampaignPledgingPhase: projectFragment.isInPostCampaignPledgingPhase,
         postCampaignPledgingEnabled: projectFragment.postCampaignPledgingEnabled,
         prelaunchActivated: projectFragment.prelaunchActivated,
+        redemptionPageUrl: projectFragment.redemptionPageUrl,
         rewardData: RewardData(addOns: addOns, rewards: rewards),
         sendMetaCapiEvents: projectFragment.sendMetaCapiEvents,
         slug: generatedSlug ?? projectFragment.slug,
