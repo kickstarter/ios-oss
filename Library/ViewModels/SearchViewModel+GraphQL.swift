@@ -54,6 +54,27 @@ extension GraphAPI.RaisedBuckets {
   }
 }
 
+extension GraphAPI.PledgedBuckets {
+  static func from(discovery pledged: DiscoveryParams.AmountRaisedBucket?) -> GraphAPI.PledgedBuckets? {
+    guard let pledged = pledged else {
+      return nil
+    }
+
+    switch pledged {
+    case .bucket_0:
+      return GraphAPI.PledgedBuckets.bucket_0
+    case .bucket_1:
+      return GraphAPI.PledgedBuckets.bucket_1
+    case .bucket_2:
+      return GraphAPI.PledgedBuckets.bucket_2
+    case .bucket_3:
+      return GraphAPI.PledgedBuckets.bucket_3
+    case .bucket_4:
+      return GraphAPI.PledgedBuckets.bucket_4
+    }
+  }
+}
+
 extension GraphAPI.SearchQuery {
   static func from(
     discoveryParams params: DiscoveryParams,
@@ -69,6 +90,7 @@ extension GraphAPI.SearchQuery {
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
     let locationId = params.location?.graphID
+    let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
 
     return GraphAPI.SearchQuery(
       term: params.query,
@@ -77,6 +99,7 @@ extension GraphAPI.SearchQuery {
       state: state,
       raised: raised,
       locationId: locationId,
+      pledged: pledged,
       first: params.perPage,
       cursor: cursor
     )
