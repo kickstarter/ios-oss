@@ -117,7 +117,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     self.pledgeOverTimeStackViewHidden = pledgeOverTimeData.map { $0?.isPledgeOverTime ?? false }.negate()
 
     self.pledgeOverTimeChargesText = pledgeOverTimeData.skipNil()
-      .map {
+      .compactMap {
         $0.project.pledgeOverTimeCollectionPlanChargedAsNPayments
       }
   }

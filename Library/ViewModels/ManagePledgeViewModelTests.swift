@@ -426,6 +426,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
+      fetchProjectPledgeOverTimeDataResult: .success(ProjectPledgeOverTimeDataEnvelope.template),
       fetchProjectRewardsResult: .success([.template])
     )
 
@@ -509,6 +510,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
+      fetchProjectPledgeOverTimeDataResult: .success(ProjectPledgeOverTimeDataEnvelope.template),
       fetchProjectRewardsResult: .success([.template])
     )
 

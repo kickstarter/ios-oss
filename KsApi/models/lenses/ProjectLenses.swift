@@ -536,7 +536,7 @@ extension Project {
       ) }
     )
 
-    public static let pledgeOverTimeCollectionPlanChargeExplanation = Lens<Project, String>(
+    public static let pledgeOverTimeCollectionPlanChargeExplanation = Lens<Project, String?>(
       view: { $0.pledgeOverTimeMinimumExplanation },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
@@ -565,7 +565,7 @@ extension Project {
       ) }
     )
 
-    public static let pledgeOverTimeCollectionPlanChargedAsNPayments = Lens<Project, String>(
+    public static let pledgeOverTimeCollectionPlanChargedAsNPayments = Lens<Project, String?>(
       view: { $0.pledgeOverTimeMinimumExplanation },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
@@ -594,7 +594,7 @@ extension Project {
       ) }
     )
 
-    public static let pledgeOverTimeCollectionPlanShortPitch = Lens<Project, String>(
+    public static let pledgeOverTimeCollectionPlanShortPitch = Lens<Project, String?>(
       view: { $0.pledgeOverTimeMinimumExplanation },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
@@ -623,7 +623,7 @@ extension Project {
       ) }
     )
 
-    public static let pledgeOverTimeMinimumExplanation = Lens<Project, String>(
+    public static let pledgeOverTimeMinimumExplanation = Lens<Project, String?>(
       view: { $0.pledgeOverTimeMinimumExplanation },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,

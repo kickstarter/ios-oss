@@ -111,7 +111,7 @@ public final class PledgePaymentPlansOptionViewModel:
 
     self.ineligibleBadgeText = configData
       .filterWhenLatestFrom(ineligible, satisfies: { $0 == true })
-      .map { $0.project.pledgeOverTimeMinimumExplanation }
+      .compactMap { $0.project.pledgeOverTimeMinimumExplanation }
   }
 
   fileprivate let configData = MutableProperty<PledgePaymentPlanOptionData?>(nil)
@@ -166,14 +166,17 @@ private func getSubtitleText(by type: PledgePaymentPlansType, isSelected: Bool, 
 }
 
 private func makePledgeOverTimeSubtitle(isSelected: Bool, project: Project) -> String {
-  let subtitle = project.pledgeOverTimeCollectionPlanShortPitch
-  guard isSelected else {
+  guard let subtitle = project.pledgeOverTimeCollectionPlanShortPitch else {
+    return ""
+  }
+
+  guard isSelected, let chargeExplanation = project.pledgeOverTimeCollectionPlanChargeExplanation else {
     return subtitle
   }
 
   return """
   \(subtitle)
 
-  \(project.pledgeOverTimeCollectionPlanChargeExplanation)
+  \(chargeExplanation)
   """
 }

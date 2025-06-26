@@ -94,6 +94,14 @@ public final class ManagePledgeViewModel:
           .switchMap { project in
             fetchProjectRewards(project: project)
           }
+          .switchMap { project in
+            // Only fetch pledge over time data if the feature flag is enabled
+            guard featureEditPledgeOverTimeEnabled() else {
+              return SignalProducer(value: project)
+            }
+
+            return fetchProjectPledgeOverTimeData(project: project)
+          }
           .materialize()
       }
 
@@ -488,6 +496,28 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
         |> Project.lens.rewardData.rewards .~ allRewards
 
       return SignalProducer(value: projectWithBackingAndRewards)
+    }
+}
+
+private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+  return AppEnvironment.current.apiService
+    .fetchProjectPledgeOverTimeData(projectId: project.id)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
+
+      let projectWithPlotData = project
+        |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
+        .pledgeOverTimeCollectionPlanChargeExplanation
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanChargedAsNPayments .~ envelope
+        .pledgeOverTimeCollectionPlanChargedAsNPayments
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanShortPitch .~ envelope.pledgeOverTimeCollectionPlanShortPitch
+        |> Project.lens.pledgeOverTimeMinimumExplanation .~ envelope.pledgeOverTimeMinimumExplanation
+
+      return SignalProducer(value: projectWithPlotData)
     }
 }
 

@@ -127,6 +127,10 @@
     fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?
     fileprivate let fetchProjectFriendsEnvelopeResult: Result<[User], ErrorEnvelope>?
+    fileprivate let fetchProjectPledgeOverTimeDataResult: Result<
+      ProjectPledgeOverTimeDataEnvelope,
+      ErrorEnvelope
+    >?
     fileprivate let fetchProjectRewardsEnvelopeResult: Result<[Reward], ErrorEnvelope>?
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
@@ -305,6 +309,7 @@
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
+      fetchProjectPledgeOverTimeDataResult: Result<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope>? = nil,
       fetchProjectRewardsResult: Result<[Reward], ErrorEnvelope>? = nil,
       fetchProjectActivitiesResponse: [Activity]? = nil,
       fetchProjectActivitiesError: ErrorEnvelope? = nil,
@@ -499,6 +504,7 @@
       self.fetchProjectEnvelopeResult = fetchProjectResult
       self.fetchProjectPamphletEnvelopeResult = fetchProjectPamphletResult
       self.fetchProjectFriendsEnvelopeResult = fetchProjectFriendsResult
+      self.fetchProjectPledgeOverTimeDataResult = fetchProjectPledgeOverTimeDataResult
       self.fetchProjectRewardsEnvelopeResult = fetchProjectRewardsResult
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
@@ -1368,6 +1374,17 @@
       default:
         return .empty
       }
+    }
+
+    func fetchProjectPledgeOverTimeData(projectId: Int)
+      -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let query = GraphAPI.FetchProjectPledgeOverTimeDataQuery(projectId: projectId)
+
+      return client.fetchWithResult(query: query, result: self.fetchProjectPledgeOverTimeDataResult)
     }
 
     internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
