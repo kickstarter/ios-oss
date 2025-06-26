@@ -167,6 +167,10 @@ struct PPOProjectCard: View {
     if let actionDetails = self.viewModel.actionDetails {
       Text(actionDetails)
         .font(Font(PPOStyles.subtitle.font))
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
         .foregroundStyle(Color(PPOStyles.subtitle.color))
         .padding([.horizontal])
     }
