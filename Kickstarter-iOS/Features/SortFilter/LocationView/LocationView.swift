@@ -24,9 +24,8 @@ public struct LocationView: View {
       Button {
         self.selectedDefaultLocation(nil)
       } label: {
-        // FIXME: MBL-2343 Add translations
         self.buttonLabel(
-          title: "FPO: Anywhere",
+          title: Strings.Location_anywhere(),
           isSelected: self.selectedLocation.isNil
         )
       }
@@ -52,8 +51,7 @@ public struct LocationView: View {
     .searchable(
       text: self.$searchText,
       placement: .navigationBarDrawer(displayMode: .always),
-      // FIXME: MBL-2343 Add translations
-      prompt: "FPO: Search by city, state, country..."
+      prompt: Strings.Location_searchbox_placeholder()
     )
     .searchSuggestions {
       ForEach(self.suggestedLocations) { location in

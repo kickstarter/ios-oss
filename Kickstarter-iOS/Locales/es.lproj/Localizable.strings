@@ -41,6 +41,12 @@
 "Allow_tracking" = "Permitir seguimiento";
 "Almost_there" = "Cerca de la meta!";
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
+"Amount_raised" = "Monto recaudado";
+"Amount_raised_bucket_0" = "Menos de USD 1000";
+"Amount_raised_bucket_1" = "Entre USD 1000 y USD 10 000";
+"Amount_raised_bucket_2" = "Entre USD 10 000 y USD 100 000";
+"Amount_raised_bucket_3" = "Entre USD 100 000 y USD 1 000 000";
+"Amount_raised_bucket_4" = "Más de USD 1 000 000";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
 "Announcements" = "Anuncios";
@@ -77,7 +83,7 @@
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Patrocinadores se han registrado para ayudar a los creadores de Kickstarter a hacer realidad sus ideas.";
 "Backing_details" = "Detalles de la contribución";
 "Backing_means_supporting" = "Patrocinar un proyecto significa apoyar una idea creativa, independientemente del resultado.";
-"Backings" = "Backings";
+"Backings" = "Contribuciones";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
 "Beta" = "Beta";
 "Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
@@ -137,7 +143,7 @@
 "Collection_plan" = "Plan de pagos";
 "Collections" = "Colecciones";
 "Coming_soon" = "Próximamente";
-"Coming_soon_with_colon" = "Coming soon:";
+"Coming_soon_with_colon" = "Próximamente:";
 "Comment_reply_digest" = "Resumen de respuestas a comentarios";
 "Complete_payment" = "Completar pago";
 "Confirm" = "Confirmar";
@@ -198,7 +204,7 @@
 "Currency_USD" = "$ Dólar estadounidense (USD)";
 "Current_email" = "Correo electrónico actual";
 "Current_password" = "Contraseña actual";
-"Currently_supported" = "Currently supported:";
+"Currently_supported" = "Ya disponible:";
 "Customize_your_reward" = "Personaliza tu recompensa";
 "Customize_your_reward_with_optional_addons" = "Personaliza tu recompensa con complementos opcionales.";
 "Daily_digest" = "Resumen diario";
@@ -222,7 +228,7 @@
 "Download_your_personal_data" = "Descarga tus datos personales";
 "Earth" = "Tierra";
 "Edit" = "Editar";
-"Edit_pledge" = "Edit pledge";
+"Edit_pledge" = "Editar contribución";
 "Edit_profile" = "Editar perfil";
 "Edit_reward" = "Editar recompensa";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
@@ -353,7 +359,7 @@
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará el %{project_deadline}.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará %{total} el %{project_deadline}.";
 "Ill_do_this_later" = "Lo haré más tarde";
-"Important_project_alerts" = "Important project alerts";
+"Important_project_alerts" = "Alertas de proyecto importantes";
 "Include_ended_projects" = "Incluir proyectos finalizados";
 "Increase_pledge" = "Incrementar contribución";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
@@ -361,7 +367,7 @@
 "Intellectual_property_violation" = "Violación a la propiedad intelectual";
 "Introduce_yourself" = "Preséntate";
 "Introducing_Lights_On" = "Presentamos \"Seguimos activos\"";
-"Introducing_the_backings_tab" = "Introducing the Backings tab";
+"Introducing_the_backings_tab" = "Presentamos la pestaña Contribuciones";
 "It_looks" = "Aparentemente, ya habías denunciado este proyecto. Nuestro equipo de confianza y seguridad revisará tu denuncia con base en <a href=\"%{our_rules}\">Nuestras reglas</a> y <a href=\"%{community_guidelines}\">Reglas de la comunidad</a>. Gracias por tus comentarios.";
 "It_may_not_offer_some_or_all_of_your_add_ons" = "Es posible que no ofrezca algunos o todos tus complementos.";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
@@ -415,6 +421,8 @@
 "Live_with_creator_name" = "En vivo con <b>%{creator_name}</b>";
 "Loading" = "Cargando";
 "Location" = "Ubicación";
+"Location_anywhere" = "Cualquier lugar";
+"Location_searchbox_placeholder" = "Búsqueda por ciudad, estado, país...";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice.";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_ask_the_project_creator_directly" = "Inicia sesión para preguntarle al creador del proyecto directamente.";
@@ -723,7 +731,7 @@
 "Something_went_wrong_pull_to_refresh" = "Ocurrió un error. Desliza para actualizar.";
 "Something_went_wrong_pull_to_refresh_no_period" = "Ocurrió un error. Desliza para actualizar.";
 "Sort_by" = "Ordenar por";
-"Sorting_and_filtering" = "Sorting and filtering";
+"Sorting_and_filtering" = "Clasificación y filtros";
 "Spam" = "Correo no deseado";
 "Start_the_request" = "Comenzar la recopilación de datos";
 "Starting_soon" = "Comienza en breve";
@@ -737,7 +745,7 @@
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Proyectos exitosos se han creado en Kickstarter.";
-"Successfully_funded_backings" = "Successfully funded backings";
+"Successfully_funded_backings" = "Contribuciones a proyectos financiados con éxito";
 "Superbacker" = "Superbacker";
 "Support_creative_independence" = "Apoya la independencia creativa";
 "Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19.";
@@ -782,7 +790,7 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
 "This_is_meant_to_give_you" = "Te da una idea del costo del envío. Una vez que el creador esté listo para entregar la recompensa, volverás aquí para pagar el envío y los impuestos aplicables.";
-"This_may_involve_submitting_a_delivery_address" = "This may involve submitting a delivery address, selecting your item preferences, answering survey questions, and/or paying for shipping or taxes.";
+"This_may_involve_submitting_a_delivery_address" = "Podrías tener que indicar la dirección de entrega, seleccionar tus preferencias respecto a los artículos, responder preguntas del cuestionario o pagar los costos de envío o impuestos.";
 "This_person_canceled_their_pledge" = "Esta persona canceló su contribución.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
 "This_post_is_for_backers_only" = "Esta publicación es únicamente para patrocinadores";
@@ -832,7 +840,7 @@
 "Verify_your_email_address" = "Verifica tu dirección de correo electrónico";
 "Video_disabled_until_the_internet_connection_improves" = "Video desactivado hasta se reestablezca la conexión de internet";
 "View" = "Ver";
-"View_and_manage_your_backings_from_our_new_backings_dashboard" = "View and manage your backings from our new Backings dashboard! More functionality will become available as our beta evolves.";
+"View_and_manage_your_backings_from_our_new_backings_dashboard" = "Ahora puedes ver y administrar tus contribuciones desde nuestro nuevo panel. Agregaremos más funcionalidades a medida que la versión beta evolucione.";
 "View_dashboard" = "Ver panel";
 "View_more_replies" = "Ver más respuestas";
 "View_profile" = "Ver perfil";
@@ -880,7 +888,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "What_parts_of_your_project_will_use_AI_generated_content" = "¿Qué partes de tu proyecto utilizarán contenido generado por IA? Responde con la mayor precisión posible.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
-"When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "When projects you've backed have successfully funded, you'll see them here.";
+"When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "Los proyectos que hayas patrocinado aparecerán aquí una vez que se financien con éxito.";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "Verás aquí los proyectos que hayas patrocinado y necesiten tu atención.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "Which_categories_interest_you" = "¿Qué categorías te interesan?";
