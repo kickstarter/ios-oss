@@ -207,8 +207,13 @@ final class SearchFiltersUseCaseTests: TestCase {
       XCTAssertEqual(type, .location, "Tapping percent raised button should percent raised options")
       XCTAssertEqual(
         self.useCase.uiOutputs.searchFilters.location.defaultLocations.count,
-        3,
-        "There should be three default locations set"
+        4,
+        "There should be four default locations set"
+      )
+      XCTAssertEqual(
+        self.useCase.uiOutputs.searchFilters.location.defaultLocations[0],
+        .anywhere,
+        "The first default location should be 'anywhere'"
       )
       XCTAssertEqual(
         self.useCase.uiOutputs.searchFilters.location.suggestedLocations.count,

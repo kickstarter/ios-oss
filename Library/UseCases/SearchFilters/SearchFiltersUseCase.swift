@@ -60,8 +60,12 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     suggestedLocations: Signal<[KsApi.Location], Never>
   ) {
     self.categoriesProperty <~ categories
-    self.defaultLocationsProperty <~ defaultLocations
     self.suggestedLocationsProperty <~ suggestedLocations
+    self.defaultLocationsProperty <~ defaultLocations
+      .map { locations in
+        let defaults = locations.map { SearchFiltersDefaultLocation.some($0) }
+        return [.anywhere] + defaults
+      }
 
     self.showFilters = self.tappedFilterTypeSignal
       .map { pill in
@@ -189,7 +193,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   fileprivate let selectedLocationProperty = MutableProperty<Location?>(nil)
 
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
-  fileprivate let defaultLocationsProperty = MutableProperty<[KsApi.Location]>([])
+  fileprivate let defaultLocationsProperty = MutableProperty<[SearchFiltersDefaultLocation]>([])
   fileprivate let suggestedLocationsProperty = MutableProperty<[KsApi.Location]>([])
 
   internal static let defaultSortOption = DiscoveryParams.Sort.magic

@@ -31,7 +31,7 @@ public class SearchFilters: ObservableObject {
   }
 
   public struct LocationOptions {
-    public var defaultLocations: [Location]
+    public var defaultLocations: [SearchFiltersDefaultLocation]
     public var suggestedLocations: [Location]
     public var selectedLocation: Location?
   }
@@ -132,7 +132,7 @@ public class SearchFilters: ObservableObject {
   }
 
   func update(
-    withDefaultSearchLocations locations: [Location]
+    withDefaultSearchLocations locations: [SearchFiltersDefaultLocation]
   ) {
     self.objectWillChange.send()
     self.location.defaultLocations = locations

@@ -3,7 +3,7 @@ import Library
 import SwiftUI
 
 public struct LocationView: View {
-  let defaultLocations: [Location]
+  let defaultLocations: [SearchFiltersDefaultLocation]
   let suggestedLocations: [Location]
   @Binding var selectedLocation: Location?
   let onSearchedForLocations: (String) -> Void
@@ -20,29 +20,31 @@ public struct LocationView: View {
   }
 
   @ViewBuilder var defaultLocationsList: some View {
-    VStack(alignment: .leading, spacing: Constants.spacing) {
-      Button {
-        self.selectedDefaultLocation(nil)
-      } label: {
-        // FIXME: MBL-2343 Add translations
-        self.buttonLabel(
-          title: "FPO: Anywhere",
-          isSelected: self.selectedLocation.isNil
-        )
-      }
-      ForEach(self.defaultLocations) { item in
-        Button {
-          self.selectedDefaultLocation(item)
-        } label: {
-          self.buttonLabel(
-            title: item.displayableName,
-            isSelected: self.selectedLocation?.id == item.id
+    RadioButtonList(
+      items: self.defaultLocations,
+      didSelectItem: { defaultLocation in
+        switch defaultLocation {
+        case .anywhere:
+          self.selectedDefaultLocation(nil)
+        case let .some(location):
+          self.selectedDefaultLocation(location)
+        }
+      },
+      itemConfiguration: { defaultLocation in
+        switch defaultLocation {
+        case .anywhere:
+          RadioButtonList.Configuration(
+            title: defaultLocation.title,
+            isSelected: self.selectedLocation == nil
+          )
+        case let .some(location):
+          RadioButtonList.Configuration(
+            title: defaultLocation.title,
+            isSelected: location == self.selectedLocation
           )
         }
       }
-    }
-    .padding(Constants.padding)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    )
   }
 
   public var body: some View {
