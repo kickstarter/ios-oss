@@ -113,6 +113,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureSearchFilterByLocation()
   case .netNewBackersGoToPM:
     return featureNetNewBackersGoToPMEnabled()
+  case .searchFilterByAmountRaised:
+    return featureSearchFilterByAmountRaised()
   }
 }
 

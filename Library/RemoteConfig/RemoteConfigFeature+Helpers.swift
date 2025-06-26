@@ -70,3 +70,7 @@ public func featureSearchFilterByLocation() -> Bool {
 public func featureNetNewBackersGoToPMEnabled() -> Bool {
   featureEnabled(feature: .netNewBackersGoToPM)
 }
+
+public func featureSearchFilterByAmountRaised() -> Bool {
+  featureEnabled(feature: .searchFilterByAmountRaised)
+}
