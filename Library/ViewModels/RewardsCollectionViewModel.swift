@@ -166,7 +166,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           : PledgeViewContext.pledge
 
       /// Differentiating between updating a reward for a regular pledge and updating a Pledge Over Time pledge.
-      let isPledgeOverTime = project.personalization.backing?.paymentIncrements.isEmpty == false
+      let isPledgeOverTime = project.isPledgeOverTimeAllowed == true
       let updatePledgeContext = isPledgeOverTime && featureEditPledgeOverTimeEnabled()
         ? PledgeViewContext.editPledgeOverTime
         : PledgeViewContext.updateReward
