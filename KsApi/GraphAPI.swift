@@ -4641,6 +4641,7 @@ public enum GraphAPI {
     case chCurrencySelector
     case dkCurrencySelector
     case noCurrencySelector
+    case plUsdCurrency_2025
     case seCurrencySelector
     case datalakeFeEvents
     case creatorDemographicsSurvey
@@ -4767,6 +4768,7 @@ public enum GraphAPI {
         case "ch_currency_selector": self = .chCurrencySelector
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
+        case "pl_usd_currency_2025": self = .plUsdCurrency_2025
         case "se_currency_selector": self = .seCurrencySelector
         case "datalake_fe_events": self = .datalakeFeEvents
         case "creator_demographics_survey": self = .creatorDemographicsSurvey
@@ -4894,6 +4896,7 @@ public enum GraphAPI {
         case .chCurrencySelector: return "ch_currency_selector"
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
+        case .plUsdCurrency_2025: return "pl_usd_currency_2025"
         case .seCurrencySelector: return "se_currency_selector"
         case .datalakeFeEvents: return "datalake_fe_events"
         case .creatorDemographicsSurvey: return "creator_demographics_survey"
@@ -5021,6 +5024,7 @@ public enum GraphAPI {
         case (.chCurrencySelector, .chCurrencySelector): return true
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
+        case (.plUsdCurrency_2025, .plUsdCurrency_2025): return true
         case (.seCurrencySelector, .seCurrencySelector): return true
         case (.datalakeFeEvents, .datalakeFeEvents): return true
         case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
@@ -5149,6 +5153,7 @@ public enum GraphAPI {
         .chCurrencySelector,
         .dkCurrencySelector,
         .noCurrencySelector,
+        .plUsdCurrency_2025,
         .seCurrencySelector,
         .datalakeFeEvents,
         .creatorDemographicsSurvey,
@@ -18506,6 +18511,7 @@ public enum GraphAPI {
           message
           type
         }
+        webviewUrl
       }
       """
 
@@ -18517,6 +18523,7 @@ public enum GraphAPI {
         GraphQLField("backing", type: .object(Backing.selections)),
         GraphQLField("tierType", type: .scalar(String.self)),
         GraphQLField("flags", type: .list(.nonNull(.object(Flag.selections)))),
+        GraphQLField("webviewUrl", type: .scalar(String.self)),
       ]
     }
 
@@ -18526,8 +18533,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }])
+    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil, webviewUrl: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, "webviewUrl": webviewUrl])
     }
 
     public var __typename: String {
@@ -18566,6 +18573,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, forKey: "flags")
+      }
+    }
+
+    /// webview url for survey responses or pledge management
+    public var webviewUrl: String? {
+      get {
+        return resultMap["webviewUrl"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "webviewUrl")
       }
     }
 

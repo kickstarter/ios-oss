@@ -608,7 +608,8 @@ class PPOViewModelTests: XCTestCase {
         }
       ],
 
-      "tierType": "Tier1PaymentFailed"
+      "tierType": "Tier1PaymentFailed",
+      "webviewUrl": null
     }
     """
   }

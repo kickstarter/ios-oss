@@ -80,9 +80,12 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    // For v1 of PPO we're just using the same url for surveys and the backing details page.
-    // This specifically links to the survey tab.
-    let backingDetailsUrl = backing?.backingDetailsPageRoute
+    // Let backingDetailsUrl default to the card-specific webviewUrl.
+    // TODO(MBL-2540): Only set this field for cards that need it, once the open backing details
+    // action is replaced by a open project page action instead.
+    let webviewUrl = card.webviewUrl
+    let backingDetailsUrl = webviewUrl ?? backing?.backingDetailsPageRoute
+
     let backingId = backing.flatMap { decompose(id: $0.id) }
     let backingGraphId = backing?.id
 
