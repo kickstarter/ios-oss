@@ -9,11 +9,14 @@ private struct PPOParsedAction {
   let tierType: PPOProjectCardModel.TierType
 }
 
+// Source of truth for enum values can be found at
+// https://github.com/kickstarter/kickstarter/blob/main/app/models/open_search/pledged_projects_overview.rb
 private enum PPOProjectCardModelConstants {
   static let paymentFailed = "Tier1PaymentFailed"
   static let confirmAddress = "Tier1AddressLockingSoon"
   static let completeSurvey = "Tier1OpenSurvey"
   static let authenticationRequired = "Tier1PaymentAuthenticationRequired"
+  static let pledgeManagement = "PledgeManagement"
 }
 
 extension PPOProjectCardModel {
@@ -69,6 +72,8 @@ extension PPOProjectCardModel {
       actions = Self.actionsForSurvey()
     case PPOProjectCardModelConstants.authenticationRequired:
       actions = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
+    case PPOProjectCardModelConstants.pledgeManagement:
+      actions = Self.actionsForPledgeManagement()
     default:
       return nil
     }
@@ -135,6 +140,14 @@ extension PPOProjectCardModel {
       primaryAction: .completeSurvey,
       secondaryAction: nil,
       tierType: .openSurvey
+    )
+  }
+
+  private static func actionsForPledgeManagement() -> PPOParsedAction {
+    PPOParsedAction(
+      primaryAction: .managePledge,
+      secondaryAction: nil,
+      tierType: .pledgeManagement
     )
   }
 

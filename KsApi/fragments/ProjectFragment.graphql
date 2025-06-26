@@ -56,6 +56,9 @@ fragment ProjectFragment on Project {
   isWatched
   isLaunched
   isInPostCampaignPledgingPhase
+  lastWave {
+    ...LastWaveFragment
+  }
   launchedAt
   location {
     ...LocationFragment
@@ -64,6 +67,9 @@ fragment ProjectFragment on Project {
   minPledge
   name
   pid
+  pledgeManager {
+    ...PledgeManagerFragment
+  }
   pledgeOverTimeCollectionPlanChargeExplanation
   pledgeOverTimeCollectionPlanChargedAsNPayments
   pledgeOverTimeCollectionPlanShortPitch
@@ -77,6 +83,7 @@ fragment ProjectFragment on Project {
   }
   prelaunchActivated
   projectNotice
+  redemptionPageUrl
   risks
   sendMetaCapiEvents
   slug

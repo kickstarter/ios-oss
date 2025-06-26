@@ -215,6 +215,11 @@ public enum FetchProjectQueryTemplate {
           "isWatched":false,
           "isLaunched":true,
           "launchedAt":1625118948,
+          "lastWave": {
+             "__typename":"CheckoutWave",
+             "id": "Q2hlY2tvdXRXYXZlLTI1OQ==",
+             "active": true
+          },
           "location":{
              "__typename":"Location",
              "country":"DE",
@@ -226,6 +231,11 @@ public enum FetchProjectQueryTemplate {
           "maxPledge": 8500,
           "minPledge": 1,
           "name":"The Quiet",
+          "pledgeManager": {
+             "__typename":"PledgeManager",
+             "id": "UGxlZGdlTWFuYWdlci05MQ==",
+             "acceptsNewBackers": true
+          },
           "pid":904702116,
           "pledged":{
              "__typename":"Money",
@@ -240,6 +250,7 @@ public enum FetchProjectQueryTemplate {
              "totalCount":5
           },
           "prelaunchActivated":true,
+          "redemptionPageUrl": "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",
           "projectNotice": null,
           "slug":"theaschneider/thequiet",
           "state":"LIVE",

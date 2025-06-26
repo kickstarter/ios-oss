@@ -1,0 +1,4 @@
+fragment LastWaveFragment on CheckoutWave {
+  id
+  active
+}

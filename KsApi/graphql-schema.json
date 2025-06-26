@@ -731,6 +731,16 @@
                   "ofType": null
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "discoverable",
+                "description": "Filter by discoverable.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -2312,6 +2322,22 @@
             "deprecationReason": null
           },
           {
+            "name": "amountLessShipping",
+            "description": "The amount pledged by the backer, less shipping.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "availableCrossSells",
             "description": "Add-ons available to be added at Pledge Redemption",
             "args": [],
@@ -2498,38 +2524,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Money",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "canAcceptPartialRefund",
-            "description": "Whether or not the creator can perform a partial refund now",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "canAcceptPledgeManagerRefund",
-            "description": "Whether or not the creator can perform a pledge manager refund now",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -5804,8 +5798,8 @@
             "deprecationReason": null
           },
           {
-            "name": "amountCollectedForPledgeManagerAddons",
-            "description": "The total amount collected for add-ons in the pledge manager",
+            "name": "amountCollectedForAddonsUpgradesAndNewBackers",
+            "description": "The total amount collected for add-ons, upgrades, and new backers in the pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -6128,24 +6122,6 @@
                 "defaultValue": null
               },
               {
-                "name": "isLatePledge",
-                "description": "Filter by whether the backer is a late pledge",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Boolean",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
                 "name": "sortBy",
                 "description": "Sort the backer report by this field",
                 "type": {
@@ -6274,6 +6250,24 @@
                   }
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "backerEntryPoint",
+                "description": "Filter by backer entry point",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -6378,7 +6372,7 @@
           },
           {
             "name": "backersRemainingForPledgeRedemption",
-            "description": "The number of backers who have yet to go through the pledge manager",
+            "description": "The number of original backers who have yet to go through the pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -6405,6 +6399,47 @@
             "deprecationReason": null
           },
           {
+            "name": "backingDetailsPageRoute",
+            "description": "URL/path for the backing details page",
+            "args": [
+              {
+                "name": "type",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "Route",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "tab",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "BackingDetailsPageTab",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "canComment",
             "description": "True if the current user can comment (considers restrictions)",
             "args": [],
@@ -6423,6 +6458,38 @@
           {
             "name": "canCommentSansRestrictions",
             "description": "True if the current user can comment (does not consider restrictions)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "canOptInToPledgeManager",
+            "description": "Whether or not the project can be opted into pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "canPrelaunchEarly",
+            "description": "Whether the project is eligible for early prelaunch",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -6536,6 +6603,18 @@
                 "name": "Boolean",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cleanupErroredPledgesDeadline",
+            "description": "The date after which errored pledges should be dropped",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7296,6 +7375,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasShopifyShop",
+            "description": "Whether the project has successfully linked a Shopify shop",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "hasSlug",
             "description": "Whether a project has its slug set.",
             "args": [],
@@ -7376,6 +7471,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasUpgradeableRewards",
+            "description": "Whether or not the project has upgradeable rewards configured",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -7438,6 +7549,38 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "importsToEu",
+            "description": "Whether the project has stock locations outside the EU that ship to the EU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "importsToUk",
+            "description": "Whether the project has stock locations outside the UK that ship to the UK",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -7649,6 +7792,26 @@
             "deprecationReason": null
           },
           {
+            "name": "itemVariants",
+            "description": "Item variants associated with the project",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "SkuCount",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "items",
             "description": "Items available through the project's backer rewards.",
             "args": [
@@ -7719,6 +7882,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "latePledgePlannedEndDate",
+            "description": "The datetime at which the last available time-limited reward will end, if all the rewards are time-limited",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7795,6 +7970,18 @@
                   }
                 }
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mappingsCreatedAt",
+            "description": "When the sku mappings were finalzied",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7923,6 +8110,18 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "newBackersCount",
+            "description": "The number of new backers who have gone through the pledge manager",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -8143,6 +8342,30 @@
             "deprecationReason": null
           },
           {
+            "name": "pledgeOverTimeWarning",
+            "description": "Warns the backer that their pledge is no longer eligible for Pledge Over Time",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgeOverTimeWarningExplanation",
+            "description": "Warns the backer that their pledge is no longer eligible for Pledge Over Time with detail",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pledged",
             "description": "How much money is pledged to the project.",
             "args": [],
@@ -8160,7 +8383,7 @@
           },
           {
             "name": "pledgesRedeemedPercentage",
-            "description": "The percentage of pledges that have been redeemed",
+            "description": "The percentage of original pledges that have been redeemed",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -8523,6 +8746,22 @@
             "deprecationReason": null
           },
           {
+            "name": "redemptionPageUrl",
+            "description": "URL for redeeming the backing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "rewards",
             "description": "Project rewards.",
             "args": [
@@ -8792,6 +9031,62 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "ShippingZone",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shipsWithinEu",
+            "description": "Whether the project has stock locations in the EU that ship to the EU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shipsWithinUk",
+            "description": "Whether the project has stock locations in the UK that ship to the UK",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shopifySkus",
+            "description": "The project's pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ShopifyVariant",
                     "ofType": null
                   }
                 }
@@ -10464,22 +10759,6 @@
               "kind": "SCALAR",
               "name": "Boolean",
               "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "canPrelaunchEarly",
-            "description": "Whether a user is trusted to configure prelaunch early.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -15942,6 +16221,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pl_usd_currency_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "se_currency_selector",
             "description": null,
             "isDeprecated": false,
@@ -16044,18 +16329,6 @@
             "deprecationReason": null
           },
           {
-            "name": "late_pledges_learn_more_cta",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "post_campaign_backings_2024",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "ckeditor_project_updates",
             "description": null,
             "isDeprecated": false,
@@ -16099,12 +16372,6 @@
           },
           {
             "name": "pledge_projects_overview_ios_2024",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "survey_reward_questions_2024",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16212,12 +16479,6 @@
             "deprecationReason": null
           },
           {
-            "name": "secret_rewards_2025",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "featured_rewards_2025",
             "description": null,
             "isDeprecated": false,
@@ -16243,12 +16504,6 @@
           },
           {
             "name": "project_classifiers_2025",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "backer_report_tracking_numbers_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16284,7 +16539,43 @@
             "deprecationReason": null
           },
           {
-            "name": "pm_pledge_shipping_supported_2025",
+            "name": "pledge_over_time_edit_pledge_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "gate_pm_for_plot_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "eufymake_backer_report",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "multi_vat_ids_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shopify_sync_integration_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "creator_tax_reporting_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "allow_survey_response_edits_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -20251,6 +20542,22 @@
             "deprecationReason": null
           },
           {
+            "name": "reviewCollectedFundsAt",
+            "description": "The date when the creator can review the collected funds from PM",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "startsAt",
             "description": "The start date of the wave",
             "args": [],
@@ -21375,6 +21682,70 @@
       },
       {
         "kind": "ENUM",
+        "name": "Route",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "path",
+            "description": "Just the path (does not include the domain)",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "url",
+            "description": "The entire URL (include the domain)",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "BackingDetailsPageTab",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "details",
+            "description": "Details",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "survey_responses",
+            "description": "Survey responses",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "messages",
+            "description": "Messages",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_redemption",
+            "description": "Pledge redemption",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "digital_rewards",
+            "description": "Digital rewards",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
         "name": "CollaboratorPermission",
         "description": "A permission for a collaborator on a project",
         "fields": null,
@@ -21425,6 +21796,12 @@
           },
           {
             "name": "launch_pledge_manager",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "launch_prelaunch",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -21987,13 +22364,17 @@
             "deprecationReason": null
           },
           {
-            "name": "disbursementPath",
-            "description": "The path to the disbursement page for a successful post-pledge redemption payout",
+            "name": "disbursementsPath",
+            "description": "The path to the disbursements page",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -22145,6 +22526,22 @@
           {
             "name": "projectPath",
             "description": "The project path",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shopifySyncPath",
+            "description": "The Shopify sync path path",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -23102,6 +23499,137 @@
         "fields": null,
         "inputFields": null,
         "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SkuCount",
+        "description": "SKU data with count of orders with this SKU",
+        "fields": [
+          {
+            "name": "count",
+            "description": "The number of orders that include this SKU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "The unique identifier for the SKU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "itemName",
+            "description": "The name of the item associated with the SKU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name of the SKU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "optionValues",
+            "description": "The option values associated with this SKU",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "sentAt",
+            "description": "The date and time when the survey was sent",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "sku",
+            "description": "The SKU value",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -24206,6 +24734,168 @@
             "description": "European Union",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "AT",
+            "description": "Austria",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BE",
+            "description": "Belgium",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BG",
+            "description": "Bulgaria",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HR",
+            "description": "Croatia",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CY",
+            "description": "Cyprus",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CZ",
+            "description": "Czech Republic",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "DK",
+            "description": "Denmark",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EE",
+            "description": "Estonia",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FI",
+            "description": "Finland",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FR",
+            "description": "France",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "DE",
+            "description": "Germany",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "GR",
+            "description": "Greece",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HU",
+            "description": "Hungary",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "IE",
+            "description": "Ireland",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "IT",
+            "description": "Italy",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LV",
+            "description": "Latvia",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LT",
+            "description": "Lithuania",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LU",
+            "description": "Luxembourg",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MT",
+            "description": "Malta",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NL",
+            "description": "Netherlands",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PL",
+            "description": "Poland",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PT",
+            "description": "Portugal",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "RO",
+            "description": "Romania",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SK",
+            "description": "Slovakia",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SI",
+            "description": "Slovenia",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ES",
+            "description": "Spain",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SE",
+            "description": "Sweden",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -24303,15 +24993,31 @@
             "deprecationReason": null
           },
           {
-            "name": "canBePartiallyRefunded",
-            "description": "Whether or not the order can be partially refunded",
+            "name": "baseOrderableVoucherAmount",
+            "description": "The voucher amount for the base orderable, or 0 if there is no base orderable",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Boolean",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "baseOrderableVoucherAmountFormatted",
+            "description": "The voucher amount for the base orderable, or 0 if there is no base orderable, formatted",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -24449,10 +25155,50 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "OrderCrossSellWithQuantity",
+                    "name": "OrderOrderableWithQuantity",
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "crowdfundingAddonsWithQuantity",
+            "description": "Add-ons selected for this order during Crowdfunding with quantity",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "OrderOrderableWithQuantity",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "crowdfundingAndUpgradeTotal",
+            "description": "The total amount for crowdfunding and upgrade rewards",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -24571,6 +25317,22 @@
             "deprecationReason": null
           },
           {
+            "name": "itemTaxIncluded",
+            "description": "Whether the rewards have tax included in the price",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "location",
             "description": "The order location.",
             "args": [],
@@ -24639,6 +25401,22 @@
             "deprecationReason": null
           },
           {
+            "name": "orderableVoucherTotalFormatted",
+            "description": "The total voucher amount for all orderables, formatted",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paymentSource",
             "description": "Payment source used on an order.",
             "args": [],
@@ -24669,6 +25447,18 @@
           {
             "name": "refundedShippingAmount",
             "description": "The amount refunded for the shipping",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedSurchargeAmount",
+            "description": "The amount refunded for the surcharge",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -24741,6 +25531,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingSurchargeAmount",
+            "description": "The remaining surcharge amount",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -24918,6 +25720,29 @@
             "name": "surchargeAmountFormatted",
             "description": "The total surcharge amount for the order, formatted",
             "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "taxLocalization",
+            "description": "The localized tax (VAT, Tax, HST, etc) based on order address",
+            "args": [
+              {
+                "name": "refund",
+                "description": "Whether or not the display is for a refund",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -25835,6 +26660,38 @@
         "description": "An orderable included in an Order, e.g. a reward.",
         "fields": [
           {
+            "name": "amountExcludingTax",
+            "description": "The price, excluding tax",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "amountExcludingTaxFormatted",
+            "description": "The formatted price, excluding tax",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "baseAmount",
             "description": "The price of one unit of the reward",
             "args": [],
@@ -25971,6 +26828,22 @@
             "deprecationReason": null
           },
           {
+            "name": "refundedBaseAmount",
+            "description": "The amount refunded for the base amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "refundedCost",
             "description": "The amount refunded for the cost",
             "args": [],
@@ -25980,6 +26853,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "remainingBaseAmountFormatted",
+            "description": "The remaining base amount",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -26028,6 +26917,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "voucherAmountFormatted",
+            "description": "The amount of the voucher",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -26113,12 +27018,12 @@
       },
       {
         "kind": "OBJECT",
-        "name": "OrderCrossSellWithQuantity",
-        "description": "An add-on reward included in an Order during Pledge Redemption as a Cross Sell.",
+        "name": "OrderOrderableWithQuantity",
+        "description": "All rewards of a particular kind included in an Order, bundled together with their quantity and price information",
         "fields": [
           {
             "name": "orderable",
-            "description": "The orderable of the cross sell",
+            "description": "The orderable of the reward",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26134,7 +27039,7 @@
           },
           {
             "name": "quantity",
-            "description": "The quantity of the add-on in the Order",
+            "description": "The quantity of the reward in the Order",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26150,7 +27055,7 @@
           },
           {
             "name": "totalPrice",
-            "description": "The total price of the cross-sell",
+            "description": "The total price of the reward",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26166,7 +27071,7 @@
           },
           {
             "name": "totalPriceFormatted",
-            "description": "The total price of the cross-sell, formatted",
+            "description": "The total price of the reward, formatted",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26181,8 +27086,24 @@
             "deprecationReason": null
           },
           {
+            "name": "unitPrice",
+            "description": "The price of one unit of the reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "unitPriceFormatted",
-            "description": "The price of one unit of the cross-sell",
+            "description": "The price of one unit of the reward, formatted",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26710,13 +27631,9 @@
             "description": "Whether the creator opted out of the pledge manager.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -26738,6 +27655,18 @@
             "deprecationReason": null
           },
           {
+            "name": "reviewAt",
+            "description": "The date by which the PM will be reviewed (Date of review submission + 5 business days)",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "reviewer",
             "description": "The user assigned to review this pledge manager",
             "args": [],
@@ -26754,13 +27683,9 @@
             "description": "The pledge manager's state, e.g. draft, submitted, approved, denied, etc.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "PledgeManagerStateEnum",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "PledgeManagerStateEnum",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -26770,13 +27695,9 @@
             "description": "Whether the pledge manager can be used to charge for tariffs.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -29726,6 +30647,113 @@
                 "name": "Float",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ShopifyVariant",
+        "description": "Collection of information relating to Shopify item variants",
+        "fields": [
+          {
+            "name": "price",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "productHandle",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "productId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "productTitle",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "sku",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "variantId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "variantTitle",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -33397,6 +34425,18 @@
             "deprecationReason": null
           },
           {
+            "name": "priceFormatted",
+            "description": "The price formatted for display",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "remainingQuantity",
             "description": "How many of this reward are still available to claim during Pledge Redemption",
             "args": [],
@@ -34670,70 +35710,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "Route",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "path",
-            "description": "Just the path (does not include the domain)",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "url",
-            "description": "The entire URL (include the domain)",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "BackingDetailsPageTab",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "details",
-            "description": "Details",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "survey_responses",
-            "description": "Survey responses",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "messages",
-            "description": "Messages",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pledge_redemption",
-            "description": "Pledge redemption",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "digital_rewards",
-            "description": "Digital rewards",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "Refund",
         "description": "A refund.",
@@ -34930,6 +35906,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clientSecret",
+            "description": "The client secret for the adjustment",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiresAction",
+            "description": "Whether the adjustment requires action",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "isDeprecated": false,
@@ -41002,8 +42002,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "BackgroundJobProgressStatusEnum",
                 "ofType": null
               }
             },
@@ -41030,6 +42030,35 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "BackgroundJobProgressStatusEnum",
+        "description": "Status of background job progress",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "PROCESSING",
+            "description": "Job is processing",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMPLETED",
+            "description": "Job is completed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FAILED",
+            "description": "Job has failed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -42316,6 +43345,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createOrUpdateShop",
+            "description": "Creates or updates a Shopify shop",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdateShopInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdateShopPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createOrUpdateTrackingNumber",
             "description": "Create or update a shipment's tracking number",
             "args": [
@@ -42877,6 +43933,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "CreateUserUrlsPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createVariantMappings",
+            "description": "Creates a batch of variant mappings between Kickstarter & Shopify item variant (skus)",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateVariantMappingsInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateVariantMappingsPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -43855,6 +44938,33 @@
             "deprecationReason": null
           },
           {
+            "name": "optInToPledgeManager",
+            "description": "Opt in to a pledge manager",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OptInToPledgeManagerInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "OptInToPledgeManagerPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "optOutOfPledgeManager",
             "description": "Opt out of a pledge manager",
             "args": [
@@ -44227,6 +45337,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "ResetBackerSurveyPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "revertPledgeManagerToDraft",
+            "description": "Reverts a pledge manager to draft state",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RevertPledgeManagerToDraftInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "RevertPledgeManagerToDraftPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -45502,6 +46639,33 @@
             "deprecationReason": null
           },
           {
+            "name": "updateOrderAdjustment",
+            "description": "Update an order adjustment success state and error message",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateOrderAdjustmentInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateOrderAdjustmentPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updateOrderableConfig",
             "description": "Update OrderableConfig for an Orderable",
             "args": [
@@ -45739,6 +46903,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "UpdateQuestionPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateRefundCheckout",
+            "description": "Update a refund checkout state and error message",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateRefundCheckoutInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateRefundCheckoutPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -51132,6 +52323,108 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdateShopInput",
+        "description": "Autogenerated input type of CreateOrUpdateShop",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shopifyDomain",
+            "description": "The Shopify domain",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "token",
+            "description": "The Shopify access token",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdateShopPayload",
+        "description": "Autogenerated return type of CreateOrUpdateShop",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": "Project associated with the Shopify shop",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateOrUpdateTrackingNumberInput",
         "description": "Autogenerated input type of CreateOrUpdateTrackingNumber",
         "fields": null,
@@ -54157,6 +55450,141 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CreateVariantMappingsInput",
+        "description": "Autogenerated input type of CreateVariantMappings",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "mappings",
+            "description": "Array of variant mappings to have records created for",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "VariantMappingInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "VariantMappingInput",
+        "description": "A kickstarter item variant id and a shopify variant id",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "itemVariantId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shopifyVariantId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateVariantMappingsPayload",
+        "description": "Autogenerated return type of CreateVariantMappings",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateVideoTrackInput",
         "description": "Autogenerated input type of CreateVideoTrack",
         "fields": null,
@@ -55998,6 +57426,20 @@
             "defaultValue": null
           },
           {
+            "name": "resourcesType",
+            "description": "Type of resource distribution: 'unique' or 'shared'",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "ResourcesTypeEnum",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
             "name": "description",
             "description": null,
             "type": {
@@ -56038,6 +57480,29 @@
         ],
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ResourcesTypeEnum",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "UNIQUE",
+            "description": "Each backer gets a unique resource",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SHARED",
+            "description": "All backers share the same resource",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -56568,16 +58033,6 @@
             "defaultValue": null
           },
           {
-            "name": "refundOrder",
-            "description": "(legacy) Whether or not the refund the order",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
             "name": "refundOrderInput",
             "description": "Parameters to refund a order.",
             "type": {
@@ -57018,6 +58473,18 @@
                 "name": "Refund",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundCheckout",
+            "description": "The in-memory refund checkout instance",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "RefundCheckout",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -57491,6 +58958,80 @@
           {
             "name": "success",
             "description": "Succeeds if backings are being updated in backend.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "OptInToPledgeManagerInput",
+        "description": "Autogenerated input type of OptInToPledgeManager",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The project id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "OptInToPledgeManagerPayload",
+        "description": "Autogenerated return type of OptInToPledgeManager",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": "Success if opted in to pledge manager",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -58594,6 +60135,80 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "RevertPledgeManagerToDraftInput",
+        "description": "Autogenerated input type of RevertPledgeManagerToDraft",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "pledgeManagerId",
+            "description": "The pledge manager id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RevertPledgeManagerToDraftPayload",
+        "description": "Autogenerated return type of RevertPledgeManagerToDraft",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "ReviewPledgeManagerInput",
         "description": "Autogenerated input type of ReviewPledgeManager",
         "fields": null,
@@ -59524,6 +61139,24 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "backerEntryPoint",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
               }
@@ -62752,6 +64385,16 @@
             "defaultValue": null
           },
           {
+            "name": "incremental",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -63817,6 +65460,104 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "UpdateOrderAdjustmentInput",
+        "description": "Autogenerated input type of UpdateOrderAdjustment",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "refundId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "success",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "stateReason",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateOrderAdjustmentPayload",
+        "description": "Autogenerated return type of UpdateOrderAdjustment",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "orderAdjustment",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RefundAdjustmentData",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UpdateOrderableConfigInput",
         "description": "Autogenerated input type of UpdateOrderableConfig",
         "fields": null,
@@ -63923,6 +65664,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": "The project associated with the reward",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -65347,6 +67104,104 @@
               "kind": "OBJECT",
               "name": "Question",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateRefundCheckoutInput",
+        "description": "Autogenerated input type of UpdateRefundCheckout",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "refundCheckoutId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "state",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "stateReason",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateRefundCheckoutPayload",
+        "description": "Autogenerated return type of UpdateRefundCheckout",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundCheckout",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RefundCheckout",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

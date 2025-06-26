@@ -8,6 +8,7 @@ public enum PledgeStateCTAType: Equatable {
   case viewRewards
   case viewYourRewards
   case prelaunch(saved: Bool, watchCount: Int)
+  case pledgeManager
 
   public var buttonTitle: String {
     switch self {
@@ -25,6 +26,8 @@ public enum PledgeStateCTAType: Equatable {
       return Strings.View_your_rewards()
     case let .prelaunch(saved, _):
       return saved ? Strings.Saved() : Strings.Notify_me_on_launch()
+    case .pledgeManager:
+      return Strings.Go_to_pledge_manager()
     }
   }
 
@@ -36,7 +39,7 @@ public enum PledgeStateCTAType: Equatable {
       return .green
     case .manage:
       return .blue
-    case .viewBacking, .viewRewards, .viewYourRewards:
+    case .viewBacking, .viewRewards, .viewYourRewards, .pledgeManager:
       return .black
     case let .prelaunch(saved, _):
       return saved ? .none : .black
@@ -45,7 +48,7 @@ public enum PledgeStateCTAType: Equatable {
 
   public var stackViewIsHidden: Bool {
     switch self {
-    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch:
+    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch, .pledgeManager:
       return true
     case .fix, .manage:
       return false
@@ -74,7 +77,7 @@ public enum PledgeStateCTAType: Equatable {
 
   public var stackViewAndSpacerAreHidden: Bool {
     switch self {
-    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch:
+    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch, .pledgeManager:
       return true
     case .fix, .manage:
       return false
