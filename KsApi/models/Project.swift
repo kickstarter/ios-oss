@@ -17,6 +17,7 @@ public struct Project {
   public var lastWave: LastWave?
   public var location: Location
   public var name: String
+  public var pledgeManager: PledgeManager?
   public var pledgeOverTimeCollectionPlanChargeExplanation: String?
   public var pledgeOverTimeCollectionPlanChargedAsNPayments: String?
   public var pledgeOverTimeCollectionPlanShortPitch: String?
