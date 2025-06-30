@@ -113,15 +113,17 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
         pledgeOverTimeApiValues: GraphAPI.BuildPaymentPlanQuery.Data?
       ) -> PledgePaymentPlansAndSelectionData? in
 
-        let isPledgeOverTimePreSelected = project.personalization.backing?.paymentIncrements.isEmpty == false
-
-        let defaultPlan = isPledgeOverTimePreSelected ?
-          PledgePaymentPlansType.pledgeOverTime :
-          PledgePaymentPlansType.pledgeInFull
-
         // Wrap the value in `nil` to ensure the Signal emits consistently,
         // even when the API request fails or Pledge Over Time is disabled.
         guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
+
+        let isPledgeOverTimePreSelected = project.personalization.backing?.paymentIncrements.isEmpty == false
+        let isPledgeOverTimeEligible = paymentPlan.amountIsPledgeOverTimeEligible
+
+        // Retain PLOT pre-selection only if the new pledge amount meets the eligibility threshold (amountIsPledgeOverTimeEligible)
+        let defaultPlan = isPledgeOverTimePreSelected && isPledgeOverTimeEligible ?
+          PledgePaymentPlansType.pledgeOverTime :
+          PledgePaymentPlansType.pledgeInFull
 
         return PledgePaymentPlansAndSelectionData(
           withPaymentPlanFragment: paymentPlan,
