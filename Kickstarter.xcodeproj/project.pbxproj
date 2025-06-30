@@ -8779,7 +8779,6 @@
 			packageProductDependencies = (
 				06634FBD2807A4C300950F60 /* Apollo */,
 				06634FBF2807A4C300950F60 /* ApolloAPI */,
-				06634FC12807A4C300950F60 /* ApolloUtils */,
 				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
@@ -12771,11 +12770,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloAPI;
-		};
-		06634FC12807A4C300950F60 /* ApolloUtils */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloUtils;
 		};
 		06634FC42807A4EB00950F60 /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;
