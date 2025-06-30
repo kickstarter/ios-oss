@@ -6,4 +6,12 @@ extension GraphQLNullable {
       return .none
     }
   }
+
+  static func caseOrNil<T>(_ maybeValue: T?) -> GraphQLNullable<GraphQLEnum<T>> {
+    if let value = maybeValue {
+      return .some(.case(value))
+    } else {
+      return .none
+    }
+  }
 }
