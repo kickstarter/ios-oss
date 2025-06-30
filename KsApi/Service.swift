@@ -250,9 +250,9 @@ public struct Service: ServiceType {
           .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
             projectId: input.projectId,
             amount: input.amountDollars,
-            paymentIntentContext: input.paymentIntentContext,
-            digitalMarketingAttributed: input.digitalMarketingAttributed,
-            checkoutId: input.checkoutId
+            paymentIntentContext: .caseOrNil(input.paymentIntentContext),
+            digitalMarketingAttributed: .someOrNil(input.digitalMarketingAttributed),
+            checkoutId: .someOrNil(input.checkoutId)
           ))
       )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
@@ -355,8 +355,8 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchProjectCommentsQuery(
         slug: slug,
-        cursor: cursor,
-        limit: limit
+        cursor: .someOrNil(cursor),
+        limit: .someOrNil(limit)
       ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
@@ -369,8 +369,8 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUpdateCommentsQuery(
         postId: id,
-        cursor: cursor,
-        limit: limit
+        cursor: .someOrNil(cursor),
+        limit: .someOrNil(limit)
       ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
@@ -384,7 +384,7 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchCommentRepliesQuery(
         commentId: id,
-        cursor: cursor,
+        cursor: .someOrNil(cursor),
         limit: limit
       ))
       .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
@@ -502,7 +502,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchUserBackingsQuery(
-            status: status,
+            status: .case(status),
             withStoredCards: false,
             includeShippingRules: true,
             includeLocalPickup: false
@@ -668,7 +668,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: locationId,
+      locationId: .someOrNil(locationId),
       withStoredCards: false,
       includeShippingRules: true,
       includeLocalPickup: true
@@ -683,7 +683,7 @@ public struct Service: ServiceType {
     cursor: String? = nil,
     limit: Int? = nil
   ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    let query = GraphAPI.FetchMyBackedProjectsQuery(first: limit, after: cursor)
+    let query = GraphAPI.FetchMyBackedProjectsQuery(first: .someOrNil(limit), after: .someOrNil(cursor))
 
     return GraphQL.shared.client
       .fetch(query: query)
@@ -694,7 +694,7 @@ public struct Service: ServiceType {
     cursor: String? = nil,
     limit: Int? = nil
   ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
-    let query = GraphAPI.FetchMySavedProjectsQuery(first: limit, after: cursor)
+    let query = GraphAPI.FetchMySavedProjectsQuery(first: .someOrNil(limit), after: .someOrNil(cursor))
 
     return GraphQL.shared.client
       .fetch(query: query)
@@ -947,7 +947,7 @@ public struct Service: ServiceType {
     limit: Int? = nil
   ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
     GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchPledgedProjectsQuery(first: limit, after: cursor))
+      .fetch(query: GraphAPI.FetchPledgedProjectsQuery(first: .someOrNil(limit), after: .someOrNil(cursor)))
       .eraseToAnyPublisher()
   }
 }
