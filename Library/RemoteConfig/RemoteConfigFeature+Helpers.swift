@@ -66,3 +66,11 @@ public func featureSecretRewardsEnabled() -> Bool {
 public func featureSearchFilterByLocation() -> Bool {
   featureEnabled(feature: .searchFilterByLocation)
 }
+
+public func featureNetNewBackersGoToPMEnabled() -> Bool {
+  featureEnabled(feature: .netNewBackersGoToPM)
+}
+
+public func featureSearchFilterByAmountRaised() -> Bool {
+  featureEnabled(feature: .searchFilterByAmountRaised)
+}

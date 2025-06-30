@@ -144,6 +144,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `URL` to take the user to the `PledgeManagementDetailsWebViewController`
   var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
 
+  var goToPledgeManager: Signal<URL, Never> { get }
+
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
 
@@ -690,6 +692,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: - Pledge View
 
+    let shouldGoToPledgeManager = ctaButtonTappedWithType
+      .filter { $0 == .pledgeManager }
+
+    self.goToPledgeManager = project
+      .takeWhen(shouldGoToPledgeManager)
+      .compactMap { project -> URL? in
+        let urlString = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
+          .redemptionPageUrl
+
+        return URL(string: urlString)
+      }
+
     self.viewPledgeUseCase = .init(with: projectAndBacking)
 
     ctaButtonTappedWithType
@@ -862,6 +876,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> {
     self.viewPledgeUseCase.goToNativePledgeView
   }
+
+  public let goToPledgeManager: Signal<URL, Never>
 
   public var goToPledgeManagementPledgeView: Signal<URL, Never> {
     self.viewPledgeUseCase.goToPledgeManagementPledgeView

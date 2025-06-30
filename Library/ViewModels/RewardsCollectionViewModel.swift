@@ -164,6 +164,13 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
           ? PledgeViewContext.latePledge
           : PledgeViewContext.pledge
+
+      /// Differentiating between updating a reward for a regular pledge and updating a Pledge Over Time pledge.
+      let isPledgeOverTime = project.isPledgeOverTimeAllowed == true
+      let updatePledgeContext = isPledgeOverTime && featureEditPledgeOverTimeEnabled()
+        ? PledgeViewContext.editPledgeOverTime
+        : PledgeViewContext.updateReward
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
@@ -172,7 +179,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
-        context: project.personalization.backing == nil ? pledgeContext : .updateReward
+        context: project.personalization.backing == nil ? pledgeContext : updatePledgeContext
       )
 
       return (data, reward.hasAddOns)

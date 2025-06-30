@@ -1,3 +1,4 @@
+$(PROJECT_DIR)/KsApi/fragments/LastWaveFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFeaturesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserSettingsFragment.graphql
@@ -8,6 +9,7 @@ $(PROJECT_DIR)/KsApi/fragments/ProjectAnalyticsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CommentFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PPOBackingFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/PaymentIncrementFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/PledgeManagerFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserStoredCardsFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserEmailFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/MoneyFragment.graphql
@@ -74,5 +76,6 @@ $(PROJECT_DIR)/KsApi/queries/SearchQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectRewardsByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchAddOnsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchPPOQuery.graphql
+$(PROJECT_DIR)/KsApi/queries/FetchProjectPLOTQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCategory.graphql
 $(PROJECT_DIR)/KsApi/graphql-schema.json
