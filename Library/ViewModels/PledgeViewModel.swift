@@ -615,7 +615,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         context,
-        selectedPaymentPlan == .pledgeOverTime
+        incremental: selectedPaymentPlan == .pledgeOverTime
       )
     }
 
