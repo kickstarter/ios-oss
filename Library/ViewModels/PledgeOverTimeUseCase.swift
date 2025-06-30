@@ -46,9 +46,11 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
-    self.buildPaymentPlanInputs = Signal.combineLatest(project, pledgeTotal)
-      // Only call the query once
-      .take(first: 1)
+    self.buildPaymentPlanInputs = Signal.combineLatest(
+        project,
+        // just re-evaluate if the total is changed
+        pledgeTotal.skipRepeats()
+      )
       .map { (project: Project, pledgeTotal: Double) -> (
         String,
         String
@@ -110,12 +112,16 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
         project: Project,
         pledgeOverTimeApiValues: GraphAPI.BuildPaymentPlanQuery.Data?
       ) -> PledgePaymentPlansAndSelectionData? in
+        
+        let isPledgeOverTimePreSelected = project.personalization.backing?.paymentIncrements.isEmpty == false
 
+        let defaultPlan = isPledgeOverTimePreSelected ?
+          PledgePaymentPlansType.pledgeOverTime :
+          PledgePaymentPlansType.pledgeInFull
+        
         // Wrap the value in `nil` to ensure the Signal emits consistently,
         // even when the API request fails or Pledge Over Time is disabled.
         guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
-
-        let defaultPlan = PledgePaymentPlansType.pledgeInFull
 
         return PledgePaymentPlansAndSelectionData(
           withPaymentPlanFragment: paymentPlan,
