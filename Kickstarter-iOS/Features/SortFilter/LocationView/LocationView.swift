@@ -69,6 +69,11 @@ public struct LocationView: View {
     .onChange(of: self.searchText) { newValue in
       self.didChangeSearchText(newValue)
     }
+    .onChange(of: self.selectedLocation) { newValue in
+      if newValue.isNil {
+        self.didResetLocation()
+      }
+    }
   }
 
   func didChangeSearchText(_ newValue: String) {
@@ -105,6 +110,12 @@ public struct LocationView: View {
 
     // Clear the autosuggest results, too.
     self.onSearchedForLocations("")
+  }
+
+  func didResetLocation() {
+    if !self.searchText.isEmpty {
+      self.searchText = ""
+    }
   }
 
   internal enum Constants {
