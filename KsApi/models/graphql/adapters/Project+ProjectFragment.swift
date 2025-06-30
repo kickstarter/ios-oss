@@ -21,7 +21,7 @@ extension Project {
         from: projectFragment.country.fragments.countryFragment,
         minPledge: projectFragment.minPledge,
         maxPledge: projectFragment.maxPledge,
-        currency: projectFragment.currency
+        currency: projectFragment.currency.value
       ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
       let category = Project.Category.category(from: categoryFragment),
@@ -30,7 +30,7 @@ extension Project {
       let location = Location.location(from: locationFragment),
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
-      let state = projectState(from: projectFragment.state),
+      let state = projectState(from: projectFragment.state.value),
       let userFragment = projectFragment.creator?.fragments.userFragment,
       let creator = User.user(from: userFragment)
     else { return nil }
@@ -182,7 +182,10 @@ private func projectPhoto(from projectFragment: GraphAPI.ProjectFragment) -> Pro
   )
 }
 
-private func projectState(from projectState: GraphAPI.ProjectState) -> Project.State? {
+private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.State? {
+  guard let projectState = projectState else {
+    return nil
+  }
   return Project.State(rawValue: projectState.rawValue.lowercased())
 }
 
@@ -346,7 +349,7 @@ private func extendedProjectEnvironmentalCommitments(
 
       var commitmentCategory: ProjectTabCategory
 
-      switch commitment?.commitmentCategory {
+      switch commitment?.commitmentCategory.value {
       case .longLastingDesign:
         commitmentCategory = .longLastingDesign
       case .sustainableMaterials:

@@ -4,12 +4,12 @@ extension GraphAPI.UpdateBackingInput {
   static func from(_ input: UpdateBackingInput) -> GraphAPI.UpdateBackingInput {
     return GraphAPI.UpdateBackingInput(
       id: input.id,
-      amount: input.amount,
-      rewardIds: input.rewardIds,
-      locationId: input.locationId,
-      paymentSourceId: input.paymentSourceId,
-      intentClientSecret: input.setupIntentClientSecret,
-      applePay: GraphAPI.ApplePayInput.from(input.applePay)
+      amount: .someOrNil(input.amount),
+      rewardIds: .someOrNil(input.rewardIds),
+      locationId: .someOrNil(input.locationId),
+      paymentSourceId: .someOrNil(input.paymentSourceId),
+      intentClientSecret: .someOrNil(input.setupIntentClientSecret),
+      applePay: .someOrNil(GraphAPI.ApplePayInput.from(input.applePay))
     )
   }
 }

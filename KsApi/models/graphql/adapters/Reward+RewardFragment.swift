@@ -96,7 +96,7 @@ private func shippingData(
   from rewardFragment: GraphAPI.RewardFragment
 ) -> Reward.Shipping {
   return Reward.Shipping(
-    enabled: [.restricted, .unrestricted].contains(rewardFragment.shippingPreference),
+    enabled: [.restricted, .unrestricted].contains(rewardFragment.shippingPreference?.value),
     location: nil,
     preference: shippingPreference(from: rewardFragment),
     summary: rewardFragment.shippingSummary,
@@ -144,7 +144,7 @@ private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.I
   return Reward.Image(altText: image.altText, url: image.url)
 }
 
-private func rewardAudienceData(from audienceData: GraphAPI.RewardFragment.AudienceDatum) -> Reward
+private func rewardAudienceData(from audienceData: GraphAPI.RewardFragment.AudienceData) -> Reward
   .AudienceData {
   return Reward.AudienceData(isSecretReward: audienceData.secret)
 }
