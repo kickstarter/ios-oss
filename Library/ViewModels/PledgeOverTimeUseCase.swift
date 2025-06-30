@@ -47,21 +47,21 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
     self.buildPaymentPlanInputs = Signal.combineLatest(
-        project,
-        // just re-evaluate if the total is changed
-        pledgeTotal.skipRepeats()
-      )
-      .map { (project: Project, pledgeTotal: Double) -> (
-        String,
-        String
-      ) in
-        let amountFormatter = NumberFormatter()
-        amountFormatter.minimumFractionDigits = 2
-        amountFormatter.maximumFractionDigits = 2
-        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
+      project,
+      // just re-evaluate if the total is changed
+      pledgeTotal.skipRepeats()
+    )
+    .map { (project: Project, pledgeTotal: Double) -> (
+      String,
+      String
+    ) in
+      let amountFormatter = NumberFormatter()
+      amountFormatter.minimumFractionDigits = 2
+      amountFormatter.maximumFractionDigits = 2
+      let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
 
-        return (project.slug, amount)
-      }
+      return (project.slug, amount)
+    }
 
     let pledgeOverTimeQuery = self.buildPaymentPlanInputs
       .switchMap { (
@@ -112,13 +112,13 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
         project: Project,
         pledgeOverTimeApiValues: GraphAPI.BuildPaymentPlanQuery.Data?
       ) -> PledgePaymentPlansAndSelectionData? in
-        
+
         let isPledgeOverTimePreSelected = project.personalization.backing?.paymentIncrements.isEmpty == false
 
         let defaultPlan = isPledgeOverTimePreSelected ?
           PledgePaymentPlansType.pledgeOverTime :
           PledgePaymentPlansType.pledgeInFull
-        
+
         // Wrap the value in `nil` to ensure the Signal emits consistently,
         // even when the API request fails or Pledge Over Time is disabled.
         guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
