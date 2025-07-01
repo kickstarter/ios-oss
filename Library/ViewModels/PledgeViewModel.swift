@@ -603,7 +603,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         context,
         selectedPaymentPlan
         -> UpdateBackingData in
-      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      let paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
       return (
         backing: backing,
@@ -615,7 +615,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         setupIntentClientSecret: nil,
         applePayParams: applePayParams,
         context,
-        selectedPaymentPlan == .pledgeOverTime
+        incremental: selectedPaymentPlan == .pledgeOverTime
       )
     }
 

@@ -412,7 +412,7 @@
 "Live" = "En direct";
 "Live_Stream" = "Diffusion en direct";
 "Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "Les engagements en cours et non financés sont visibles actuellement visibles dans l'onglet Profil.";
-"Live_backings" = "Live backings";
+"Live_backings" = "Engagements en cours";
 "Live_now" = "En direct en ce moment";
 "Live_now_live_stream_event_name_by_creator_name" = "En direct : %{live_stream_event_name} par %{creator_name}";
 "Live_stream_countdown" = "Compte à rebours de la diffusion en direct";
@@ -825,7 +825,7 @@
 "Unsaves_project" = "Annule l'enregistrement du projet.";
 "Unsubscribe" = "Se désabonner";
 "Unsubscribes_from_upcoming_lives_streams" = "Désabonnement des diffusions en direct à venir.";
-"Unsuccessful_and_canceled_backings" = "Unsuccessful and canceled backings";
+"Unsuccessful_and_canceled_backings" = "Projets non financés ou annulés";
 "Unsuccessfully_Funded" = "Non financé.";
 "Unsupported_card_type" = "Ce type n'est pas accepté. Veuillez réessayer avec une autre carte.";
 "Upcoming_live_stream" = "Diffusion en direct à venir";

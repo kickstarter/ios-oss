@@ -2736,6 +2736,67 @@ public enum GraphAPI {
     }
   }
 
+  /// Buckets of amount pledged
+  public enum PledgedBuckets: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// Range from 0 to 1000 USD
+    case bucket_0
+    /// Range from 1000 to 10000 USD
+    case bucket_1
+    /// Range from 10000 to 100000 USD
+    case bucket_2
+    /// Range from 100000 to 1000000 USD
+    case bucket_3
+    /// Range from 1000000 to Infinity USD
+    case bucket_4
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "BUCKET_0": self = .bucket_0
+        case "BUCKET_1": self = .bucket_1
+        case "BUCKET_2": self = .bucket_2
+        case "BUCKET_3": self = .bucket_3
+        case "BUCKET_4": self = .bucket_4
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .bucket_0: return "BUCKET_0"
+        case .bucket_1: return "BUCKET_1"
+        case .bucket_2: return "BUCKET_2"
+        case .bucket_3: return "BUCKET_3"
+        case .bucket_4: return "BUCKET_4"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: PledgedBuckets, rhs: PledgedBuckets) -> Bool {
+      switch (lhs, rhs) {
+        case (.bucket_0, .bucket_0): return true
+        case (.bucket_1, .bucket_1): return true
+        case (.bucket_2, .bucket_2): return true
+        case (.bucket_3, .bucket_3): return true
+        case (.bucket_4, .bucket_4): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [PledgedBuckets] {
+      return [
+        .bucket_0,
+        .bucket_1,
+        .bucket_2,
+        .bucket_3,
+        .bucket_4,
+      ]
+    }
+  }
+
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -4580,6 +4641,7 @@ public enum GraphAPI {
     case chCurrencySelector
     case dkCurrencySelector
     case noCurrencySelector
+    case plUsdCurrency_2025
     case seCurrencySelector
     case datalakeFeEvents
     case creatorDemographicsSurvey
@@ -4706,6 +4768,7 @@ public enum GraphAPI {
         case "ch_currency_selector": self = .chCurrencySelector
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
+        case "pl_usd_currency_2025": self = .plUsdCurrency_2025
         case "se_currency_selector": self = .seCurrencySelector
         case "datalake_fe_events": self = .datalakeFeEvents
         case "creator_demographics_survey": self = .creatorDemographicsSurvey
@@ -4833,6 +4896,7 @@ public enum GraphAPI {
         case .chCurrencySelector: return "ch_currency_selector"
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
+        case .plUsdCurrency_2025: return "pl_usd_currency_2025"
         case .seCurrencySelector: return "se_currency_selector"
         case .datalakeFeEvents: return "datalake_fe_events"
         case .creatorDemographicsSurvey: return "creator_demographics_survey"
@@ -4960,6 +5024,7 @@ public enum GraphAPI {
         case (.chCurrencySelector, .chCurrencySelector): return true
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
+        case (.plUsdCurrency_2025, .plUsdCurrency_2025): return true
         case (.seCurrencySelector, .seCurrencySelector): return true
         case (.datalakeFeEvents, .datalakeFeEvents): return true
         case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
@@ -5088,6 +5153,7 @@ public enum GraphAPI {
         .chCurrencySelector,
         .dkCurrencySelector,
         .noCurrencySelector,
+        .plUsdCurrency_2025,
         .seCurrencySelector,
         .datalakeFeEvents,
         .creatorDemographicsSurvey,
@@ -12297,6 +12363,149 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchProjectPledgeOverTimeDataQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchProjectPledgeOverTimeData($projectId: Int!) {
+        project(pid: $projectId) {
+          __typename
+          isPledgeOverTimeAllowed
+          pledgeOverTimeCollectionPlanChargeExplanation
+          pledgeOverTimeCollectionPlanChargedAsNPayments
+          pledgeOverTimeCollectionPlanShortPitch
+          pledgeOverTimeMinimumExplanation
+        }
+      }
+      """
+
+    public let operationName: String = "FetchProjectPledgeOverTimeData"
+
+    public var projectId: Int
+
+    public init(projectId: Int) {
+      self.projectId = projectId
+    }
+
+    public var variables: GraphQLMap? {
+      return ["projectId": projectId]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("project", arguments: ["pid": GraphQLVariable("projectId")], type: .object(Project.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(project: Project? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches a project given its slug or pid.
+      public var project: Project? {
+        get {
+          return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "project")
+        }
+      }
+
+      public struct Project: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Project"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(isPledgeOverTimeAllowed: Bool, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Project", "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Whether a project is enrolled in plot
+        public var isPledgeOverTimeAllowed: Bool {
+          get {
+            return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
+          }
+        }
+
+        /// Backer-facing summary of when the incremental charges will occur
+        public var pledgeOverTimeCollectionPlanChargeExplanation: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanChargeExplanation"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargeExplanation")
+          }
+        }
+
+        /// Quick summary of the amount of increments pledges will be spread over
+        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanChargedAsNPayments"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargedAsNPayments")
+          }
+        }
+
+        /// Backer-facing short summary of this project's number of payment increments to split over
+        public var pledgeOverTimeCollectionPlanShortPitch: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanShortPitch"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanShortPitch")
+          }
+        }
+
+        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+        public var pledgeOverTimeMinimumExplanation: String? {
+          get {
+            return resultMap["pledgeOverTimeMinimumExplanation"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeMinimumExplanation")
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchProjectRewardsByIdQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -14480,7 +14689,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $pledged: PledgedBuckets, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
@@ -14488,6 +14697,7 @@ public enum GraphAPI {
           state: $state
           raised: $raised
           locationId: $locationId
+          pledged: $pledged
           after: $cursor
           first: $first
         ) {
@@ -14526,22 +14736,24 @@ public enum GraphAPI {
     public var state: PublicProjectState?
     public var raised: RaisedBuckets?
     public var locationId: GraphQLID?
+    public var pledged: PledgedBuckets?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, pledged: PledgedBuckets? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
       self.state = state
       self.raised = raised
       self.locationId = locationId
+      self.pledged = pledged
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "pledged": pledged, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14549,7 +14761,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "pledged": GraphQLVariable("pledged"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 

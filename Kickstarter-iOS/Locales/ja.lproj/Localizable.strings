@@ -42,11 +42,11 @@
 "Almost_there" = "もう少しです!";
 "Amount_previous_amount" = "金額: %{amount}, 以前の金額: %{previous_amount}";
 "Amount_raised" = "達成額";
-"Amount_raised_bucket_0" = "Under $1,000";
-"Amount_raised_bucket_1" = "$1,000 to $10,000";
-"Amount_raised_bucket_2" = "$10,000 to $100,000";
-"Amount_raised_bucket_3" = "$100,000 to $1,000,000";
-"Amount_raised_bucket_4" = "More than $1,000,000";
+"Amount_raised_bucket_0" = "$1,000 未満";
+"Amount_raised_bucket_1" = "$1,000 ～ $10,000";
+"Amount_raised_bucket_2" = "$10,000 ～ $100,000";
+"Amount_raised_bucket_3" = "$100,000 ～ $1,000,000";
+"Amount_raised_bucket_4" = "$1,000,000 以上";
 "Amount_reward" = "金額：%{amount}、%{reward}";
 "Amounts_shown" = "表示されている金額は、おおよその換算金額ですのでご注意ください。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められ、その換算額も表示されます。";
 "Announcements" = "お知らせ";
@@ -204,7 +204,7 @@
 "Currency_USD" = "$ 米ドル (USD)";
 "Current_email" = "現在のメールアドレス";
 "Current_password" = "現在のパスワード";
-"Currently_supported" = "Currently supported:";
+"Currently_supported" = "すでにサポートされている機能：";
 "Customize_your_reward" = "リワードをカスタマイズ";
 "Customize_your_reward_with_optional_addons" = "オプションとしてアドオン (追加リワード) を追加しリワードをカスタマイズしましょう。";
 "Daily_digest" = "デイリーダイジェスト";
@@ -411,8 +411,8 @@
 "Limited_shipping" = "限定配送";
 "Live" = "ライブ";
 "Live_Stream" = "ライブ配信";
-"Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "Live and unsuccessful backings can currently be viewed in the Profile tab.";
-"Live_backings" = "Live backings";
+"Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "進行中のバッキングと成功しなかったバッキングは［プロフィール］タブから確認できます。";
+"Live_backings" = "進行中のバッキング";
 "Live_now" = "ライブ配信中";
 "Live_now_live_stream_event_name_by_creator_name" = "%{creator_name} が%{live_stream_event_name} をライブ配信中";
 "Live_stream_countdown" = "ライブ配信のカウントダウン";
@@ -464,7 +464,7 @@
 "Newsletters" = "ニュースレター";
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
-"No_funded_backings" = "No funded backings";
+"No_funded_backings" = "資金調達済みのバッキングはありません";
 "No_go_back" = "いいえ、戻ります";
 "No_longer_available" = "利用できなくなりました";
 "No_messages" = "メッセージがありません。";
@@ -731,7 +731,7 @@
 "Something_went_wrong_pull_to_refresh" = "何らかのエラーが発生しました。リフレッシュするにはプルダウンしてください。";
 "Something_went_wrong_pull_to_refresh_no_period" = "何らかのエラーが発生しました。プルダウンして画面を更新してください。";
 "Sort_by" = "並べ替える";
-"Sorting_and_filtering" = "Sorting and filtering";
+"Sorting_and_filtering" = "並べ替えとフィルタリング";
 "Spam" = "迷惑メール";
 "Start_the_request" = "データの収集を開始する";
 "Starting_soon" = "もう少しで始まります。";
@@ -745,7 +745,7 @@
 "Subscribed" = "購読済";
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";
 "Successful_projects_have_been_created_on_kickstarter" = "のプロジェクトが Kickstarter で作成されました。";
-"Successfully_funded_backings" = "Successfully funded backings";
+"Successfully_funded_backings" = "資金調達に成功したバッキング";
 "Superbacker" = "Superbacker";
 "Support_creative_independence" = "クリエイティブな独立プロジェクトをサポートしよう";
 "Support_creative_spaces_and_businesses_affected_by" = "新型コロナウイルス危機によって影響を受けた文化スペースやクリエイティブなビジネスをサポートしましょう。";
@@ -825,7 +825,7 @@
 "Unsaves_project" = "保存されていないプロジェクト。";
 "Unsubscribe" = "購読キャンセル済み";
 "Unsubscribes_from_upcoming_lives_streams" = "ライブ配信の購読を停止";
-"Unsuccessful_and_canceled_backings" = "Unsuccessful and canceled backings";
+"Unsuccessful_and_canceled_backings" = "資金調達が成功せずキャンセルされたバッキング";
 "Unsuccessfully_Funded" = "資金調達失敗";
 "Unsupported_card_type" = "残念ながらこのタイプのカードには対応しておりません。別のカードにてもう一度お試しください。";
 "Upcoming_live_stream" = "ライブ配信が開始します";
@@ -888,7 +888,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
 "What_parts_of_your_project_will_use_AI_generated_content" = "プロジェクトのどの部分で AI 生成のコンテンツを使用しますか？できるだけ詳しく説明してください。";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
-"When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "When projects you've backed have successfully funded, you'll see them here.";
+"When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "バックしたプロジェクトのファンディングが成功すると、こちらに表示されます。";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "バックしたプロジェクトに関してお知らせやアラートがある場合はこちらに表示されます。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
 "Which_categories_interest_you" = "興味のあるカテゴリーは？";

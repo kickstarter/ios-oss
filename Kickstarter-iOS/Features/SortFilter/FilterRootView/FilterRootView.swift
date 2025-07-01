@@ -5,12 +5,12 @@ import SwiftUI
 struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
   @ObservedObject var searchFilters: SearchFilters
-  @State var locationSearchText: String
 
   var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
   var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
   var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
   var onSelectedLocation: ((Location?) -> Void)? = nil
+  var onSelectedAmountRaisedBucket: ((DiscoveryParams.AmountRaisedBucket) -> Void)? = nil
   var onSearchedForLocations: ((String) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
@@ -47,6 +47,17 @@ struct FilterRootView: View {
     }
   }
 
+  private var selectedAmountRaisedBucket: Binding<DiscoveryParams.AmountRaisedBucket?> {
+    Binding {
+      self.searchFilters.amountRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onSelectedAmountRaisedBucket,
+         let bucket = newValue {
+        action(bucket)
+      }
+    }
+  }
+
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
   }
@@ -63,9 +74,6 @@ struct FilterRootView: View {
     }
 
     self.searchFilters = searchFilters
-
-    let selectedLocationName = searchFilters.location.selectedLocation?.displayableName
-    _locationSearchText = State(initialValue: selectedLocationName ?? "")
   }
 
   @ViewBuilder
@@ -116,13 +124,22 @@ struct FilterRootView: View {
   @ViewBuilder
   var locationSection: some View {
     FilterSectionButton(
-      // FIXME: MBL-2343 Add translations.
-      title: "FPO: Location",
+      title: Strings.Location(),
       subtitle: self.searchFilters.location.selectedLocation?.displayableName
     )
     .padding(Constants.sectionPadding)
   }
 
+  @ViewBuilder
+  var amountRaisedSection: some View {
+    FilterSectionButton(
+      title: Strings.Amount_raised(),
+      subtitle: self.searchFilters.amountRaised.selectedBucket?.title
+    )
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
   var percentRaisedModal: some View {
     PercentRaisedView(
       buckets: self.searchFilters.percentRaised.buckets,
@@ -130,6 +147,7 @@ struct FilterRootView: View {
     )
   }
 
+  @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
       categories: self.searchFilters.category.categories,
@@ -137,13 +155,21 @@ struct FilterRootView: View {
     )
   }
 
+  @ViewBuilder
   var locationModal: some View {
     LocationView(
       defaultLocations: self.searchFilters.location.defaultLocations,
       suggestedLocations: self.searchFilters.location.suggestedLocations,
       selectedLocation: self.selectedLocation,
-      onSearchedForLocations: self.onSearchedForLocations ?? { _ in },
-      searchText: self.$locationSearchText
+      onSearchedForLocations: self.onSearchedForLocations ?? { _ in }
+    )
+  }
+
+  @ViewBuilder
+  var amountRaisedModal: some View {
+    AmountRaisedView(
+      buckets: self.searchFilters.amountRaised.buckets,
+      selectedBucket: self.selectedAmountRaisedBucket
     )
   }
 
@@ -190,6 +216,12 @@ struct FilterRootView: View {
               self.locationSection
             }
           }
+          if featureSearchFilterByAmountRaised() {
+            Divider()
+            NavigationLink(value: SearchFilterModalType.amountRaised) {
+              self.amountRaisedSection
+            }
+          }
           Divider()
           Spacer()
         }
@@ -202,9 +234,11 @@ struct FilterRootView: View {
             self.percentRaisedModal
               .modalHeader(withTitle: Strings.Percentage_raised(), onClose: self.onClose)
           case .location:
-            // FIXME: MBL-2343 Add translations.
             self.locationModal
-              .modalHeader(withTitle: "FPO: Location", onClose: self.onClose)
+              .modalHeader(withTitle: Strings.Location(), onClose: self.onClose)
+          case .amountRaised:
+            self.amountRaisedModal
+              .modalHeader(withTitle: Strings.Amount_raised(), onClose: self.onClose)
           default:
             EmptyView()
           }
@@ -247,7 +281,7 @@ extension View {
 }
 
 extension DiscoveryParams.State: @retroactive Identifiable {
-  public var id: Int {
-    return self.rawValue.hashValue
+  public var id: String {
+    return self.rawValue
   }
 }
