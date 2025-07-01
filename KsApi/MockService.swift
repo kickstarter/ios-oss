@@ -127,7 +127,7 @@
     fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?
     fileprivate let fetchProjectFriendsEnvelopeResult: Result<[User], ErrorEnvelope>?
-    fileprivate let fetchProjectPledgeOverTimeDataResult: Result<
+    fileprivate let fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
       ProjectPledgeOverTimeDataEnvelope,
       ErrorEnvelope
     >?
@@ -309,7 +309,10 @@
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
-      fetchProjectPledgeOverTimeDataResult: Result<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope>? = nil,
+      fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
+        ProjectPledgeOverTimeDataEnvelope,
+        ErrorEnvelope
+      >? = nil,
       fetchProjectRewardsResult: Result<[Reward], ErrorEnvelope>? = nil,
       fetchProjectActivitiesResponse: [Activity]? = nil,
       fetchProjectActivitiesError: ErrorEnvelope? = nil,
@@ -504,7 +507,7 @@
       self.fetchProjectEnvelopeResult = fetchProjectResult
       self.fetchProjectPamphletEnvelopeResult = fetchProjectPamphletResult
       self.fetchProjectFriendsEnvelopeResult = fetchProjectFriendsResult
-      self.fetchProjectPledgeOverTimeDataResult = fetchProjectPledgeOverTimeDataResult
+      self.fetchProjectRewardsAndPledgeOverTimeDataResult = fetchProjectRewardsAndPledgeOverTimeDataResult
       self.fetchProjectRewardsEnvelopeResult = fetchProjectRewardsResult
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
@@ -1376,15 +1379,25 @@
       }
     }
 
-    func fetchProjectPledgeOverTimeData(projectId: Int)
+    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
       -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
 
-      let query = GraphAPI.FetchProjectPledgeOverTimeDataQuery(projectId: projectId)
+      let query = GraphAPI
+        .FetchProjectRewardsByIdQuery(
+          projectId: projectId,
+          includeShippingRules: false,
+          includeLocalPickup: true,
+          includePledgeOverTime: true
+        )
 
-      return client.fetchWithResult(query: query, result: self.fetchProjectPledgeOverTimeDataResult)
+      return client
+        .fetchWithResult(
+          query: query,
+          result: self.fetchProjectRewardsAndPledgeOverTimeDataResult
+        )
     }
 
     internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
@@ -1396,7 +1409,8 @@
         .FetchProjectRewardsByIdQuery(
           projectId: projectId,
           includeShippingRules: false,
-          includeLocalPickup: true
+          includeLocalPickup: true,
+          includePledgeOverTime: false
         )
 
       return client

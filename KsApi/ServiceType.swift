@@ -240,7 +240,8 @@ public protocol ServiceType {
   func fetchProject(projectParam: Param, configCurrency: String?)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
-  func fetchProjectPledgeOverTimeData(projectId: Int)
+  /// Fetch the project's rewards and pledge over time data
+  func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
     -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope>
 
   /// Fetch the project's rewards only, without shipping rules

@@ -588,28 +588,34 @@ public struct Service: ServiceType {
     return request(.project(param))
   }
 
-  public func fetchProjectPledgeOverTimeData(projectId: Int)
-    -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
-    let query = GraphAPI
-      .FetchProjectPledgeOverTimeDataQuery(projectId: projectId)
-
-    return GraphQL.shared.client
-      .fetch(query: query)
-      .flatMap(ProjectPledgeOverTimeDataEnvelope.envelopeProducer(from:))
-  }
-
   public func fetchProjectRewards(projectId: Int)
     -> SignalProducer<[Reward], ErrorEnvelope> {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true
+        includeLocalPickup: true,
+        includePledgeOverTime: false
       )
 
     return GraphQL.shared.client
       .fetch(query: query)
       .flatMap(Project.projectRewardsProducer(from:))
+  }
+
+  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+    -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
+    let query = GraphAPI
+      .FetchProjectRewardsByIdQuery(
+        projectId: projectId,
+        includeShippingRules: true,
+        includeLocalPickup: true,
+        includePledgeOverTime: true
+      )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(Project.projectRewardsAndPledgeOverTimeDataProducer(from:))
   }
 
   public func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {

@@ -1,5 +1,6 @@
 extension ProjectPledgeOverTimeDataEnvelope {
   public static let template = ProjectPledgeOverTimeDataEnvelope(
+    rewards: [Reward.template],
     isPledgeOverTimeAllowed: true,
     pledgeOverTimeCollectionPlanChargeExplanation: "The first charge will occur when the project ends successfully, then every month until fully paid.",
     pledgeOverTimeCollectionPlanChargedAsNPayments: "charged as 3 payments",

@@ -268,7 +268,6 @@
 		331746822E099BC800C5FC1C /* LastWave+LastWaveFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746812E099BAF00C5FC1C /* LastWave+LastWaveFragment.swift */; };
 		331746852E09AC5C00C5FC1C /* LastWave+LastWaveFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */; };
 		331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */; };
-		3330E7C72E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */; };
 		3330E7C92E0BE5A7004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */; };
 		3330E7CB2E0C7CE5004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330E7CA2E0C7CDF004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift */; };
 		333F4E532DE7C8FE005C4964 /* RewardsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */; };
@@ -343,6 +342,7 @@
 		33F55B592D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33F55B4B2D4C711C0007E50E /* Inter-VariableFont.ttf */; };
 		33F55B5A2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33F55B4A2D4C711C0007E50E /* Inter-Italic-VariableFont.ttf */; };
 		33F55B5B2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33F55B4A2D4C711C0007E50E /* Inter-Italic-VariableFont.ttf */; };
+		33FB1E8B2E13C45200008F93 /* PledgeOverTimeFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33FB1E8A2E13C45200008F93 /* PledgeOverTimeFragment.graphql */; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
@@ -2068,7 +2068,6 @@
 		331746812E099BAF00C5FC1C /* LastWave+LastWaveFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastWave+LastWaveFragment.swift"; sourceTree = "<group>"; };
 		331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastWave+LastWaveFragmentTests.swift"; sourceTree = "<group>"; };
 		331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgeManager+PledgeManagerFragmentTests.swift"; sourceTree = "<group>"; };
-		3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectPLOTQuery.graphql; sourceTree = "<group>"; };
 		3330E7C82E0BE592004B0730 /* ProjectPledgeOverTimeDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPledgeOverTimeDataEnvelope.swift; sourceTree = "<group>"; };
 		3330E7CA2E0C7CDF004B0730 /* ProjectPledgeOverTimeDataEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPledgeOverTimeDataEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		333F4E522DE7C52B005C4964 /* RewardsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCase.swift; sourceTree = "<group>"; };
@@ -2131,6 +2130,7 @@
 		33F55B4B2D4C711C0007E50E /* Inter-VariableFont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-VariableFont.ttf"; sourceTree = "<group>"; };
 		33F55B522D5282E80007E50E /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFont.swift; sourceTree = "<group>"; };
 		33F55B562D55936F0007E50E /* SystemFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemFont.swift; sourceTree = "<group>"; };
+		33FB1E8A2E13C45200008F93 /* PledgeOverTimeFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PledgeOverTimeFragment.graphql; sourceTree = "<group>"; };
 		37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewController.swift; sourceTree = "<group>"; };
 		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
@@ -6307,7 +6307,6 @@
 				06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */,
 				06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */,
 				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
-				3330E7C62E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql */,
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
@@ -6430,6 +6429,7 @@
 				60ED07BB2D9EFF66007779B5 /* OrderFragment.graphql */,
 				606EC1E92D2847CA00286CBD /* PaymentIncrementFragment.graphql */,
 				331746772E0313D900C5FC1C /* PledgeManagerFragment.graphql */,
+				33FB1E8A2E13C45200008F93 /* PledgeOverTimeFragment.graphql */,
 				393E8DA02C5BE07C00AEA968 /* PPOBackingFragment.graphql */,
 				393E8DA22C5BE08500AEA968 /* PPOCardFragment.graphql */,
 				393E8DA42C5BE08B00AEA968 /* PPOProjectFragment.graphql */,
@@ -8350,9 +8350,9 @@
 				068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */,
 				061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */,
 				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
+				33FB1E8B2E13C45200008F93 /* PledgeOverTimeFragment.graphql in Resources */,
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				E15802DE2D81D8420000BAB3 /* SearchQuery.graphql in Resources */,
-				3330E7C72E0BD71A004B0730 /* FetchProjectPLOTQuery.graphql in Resources */,
 				6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */,
 				39B5E1122B89120F00FFB720 /* CreateAttributionEvent.graphql in Resources */,
 				AADDA7162CB60B8B00E7112E /* ProjectAnalyticsFragment.graphql in Resources */,

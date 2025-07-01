@@ -92,15 +92,12 @@ public final class ManagePledgeViewModel:
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { project in
-            fetchProjectRewards(project: project)
-          }
-          .switchMap { project in
             // Only fetch pledge over time data if the feature flag is enabled
-            guard featureEditPledgeOverTimeEnabled() else {
-              return SignalProducer(value: project)
+            if featureEditPledgeOverTimeEnabled() {
+              return fetchProjectRewardsAndPledgeOverTimeData(project: project)
             }
 
-            return fetchProjectPledgeOverTimeData(project: project)
+            return fetchProjectRewards(project: project)
           }
           .materialize()
       }
@@ -492,20 +489,28 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
         allRewards.insert(noRewardReward, at: 0)
       }
 
-      let projectWithBackingAndRewards = project
+      let projectUpdated = project
         |> Project.lens.rewardData.rewards .~ allRewards
 
-      return SignalProducer(value: projectWithBackingAndRewards)
+      return SignalProducer(value: projectUpdated)
     }
 }
 
-private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+private func fetchProjectRewardsAndPledgeOverTimeData(project: Project)
+  -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
-    .fetchProjectPledgeOverTimeData(projectId: project.id)
+    .fetchProjectRewardsAndPledgeOverTimeData(projectId: project.id)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
 
-      let projectWithPlotData = project
+      var allRewards = envelope.rewards
+
+      if let noRewardReward = project.rewardData.rewards.first {
+        allRewards.insert(noRewardReward, at: 0)
+      }
+
+      let projectUpdated = project
+        |> Project.lens.rewardData.rewards .~ allRewards
         |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
         |> Project.lens
         .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
@@ -517,7 +522,7 @@ private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<
         .pledgeOverTimeCollectionPlanShortPitch .~ envelope.pledgeOverTimeCollectionPlanShortPitch
         |> Project.lens.pledgeOverTimeMinimumExplanation .~ envelope.pledgeOverTimeMinimumExplanation
 
-      return SignalProducer(value: projectWithPlotData)
+      return SignalProducer(value: projectUpdated)
     }
 }
 
@@ -560,7 +565,7 @@ private func actionSheetMenuOptionsFor(
     .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
   /// Enable the 'Edit pledge' option for all PLOT-enabled projects.
-  if project.isPledgeOverTimeAllowed == true {
+  if isPledgeOverTime(with: backing) || project.isPledgeOverTimeAllowed == true {
     actions = actions.filter { $0 != .chooseAnotherReward }
 
     /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
