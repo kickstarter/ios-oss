@@ -12,6 +12,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedState = TestObserver<DiscoveryParams.State, Never>()
   private let selectedPercentRaisedBucket = TestObserver<DiscoveryParams.PercentRaisedBucket?, Never>()
   private let selectedLocation = TestObserver<Location?, Never>()
+  private let selectedAmountRaisedBucket = TestObserver<DiscoveryParams.AmountRaisedBucket?, Never>()
   private let showFilters = TestObserver<SearchFilterModalType, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
@@ -34,6 +35,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOutputs.selectedState.observe(self.selectedState.observer)
     self.useCase.dataOutputs.selectedPercentRaisedBucket.observe(self.selectedPercentRaisedBucket.observer)
     self.useCase.dataOutputs.selectedLocation.observe(self.selectedLocation.observer)
+    self.useCase.dataOutputs.selectedAmountRaisedBucket.observe(self.selectedAmountRaisedBucket.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
 
@@ -55,6 +57,10 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   func assert_selectedLocation_isDefault() {
     self.selectedLocation.assertLastValue(nil, "Selected location should be default value")
+  }
+
+  func assert_selectedAmountRaisedBucket_isDefault() {
+    self.selectedAmountRaisedBucket.assertLastValue(nil, "Selected amount raised should be default value")
   }
 
   func test_allFilters_onInitialSignal_areDefaults() {
@@ -220,6 +226,38 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedLocation_isDefault()
   }
 
+  func test_tappedAmountRaised_showsAmountRaised() {
+    let amountRaisedOn = MockRemoteConfigClient()
+    amountRaisedOn.features = [
+      RemoteConfigFeature.searchFilterByAmountRaised.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: amountRaisedOn) {
+      self.initialObserver.send(value: ())
+
+      self.showFilters.assertDidNotEmitValue()
+
+      self.useCase.inputs.tappedButton(forFilterType: .amountRaised)
+
+      self.showFilters.assertDidEmitValue()
+
+      if let type = self.showFilters.lastValue {
+        XCTAssertEqual(type, .amountRaised, "Tapping amount raised button should amount raised options")
+        XCTAssertGreaterThan(
+          self.useCase.uiOutputs.searchFilters.amountRaised.buckets.count,
+          0,
+          "There should be multiple amount raised options"
+        )
+      }
+
+      XCTAssertEqual(
+        self.useCase.uiOutputs.searchFilters.amountRaised.selectedBucket,
+        nil,
+        "No option should be selected by default"
+      )
+    }
+  }
+
   func test_selectingCategory_updatesCategory() {
     self.initialObserver.send(value: ())
 
@@ -295,6 +333,21 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
 
     XCTAssertEqual(newSelectedBucket, .bucket_1, "Percent raised value should change when bucket is selected")
+  }
+
+  func test_selectingAmountRaisedBucket_updatesBucket() {
+    self.initialObserver.send(value: ())
+
+    self.assert_selectedAmountRaisedBucket_isDefault()
+
+    self.useCase.inputs.selectedAmountRaisedBucket(.bucket_3)
+
+    guard let newSelectedBucket = self.selectedAmountRaisedBucket.lastValue else {
+      XCTFail("There should be a new selected bucket")
+      return
+    }
+
+    XCTAssertEqual(newSelectedBucket, .bucket_3, "Amount raised value should change when bucket is selected")
   }
 
   func test_selectingLocation_updatesLocation() {
@@ -442,6 +495,53 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
   }
 
+  func test_selectingAmountRaised_updatesAmountRaisedPill() {
+    let amountRaisedOn = MockRemoteConfigClient()
+    amountRaisedOn.features = [
+      RemoteConfigFeature.searchFilterByAmountRaised.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: amountRaisedOn) {
+      self.initialObserver.send(value: ())
+
+      self.assert_selectedAmountRaisedBucket_isDefault()
+
+      if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          false,
+          "Amount raised pill should not be highlighted when no bucket is selected"
+        )
+      } else {
+        XCTFail("Expected percent raised pill to be set")
+      }
+
+      self.useCase.inputs.selectedAmountRaisedBucket(.bucket_3)
+
+      if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          true,
+          "Amount raised pill should be highlighted when a non-default option is selected"
+        )
+
+        guard case let .dropdown(title) = pill.buttonType else {
+          XCTFail("Pill is not a dropdown")
+          return
+        }
+
+        XCTAssertEqual(
+          title,
+          DiscoveryParams.AmountRaisedBucket.bucket_3.title,
+          "Dropdown should have description of selected amount raised option in its title"
+        )
+
+      } else {
+        XCTFail("Expected percent raised pill to be set")
+      }
+    }
+  }
+
   func test_selectingLocation_updatesLocationPill() {
     let locationOn = MockRemoteConfigClient()
     locationOn.features = [
@@ -524,6 +624,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedProjectState_isDefault()
     self.assert_selectedPercentRaisedBucket_isDefault()
     self.assert_selectedLocation_isDefault()
+    self.assert_selectedAmountRaisedBucket_isDefault()
 
     for type in SearchFilterModalType.allCases {
       if type == .sort {

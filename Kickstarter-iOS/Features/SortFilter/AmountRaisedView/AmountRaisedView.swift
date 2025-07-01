@@ -2,9 +2,9 @@ import KsApi
 import Library
 import SwiftUI
 
-public struct PercentRaisedView: View {
-  var buckets: [DiscoveryParams.PercentRaisedBucket]
-  @Binding var selectedBucket: DiscoveryParams.PercentRaisedBucket?
+public struct AmountRaisedView: View {
+  var buckets: [DiscoveryParams.AmountRaisedBucket]
+  @Binding var selectedBucket: DiscoveryParams.AmountRaisedBucket?
 
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {
@@ -32,7 +32,7 @@ public struct PercentRaisedView: View {
   }
 }
 
-extension DiscoveryParams.PercentRaisedBucket: @retroactive Identifiable {
+extension DiscoveryParams.AmountRaisedBucket: @retroactive Identifiable {
   public var id: Int {
     return self.rawValue
   }
