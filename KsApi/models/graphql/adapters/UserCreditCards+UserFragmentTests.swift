@@ -20,14 +20,18 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
     ]
 
     do {
-      let storedCardsFragment = try GraphAPI.UserFragment
-        .StoredCard(jsonObject: sampleCardDict, variables: variables)
-      let locationFragment = GraphAPI.UserFragment.Location(
-        country: "US",
-        countryName: "United States",
-        displayableName: "Las Vegas, NV",
-        id: "TG9jYXRpb24tMjQzNjcwNA==",
-        name: "Las Vegas"
+      let storedCardsFragment: GraphAPI.UserFragment = try testGraphObject(
+        data: sampleCardDict,
+        variables: variables
+      )
+      let locationFragment: GraphAPI.UserFragment.Location = try testGraphObject(
+        data: [
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Las Vegas, NV",
+          "id": "TG9jYXRpb24tMjQzNjcwNA==",
+          "name": "Las Vegas"
+        ]
       )
       let userFragment = GraphAPI.UserFragment(
         backingsCount: 3, chosenCurrency: "USD",

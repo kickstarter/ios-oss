@@ -11,8 +11,8 @@ class GraphAPI_UnwatchProjectInput_WatchProjectInputTests: XCTestCase {
 
     let graphInput = GraphAPI.UnwatchProjectInput.from(input)
 
-    XCTAssertEqual(graphInput.clientMutationId, input.clientMutationId)
+    XCTAssertEqual(graphInput.clientMutationId.unwrapped, input.clientMutationId)
     XCTAssertEqual(graphInput.id, input.id)
-    XCTAssertEqual(graphInput.trackingContext, input.trackingContext)
+    XCTAssertEqual(graphInput.trackingContext.unwrapped, input.trackingContext)
   }
 }

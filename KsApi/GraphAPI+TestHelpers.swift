@@ -8,8 +8,11 @@ public enum GraphQLSelectionSetStringError: Error {
   case fileNotFoundError
 }
 
-func testGraphObject<T: GraphAPI.SelectionSet>(data: [String: Any]) throws -> T {
-  return try T.init(data: data)
+func testGraphObject<T: GraphAPI.SelectionSet>(
+  data: [String: Any],
+  variables: GraphQLOperation.Variables? = nil
+) throws -> T {
+  return try T.init(data: data, variables: variables)
 }
 
 func testGraphObject<T: GraphAPI.SelectionSet>(

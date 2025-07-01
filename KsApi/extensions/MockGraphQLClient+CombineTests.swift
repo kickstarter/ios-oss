@@ -9,7 +9,7 @@ final class MockGraphQLClient_CombineTests: XCTestCase {
 
     let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
     let fetchUserEmailQueryData: GraphAPI.FetchUserEmailQuery
-      .Data = testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
       XCTFail()
