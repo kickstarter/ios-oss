@@ -46,20 +46,22 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
     let pledgeOverTimeUIEnabled = project.signal
       .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
 
-    self.buildPaymentPlanInputs = Signal.combineLatest(project, pledgeTotal)
-      // Only call the query once
-      .take(first: 1)
-      .map { (project: Project, pledgeTotal: Double) -> (
-        String,
-        String
-      ) in
-        let amountFormatter = NumberFormatter()
-        amountFormatter.minimumFractionDigits = 2
-        amountFormatter.maximumFractionDigits = 2
-        let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
+    self.buildPaymentPlanInputs = Signal.combineLatest(
+      project,
+      // just re-evaluate if the total is changed
+      pledgeTotal.skipRepeats()
+    )
+    .map { (project: Project, pledgeTotal: Double) -> (
+      String,
+      String
+    ) in
+      let amountFormatter = NumberFormatter()
+      amountFormatter.minimumFractionDigits = 2
+      amountFormatter.maximumFractionDigits = 2
+      let amount = amountFormatter.string(from: NSNumber(value: pledgeTotal)) ?? ""
 
-        return (project.slug, amount)
-      }
+      return (project.slug, amount)
+    }
 
     let pledgeOverTimeQuery = self.buildPaymentPlanInputs
       .switchMap { (
@@ -115,7 +117,13 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
         // even when the API request fails or Pledge Over Time is disabled.
         guard let paymentPlan = pledgeOverTimeApiValues?.project?.paymentPlan else { return nil }
 
-        let defaultPlan = PledgePaymentPlansType.pledgeInFull
+        let isPledgeOverTimePreSelected = project.personalization.backing?.paymentIncrements.isEmpty == false
+        let isPledgeOverTimeEligible = paymentPlan.amountIsPledgeOverTimeEligible
+
+        // Retain PLOT pre-selection only if the new pledge amount meets the eligibility threshold (amountIsPledgeOverTimeEligible)
+        let defaultPlan = isPledgeOverTimePreSelected && isPledgeOverTimeEligible ?
+          PledgePaymentPlansType.pledgeOverTime :
+          PledgePaymentPlansType.pledgeInFull
 
         return PledgePaymentPlansAndSelectionData(
           withPaymentPlanFragment: paymentPlan,

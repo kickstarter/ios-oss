@@ -77,7 +77,7 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
 
     let notChangingPaymentMethod = context.map { context in
       if context.isUpdating {
-        return context == .updateReward
+        return context == .updateReward || context == .editPledgeOverTime
       }
 
       return false
