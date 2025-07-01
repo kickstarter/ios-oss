@@ -50,7 +50,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
     }
   }
 
-  func testUseCase_callsBuildPaymentPlanQuery_onlyOnce() {
+  func testUseCase_callsBuildPaymentPlanQuery_SkipsRepeats() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.pledgeOverTime.rawValue: true
@@ -70,15 +70,39 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.0, "some-slug")
       XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.1, "100.00")
 
-      self.pledgeTotalObserver.send(value: 1.0)
-      self.pledgeTotalObserver.send(value: 2.0)
-      self.pledgeTotalObserver.send(value: 3.0)
+      self.pledgeTotalObserver.send(value: 98.0)
+
+      self.buildPaymentPlanInputs.assertValueCount(2)
+      XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.0, "some-slug")
+      XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.1, "98.00")
+
+      self.pledgeTotalObserver.send(value: 98.0)
+
+      // Count remains the same as the previous one since the value ("98.00") did not change.
+      self.buildPaymentPlanInputs.assertValueCount(2)
+
+      self.pledgeTotalObserver.send(value: 165.0)
+      self.buildPaymentPlanInputs.assertValueCount(3)
+      XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.0, "some-slug")
+      XCTAssertEqual(self.buildPaymentPlanInputs.lastValue?.1, "165.00")
 
       self.useCase!.paymentPlanSelected(.pledgeInFull)
       self.useCase!.paymentPlanSelected(.pledgeOverTime)
       self.useCase!.paymentPlanSelected(.pledgeInFull)
 
-      self.buildPaymentPlanInputs.assertValueCount(1)
+      // Only emits unique values skipping repeats
+      // pledgeTotalObserver stream:
+      // 1. 100.00
+      // 2. 98.00
+      // 3. 98.00
+      // 4. 165.00
+      // Expected emitted values
+      // 1. 100.00
+      // 2. 98.00
+      // 3. 165.00
+
+      // Updates from paymentPlanSelected should not trigger additional emissions to buildPaymentPlanInputs.
+      self.buildPaymentPlanInputs.assertValueCount(3)
     }
   }
 
@@ -223,6 +247,56 @@ final class PledgeOverTimeUseCaseTests: TestCase {
 
       self.useCase!.paymentPlanSelected(.pledgeInFull)
       self.selectedPlan.assertValues([.pledgeInFull, .pledgeOverTime, .pledgeInFull])
+    }
+  }
+
+  func testUseCase_EditPlotPledged_PledgeOverTime_Preselected_whenIsElegible() {
+    let queryData: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+    let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.slug .~ "some-slug"
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+        |> Project.lens.personalization.backing .~ Backing.templatePlot
+
+      self.projectObserver.send(value: project)
+      self.pledgeTotalObserver.send(value: 100.0)
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeIsLoading.assertValues([true, false])
+      self.selectedPlan.assertLastValue(.pledgeOverTime)
+    }
+  }
+
+  func testUseCase_EditPlotPledged_PledgeInFull_Preselected_whenIsNotElegible() {
+    let queryData: GraphAPI.BuildPaymentPlanQuery
+      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: false))
+    let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
+
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+      let project = Project.template
+        |> Project.lens.slug .~ "some-slug"
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+        |> Project.lens.personalization.backing .~ Backing.templatePlot
+
+      self.projectObserver.send(value: project)
+      self.pledgeTotalObserver.send(value: 100.0)
+
+      self.showPledgeOverTimeUI.assertValues([true])
+      self.pledgeOverTimeIsLoading.assertValues([true, false])
+      self.selectedPlan.assertLastValue(.pledgeInFull)
     }
   }
 }

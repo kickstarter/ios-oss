@@ -603,7 +603,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
         context,
         selectedPaymentPlan
         -> UpdateBackingData in
-      var paymentSourceId = selectedPaymentSource?.savedCreditCardId
+      let paymentSourceId = selectedPaymentSource?.savedCreditCardId
 
       return (
         backing: backing,
