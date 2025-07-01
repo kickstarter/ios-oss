@@ -65,7 +65,10 @@ extension Project {
 
   static func projectRewardsAndPledgeOverTimeDataProducer(
     from data: GraphAPI.FetchProjectRewardsByIdQuery.Data
-  ) -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
+  ) -> SignalProducer<
+    RewardsAndPledgeOverTimeEnvelope,
+    ErrorEnvelope
+  > {
     let projectRewards = Project.projectRewardsAndPledgeOverTimeData(from: data)
 
     return SignalProducer(value: projectRewards)
@@ -74,11 +77,11 @@ extension Project {
   static func projectRewardsAndPledgeOverTimeData(
     from data: GraphAPI.FetchProjectRewardsByIdQuery
       .Data
-  ) -> ProjectPledgeOverTimeDataEnvelope {
+  ) -> RewardsAndPledgeOverTimeEnvelope {
     let rewards = self.projectRewards(from: data)
 
     guard let pledgeOverTimeFragment = data.project?.fragments.pledgeOverTimeFragment else {
-      return ProjectPledgeOverTimeDataEnvelope(
+      return RewardsAndPledgeOverTimeEnvelope(
         rewards: rewards,
         isPledgeOverTimeAllowed: false,
         pledgeOverTimeCollectionPlanChargeExplanation: nil,
@@ -88,7 +91,7 @@ extension Project {
       )
     }
 
-    return ProjectPledgeOverTimeDataEnvelope(
+    return RewardsAndPledgeOverTimeEnvelope(
       rewards: rewards,
       isPledgeOverTimeAllowed: pledgeOverTimeFragment.isPledgeOverTimeAllowed,
       pledgeOverTimeCollectionPlanChargeExplanation: pledgeOverTimeFragment

@@ -483,14 +483,7 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 
-      var allRewards = projectRewards
-
-      if let noRewardReward = project.rewardData.rewards.first {
-        allRewards.insert(noRewardReward, at: 0)
-      }
-
-      let projectUpdated = project
-        |> Project.lens.rewardData.rewards .~ allRewards
+      let projectUpdated = projectWithUpdatedRewards(project, rewards: projectRewards)
 
       return SignalProducer(value: projectUpdated)
     }
@@ -503,14 +496,9 @@ private func fetchProjectRewardsAndPledgeOverTimeData(project: Project)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
 
-      var allRewards = envelope.rewards
+      var projectUpdated = projectWithUpdatedRewards(project, rewards: envelope.rewards)
 
-      if let noRewardReward = project.rewardData.rewards.first {
-        allRewards.insert(noRewardReward, at: 0)
-      }
-
-      let projectUpdated = project
-        |> Project.lens.rewardData.rewards .~ allRewards
+      projectUpdated = projectUpdated
         |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
         |> Project.lens
         .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
@@ -524,6 +512,19 @@ private func fetchProjectRewardsAndPledgeOverTimeData(project: Project)
 
       return SignalProducer(value: projectUpdated)
     }
+}
+
+private func projectWithUpdatedRewards(_ project: Project, rewards: [Reward]) -> Project {
+  let rewardsIncludingNoReward: [Reward]
+
+  if let noReward = project.rewardData.rewards.first {
+    rewardsIncludingNoReward = [noReward] + rewards
+  } else {
+    rewardsIncludingNoReward = rewards
+  }
+
+  return project
+    |> Project.lens.rewardData.rewards .~ rewardsIncludingNoReward
 }
 
 private func pledgeViewData(

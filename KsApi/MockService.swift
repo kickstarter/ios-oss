@@ -128,7 +128,8 @@
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?
     fileprivate let fetchProjectFriendsEnvelopeResult: Result<[User], ErrorEnvelope>?
     fileprivate let fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
-      ProjectPledgeOverTimeDataEnvelope,
+      RewardsAndPledgeOverTimeEnvelope,
+
       ErrorEnvelope
     >?
     fileprivate let fetchProjectRewardsEnvelopeResult: Result<[Reward], ErrorEnvelope>?
@@ -310,7 +311,8 @@
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
       fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
-        ProjectPledgeOverTimeDataEnvelope,
+        RewardsAndPledgeOverTimeEnvelope,
+
         ErrorEnvelope
       >? = nil,
       fetchProjectRewardsResult: Result<[Reward], ErrorEnvelope>? = nil,
@@ -1380,7 +1382,10 @@
     }
 
     func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
-      -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
+      -> SignalProducer<
+        RewardsAndPledgeOverTimeEnvelope,
+        ErrorEnvelope
+      > {
       guard let client = self.apolloClient else {
         return .empty
       }

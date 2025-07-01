@@ -1,7 +1,7 @@
 import Foundation
 import ReactiveSwift
 
-public struct ProjectPledgeOverTimeDataEnvelope {
+public struct RewardsAndPledgeOverTimeEnvelope {
   public let rewards: [Reward]
   public let isPledgeOverTimeAllowed: Bool
   public let pledgeOverTimeCollectionPlanChargeExplanation: String?
@@ -10,4 +10,4 @@ public struct ProjectPledgeOverTimeDataEnvelope {
   public let pledgeOverTimeMinimumExplanation: String?
 }
 
-extension ProjectPledgeOverTimeDataEnvelope: Decodable {}
+extension RewardsAndPledgeOverTimeEnvelope: Decodable {}

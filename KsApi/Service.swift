@@ -604,7 +604,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
-    -> SignalProducer<ProjectPledgeOverTimeDataEnvelope, ErrorEnvelope> {
+    -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope> {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
