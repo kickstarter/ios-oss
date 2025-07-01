@@ -139,6 +139,7 @@ struct FilterRootView: View {
     .padding(Constants.sectionPadding)
   }
 
+  @ViewBuilder
   var percentRaisedModal: some View {
     PercentRaisedView(
       buckets: self.searchFilters.percentRaised.buckets,
@@ -146,6 +147,7 @@ struct FilterRootView: View {
     )
   }
 
+  @ViewBuilder
   var categoryModal: some View {
     FilterCategoryView(
       categories: self.searchFilters.category.categories,
@@ -153,6 +155,7 @@ struct FilterRootView: View {
     )
   }
 
+  @ViewBuilder
   var locationModal: some View {
     LocationView(
       defaultLocations: self.searchFilters.location.defaultLocations,
@@ -162,6 +165,7 @@ struct FilterRootView: View {
     )
   }
 
+  @ViewBuilder
   var amountRaisedModal: some View {
     AmountRaisedView(
       buckets: self.searchFilters.amountRaised.buckets,
