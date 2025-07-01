@@ -6,11 +6,11 @@ import XCTest
 final class Category_CategoryFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = [
+      let variables: Apollo.GraphQLMap = [
         "id": "Q2F0ZWdvcnktMw=="
       ]
       let fragment: GraphAPI.CategoryFragment = try testGraphObject(
-        data: categoryDictionary(),
+        jsonObject: categoryDictionary(),
         variables: variables
       )
       XCTAssertNotNil(fragment)
