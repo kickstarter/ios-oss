@@ -6,14 +6,13 @@ public enum ClearUserUnseenActivityMutationTemplate {
   case errored
 
   var data: GraphAPI.ClearUserUnseenActivityMutation.Data {
-    let type = GraphAPI.ClearUserUnseenActivityMutation.Data.self
     switch self {
     case .valid:
-      return testGraphObject<type>(
+      return try! testGraphObject(
         data: self.createClearUserUnseenActivityMutationResultMap
       )
     case .errored:
-      return testGraphObject<type>(
+      return try! testGraphObject(
         data: self.createClearUserUnseenActivityMutationErroredResultMap
       )
     }
@@ -21,16 +20,17 @@ public enum ClearUserUnseenActivityMutationTemplate {
 
   // MARK: Private Properties
 
-  private var createClearUserUnseenActivityMutationResultMap: [String: Any?] {
+  private var createClearUserUnseenActivityMutationResultMap: [String: Any] {
     [
       "clearUserUnseenActivity": [
-        "clientMutationId": nil,
+        "__typename": "ClearUserUnseenActivityPayload",
+        // "clientMutationId": nil,
         "activityIndicatorCount": 3
       ]
     ]
   }
 
-  private var createClearUserUnseenActivityMutationErroredResultMap: [String: Any?] {
+  private var createClearUserUnseenActivityMutationErroredResultMap: [String: Any] {
     return [:]
   }
 }

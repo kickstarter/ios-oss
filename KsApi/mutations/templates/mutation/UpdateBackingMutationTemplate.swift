@@ -10,15 +10,9 @@ public enum UpdateBackingMutationTemplate {
     case let .valid(checkoutState, sca):
       let resultMap = self.updateBackingMutationResultMap(checkoutState: checkoutState, sca: sca)
 
-      return testGraphObject<
-        GraphAPI.UpdateBackingMutation
-          .Data
-      >(data: resultMap)
+      return try! testGraphObject(data: resultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.UpdateBackingMutation
-          .Data
-      >(data: self.updateBackingMutationErroredResultMap)
+      return try! testGraphObject(data: self.updateBackingMutationErroredResultMap)
     }
   }
 
@@ -27,7 +21,7 @@ public enum UpdateBackingMutationTemplate {
   private func updateBackingMutationResultMap(
     checkoutState: GraphAPI.CheckoutState,
     sca: Bool
-  ) -> [String: Any?] {
+  ) -> [String: Any] {
     [
       "updateBacking": [
         "checkout": [
@@ -42,7 +36,7 @@ public enum UpdateBackingMutationTemplate {
     ]
   }
 
-  private var updateBackingMutationErroredResultMap: [String: Any?] {
+  private var updateBackingMutationErroredResultMap: [String: Any] {
     return [:]
   }
 }

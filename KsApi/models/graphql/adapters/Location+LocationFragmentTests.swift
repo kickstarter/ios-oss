@@ -4,7 +4,7 @@ import XCTest
 
 final class Location_LocationFragmentTests: XCTestCase {
   func test() {
-    let locationFragment: GraphAPI.LocationFragment = testGraphObject(
+    let locationFragment: GraphAPI.LocationFragment = try! testGraphObject(
       data: [
         "country": "CA",
         "countryName": "Canada",

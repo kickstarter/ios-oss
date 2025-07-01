@@ -9,9 +9,9 @@ public enum FetchCommentRepliesQueryTemplate {
   var data: GraphAPI.FetchCommentRepliesQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchCommentRepliesQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchCommentRepliesQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
@@ -442,7 +442,7 @@ public enum FetchCommentRepliesQueryTemplate {
     return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return CommentFragmentTemplate.valid.data
   }
 }
