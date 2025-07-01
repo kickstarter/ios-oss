@@ -20,7 +20,7 @@ public enum CreatePaymentSourceMutationTemplate {
     [
       "createPaymentSource": [
         "__typename": "CreatePaymentSourcePayload",
-        "clientMutationId": nil,
+        // "clientMutationId": nil,
         "isSuccessful": true,
         "paymentSource": [
           "__typename": "CreditCard",
@@ -36,7 +36,7 @@ public enum CreatePaymentSourceMutationTemplate {
   }
 
   private var createPaymentSourceMutationErroredResultMap: [String: Any] {
-    guard var modifiedData = createPaymentSourceMutationResultMap["createPaymentSource"] as? [String: Any?]
+    guard var modifiedData = createPaymentSourceMutationResultMap["createPaymentSource"] as? [String: Any]
     else {
       return self.createPaymentSourceMutationResultMap
     }
