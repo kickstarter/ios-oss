@@ -10,9 +10,9 @@ public enum FetchProjectQueryTemplate {
   var data: GraphAPI.FetchProjectByIdQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.erroredResultMap)
     }
   }
 
