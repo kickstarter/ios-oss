@@ -16,6 +16,13 @@ func testGraphObject<T: GraphAPI.SelectionSet>(
 }
 
 func testGraphObject<T: GraphAPI.SelectionSet>(
+  jsonObject: [String: Any],
+  variables: GraphQLOperation.Variables? = nil
+) throws -> T {
+  return try testGraphObject(data: jsonObject, variables: variables)
+}
+
+func testGraphObject<T: GraphAPI.SelectionSet>(
   jsonString: String,
   variables: GraphQLOperation.Variables? = nil
 ) throws -> T {
