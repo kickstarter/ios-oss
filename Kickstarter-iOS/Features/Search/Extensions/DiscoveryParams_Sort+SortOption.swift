@@ -4,8 +4,8 @@ import Library
 extension DiscoveryParams.Sort: @retroactive Identifiable {}
 // Implements SortOption so DiscoveryParams.Sort can be used in a SortView.
 extension DiscoveryParams.Sort: SortOption {
-  public var id: Int {
-    return self.rawValue.hashValue
+  public var id: String {
+    return self.rawValue
   }
 
   public var name: String {

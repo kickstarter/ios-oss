@@ -51,7 +51,7 @@ public struct DiscoveryParams {
     }
   }
 
-  public enum PercentRaisedBucket: CaseIterable {
+  public enum PercentRaisedBucket: Int, CaseIterable {
     /// 0 to 75%
     case bucket_0
     /// 75% - 100%
@@ -60,7 +60,7 @@ public struct DiscoveryParams {
     case bucket_2
   }
 
-  public enum AmountRaisedBucket: CaseIterable {
+  public enum AmountRaisedBucket: Int, CaseIterable {
     /// Range from 0 to 1,000 USD
     case bucket_0
 

@@ -34,6 +34,6 @@ public struct PercentRaisedView: View {
 
 extension DiscoveryParams.PercentRaisedBucket: @retroactive Identifiable {
   public var id: Int {
-    return self.hashValue
+    return self.rawValue
   }
 }

@@ -281,7 +281,7 @@ extension View {
 }
 
 extension DiscoveryParams.State: @retroactive Identifiable {
-  public var id: Int {
-    return self.rawValue.hashValue
+  public var id: String {
+    return self.rawValue
   }
 }

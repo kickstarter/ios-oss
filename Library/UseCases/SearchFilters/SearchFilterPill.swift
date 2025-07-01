@@ -6,7 +6,7 @@ import UIKit
 /// This is a model object that represents one of those pills.
 public struct SearchFilterPill: Identifiable {
   public var id: Int {
-    return self.filterType.hashValue
+    return self.filterType.rawValue
   }
 
   public let isHighlighted: Bool
@@ -16,7 +16,7 @@ public struct SearchFilterPill: Identifiable {
 
   /// Which filter the pill represents.
   /// Only one pill of each type will be shown, since this powers the id of the pill.
-  public enum FilterType {
+  public enum FilterType: Int {
     case allFilters
     case category
     case sort
