@@ -428,8 +428,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
       fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
-        ProjectRewardsPledgeOverTimeDataEnvelope
-          .template
+        RewardsAndPledgeOverTimeEnvelope.template
       )
     )
 
@@ -516,8 +515,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchManagePledgeViewBackingResult: .success(projectAndBacking),
       fetchProjectResult: .success(project),
       fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
-        ProjectRewardsPledgeOverTimeDataEnvelope
-          .template
+        RewardsAndPledgeOverTimeEnvelope.template
       )
     )
 
