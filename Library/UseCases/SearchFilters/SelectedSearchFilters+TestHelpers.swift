@@ -21,6 +21,10 @@ extension SearchFilters {
     return self.pills.first(where: { $0.filterType == .percentRaised })
   }
 
+  var amountRaisedPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .amountRaised })
+  }
+
   var locationPill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .location })
   }
