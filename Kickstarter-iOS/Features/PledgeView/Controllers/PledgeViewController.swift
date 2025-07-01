@@ -377,6 +377,7 @@ final class PledgeViewController: UIViewController,
 
     self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+    self.paymentSectionLabel.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()

@@ -4641,6 +4641,7 @@ public enum GraphAPI {
     case chCurrencySelector
     case dkCurrencySelector
     case noCurrencySelector
+    case plUsdCurrency_2025
     case seCurrencySelector
     case datalakeFeEvents
     case creatorDemographicsSurvey
@@ -4767,6 +4768,7 @@ public enum GraphAPI {
         case "ch_currency_selector": self = .chCurrencySelector
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
+        case "pl_usd_currency_2025": self = .plUsdCurrency_2025
         case "se_currency_selector": self = .seCurrencySelector
         case "datalake_fe_events": self = .datalakeFeEvents
         case "creator_demographics_survey": self = .creatorDemographicsSurvey
@@ -4894,6 +4896,7 @@ public enum GraphAPI {
         case .chCurrencySelector: return "ch_currency_selector"
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
+        case .plUsdCurrency_2025: return "pl_usd_currency_2025"
         case .seCurrencySelector: return "se_currency_selector"
         case .datalakeFeEvents: return "datalake_fe_events"
         case .creatorDemographicsSurvey: return "creator_demographics_survey"
@@ -5021,6 +5024,7 @@ public enum GraphAPI {
         case (.chCurrencySelector, .chCurrencySelector): return true
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
+        case (.plUsdCurrency_2025, .plUsdCurrency_2025): return true
         case (.seCurrencySelector, .seCurrencySelector): return true
         case (.datalakeFeEvents, .datalakeFeEvents): return true
         case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
@@ -5149,6 +5153,7 @@ public enum GraphAPI {
         .chCurrencySelector,
         .dkCurrencySelector,
         .noCurrencySelector,
+        .plUsdCurrency_2025,
         .seCurrencySelector,
         .datalakeFeEvents,
         .creatorDemographicsSurvey,
@@ -12352,6 +12357,149 @@ public enum GraphAPI {
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+
+  public final class FetchProjectPledgeOverTimeDataQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchProjectPledgeOverTimeData($projectId: Int!) {
+        project(pid: $projectId) {
+          __typename
+          isPledgeOverTimeAllowed
+          pledgeOverTimeCollectionPlanChargeExplanation
+          pledgeOverTimeCollectionPlanChargedAsNPayments
+          pledgeOverTimeCollectionPlanShortPitch
+          pledgeOverTimeMinimumExplanation
+        }
+      }
+      """
+
+    public let operationName: String = "FetchProjectPledgeOverTimeData"
+
+    public var projectId: Int
+
+    public init(projectId: Int) {
+      self.projectId = projectId
+    }
+
+    public var variables: GraphQLMap? {
+      return ["projectId": projectId]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("project", arguments: ["pid": GraphQLVariable("projectId")], type: .object(Project.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(project: Project? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches a project given its slug or pid.
+      public var project: Project? {
+        get {
+          return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "project")
+        }
+      }
+
+      public struct Project: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Project"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
+            GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(isPledgeOverTimeAllowed: Bool, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Project", "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Whether a project is enrolled in plot
+        public var isPledgeOverTimeAllowed: Bool {
+          get {
+            return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
+          }
+        }
+
+        /// Backer-facing summary of when the incremental charges will occur
+        public var pledgeOverTimeCollectionPlanChargeExplanation: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanChargeExplanation"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargeExplanation")
+          }
+        }
+
+        /// Quick summary of the amount of increments pledges will be spread over
+        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanChargedAsNPayments"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargedAsNPayments")
+          }
+        }
+
+        /// Backer-facing short summary of this project's number of payment increments to split over
+        public var pledgeOverTimeCollectionPlanShortPitch: String? {
+          get {
+            return resultMap["pledgeOverTimeCollectionPlanShortPitch"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanShortPitch")
+          }
+        }
+
+        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+        public var pledgeOverTimeMinimumExplanation: String? {
+          get {
+            return resultMap["pledgeOverTimeMinimumExplanation"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "pledgeOverTimeMinimumExplanation")
           }
         }
       }

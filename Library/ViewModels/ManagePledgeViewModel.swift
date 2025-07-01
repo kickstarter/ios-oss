@@ -94,6 +94,14 @@ public final class ManagePledgeViewModel:
           .switchMap { project in
             fetchProjectRewards(project: project)
           }
+          .switchMap { project in
+            // Only fetch pledge over time data if the feature flag is enabled
+            guard featureEditPledgeOverTimeEnabled() else {
+              return SignalProducer(value: project)
+            }
+
+            return fetchProjectPledgeOverTimeData(project: project)
+          }
           .materialize()
       }
 
@@ -491,6 +499,28 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     }
 }
 
+private func fetchProjectPledgeOverTimeData(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+  return AppEnvironment.current.apiService
+    .fetchProjectPledgeOverTimeData(projectId: project.id)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
+
+      let projectWithPlotData = project
+        |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
+        .pledgeOverTimeCollectionPlanChargeExplanation
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanChargedAsNPayments .~ envelope
+        .pledgeOverTimeCollectionPlanChargedAsNPayments
+        |> Project.lens
+        .pledgeOverTimeCollectionPlanShortPitch .~ envelope.pledgeOverTimeCollectionPlanShortPitch
+        |> Project.lens.pledgeOverTimeMinimumExplanation .~ envelope.pledgeOverTimeMinimumExplanation
+
+      return SignalProducer(value: projectWithPlotData)
+    }
+}
+
 private func pledgeViewData(
   project: Project,
   backing: Backing,
@@ -529,7 +559,8 @@ private func actionSheetMenuOptionsFor(
   var actions = ManagePledgeAlertAction.allCases
     .filter { $0 != .viewRewards && $0 != .editPledgeOverTimePledge }
 
-  if isPledgeOverTime(with: backing) {
+  /// Enable the 'Edit pledge' option for all PLOT-enabled projects.
+  if project.isPledgeOverTimeAllowed == true {
     actions = actions.filter { $0 != .chooseAnotherReward }
 
     /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.

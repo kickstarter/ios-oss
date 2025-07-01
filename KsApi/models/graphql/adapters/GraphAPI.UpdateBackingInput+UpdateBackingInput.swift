@@ -9,7 +9,8 @@ extension GraphAPI.UpdateBackingInput {
       locationId: input.locationId,
       paymentSourceId: input.paymentSourceId,
       intentClientSecret: input.setupIntentClientSecret,
-      applePay: GraphAPI.ApplePayInput.from(input.applePay)
+      applePay: GraphAPI.ApplePayInput.from(input.applePay),
+      incremental: input.incremental
     )
   }
 }
