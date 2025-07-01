@@ -136,6 +136,27 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     }
   }
 
+  func testPledgeCTA_ExistingBackerBackerGoToPM() {
+    let mockConfigClient = MockRemoteConfigClient()
+
+    mockConfigClient.features = [
+      RemoteConfigFeature.netNewBackersGoToPM.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let project = Project.netNewBacker
+        |> Project.lens.personalization.backing .~ Backing.template
+        |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.pledgeManager .~ nil
+
+      self.vm.inputs.configureWith(value: (.left((project, nil)), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.black])
+      self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+    }
+  }
+
   func testPledgeCTA_NonBacker_LiveProject_loggedOut() {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ nil
