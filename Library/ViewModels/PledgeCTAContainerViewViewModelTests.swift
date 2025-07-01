@@ -136,7 +136,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     }
   }
 
-  func testPledgeCTA_ExistingBackerBackerGoToPM() {
+  func testPledgeCTA_ExistingBackerGoToPM() {
     let mockConfigClient = MockRemoteConfigClient()
 
     mockConfigClient.features = [
