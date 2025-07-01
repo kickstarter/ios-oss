@@ -13,7 +13,7 @@ final class Comment_CommentFragmentTests: XCTestCase {
 
       XCTAssertNotNil(commentFragment)
       XCTAssertNotNil(commentFragment.fragments.commentBaseFragment.author)
-      XCTAssertEqual(commentFragment.fragments.commentBaseFragment.authorBadges, [.collaborator])
+      XCTAssertEqual(commentFragment.fragments.commentBaseFragment.authorBadges, [.case(.collaborator)])
       XCTAssertEqual(commentFragment.fragments.commentBaseFragment.body, "new post")
       XCTAssertEqual(commentFragment.fragments.commentBaseFragment.id, "Q29tbWVudC0zMjY2NDEwNQ==")
       XCTAssertNil(commentFragment.fragments.commentBaseFragment.parentId)

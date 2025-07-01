@@ -4,7 +4,7 @@ import XCTest
 
 final class User_UserFragmentTests: XCTestCase {
   func testUserCreation_FromFragment_Success() {
-    let userFragment: GraphAPI.UserFragment = testGraphObject(data: UserFragmentTemplate.valid.data)
+    let userFragment: GraphAPI.UserFragment = try! testGraphObject(data: UserFragmentTemplate.valid.data)
 
     let user = User.user(from: userFragment)
 

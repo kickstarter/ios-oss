@@ -9,6 +9,12 @@ public enum GraphQLSelectionSetStringError: Error {
 }
 
 func testGraphObject<T: GraphAPI.SelectionSet>(
+  data: [String: Any]
+) throws -> T {
+  return try T.init(data: data)
+}
+
+func testGraphObject<T: GraphAPI.SelectionSet>(
   data: [String: Any],
   variables: GraphQLOperation.Variables? = nil
 ) throws -> T {
