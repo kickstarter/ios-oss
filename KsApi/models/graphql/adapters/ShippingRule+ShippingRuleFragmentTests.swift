@@ -4,7 +4,7 @@ import XCTest
 
 final class ShippingRule_ShippingRuleFragmentTests: XCTestCase {
   func test() {
-    let shippingRuleFragment: GraphAPI.ShippingRuleFragment = try! testGraphObject(
+    let shippingRuleFragment: GraphAPI.ShippingRuleFragment = testGraphObject(
       data: [
         "cost": [
           "amount": "50",

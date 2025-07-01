@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 final class Country_CountryFragmentTests: XCTestCase {
-  private let countryFragment: GraphAPI.CountryFragment = try! testGraphObject(
+  private let countryFragment: GraphAPI.CountryFragment = testGraphObject(
     data: [
       "code": GraphAPI.CountryCode.us,
       "name": "United States"
