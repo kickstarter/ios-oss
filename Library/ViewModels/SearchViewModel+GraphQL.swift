@@ -70,14 +70,14 @@ extension GraphAPI.SearchQuery {
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
 
     return GraphAPI.SearchQuery(
-      term: .someOrNil(params.query),
-      sort: .caseOrNil(sort),
-      categoryId: .someOrNil(categoryId),
-      state: .caseOrNil(state),
-      raised: .caseOrNil(raised),
-      locationId: .someOrNil(nil),
-      first: .someOrNil(params.perPage),
-      cursor: .someOrNil(cursor)
+      term: GraphQLInput.someOrNil(params.query),
+      sort: GraphQLInput.caseOrNil(sort),
+      categoryId: GraphQLInput.someOrNil(categoryId),
+      state: GraphQLInput.caseOrNil(state),
+      raised: GraphQLInput.caseOrNil(raised),
+      locationId: GraphQLInput.someOrNil(nil),
+      first: GraphQLInput.someOrNil(params.perPage),
+      cursor: GraphQLInput.someOrNil(cursor)
     )
   }
 }

@@ -7,8 +7,8 @@ extension GraphAPI.UpdateUserAccountInput {
    */
   static func from(_ input: CreatePasswordInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(
-      password: .someOrNil(input.password),
-      passwordConfirmation: .someOrNil(input.passwordConfirmation)
+      password: GraphQLInput.someOrNil(input.password),
+      passwordConfirmation: GraphQLInput.someOrNil(input.passwordConfirmation)
     )
   }
 
@@ -17,9 +17,9 @@ extension GraphAPI.UpdateUserAccountInput {
    */
   static func from(_ input: ChangePasswordInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(
-      currentPassword: .someOrNil(input.currentPassword),
-      password: .someOrNil(input.newPassword),
-      passwordConfirmation: .someOrNil(input.newPasswordConfirmation)
+      currentPassword: GraphQLInput.someOrNil(input.currentPassword),
+      password: GraphQLInput.someOrNil(input.newPassword),
+      passwordConfirmation: GraphQLInput.someOrNil(input.newPasswordConfirmation)
     )
   }
 
@@ -28,8 +28,8 @@ extension GraphAPI.UpdateUserAccountInput {
    */
   static func from(_ input: ChangeEmailInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(
-      currentPassword: .someOrNil(input.currentPassword),
-      email: .someOrNil(input.email)
+      currentPassword: GraphQLInput.someOrNil(input.currentPassword),
+      email: GraphQLInput.someOrNil(input.email)
     )
   }
 }

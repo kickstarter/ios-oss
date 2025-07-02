@@ -5,6 +5,6 @@ extension GraphAPI.UpdateUserProfileInput {
   static func from(_ input: ChangeCurrencyInput) -> GraphAPI.UpdateUserProfileInput {
     let currency = GraphAPI.CurrencyCode(rawValue: input.chosenCurrency)
 
-    return GraphAPI.UpdateUserProfileInput(chosenCurrency: .caseOrNil(currency))
+    return GraphAPI.UpdateUserProfileInput(chosenCurrency: GraphQLInput.caseOrNil(currency))
   }
 }

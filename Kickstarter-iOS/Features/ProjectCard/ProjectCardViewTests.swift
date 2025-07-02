@@ -198,7 +198,7 @@ private func createMockProjectNode(
   pledged: Double = 7_500,
   isInPostCampaignPledgingPhase: Bool = false,
   isPostCampaignPledgingEnabled: Bool = false
-) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
+) -> GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node {
   var resultMap: [String: Any] = [
     "__typename": "Project",
     "pid": id,

@@ -3,7 +3,7 @@ extension GraphAPI.PostCommentInput {
     return GraphAPI.PostCommentInput(
       commentableId: input.commentableId,
       body: input.body,
-      parentId: .someOrNil(input.parentId)
+      parentId: GraphQLInput.someOrNil(input.parentId)
     )
   }
 }
