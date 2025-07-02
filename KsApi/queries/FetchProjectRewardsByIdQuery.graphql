@@ -1,4 +1,4 @@
-query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
+query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) {
   project(pid: $projectId) {
     rewards {
       nodes {
@@ -14,5 +14,6 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
         }
       }
     }
+    ...PledgeOverTimeFragment @include(if: $includePledgeOverTime)
   }
 }

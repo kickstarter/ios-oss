@@ -12363,154 +12363,11 @@ public enum GraphAPI {
     }
   }
 
-  public final class FetchProjectPledgeOverTimeDataQuery: GraphQLQuery {
-    /// The raw GraphQL definition of this operation.
-    public let operationDefinition: String =
-      """
-      query FetchProjectPledgeOverTimeData($projectId: Int!) {
-        project(pid: $projectId) {
-          __typename
-          isPledgeOverTimeAllowed
-          pledgeOverTimeCollectionPlanChargeExplanation
-          pledgeOverTimeCollectionPlanChargedAsNPayments
-          pledgeOverTimeCollectionPlanShortPitch
-          pledgeOverTimeMinimumExplanation
-        }
-      }
-      """
-
-    public let operationName: String = "FetchProjectPledgeOverTimeData"
-
-    public var projectId: Int
-
-    public init(projectId: Int) {
-      self.projectId = projectId
-    }
-
-    public var variables: GraphQLMap? {
-      return ["projectId": projectId]
-    }
-
-    public struct Data: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["Query"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("project", arguments: ["pid": GraphQLVariable("projectId")], type: .object(Project.selections)),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(project: Project? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Query", "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
-      }
-
-      /// Fetches a project given its slug or pid.
-      public var project: Project? {
-        get {
-          return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "project")
-        }
-      }
-
-      public struct Project: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Project"]
-
-        public static var selections: [GraphQLSelection] {
-          return [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
-            GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
-            GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
-            GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
-            GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
-          ]
-        }
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(isPledgeOverTimeAllowed: Bool, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "Project", "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        /// Whether a project is enrolled in plot
-        public var isPledgeOverTimeAllowed: Bool {
-          get {
-            return resultMap["isPledgeOverTimeAllowed"]! as! Bool
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
-          }
-        }
-
-        /// Backer-facing summary of when the incremental charges will occur
-        public var pledgeOverTimeCollectionPlanChargeExplanation: String? {
-          get {
-            return resultMap["pledgeOverTimeCollectionPlanChargeExplanation"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargeExplanation")
-          }
-        }
-
-        /// Quick summary of the amount of increments pledges will be spread over
-        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? {
-          get {
-            return resultMap["pledgeOverTimeCollectionPlanChargedAsNPayments"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargedAsNPayments")
-          }
-        }
-
-        /// Backer-facing short summary of this project's number of payment increments to split over
-        public var pledgeOverTimeCollectionPlanShortPitch: String? {
-          get {
-            return resultMap["pledgeOverTimeCollectionPlanShortPitch"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanShortPitch")
-          }
-        }
-
-        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-        public var pledgeOverTimeMinimumExplanation: String? {
-          get {
-            return resultMap["pledgeOverTimeMinimumExplanation"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "pledgeOverTimeMinimumExplanation")
-          }
-        }
-      }
-    }
-  }
-
   public final class FetchProjectRewardsByIdQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
+      query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) {
         project(pid: $projectId) {
           __typename
           rewards {
@@ -12530,6 +12387,7 @@ public enum GraphAPI {
               }
             }
           }
+          ...PledgeOverTimeFragment @include(if: $includePledgeOverTime)
         }
       }
       """
@@ -12542,21 +12400,24 @@ public enum GraphAPI {
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
+      document.append("\n" + PledgeOverTimeFragment.fragmentDefinition)
       return document
     }
 
     public var projectId: Int
     public var includeShippingRules: Bool
     public var includeLocalPickup: Bool
+    public var includePledgeOverTime: Bool
 
-    public init(projectId: Int, includeShippingRules: Bool, includeLocalPickup: Bool) {
+    public init(projectId: Int, includeShippingRules: Bool, includeLocalPickup: Bool, includePledgeOverTime: Bool) {
       self.projectId = projectId
       self.includeShippingRules = includeShippingRules
       self.includeLocalPickup = includeLocalPickup
+      self.includePledgeOverTime = includePledgeOverTime
     }
 
     public var variables: GraphQLMap? {
-      return ["projectId": projectId, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup]
+      return ["projectId": projectId, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup, "includePledgeOverTime": includePledgeOverTime]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -12595,6 +12456,9 @@ public enum GraphAPI {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("rewards", type: .object(Reward.selections)),
+            GraphQLBooleanCondition(variableName: "includePledgeOverTime", inverted: false, selections: [
+              GraphQLFragmentSpread(PledgeOverTimeFragment.self),
+            ]),
           ]
         }
 
@@ -12604,8 +12468,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(rewards: Reward? = nil) {
-          self.init(unsafeResultMap: ["__typename": "Project", "rewards": rewards.flatMap { (value: Reward) -> ResultMap in value.resultMap }])
+        public init(rewards: Reward? = nil, isPledgeOverTimeAllowed: Bool? = nil, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Project", "rewards": rewards.flatMap { (value: Reward) -> ResultMap in value.resultMap }, "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation])
         }
 
         public var __typename: String {
@@ -12624,6 +12488,32 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue?.resultMap, forKey: "rewards")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var pledgeOverTimeFragment: PledgeOverTimeFragment {
+            get {
+              return PledgeOverTimeFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
           }
         }
 
@@ -14528,7 +14418,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query LocationsByTerm($term: String, $first: Int) {
-        locations(term: $term, first: $first, discoverable: true) {
+        locations(term: $term, first: $first) {
           __typename
           nodes {
             __typename
@@ -14563,7 +14453,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first"), "discoverable": true], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first")], type: .object(Location.selections)),
         ]
       }
 
@@ -18262,6 +18152,103 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "acceptsNewBackers")
+      }
+    }
+  }
+
+  public struct PledgeOverTimeFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment PledgeOverTimeFragment on Project {
+        __typename
+        isPledgeOverTimeAllowed
+        pledgeOverTimeCollectionPlanChargeExplanation
+        pledgeOverTimeCollectionPlanChargedAsNPayments
+        pledgeOverTimeCollectionPlanShortPitch
+        pledgeOverTimeMinimumExplanation
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Project"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("isPledgeOverTimeAllowed", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("pledgeOverTimeCollectionPlanChargeExplanation", type: .scalar(String.self)),
+        GraphQLField("pledgeOverTimeCollectionPlanChargedAsNPayments", type: .scalar(String.self)),
+        GraphQLField("pledgeOverTimeCollectionPlanShortPitch", type: .scalar(String.self)),
+        GraphQLField("pledgeOverTimeMinimumExplanation", type: .scalar(String.self)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(isPledgeOverTimeAllowed: Bool, pledgeOverTimeCollectionPlanChargeExplanation: String? = nil, pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil, pledgeOverTimeCollectionPlanShortPitch: String? = nil, pledgeOverTimeMinimumExplanation: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed, "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation, "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments, "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch, "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// Whether a project is enrolled in plot
+    public var isPledgeOverTimeAllowed: Bool {
+      get {
+        return resultMap["isPledgeOverTimeAllowed"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isPledgeOverTimeAllowed")
+      }
+    }
+
+    /// Backer-facing summary of when the incremental charges will occur
+    public var pledgeOverTimeCollectionPlanChargeExplanation: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanChargeExplanation"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargeExplanation")
+      }
+    }
+
+    /// Quick summary of the amount of increments pledges will be spread over
+    public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanChargedAsNPayments"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanChargedAsNPayments")
+      }
+    }
+
+    /// Backer-facing short summary of this project's number of payment increments to split over
+    public var pledgeOverTimeCollectionPlanShortPitch: String? {
+      get {
+        return resultMap["pledgeOverTimeCollectionPlanShortPitch"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeCollectionPlanShortPitch")
+      }
+    }
+
+    /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+    public var pledgeOverTimeMinimumExplanation: String? {
+      get {
+        return resultMap["pledgeOverTimeMinimumExplanation"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "pledgeOverTimeMinimumExplanation")
       }
     }
   }
