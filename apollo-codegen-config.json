@@ -1,30 +1,37 @@
 {
-  "schemaNamespace" : "GraphAPI",
-  "input" : {
-    "operationSearchPaths" : [
+  "schemaNamespace": "GraphAPI",
+  "input": {
+    "operationSearchPaths": [
       "**/*.graphql"
     ],
-    "schemaSearchPaths" : [
+    "schemaSearchPaths": [
       "KsApi/graphql-schema.json"
     ]
   },
-  "output" : {
-    "testMocks" : {
-      "none" : {
-      }
+  "options": {
+    "selectionSetInitializers": {
+      "operations": false,
+      "namedFragments": false,
+      "definitionsNamed": [
+        "ProjectAnalyticsFragment"
+      ]
+    }
+  },
+  "output": {
+    "testMocks": {
+      "none": {}
     },
-    "schemaTypes" : {
-      "path" : "./GraphAPI",
-      "moduleType" : {
-        "embeddedInTarget" : {
-          "accessModifier" : "public",
-          "name" : "KsApi"
+    "schemaTypes": {
+      "path": "./GraphAPI",
+      "moduleType": {
+        "embeddedInTarget": {
+          "accessModifier": "public",
+          "name": "KsApi"
         }
       }
     },
-    "operations" : {
-      "inSchemaModule" : {
-      }
+    "operations": {
+      "inSchemaModule": {}
     }
   }
 }

@@ -96,6 +96,70 @@ public extension GraphAPI {
     /// The minimum amount to raise for the project to be successful.
     public var goal: Goal? { __data["goal"] }
 
+    public init(
+      addOns: AddOns? = nil,
+      backersCount: Int,
+      backing: Backing? = nil,
+      category: Category? = nil,
+      commentsCount: Int,
+      country: Country,
+      creator: Creator? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+      deadlineAt: GraphAPI.DateTime? = nil,
+      launchedAt: GraphAPI.DateTime? = nil,
+      pid: Int,
+      name: String,
+      isInPostCampaignPledgingPhase: Bool,
+      isWatched: Bool,
+      percentFunded: Int,
+      isPrelaunchActivated: Bool,
+      projectTags: [ProjectTag?],
+      postCampaignPledgingEnabled: Bool,
+      rewards: Rewards? = nil,
+      state: GraphQLEnum<GraphAPI.ProjectState>,
+      video: Video? = nil,
+      pledged: Pledged,
+      fxRate: Double,
+      usdExchangeRate: Double? = nil,
+      posts: Posts? = nil,
+      goal: Goal? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Project.typename,
+          "addOns": addOns._fieldData,
+          "backersCount": backersCount,
+          "backing": backing._fieldData,
+          "category": category._fieldData,
+          "commentsCount": commentsCount,
+          "country": country._fieldData,
+          "creator": creator._fieldData,
+          "currency": currency,
+          "deadlineAt": deadlineAt,
+          "launchedAt": launchedAt,
+          "pid": pid,
+          "name": name,
+          "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+          "isWatched": isWatched,
+          "percentFunded": percentFunded,
+          "isPrelaunchActivated": isPrelaunchActivated,
+          "projectTags": projectTags._fieldData,
+          "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+          "rewards": rewards._fieldData,
+          "state": state,
+          "video": video._fieldData,
+          "pledged": pledged._fieldData,
+          "fxRate": fxRate,
+          "usdExchangeRate": usdExchangeRate,
+          "posts": posts._fieldData,
+          "goal": goal._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectAnalyticsFragment.self)
+        ]
+      ))
+    }
+
     /// AddOns
     ///
     /// Parent Type: `ProjectRewardConnection`
@@ -110,6 +174,20 @@ public extension GraphAPI {
       ] }
 
       public var totalCount: Int { __data["totalCount"] }
+
+      public init(
+        totalCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
+            "totalCount": totalCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.AddOns.self)
+          ]
+        ))
+      }
     }
 
     /// Backing
@@ -126,6 +204,20 @@ public extension GraphAPI {
       ] }
 
       public var id: GraphAPI.ID { __data["id"] }
+
+      public init(
+        id: GraphAPI.ID
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Backing.typename,
+            "id": id,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Backing.self)
+          ]
+        ))
+      }
     }
 
     /// Category
@@ -147,6 +239,22 @@ public extension GraphAPI {
       /// Category parent
       public var parentCategory: ParentCategory? { __data["parentCategory"] }
 
+      public init(
+        analyticsName: String,
+        parentCategory: ParentCategory? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Category.typename,
+            "analyticsName": analyticsName,
+            "parentCategory": parentCategory._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Category.self)
+          ]
+        ))
+      }
+
       /// Category.ParentCategory
       ///
       /// Parent Type: `Category`
@@ -164,6 +272,22 @@ public extension GraphAPI {
         /// Category name in English for analytics use.
         public var analyticsName: String { __data["analyticsName"] }
         public var id: GraphAPI.ID { __data["id"] }
+
+        public init(
+          analyticsName: String,
+          id: GraphAPI.ID
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Category.typename,
+              "analyticsName": analyticsName,
+              "id": id,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectAnalyticsFragment.Category.ParentCategory.self)
+            ]
+          ))
+        }
       }
     }
 
@@ -182,6 +306,20 @@ public extension GraphAPI {
 
       /// ISO ALPHA-2 code.
       public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
+
+      public init(
+        code: GraphQLEnum<GraphAPI.CountryCode>
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Country.typename,
+            "code": code,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Country.self)
+          ]
+        ))
+      }
     }
 
     /// Creator
@@ -202,6 +340,22 @@ public extension GraphAPI {
       /// Projects a user has created.
       public var createdProjects: CreatedProjects? { __data["createdProjects"] }
 
+      public init(
+        id: GraphAPI.ID,
+        createdProjects: CreatedProjects? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.User.typename,
+            "id": id,
+            "createdProjects": createdProjects._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Creator.self)
+          ]
+        ))
+      }
+
       /// Creator.CreatedProjects
       ///
       /// Parent Type: `UserCreatedProjectsConnection`
@@ -216,6 +370,20 @@ public extension GraphAPI {
         ] }
 
         public var totalCount: Int { __data["totalCount"] }
+
+        public init(
+          totalCount: Int
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.UserCreatedProjectsConnection.typename,
+              "totalCount": totalCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectAnalyticsFragment.Creator.CreatedProjects.self)
+            ]
+          ))
+        }
       }
     }
 
@@ -234,6 +402,20 @@ public extension GraphAPI {
 
       /// Tag name.
       public var name: String { __data["name"] }
+
+      public init(
+        name: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Tag.typename,
+            "name": name,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.ProjectTag.self)
+          ]
+        ))
+      }
     }
 
     /// Rewards
@@ -250,6 +432,20 @@ public extension GraphAPI {
       ] }
 
       public var totalCount: Int { __data["totalCount"] }
+
+      public init(
+        totalCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
+            "totalCount": totalCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Rewards.self)
+          ]
+        ))
+      }
     }
 
     /// Video
@@ -266,6 +462,20 @@ public extension GraphAPI {
       ] }
 
       public var id: GraphAPI.ID { __data["id"] }
+
+      public init(
+        id: GraphAPI.ID
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Video.typename,
+            "id": id,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Video.self)
+          ]
+        ))
+      }
     }
 
     /// Pledged
@@ -283,6 +493,20 @@ public extension GraphAPI {
 
       /// Floating-point numeric value of monetary amount represented as a string
       public var amount: String? { __data["amount"] }
+
+      public init(
+        amount: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Money.typename,
+            "amount": amount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self)
+          ]
+        ))
+      }
     }
 
     /// Posts
@@ -299,6 +523,20 @@ public extension GraphAPI {
       ] }
 
       public var totalCount: Int { __data["totalCount"] }
+
+      public init(
+        totalCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PostConnection.typename,
+            "totalCount": totalCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Posts.self)
+          ]
+        ))
+      }
     }
 
     /// Goal
@@ -316,6 +554,20 @@ public extension GraphAPI {
 
       /// Floating-point numeric value of monetary amount represented as a string
       public var amount: String? { __data["amount"] }
+
+      public init(
+        amount: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Money.typename,
+            "amount": amount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectAnalyticsFragment.Goal.self)
+          ]
+        ))
+      }
     }
   }
 
