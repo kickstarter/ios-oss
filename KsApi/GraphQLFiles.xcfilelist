@@ -1,4 +1,5 @@
 $(PROJECT_DIR)/KsApi/fragments/LastWaveFragment.graphql
+$(PROJECT_DIR)/KsApi/fragments/PledgeOverTimeFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFeaturesFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/UserSettingsFragment.graphql
@@ -76,6 +77,5 @@ $(PROJECT_DIR)/KsApi/queries/SearchQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchProjectRewardsByIdQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchAddOnsQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchPPOQuery.graphql
-$(PROJECT_DIR)/KsApi/queries/FetchProjectPLOTQuery.graphql
 $(PROJECT_DIR)/KsApi/queries/FetchCategory.graphql
 $(PROJECT_DIR)/KsApi/graphql-schema.json
