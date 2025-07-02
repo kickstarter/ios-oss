@@ -4,6 +4,7 @@ import KsApi
 #if targetEnvironment(simulator)
   extension PPOProjectCardModel {
     public static let previewTemplates: [PPOProjectCardModel] = [
+      managePledgeTemplate,
       confirmAddressTemplate,
       addressLockTemplate,
       fixPaymentTemplate,

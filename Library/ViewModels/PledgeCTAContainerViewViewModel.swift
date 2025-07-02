@@ -211,15 +211,15 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
     return .prelaunch(saved: projectIsSaved, watchCount: project.watchesCount ?? 0)
   }
 
+  if featureNetNewBackersGoToPMEnabled() && project.pledgeManagementAvailable {
+    return PledgeStateCTAType.pledgeManager
+  }
+
   let isInPostCampaign = featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
-    }
-
-    if featureNetNewBackersGoToPMEnabled() && project.acceptsNetNewBackersForPM {
-      return PledgeStateCTAType.pledgeManager
     }
 
     if isInPostCampaign {
