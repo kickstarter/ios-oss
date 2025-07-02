@@ -18654,6 +18654,7 @@ public enum GraphAPI {
           message
           type
         }
+        webviewUrl
       }
       """
 
@@ -18665,6 +18666,7 @@ public enum GraphAPI {
         GraphQLField("backing", type: .object(Backing.selections)),
         GraphQLField("tierType", type: .scalar(String.self)),
         GraphQLField("flags", type: .list(.nonNull(.object(Flag.selections)))),
+        GraphQLField("webviewUrl", type: .scalar(String.self)),
       ]
     }
 
@@ -18674,8 +18676,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }])
+    public init(backing: Backing? = nil, tierType: String? = nil, flags: [Flag]? = nil, webviewUrl: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PledgeProjectOverviewItem", "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "tierType": tierType, "flags": flags.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, "webviewUrl": webviewUrl])
     }
 
     public var __typename: String {
@@ -18714,6 +18716,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue.flatMap { (value: [Flag]) -> [ResultMap] in value.map { (value: Flag) -> ResultMap in value.resultMap } }, forKey: "flags")
+      }
+    }
+
+    /// webview url for survey responses or pledge management
+    public var webviewUrl: String? {
+      get {
+        return resultMap["webviewUrl"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "webviewUrl")
       }
     }
 

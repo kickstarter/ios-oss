@@ -36,11 +36,17 @@ public class SearchFilters: ObservableObject {
     public var selectedLocation: Location?
   }
 
+  public struct AmountRaisedOptions {
+    public let buckets: [DiscoveryParams.AmountRaisedBucket]
+    public var selectedBucket: DiscoveryParams.AmountRaisedBucket?
+  }
+
   public private(set) var category: CategoryOptions
   public private(set) var sort: SortOptions
   public private(set) var projectState: ProjectStateOptions
   public private(set) var percentRaised: PercentRaisedOptions
   public private(set) var location: LocationOptions
+  public private(set) var amountRaised: AmountRaisedOptions
 
   public fileprivate(set) var pills: [SearchFilterPill]
 
@@ -53,7 +59,8 @@ public class SearchFilters: ObservableObject {
       self.hasCategory,
       self.hasProjectState,
       self.hasPercentRaised,
-      self.hasLocation
+      self.hasLocation,
+      self.hasAmountRaised
     ]
     .count(where: { $0 == true })
   }
@@ -89,18 +96,24 @@ public class SearchFilters: ObservableObject {
     return self.location.selectedLocation != nil
   }
 
+  var hasAmountRaised: Bool {
+    return self.amountRaised.selectedBucket != nil
+  }
+
   init(
     sort: SortOptions,
     category: CategoryOptions,
     projectState: ProjectStateOptions,
     percentRaised: PercentRaisedOptions,
-    location: LocationOptions
+    location: LocationOptions,
+    amountRaised: AmountRaisedOptions
   ) {
     self.sort = sort
     self.category = category
     self.projectState = projectState
     self.percentRaised = percentRaised
     self.location = location
+    self.amountRaised = amountRaised
 
     self.pills = []
     self.updatePills()
@@ -111,7 +124,8 @@ public class SearchFilters: ObservableObject {
     category: SearchFiltersCategory,
     projectState: DiscoveryParams.State,
     percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?,
-    location: Location?
+    location: Location?,
+    amountRaisedBucket: DiscoveryParams.AmountRaisedBucket?
   ) {
     self.objectWillChange.send()
 
@@ -120,6 +134,7 @@ public class SearchFilters: ObservableObject {
     self.projectState.selectedProjectState = projectState
     self.percentRaised.selectedBucket = percentRaisedBucket
     self.location.selectedLocation = location
+    self.amountRaised.selectedBucket = amountRaisedBucket
 
     self.updatePills()
   }
@@ -157,6 +172,8 @@ public class SearchFilters: ObservableObject {
       return self.hasPercentRaised
     case .location:
       return self.hasLocation
+    case .amountRaised:
+      return self.hasAmountRaised
     }
   }
 
@@ -219,6 +236,17 @@ public class SearchFilters: ObservableObject {
         buttonType: .dropdown(percentRaisedTitle)
       )
     )
+
+    if featureSearchFilterByAmountRaised() {
+      let amountRaisedTitle = self.amountRaised.selectedBucket?.title ?? Strings.Amount_raised()
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.hasAmountRaised,
+          filterType: .amountRaised,
+          buttonType: .dropdown(amountRaisedTitle)
+        )
+      )
+    }
 
     self.pills = pills
   }
