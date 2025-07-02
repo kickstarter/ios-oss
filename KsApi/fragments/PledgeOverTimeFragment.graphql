@@ -1,0 +1,7 @@
+fragment PledgeOverTimeFragment on Project {
+  isPledgeOverTimeAllowed
+  pledgeOverTimeCollectionPlanChargeExplanation
+  pledgeOverTimeCollectionPlanChargedAsNPayments
+  pledgeOverTimeCollectionPlanShortPitch
+  pledgeOverTimeMinimumExplanation
+}
