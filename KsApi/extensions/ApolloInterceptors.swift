@@ -35,7 +35,8 @@ class NetworkInterceptorProvider: InterceptorProvider {
       NetworkFetchInterceptor(client: self.client),
       ResponseCodeInterceptor(),
       AutomaticPersistedQueryInterceptor(),
-      CacheWriteInterceptor(store: self.store)
+      CacheWriteInterceptor(store: self.store),
+      JSONResponseParsingInterceptor()
     ]
   }
 
@@ -66,10 +67,10 @@ class HeadersInterceptor: ApolloInterceptor {
     ) -> Void
   ) {
     self.additionalHeaders().forEach(request.addHeader)
-
     chain.proceedAsync(
       request: request,
       response: response,
+      interceptor: self,
       completion: completion
     )
   }

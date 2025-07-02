@@ -17,10 +17,10 @@ private enum PPOProjectCardModelConstants {
 }
 
 extension PPOProjectCardModel {
-  init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledge.Edge.Node) {
-    let card = node.fragments.ppoCardFragment
-    let backing = card.backing?.fragments.ppoBackingFragment
-    let ppoProject = backing?.project?.fragments.ppoProjectFragment
+  init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node) {
+    let card = node.fragments.pPOCardFragment
+    let backing = card.backing?.fragments.pPOBackingFragment
+    let ppoProject = backing?.project?.fragments.pPOProjectFragment
 
     let image = ppoProject?.image
       .flatMap { URL(string: $0.url) }

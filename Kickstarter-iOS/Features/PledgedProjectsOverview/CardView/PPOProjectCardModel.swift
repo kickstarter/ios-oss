@@ -162,7 +162,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 }
 
 extension PPOProjectCardModel.Alert {
-  init?(flag: GraphAPI.PpoCardFragment.Flag) {
+  init?(flag: GraphAPI.PPOCardFragment.Flag) {
     let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
     case "alert":
       .alert
