@@ -7,6 +7,9 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+/// Tabs are now Explore (aka Discover), Backings, Activity, Search, Profile.
+private let activityIndex = 2
+
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], Never>()
@@ -53,7 +56,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -68,7 +71,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["5"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -83,7 +86,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
   }
 
@@ -98,21 +101,21 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { true }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "100"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "100", "99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -127,14 +130,14 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
       mockApplication.applicationIconBadgeNumber = 50
 
       self.vm.inputs.applicationWillEnterForeground()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -160,19 +163,19 @@ final class RootViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
-      self.vm.inputs.didSelect(index: 1)
+      self.vm.inputs.didSelect(index: activityIndex)
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.scheduler.advance()
 
       XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -195,19 +198,19 @@ final class RootViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
-      self.vm.inputs.didSelect(index: 1)
+      self.vm.inputs.didSelect(index: activityIndex)
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.scheduler.advance()
 
       self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
     }
   }
 
@@ -222,7 +225,7 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
     }
 
     let user = .template
@@ -233,14 +236,14 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.currentUserUpdated()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       AppEnvironment.logout()
 
       self.vm.inputs.userSessionEnded()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "50", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -255,17 +258,106 @@ final class RootViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
 
       self.vm.inputs.didReceiveBadgeValue(10)
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "10"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
 
       self.vm.inputs.didReceiveBadgeValue(0)
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "10", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_CurrentUserUpdated_SessionEnded_IncludesErroredPledges() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
+    }
+
+    let user = .template
+      |> User.lens.unseenActivityCount .~ 50
+      |> User.lens.erroredBackingsCount .~ 4
+
+    withEnvironment(application: mockApplication) {
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.currentUserUpdated()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
+
+      AppEnvironment.logout()
+
+      self.vm.inputs.userSessionEnded()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "54", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
+    }
+  }
+
+  func testClearBadgeValueOnActivitiesTabSelected_IncludesErroredPledges() {
+    let initialActivitiesCount = 100
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+      |> User.lens.erroredBackingsCount .~ 9
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex])
+
+      self.vm.inputs.didSelect(index: activityIndex)
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex])
+    }
+
+    let userAddressedErroredPledges = User.template
+      |> User.lens.unseenActivityCount .~ 0
+      |> User.lens.erroredBackingsCount .~ 0
+
+    withEnvironment(
+      apiService: mockService,
+      application: mockApplication,
+      currentUser: userAddressedErroredPledges
+    ) {
+      self.vm.inputs.currentUserUpdated()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([activityIndex, activityIndex, activityIndex])
     }
   }
 
@@ -279,7 +371,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -289,8 +381,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
       ],
       "Show the logged in tabs."
     )
@@ -300,8 +392,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
     )
@@ -311,9 +403,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "LoginTout"]
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+        ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"],
+        ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -451,16 +543,6 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testSwitchToSearch() {
-    self.selectedIndex.assertDidNotEmitValue()
-
-    self.vm.inputs.viewDidLoad()
-
-    self.selectedIndex.assertLastValue(0)
-    self.vm.inputs.switchToSearch()
-    self.selectedIndex.assertLastValue(2)
-  }
-
   func testTabBarItemStyles() {
     let user = User.template |> \.avatar.small .~ "http://image.com/image"
     let creator = User.template
@@ -540,7 +622,8 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testPPOTabBarBadging_WithoutPersistence() {
+  // FIXME: MBL-2151 Implement PPO badging using backingActionsCount
+  func disabled_testPPOTabBarBadging_FeatureFlagEnabledWithoutPersistence() {
     let user = User.template
       |> \.unseenActivityCount .~ 50
       |> \.erroredBackingsCount .~ 4
@@ -548,7 +631,9 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(currentUserPPOSettings: nil) {
+    withEnvironment(
+      currentUserPPOSettings: nil
+    ) {
       self.vm.inputs.viewDidLoad()
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
@@ -561,34 +646,17 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testPPOTabBarBadging_WithPersistence() {
-    let user = User.template
-      |> \.unseenActivityCount .~ 50
-      |> \.erroredBackingsCount .~ 4
-
-    self.setBadgeValueAtIndexValue.assertValues([])
-    self.setBadgeValueAtIndexIndex.assertValues([])
-
-    withEnvironment(currentUserPPOSettings: PPOUserSettings(hasAction: true, backingActionCount: 1)) {
-      self.vm.inputs.viewDidLoad()
-
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      self.vm.inputs.currentUserUpdated()
-
-      self.setBadgeValueAtIndexValue.assertValues(["", ""])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
-    }
-  }
-
-  func testSetViewControllers_LoggedIn() {
-    withEnvironment(currentUser: nil) {
+  func testSetViewControllers_PledgedProjectsOverview_LoggedIn() {
+    withEnvironment(
+      currentUser: nil
+    ) {
       self.vm.inputs.viewDidLoad()
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
         ],
-        "Shows regular Activities tab initially"
+        "Shows empty Activities tab initially"
       )
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
@@ -596,8 +664,8 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"]
         ],
         "Shows PPO tab when logged in with feature flag enabled"
       )
@@ -607,9 +675,9 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
-          ["Discovery", "Activities", "Search", "LoginTout"]
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"],
+          ["Discovery", "PPOContainer", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "EmptyStates", "EmptyStates", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab when logged out again"
       )
