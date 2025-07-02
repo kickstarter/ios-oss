@@ -14528,7 +14528,7 @@ public enum GraphAPI {
     public let operationDefinition: String =
       """
       query LocationsByTerm($term: String, $first: Int) {
-        locations(term: $term, first: $first, discoverable: true) {
+        locations(term: $term, first: $first) {
           __typename
           nodes {
             __typename
@@ -14563,7 +14563,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first"), "discoverable": true], type: .object(Location.selections)),
+          GraphQLField("locations", arguments: ["term": GraphQLVariable("term"), "first": GraphQLVariable("first")], type: .object(Location.selections)),
         ]
       }
 
