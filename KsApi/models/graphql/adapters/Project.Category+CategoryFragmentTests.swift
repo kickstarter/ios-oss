@@ -4,7 +4,7 @@ import XCTest
 
 final class ProjectCategory_CategoryFragmentTests: XCTestCase {
   func test() {
-    guard let categoryFragment = try? GraphAPI.CategoryFragment(
+    guard let categoryFragment: GraphAPI.CategoryFragment = try? testGraphObject(
       jsonObject: categoryDictionary()
     ) else {
       XCTFail("should create a category fragment")

@@ -9,7 +9,10 @@ final class Category_CategoryFragmentTests: XCTestCase {
       let variables: Apollo.GraphQLMap = [
         "id": "Q2F0ZWdvcnktMw=="
       ]
-      let fragment = try GraphAPI.CategoryFragment(jsonObject: categoryDictionary(), variables: variables)
+      let fragment: GraphAPI.CategoryFragment = try testGraphObject(
+        jsonObject: categoryDictionary(),
+        variables: variables
+      )
       XCTAssertNotNil(fragment)
 
       guard let category = Category.category(

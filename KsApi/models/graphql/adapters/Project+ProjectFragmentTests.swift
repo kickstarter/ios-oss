@@ -8,7 +8,10 @@ final class Project_ProjectFragmentTests: XCTestCase {
       let variables = [
         "withStoredCards": true
       ]
-      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
+      let fragment: GraphAPI.ProjectFragment = try testGraphObject(
+        jsonObject: self.projectDictionary(),
+        variables: variables
+      )
       XCTAssertNotNil(fragment)
 
       let project = Project.project(

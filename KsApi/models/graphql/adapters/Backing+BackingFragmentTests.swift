@@ -10,7 +10,10 @@ final class Backing_BackingFragmentTests: XCTestCase {
         "includeShippingRules": true,
         "includeLocalPickup": true
       ]
-      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
+      let fragment: GraphAPI.BackingFragment = try testGraphObject(
+        jsonObject: backingDictionary(),
+        variables: variables
+      )
       XCTAssertNotNil(fragment)
 
       guard let backing = Backing.backing(from: fragment) else {
@@ -75,7 +78,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       dict["addOns"] = NSNull()
       dict["reward"] = NSNull()
 
-      let fragment = try GraphAPI.BackingFragment(jsonObject: dict, variables: variables)
+      let fragment: GraphAPI.BackingFragment = try testGraphObject(jsonObject: dict, variables: variables)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)
