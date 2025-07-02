@@ -585,6 +585,46 @@
 		6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */; };
 		6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */; };
 		6051C6832B683E6300514202 /* PaymentIntentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */; };
+		605914F52E1590D90030BB90 /* onboarding-flow-save-projects-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */; };
+		605914F62E1590D90030BB90 /* onboarding-flow-login-signup-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */; };
+		605914F72E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */; };
+		605914F82E1590D90030BB90 /* onboarding-flow-save-projects-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */; };
+		605914F92E1590D90030BB90 /* onboarding-flow-save-projects-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */; };
+		605914FA2E1590D90030BB90 /* onboarding-flow-welcome-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */; };
+		605914FB2E1590D90030BB90 /* onboarding-flow-welcome-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */; };
+		605914FC2E1590D90030BB90 /* onboarding-flow-welcome-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */; };
+		605914FD2E1590D90030BB90 /* onboarding-flow-login-signup-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */; };
+		605914FE2E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */; };
+		605914FF2E1590D90030BB90 /* onboarding-flow-login-signup-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */; };
+		605915002E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */; };
+		605915012E1590D90030BB90 /* onboarding-flow-login-signup-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */; };
+		605915022E1590D90030BB90 /* onboarding-flow-save-projects-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */; };
+		605915032E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */; };
+		605915042E1590D90030BB90 /* onboarding-flow-welcome-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */; };
+		605915052E1590D90030BB90 /* onboarding-flow-login-signup-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */; };
+		605915062E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */; };
+		605915072E1590D90030BB90 /* onboarding-flow-save-projects-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */; };
+		605915082E1590D90030BB90 /* onboarding-flow-welcome-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */; };
+		605915092E1590D90030BB90 /* onboarding-flow-save-projects-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */; };
+		6059150A2E1590D90030BB90 /* onboarding-flow-login-signup-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */; };
+		6059150B2E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */; };
+		6059150C2E1590D90030BB90 /* onboarding-flow-save-projects-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */; };
+		6059150D2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */; };
+		6059150E2E1590D90030BB90 /* onboarding-flow-welcome-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */; };
+		6059150F2E1590D90030BB90 /* onboarding-flow-welcome-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */; };
+		605915102E1590D90030BB90 /* onboarding-flow-welcome-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */; };
+		605915112E1590D90030BB90 /* onboarding-flow-login-signup-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */; };
+		605915122E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */; };
+		605915132E1590D90030BB90 /* onboarding-flow-login-signup-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */; };
+		605915142E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */; };
+		605915152E1590D90030BB90 /* onboarding-flow-login-signup-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */; };
+		605915162E1590D90030BB90 /* onboarding-flow-save-projects-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */; };
+		605915172E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */; };
+		605915182E1590D90030BB90 /* onboarding-flow-welcome-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */; };
+		605915192E1590D90030BB90 /* onboarding-flow-login-signup-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */; };
+		6059151A2E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */; };
+		6059151B2E1590D90030BB90 /* onboarding-flow-save-projects-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */; };
+		6059151C2E1590D90030BB90 /* onboarding-flow-welcome-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -2384,6 +2424,26 @@
 		6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInput.swift; sourceTree = "<group>"; };
 		6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInputTests.swift; sourceTree = "<group>"; };
 		6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIntentEnvelope.swift; sourceTree = "<group>"; };
+		605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-enable-notifications-de.json"; sourceTree = "<group>"; };
+		605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-enable-notifications-en.json"; sourceTree = "<group>"; };
+		605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-enable-notifications-es.json"; sourceTree = "<group>"; };
+		605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-enable-notifications-fr.json"; sourceTree = "<group>"; };
+		605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-enable-notifications-ja.json"; sourceTree = "<group>"; };
+		605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-login-signup-de.json"; sourceTree = "<group>"; };
+		605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-login-signup-en.json"; sourceTree = "<group>"; };
+		605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-login-signup-es.json"; sourceTree = "<group>"; };
+		605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-login-signup-fr.json"; sourceTree = "<group>"; };
+		605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-login-signup-ja.json"; sourceTree = "<group>"; };
+		605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-save-projects-de.json"; sourceTree = "<group>"; };
+		605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-save-projects-en.json"; sourceTree = "<group>"; };
+		605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-save-projects-es.json"; sourceTree = "<group>"; };
+		605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-save-projects-fr.json"; sourceTree = "<group>"; };
+		605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-save-projects-ja.json"; sourceTree = "<group>"; };
+		605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-welcome-de.json"; sourceTree = "<group>"; };
+		605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-welcome-en.json"; sourceTree = "<group>"; };
+		605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-welcome-es.json"; sourceTree = "<group>"; };
+		605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-welcome-fr.json"; sourceTree = "<group>"; };
+		605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-welcome-ja.json"; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -6064,6 +6124,26 @@
 		33F55B472D4C70D40007E50E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */,
+				605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */,
+				605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */,
+				605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */,
+				605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */,
+				605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */,
+				605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */,
+				605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */,
+				605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */,
+				605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */,
+				605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */,
+				605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */,
+				605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */,
+				605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */,
+				605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */,
+				605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */,
+				605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */,
+				605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */,
+				605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */,
+				605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */,
 				33F55B492D4C70F30007E50E /* Fonts */,
 			);
 			path = Resources;
@@ -8215,6 +8295,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				605914F52E1590D90030BB90 /* onboarding-flow-save-projects-es.json in Resources */,
+				605914F62E1590D90030BB90 /* onboarding-flow-login-signup-en.json in Resources */,
+				605914F72E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json in Resources */,
+				605914F82E1590D90030BB90 /* onboarding-flow-save-projects-de.json in Resources */,
+				605914F92E1590D90030BB90 /* onboarding-flow-save-projects-fr.json in Resources */,
+				605914FA2E1590D90030BB90 /* onboarding-flow-welcome-en.json in Resources */,
+				605914FB2E1590D90030BB90 /* onboarding-flow-welcome-fr.json in Resources */,
+				605914FC2E1590D90030BB90 /* onboarding-flow-welcome-ja.json in Resources */,
+				605914FD2E1590D90030BB90 /* onboarding-flow-login-signup-es.json in Resources */,
+				605914FE2E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json in Resources */,
+				605914FF2E1590D90030BB90 /* onboarding-flow-login-signup-de.json in Resources */,
+				605915002E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json in Resources */,
+				605915012E1590D90030BB90 /* onboarding-flow-login-signup-fr.json in Resources */,
+				605915022E1590D90030BB90 /* onboarding-flow-save-projects-ja.json in Resources */,
+				605915032E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json in Resources */,
+				605915042E1590D90030BB90 /* onboarding-flow-welcome-de.json in Resources */,
+				605915052E1590D90030BB90 /* onboarding-flow-login-signup-ja.json in Resources */,
+				605915062E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json in Resources */,
+				605915072E1590D90030BB90 /* onboarding-flow-save-projects-en.json in Resources */,
+				605915082E1590D90030BB90 /* onboarding-flow-welcome-es.json in Resources */,
 				33F55B4E2D4C711C0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				33F55B4F2D4C711C0007E50E /* Inter-VariableFont.ttf in Resources */,
 				A78214741DB9326A00D0DD91 /* Localizable.strings in Resources */,
@@ -8229,6 +8329,26 @@
 				E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */,
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
 				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
+				605915092E1590D90030BB90 /* onboarding-flow-save-projects-es.json in Resources */,
+				6059150A2E1590D90030BB90 /* onboarding-flow-login-signup-en.json in Resources */,
+				6059150B2E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json in Resources */,
+				6059150C2E1590D90030BB90 /* onboarding-flow-save-projects-de.json in Resources */,
+				6059150D2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json in Resources */,
+				6059150E2E1590D90030BB90 /* onboarding-flow-welcome-en.json in Resources */,
+				6059150F2E1590D90030BB90 /* onboarding-flow-welcome-fr.json in Resources */,
+				605915102E1590D90030BB90 /* onboarding-flow-welcome-ja.json in Resources */,
+				605915112E1590D90030BB90 /* onboarding-flow-login-signup-es.json in Resources */,
+				605915122E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json in Resources */,
+				605915132E1590D90030BB90 /* onboarding-flow-login-signup-de.json in Resources */,
+				605915142E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json in Resources */,
+				605915152E1590D90030BB90 /* onboarding-flow-login-signup-fr.json in Resources */,
+				605915162E1590D90030BB90 /* onboarding-flow-save-projects-ja.json in Resources */,
+				605915172E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json in Resources */,
+				605915182E1590D90030BB90 /* onboarding-flow-welcome-de.json in Resources */,
+				605915192E1590D90030BB90 /* onboarding-flow-login-signup-ja.json in Resources */,
+				6059151A2E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json in Resources */,
+				6059151B2E1590D90030BB90 /* onboarding-flow-save-projects-en.json in Resources */,
+				6059151C2E1590D90030BB90 /* onboarding-flow-welcome-es.json in Resources */,
 				33F39E342D9DB086007099A6 /* Assets.xcassets in Resources */,
 				3344A7822D9CF5F200D7DE91 /* Assets.xcassets in Resources */,
 				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
