@@ -8,6 +8,7 @@ import XCTest
 final class PledgeOverTimeUseCaseTests: TestCase {
   let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
   let (pledgeTotalSignal, pledgeTotalObserver) = Signal<Double, Never>.pipe()
+  let (pledgeViewContextSignal, pledgeViewContextObserver) = Signal<PledgeViewContext, Never>.pipe()
 
   var useCase: PledgeOverTimeUseCase?
 
@@ -19,7 +20,11 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.useCase = PledgeOverTimeUseCase(project: self.projectSignal, pledgeTotal: self.pledgeTotalSignal)
+    self.useCase = PledgeOverTimeUseCase(
+      project: self.projectSignal,
+      pledgeTotal: self.pledgeTotalSignal,
+      context: self.pledgeViewContextSignal
+    )
     self.useCase!.outputs.buildPaymentPlanInputs.observe(self.buildPaymentPlanInputs.observer)
     self.useCase!.outputs.pledgeOverTimeIsLoading.observe(self.pledgeOverTimeIsLoading.observer)
     self.useCase!.outputs.showPledgeOverTimeUI.observe(self.showPledgeOverTimeUI.observer)
@@ -41,6 +46,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let pledgeTotal = 928.66
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: pledgeTotal)
 
@@ -63,6 +69,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -121,6 +128,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -144,6 +152,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ false
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -165,6 +174,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -187,6 +197,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ false
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -209,6 +220,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -236,6 +248,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let pledgeTotal = 928.66
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: pledgeTotal)
 
@@ -266,6 +279,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.isPledgeOverTimeAllowed .~ true
         |> Project.lens.personalization.backing .~ Backing.templatePlot
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
@@ -291,12 +305,50 @@ final class PledgeOverTimeUseCaseTests: TestCase {
         |> Project.lens.isPledgeOverTimeAllowed .~ true
         |> Project.lens.personalization.backing .~ Backing.templatePlot
 
+      self.pledgeViewContextObserver.send(value: .pledge)
       self.projectObserver.send(value: project)
       self.pledgeTotalObserver.send(value: 100.0)
 
       self.showPledgeOverTimeUI.assertValues([true])
       self.pledgeOverTimeIsLoading.assertValues([true, false])
       self.selectedPlan.assertLastValue(.pledgeInFull)
+    }
+  }
+
+  func testUseCase_showsOrHidesUI_basedOnPledgeViewContext() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgeOverTime.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      self.buildPaymentPlanInputs.assertDidNotEmitValue()
+
+      let project = Project.template
+        |> Project.lens.slug .~ "some-slug"
+        |> Project.lens.isPledgeOverTimeAllowed .~ true
+
+      self.projectObserver.send(value: project)
+      self.pledgeTotalObserver.send(value: 100.0)
+
+      let contextsToHideUI: [PledgeViewContext] = [
+        .changePaymentMethod,
+        .fixPaymentMethod,
+        .latePledge,
+        .update,
+        .updateReward
+      ]
+
+      for context in contextsToHideUI {
+        self.pledgeViewContextObserver.send(value: context)
+        self.showPledgeOverTimeUI.assertLastValue(false)
+      }
+
+      let contextsThatShowUI: [PledgeViewContext] = [.pledge, .editPledgeOverTime]
+      for context in contextsThatShowUI {
+        self.pledgeViewContextObserver.send(value: context)
+        self.showPledgeOverTimeUI.assertLastValue(true)
+      }
     }
   }
 }
