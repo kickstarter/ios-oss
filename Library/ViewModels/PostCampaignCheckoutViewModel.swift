@@ -472,7 +472,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .CompleteOnSessionCheckoutInput(
             checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
             paymentIntentClientSecret: clientSecret,
-            paymentSourceId: selectedCard.savedCreditCardId,
+            paymentSourceId: .someOrNil(selectedCard.savedCreditCardId),
             paymentSourceReusable: true,
             applePay: nil
           )

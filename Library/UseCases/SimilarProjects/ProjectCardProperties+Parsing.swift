@@ -7,7 +7,7 @@ extension ProjectCardProperties {
     guard
       let imageURLString = fragment.image?.url,
       let imageURL = URL(string: imageURLString),
-      let state = Project.State(fragment.state)
+      let state = Project.State(fragment.state.value!)
     else {
       return nil
     }
@@ -77,21 +77,21 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
 
     let state: Project.State
     switch self.state {
-    case .started:
+    case .case(.started):
       state = .started
-    case .submitted:
+    case .case(.submitted):
       state = .submitted
-    case .live:
+    case .case(.live):
       state = .live
-    case .canceled:
+    case .case(.canceled):
       state = .canceled
-    case .suspended:
+    case .case(.suspended):
       state = .suspended
-    case .purged:
+    case .case(.purged):
       state = .purged
-    case .successful:
+    case .case(.successful):
       state = .successful
-    case .failed, .__unknown:
+    case .case(.failed), .unknown:
       state = .failed
     }
 

@@ -45,11 +45,11 @@ extension GraphAPI.RaisedBuckets {
 
     switch raised {
     case .bucket_0:
-      return GraphAPI.RaisedBuckets.bucket_0
+      return GraphAPI.RaisedBuckets.bucket0
     case .bucket_1:
-      return GraphAPI.RaisedBuckets.bucket_1
+      return GraphAPI.RaisedBuckets.bucket1
     case .bucket_2:
-      return GraphAPI.RaisedBuckets.bucket_2
+      return GraphAPI.RaisedBuckets.bucket2
     }
   }
 }
@@ -70,13 +70,14 @@ extension GraphAPI.SearchQuery {
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
 
     return GraphAPI.SearchQuery(
-      term: params.query,
-      sort: sort,
-      categoryId: categoryId,
-      state: state,
-      raised: raised,
-      first: params.perPage,
-      cursor: cursor
+      term: .someOrNil(params.query),
+      sort: .caseOrNil(sort),
+      categoryId: .someOrNil(categoryId),
+      state: .caseOrNil(state),
+      raised: .caseOrNil(raised),
+      locationId: .someOrNil(nil),
+      first: .someOrNil(params.perPage),
+      cursor: .someOrNil(cursor)
     )
   }
 }
@@ -108,11 +109,11 @@ extension DiscoveryParams {
   }
 }
 
-extension GraphAPI.SearchQuery.Data.Project.Node: @retroactive Equatable {}
+extension GraphAPI.SearchQuery.Data.Projects.Node: @retroactive Equatable {}
 
 public func == (
-  lhs: GraphAPI.SearchQuery.Data.Project.Node,
-  rhs: GraphAPI.SearchQuery.Data.Project.Node
+  lhs: GraphAPI.SearchQuery.Data.Projects.Node,
+  rhs: GraphAPI.SearchQuery.Data.Projects.Node
 ) -> Bool {
   return lhs.fragments.backerDashboardProjectCellFragment.projectId == rhs.fragments
     .backerDashboardProjectCellFragment.projectId
