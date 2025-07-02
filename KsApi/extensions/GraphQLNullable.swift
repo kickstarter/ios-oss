@@ -1,5 +1,5 @@
 extension GraphQLNullable {
-  static func someOrNil(_ maybeValue: Wrapped?) -> GraphQLNullable {
+  public static func someOrNil(_ maybeValue: Wrapped?) -> GraphQLNullable {
     if let value = maybeValue {
       return .some(value)
     } else {
@@ -7,7 +7,7 @@ extension GraphQLNullable {
     }
   }
 
-  static func caseOrNil<T>(_ maybeValue: T?) -> GraphQLNullable<GraphQLEnum<T>> {
+  public static func caseOrNil<T>(_ maybeValue: T?) -> GraphQLNullable<GraphQLEnum<T>> {
     if let value = maybeValue {
       return .some(.case(value))
     } else {
