@@ -497,7 +497,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
 
     // MARK: Pledge Over Time
 
-    self.pledgeOverTimeUseCase = PledgeOverTimeUseCase(project: project, pledgeTotal: pledgeTotal)
+    self.pledgeOverTimeUseCase = PledgeOverTimeUseCase(
+      project: project,
+      pledgeTotal: pledgeTotal,
+      context: context
+    )
 
     // MARK: - Create Backing
 
