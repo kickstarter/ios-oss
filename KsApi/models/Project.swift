@@ -510,11 +510,11 @@ extension Project: GraphIDBridging {
 extension Project.Video: Decodable {}
 
 extension Project {
-  public var acceptsNetNewBackersForPM: Bool {
+  public var pledgeManagementAvailable: Bool {
     let isBacking = self.personalizationIsBacking ?? false
     let lastWaveActive = self.lastWave?.active ?? false
     let pmAcceptsNewBackers = self.pledgeManager?.acceptsNewBackers ?? false
 
-    return !isBacking && lastWaveActive && pmAcceptsNewBackers
+    return lastWaveActive && (pmAcceptsNewBackers || isBacking)
   }
 }
