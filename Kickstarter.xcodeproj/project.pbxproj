@@ -562,6 +562,8 @@
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
 		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
+		603AC36E2E144BAB007B0C44 /* LocalizedLottieFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603AC36D2E144BAB007B0C44 /* LocalizedLottieFile.swift */; };
+		603AC3712E144BBA007B0C44 /* LocalizedLottieFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603AC36F2E144BBA007B0C44 /* LocalizedLottieFileTests.swift */; };
 		603D8CD32D2D85A800CDA145 /* PledgePaymentIncrement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603D8CD22D2D85A800CDA145 /* PledgePaymentIncrement.swift */; };
 		603D8CD52D2D85D200CDA145 /* PledgePaymentIncrement+GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603D8CD42D2D85D200CDA145 /* PledgePaymentIncrement+GraphAPI.swift */; };
 		604334DE2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */; };
@@ -2360,6 +2362,8 @@
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
 		60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
+		603AC36D2E144BAB007B0C44 /* LocalizedLottieFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedLottieFile.swift; sourceTree = "<group>"; };
+		603AC36F2E144BBA007B0C44 /* LocalizedLottieFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedLottieFileTests.swift; sourceTree = "<group>"; };
 		603D8CD22D2D85A800CDA145 /* PledgePaymentIncrement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentIncrement.swift; sourceTree = "<group>"; };
 		603D8CD42D2D85D200CDA145 /* PledgePaymentIncrement+GraphAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentIncrement+GraphAPI.swift"; sourceTree = "<group>"; };
 		604334DD2D08CF5E00819385 /* BuildPaymentPlanQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BuildPaymentPlanQuery.graphql; sourceTree = "<group>"; };
@@ -3558,6 +3562,117 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		605914DD2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"onboarding-flow-enable-notifications-de.json",
+				"onboarding-flow-enable-notifications-en.json",
+				"onboarding-flow-enable-notifications-es.json",
+				"onboarding-flow-enable-notifications-fr.json",
+				"onboarding-flow-enable-notifications-ja.json",
+				"onboarding-flow-login-signup-de.json",
+				"onboarding-flow-login-signup-en.json",
+				"onboarding-flow-login-signup-es.json",
+				"onboarding-flow-login-signup-fr.json",
+				"onboarding-flow-login-signup-ja.json",
+				"onboarding-flow-save-projects-de.json",
+				"onboarding-flow-save-projects-en.json",
+				"onboarding-flow-save-projects-es.json",
+				"onboarding-flow-save-projects-fr.json",
+				"onboarding-flow-save-projects-ja.json",
+				"onboarding-flow-welcome-de.json",
+				"onboarding-flow-welcome-en.json",
+				"onboarding-flow-welcome-es.json",
+				"onboarding-flow-welcome-fr.json",
+				"onboarding-flow-welcome-ja.json",
+			);
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+		};
+		605914DE2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"onboarding-flow-enable-notifications-de.json",
+				"onboarding-flow-enable-notifications-en.json",
+				"onboarding-flow-enable-notifications-es.json",
+				"onboarding-flow-enable-notifications-fr.json",
+				"onboarding-flow-enable-notifications-ja.json",
+				"onboarding-flow-login-signup-de.json",
+				"onboarding-flow-login-signup-en.json",
+				"onboarding-flow-login-signup-es.json",
+				"onboarding-flow-login-signup-fr.json",
+				"onboarding-flow-login-signup-ja.json",
+				"onboarding-flow-save-projects-de.json",
+				"onboarding-flow-save-projects-en.json",
+				"onboarding-flow-save-projects-es.json",
+				"onboarding-flow-save-projects-fr.json",
+				"onboarding-flow-save-projects-ja.json",
+				"onboarding-flow-welcome-de.json",
+				"onboarding-flow-welcome-en.json",
+				"onboarding-flow-welcome-es.json",
+				"onboarding-flow-welcome-fr.json",
+				"onboarding-flow-welcome-ja.json",
+			);
+			target = A75511441C8642B3005355CF /* Library-iOSTests */;
+		};
+		605914DF2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"onboarding-flow-enable-notifications-de.json",
+				"onboarding-flow-enable-notifications-en.json",
+				"onboarding-flow-enable-notifications-es.json",
+				"onboarding-flow-enable-notifications-fr.json",
+				"onboarding-flow-enable-notifications-ja.json",
+				"onboarding-flow-login-signup-de.json",
+				"onboarding-flow-login-signup-en.json",
+				"onboarding-flow-login-signup-es.json",
+				"onboarding-flow-login-signup-fr.json",
+				"onboarding-flow-login-signup-ja.json",
+				"onboarding-flow-save-projects-de.json",
+				"onboarding-flow-save-projects-en.json",
+				"onboarding-flow-save-projects-es.json",
+				"onboarding-flow-save-projects-fr.json",
+				"onboarding-flow-save-projects-ja.json",
+				"onboarding-flow-welcome-de.json",
+				"onboarding-flow-welcome-en.json",
+				"onboarding-flow-welcome-es.json",
+				"onboarding-flow-welcome-fr.json",
+				"onboarding-flow-welcome-ja.json",
+			);
+			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
+		};
+		605914E02E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"onboarding-flow-enable-notifications-de.json",
+				"onboarding-flow-enable-notifications-en.json",
+				"onboarding-flow-enable-notifications-es.json",
+				"onboarding-flow-enable-notifications-fr.json",
+				"onboarding-flow-enable-notifications-ja.json",
+				"onboarding-flow-login-signup-de.json",
+				"onboarding-flow-login-signup-en.json",
+				"onboarding-flow-login-signup-es.json",
+				"onboarding-flow-login-signup-fr.json",
+				"onboarding-flow-login-signup-ja.json",
+				"onboarding-flow-save-projects-de.json",
+				"onboarding-flow-save-projects-en.json",
+				"onboarding-flow-save-projects-es.json",
+				"onboarding-flow-save-projects-fr.json",
+				"onboarding-flow-save-projects-ja.json",
+				"onboarding-flow-welcome-de.json",
+				"onboarding-flow-welcome-en.json",
+				"onboarding-flow-welcome-es.json",
+				"onboarding-flow-welcome-fr.json",
+				"onboarding-flow-welcome-ja.json",
+			);
+			target = A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		603AC2F02E144B67007B0C44 /* LottieFiles */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (605914DD2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 605914DE2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 605914DF2E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 605914E02E1462F00030BB90 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LottieFiles; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -6690,6 +6805,8 @@
 				A7ED1F181E830FDC00BFFA01 /* LanguageTests.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7ED1F191E830FDC00BFFA01 /* LaunchedCountriesTests.swift */,
+				603AC36D2E144BAB007B0C44 /* LocalizedLottieFile.swift */,
+				603AC36F2E144BBA007B0C44 /* LocalizedLottieFileTests.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
@@ -6854,6 +6971,7 @@
 				19838AAE28C82F75003DD5BB /* Features */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
+				603AC2F02E144B67007B0C44 /* LottieFiles */,
 				33F55B472D4C70D40007E50E /* Resources */,
 				A7ED20201E83237F00BFFA01 /* TestHelpers */,
 				1937A72928C95ABF00DD732D /* SharedViews_DEPRECATED_09_07_2022 */,
@@ -7987,6 +8105,9 @@
 				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
 				E10BE8D32B02975C00F73DC9 /* PBXTargetDependency */,
 			);
+			fileSystemSynchronizedGroups = (
+				603AC2F02E144B67007B0C44 /* LottieFiles */,
+			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
@@ -8850,6 +8971,7 @@
 				8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */,
 				06232D4B27962F4900A81755 /* TextViewElementCellViewModel.swift in Sources */,
 				37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */,
+				603AC36E2E144BAB007B0C44 /* LocalizedLottieFile.swift in Sources */,
 				8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */,
 				E11DE11A2D70C02200DD2ECA /* UIViewController+Children.swift in Sources */,
 				3386546E2CE29AEC00AB16A9 /* PledgePaymentPlansOptionViewModel.swift in Sources */,
@@ -8996,6 +9118,7 @@
 				A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */,
 				339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */,
 				7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */,
+				603AC3712E144BBA007B0C44 /* LocalizedLottieFileTests.swift in Sources */,
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
