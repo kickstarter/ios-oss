@@ -93,15 +93,15 @@ extension GraphAPI.SearchQuery {
     let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
 
     return GraphAPI.SearchQuery(
-      term: params.query,
-      sort: sort,
-      categoryId: categoryId,
-      state: state,
-      raised: raised,
-      locationId: locationId,
-      pledged: pledged,
-      first: params.perPage,
-      cursor: cursor
+      term: GraphQLNullable.someOrNil(params.query),
+      sort: GraphQLNullable.caseOrNil(sort),
+      categoryId: GraphQLNullable.someOrNil(categoryId),
+      state: GraphQLNullable.caseOrNil(state),
+      raised: GraphQLNullable.caseOrNil(raised),
+      locationId: GraphQLNullable.someOrNil(locationId),
+      pledged: GraphQLNullable.someOrNil(pledged),
+      first: GraphQLNullable.someOrNil(params.perPage),
+      cursor: GraphQLNullable.someOrNil(cursor)
     )
   }
 }

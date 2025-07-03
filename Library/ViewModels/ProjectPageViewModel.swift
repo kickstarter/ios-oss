@@ -506,8 +506,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         let propsString = AttributionTracking.eventParametersString(refInfo: refInfo)
         let input = GraphAPI.CreateAttributionEventInput(
           eventName: eventName,
-          eventProperties: propsString,
-          projectId: graphId
+          eventProperties: GraphQLNullable.someOrNil(propsString),
+          projectId: GraphQLNullable.someOrNil(graphId)
         )
         return AppEnvironment.current.apiService.createAttributionEvent(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

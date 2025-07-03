@@ -4,14 +4,14 @@ extension GraphAPI.CreateBackingInput {
   static func from(_ input: CreateBackingInput) -> GraphAPI.CreateBackingInput {
     return GraphAPI.CreateBackingInput(
       projectId: input.projectId,
-      amount: input.amount,
-      locationId: input.locationId,
-      rewardIds: input.rewardIds,
-      refParam: input.refParam,
-      paymentSourceId: input.paymentSourceId,
-      setupIntentClientSecret: input.setupIntentClientSecret,
-      applePay: GraphAPI.ApplePayInput.from(input.applePay),
-      incremental: input.incremental
+      amount: GraphQLNullable.someOrNil(input.amount),
+      locationId: GraphQLNullable.someOrNil(input.locationId),
+      rewardIds: GraphQLNullable.someOrNil(input.rewardIds),
+      refParam: GraphQLNullable.someOrNil(input.refParam),
+      paymentSourceId: GraphQLNullable.someOrNil(input.paymentSourceId),
+      setupIntentClientSecret: GraphQLNullable.someOrNil(input.setupIntentClientSecret),
+      applePay: GraphQLNullable.someOrNil(GraphAPI.ApplePayInput.from(input.applePay)),
+      incremental: GraphQLNullable.someOrNil(input.incremental)
     )
   }
 }
