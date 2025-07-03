@@ -4,7 +4,7 @@ import XCTest
 class LocalizedLottieFileTests: XCTestCase {
   func testReturnsLocalizedLottieFile_ForEachSupportedLanguage() {
     let testBundle = Bundle(for: type(of: self))
-    let supportedLanguages: [Language] = [.de, .es, .fr, .ja]
+    let supportedLanguages: [Language] = [.en, .de, .es, .fr, .ja]
     let fileNames: [OnboardingLotteFileNames] = [
       .welcome,
       .saveProjects,

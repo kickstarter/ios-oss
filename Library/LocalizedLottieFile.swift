@@ -15,8 +15,6 @@ func localizedOnboardingLottieFile(
   let langCode = AppEnvironment.current.language.rawValue
   let pathToFile = "\(baseName.rawValue)-\(langCode)"
 
-  print("Bundle path:", bundle.bundlePath)
-
   /// Check if the file exists
   if bundle.url(
     forResource: "\(baseName.rawValue)-\(langCode)",
@@ -30,7 +28,5 @@ func localizedOnboardingLottieFile(
   if bundle.url(forResource: fallbackPath, withExtension: "json") != nil {
     return fallbackPath
   }
-
-  print("⚠️ Could not find localized or fallback Lottie file for \(baseName)")
   return nil
 }
