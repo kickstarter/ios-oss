@@ -32,8 +32,7 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
       self.viewDidLoadProperty.signal,
       didUpdateUserDefaultsAndUI
     )
-    .map { _ in AppEnvironment.current.remoteConfigClient?.allFeatures() }
-    .skipNil()
+    .map { _ in RemoteConfigFeature.allCases }
 
     let remoteConfigFeatures = features
       .map { features in
