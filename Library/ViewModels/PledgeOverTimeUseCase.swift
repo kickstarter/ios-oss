@@ -42,9 +42,17 @@ public protocol PledgeOverTimeUseCaseType {
 
 public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverTimeUseCaseInputs,
   PledgeOverTimeUseCaseOutputs {
-  init(project: Signal<Project, Never>, pledgeTotal: Signal<Double, Never>) {
-    let pledgeOverTimeUIEnabled = project.signal
-      .map { ($0.isPledgeOverTimeAllowed ?? false) && featurePledgeOverTimeEnabled() }
+  init(
+    project: Signal<Project, Never>,
+    pledgeTotal: Signal<Double, Never>,
+    context: Signal<PledgeViewContext, Never>
+  ) {
+    let pledgeOverTimeUIEnabled = Signal.combineLatest(project, context)
+      .map { project, context -> Bool in
+        project.isPledgeOverTimeAllowed == true
+          && featurePledgeOverTimeEnabled()
+          && context.isAny(of: .pledge, .editPledgeOverTime)
+      }
 
     self.buildPaymentPlanInputs = Signal.combineLatest(
       project,
