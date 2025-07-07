@@ -475,7 +475,6 @@
 		477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */; };
 		477239772710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */; };
 		477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */; };
-		47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */; };
 		47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
 		4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4778EE1E26A1E8230059EA69 /* FetchUser.graphql */; };
 		4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */; };
@@ -1780,8 +1779,6 @@
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
-		E1D569BC2E09D5CB00C78297 /* DefaultLocationsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B82E09D5CB00C78297 /* DefaultLocationsList.swift */; };
-		E1D569C32E0C720E00C78297 /* RadioButtonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C22E0C720E00C78297 /* RadioButtonList.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
@@ -2314,7 +2311,6 @@
 		477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModel.swift; sourceTree = "<group>"; };
 		477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModelTests.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
-		47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		4778EE1E26A1E8230059EA69 /* FetchUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUser.graphql; sourceTree = "<group>"; };
 		4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelope.swift"; sourceTree = "<group>"; };
@@ -3614,7 +3610,6 @@
 		E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1D569B92E09D5CB00C78297 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
-		E1D569C22E0C720E00C78297 /* RadioButtonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonList.swift; sourceTree = "<group>"; };
 		E1D569C52E0C787800C78297 /* AmountRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRaisedView.swift; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
@@ -4172,7 +4167,6 @@
 			isa = PBXGroup;
 			children = (
 				47F4CA52267A7A8A00356DBF /* RemoteConfigFeatureFlagToolsViewController.swift */,
-				47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -9600,7 +9594,6 @@
 				39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */,
-				47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
