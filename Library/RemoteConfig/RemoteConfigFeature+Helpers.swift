@@ -1,7 +1,7 @@
 import KsApi
 
-/// Return remote config values either a value from the cloud, if it found one, or a default value based on the provided key
-private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = false) -> Bool {
+/// Return remote config values either a value from the cloud, if it found one, or an override value from user defaults.
+func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   if let valueFromDefaults = AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[feature.rawValue] {
     return valueFromDefaults
@@ -12,7 +12,7 @@ private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = f
     return valueFromRemoteConfig
   }
 
-  return defaultValue
+  return false
 }
 
 public func featureDarkModeEnabled() -> Bool {

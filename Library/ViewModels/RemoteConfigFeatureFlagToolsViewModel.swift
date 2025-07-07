@@ -84,45 +84,7 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
 // MARK: - Private Helpers
 
 private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
-  switch feature {
-  case .darkModeEnabled:
-    return featureDarkModeEnabled()
-  case .editPledgeOverTimeEnabled:
-    return featureEditPledgeOverTimeEnabled()
-  case .postCampaignPledgeEnabled:
-    return featurePostCampaignPledgeEnabled()
-  case .useKeychainForOAuthToken:
-    return featureUseKeychainForOAuthTokenEnabled()
-  case .onboardingFlow:
-    return onboardingFlowEnabled()
-  case .pledgedProjectsOverviewV2Enabled:
-    return featurePledgedProjectsOverviewV2Enabled()
-  case .pledgeOverTime:
-    return featurePledgeOverTimeEnabled()
-  case .netNewBackersWebView:
-    return featureNetNewBackersWebViewEnabled()
-  case .newDesignSystem:
-    return featureNewDesignSystemEnabled()
-  case .rewardShipmentTracking:
-    return featureRewardShipmentTrackingEnabled()
-  case .similarProjectsCarousel:
-    return featureSimilarProjectsCarouselEnabled()
-  case .secretRewards:
-    return featureSecretRewardsEnabled()
-  case .searchFilterByLocation:
-    return featureSearchFilterByLocation()
-  case .netNewBackersGoToPM:
-    return featureNetNewBackersGoToPMEnabled()
-  case .searchFilterByAmountRaised:
-    return featureSearchFilterByAmountRaised()
-  }
-}
-
-/** Returns the value of the User Defaults key in the AppEnvironment.
- */
-private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool? {
-  return AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue]
+  return featureEnabled(feature: feature)
 }
 
 /** Sets the value for the UserDefaults key in the AppEnvironment.
