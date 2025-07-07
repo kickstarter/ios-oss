@@ -74,3 +74,7 @@ public func featureNetNewBackersGoToPMEnabled() -> Bool {
 public func featureSearchFilterByAmountRaised() -> Bool {
   featureEnabled(feature: .searchFilterByAmountRaised)
 }
+
+public func featureSearchFilterByShowOnlyToggles() -> Bool {
+  featureEnabled(feature: .searchFilterByShowOnlyToggles)
+}
