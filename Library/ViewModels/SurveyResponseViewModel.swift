@@ -75,8 +75,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    let newRequest = self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in action.request }
+    let newNavigationAction = self.policyForNavigationActionProperty.signal.skipNil()
+
+    let newRequest = newNavigationAction.map { action in action.request }
 
     let newSurveyRequest = newRequest
       .filter { request in
@@ -126,11 +127,13 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
           }
       }
 
-    self.policyDecisionProperty <~ newRequest
-      .map { request in
-        if isStripeRequest(request) {
+    self.policyDecisionProperty <~ newNavigationAction
+      .map { action in
+        if isStripeNavigationAction(action) {
           return true
         }
+
+        let request = action.request
 
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
@@ -191,11 +194,23 @@ private func isSurvey(request: URLRequest) -> Bool {
   return true
 }
 
-// Returns true if the url host is of the form *.stripe.com, *.stripe.network, or *.stripecdn.com.
-private func isStripeRequest(_ request: URLRequest) -> Bool {
+// Returns true if either the url host or the target frame's security origin
+// is of the form *.stripe.com, *.stripe.network, or *.stripecdn.com.
+private func isStripeNavigationAction(_ actionData: WKNavigationActionData) -> Bool {
+  print(actionData.request.url ?? "no url")
+  if let host = actionData.request.url?.host, isStripeHost(host) {
+    return true
+  }
+  if let securityOriginHost = actionData.navigationAction.targetFrame?.securityOrigin.host,
+     isStripeHost(securityOriginHost) {
+    return true
+  }
+  return false
+}
+
+private func isStripeHost(_ host: String) -> Bool {
   let stripeDomains = ["stripe.com", "stripe.network", "stripecdn.com"]
 
-  guard let host = request.url?.host?.lowercased() else { return false }
-  let withoutSubdomain = host.split(separator: ".").suffix(2).joined(separator: ".")
+  let withoutSubdomain = host.lowercased().split(separator: ".").suffix(2).joined(separator: ".")
   return stripeDomains.contains(withoutSubdomain)
 }
