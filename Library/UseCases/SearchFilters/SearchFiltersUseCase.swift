@@ -64,35 +64,14 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
         return modalType
       }
 
-    self.selectedSort = Signal.merge(
-      self.selectedSortProperty.producer.takeWhen(initialSignal),
-      self.selectedSortProperty.signal
-    )
-
-    self.selectedCategory = Signal.merge(
-      self.selectedCategoryProperty.producer.takeWhen(initialSignal),
-      self.selectedCategoryProperty.signal
-    )
-
-    self.selectedState = Signal.merge(
-      self.selectedStateProperty.producer.takeWhen(initialSignal),
-      self.selectedStateProperty.signal
-    )
-
-    self.selectedPercentRaisedBucket = Signal.merge(
-      self.selectedPercentRaisedBucketProperty.producer.takeWhen(initialSignal),
-      self.selectedPercentRaisedBucketProperty.signal
-    )
-
-    self.selectedLocation = Signal.merge(
-      self.selectedLocationProperty.producer.takeWhen(initialSignal),
-      self.selectedLocationProperty.signal
-    )
-
-    self.selectedAmountRaisedBucket = Signal.merge(
-      self.selectedAmountRaisedBucketProperty.producer.takeWhen(initialSignal),
-      self.selectedAmountRaisedBucketProperty.signal
-    )
+    self.selectedSort = self.selectedSortProperty.signal(takeInitialValueWhen: initialSignal)
+    self.selectedCategory = self.selectedCategoryProperty.signal(takeInitialValueWhen: initialSignal)
+    self.selectedState = self.selectedStateProperty.signal(takeInitialValueWhen: initialSignal)
+    self.selectedPercentRaisedBucket = self.selectedPercentRaisedBucketProperty
+      .signal(takeInitialValueWhen: initialSignal)
+    self.selectedLocation = self.selectedLocationProperty.signal(takeInitialValueWhen: initialSignal)
+    self.selectedAmountRaisedBucket = self.selectedAmountRaisedBucketProperty
+      .signal(takeInitialValueWhen: initialSignal)
 
     let sortOptions = SearchFilters.SortOptions(
       sortOptions: self.sortOptions,
@@ -324,3 +303,14 @@ public enum SearchFilterEvent {
 }
 
 private extension GraphAPI.LocationsByTermQuery.Data.Location {}
+
+private extension MutableProperty {
+  /// Emits its current value when `takeInitialValueWhen` is sent, and whenever the value changes, too.
+  /// Useful for turning a `MutableProperty` with a default value into a `signal`.
+  func signal(takeInitialValueWhen initialSignal: Signal<Void, Never>) -> Signal<Value, Never> {
+    return Signal.merge(
+      self.producer.takeWhen(initialSignal),
+      self.signal
+    )
+  }
+}
