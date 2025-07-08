@@ -4,12 +4,12 @@ extension GraphAPI.TriggerThirdPartyEventInput {
       deviceId: input.deviceId,
       eventName: input.eventName,
       projectId: input.projectId,
-      pledgeAmount: input.pledgeAmount,
-      shipping: input.shipping,
-      transactionId: input.transactionId,
-      userId: input.userId,
-      appData: input.appData,
-      clientMutationId: input.clientMutationId
+      pledgeAmount: GraphQLNullable.someOrNil(input.pledgeAmount),
+      shipping: GraphQLNullable.someOrNil(input.shipping),
+      transactionId: GraphQLNullable.someOrNil(input.transactionId),
+      userId: GraphQLNullable.someOrNil(input.userId),
+      appData: GraphQLNullable.someOrNil(input.appData),
+      clientMutationId: GraphQLNullable.someOrNil(input.clientMutationId)
     )
   }
 }
