@@ -6,6 +6,7 @@ public enum LoginIntent: String {
   case generic
   case loginTab
   case messageCreator
+  case onboarding
   case starProject
 
   var trackingString: String {
@@ -24,6 +25,8 @@ public enum LoginIntent: String {
       return "login_tab"
     case .messageCreator:
       return "message_creator"
+    case .onboarding:
+      return "onboarding"
     case .starProject:
       return "star"
     }

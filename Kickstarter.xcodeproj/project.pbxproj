@@ -648,6 +648,8 @@
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
+		609935EB2E1D7177009263C5 /* OnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */; };
+		609935EE2E1D718F009263C5 /* OnboardingUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		60A80F552BE003A60052A829 /* StripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F542BE003A60052A829 /* StripeIntentService.swift */; };
 		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
@@ -2463,6 +2465,8 @@
 		609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInput.swift; sourceTree = "<group>"; };
 		609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInputTests.swift; sourceTree = "<group>"; };
 		609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerThirdPartyEvent.graphql; sourceTree = "<group>"; };
+		609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUseCase.swift; sourceTree = "<group>"; };
+		609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUseCaseTests.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		60A80F542BE003A60052A829 /* StripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentService.swift; sourceTree = "<group>"; };
 		60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStripeIntentService.swift; sourceTree = "<group>"; };
@@ -6793,6 +6797,8 @@
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				E11CFE492B6C41B400497375 /* OAuth.swift */,
 				E16794292B85136900064063 /* OAuthTests.swift */,
+				609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */,
+				609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */,
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
 				E16ECA6E2C245A12002A1D25 /* PagedContainer */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -8907,6 +8913,7 @@
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
 				7061848D29BE577B008F9941 /* MessageBannerViewViewModel.swift in Sources */,
+				609935EB2E1D7177009263C5 /* OnboardingUseCase.swift in Sources */,
 				6035AFB12C5947D2007E28FC /* PledgeViewModel.swift in Sources */,
 				778215E820F6922100F3D09F /* HelpType.swift in Sources */,
 				E16ECA722C245A51002A1D25 /* PagedContainerViewModel.swift in Sources */,
@@ -9199,6 +9206,7 @@
 				194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
 				D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
 				94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */,
+				609935EE2E1D718F009263C5 /* OnboardingUseCaseTests.swift in Sources */,
 				D6B4D9BF209B88F3002C7B68 /* PushNotificationDialogTests.swift in Sources */,
 				8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */,
 				D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */,
