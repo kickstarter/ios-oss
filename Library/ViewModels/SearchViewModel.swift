@@ -50,26 +50,11 @@ public protocol SearchViewModelInputs {
   /// Call this when the user taps on a button to show one of the sort options.
   func tappedButton(forFilterType type: SearchFilterPill.FilterType)
 
-  /// Call this when the user selects a new sort option.
-  func selectedSortOption(_ sort: DiscoveryParams.Sort)
-
-  /// Call this when the user selects a new category.
-  func selectedCategory(_ category: SearchFiltersCategory)
-
-  /// Call this when the user selects a new project state filter.
-  func selectedProjectState(_ state: DiscoveryParams.State)
-
-  /// Call this when the user selects a new percent raised filter.
-  func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
-
-  /// Call this when the user selects a filter location.
-  func filteredLocation(_: Location?)
+  /// Call this when the user updates a sort or filter option
+  func selectedFilter(_ event: SearchFilterEvent)
 
   /// Call this when the user types a location query string in the location filter
   func searchedForLocations(_ query: String)
-
-  /// Call this when the user selects a new amount raised filter.
-  func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket)
 
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
@@ -482,32 +467,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     return self.searchFiltersUseCase.showFilters
   }
 
-  public func selectedCategory(_ category: SearchFiltersCategory) {
-    self.searchFiltersUseCase.selectedCategory(category)
-  }
-
-  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
-    self.searchFiltersUseCase.selectedSortOption(sort)
-  }
-
-  public func selectedProjectState(_ state: DiscoveryParams.State) {
-    self.searchFiltersUseCase.selectedProjectState(state)
-  }
-
-  public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
-    self.searchFiltersUseCase.selectedPercentRaisedBucket(bucket)
-  }
-
-  public func filteredLocation(_ location: Location?) {
-    self.searchFiltersUseCase.filteredLocation(location)
+  public func selectedFilter(_ event: SearchFilterEvent) {
+    self.searchFiltersUseCase.selectedFilter(event)
   }
 
   public func searchedForLocations(_ query: String) {
     self.locationsUseCase.searchedForLocations(query)
-  }
-
-  public func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket) {
-    self.searchFiltersUseCase.inputs.selectedAmountRaisedBucket(bucket)
   }
 
   public var searchFilters: SearchFilters {

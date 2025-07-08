@@ -207,7 +207,7 @@ internal final class SearchViewController: UITableViewController {
     let sortView = SortView(
       viewModel: sortViewModel,
       onSelectedSort: { [weak self] sortOption in
-        self?.viewModel.inputs.selectedSortOption(sortOption)
+        self?.viewModel.inputs.selectedFilter(.sort(sortOption))
       },
       onClosed: { [weak self] in
         self?.dismiss(animated: true)
@@ -223,23 +223,11 @@ internal final class SearchViewController: UITableViewController {
       filterType: filterType,
       searchFilters: self.viewModel.outputs.searchFilters
     )
-    filterView.onSelectedProjectState = { [weak self] state in
-      self?.viewModel.inputs.selectedProjectState(state)
-    }
-    filterView.onSelectedCategory = { [weak self] category in
-      self?.viewModel.inputs.selectedCategory(category)
-    }
-    filterView.onSelectedPercentRaisedBucket = { [weak self] bucket in
-      self?.viewModel.inputs.selectedPercentRaisedBucket(bucket)
-    }
-    filterView.onSelectedLocation = { [weak self] location in
-      self?.viewModel.inputs.filteredLocation(location)
+    filterView.onFilter = { [weak self] filterEvent in
+      self?.viewModel.inputs.selectedFilter(filterEvent)
     }
     filterView.onSearchedForLocations = { [weak self] locationQuery in
       self?.viewModel.inputs.searchedForLocations(locationQuery)
-    }
-    filterView.onSelectedAmountRaisedBucket = { [weak self] bucket in
-      self?.viewModel.inputs.selectedAmountRaisedBucket(bucket)
     }
     filterView.onReset = { [weak self] type in
       self?.viewModel.inputs.resetFilters(for: type)

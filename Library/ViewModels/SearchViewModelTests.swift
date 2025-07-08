@@ -265,8 +265,8 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and category pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.rootCategory(.art))
-      self.vm.inputs.selectedSortOption(.endingSoon)
+      self.vm.inputs.selectedFilter(.category(.rootCategory(.art)))
+      self.vm.inputs.selectedFilter(.sort(.endingSoon))
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -331,8 +331,8 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and category pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.rootCategory(.art))
-      self.vm.inputs.selectedSortOption(.endingSoon)
+      self.vm.inputs.selectedFilter(.category(.rootCategory(.art)))
+      self.vm.inputs.selectedFilter(.sort(.endingSoon))
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -398,8 +398,8 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and filter pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.rootCategory(.art))
-      self.vm.inputs.selectedSortOption(.endingSoon)
+      self.vm.inputs.selectedFilter(.category(.rootCategory(.art)))
+      self.vm.inputs.selectedFilter(.sort(.endingSoon))
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -467,8 +467,8 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and filter pills to be set")
       }
 
-      self.vm.inputs.selectedCategory(.rootCategory(.art))
-      self.vm.inputs.selectedSortOption(.endingSoon)
+      self.vm.inputs.selectedFilter(.category(.rootCategory(.art)))
+      self.vm.inputs.selectedFilter(.sort(.endingSoon))
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -710,7 +710,7 @@ internal final class SearchViewModelTests: TestCase {
         "Sort sheet should have first option selected by default"
       )
 
-      self.vm.inputs.selectedSortOption(.newest)
+      self.vm.inputs.selectedFilter(.sort(.newest))
 
       self.hasProjects.assertLastValue(false, "Projects clear when new sort option is chosen")
       self.searchLoaderIndicatorIsAnimating.assertLastValue(
@@ -838,7 +838,7 @@ internal final class SearchViewModelTests: TestCase {
         "Category sheet should have empty option selected by default"
       )
 
-      self.vm.inputs.selectedCategory(.rootCategory(.filmAndVideo))
+      self.vm.inputs.selectedFilter(.category(.rootCategory(.filmAndVideo)))
 
       self.hasProjects.assertLastValue(false, "Projects clear when new category filter is chosen")
       self.searchLoaderIndicatorIsAnimating.assertLastValue(
