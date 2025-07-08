@@ -73,41 +73,29 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedAmountRaisedBucket = self.selectedAmountRaisedBucketProperty
       .signal(takeInitialValueWhen: initialSignal)
 
-    let sortOptions = SearchFilters.SortOptions(
-      sortOptions: self.sortOptions,
-      selectedSort: self.selectedSortProperty.value
-    )
-
-    let categoryOptions = SearchFilters.CategoryOptions(
-      categories: self.categoriesProperty.value,
-      selectedCategory: self.selectedCategoryProperty.value
-    )
-
-    let projectStateOptions = SearchFilters.ProjectStateOptions(
-      stateOptions: self.stateOptions,
-      selectedProjectState: self.selectedStateProperty.value
-    )
-
-    let percentRaisedOptions = SearchFilters.PercentRaisedOptions(
-      buckets: DiscoveryParams.PercentRaisedBucket.allCases
-    )
-
-    let locationOptions = SearchFilters.LocationOptions(
-      defaultLocations: self.defaultLocationsProperty.value,
-      suggestedLocations: self.suggestedLocationsProperty.value
-    )
-
-    let amountRaisedOptions = SearchFilters.AmountRaisedOptions(
-      buckets: DiscoveryParams.AmountRaisedBucket.allCases
-    )
-
     self.searchFilters = SearchFilters(
-      sort: sortOptions,
-      category: categoryOptions,
-      projectState: projectStateOptions,
-      percentRaised: percentRaisedOptions,
-      location: locationOptions,
-      amountRaised: amountRaisedOptions
+      sort: SearchFilters.SortOptions(
+        sortOptions: self.sortOptions,
+        selectedSort: self.selectedSortProperty.value
+      ),
+      category: SearchFilters.CategoryOptions(
+        categories: self.categoriesProperty.value,
+        selectedCategory: self.selectedCategoryProperty.value
+      ),
+      projectState: SearchFilters.ProjectStateOptions(
+        stateOptions: self.stateOptions,
+        selectedProjectState: self.selectedStateProperty.value
+      ),
+      percentRaised: SearchFilters.PercentRaisedOptions(
+        buckets: DiscoveryParams.PercentRaisedBucket.allCases
+      ),
+      location: SearchFilters.LocationOptions(
+        defaultLocations: self.defaultLocationsProperty.value,
+        suggestedLocations: self.suggestedLocationsProperty.value
+      ),
+      amountRaised: SearchFilters.AmountRaisedOptions(
+        buckets: DiscoveryParams.AmountRaisedBucket.allCases
+      )
     )
 
     Signal.combineLatest(
