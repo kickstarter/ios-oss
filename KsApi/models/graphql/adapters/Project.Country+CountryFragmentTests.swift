@@ -3,9 +3,11 @@ import Foundation
 import XCTest
 
 final class Country_CountryFragmentTests: XCTestCase {
-  private let countryFragment = GraphAPI.CountryFragment(
-    code: .us,
-    name: "United States"
+  private let countryFragment: GraphAPI.CountryFragment = testGraphObject(
+    data: [
+      "code": GraphAPI.CountryCode.us,
+      "name": "United States"
+    ]
   )
 
   func testCurrency_WhenItsTheSameAsCountrysCurrency_Success() {
