@@ -6,7 +6,7 @@ public enum CommentFragmentTemplate {
   case valid
   case errored
 
-  var data: [String: Any?] {
+  var data: [String: Any] {
     switch self {
     case .valid:
       return self.validResultMap()

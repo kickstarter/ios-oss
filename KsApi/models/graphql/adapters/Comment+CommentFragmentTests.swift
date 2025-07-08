@@ -6,7 +6,7 @@ final class Comment_CommentFragmentTests: XCTestCase {
   func test() {
     do {
       let variables = ["withStoredCards": true]
-      let commentFragment = try GraphAPI.CommentFragment(
+      let commentFragment: GraphAPI.CommentFragment = try testGraphObject(
         jsonObject: CommentFragmentTemplate.valid.data,
         variables: variables
       )

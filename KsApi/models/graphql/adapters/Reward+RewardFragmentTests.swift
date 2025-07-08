@@ -6,7 +6,10 @@ final class Reward_RewardFragmentTests: XCTestCase {
   func test() {
     do {
       let variables = ["includeShippingRules": true, "includeLocalPickup": true]
-      let fragment = try GraphAPI.RewardFragment(jsonObject: rewardDictionary(), variables: variables)
+      let fragment: GraphAPI.RewardFragment = try testGraphObject(
+        jsonObject: rewardDictionary(),
+        variables: variables
+      )
       XCTAssertNotNil(fragment)
 
       let dateFormatter = DateFormatter()
