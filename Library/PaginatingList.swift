@@ -48,7 +48,7 @@ public struct PaginatingList<Data, Cell, Header>: View where
         .listRowBackground(Color.clear)
       ForEach(self.data) { item in
         self.content(item)
-          .tag(item)
+          .id(item.id)
       }
 
       if self.canLoadMore {
