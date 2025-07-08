@@ -100,38 +100,74 @@ struct FilterRootView: View {
 
   @ViewBuilder
   var percentRaisedSection: some View {
-    FilterSectionButton(
-      title: Strings.Percentage_raised(),
-      subtitle:
-      self.searchFilters.percentRaised.selectedBucket?.title
-    )
+    NavigationLink(value: SearchFilterModalType.percentRaised) {
+      FilterSectionButton(
+        title: Strings.Percentage_raised(),
+        subtitle:
+        self.searchFilters.percentRaised.selectedBucket?.title
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var categorySection: some View {
-    FilterSectionButton(
-      title: Strings.Category(),
-      subtitle: self.searchFilters.category.selectedCategory.name
-    )
+    NavigationLink(value: SearchFilterModalType.category) {
+      FilterSectionButton(
+        title: Strings.Category(),
+        subtitle: self.searchFilters.category.selectedCategory.name
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var locationSection: some View {
-    FilterSectionButton(
-      title: Strings.Location(),
-      subtitle: self.searchFilters.location.selectedLocation?.displayableName
-    )
+    NavigationLink(value: SearchFilterModalType.location) {
+      FilterSectionButton(
+        title: Strings.Location(),
+        subtitle: self.searchFilters.location.selectedLocation?.displayableName
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var amountRaisedSection: some View {
-    FilterSectionButton(
-      title: Strings.Amount_raised(),
-      subtitle: self.searchFilters.amountRaised.selectedBucket?.title
-    )
+    NavigationLink(value: SearchFilterModalType.amountRaised) {
+      FilterSectionButton(
+        title: Strings.Amount_raised(),
+        subtitle: self.searchFilters.amountRaised.selectedBucket?.title
+      )
+    }
+    .padding(Constants.sectionPadding)
+  }
+
+  // FIXME: MBL-2560
+  // Hook this up to SearchFiltersUseCase with Bindings.
+  @State var recommendedToggle = false
+  @State var pwlToggle = false
+  @State var savedToggle = false
+  @State var followingToggle = false
+
+  @ViewBuilder
+  var showOnlySection: some View {
+    VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
+      // FIXME: MBL-2563 Add translated strings
+      Text("FPO: Show only")
+        .font(InterFont.headingLG.swiftUIFont())
+      Group {
+        // FIXME: MBL-2563 Add translated strings
+        Toggle("FPO: Recommended for you", isOn: self.$recommendedToggle)
+        Toggle("FPO: Projects We Love", isOn: self.$pwlToggle)
+        Toggle("FPO: Saved projects", isOn: self.$savedToggle)
+        Toggle("FPO: Following", isOn: self.$followingToggle)
+      }
+      .toggleStyle(.switch)
+      .tint(Colors.Text.primary.swiftUIColor())
+      .font(InterFont.bodyMD.swiftUIFont())
+    }
+    .foregroundStyle(Colors.Text.primary.swiftUIColor())
     .padding(Constants.sectionPadding)
   }
 
@@ -195,31 +231,29 @@ struct FilterRootView: View {
   public var body: some View {
     VStack(alignment: .leading) {
       NavigationStack(path: self.$navigationState) {
-        VStack {
-          Divider()
-          NavigationLink(value: SearchFilterModalType.category) {
-            self.categorySection
-          }
-          Divider()
-          self.projectStateSection
-          Divider()
-          NavigationLink(value: SearchFilterModalType.percentRaised) {
-            self.percentRaisedSection
-          }
-          if featureSearchFilterByLocation() {
+        ScrollView {
+          VStack {
             Divider()
-            NavigationLink(value: SearchFilterModalType.location) {
+            self.categorySection
+            Divider()
+            self.projectStateSection
+            Divider()
+            self.percentRaisedSection
+            if featureSearchFilterByLocation() {
+              Divider()
               self.locationSection
             }
-          }
-          if featureSearchFilterByAmountRaised() {
-            Divider()
-            NavigationLink(value: SearchFilterModalType.amountRaised) {
+            if featureSearchFilterByAmountRaised() {
+              Divider()
               self.amountRaisedSection
             }
+            if featureSearchFilterByShowOnlyToggles() {
+              Divider()
+              self.showOnlySection
+            }
+            Divider()
+            Spacer()
           }
-          Divider()
-          Spacer()
         }
         .navigationDestination(for: SearchFilterModalType.self, destination: { modalType in
           switch modalType {
