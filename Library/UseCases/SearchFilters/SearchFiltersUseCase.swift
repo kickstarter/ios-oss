@@ -13,18 +13,8 @@ public protocol SearchFiltersUseCaseInputs {
   func tappedButton(forFilterType: SearchFilterPill.FilterType)
   /// Call this when the clears their query and the sort options should reset.
   func clearedQueryText()
-  /// Call this when the user selects a new sort option.
-  func selectedSortOption(_ sort: DiscoveryParams.Sort)
-  /// Call this when the user selects a new category.
-  func selectedCategory(_ category: SearchFiltersCategory)
-  /// Call this when the user selects a new project state filter.
-  func selectedProjectState(_ state: DiscoveryParams.State)
-  /// Call this when the user selects a new percent raised filter.
-  func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket)
-  /// Call this when the user selects a new amount raised filter.
-  func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket)
-  /// Cal this when the user selects a filter location.
-  func filteredLocation(_: Location?)
+  /// Call this when the user updates a sort or filter option
+  func selectedFilter(_ event: SearchFilterEvent)
   /// Call this when the user taps reset on a filter modal
   func resetFilters(for: SearchFilterModalType)
 }
@@ -47,7 +37,9 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedState: Signal<DiscoveryParams.State, Never> { get }
   /// The currently selected percent raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never> { get }
+  /// The currently selected filter location. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedLocation: Signal<Location?, Never> { get }
+  /// The currently selected amount raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never> { get }
 }
 
@@ -270,47 +262,21 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     }
   }
 
-  public func selectedSortOption(_ sort: DiscoveryParams.Sort) {
-    assert(
-      self.sortOptions.contains(sort),
-      "Selected a sort option that isn't actually available in SearchFiltersUseCase."
-    )
-
-    self.selectedSortProperty.value = sort
-  }
-
-  public func selectedCategory(_ selectedCategory: SearchFiltersCategory) {
-    if let category = selectedCategory.category {
-      let categories = self.categoriesProperty.value
-      let subcategories = categories.lazy.flatMap { $0.subcategories?.nodes ?? [] }
-      let exists = categories.contains(category) || subcategories.contains(category)
-      if !exists {
-        assert(false, "Selected category should be one of the categories set in SearchFiltersUseCase.")
-      }
+  public func selectedFilter(_ event: SearchFilterEvent) {
+    switch event {
+    case let .sort(sort):
+      self.selectedSortProperty.value = sort
+    case let .category(selectedCategory):
+      self.selectedCategoryProperty.value = selectedCategory
+    case let .projectState(state):
+      self.selectedStateProperty.value = state
+    case let .percentRaised(bucket):
+      self.selectedPercentRaisedBucketProperty.value = bucket
+    case let .amountRaised(bucket):
+      self.selectedAmountRaisedBucketProperty.value = bucket
+    case let .location(location):
+      self.selectedLocationProperty.value = location
     }
-
-    self.selectedCategoryProperty.value = selectedCategory
-  }
-
-  public func selectedProjectState(_ state: DiscoveryParams.State) {
-    assert(
-      self.stateOptions.contains(state),
-      "Selected a state option that isn't actually available in SearchFiltersUseCase."
-    )
-
-    self.selectedStateProperty.value = state
-  }
-
-  public func selectedPercentRaisedBucket(_ bucket: DiscoveryParams.PercentRaisedBucket) {
-    self.selectedPercentRaisedBucketProperty.value = bucket
-  }
-
-  public func filteredLocation(_ location: Location?) {
-    self.selectedLocationProperty.value = location
-  }
-
-  public func selectedAmountRaisedBucket(_ bucket: DiscoveryParams.AmountRaisedBucket) {
-    self.selectedAmountRaisedBucketProperty.value = bucket
   }
 
   public var inputs: SearchFiltersUseCaseInputs { return self }
@@ -346,6 +312,15 @@ public enum SearchFilterModalType: Hashable, CaseIterable {
   case percentRaised
   case location
   case amountRaised
+}
+
+public enum SearchFilterEvent {
+  case sort(DiscoveryParams.Sort)
+  case category(SearchFiltersCategory)
+  case projectState(DiscoveryParams.State)
+  case percentRaised(DiscoveryParams.PercentRaisedBucket)
+  case amountRaised(DiscoveryParams.AmountRaisedBucket)
+  case location(Location?)
 }
 
 private extension GraphAPI.LocationsByTermQuery.Data.Location {}
