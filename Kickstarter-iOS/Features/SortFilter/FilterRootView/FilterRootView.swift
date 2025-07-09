@@ -6,11 +6,7 @@ struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
   @ObservedObject var searchFilters: SearchFilters
 
-  var onSelectedCategory: ((SearchFiltersCategory) -> Void)? = nil
-  var onSelectedProjectState: ((DiscoveryParams.State) -> Void)? = nil
-  var onSelectedPercentRaisedBucket: ((DiscoveryParams.PercentRaisedBucket) -> Void)? = nil
-  var onSelectedLocation: ((Location?) -> Void)? = nil
-  var onSelectedAmountRaisedBucket: ((DiscoveryParams.AmountRaisedBucket) -> Void)? = nil
+  var onFilter: ((SearchFilterEvent) -> Void)? = nil
   var onSearchedForLocations: ((String) -> Void)? = nil
   var onReset: ((SearchFilterModalType) -> Void)? = nil
   var onResults: (() -> Void)? = nil
@@ -20,8 +16,8 @@ struct FilterRootView: View {
     Binding {
       self.searchFilters.category.selectedCategory
     } set: { newValue in
-      if let action = self.onSelectedCategory {
-        action(newValue)
+      if let action = self.onFilter {
+        action(.category(newValue))
       }
     }
   }
@@ -30,9 +26,9 @@ struct FilterRootView: View {
     Binding {
       self.searchFilters.percentRaised.selectedBucket
     } set: { newValue in
-      if let action = self.onSelectedPercentRaisedBucket,
+      if let action = self.onFilter,
          let bucket = newValue {
-        action(bucket)
+        action(.percentRaised(bucket))
       }
     }
   }
@@ -41,8 +37,8 @@ struct FilterRootView: View {
     Binding {
       self.searchFilters.location.selectedLocation
     } set: { newValue in
-      if let action = self.onSelectedLocation {
-        action(newValue)
+      if let action = self.onFilter {
+        action(.location(newValue))
       }
     }
   }
@@ -51,9 +47,9 @@ struct FilterRootView: View {
     Binding {
       self.searchFilters.amountRaised.selectedBucket
     } set: { newValue in
-      if let action = self.onSelectedAmountRaisedBucket,
+      if let action = self.onFilter,
          let bucket = newValue {
-        action(bucket)
+        action(.amountRaised(bucket))
       }
     }
   }
@@ -85,8 +81,8 @@ struct FilterRootView: View {
       FlowLayout(spacing: Constants.flowLayoutSpacing) {
         ForEach(self.searchFilters.projectState.stateOptions) { state in
           Button(action: {
-            if let action = onSelectedProjectState {
-              action(state)
+            if let action = self.onFilter {
+              action(.projectState(state))
             }
           }, label: {
             Text(state.title)

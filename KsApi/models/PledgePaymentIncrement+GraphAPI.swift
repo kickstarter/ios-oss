@@ -11,7 +11,8 @@ extension PledgePaymentIncrement {
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )
     self.scheduledCollection = intervalAsTime
-    self.state = PledgePaymentIncrementState(stateValue: fragment.state)
+    let stateValue = fragment.state
+    self.state = PledgePaymentIncrementState(stateValue: stateValue)
 
     if let stateReason = fragment.stateReason?.rawValue {
       self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
