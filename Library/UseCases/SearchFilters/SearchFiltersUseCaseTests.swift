@@ -276,7 +276,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.tappedButton(forFilterType: .category)
     self.showFilters.assertDidEmitValue()
 
-    self.useCase.inputs.selectedCategory(.rootCategory(.art))
+    self.useCase.inputs.selectedFilter(.category(.rootCategory(.art)))
 
     guard let newCategory = self.selectedCategory.lastValue else {
       XCTFail("There should be a new selected category")
@@ -295,7 +295,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.inputs.tappedButton(forFilterType: .sort)
     self.showFilters.assertDidEmitValue()
 
-    self.useCase.inputs.selectedSortOption(.endingSoon)
+    self.useCase.inputs.selectedFilter(.sort(.endingSoon))
 
     guard let newSelectedSort = self.selectedSort.lastValue else {
       XCTFail("There should be a new selected sort option")
@@ -310,7 +310,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.assert_selectedProjectState_isDefault()
 
-    self.useCase.inputs.selectedProjectState(.late_pledge)
+    self.useCase.inputs.selectedFilter(.projectState(.late_pledge))
 
     guard let newSelectedState = self.selectedState.lastValue else {
       XCTFail("There should be a new selected state")
@@ -325,7 +325,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.assert_selectedPercentRaisedBucket_isDefault()
 
-    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_1)
+    self.useCase.inputs.selectedFilter(.percentRaised(.bucket_1))
 
     guard let newSelectedBucket = self.selectedPercentRaisedBucket.lastValue else {
       XCTFail("There should be a new selected bucket")
@@ -340,7 +340,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.assert_selectedAmountRaisedBucket_isDefault()
 
-    self.useCase.inputs.selectedAmountRaisedBucket(.bucket_3)
+    self.useCase.inputs.selectedFilter(.amountRaised(.bucket_3))
 
     guard let newSelectedBucket = self.selectedAmountRaisedBucket.lastValue else {
       XCTFail("There should be a new selected bucket")
@@ -357,7 +357,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     let location = threeLocations[1]
 
-    self.useCase.inputs.filteredLocation(location)
+    self.useCase.inputs.selectedFilter(.location(location))
 
     guard let newSelectedLocation = self.selectedLocation.lastValue else {
       XCTFail("There should be a new selected location")
@@ -386,7 +386,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       XCTFail("Expected sort pill to be set")
     }
 
-    self.useCase.inputs.selectedSortOption(.endingSoon)
+    self.useCase.inputs.selectedFilter(.sort(.endingSoon))
 
     if let sortPill = self.useCase.uiOutputs.searchFilters.sortPill {
       XCTAssertEqual(
@@ -430,7 +430,10 @@ final class SearchFiltersUseCaseTests: TestCase {
       "Category pill should have placeholder text when no category is selected"
     )
 
-    self.useCase.inputs.selectedCategory(.subcategory(rootCategory: .art, subcategory: .illustration))
+    self.useCase.inputs.selectedFilter(.category(.subcategory(
+      rootCategory: .art,
+      subcategory: .illustration
+    )))
 
     guard let newCategoryPill = self.useCase.uiOutputs.searchFilters.categoryPill else {
       XCTFail("Category pill is missing.")
@@ -470,7 +473,7 @@ final class SearchFiltersUseCaseTests: TestCase {
       XCTFail("Expected percent raised pill to be set")
     }
 
-    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+    self.useCase.inputs.selectedFilter(.percentRaised(.bucket_2))
 
     if let pill = self.useCase.uiOutputs.searchFilters.percentRaisedPill {
       XCTAssertEqual(
@@ -516,7 +519,7 @@ final class SearchFiltersUseCaseTests: TestCase {
         XCTFail("Expected percent raised pill to be set")
       }
 
-      self.useCase.inputs.selectedAmountRaisedBucket(.bucket_3)
+      self.useCase.inputs.selectedFilter(.amountRaised(.bucket_3))
 
       if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
         XCTAssertEqual(
@@ -565,7 +568,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
       let location = threeLocations[0]
 
-      self.useCase.inputs.filteredLocation(location)
+      self.useCase.inputs.selectedFilter(.location(location))
 
       if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
         XCTAssertEqual(
@@ -598,13 +601,13 @@ final class SearchFiltersUseCaseTests: TestCase {
       .documentarySpanish
     ])
 
-    self.useCase.inputs.selectedCategory(.rootCategory(.art))
+    self.useCase.inputs.selectedFilter(.category(.rootCategory(.art)))
     self.selectedCategory.assertLastValue(.art)
 
-    self.useCase.inputs.selectedProjectState(.late_pledge)
+    self.useCase.inputs.selectedFilter(.projectState(.late_pledge))
     self.selectedState.assertLastValue(.late_pledge)
 
-    self.useCase.inputs.selectedPercentRaisedBucket(.bucket_2)
+    self.useCase.inputs.selectedFilter(.percentRaised(.bucket_2))
     self.selectedPercentRaisedBucket.assertLastValue(.bucket_2)
 
     for type in SearchFilterModalType.allCases {
@@ -647,7 +650,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedSort_isDefault()
     self.assertAllFilters_areSetToDefaults()
 
-    self.useCase.inputs.selectedSortOption(.endingSoon)
+    self.useCase.inputs.selectedFilter(.sort(.endingSoon))
     self.setAllFilters_toNonDefault_andAssert()
 
     self.useCase.inputs.clearedQueryText()
