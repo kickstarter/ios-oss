@@ -41,6 +41,8 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedLocation: Signal<Location?, Never> { get }
   /// The currently selected amount raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never> { get }
+  /// The currently selected 'Show Only' toggles. All toggles default to `false`. Default value only sent after `initialSignal` occurs.
+  var selectedToggles: Signal<SearchFilterToggles, Never> { get }
 }
 
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
@@ -58,12 +60,6 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.defaultLocationsProperty <~ defaultLocations
     self.suggestedLocationsProperty <~ suggestedLocations
 
-    self.showFilters = self.tappedFilterTypeSignal
-      .map { pill in
-        let modalType = filterModal(toShowForPill: pill)
-        return modalType
-      }
-
     self.selectedSort = self.selectedSortProperty.signal(takeInitialValueWhen: initialSignal)
     self.selectedCategory = self.selectedCategoryProperty.signal(takeInitialValueWhen: initialSignal)
     self.selectedState = self.selectedStateProperty.signal(takeInitialValueWhen: initialSignal)
@@ -72,6 +68,21 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     self.selectedLocation = self.selectedLocationProperty.signal(takeInitialValueWhen: initialSignal)
     self.selectedAmountRaisedBucket = self.selectedAmountRaisedBucketProperty
       .signal(takeInitialValueWhen: initialSignal)
+
+    self.selectedToggles = Signal.combineLatest(
+      self.recommendedProperty.signal(takeInitialValueWhen: initialSignal),
+      self.savedProjectsProperty.signal(takeInitialValueWhen: initialSignal),
+      self.projectsWeLoveProperty.signal(takeInitialValueWhen: initialSignal),
+      self.followingProperty.signal(takeInitialValueWhen: initialSignal)
+    )
+    .map { recommended, saved, pwl, following in
+      SearchFilterToggles(
+        recommended: recommended,
+        savedProjects: saved,
+        projectsWeLove: pwl,
+        following: following
+      )
+    }
 
     self.searchFilters = SearchFilters(
       sort: SearchFilters.SortOptions(
@@ -95,8 +106,28 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       ),
       amountRaised: SearchFilters.AmountRaisedOptions(
         buckets: DiscoveryParams.AmountRaisedBucket.allCases
+      ),
+      showOnly: SearchFilters.ShowOnlyOptions(
+        recommended: self.recommendedProperty.value,
+        savedProjects: self.savedProjectsProperty.value,
+        projectsWeLove: self.projectsWeLoveProperty.value,
+        following: self.followingProperty.value
       )
     )
+
+    let tappedTogglePill = self.tappedFilterTypeSignal.filter { $0.isToggle }
+    let tappedModalPill = self.tappedFilterTypeSignal.filter { !$0.isToggle }
+
+    self.showFilters = tappedModalPill
+      .map { pill in
+        let modalType = filterModal(toShowForPill: pill)
+        return modalType
+      }
+
+    tappedTogglePill
+      .observeValues { [weak self] pill in
+        self?.toggleFilter(ofType: pill)
+      }
 
     Signal.combineLatest(
       self.dataOutputs.selectedSort,
@@ -104,19 +135,21 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.dataOutputs.selectedState,
       self.dataOutputs.selectedPercentRaisedBucket,
       self.dataOutputs.selectedLocation,
-      self.dataOutputs.selectedAmountRaisedBucket
+      self.dataOutputs.selectedAmountRaisedBucket,
+      self.dataOutputs.selectedToggles
     )
     .observeForUI()
     .observeValues { [
       weak searchFilters
-    ] sort, category, state, percentRaisedBucket, location, amountRaisedBucket in
+    ] sort, category, state, percentRaisedBucket, location, amountRaisedBucket, toggles in
       searchFilters?.update(
         withSort: sort,
         category: category,
         projectState: state,
         percentRaisedBucket: percentRaisedBucket,
         location: location,
-        amountRaisedBucket: amountRaisedBucket
+        amountRaisedBucket: amountRaisedBucket,
+        toggles: toggles
       )
     }
 
@@ -170,6 +203,11 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   fileprivate let defaultLocationsProperty = MutableProperty<[KsApi.Location]>([])
   fileprivate let suggestedLocationsProperty = MutableProperty<[KsApi.Location]>([])
 
+  fileprivate let recommendedProperty = MutableProperty<Bool>(false)
+  fileprivate let savedProjectsProperty = MutableProperty<Bool>(false)
+  fileprivate let projectsWeLoveProperty = MutableProperty<Bool>(false)
+  fileprivate let followingProperty = MutableProperty<Bool>(false)
+
   internal static let defaultSortOption = DiscoveryParams.Sort.magic
 
   fileprivate let sortOptions = [
@@ -191,14 +229,15 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
     DiscoveryParams.State.successful
   ]
 
-  public var showFilters: Signal<SearchFilterModalType, Never>
+  public let showFilters: Signal<SearchFilterModalType, Never>
 
-  public var selectedSort: Signal<DiscoveryParams.Sort, Never>
-  public var selectedCategory: Signal<SearchFiltersCategory, Never>
-  public var selectedState: Signal<DiscoveryParams.State, Never>
-  public var selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
-  public var selectedLocation: Signal<Location?, Never>
-  public var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never>
+  public let selectedSort: Signal<DiscoveryParams.Sort, Never>
+  public let selectedCategory: Signal<SearchFiltersCategory, Never>
+  public let selectedState: Signal<DiscoveryParams.State, Never>
+  public let selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
+  public let selectedLocation: Signal<Location?, Never>
+  public let selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never>
+  public let selectedToggles: Signal<SearchFilterToggles, Never>
 
   public private(set) var searchFilters: SearchFilters
 
@@ -216,6 +255,10 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedPercentRaisedBucketProperty.value = nil
       self.selectedLocationProperty.value = nil
       self.selectedAmountRaisedBucketProperty.value = nil
+      self.followingProperty.value = false
+      self.recommendedProperty.value = false
+      self.projectsWeLoveProperty.value = false
+      self.savedProjectsProperty.value = false
     case .category:
       self.selectedCategoryProperty.value = .none
     case .sort:
@@ -243,6 +286,33 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedAmountRaisedBucketProperty.value = bucket
     case let .location(location):
       self.selectedLocationProperty.value = location
+    case let .recommended(showRecommended):
+      self.recommendedProperty.value = showRecommended
+    case let .savedProjects(showSavedProjects):
+      self.savedProjectsProperty.value = showSavedProjects
+    case let .projectsWeLove(showProjectsWeLove):
+      self.projectsWeLoveProperty.value = showProjectsWeLove
+    case let .following(showFollowing):
+      self.followingProperty.value = showFollowing
+    }
+  }
+
+  internal func toggleFilter(ofType type: SearchFilterPill.FilterType) {
+    switch type {
+    case .projectsWeLove:
+      let pwl = self.projectsWeLoveProperty.value
+      self.selectedFilter(.projectsWeLove(!pwl))
+    case .saved:
+      let saved = self.savedProjectsProperty.value
+      self.selectedFilter(.savedProjects(!saved))
+    case .following:
+      let following = self.followingProperty.value
+      self.selectedFilter(.following(!following))
+    case .recommended:
+      let recommended = self.recommendedProperty.value
+      self.selectedFilter(.recommended(!recommended))
+    default:
+      assert(false, "Only boolean filter types can be toggled directly from the pill bar header.")
     }
   }
 
@@ -296,6 +366,17 @@ public enum SearchFilterEvent {
   case percentRaised(DiscoveryParams.PercentRaisedBucket)
   case amountRaised(DiscoveryParams.AmountRaisedBucket)
   case location(Location?)
+  case recommended(Bool)
+  case savedProjects(Bool)
+  case projectsWeLove(Bool)
+  case following(Bool)
+}
+
+public struct SearchFilterToggles {
+  public var recommended: Bool
+  public var savedProjects: Bool
+  public var projectsWeLove: Bool
+  public var following: Bool
 }
 
 private extension GraphAPI.LocationsByTermQuery.Data.Location {}

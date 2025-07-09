@@ -54,6 +54,46 @@ struct FilterRootView: View {
     }
   }
 
+  private var showRecommended: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.recommended
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.recommended(newValue))
+      }
+    }
+  }
+
+  private var showSavedProjects: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.savedProjects
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.savedProjects(newValue))
+      }
+    }
+  }
+
+  private var showProjectsWeLove: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.projectsWeLove
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.projectsWeLove(newValue))
+      }
+    }
+  }
+
+  private var showFollowing: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.following
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.following(newValue))
+      }
+    }
+  }
+
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
   }
@@ -143,13 +183,6 @@ struct FilterRootView: View {
     .padding(Constants.sectionPadding)
   }
 
-  // FIXME: MBL-2560
-  // Hook this up to SearchFiltersUseCase with Bindings.
-  @State var recommendedToggle = false
-  @State var pwlToggle = false
-  @State var savedToggle = false
-  @State var followingToggle = false
-
   @ViewBuilder
   var showOnlySection: some View {
     VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
@@ -158,10 +191,10 @@ struct FilterRootView: View {
         .font(InterFont.headingLG.swiftUIFont())
       Group {
         // FIXME: MBL-2563 Add translated strings
-        Toggle("FPO: Recommended for you", isOn: self.$recommendedToggle)
-        Toggle("FPO: Projects We Love", isOn: self.$pwlToggle)
-        Toggle("FPO: Saved projects", isOn: self.$savedToggle)
-        Toggle("FPO: Following", isOn: self.$followingToggle)
+        Toggle("FPO: Recommended for you", isOn: self.showRecommended)
+        Toggle("FPO: Projects We Love", isOn: self.showProjectsWeLove)
+        Toggle("FPO: Saved projects", isOn: self.showSavedProjects)
+        Toggle("FPO: Following", isOn: self.showFollowing)
       }
       .toggleStyle(.switch)
       .tint(Colors.Text.primary.swiftUIColor())

@@ -28,6 +28,23 @@ public struct SearchFilterPill: Identifiable {
     case saved
     case following
     case recommended
+
+    /// If `true`, this pill is a boolean value that can be toggled directly from the search header.
+    /// Tapping on this pill doesn't open a modal.
+    var isToggle: Bool {
+      switch self {
+      case .projectsWeLove:
+        true
+      case .saved:
+        true
+      case .following:
+        true
+      case .recommended:
+        true
+      default:
+        false
+      }
+    }
   }
 
   /// How the pill should be rendered.
