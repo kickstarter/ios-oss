@@ -197,7 +197,6 @@ private func isSurvey(request: URLRequest) -> Bool {
 // Returns true if either the url host or the target frame's security origin
 // is of the form *.stripe.com, *.stripe.network, or *.stripecdn.com.
 private func isStripeNavigationAction(_ actionData: WKNavigationActionData) -> Bool {
-  print(actionData.request.url ?? "no url")
   if let host = actionData.request.url?.host, isStripeHost(host) {
     return true
   }
