@@ -1,5 +1,33 @@
-query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $pledged: PledgedBuckets, $first: Int, $cursor: String) {
-  projects(term: $term, sort: $sort, categoryId: $categoryId, state: $state, raised: $raised, locationId: $locationId, pledged: $pledged, after: $cursor, first: $first) {
+query Search(
+  $term: String,
+  $sort: ProjectSort,
+  $categoryId: String,
+  $state: PublicProjectState,
+  $raised: RaisedBuckets,
+  $locationId: ID,
+  $pledged: PledgedBuckets,
+  $showRecommended: Boolean,
+  $showSavedProjects: Boolean,
+  $showProjectsWeLove: Boolean,
+  $showFollowing: Boolean,
+  $first: Int,
+  $cursor: String
+) {
+  projects(
+    term: $term,
+    sort: $sort,
+    categoryId: $categoryId,
+    state: $state,
+    raised: $raised,
+    locationId: $locationId,
+    pledged: $pledged,
+    recommended: $showRecommended,
+    starred: $showSavedProjects,
+    following: $showFollowing,
+    staffPicks: $showProjectsWeLove,
+    after: $cursor,
+    first: $first
+  ) {
     nodes {
       ...BackerDashboardProjectCellFragment
       ...ProjectAnalyticsFragment

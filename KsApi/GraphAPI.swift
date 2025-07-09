@@ -14579,7 +14579,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $pledged: PledgedBuckets, $first: Int, $cursor: String) {
+      query Search($term: String, $sort: ProjectSort, $categoryId: String, $state: PublicProjectState, $raised: RaisedBuckets, $locationId: ID, $pledged: PledgedBuckets, $showRecommended: Boolean, $showSavedProjects: Boolean, $showProjectsWeLove: Boolean, $showFollowing: Boolean, $first: Int, $cursor: String) {
         projects(
           term: $term
           sort: $sort
@@ -14588,6 +14588,10 @@ public enum GraphAPI {
           raised: $raised
           locationId: $locationId
           pledged: $pledged
+          recommended: $showRecommended
+          starred: $showSavedProjects
+          following: $showFollowing
+          staffPicks: $showProjectsWeLove
           after: $cursor
           first: $first
         ) {
@@ -14627,10 +14631,14 @@ public enum GraphAPI {
     public var raised: RaisedBuckets?
     public var locationId: GraphQLID?
     public var pledged: PledgedBuckets?
+    public var showRecommended: Bool?
+    public var showSavedProjects: Bool?
+    public var showProjectsWeLove: Bool?
+    public var showFollowing: Bool?
     public var first: Int?
     public var cursor: String?
 
-    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, pledged: PledgedBuckets? = nil, first: Int? = nil, cursor: String? = nil) {
+    public init(term: String? = nil, sort: ProjectSort? = nil, categoryId: String? = nil, state: PublicProjectState? = nil, raised: RaisedBuckets? = nil, locationId: GraphQLID? = nil, pledged: PledgedBuckets? = nil, showRecommended: Bool? = nil, showSavedProjects: Bool? = nil, showProjectsWeLove: Bool? = nil, showFollowing: Bool? = nil, first: Int? = nil, cursor: String? = nil) {
       self.term = term
       self.sort = sort
       self.categoryId = categoryId
@@ -14638,12 +14646,16 @@ public enum GraphAPI {
       self.raised = raised
       self.locationId = locationId
       self.pledged = pledged
+      self.showRecommended = showRecommended
+      self.showSavedProjects = showSavedProjects
+      self.showProjectsWeLove = showProjectsWeLove
+      self.showFollowing = showFollowing
       self.first = first
       self.cursor = cursor
     }
 
     public var variables: GraphQLMap? {
-      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "pledged": pledged, "first": first, "cursor": cursor]
+      return ["term": term, "sort": sort, "categoryId": categoryId, "state": state, "raised": raised, "locationId": locationId, "pledged": pledged, "showRecommended": showRecommended, "showSavedProjects": showSavedProjects, "showProjectsWeLove": showProjectsWeLove, "showFollowing": showFollowing, "first": first, "cursor": cursor]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -14651,7 +14663,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
-          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "pledged": GraphQLVariable("pledged"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
+          GraphQLField("projects", arguments: ["term": GraphQLVariable("term"), "sort": GraphQLVariable("sort"), "categoryId": GraphQLVariable("categoryId"), "state": GraphQLVariable("state"), "raised": GraphQLVariable("raised"), "locationId": GraphQLVariable("locationId"), "pledged": GraphQLVariable("pledged"), "recommended": GraphQLVariable("showRecommended"), "starred": GraphQLVariable("showSavedProjects"), "following": GraphQLVariable("showFollowing"), "staffPicks": GraphQLVariable("showProjectsWeLove"), "after": GraphQLVariable("cursor"), "first": GraphQLVariable("first")], type: .object(Project.selections)),
         ]
       }
 

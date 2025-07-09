@@ -87,10 +87,33 @@ extension GraphAPI.SearchQuery {
     } else {
       categoryId = nil
     }
+
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
     let locationId = params.location?.graphID
     let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
+
+    let showRecommended = params.social
+    let showSavedProjects = params.starred
+    let showProjectsWeLove = params.staffPicks
+    let showFollowing = params.social
+
+    assert(
+      showRecommended != .some(false),
+      "Setting showRecommended to false would return only non-recommended results. Did you mean to set it to nil?"
+    )
+    assert(
+      showSavedProjects != .some(false),
+      "Setting showSavedProjects to false would return only unsaved results. Did you mean to set it to nil?"
+    )
+    assert(
+      showProjectsWeLove != .some(false),
+      "Setting showProjectsWeLove to false would return only unloved results. Did you mean to set it to nil?"
+    )
+    assert(
+      showFollowing != .some(false),
+      "Setting showFollowing to false would return only unfollowed results. Did you mean to set it to nil?"
+    )
 
     return GraphAPI.SearchQuery(
       term: GraphQLNullable.someOrNil(params.query),
@@ -100,6 +123,10 @@ extension GraphAPI.SearchQuery {
       raised: GraphQLNullable.caseOrNil(raised),
       locationId: GraphQLNullable.someOrNil(locationId),
       pledged: GraphQLNullable.someOrNil(pledged),
+      showRecommended: GraphQLNullable.someOrNil(showRecommended),
+      showSavedProjects: GraphQLNullable.someOrNil(showSavedProjects),
+      showProjectsWeLove: GraphQLNullable.someOrNil(showProjectsWeLove),
+      showFollowing: GraphQLNullable.someOrNil(showFollowing),
       first: GraphQLNullable.someOrNil(params.perPage),
       cursor: GraphQLNullable.someOrNil(cursor)
     )
