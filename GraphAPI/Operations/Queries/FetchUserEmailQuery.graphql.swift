@@ -26,6 +26,20 @@ public extension GraphAPI {
       /// You.
       public var me: Me? { __data["me"] }
 
+      public init(
+        me: Me? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Query.typename,
+            "me": me._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchUserEmailQuery.Data.self)
+          ]
+        ))
+      }
+
       /// Me
       ///
       /// Parent Type: `User`
@@ -47,6 +61,21 @@ public extension GraphAPI {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var userEmailFragment: UserEmailFragment { _toFragment() }
+        }
+
+        public init(
+          email: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.User.typename,
+              "email": email,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchUserEmailQuery.Data.Me.self),
+              ObjectIdentifier(UserEmailFragment.self)
+            ]
+          ))
         }
       }
     }

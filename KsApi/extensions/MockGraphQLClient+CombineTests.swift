@@ -3,13 +3,12 @@ import Combine
 import XCTest
 
 final class MockGraphQLClient_CombineTests: XCTestCase {
-  func disabled_testSuccess() {
+  func testSuccess() {
     let mockClient = MockGraphQLClient()
     let observer = CombineTestObserver<UserEnvelope<GraphUserEmail>, ErrorEnvelope>()
 
     let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
-    let fetchUserEmailQueryData: GraphAPI.FetchUserEmailQuery
-      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+    let fetchUserEmailQueryData = GraphUserEnvelopeTemplates.fetchUserEmail
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
       XCTFail()

@@ -75,9 +75,8 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.me.uid, "11111")
   }
 
-  func fixable_testFetchUserEmail() {
-    let fetchUserEmailQueryData: GraphAPI.FetchUserEmailQuery
-      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+  func testFetchUserEmail() {
+    let fetchUserEmailQueryData = GraphUserEnvelopeTemplates.fetchUserEmail
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
       XCTFail()

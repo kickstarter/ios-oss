@@ -15,7 +15,8 @@
       "definitionsNamed": [
         "ProjectAnalyticsFragment",
         "MoneyFragment",
-        "FetchSimilarProjects"
+        "FetchSimilarProjects",
+        "FetchUserEmail"
       ]
     }
   },

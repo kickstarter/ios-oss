@@ -1,6 +1,12 @@
 @testable import KsApi
 
 public struct GraphUserEnvelopeTemplates {
+  static let fetchUserEmail = GraphAPI.FetchUserEmailQuery.Data(
+    me: GraphAPI.FetchUserEmailQuery.Data.Me(
+      email: "user@example.com"
+    )
+  )
+
   static let userJSONDict: [String: Any] =
     [
       "me": [

@@ -7,8 +7,7 @@ final class ReportProjectFormViewModelTests: TestCase {
   // MARK: Computed Properties
 
   private var userEmailSuccessMockService: MockService {
-    let fetchUserEmailQueryData: GraphAPI.FetchUserEmailQuery
-      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+    let fetchUserEmailQueryData = GraphUserEnvelopeTemplates.fetchUserEmail
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
       return MockService()
