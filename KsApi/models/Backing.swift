@@ -45,6 +45,8 @@ public struct Backing {
     case canceled
     case collected
     case dropped
+    // A dummy pledge is a $0.0 pledge that was created behind the scenes
+    // to allow a net new backer to create a pledge management cart.
     case dummy
     case errored
     case pledged
