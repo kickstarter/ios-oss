@@ -23,6 +23,22 @@ public extension GraphAPI {
     public var nodes: [Node?]? { __data["nodes"] }
     public var totalCount: Int { __data["totalCount"] }
 
+    public init(
+      nodes: [Node?]? = nil,
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+          "nodes": nodes._fieldData,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserStoredCardsFragment.self)
+        ]
+      ))
+    }
+
     /// Node
     ///
     /// Parent Type: `CreditCard`
@@ -50,6 +66,28 @@ public extension GraphAPI {
       public var type: GraphQLEnum<GraphAPI.CreditCardTypes> { __data["type"] }
       /// Stripe card id
       public var stripeCardId: String { __data["stripeCardId"] }
+
+      public init(
+        expirationDate: GraphAPI.Date,
+        id: String,
+        lastFour: String,
+        type: GraphQLEnum<GraphAPI.CreditCardTypes>,
+        stripeCardId: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreditCard.typename,
+            "expirationDate": expirationDate,
+            "id": id,
+            "lastFour": lastFour,
+            "type": type,
+            "stripeCardId": stripeCardId,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(UserStoredCardsFragment.Node.self)
+          ]
+        ))
+      }
     }
   }
 

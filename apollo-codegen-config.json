@@ -16,7 +16,9 @@
         "ProjectAnalyticsFragment",
         "MoneyFragment",
         "FetchSimilarProjects",
-        "FetchUserEmail"
+        "FetchUserEmail",
+        "FetchUser",
+        "UserStoredCardsFragment"
       ]
     }
   },

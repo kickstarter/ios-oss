@@ -3,9 +3,8 @@ import Foundation
 import XCTest
 
 final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
-  func disabled_testFetchUserEvelope_GraphUser_Success() {
-    let fetchUserQueryData: GraphAPI.FetchUserQuery
-      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+  func testFetchUserEvelope_GraphUser_Success() {
+    let fetchUserQueryData = GraphUserEnvelopeTemplates.fetchUser
 
     guard let envelope = UserEnvelope<GraphUser>.userEnvelope(from: fetchUserQueryData) else {
       XCTFail()
@@ -39,9 +38,8 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.me.uid, "11111")
   }
 
-  func disabled_testFetchUserEnvelope_User_Success() {
-    let fetchUserQueryData: GraphAPI.FetchUserQuery
-      .Data = try! testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+  func testFetchUserEnvelope_User_Success() {
+    let fetchUserQueryData = GraphUserEnvelopeTemplates.fetchUser
 
     guard let envelope = UserEnvelope<User>.userEnvelope(from: fetchUserQueryData) else {
       XCTFail()
