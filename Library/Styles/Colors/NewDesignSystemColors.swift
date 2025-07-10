@@ -20,6 +20,12 @@ public struct Colors {
       darkMode: .gray_600
     )
 
+    public static let placeholder = SemanticColor(
+      "text/placeholder",
+      lightMode: .gray_600,
+      darkMode: .gray_500
+    )
+
     public struct Accent {
       public static let red = SemanticColor(
         "text/accent/red",

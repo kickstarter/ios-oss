@@ -100,6 +100,8 @@ public protocol SearchViewModelOutputs {
   /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
   /// Owned and automatically updated by the `SearchFiltersUseCase`.
   var searchFilters: SearchFilters { get }
+
+  var isClearButtonHidden: Signal<Bool, Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -135,6 +137,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.cancelButtonPressedProperty.signal.mapConst(""),
         self.clearSearchTextProperty.signal.mapConst("")
       )
+
+    self.isClearButtonHidden = queryText.map { $0.isEmpty }
 
     // DiscoveryParams using the users currently selected query text, sort and filters.
     let queryParams: Signal<DiscoveryParams, Never> = Signal.combineLatest(
@@ -266,7 +270,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFieldDidBeginEditingProperty.signal.mapConst((true, true))
     )
 
-    self.searchFieldText = self.cancelButtonPressedProperty.signal.mapConst("")
+    self.searchFieldText = Signal.merge(
+      self.cancelButtonPressedProperty.signal.mapConst(""),
+      self.clearSearchTextProperty.signal.mapConst("")
+    )
 
     self.resignFirstResponder = Signal
       .merge(
@@ -462,6 +469,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
   public let showSortAndFilterHeader: Signal<Bool, Never>
   public let searchResults: Signal<SearchResults, Never>
+  public let isClearButtonHidden: Signal<Bool, Never>
 
   public var showFilters: Signal<SearchFilterModalType, Never> {
     return self.searchFiltersUseCase.showFilters
