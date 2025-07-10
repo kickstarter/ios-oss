@@ -117,7 +117,6 @@
 		065E6BAC26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */; };
 		06634FBE2807A4C300950F60 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBD2807A4C300950F60 /* Apollo */; };
 		06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBF2807A4C300950F60 /* ApolloAPI */; };
-		06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC12807A4C300950F60 /* ApolloUtils */; };
 		06634FC52807A4EB00950F60 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC42807A4EB00950F60 /* Prelude */; };
 		06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC62807A4EB00950F60 /* Prelude_UIKit */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
@@ -3694,7 +3693,6 @@
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
-				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
 				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
 			);
@@ -8110,8 +8108,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D01587611EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApi" */;
 			buildPhases = (
-				E1F63FC22BA0A419007B2B2B /* Make list of GraphQL dependencies */,
-				8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */,
 				D015874B1EEB2DE4006E7684 /* Sources */,
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
 				D015874D1EEB2DE4006E7684 /* Headers */,
@@ -8125,7 +8121,6 @@
 			packageProductDependencies = (
 				06634FBD2807A4C300950F60 /* Apollo */,
 				06634FBF2807A4C300950F60 /* ApolloAPI */,
-				06634FC12807A4C300950F60 /* ApolloUtils */,
 				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
@@ -8570,45 +8565,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n  ${SRCROOT}/bin/firebase-crashlytics-run.sh\nfi\n";
-		};
-		8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(PROJECT_DIR)/KsApi/GraphQLFiles.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Apollo Code Generation";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(PROJECT_DIR)/KsApi/GraphAPI.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Don't run this during index builds\nif [ $ACTION = \"indexbuild\" ]; then exit 0; fi\n\n# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" --namespace=GraphAPI GraphAPI.swift\n";
-		};
-		E1F63FC22BA0A419007B2B2B /* Make list of GraphQL dependencies */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Make list of GraphQL dependencies";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$PROJECT_DIR/bin/find-graphql-files.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -11845,7 +11801,7 @@
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.44.0;
+				version = 1.9.3;
 			};
 		};
 		06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
@@ -11956,11 +11912,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloAPI;
-		};
-		06634FC12807A4C300950F60 /* ApolloUtils */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloUtils;
 		};
 		06634FC42807A4EB00950F60 /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;
