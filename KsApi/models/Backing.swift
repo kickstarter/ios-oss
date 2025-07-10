@@ -45,6 +45,7 @@ public struct Backing {
     case canceled
     case collected
     case dropped
+    case dummy
     case errored
     case pledged
     case preauth
