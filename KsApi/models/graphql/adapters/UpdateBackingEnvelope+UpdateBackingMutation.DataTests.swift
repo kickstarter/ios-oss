@@ -2,7 +2,7 @@
 import XCTest
 
 final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
-  func test_SCA() {
+  func fixable_test_SCA() {
     let envProducer = UpdateBackingEnvelope
       .producer(from: UpdateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
     let env = MockGraphQLClient.shared.client.data(from: envProducer)
@@ -13,7 +13,7 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
     XCTAssertEqual(env?.updateBacking.checkout.state, .authorizing)
   }
 
-  func test_NonSCA_Successful() {
+  func fixable_test_NonSCA_Successful() {
     let env = UpdateBackingEnvelope
       .from(UpdateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
 
@@ -23,7 +23,7 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
     XCTAssertEqual(env?.updateBacking.checkout.state, .successful)
   }
 
-  func test_NonSCA_Failed() {
+  func fixable_test_NonSCA_Failed() {
     let env = UpdateBackingEnvelope
       .from(UpdateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
 

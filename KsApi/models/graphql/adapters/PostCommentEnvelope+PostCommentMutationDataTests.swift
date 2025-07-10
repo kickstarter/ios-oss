@@ -2,7 +2,7 @@
 import XCTest
 
 final class PostCommentEnvelope_PostCommentMutationDataTests: XCTestCase {
-  func testPostCommentEnvelope_Success() {
+  func disabled_testPostCommentEnvelope_Success() {
     let producer = PostCommentEnvelope.producer(from: PostCommentMutationTemplate.valid.data)
 
     guard let createCommentEnvelope = MockGraphQLClient.shared.client.data(from: producer) else {

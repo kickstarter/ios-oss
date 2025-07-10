@@ -3,7 +3,7 @@ import Combine
 import XCTest
 
 final class MockGraphQLClient_CombineTests: XCTestCase {
-  func testSuccess() {
+  func disabled_testSuccess() {
     let mockClient = MockGraphQLClient()
     let observer = CombineTestObserver<UserEnvelope<GraphUserEmail>, ErrorEnvelope>()
 

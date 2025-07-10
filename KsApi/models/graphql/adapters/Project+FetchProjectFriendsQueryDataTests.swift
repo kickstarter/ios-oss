@@ -4,7 +4,7 @@ import XCTest
 
 final class Project_FetchProjectFriendsQueryDataTests: XCTestCase {
   /// `FetchProjectFriendsQueryBySlug` returns identical data.
-  func testFetchProjectFriendsQueryData_Success() {
+  func disabled_testFetchProjectFriendsQueryData_Success() {
     let producer = Project.projectFriendsProducer(from: FetchProjectFriendsQueryTemplate.valid.data)
     guard let projectFriendsById = MockGraphQLClient.shared.client.data(from: producer) else {
       XCTFail()

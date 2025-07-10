@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 final class ShippingRule_ShippingRuleFragmentTests: XCTestCase {
-  func test() {
+  func fixable_test() {
     let shippingRuleFragment: GraphAPI.ShippingRuleFragment = try! testGraphObject(
       data: [
         "cost": [

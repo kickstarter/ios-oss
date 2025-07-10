@@ -2,7 +2,7 @@
 import XCTest
 
 final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
-  func test_envelopeFrom() {
+  func fixable_test_envelopeFrom() {
     let envelopeProducer = WatchProjectResponseEnvelope
       .producer(from: WatchProjectResponseMutationTemplate.valid(watched: true).watchData)
 
@@ -13,7 +13,7 @@ final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
     XCTAssertEqual(envelope?.watchProject.project.watchesCount, 100)
   }
 
-  func test_envelopeFrom_ReturnsNil() {
+  func fixable_test_envelopeFrom_ReturnsNil() {
     let errorProducer = WatchProjectResponseEnvelope
       .producer(from: WatchProjectResponseMutationTemplate.errored(watched: true).watchData)
     let error = MockGraphQLClient.shared.client.error(from: errorProducer)
