@@ -7,7 +7,8 @@ extension ProjectCardProperties {
     guard
       let imageURLString = fragment.image?.url,
       let imageURL = URL(string: imageURLString),
-      let state = Project.State(fragment.state.value!)
+      let fragmentState = fragment.state.value,
+      let state = Project.State(fragmentState)
     else {
       return nil
     }
