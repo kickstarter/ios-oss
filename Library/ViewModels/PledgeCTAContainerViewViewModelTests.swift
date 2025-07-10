@@ -157,6 +157,20 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     }
   }
 
+  func testPledgeCTA_dummyPledgeGoToPM() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .dummy
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
+  }
+
   func testPledgeCTA_NonBacker_LiveProject_loggedOut() {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ nil
