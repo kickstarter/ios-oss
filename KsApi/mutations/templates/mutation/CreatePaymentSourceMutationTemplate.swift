@@ -8,42 +8,35 @@ public enum CreatePaymentSourceMutationTemplate {
   var data: GraphAPI.CreatePaymentSourceMutation.Data {
     switch self {
     case .valid:
-      return try! testGraphObject(data: self.createPaymentSourceMutationResultMap)
+      return try! testGraphObject(
+        jsonString: self.createPaymentSourceMutationResult(isSuccessful: true)
+      )
     case .errored:
-      return try! testGraphObject(data: self.createPaymentSourceMutationErroredResultMap)
+      return try! testGraphObject(
+        jsonString: self.createPaymentSourceMutationResult(isSuccessful: false)
+      )
     }
   }
 
   // MARK: Private Properties
 
-  private var createPaymentSourceMutationResultMap: [String: Any] {
-    [
-      "createPaymentSource": [
-        "__typename": "CreatePaymentSourcePayload",
-        // "clientMutationId": nil,
-        "isSuccessful": true,
-        "paymentSource": [
-          "__typename": "CreditCard",
-          "expirationDate": "2032-02-01",
-          "id": "69021299",
-          "lastFour": "4242",
-          "paymentType": GraphAPI.PaymentTypes.creditCard,
-          "type": GraphAPI.CreditCardTypes.visa,
-          "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
-        ]
-      ]
-    ]
-  }
-
-  private var createPaymentSourceMutationErroredResultMap: [String: Any] {
-    guard var modifiedData = createPaymentSourceMutationResultMap["createPaymentSource"] as? [String: Any]
-    else {
-      return self.createPaymentSourceMutationResultMap
-    }
-
-    modifiedData["isSuccessful"] = false
-    let errorData = ["createPaymentSource": modifiedData]
-
-    return errorData
+  private func createPaymentSourceMutationResult(isSuccessful: Bool) -> String {
+    """
+        {
+          "createPaymentSource": {
+            "__typename": "CreatePaymentSourcePayload",
+            "isSuccessful": \(isSuccessful),
+            "paymentSource": {
+              "__typename": "CreditCard",
+              "expirationDate": "2032-02-01",
+              "id": "69021299",
+              "lastFour": "4242",
+              "paymentType": "CREDIT_CARD",
+              "type": "VISA",
+              "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
+            }
+          }
+        }
+    """
   }
 }
