@@ -13,7 +13,8 @@
       "operations": false,
       "namedFragments": false,
       "definitionsNamed": [
-        "ProjectAnalyticsFragment"
+        "ProjectAnalyticsFragment",
+        "MoneyFragment"
       ]
     }
   },

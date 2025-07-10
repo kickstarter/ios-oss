@@ -26,6 +26,24 @@ public extension GraphAPI {
     public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
     /// Symbol of the currency in which the monetary amount appears
     public var symbol: String? { __data["symbol"] }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
 }
