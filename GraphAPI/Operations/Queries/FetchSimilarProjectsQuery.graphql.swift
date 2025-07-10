@@ -37,6 +37,20 @@ public extension GraphAPI {
       /// Get some projects
       public var projects: Projects? { __data["projects"] }
 
+      public init(
+        projects: Projects? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Query.typename,
+            "projects": projects._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchSimilarProjectsQuery.Data.self)
+          ]
+        ))
+      }
+
       /// Projects
       ///
       /// Parent Type: `ProjectsConnectionWithTotalCount`
@@ -52,6 +66,20 @@ public extension GraphAPI {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+
+        public init(
+          nodes: [Node?]? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.ProjectsConnectionWithTotalCount.typename,
+              "nodes": nodes._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.self)
+            ]
+          ))
+        }
 
         /// Projects.Node
         ///
@@ -146,6 +174,91 @@ public extension GraphAPI {
             public var projectPamphletMainCellPropertiesFragment: ProjectPamphletMainCellPropertiesFragment { _toFragment() }
           }
 
+          public init(
+            image: Image? = nil,
+            pid: Int,
+            name: String,
+            state: GraphQLEnum<GraphAPI.ProjectState>,
+            isLaunched: Bool,
+            deadlineAt: GraphAPI.DateTime? = nil,
+            percentFunded: Int,
+            prelaunchActivated: Bool,
+            launchedAt: GraphAPI.DateTime? = nil,
+            isInPostCampaignPledgingPhase: Bool,
+            postCampaignPledgingEnabled: Bool,
+            url: String,
+            isWatched: Bool,
+            goal: Goal? = nil,
+            pledged: Pledged,
+            addOns: AddOns? = nil,
+            backersCount: Int,
+            backing: Backing? = nil,
+            category: Category? = nil,
+            commentsCount: Int,
+            country: Country,
+            creator: Creator? = nil,
+            currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+            isPrelaunchActivated: Bool,
+            projectTags: [ProjectTag?],
+            rewards: Rewards? = nil,
+            video: Video? = nil,
+            fxRate: Double,
+            usdExchangeRate: Double? = nil,
+            posts: Posts? = nil,
+            projectDescription: String,
+            stateChangedAt: GraphAPI.DateTime,
+            projectUsdExchangeRate: Double,
+            location: Location? = nil,
+            risks: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Project.typename,
+                "image": image._fieldData,
+                "pid": pid,
+                "name": name,
+                "state": state,
+                "isLaunched": isLaunched,
+                "deadlineAt": deadlineAt,
+                "percentFunded": percentFunded,
+                "prelaunchActivated": prelaunchActivated,
+                "launchedAt": launchedAt,
+                "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+                "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+                "url": url,
+                "isWatched": isWatched,
+                "goal": goal._fieldData,
+                "pledged": pledged._fieldData,
+                "addOns": addOns._fieldData,
+                "backersCount": backersCount,
+                "backing": backing._fieldData,
+                "category": category._fieldData,
+                "commentsCount": commentsCount,
+                "country": country._fieldData,
+                "creator": creator._fieldData,
+                "currency": currency,
+                "isPrelaunchActivated": isPrelaunchActivated,
+                "projectTags": projectTags._fieldData,
+                "rewards": rewards._fieldData,
+                "video": video._fieldData,
+                "fxRate": fxRate,
+                "usdExchangeRate": usdExchangeRate,
+                "posts": posts._fieldData,
+                "projectDescription": projectDescription,
+                "stateChangedAt": stateChangedAt,
+                "projectUsdExchangeRate": projectUsdExchangeRate,
+                "location": location._fieldData,
+                "risks": risks,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.self),
+                ObjectIdentifier(ProjectCardFragment.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.self)
+              ]
+            ))
+          }
+
           /// Projects.Node.Image
           ///
           /// Parent Type: `Photo`
@@ -158,6 +271,24 @@ public extension GraphAPI {
             public var id: GraphAPI.ID { __data["id"] }
             /// URL of the photo
             public var url: String { __data["url"] }
+
+            public init(
+              id: GraphAPI.ID,
+              url: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Photo.typename,
+                  "id": id,
+                  "url": url,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Image.self),
+                  ObjectIdentifier(ProjectCardFragment.Image.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
+                ]
+              ))
+            }
           }
 
           /// Projects.Node.Goal
@@ -181,6 +312,28 @@ public extension GraphAPI {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var moneyFragment: MoneyFragment { _toFragment() }
+            }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Goal.self),
+                  ObjectIdentifier(ProjectCardFragment.Goal.self),
+                  ObjectIdentifier(MoneyFragment.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Goal.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Goal.self)
+                ]
+              ))
             }
           }
 
@@ -206,6 +359,28 @@ public extension GraphAPI {
 
               public var moneyFragment: MoneyFragment { _toFragment() }
             }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Pledged.self),
+                  ObjectIdentifier(ProjectCardFragment.Pledged.self),
+                  ObjectIdentifier(MoneyFragment.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Pledged.self)
+                ]
+              ))
+            }
           }
 
           public typealias AddOns = ProjectAnalyticsFragment.AddOns
@@ -220,6 +395,22 @@ public extension GraphAPI {
             public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
 
             public var id: GraphAPI.ID { __data["id"] }
+
+            public init(
+              id: GraphAPI.ID
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Backing.typename,
+                  "id": id,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Backing.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
+                ]
+              ))
+            }
           }
 
           /// Projects.Node.Category
@@ -238,6 +429,26 @@ public extension GraphAPI {
             /// Category name.
             public var name: String { __data["name"] }
 
+            public init(
+              analyticsName: String,
+              parentCategory: ParentCategory? = nil,
+              name: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Category.typename,
+                  "analyticsName": analyticsName,
+                  "parentCategory": parentCategory._fieldData,
+                  "name": name,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Category.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Category.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Category.self)
+                ]
+              ))
+            }
+
             public typealias ParentCategory = ProjectAnalyticsFragment.Category.ParentCategory
           }
 
@@ -254,6 +465,24 @@ public extension GraphAPI {
             public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
             /// Country name.
             public var name: String { __data["name"] }
+
+            public init(
+              code: GraphQLEnum<GraphAPI.CountryCode>,
+              name: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Country.typename,
+                  "code": code,
+                  "name": name,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Country.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Country.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
+                ]
+              ))
+            }
           }
 
           /// Projects.Node.Creator
@@ -275,6 +504,30 @@ public extension GraphAPI {
             /// The user's avatar.
             public var imageUrl: String { __data["imageUrl"] }
 
+            public init(
+              id: GraphAPI.ID,
+              createdProjects: CreatedProjects? = nil,
+              name: String,
+              isBlocked: Bool? = nil,
+              imageUrl: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.User.typename,
+                  "id": id,
+                  "createdProjects": createdProjects._fieldData,
+                  "name": name,
+                  "isBlocked": isBlocked,
+                  "imageUrl": imageUrl,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Creator.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Creator.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Creator.self)
+                ]
+              ))
+            }
+
             public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
           }
 
@@ -294,6 +547,24 @@ public extension GraphAPI {
             public var id: GraphAPI.ID { __data["id"] }
             /// A video's sources (hls, high, base)
             public var videoSources: VideoSources? { __data["videoSources"] }
+
+            public init(
+              id: GraphAPI.ID,
+              videoSources: VideoSources? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Video.typename,
+                  "id": id,
+                  "videoSources": videoSources._fieldData,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchSimilarProjectsQuery.Data.Projects.Node.Video.self),
+                  ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
+                  ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
+                ]
+              ))
+            }
 
             public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
           }

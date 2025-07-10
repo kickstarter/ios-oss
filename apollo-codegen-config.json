@@ -14,7 +14,8 @@
       "namedFragments": false,
       "definitionsNamed": [
         "ProjectAnalyticsFragment",
-        "MoneyFragment"
+        "MoneyFragment",
+        "FetchSimilarProjects"
       ]
     }
   },
