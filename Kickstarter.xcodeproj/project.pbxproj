@@ -955,7 +955,6 @@
 		8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCAD264C98A50079D308 /* Comment.swift */; };
 		8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */; };
 		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
-		8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD4E2654281E0079D308 /* GraphAPI.swift */; };
 		8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */; };
 		8ADCCD812655CA290079D308 /* ApolloInterceptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */; };
 		8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */; };
@@ -1767,6 +1766,252 @@
 		E1B813C52BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */; };
 		E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */; };
 		E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */; };
+		E1B8E24B2E20257000299046 /* CheckoutFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14C2E20257000299046 /* CheckoutFragment.graphql.swift */; };
+		E1B8E24C2E20257000299046 /* RewardItemsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2262E20257000299046 /* RewardItemsConnection.graphql.swift */; };
+		E1B8E24D2E20257000299046 /* Tag.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22F2E20257000299046 /* Tag.graphql.swift */; };
+		E1B8E24E2E20257000299046 /* CreateBackingInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C42E20257000299046 /* CreateBackingInput.graphql.swift */; };
+		E1B8E24F2E20257000299046 /* CancelBackingMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16B2E20257000299046 /* CancelBackingMutation.graphql.swift */; };
+		E1B8E2502E20257000299046 /* UserCreatedProjectsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2372E20257000299046 /* UserCreatedProjectsConnection.graphql.swift */; };
+		E1B8E2512E20257000299046 /* CheckoutWave.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E82E20257000299046 /* CheckoutWave.graphql.swift */; };
+		E1B8E2522E20257000299046 /* ISO8601DateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A12E20257000299046 /* ISO8601DateTime.swift */; };
+		E1B8E2532E20257000299046 /* PPOBackingFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1592E20257000299046 /* PPOBackingFragment.graphql.swift */; };
+		E1B8E2542E20257000299046 /* NonDeprecatedFlaggingKind.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AF2E20257000299046 /* NonDeprecatedFlaggingKind.graphql.swift */; };
+		E1B8E2552E20257000299046 /* CreatePaymentIntentMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1732E20257000299046 /* CreatePaymentIntentMutation.graphql.swift */; };
+		E1B8E2562E20257000299046 /* CreateCheckoutInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C52E20257000299046 /* CreateCheckoutInput.graphql.swift */; };
+		E1B8E2572E20257000299046 /* UserSendEmailVerificationPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23A2E20257000299046 /* UserSendEmailVerificationPayload.graphql.swift */; };
+		E1B8E2582E20257000299046 /* WatchProjectInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D52E20257000299046 /* WatchProjectInput.graphql.swift */; };
+		E1B8E2592E20257000299046 /* PledgedProjectsOverviewPledgeFlags.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2102E20257000299046 /* PledgedProjectsOverviewPledgeFlags.graphql.swift */; };
+		E1B8E25A2E20257000299046 /* CreatorPrompt.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F92E20257000299046 /* CreatorPrompt.graphql.swift */; };
+		E1B8E25B2E20257000299046 /* CheckoutState.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A52E20257000299046 /* CheckoutState.graphql.swift */; };
+		E1B8E25C2E20257000299046 /* AddUserToSecretRewardGroupMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1692E20257000299046 /* AddUserToSecretRewardGroupMutation.graphql.swift */; };
+		E1B8E25D2E20257000299046 /* UserSettingsFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1662E20257000299046 /* UserSettingsFragment.graphql.swift */; };
+		E1B8E25E2E20257000299046 /* CuratedPage.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FB2E20257000299046 /* CuratedPage.graphql.swift */; };
+		E1B8E25F2E20257000299046 /* SignInWithAppleInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CD2E20257000299046 /* SignInWithAppleInput.graphql.swift */; };
+		E1B8E2602E20257000299046 /* UpdateBackingMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17B2E20257000299046 /* UpdateBackingMutation.graphql.swift */; };
+		E1B8E2612E20257000299046 /* BankAccount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E22E20257000299046 /* BankAccount.graphql.swift */; };
+		E1B8E2622E20257000299046 /* ValidateCheckoutQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E19A2E20257000299046 /* ValidateCheckoutQuery.graphql.swift */; };
+		E1B8E2632E20257000299046 /* UpdateUserAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17C2E20257000299046 /* UpdateUserAccountMutation.graphql.swift */; };
+		E1B8E2642E20257000299046 /* RewardConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2232E20257000299046 /* RewardConnection.graphql.swift */; };
+		E1B8E2652E20257000299046 /* FetchMySavedProjectsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1882E20257000299046 /* FetchMySavedProjectsQuery.graphql.swift */; };
+		E1B8E2662E20257000299046 /* CommentEdge.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1EC2E20257000299046 /* CommentEdge.graphql.swift */; };
+		E1B8E2672E20257000299046 /* PaymentIncrementState.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B02E20257000299046 /* PaymentIncrementState.graphql.swift */; };
+		E1B8E2682E20257000299046 /* VideoTrackCue.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2412E20257000299046 /* VideoTrackCue.graphql.swift */; };
+		E1B8E2692E20257000299046 /* TriggerThirdPartyEventInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CF2E20257000299046 /* TriggerThirdPartyEventInput.graphql.swift */; };
+		E1B8E26A2E20257000299046 /* CountryFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1502E20257000299046 /* CountryFragment.graphql.swift */; };
+		E1B8E26B2E20257000299046 /* ShippingPreference.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B82E20257000299046 /* ShippingPreference.graphql.swift */; };
+		E1B8E26C2E20257000299046 /* TriggerThirdPartyEventMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1792E20257000299046 /* TriggerThirdPartyEventMutation.graphql.swift */; };
+		E1B8E26D2E20257000299046 /* FetchAddOnsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1832E20257000299046 /* FetchAddOnsQuery.graphql.swift */; };
+		E1B8E26E2E20257000299046 /* LocationsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2022E20257000299046 /* LocationsConnection.graphql.swift */; };
+		E1B8E26F2E20257000299046 /* PostCommentPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2162E20257000299046 /* PostCommentPayload.graphql.swift */; };
+		E1B8E2702E20257000299046 /* CountryCode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A82E20257000299046 /* CountryCode.graphql.swift */; };
+		E1B8E2712E20257000299046 /* PaymentIncrementStateReason.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B12E20257000299046 /* PaymentIncrementStateReason.graphql.swift */; };
+		E1B8E2722E20257000299046 /* RewardFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1612E20257000299046 /* RewardFragment.graphql.swift */; };
+		E1B8E2732E20257000299046 /* ClearUserUnseenActivityMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16C2E20257000299046 /* ClearUserUnseenActivityMutation.graphql.swift */; };
+		E1B8E2742E20257000299046 /* FetchUserQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1952E20257000299046 /* FetchUserQuery.graphql.swift */; };
+		E1B8E2752E20257000299046 /* Notification.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2072E20257000299046 /* Notification.graphql.swift */; };
+		E1B8E2762E20257000299046 /* CreatePaymentIntentInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C82E20257000299046 /* CreatePaymentIntentInput.graphql.swift */; };
+		E1B8E2772E20257000299046 /* ProjectPamphletMainCellPropertiesFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1602E20257000299046 /* ProjectPamphletMainCellPropertiesFragment.graphql.swift */; };
+		E1B8E2782E20257000299046 /* VideoSources.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23F2E20257000299046 /* VideoSources.graphql.swift */; };
+		E1B8E2792E20257000299046 /* LocationsByTermQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1982E20257000299046 /* LocationsByTermQuery.graphql.swift */; };
+		E1B8E27A2E20257000299046 /* FetchCategoryQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1852E20257000299046 /* FetchCategoryQuery.graphql.swift */; };
+		E1B8E27B2E20257000299046 /* AddUserToSecretRewardGroupInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1BC2E20257000299046 /* AddUserToSecretRewardGroupInput.graphql.swift */; };
+		E1B8E27C2E20257000299046 /* ResourceAudience.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2212E20257000299046 /* ResourceAudience.graphql.swift */; };
+		E1B8E27D2E20257000299046 /* PledgedBuckets.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B32E20257000299046 /* PledgedBuckets.graphql.swift */; };
+		E1B8E27E2E20257000299046 /* PaymentSourceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1562E20257000299046 /* PaymentSourceFragment.graphql.swift */; };
+		E1B8E27F2E20257000299046 /* PostCommentInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CC2E20257000299046 /* PostCommentInput.graphql.swift */; };
+		E1B8E2802E20257000299046 /* UnwatchProjectInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D02E20257000299046 /* UnwatchProjectInput.graphql.swift */; };
+		E1B8E2812E20257000299046 /* CreatorInterview.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F82E20257000299046 /* CreatorInterview.graphql.swift */; };
+		E1B8E2822E20257000299046 /* UserCreditCardTypeConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2382E20257000299046 /* UserCreditCardTypeConnection.graphql.swift */; };
+		E1B8E2832E20257000299046 /* UserStoredCardsFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1672E20257000299046 /* UserStoredCardsFragment.graphql.swift */; };
+		E1B8E2842E20257000299046 /* CreateAttributionEventPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F02E20257000299046 /* CreateAttributionEventPayload.graphql.swift */; };
+		E1B8E2852E20257000299046 /* PostConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2172E20257000299046 /* PostConnection.graphql.swift */; };
+		E1B8E2862E20257000299046 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E19D2E20257000299046 /* Date.swift */; };
+		E1B8E2872E20257000299046 /* PPOProjectFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15B2E20257000299046 /* PPOProjectFragment.graphql.swift */; };
+		E1B8E2882E20257000299046 /* CompleteOnSessionCheckoutInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C22E20257000299046 /* CompleteOnSessionCheckoutInput.graphql.swift */; };
+		E1B8E2892E20257000299046 /* UserFeaturesFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1642E20257000299046 /* UserFeaturesFragment.graphql.swift */; };
+		E1B8E28A2E20257000299046 /* PublicProjectState.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B62E20257000299046 /* PublicProjectState.graphql.swift */; };
+		E1B8E28B2E20257000299046 /* UpdateUserProfileMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17D2E20257000299046 /* UpdateUserProfileMutation.graphql.swift */; };
+		E1B8E28C2E20257000299046 /* ShippingRuleFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1622E20257000299046 /* ShippingRuleFragment.graphql.swift */; };
+		E1B8E28D2E20257000299046 /* CommentFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14E2E20257000299046 /* CommentFragment.graphql.swift */; };
+		E1B8E28E2E20257000299046 /* ProjectBackerFriendsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2192E20257000299046 /* ProjectBackerFriendsConnection.graphql.swift */; };
+		E1B8E28F2E20257000299046 /* ApplePayInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1BE2E20257000299046 /* ApplePayInput.graphql.swift */; };
+		E1B8E2902E20257000299046 /* SurveyResponsesConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22E2E20257000299046 /* SurveyResponsesConnection.graphql.swift */; };
+		E1B8E2912E20257000299046 /* CreditCard.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FA2E20257000299046 /* CreditCard.graphql.swift */; };
+		E1B8E2922E20257000299046 /* CreateAttributionEventMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16E2E20257000299046 /* CreateAttributionEventMutation.graphql.swift */; };
+		E1B8E2932E20257000299046 /* NewsletterSubscriptions.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2062E20257000299046 /* NewsletterSubscriptions.graphql.swift */; };
+		E1B8E2942E20257000299046 /* PledgeProjectOverviewItemEdge.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2142E20257000299046 /* PledgeProjectOverviewItemEdge.graphql.swift */; };
+		E1B8E2952E20257000299046 /* Photo.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20F2E20257000299046 /* Photo.graphql.swift */; };
+		E1B8E2962E20257000299046 /* UpdateBackingPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2322E20257000299046 /* UpdateBackingPayload.graphql.swift */; };
+		E1B8E2972E20257000299046 /* ProjectsConnectionWithTotalCount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21E2E20257000299046 /* ProjectsConnectionWithTotalCount.graphql.swift */; };
+		E1B8E2982E20257000299046 /* UserSendEmailVerificationMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17E2E20257000299046 /* UserSendEmailVerificationMutation.graphql.swift */; };
+		E1B8E2992E20257000299046 /* FetchProjectFriendsBySlugQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18E2E20257000299046 /* FetchProjectFriendsBySlugQuery.graphql.swift */; };
+		E1B8E29A2E20257000299046 /* CreateCheckoutPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F22E20257000299046 /* CreateCheckoutPayload.graphql.swift */; };
+		E1B8E29B2E20257000299046 /* InterviewAnswer.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FF2E20257000299046 /* InterviewAnswer.graphql.swift */; };
+		E1B8E29C2E20257000299046 /* AttachedVideo.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E02E20257000299046 /* AttachedVideo.graphql.swift */; };
+		E1B8E29D2E20257000299046 /* FreeformPost.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FE2E20257000299046 /* FreeformPost.graphql.swift */; };
+		E1B8E29E2E20257000299046 /* ClearUserUnseenActivityInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C12E20257000299046 /* ClearUserUnseenActivityInput.graphql.swift */; };
+		E1B8E29F2E20257000299046 /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2462E20257000299046 /* SchemaConfiguration.swift */; };
+		E1B8E2A02E20257000299046 /* Order.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2082E20257000299046 /* Order.graphql.swift */; };
+		E1B8E2A12E20257000299046 /* StripeIntentContextTypes.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B92E20257000299046 /* StripeIntentContextTypes.graphql.swift */; };
+		E1B8E2A22E20257000299046 /* FetchUserEmailQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1942E20257000299046 /* FetchUserEmailQuery.graphql.swift */; };
+		E1B8E2A32E20257000299046 /* CancelBackingInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C02E20257000299046 /* CancelBackingInput.graphql.swift */; };
+		E1B8E2A42E20257000299046 /* EnvironmentalCommitmentCategory.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AC2E20257000299046 /* EnvironmentalCommitmentCategory.graphql.swift */; };
+		E1B8E2A52E20257000299046 /* UnwatchProjectPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2312E20257000299046 /* UnwatchProjectPayload.graphql.swift */; };
+		E1B8E2A62E20257000299046 /* ProjectProfile.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21C2E20257000299046 /* ProjectProfile.graphql.swift */; };
+		E1B8E2A72E20257000299046 /* PledgeProjectOverviewItem.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2132E20257000299046 /* PledgeProjectOverviewItem.graphql.swift */; };
+		E1B8E2A82E20257000299046 /* Feature.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AD2E20257000299046 /* Feature.graphql.swift */; };
+		E1B8E2A92E20257000299046 /* Conversation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1EE2E20257000299046 /* Conversation.graphql.swift */; };
+		E1B8E2AA2E20257000299046 /* CommentConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1EB2E20257000299046 /* CommentConnection.graphql.swift */; };
+		E1B8E2AB2E20257000299046 /* BuildPaymentPlanQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1812E20257000299046 /* BuildPaymentPlanQuery.graphql.swift */; };
+		E1B8E2AC2E20257000299046 /* SignInWithApplePayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22B2E20257000299046 /* SignInWithApplePayload.graphql.swift */; };
+		E1B8E2AD2E20257000299046 /* CommentWithRepliesFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14F2E20257000299046 /* CommentWithRepliesFragment.graphql.swift */; };
+		E1B8E2AE2E20257000299046 /* ProjectFaqConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21B2E20257000299046 /* ProjectFaqConnection.graphql.swift */; };
+		E1B8E2AF2E20257000299046 /* CurrencyCode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AB2E20257000299046 /* CurrencyCode.graphql.swift */; };
+		E1B8E2B02E20257000299046 /* ProjectState.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B52E20257000299046 /* ProjectState.graphql.swift */; };
+		E1B8E2B12E20257000299046 /* AddUserToSecretRewardGroupPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1DC2E20257000299046 /* AddUserToSecretRewardGroupPayload.graphql.swift */; };
+		E1B8E2B22E20257000299046 /* BackingState.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A42E20257000299046 /* BackingState.graphql.swift */; };
+		E1B8E2B32E20257000299046 /* CreateFlaggingMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1712E20257000299046 /* CreateFlaggingMutation.graphql.swift */; };
+		E1B8E2B42E20257000299046 /* CreditCardPaymentType.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A92E20257000299046 /* CreditCardPaymentType.graphql.swift */; };
+		E1B8E2B52E20257000299046 /* UnwatchProjectMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17A2E20257000299046 /* UnwatchProjectMutation.graphql.swift */; };
+		E1B8E2B62E20257000299046 /* Location.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2012E20257000299046 /* Location.graphql.swift */; };
+		E1B8E2B72E20257000299046 /* PaymentSource.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2442E20257000299046 /* PaymentSource.graphql.swift */; };
+		E1B8E2B82E20257000299046 /* Commentable.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D72E20257000299046 /* Commentable.graphql.swift */; };
+		E1B8E2B92E20257000299046 /* AttachedAudio.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1DF2E20257000299046 /* AttachedAudio.graphql.swift */; };
+		E1B8E2BA2E20257000299046 /* Node.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D82E20257000299046 /* Node.graphql.swift */; };
+		E1B8E2BB2E20257000299046 /* BlockUserMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16A2E20257000299046 /* BlockUserMutation.graphql.swift */; };
+		E1B8E2BC2E20257000299046 /* TriggerThirdPartyEventPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2302E20257000299046 /* TriggerThirdPartyEventPayload.graphql.swift */; };
+		E1B8E2BD2E20257000299046 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A22E20257000299046 /* JSON.swift */; };
+		E1B8E2BE2E20257000299046 /* UserUrl.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23B2E20257000299046 /* UserUrl.graphql.swift */; };
+		E1B8E2BF2E20257000299046 /* FetchUpdateCommentsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1922E20257000299046 /* FetchUpdateCommentsQuery.graphql.swift */; };
+		E1B8E2C02E20257000299046 /* FetchPledgedProjectsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1892E20257000299046 /* FetchPledgedProjectsQuery.graphql.swift */; };
+		E1B8E2C12E20257000299046 /* CreateBackingMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16F2E20257000299046 /* CreateBackingMutation.graphql.swift */; };
+		E1B8E2C22E20257000299046 /* CreatePaymentSourcePayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F62E20257000299046 /* CreatePaymentSourcePayload.graphql.swift */; };
+		E1B8E2C32E20257000299046 /* ShippingRule.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22A2E20257000299046 /* ShippingRule.graphql.swift */; };
+		E1B8E2C42E20257000299046 /* EnvironmentalCommitment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FC2E20257000299046 /* EnvironmentalCommitment.graphql.swift */; };
+		E1B8E2C52E20257000299046 /* FetchProjectCommentsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18C2E20257000299046 /* FetchProjectCommentsQuery.graphql.swift */; };
+		E1B8E2C62E20257000299046 /* CreatePaymentSourceInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C92E20257000299046 /* CreatePaymentSourceInput.graphql.swift */; };
+		E1B8E2C72E20257000299046 /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2472E20257000299046 /* SchemaMetadata.graphql.swift */; };
+		E1B8E2C82E20257000299046 /* Postable.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D92E20257000299046 /* Postable.graphql.swift */; };
+		E1B8E2C92E20257000299046 /* ProjectRewardConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21D2E20257000299046 /* ProjectRewardConnection.graphql.swift */; };
+		E1B8E2CA2E20257000299046 /* Money.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2042E20257000299046 /* Money.graphql.swift */; };
+		E1B8E2CB2E20257000299046 /* HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A02E20257000299046 /* HTML.swift */; };
+		E1B8E2CC2E20257000299046 /* VideoTrack.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2402E20257000299046 /* VideoTrack.graphql.swift */; };
+		E1B8E2CD2E20257000299046 /* ClearUserUnseenActivityPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E92E20257000299046 /* ClearUserUnseenActivityPayload.graphql.swift */; };
+		E1B8E2CE2E20257000299046 /* PaymentIncrementAmount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20C2E20257000299046 /* PaymentIncrementAmount.graphql.swift */; };
+		E1B8E2CF2E20257000299046 /* FetchUserStoredCardsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1972E20257000299046 /* FetchUserStoredCardsQuery.graphql.swift */; };
+		E1B8E2D02E20257000299046 /* FetchUserSetupQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1962E20257000299046 /* FetchUserSetupQuery.graphql.swift */; };
+		E1B8E2D12E20257000299046 /* FlaggingKind.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AE2E20257000299046 /* FlaggingKind.graphql.swift */; };
+		E1B8E2D22E20257000299046 /* UpdateUserAccountInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D22E20257000299046 /* UpdateUserAccountInput.graphql.swift */; };
+		E1B8E2D32E20257000299046 /* CompleteOnSessionCheckoutMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E16D2E20257000299046 /* CompleteOnSessionCheckoutMutation.graphql.swift */; };
+		E1B8E2D42E20257000299046 /* FetchRootCategoriesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1902E20257000299046 /* FetchRootCategoriesQuery.graphql.swift */; };
+		E1B8E2D52E20257000299046 /* SearchQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1992E20257000299046 /* SearchQuery.graphql.swift */; };
+		E1B8E2D62E20257000299046 /* RewardShippingRulesConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2272E20257000299046 /* RewardShippingRulesConnection.graphql.swift */; };
+		E1B8E2D72E20257000299046 /* Organization.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2092E20257000299046 /* Organization.graphql.swift */; };
+		E1B8E2D82E20257000299046 /* UpdateUserAccountPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2332E20257000299046 /* UpdateUserAccountPayload.graphql.swift */; };
+		E1B8E2D92E20257000299046 /* CategorySubcategoriesConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E62E20257000299046 /* CategorySubcategoriesConnection.graphql.swift */; };
+		E1B8E2DA2E20257000299046 /* PledgeManagerFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1572E20257000299046 /* PledgeManagerFragment.graphql.swift */; };
+		E1B8E2DB2E20257000299046 /* FetchMyBackedProjectsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1872E20257000299046 /* FetchMyBackedProjectsQuery.graphql.swift */; };
+		E1B8E2DC2E20257000299046 /* FetchUserBackingsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1932E20257000299046 /* FetchUserBackingsQuery.graphql.swift */; };
+		E1B8E2DD2E20257000299046 /* PledgeOverTimeFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1582E20257000299046 /* PledgeOverTimeFragment.graphql.swift */; };
+		E1B8E2DE2E20257000299046 /* PPOCardFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15A2E20257000299046 /* PPOCardFragment.graphql.swift */; };
+		E1B8E2DF2E20257000299046 /* FetchBackingQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1842E20257000299046 /* FetchBackingQuery.graphql.swift */; };
+		E1B8E2E02E20257000299046 /* AdjustmentSummary.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1DD2E20257000299046 /* AdjustmentSummary.graphql.swift */; };
+		E1B8E2E12E20257000299046 /* ProjectCardFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15E2E20257000299046 /* ProjectCardFragment.graphql.swift */; };
+		E1B8E2E22E20257000299046 /* LastWaveFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1512E20257000299046 /* LastWaveFragment.graphql.swift */; };
+		E1B8E2E32E20257000299046 /* MoneyFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1532E20257000299046 /* MoneyFragment.graphql.swift */; };
+		E1B8E2E42E20257000299046 /* Checkout.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E72E20257000299046 /* Checkout.graphql.swift */; };
+		E1B8E2E52E20257000299046 /* BlockUserPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E32E20257000299046 /* BlockUserPayload.graphql.swift */; };
+		E1B8E2E62E20257000299046 /* PaymentPlan.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20D2E20257000299046 /* PaymentPlan.graphql.swift */; };
+		E1B8E2E72E20257000299046 /* WatchProjectPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2422E20257000299046 /* WatchProjectPayload.graphql.swift */; };
+		E1B8E2E82E20257000299046 /* AppDataInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1BD2E20257000299046 /* AppDataInput.graphql.swift */; };
+		E1B8E2E92E20257000299046 /* UserSavedProjectsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2392E20257000299046 /* UserSavedProjectsConnection.graphql.swift */; };
+		E1B8E2EA2E20257000299046 /* CreateSetupIntentMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1752E20257000299046 /* CreateSetupIntentMutation.graphql.swift */; };
+		E1B8E2EB2E20257000299046 /* CommentBadge.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A72E20257000299046 /* CommentBadge.graphql.swift */; };
+		E1B8E2EC2E20257000299046 /* PledgedProjectsOverviewPledgesConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2112E20257000299046 /* PledgedProjectsOverviewPledgesConnection.graphql.swift */; };
+		E1B8E2ED2E20257000299046 /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E19F2E20257000299046 /* Email.swift */; };
+		E1B8E2EE2E20257000299046 /* CreatePaymentSourceMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1742E20257000299046 /* CreatePaymentSourceMutation.graphql.swift */; };
+		E1B8E2EF2E20257000299046 /* Backing.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E12E20257000299046 /* Backing.graphql.swift */; };
+		E1B8E2F02E20257000299046 /* CreateAttributionEventInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C32E20257000299046 /* CreateAttributionEventInput.graphql.swift */; };
+		E1B8E2F12E20257000299046 /* InterviewQuestion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2002E20257000299046 /* InterviewQuestion.graphql.swift */; };
+		E1B8E2F22E20257000299046 /* Survey.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22D2E20257000299046 /* Survey.graphql.swift */; };
+		E1B8E2F32E20257000299046 /* UserBackingsConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2362E20257000299046 /* UserBackingsConnection.graphql.swift */; };
+		E1B8E2F42E20257000299046 /* ProjectSort.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B42E20257000299046 /* ProjectSort.graphql.swift */; };
+		E1B8E2F52E20257000299046 /* PaymentTypes.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B22E20257000299046 /* PaymentTypes.graphql.swift */; };
+		E1B8E2F62E20257000299046 /* SimpleShippingRule.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E22C2E20257000299046 /* SimpleShippingRule.graphql.swift */; };
+		E1B8E2F72E20257000299046 /* CommentBaseFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14D2E20257000299046 /* CommentBaseFragment.graphql.swift */; };
+		E1B8E2F82E20257000299046 /* BackingFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14A2E20257000299046 /* BackingFragment.graphql.swift */; };
+		E1B8E2F92E20257000299046 /* FetchProjectRewardsByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18F2E20257000299046 /* FetchProjectRewardsByIdQuery.graphql.swift */; };
+		E1B8E2FA2E20257000299046 /* PPOUserSetupFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15C2E20257000299046 /* PPOUserSetupFragment.graphql.swift */; };
+		E1B8E2FB2E20257000299046 /* PaymentSourceDeleteInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CB2E20257000299046 /* PaymentSourceDeleteInput.graphql.swift */; };
+		E1B8E2FC2E20257000299046 /* DateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E19E2E20257000299046 /* DateTime.swift */; };
+		E1B8E2FD2E20257000299046 /* Video.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23D2E20257000299046 /* Video.graphql.swift */; };
+		E1B8E2FE2E20257000299046 /* Address.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1DB2E20257000299046 /* Address.graphql.swift */; };
+		E1B8E2FF2E20257000299046 /* CancelBackingPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E42E20257000299046 /* CancelBackingPayload.graphql.swift */; };
+		E1B8E3002E20257000299046 /* ProjectAnalyticsFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15D2E20257000299046 /* ProjectAnalyticsFragment.graphql.swift */; };
+		E1B8E3012E20257000299046 /* Message.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2032E20257000299046 /* Message.graphql.swift */; };
+		E1B8E3022E20257000299046 /* CreateBackingPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F12E20257000299046 /* CreateBackingPayload.graphql.swift */; };
+		E1B8E3032E20257000299046 /* UserFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1652E20257000299046 /* UserFragment.graphql.swift */; };
+		E1B8E3042E20257000299046 /* CreateFlaggingPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F32E20257000299046 /* CreateFlaggingPayload.graphql.swift */; };
+		E1B8E3052E20257000299046 /* UpdateUserProfileInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D32E20257000299046 /* UpdateUserProfileInput.graphql.swift */; };
+		E1B8E3062E20257000299046 /* DeletePaymentSourceMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1762E20257000299046 /* DeletePaymentSourceMutation.graphql.swift */; };
+		E1B8E3072E20257000299046 /* SavedSearchSegment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2292E20257000299046 /* SavedSearchSegment.graphql.swift */; };
+		E1B8E3082E20257000299046 /* Project.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2182E20257000299046 /* Project.graphql.swift */; };
+		E1B8E3092E20257000299046 /* BlockUserInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1BF2E20257000299046 /* BlockUserInput.graphql.swift */; };
+		E1B8E30A2E20257000299046 /* UpdateBackingInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D12E20257000299046 /* UpdateBackingInput.graphql.swift */; };
+		E1B8E30B2E20257000299046 /* FetchSimilarProjectsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1912E20257000299046 /* FetchSimilarProjectsQuery.graphql.swift */; };
+		E1B8E30C2E20257000299046 /* CreateSetupIntentInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CA2E20257000299046 /* CreateSetupIntentInput.graphql.swift */; };
+		E1B8E30D2E20257000299046 /* BackerDashboardProjectCellFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1492E20257000299046 /* BackerDashboardProjectCellFragment.graphql.swift */; };
+		E1B8E30E2E20257000299046 /* CreateFlaggingInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C62E20257000299046 /* CreateFlaggingInput.graphql.swift */; };
+		E1B8E30F2E20257000299046 /* CreateOrUpdateBackingAddressInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1C72E20257000299046 /* CreateOrUpdateBackingAddressInput.graphql.swift */; };
+		E1B8E3102E20257000299046 /* User.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2352E20257000299046 /* User.graphql.swift */; };
+		E1B8E3112E20257000299046 /* CreateOrUpdateBackingAddressMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1722E20257000299046 /* CreateOrUpdateBackingAddressMutation.graphql.swift */; };
+		E1B8E3122E20257000299046 /* CreditCardTypes.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1AA2E20257000299046 /* CreditCardTypes.graphql.swift */; };
+		E1B8E3132E20257000299046 /* LocationFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1522E20257000299046 /* LocationFragment.graphql.swift */; };
+		E1B8E3142E20257000299046 /* Comment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1EA2E20257000299046 /* Comment.graphql.swift */; };
+		E1B8E3152E20257000299046 /* PostCommentMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1772E20257000299046 /* PostCommentMutation.graphql.swift */; };
+		E1B8E3162E20257000299046 /* PaymentSourceDeletePayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20E2E20257000299046 /* PaymentSourceDeletePayload.graphql.swift */; };
+		E1B8E3172E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18D2E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift */; };
+		E1B8E3182E20257000299046 /* PageInfo.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20A2E20257000299046 /* PageInfo.graphql.swift */; };
+		E1B8E3192E20257000299046 /* PaymentIncrement.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E20B2E20257000299046 /* PaymentIncrement.graphql.swift */; };
+		E1B8E31A2E20257000299046 /* SignInWithAppleMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1782E20257000299046 /* SignInWithAppleMutation.graphql.swift */; };
+		E1B8E31B2E20257000299046 /* CreateOrUpdateBackingAddressPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F42E20257000299046 /* CreateOrUpdateBackingAddressPayload.graphql.swift */; };
+		E1B8E31C2E20257000299046 /* GraphAPI.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2492E20257000299046 /* GraphAPI.graphql.swift */; };
+		E1B8E31D2E20257000299046 /* Query.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21F2E20257000299046 /* Query.graphql.swift */; };
+		E1B8E31E2E20257000299046 /* WatchProjectMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E17F2E20257000299046 /* WatchProjectMutation.graphql.swift */; };
+		E1B8E31F2E20257000299046 /* RewardTotalCountConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2282E20257000299046 /* RewardTotalCountConnection.graphql.swift */; };
+		E1B8E3202E20257000299046 /* Flagging.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1FD2E20257000299046 /* Flagging.graphql.swift */; };
+		E1B8E3212E20257000299046 /* CompleteOnSessionCheckoutPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1ED2E20257000299046 /* CompleteOnSessionCheckoutPayload.graphql.swift */; };
+		E1B8E3222E20257000299046 /* VideoSourceInfo.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23E2E20257000299046 /* VideoSourceInfo.graphql.swift */; };
+		E1B8E3232E20257000299046 /* ThirdPartyEventItemInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1CE2E20257000299046 /* ThirdPartyEventItemInput.graphql.swift */; };
+		E1B8E3242E20257000299046 /* CategoryFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E14B2E20257000299046 /* CategoryFragment.graphql.swift */; };
+		E1B8E3252E20257000299046 /* RewardItemEdge.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2252E20257000299046 /* RewardItemEdge.graphql.swift */; };
+		E1B8E3262E20257000299046 /* DefaultLocationsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1822E20257000299046 /* DefaultLocationsQuery.graphql.swift */; };
+		E1B8E3272E20257000299046 /* RewardItem.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2242E20257000299046 /* RewardItem.graphql.swift */; };
+		E1B8E3282E20257000299046 /* PaymentIncrementFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1552E20257000299046 /* PaymentIncrementFragment.graphql.swift */; };
+		E1B8E3292E20257000299046 /* UpdateUserProfilePayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2342E20257000299046 /* UpdateUserProfilePayload.graphql.swift */; };
+		E1B8E32A2E20257000299046 /* FetchCommentRepliesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1862E20257000299046 /* FetchCommentRepliesQuery.graphql.swift */; };
+		E1B8E32B2E20257000299046 /* ProjectFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E15F2E20257000299046 /* ProjectFragment.graphql.swift */; };
+		E1B8E32C2E20257000299046 /* CreateCheckoutMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1702E20257000299046 /* CreateCheckoutMutation.graphql.swift */; };
+		E1B8E32D2E20257000299046 /* FetchProjectBySlugQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18B2E20257000299046 /* FetchProjectBySlugQuery.graphql.swift */; };
+		E1B8E32E2E20257000299046 /* AiDisclosure.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1DE2E20257000299046 /* AiDisclosure.graphql.swift */; };
+		E1B8E32F2E20257000299046 /* ProjectFaq.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E21A2E20257000299046 /* ProjectFaq.graphql.swift */; };
+		E1B8E3302E20257000299046 /* PledgeProjectsOverview.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2152E20257000299046 /* PledgeProjectsOverview.graphql.swift */; };
+		E1B8E3312E20257000299046 /* CheckoutStateEnum.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1A62E20257000299046 /* CheckoutStateEnum.graphql.swift */; };
+		E1B8E3322E20257000299046 /* PledgeManager.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2122E20257000299046 /* PledgeManager.graphql.swift */; };
+		E1B8E3332E20257000299046 /* Category.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1E52E20257000299046 /* Category.graphql.swift */; };
+		E1B8E3342E20257000299046 /* Country.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1EF2E20257000299046 /* Country.graphql.swift */; };
+		E1B8E3352E20257000299046 /* Validation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E23C2E20257000299046 /* Validation.graphql.swift */; };
+		E1B8E3362E20257000299046 /* OrderFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1542E20257000299046 /* OrderFragment.graphql.swift */; };
+		E1B8E3372E20257000299046 /* UserEmailFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1632E20257000299046 /* UserEmailFragment.graphql.swift */; };
+		E1B8E3382E20257000299046 /* Mutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2052E20257000299046 /* Mutation.graphql.swift */; };
+		E1B8E3392E20257000299046 /* CreateSetupIntentPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F72E20257000299046 /* CreateSetupIntentPayload.graphql.swift */; };
+		E1B8E33A2E20257000299046 /* CreatePaymentIntentPayload.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1F52E20257000299046 /* CreatePaymentIntentPayload.graphql.swift */; };
+		E1B8E33B2E20257000299046 /* UserNotificationTopic.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1BA2E20257000299046 /* UserNotificationTopic.graphql.swift */; };
+		E1B8E33C2E20257000299046 /* RaisedBuckets.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B72E20257000299046 /* RaisedBuckets.graphql.swift */; };
+		E1B8E33D2E20257000299046 /* UserSendEmailVerificationInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1D42E20257000299046 /* UserSendEmailVerificationInput.graphql.swift */; };
+		E1B8E33E2E20257000299046 /* Reward.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2222E20257000299046 /* Reward.graphql.swift */; };
+		E1B8E33F2E20257000299046 /* FetchProjectByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18A2E20257000299046 /* FetchProjectByIdQuery.graphql.swift */; };
+		E1B8E3402E20257000299046 /* Refund.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2202E20257000299046 /* Refund.graphql.swift */; };
 		E1B9F1C92DA46DC400F29E1A /* SearchFiltersHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */; };
 		E1BAA03A2C1A1CCD004F8B06 /* PPOViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */; };
 		E1BAA03B2C1A1CCD004F8B06 /* PPOView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA0342C1A1907004F8B06 /* PPOView.swift */; };
@@ -2770,7 +3015,6 @@
 		8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelope.swift"; sourceTree = "<group>"; };
 		8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelopeTests.swift"; sourceTree = "<group>"; };
 		8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
-		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
 		8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+RAC.swift"; sourceTree = "<group>"; };
 		8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloInterceptors.swift; sourceTree = "<group>"; };
 		8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+Singleton.swift"; sourceTree = "<group>"; };
@@ -3602,6 +3846,252 @@
 		E1B813C42BC8340700DF33CF /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMyBackedProjectsQuery.json; sourceTree = "<group>"; };
+		E1B8E1492E20257000299046 /* BackerDashboardProjectCellFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectCellFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14A2E20257000299046 /* BackingFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14B2E20257000299046 /* CategoryFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14C2E20257000299046 /* CheckoutFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14D2E20257000299046 /* CommentBaseFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBaseFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14E2E20257000299046 /* CommentFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E14F2E20257000299046 /* CommentWithRepliesFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentWithRepliesFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1502E20257000299046 /* CountryFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1512E20257000299046 /* LastWaveFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastWaveFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1522E20257000299046 /* LocationFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1532E20257000299046 /* MoneyFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1542E20257000299046 /* OrderFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1552E20257000299046 /* PaymentIncrementFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1562E20257000299046 /* PaymentSourceFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1572E20257000299046 /* PledgeManagerFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagerFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1582E20257000299046 /* PledgeOverTimeFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1592E20257000299046 /* PPOBackingFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOBackingFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15A2E20257000299046 /* PPOCardFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOCardFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15B2E20257000299046 /* PPOProjectFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15C2E20257000299046 /* PPOUserSetupFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSetupFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15D2E20257000299046 /* ProjectAnalyticsFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAnalyticsFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15E2E20257000299046 /* ProjectCardFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCardFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E15F2E20257000299046 /* ProjectFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1602E20257000299046 /* ProjectPamphletMainCellPropertiesFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellPropertiesFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1612E20257000299046 /* RewardFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1622E20257000299046 /* ShippingRuleFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRuleFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1632E20257000299046 /* UserEmailFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1642E20257000299046 /* UserFeaturesFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeaturesFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1652E20257000299046 /* UserFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1662E20257000299046 /* UserSettingsFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1672E20257000299046 /* UserStoredCardsFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoredCardsFragment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1692E20257000299046 /* AddUserToSecretRewardGroupMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16A2E20257000299046 /* BlockUserMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16B2E20257000299046 /* CancelBackingMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16C2E20257000299046 /* ClearUserUnseenActivityMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16D2E20257000299046 /* CompleteOnSessionCheckoutMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteOnSessionCheckoutMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16E2E20257000299046 /* CreateAttributionEventMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAttributionEventMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E16F2E20257000299046 /* CreateBackingMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1702E20257000299046 /* CreateCheckoutMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1712E20257000299046 /* CreateFlaggingMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1722E20257000299046 /* CreateOrUpdateBackingAddressMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateBackingAddressMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1732E20257000299046 /* CreatePaymentIntentMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1742E20257000299046 /* CreatePaymentSourceMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1752E20257000299046 /* CreateSetupIntentMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1762E20257000299046 /* DeletePaymentSourceMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentSourceMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1772E20257000299046 /* PostCommentMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1782E20257000299046 /* SignInWithAppleMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1792E20257000299046 /* TriggerThirdPartyEventMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17A2E20257000299046 /* UnwatchProjectMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17B2E20257000299046 /* UpdateBackingMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17C2E20257000299046 /* UpdateUserAccountMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17D2E20257000299046 /* UpdateUserProfileMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserProfileMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17E2E20257000299046 /* UserSendEmailVerificationMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSendEmailVerificationMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E17F2E20257000299046 /* WatchProjectMutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1812E20257000299046 /* BuildPaymentPlanQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1822E20257000299046 /* DefaultLocationsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLocationsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1832E20257000299046 /* FetchAddOnsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchAddOnsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1842E20257000299046 /* FetchBackingQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackingQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1852E20257000299046 /* FetchCategoryQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCategoryQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1862E20257000299046 /* FetchCommentRepliesQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommentRepliesQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1872E20257000299046 /* FetchMyBackedProjectsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMyBackedProjectsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1882E20257000299046 /* FetchMySavedProjectsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMySavedProjectsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1892E20257000299046 /* FetchPledgedProjectsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPledgedProjectsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18A2E20257000299046 /* FetchProjectByIdQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectByIdQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18B2E20257000299046 /* FetchProjectBySlugQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectBySlugQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18C2E20257000299046 /* FetchProjectCommentsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectCommentsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18D2E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectFriendsByIdQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18E2E20257000299046 /* FetchProjectFriendsBySlugQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectFriendsBySlugQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E18F2E20257000299046 /* FetchProjectRewardsByIdQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1902E20257000299046 /* FetchRootCategoriesQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRootCategoriesQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1912E20257000299046 /* FetchSimilarProjectsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchSimilarProjectsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1922E20257000299046 /* FetchUpdateCommentsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUpdateCommentsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1932E20257000299046 /* FetchUserBackingsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserBackingsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1942E20257000299046 /* FetchUserEmailQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserEmailQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1952E20257000299046 /* FetchUserQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1962E20257000299046 /* FetchUserSetupQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserSetupQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1972E20257000299046 /* FetchUserStoredCardsQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserStoredCardsQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1982E20257000299046 /* LocationsByTermQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsByTermQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1992E20257000299046 /* SearchQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E19A2E20257000299046 /* ValidateCheckoutQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCheckoutQuery.graphql.swift; sourceTree = "<group>"; };
+		E1B8E19D2E20257000299046 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		E1B8E19E2E20257000299046 /* DateTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTime.swift; sourceTree = "<group>"; };
+		E1B8E19F2E20257000299046 /* Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
+		E1B8E1A02E20257000299046 /* HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTML.swift; sourceTree = "<group>"; };
+		E1B8E1A12E20257000299046 /* ISO8601DateTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601DateTime.swift; sourceTree = "<group>"; };
+		E1B8E1A22E20257000299046 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		E1B8E1A42E20257000299046 /* BackingState.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1A52E20257000299046 /* CheckoutState.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutState.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1A62E20257000299046 /* CheckoutStateEnum.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStateEnum.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1A72E20257000299046 /* CommentBadge.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBadge.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1A82E20257000299046 /* CountryCode.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCode.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1A92E20257000299046 /* CreditCardPaymentType.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardPaymentType.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AA2E20257000299046 /* CreditCardTypes.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardTypes.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AB2E20257000299046 /* CurrencyCode.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCode.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AC2E20257000299046 /* EnvironmentalCommitmentCategory.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentalCommitmentCategory.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AD2E20257000299046 /* Feature.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AE2E20257000299046 /* FlaggingKind.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggingKind.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1AF2E20257000299046 /* NonDeprecatedFlaggingKind.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonDeprecatedFlaggingKind.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B02E20257000299046 /* PaymentIncrementState.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementState.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B12E20257000299046 /* PaymentIncrementStateReason.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementStateReason.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B22E20257000299046 /* PaymentTypes.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTypes.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B32E20257000299046 /* PledgedBuckets.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedBuckets.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B42E20257000299046 /* ProjectSort.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSort.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B52E20257000299046 /* ProjectState.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B62E20257000299046 /* PublicProjectState.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicProjectState.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B72E20257000299046 /* RaisedBuckets.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaisedBuckets.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B82E20257000299046 /* ShippingPreference.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingPreference.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1B92E20257000299046 /* StripeIntentContextTypes.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeIntentContextTypes.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1BA2E20257000299046 /* UserNotificationTopic.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTopic.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1BC2E20257000299046 /* AddUserToSecretRewardGroupInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1BD2E20257000299046 /* AppDataInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1BE2E20257000299046 /* ApplePayInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1BF2E20257000299046 /* BlockUserInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C02E20257000299046 /* CancelBackingInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C12E20257000299046 /* ClearUserUnseenActivityInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C22E20257000299046 /* CompleteOnSessionCheckoutInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteOnSessionCheckoutInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C32E20257000299046 /* CreateAttributionEventInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAttributionEventInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C42E20257000299046 /* CreateBackingInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C52E20257000299046 /* CreateCheckoutInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C62E20257000299046 /* CreateFlaggingInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C72E20257000299046 /* CreateOrUpdateBackingAddressInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateBackingAddressInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C82E20257000299046 /* CreatePaymentIntentInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1C92E20257000299046 /* CreatePaymentSourceInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CA2E20257000299046 /* CreateSetupIntentInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CB2E20257000299046 /* PaymentSourceDeleteInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeleteInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CC2E20257000299046 /* PostCommentInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CD2E20257000299046 /* SignInWithAppleInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CE2E20257000299046 /* ThirdPartyEventItemInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventItemInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1CF2E20257000299046 /* TriggerThirdPartyEventInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D02E20257000299046 /* UnwatchProjectInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D12E20257000299046 /* UpdateBackingInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D22E20257000299046 /* UpdateUserAccountInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D32E20257000299046 /* UpdateUserProfileInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserProfileInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D42E20257000299046 /* UserSendEmailVerificationInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSendEmailVerificationInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D52E20257000299046 /* WatchProjectInput.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D72E20257000299046 /* Commentable.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commentable.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D82E20257000299046 /* Node.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1D92E20257000299046 /* Postable.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Postable.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1DB2E20257000299046 /* Address.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1DC2E20257000299046 /* AddUserToSecretRewardGroupPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1DD2E20257000299046 /* AdjustmentSummary.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentSummary.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1DE2E20257000299046 /* AiDisclosure.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AiDisclosure.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1DF2E20257000299046 /* AttachedAudio.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedAudio.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E02E20257000299046 /* AttachedVideo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedVideo.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E12E20257000299046 /* Backing.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backing.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E22E20257000299046 /* BankAccount.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccount.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E32E20257000299046 /* BlockUserPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E42E20257000299046 /* CancelBackingPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E52E20257000299046 /* Category.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E62E20257000299046 /* CategorySubcategoriesConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySubcategoriesConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E72E20257000299046 /* Checkout.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E82E20257000299046 /* CheckoutWave.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutWave.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1E92E20257000299046 /* ClearUserUnseenActivityPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1EA2E20257000299046 /* Comment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1EB2E20257000299046 /* CommentConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1EC2E20257000299046 /* CommentEdge.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEdge.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1ED2E20257000299046 /* CompleteOnSessionCheckoutPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteOnSessionCheckoutPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1EE2E20257000299046 /* Conversation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1EF2E20257000299046 /* Country.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F02E20257000299046 /* CreateAttributionEventPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAttributionEventPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F12E20257000299046 /* CreateBackingPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F22E20257000299046 /* CreateCheckoutPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F32E20257000299046 /* CreateFlaggingPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F42E20257000299046 /* CreateOrUpdateBackingAddressPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateBackingAddressPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F52E20257000299046 /* CreatePaymentIntentPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F62E20257000299046 /* CreatePaymentSourcePayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourcePayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F72E20257000299046 /* CreateSetupIntentPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F82E20257000299046 /* CreatorInterview.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorInterview.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1F92E20257000299046 /* CreatorPrompt.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorPrompt.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FA2E20257000299046 /* CreditCard.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FB2E20257000299046 /* CuratedPage.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedPage.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FC2E20257000299046 /* EnvironmentalCommitment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentalCommitment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FD2E20257000299046 /* Flagging.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flagging.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FE2E20257000299046 /* FreeformPost.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeformPost.graphql.swift; sourceTree = "<group>"; };
+		E1B8E1FF2E20257000299046 /* InterviewAnswer.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewAnswer.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2002E20257000299046 /* InterviewQuestion.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewQuestion.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2012E20257000299046 /* Location.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2022E20257000299046 /* LocationsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2032E20257000299046 /* Message.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2042E20257000299046 /* Money.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2052E20257000299046 /* Mutation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2062E20257000299046 /* NewsletterSubscriptions.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsletterSubscriptions.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2072E20257000299046 /* Notification.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2082E20257000299046 /* Order.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2092E20257000299046 /* Organization.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20A2E20257000299046 /* PageInfo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20B2E20257000299046 /* PaymentIncrement.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrement.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20C2E20257000299046 /* PaymentIncrementAmount.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementAmount.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20D2E20257000299046 /* PaymentPlan.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPlan.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20E2E20257000299046 /* PaymentSourceDeletePayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeletePayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E20F2E20257000299046 /* Photo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2102E20257000299046 /* PledgedProjectsOverviewPledgeFlags.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectsOverviewPledgeFlags.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2112E20257000299046 /* PledgedProjectsOverviewPledgesConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgedProjectsOverviewPledgesConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2122E20257000299046 /* PledgeManager.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManager.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2132E20257000299046 /* PledgeProjectOverviewItem.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeProjectOverviewItem.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2142E20257000299046 /* PledgeProjectOverviewItemEdge.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeProjectOverviewItemEdge.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2152E20257000299046 /* PledgeProjectsOverview.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeProjectsOverview.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2162E20257000299046 /* PostCommentPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2172E20257000299046 /* PostConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2182E20257000299046 /* Project.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2192E20257000299046 /* ProjectBackerFriendsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBackerFriendsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21A2E20257000299046 /* ProjectFaq.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFaq.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21B2E20257000299046 /* ProjectFaqConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFaqConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21C2E20257000299046 /* ProjectProfile.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectProfile.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21D2E20257000299046 /* ProjectRewardConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRewardConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21E2E20257000299046 /* ProjectsConnectionWithTotalCount.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsConnectionWithTotalCount.graphql.swift; sourceTree = "<group>"; };
+		E1B8E21F2E20257000299046 /* Query.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2202E20257000299046 /* Refund.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refund.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2212E20257000299046 /* ResourceAudience.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceAudience.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2222E20257000299046 /* Reward.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reward.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2232E20257000299046 /* RewardConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2242E20257000299046 /* RewardItem.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardItem.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2252E20257000299046 /* RewardItemEdge.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardItemEdge.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2262E20257000299046 /* RewardItemsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardItemsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2272E20257000299046 /* RewardShippingRulesConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardShippingRulesConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2282E20257000299046 /* RewardTotalCountConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTotalCountConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2292E20257000299046 /* SavedSearchSegment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedSearchSegment.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22A2E20257000299046 /* ShippingRule.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRule.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22B2E20257000299046 /* SignInWithApplePayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApplePayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22C2E20257000299046 /* SimpleShippingRule.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleShippingRule.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22D2E20257000299046 /* Survey.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22E2E20257000299046 /* SurveyResponsesConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyResponsesConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E22F2E20257000299046 /* Tag.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2302E20257000299046 /* TriggerThirdPartyEventPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2312E20257000299046 /* UnwatchProjectPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2322E20257000299046 /* UpdateBackingPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2332E20257000299046 /* UpdateUserAccountPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2342E20257000299046 /* UpdateUserProfilePayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserProfilePayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2352E20257000299046 /* User.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2362E20257000299046 /* UserBackingsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBackingsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2372E20257000299046 /* UserCreatedProjectsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreatedProjectsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2382E20257000299046 /* UserCreditCardTypeConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreditCardTypeConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2392E20257000299046 /* UserSavedProjectsConnection.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSavedProjectsConnection.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23A2E20257000299046 /* UserSendEmailVerificationPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSendEmailVerificationPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23B2E20257000299046 /* UserUrl.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUrl.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23C2E20257000299046 /* Validation.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23D2E20257000299046 /* Video.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23E2E20257000299046 /* VideoSourceInfo.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSourceInfo.graphql.swift; sourceTree = "<group>"; };
+		E1B8E23F2E20257000299046 /* VideoSources.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSources.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2402E20257000299046 /* VideoTrack.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrack.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2412E20257000299046 /* VideoTrackCue.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrackCue.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2422E20257000299046 /* WatchProjectPayload.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectPayload.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2442E20257000299046 /* PaymentSource.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSource.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2462E20257000299046 /* SchemaConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
+		E1B8E2472E20257000299046 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
+		E1B8E2492E20257000299046 /* GraphAPI.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphAPI.graphql.swift; sourceTree = "<group>"; };
 		E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderView.swift; sourceTree = "<group>"; };
 		E1BAA0342C1A1907004F8B06 /* PPOView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOView.swift; sourceTree = "<group>"; };
 		E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOViewModel.swift; sourceTree = "<group>"; };
@@ -7405,8 +7895,8 @@
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
+				E1B8E24A2E20257000299046 /* GraphAPI */,
 				D01587531EEB2DE4006E7684 /* Info.plist */,
-				8ADCCD4E2654281E0079D308 /* GraphAPI.swift */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
@@ -7887,6 +8377,347 @@
 			);
 			path = combine;
 			sourceTree = "<group>";
+		};
+		E1B8E1682E20257000299046 /* Fragments */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1492E20257000299046 /* BackerDashboardProjectCellFragment.graphql.swift */,
+				E1B8E14A2E20257000299046 /* BackingFragment.graphql.swift */,
+				E1B8E14B2E20257000299046 /* CategoryFragment.graphql.swift */,
+				E1B8E14C2E20257000299046 /* CheckoutFragment.graphql.swift */,
+				E1B8E14D2E20257000299046 /* CommentBaseFragment.graphql.swift */,
+				E1B8E14E2E20257000299046 /* CommentFragment.graphql.swift */,
+				E1B8E14F2E20257000299046 /* CommentWithRepliesFragment.graphql.swift */,
+				E1B8E1502E20257000299046 /* CountryFragment.graphql.swift */,
+				E1B8E1512E20257000299046 /* LastWaveFragment.graphql.swift */,
+				E1B8E1522E20257000299046 /* LocationFragment.graphql.swift */,
+				E1B8E1532E20257000299046 /* MoneyFragment.graphql.swift */,
+				E1B8E1542E20257000299046 /* OrderFragment.graphql.swift */,
+				E1B8E1552E20257000299046 /* PaymentIncrementFragment.graphql.swift */,
+				E1B8E1562E20257000299046 /* PaymentSourceFragment.graphql.swift */,
+				E1B8E1572E20257000299046 /* PledgeManagerFragment.graphql.swift */,
+				E1B8E1582E20257000299046 /* PledgeOverTimeFragment.graphql.swift */,
+				E1B8E1592E20257000299046 /* PPOBackingFragment.graphql.swift */,
+				E1B8E15A2E20257000299046 /* PPOCardFragment.graphql.swift */,
+				E1B8E15B2E20257000299046 /* PPOProjectFragment.graphql.swift */,
+				E1B8E15C2E20257000299046 /* PPOUserSetupFragment.graphql.swift */,
+				E1B8E15D2E20257000299046 /* ProjectAnalyticsFragment.graphql.swift */,
+				E1B8E15E2E20257000299046 /* ProjectCardFragment.graphql.swift */,
+				E1B8E15F2E20257000299046 /* ProjectFragment.graphql.swift */,
+				E1B8E1602E20257000299046 /* ProjectPamphletMainCellPropertiesFragment.graphql.swift */,
+				E1B8E1612E20257000299046 /* RewardFragment.graphql.swift */,
+				E1B8E1622E20257000299046 /* ShippingRuleFragment.graphql.swift */,
+				E1B8E1632E20257000299046 /* UserEmailFragment.graphql.swift */,
+				E1B8E1642E20257000299046 /* UserFeaturesFragment.graphql.swift */,
+				E1B8E1652E20257000299046 /* UserFragment.graphql.swift */,
+				E1B8E1662E20257000299046 /* UserSettingsFragment.graphql.swift */,
+				E1B8E1672E20257000299046 /* UserStoredCardsFragment.graphql.swift */,
+			);
+			path = Fragments;
+			sourceTree = "<group>";
+		};
+		E1B8E1802E20257000299046 /* Mutations */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1692E20257000299046 /* AddUserToSecretRewardGroupMutation.graphql.swift */,
+				E1B8E16A2E20257000299046 /* BlockUserMutation.graphql.swift */,
+				E1B8E16B2E20257000299046 /* CancelBackingMutation.graphql.swift */,
+				E1B8E16C2E20257000299046 /* ClearUserUnseenActivityMutation.graphql.swift */,
+				E1B8E16D2E20257000299046 /* CompleteOnSessionCheckoutMutation.graphql.swift */,
+				E1B8E16E2E20257000299046 /* CreateAttributionEventMutation.graphql.swift */,
+				E1B8E16F2E20257000299046 /* CreateBackingMutation.graphql.swift */,
+				E1B8E1702E20257000299046 /* CreateCheckoutMutation.graphql.swift */,
+				E1B8E1712E20257000299046 /* CreateFlaggingMutation.graphql.swift */,
+				E1B8E1722E20257000299046 /* CreateOrUpdateBackingAddressMutation.graphql.swift */,
+				E1B8E1732E20257000299046 /* CreatePaymentIntentMutation.graphql.swift */,
+				E1B8E1742E20257000299046 /* CreatePaymentSourceMutation.graphql.swift */,
+				E1B8E1752E20257000299046 /* CreateSetupIntentMutation.graphql.swift */,
+				E1B8E1762E20257000299046 /* DeletePaymentSourceMutation.graphql.swift */,
+				E1B8E1772E20257000299046 /* PostCommentMutation.graphql.swift */,
+				E1B8E1782E20257000299046 /* SignInWithAppleMutation.graphql.swift */,
+				E1B8E1792E20257000299046 /* TriggerThirdPartyEventMutation.graphql.swift */,
+				E1B8E17A2E20257000299046 /* UnwatchProjectMutation.graphql.swift */,
+				E1B8E17B2E20257000299046 /* UpdateBackingMutation.graphql.swift */,
+				E1B8E17C2E20257000299046 /* UpdateUserAccountMutation.graphql.swift */,
+				E1B8E17D2E20257000299046 /* UpdateUserProfileMutation.graphql.swift */,
+				E1B8E17E2E20257000299046 /* UserSendEmailVerificationMutation.graphql.swift */,
+				E1B8E17F2E20257000299046 /* WatchProjectMutation.graphql.swift */,
+			);
+			path = Mutations;
+			sourceTree = "<group>";
+		};
+		E1B8E19B2E20257000299046 /* Queries */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1812E20257000299046 /* BuildPaymentPlanQuery.graphql.swift */,
+				E1B8E1822E20257000299046 /* DefaultLocationsQuery.graphql.swift */,
+				E1B8E1832E20257000299046 /* FetchAddOnsQuery.graphql.swift */,
+				E1B8E1842E20257000299046 /* FetchBackingQuery.graphql.swift */,
+				E1B8E1852E20257000299046 /* FetchCategoryQuery.graphql.swift */,
+				E1B8E1862E20257000299046 /* FetchCommentRepliesQuery.graphql.swift */,
+				E1B8E1872E20257000299046 /* FetchMyBackedProjectsQuery.graphql.swift */,
+				E1B8E1882E20257000299046 /* FetchMySavedProjectsQuery.graphql.swift */,
+				E1B8E1892E20257000299046 /* FetchPledgedProjectsQuery.graphql.swift */,
+				E1B8E18A2E20257000299046 /* FetchProjectByIdQuery.graphql.swift */,
+				E1B8E18B2E20257000299046 /* FetchProjectBySlugQuery.graphql.swift */,
+				E1B8E18C2E20257000299046 /* FetchProjectCommentsQuery.graphql.swift */,
+				E1B8E18D2E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift */,
+				E1B8E18E2E20257000299046 /* FetchProjectFriendsBySlugQuery.graphql.swift */,
+				E1B8E18F2E20257000299046 /* FetchProjectRewardsByIdQuery.graphql.swift */,
+				E1B8E1902E20257000299046 /* FetchRootCategoriesQuery.graphql.swift */,
+				E1B8E1912E20257000299046 /* FetchSimilarProjectsQuery.graphql.swift */,
+				E1B8E1922E20257000299046 /* FetchUpdateCommentsQuery.graphql.swift */,
+				E1B8E1932E20257000299046 /* FetchUserBackingsQuery.graphql.swift */,
+				E1B8E1942E20257000299046 /* FetchUserEmailQuery.graphql.swift */,
+				E1B8E1952E20257000299046 /* FetchUserQuery.graphql.swift */,
+				E1B8E1962E20257000299046 /* FetchUserSetupQuery.graphql.swift */,
+				E1B8E1972E20257000299046 /* FetchUserStoredCardsQuery.graphql.swift */,
+				E1B8E1982E20257000299046 /* LocationsByTermQuery.graphql.swift */,
+				E1B8E1992E20257000299046 /* SearchQuery.graphql.swift */,
+				E1B8E19A2E20257000299046 /* ValidateCheckoutQuery.graphql.swift */,
+			);
+			path = Queries;
+			sourceTree = "<group>";
+		};
+		E1B8E19C2E20257000299046 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1802E20257000299046 /* Mutations */,
+				E1B8E19B2E20257000299046 /* Queries */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		E1B8E1A32E20257000299046 /* CustomScalars */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E19D2E20257000299046 /* Date.swift */,
+				E1B8E19E2E20257000299046 /* DateTime.swift */,
+				E1B8E19F2E20257000299046 /* Email.swift */,
+				E1B8E1A02E20257000299046 /* HTML.swift */,
+				E1B8E1A12E20257000299046 /* ISO8601DateTime.swift */,
+				E1B8E1A22E20257000299046 /* JSON.swift */,
+			);
+			path = CustomScalars;
+			sourceTree = "<group>";
+		};
+		E1B8E1BB2E20257000299046 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1A42E20257000299046 /* BackingState.graphql.swift */,
+				E1B8E1A52E20257000299046 /* CheckoutState.graphql.swift */,
+				E1B8E1A62E20257000299046 /* CheckoutStateEnum.graphql.swift */,
+				E1B8E1A72E20257000299046 /* CommentBadge.graphql.swift */,
+				E1B8E1A82E20257000299046 /* CountryCode.graphql.swift */,
+				E1B8E1A92E20257000299046 /* CreditCardPaymentType.graphql.swift */,
+				E1B8E1AA2E20257000299046 /* CreditCardTypes.graphql.swift */,
+				E1B8E1AB2E20257000299046 /* CurrencyCode.graphql.swift */,
+				E1B8E1AC2E20257000299046 /* EnvironmentalCommitmentCategory.graphql.swift */,
+				E1B8E1AD2E20257000299046 /* Feature.graphql.swift */,
+				E1B8E1AE2E20257000299046 /* FlaggingKind.graphql.swift */,
+				E1B8E1AF2E20257000299046 /* NonDeprecatedFlaggingKind.graphql.swift */,
+				E1B8E1B02E20257000299046 /* PaymentIncrementState.graphql.swift */,
+				E1B8E1B12E20257000299046 /* PaymentIncrementStateReason.graphql.swift */,
+				E1B8E1B22E20257000299046 /* PaymentTypes.graphql.swift */,
+				E1B8E1B32E20257000299046 /* PledgedBuckets.graphql.swift */,
+				E1B8E1B42E20257000299046 /* ProjectSort.graphql.swift */,
+				E1B8E1B52E20257000299046 /* ProjectState.graphql.swift */,
+				E1B8E1B62E20257000299046 /* PublicProjectState.graphql.swift */,
+				E1B8E1B72E20257000299046 /* RaisedBuckets.graphql.swift */,
+				E1B8E1B82E20257000299046 /* ShippingPreference.graphql.swift */,
+				E1B8E1B92E20257000299046 /* StripeIntentContextTypes.graphql.swift */,
+				E1B8E1BA2E20257000299046 /* UserNotificationTopic.graphql.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		E1B8E1D62E20257000299046 /* InputObjects */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1BC2E20257000299046 /* AddUserToSecretRewardGroupInput.graphql.swift */,
+				E1B8E1BD2E20257000299046 /* AppDataInput.graphql.swift */,
+				E1B8E1BE2E20257000299046 /* ApplePayInput.graphql.swift */,
+				E1B8E1BF2E20257000299046 /* BlockUserInput.graphql.swift */,
+				E1B8E1C02E20257000299046 /* CancelBackingInput.graphql.swift */,
+				E1B8E1C12E20257000299046 /* ClearUserUnseenActivityInput.graphql.swift */,
+				E1B8E1C22E20257000299046 /* CompleteOnSessionCheckoutInput.graphql.swift */,
+				E1B8E1C32E20257000299046 /* CreateAttributionEventInput.graphql.swift */,
+				E1B8E1C42E20257000299046 /* CreateBackingInput.graphql.swift */,
+				E1B8E1C52E20257000299046 /* CreateCheckoutInput.graphql.swift */,
+				E1B8E1C62E20257000299046 /* CreateFlaggingInput.graphql.swift */,
+				E1B8E1C72E20257000299046 /* CreateOrUpdateBackingAddressInput.graphql.swift */,
+				E1B8E1C82E20257000299046 /* CreatePaymentIntentInput.graphql.swift */,
+				E1B8E1C92E20257000299046 /* CreatePaymentSourceInput.graphql.swift */,
+				E1B8E1CA2E20257000299046 /* CreateSetupIntentInput.graphql.swift */,
+				E1B8E1CB2E20257000299046 /* PaymentSourceDeleteInput.graphql.swift */,
+				E1B8E1CC2E20257000299046 /* PostCommentInput.graphql.swift */,
+				E1B8E1CD2E20257000299046 /* SignInWithAppleInput.graphql.swift */,
+				E1B8E1CE2E20257000299046 /* ThirdPartyEventItemInput.graphql.swift */,
+				E1B8E1CF2E20257000299046 /* TriggerThirdPartyEventInput.graphql.swift */,
+				E1B8E1D02E20257000299046 /* UnwatchProjectInput.graphql.swift */,
+				E1B8E1D12E20257000299046 /* UpdateBackingInput.graphql.swift */,
+				E1B8E1D22E20257000299046 /* UpdateUserAccountInput.graphql.swift */,
+				E1B8E1D32E20257000299046 /* UpdateUserProfileInput.graphql.swift */,
+				E1B8E1D42E20257000299046 /* UserSendEmailVerificationInput.graphql.swift */,
+				E1B8E1D52E20257000299046 /* WatchProjectInput.graphql.swift */,
+			);
+			path = InputObjects;
+			sourceTree = "<group>";
+		};
+		E1B8E1DA2E20257000299046 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1D72E20257000299046 /* Commentable.graphql.swift */,
+				E1B8E1D82E20257000299046 /* Node.graphql.swift */,
+				E1B8E1D92E20257000299046 /* Postable.graphql.swift */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		E1B8E2432E20257000299046 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1DB2E20257000299046 /* Address.graphql.swift */,
+				E1B8E1DC2E20257000299046 /* AddUserToSecretRewardGroupPayload.graphql.swift */,
+				E1B8E1DD2E20257000299046 /* AdjustmentSummary.graphql.swift */,
+				E1B8E1DE2E20257000299046 /* AiDisclosure.graphql.swift */,
+				E1B8E1DF2E20257000299046 /* AttachedAudio.graphql.swift */,
+				E1B8E1E02E20257000299046 /* AttachedVideo.graphql.swift */,
+				E1B8E1E12E20257000299046 /* Backing.graphql.swift */,
+				E1B8E1E22E20257000299046 /* BankAccount.graphql.swift */,
+				E1B8E1E32E20257000299046 /* BlockUserPayload.graphql.swift */,
+				E1B8E1E42E20257000299046 /* CancelBackingPayload.graphql.swift */,
+				E1B8E1E52E20257000299046 /* Category.graphql.swift */,
+				E1B8E1E62E20257000299046 /* CategorySubcategoriesConnection.graphql.swift */,
+				E1B8E1E72E20257000299046 /* Checkout.graphql.swift */,
+				E1B8E1E82E20257000299046 /* CheckoutWave.graphql.swift */,
+				E1B8E1E92E20257000299046 /* ClearUserUnseenActivityPayload.graphql.swift */,
+				E1B8E1EA2E20257000299046 /* Comment.graphql.swift */,
+				E1B8E1EB2E20257000299046 /* CommentConnection.graphql.swift */,
+				E1B8E1EC2E20257000299046 /* CommentEdge.graphql.swift */,
+				E1B8E1ED2E20257000299046 /* CompleteOnSessionCheckoutPayload.graphql.swift */,
+				E1B8E1EE2E20257000299046 /* Conversation.graphql.swift */,
+				E1B8E1EF2E20257000299046 /* Country.graphql.swift */,
+				E1B8E1F02E20257000299046 /* CreateAttributionEventPayload.graphql.swift */,
+				E1B8E1F12E20257000299046 /* CreateBackingPayload.graphql.swift */,
+				E1B8E1F22E20257000299046 /* CreateCheckoutPayload.graphql.swift */,
+				E1B8E1F32E20257000299046 /* CreateFlaggingPayload.graphql.swift */,
+				E1B8E1F42E20257000299046 /* CreateOrUpdateBackingAddressPayload.graphql.swift */,
+				E1B8E1F52E20257000299046 /* CreatePaymentIntentPayload.graphql.swift */,
+				E1B8E1F62E20257000299046 /* CreatePaymentSourcePayload.graphql.swift */,
+				E1B8E1F72E20257000299046 /* CreateSetupIntentPayload.graphql.swift */,
+				E1B8E1F82E20257000299046 /* CreatorInterview.graphql.swift */,
+				E1B8E1F92E20257000299046 /* CreatorPrompt.graphql.swift */,
+				E1B8E1FA2E20257000299046 /* CreditCard.graphql.swift */,
+				E1B8E1FB2E20257000299046 /* CuratedPage.graphql.swift */,
+				E1B8E1FC2E20257000299046 /* EnvironmentalCommitment.graphql.swift */,
+				E1B8E1FD2E20257000299046 /* Flagging.graphql.swift */,
+				E1B8E1FE2E20257000299046 /* FreeformPost.graphql.swift */,
+				E1B8E1FF2E20257000299046 /* InterviewAnswer.graphql.swift */,
+				E1B8E2002E20257000299046 /* InterviewQuestion.graphql.swift */,
+				E1B8E2012E20257000299046 /* Location.graphql.swift */,
+				E1B8E2022E20257000299046 /* LocationsConnection.graphql.swift */,
+				E1B8E2032E20257000299046 /* Message.graphql.swift */,
+				E1B8E2042E20257000299046 /* Money.graphql.swift */,
+				E1B8E2052E20257000299046 /* Mutation.graphql.swift */,
+				E1B8E2062E20257000299046 /* NewsletterSubscriptions.graphql.swift */,
+				E1B8E2072E20257000299046 /* Notification.graphql.swift */,
+				E1B8E2082E20257000299046 /* Order.graphql.swift */,
+				E1B8E2092E20257000299046 /* Organization.graphql.swift */,
+				E1B8E20A2E20257000299046 /* PageInfo.graphql.swift */,
+				E1B8E20B2E20257000299046 /* PaymentIncrement.graphql.swift */,
+				E1B8E20C2E20257000299046 /* PaymentIncrementAmount.graphql.swift */,
+				E1B8E20D2E20257000299046 /* PaymentPlan.graphql.swift */,
+				E1B8E20E2E20257000299046 /* PaymentSourceDeletePayload.graphql.swift */,
+				E1B8E20F2E20257000299046 /* Photo.graphql.swift */,
+				E1B8E2102E20257000299046 /* PledgedProjectsOverviewPledgeFlags.graphql.swift */,
+				E1B8E2112E20257000299046 /* PledgedProjectsOverviewPledgesConnection.graphql.swift */,
+				E1B8E2122E20257000299046 /* PledgeManager.graphql.swift */,
+				E1B8E2132E20257000299046 /* PledgeProjectOverviewItem.graphql.swift */,
+				E1B8E2142E20257000299046 /* PledgeProjectOverviewItemEdge.graphql.swift */,
+				E1B8E2152E20257000299046 /* PledgeProjectsOverview.graphql.swift */,
+				E1B8E2162E20257000299046 /* PostCommentPayload.graphql.swift */,
+				E1B8E2172E20257000299046 /* PostConnection.graphql.swift */,
+				E1B8E2182E20257000299046 /* Project.graphql.swift */,
+				E1B8E2192E20257000299046 /* ProjectBackerFriendsConnection.graphql.swift */,
+				E1B8E21A2E20257000299046 /* ProjectFaq.graphql.swift */,
+				E1B8E21B2E20257000299046 /* ProjectFaqConnection.graphql.swift */,
+				E1B8E21C2E20257000299046 /* ProjectProfile.graphql.swift */,
+				E1B8E21D2E20257000299046 /* ProjectRewardConnection.graphql.swift */,
+				E1B8E21E2E20257000299046 /* ProjectsConnectionWithTotalCount.graphql.swift */,
+				E1B8E21F2E20257000299046 /* Query.graphql.swift */,
+				E1B8E2202E20257000299046 /* Refund.graphql.swift */,
+				E1B8E2212E20257000299046 /* ResourceAudience.graphql.swift */,
+				E1B8E2222E20257000299046 /* Reward.graphql.swift */,
+				E1B8E2232E20257000299046 /* RewardConnection.graphql.swift */,
+				E1B8E2242E20257000299046 /* RewardItem.graphql.swift */,
+				E1B8E2252E20257000299046 /* RewardItemEdge.graphql.swift */,
+				E1B8E2262E20257000299046 /* RewardItemsConnection.graphql.swift */,
+				E1B8E2272E20257000299046 /* RewardShippingRulesConnection.graphql.swift */,
+				E1B8E2282E20257000299046 /* RewardTotalCountConnection.graphql.swift */,
+				E1B8E2292E20257000299046 /* SavedSearchSegment.graphql.swift */,
+				E1B8E22A2E20257000299046 /* ShippingRule.graphql.swift */,
+				E1B8E22B2E20257000299046 /* SignInWithApplePayload.graphql.swift */,
+				E1B8E22C2E20257000299046 /* SimpleShippingRule.graphql.swift */,
+				E1B8E22D2E20257000299046 /* Survey.graphql.swift */,
+				E1B8E22E2E20257000299046 /* SurveyResponsesConnection.graphql.swift */,
+				E1B8E22F2E20257000299046 /* Tag.graphql.swift */,
+				E1B8E2302E20257000299046 /* TriggerThirdPartyEventPayload.graphql.swift */,
+				E1B8E2312E20257000299046 /* UnwatchProjectPayload.graphql.swift */,
+				E1B8E2322E20257000299046 /* UpdateBackingPayload.graphql.swift */,
+				E1B8E2332E20257000299046 /* UpdateUserAccountPayload.graphql.swift */,
+				E1B8E2342E20257000299046 /* UpdateUserProfilePayload.graphql.swift */,
+				E1B8E2352E20257000299046 /* User.graphql.swift */,
+				E1B8E2362E20257000299046 /* UserBackingsConnection.graphql.swift */,
+				E1B8E2372E20257000299046 /* UserCreatedProjectsConnection.graphql.swift */,
+				E1B8E2382E20257000299046 /* UserCreditCardTypeConnection.graphql.swift */,
+				E1B8E2392E20257000299046 /* UserSavedProjectsConnection.graphql.swift */,
+				E1B8E23A2E20257000299046 /* UserSendEmailVerificationPayload.graphql.swift */,
+				E1B8E23B2E20257000299046 /* UserUrl.graphql.swift */,
+				E1B8E23C2E20257000299046 /* Validation.graphql.swift */,
+				E1B8E23D2E20257000299046 /* Video.graphql.swift */,
+				E1B8E23E2E20257000299046 /* VideoSourceInfo.graphql.swift */,
+				E1B8E23F2E20257000299046 /* VideoSources.graphql.swift */,
+				E1B8E2402E20257000299046 /* VideoTrack.graphql.swift */,
+				E1B8E2412E20257000299046 /* VideoTrackCue.graphql.swift */,
+				E1B8E2422E20257000299046 /* WatchProjectPayload.graphql.swift */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		E1B8E2452E20257000299046 /* Unions */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E2442E20257000299046 /* PaymentSource.graphql.swift */,
+			);
+			path = Unions;
+			sourceTree = "<group>";
+		};
+		E1B8E2482E20257000299046 /* Schema */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1A32E20257000299046 /* CustomScalars */,
+				E1B8E1BB2E20257000299046 /* Enums */,
+				E1B8E1D62E20257000299046 /* InputObjects */,
+				E1B8E1DA2E20257000299046 /* Interfaces */,
+				E1B8E2432E20257000299046 /* Objects */,
+				E1B8E2452E20257000299046 /* Unions */,
+				E1B8E2462E20257000299046 /* SchemaConfiguration.swift */,
+				E1B8E2472E20257000299046 /* SchemaMetadata.graphql.swift */,
+			);
+			path = Schema;
+			sourceTree = "<group>";
+		};
+		E1B8E24A2E20257000299046 /* GraphAPI */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8E1682E20257000299046 /* Fragments */,
+				E1B8E19C2E20257000299046 /* Operations */,
+				E1B8E2482E20257000299046 /* Schema */,
+				E1B8E2492E20257000299046 /* GraphAPI.graphql.swift */,
+			);
+			path = GraphAPI;
+			sourceTree = SOURCE_ROOT;
 		};
 		E1BAA0332C1A18DA004F8B06 /* PledgedProjectsOverview */ = {
 			isa = PBXGroup;
@@ -9763,7 +10594,6 @@
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
-				8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
 				D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */,
 				0655C73027335CA50087281F /* CategoryEnvelope+FetchCategoryQueryData.swift in Sources */,
@@ -9870,6 +10700,252 @@
 				E16127642DF0AE800080B448 /* DefaultLocationsQuery.graphql in Sources */,
 				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
+				E1B8E24B2E20257000299046 /* CheckoutFragment.graphql.swift in Sources */,
+				E1B8E24C2E20257000299046 /* RewardItemsConnection.graphql.swift in Sources */,
+				E1B8E24D2E20257000299046 /* Tag.graphql.swift in Sources */,
+				E1B8E24E2E20257000299046 /* CreateBackingInput.graphql.swift in Sources */,
+				E1B8E24F2E20257000299046 /* CancelBackingMutation.graphql.swift in Sources */,
+				E1B8E2502E20257000299046 /* UserCreatedProjectsConnection.graphql.swift in Sources */,
+				E1B8E2512E20257000299046 /* CheckoutWave.graphql.swift in Sources */,
+				E1B8E2522E20257000299046 /* ISO8601DateTime.swift in Sources */,
+				E1B8E2532E20257000299046 /* PPOBackingFragment.graphql.swift in Sources */,
+				E1B8E2542E20257000299046 /* NonDeprecatedFlaggingKind.graphql.swift in Sources */,
+				E1B8E2552E20257000299046 /* CreatePaymentIntentMutation.graphql.swift in Sources */,
+				E1B8E2562E20257000299046 /* CreateCheckoutInput.graphql.swift in Sources */,
+				E1B8E2572E20257000299046 /* UserSendEmailVerificationPayload.graphql.swift in Sources */,
+				E1B8E2582E20257000299046 /* WatchProjectInput.graphql.swift in Sources */,
+				E1B8E2592E20257000299046 /* PledgedProjectsOverviewPledgeFlags.graphql.swift in Sources */,
+				E1B8E25A2E20257000299046 /* CreatorPrompt.graphql.swift in Sources */,
+				E1B8E25B2E20257000299046 /* CheckoutState.graphql.swift in Sources */,
+				E1B8E25C2E20257000299046 /* AddUserToSecretRewardGroupMutation.graphql.swift in Sources */,
+				E1B8E25D2E20257000299046 /* UserSettingsFragment.graphql.swift in Sources */,
+				E1B8E25E2E20257000299046 /* CuratedPage.graphql.swift in Sources */,
+				E1B8E25F2E20257000299046 /* SignInWithAppleInput.graphql.swift in Sources */,
+				E1B8E2602E20257000299046 /* UpdateBackingMutation.graphql.swift in Sources */,
+				E1B8E2612E20257000299046 /* BankAccount.graphql.swift in Sources */,
+				E1B8E2622E20257000299046 /* ValidateCheckoutQuery.graphql.swift in Sources */,
+				E1B8E2632E20257000299046 /* UpdateUserAccountMutation.graphql.swift in Sources */,
+				E1B8E2642E20257000299046 /* RewardConnection.graphql.swift in Sources */,
+				E1B8E2652E20257000299046 /* FetchMySavedProjectsQuery.graphql.swift in Sources */,
+				E1B8E2662E20257000299046 /* CommentEdge.graphql.swift in Sources */,
+				E1B8E2672E20257000299046 /* PaymentIncrementState.graphql.swift in Sources */,
+				E1B8E2682E20257000299046 /* VideoTrackCue.graphql.swift in Sources */,
+				E1B8E2692E20257000299046 /* TriggerThirdPartyEventInput.graphql.swift in Sources */,
+				E1B8E26A2E20257000299046 /* CountryFragment.graphql.swift in Sources */,
+				E1B8E26B2E20257000299046 /* ShippingPreference.graphql.swift in Sources */,
+				E1B8E26C2E20257000299046 /* TriggerThirdPartyEventMutation.graphql.swift in Sources */,
+				E1B8E26D2E20257000299046 /* FetchAddOnsQuery.graphql.swift in Sources */,
+				E1B8E26E2E20257000299046 /* LocationsConnection.graphql.swift in Sources */,
+				E1B8E26F2E20257000299046 /* PostCommentPayload.graphql.swift in Sources */,
+				E1B8E2702E20257000299046 /* CountryCode.graphql.swift in Sources */,
+				E1B8E2712E20257000299046 /* PaymentIncrementStateReason.graphql.swift in Sources */,
+				E1B8E2722E20257000299046 /* RewardFragment.graphql.swift in Sources */,
+				E1B8E2732E20257000299046 /* ClearUserUnseenActivityMutation.graphql.swift in Sources */,
+				E1B8E2742E20257000299046 /* FetchUserQuery.graphql.swift in Sources */,
+				E1B8E2752E20257000299046 /* Notification.graphql.swift in Sources */,
+				E1B8E2762E20257000299046 /* CreatePaymentIntentInput.graphql.swift in Sources */,
+				E1B8E2772E20257000299046 /* ProjectPamphletMainCellPropertiesFragment.graphql.swift in Sources */,
+				E1B8E2782E20257000299046 /* VideoSources.graphql.swift in Sources */,
+				E1B8E2792E20257000299046 /* LocationsByTermQuery.graphql.swift in Sources */,
+				E1B8E27A2E20257000299046 /* FetchCategoryQuery.graphql.swift in Sources */,
+				E1B8E27B2E20257000299046 /* AddUserToSecretRewardGroupInput.graphql.swift in Sources */,
+				E1B8E27C2E20257000299046 /* ResourceAudience.graphql.swift in Sources */,
+				E1B8E27D2E20257000299046 /* PledgedBuckets.graphql.swift in Sources */,
+				E1B8E27E2E20257000299046 /* PaymentSourceFragment.graphql.swift in Sources */,
+				E1B8E27F2E20257000299046 /* PostCommentInput.graphql.swift in Sources */,
+				E1B8E2802E20257000299046 /* UnwatchProjectInput.graphql.swift in Sources */,
+				E1B8E2812E20257000299046 /* CreatorInterview.graphql.swift in Sources */,
+				E1B8E2822E20257000299046 /* UserCreditCardTypeConnection.graphql.swift in Sources */,
+				E1B8E2832E20257000299046 /* UserStoredCardsFragment.graphql.swift in Sources */,
+				E1B8E2842E20257000299046 /* CreateAttributionEventPayload.graphql.swift in Sources */,
+				E1B8E2852E20257000299046 /* PostConnection.graphql.swift in Sources */,
+				E1B8E2862E20257000299046 /* Date.swift in Sources */,
+				E1B8E2872E20257000299046 /* PPOProjectFragment.graphql.swift in Sources */,
+				E1B8E2882E20257000299046 /* CompleteOnSessionCheckoutInput.graphql.swift in Sources */,
+				E1B8E2892E20257000299046 /* UserFeaturesFragment.graphql.swift in Sources */,
+				E1B8E28A2E20257000299046 /* PublicProjectState.graphql.swift in Sources */,
+				E1B8E28B2E20257000299046 /* UpdateUserProfileMutation.graphql.swift in Sources */,
+				E1B8E28C2E20257000299046 /* ShippingRuleFragment.graphql.swift in Sources */,
+				E1B8E28D2E20257000299046 /* CommentFragment.graphql.swift in Sources */,
+				E1B8E28E2E20257000299046 /* ProjectBackerFriendsConnection.graphql.swift in Sources */,
+				E1B8E28F2E20257000299046 /* ApplePayInput.graphql.swift in Sources */,
+				E1B8E2902E20257000299046 /* SurveyResponsesConnection.graphql.swift in Sources */,
+				E1B8E2912E20257000299046 /* CreditCard.graphql.swift in Sources */,
+				E1B8E2922E20257000299046 /* CreateAttributionEventMutation.graphql.swift in Sources */,
+				E1B8E2932E20257000299046 /* NewsletterSubscriptions.graphql.swift in Sources */,
+				E1B8E2942E20257000299046 /* PledgeProjectOverviewItemEdge.graphql.swift in Sources */,
+				E1B8E2952E20257000299046 /* Photo.graphql.swift in Sources */,
+				E1B8E2962E20257000299046 /* UpdateBackingPayload.graphql.swift in Sources */,
+				E1B8E2972E20257000299046 /* ProjectsConnectionWithTotalCount.graphql.swift in Sources */,
+				E1B8E2982E20257000299046 /* UserSendEmailVerificationMutation.graphql.swift in Sources */,
+				E1B8E2992E20257000299046 /* FetchProjectFriendsBySlugQuery.graphql.swift in Sources */,
+				E1B8E29A2E20257000299046 /* CreateCheckoutPayload.graphql.swift in Sources */,
+				E1B8E29B2E20257000299046 /* InterviewAnswer.graphql.swift in Sources */,
+				E1B8E29C2E20257000299046 /* AttachedVideo.graphql.swift in Sources */,
+				E1B8E29D2E20257000299046 /* FreeformPost.graphql.swift in Sources */,
+				E1B8E29E2E20257000299046 /* ClearUserUnseenActivityInput.graphql.swift in Sources */,
+				E1B8E29F2E20257000299046 /* SchemaConfiguration.swift in Sources */,
+				E1B8E2A02E20257000299046 /* Order.graphql.swift in Sources */,
+				E1B8E2A12E20257000299046 /* StripeIntentContextTypes.graphql.swift in Sources */,
+				E1B8E2A22E20257000299046 /* FetchUserEmailQuery.graphql.swift in Sources */,
+				E1B8E2A32E20257000299046 /* CancelBackingInput.graphql.swift in Sources */,
+				E1B8E2A42E20257000299046 /* EnvironmentalCommitmentCategory.graphql.swift in Sources */,
+				E1B8E2A52E20257000299046 /* UnwatchProjectPayload.graphql.swift in Sources */,
+				E1B8E2A62E20257000299046 /* ProjectProfile.graphql.swift in Sources */,
+				E1B8E2A72E20257000299046 /* PledgeProjectOverviewItem.graphql.swift in Sources */,
+				E1B8E2A82E20257000299046 /* Feature.graphql.swift in Sources */,
+				E1B8E2A92E20257000299046 /* Conversation.graphql.swift in Sources */,
+				E1B8E2AA2E20257000299046 /* CommentConnection.graphql.swift in Sources */,
+				E1B8E2AB2E20257000299046 /* BuildPaymentPlanQuery.graphql.swift in Sources */,
+				E1B8E2AC2E20257000299046 /* SignInWithApplePayload.graphql.swift in Sources */,
+				E1B8E2AD2E20257000299046 /* CommentWithRepliesFragment.graphql.swift in Sources */,
+				E1B8E2AE2E20257000299046 /* ProjectFaqConnection.graphql.swift in Sources */,
+				E1B8E2AF2E20257000299046 /* CurrencyCode.graphql.swift in Sources */,
+				E1B8E2B02E20257000299046 /* ProjectState.graphql.swift in Sources */,
+				E1B8E2B12E20257000299046 /* AddUserToSecretRewardGroupPayload.graphql.swift in Sources */,
+				E1B8E2B22E20257000299046 /* BackingState.graphql.swift in Sources */,
+				E1B8E2B32E20257000299046 /* CreateFlaggingMutation.graphql.swift in Sources */,
+				E1B8E2B42E20257000299046 /* CreditCardPaymentType.graphql.swift in Sources */,
+				E1B8E2B52E20257000299046 /* UnwatchProjectMutation.graphql.swift in Sources */,
+				E1B8E2B62E20257000299046 /* Location.graphql.swift in Sources */,
+				E1B8E2B72E20257000299046 /* PaymentSource.graphql.swift in Sources */,
+				E1B8E2B82E20257000299046 /* Commentable.graphql.swift in Sources */,
+				E1B8E2B92E20257000299046 /* AttachedAudio.graphql.swift in Sources */,
+				E1B8E2BA2E20257000299046 /* Node.graphql.swift in Sources */,
+				E1B8E2BB2E20257000299046 /* BlockUserMutation.graphql.swift in Sources */,
+				E1B8E2BC2E20257000299046 /* TriggerThirdPartyEventPayload.graphql.swift in Sources */,
+				E1B8E2BD2E20257000299046 /* JSON.swift in Sources */,
+				E1B8E2BE2E20257000299046 /* UserUrl.graphql.swift in Sources */,
+				E1B8E2BF2E20257000299046 /* FetchUpdateCommentsQuery.graphql.swift in Sources */,
+				E1B8E2C02E20257000299046 /* FetchPledgedProjectsQuery.graphql.swift in Sources */,
+				E1B8E2C12E20257000299046 /* CreateBackingMutation.graphql.swift in Sources */,
+				E1B8E2C22E20257000299046 /* CreatePaymentSourcePayload.graphql.swift in Sources */,
+				E1B8E2C32E20257000299046 /* ShippingRule.graphql.swift in Sources */,
+				E1B8E2C42E20257000299046 /* EnvironmentalCommitment.graphql.swift in Sources */,
+				E1B8E2C52E20257000299046 /* FetchProjectCommentsQuery.graphql.swift in Sources */,
+				E1B8E2C62E20257000299046 /* CreatePaymentSourceInput.graphql.swift in Sources */,
+				E1B8E2C72E20257000299046 /* SchemaMetadata.graphql.swift in Sources */,
+				E1B8E2C82E20257000299046 /* Postable.graphql.swift in Sources */,
+				E1B8E2C92E20257000299046 /* ProjectRewardConnection.graphql.swift in Sources */,
+				E1B8E2CA2E20257000299046 /* Money.graphql.swift in Sources */,
+				E1B8E2CB2E20257000299046 /* HTML.swift in Sources */,
+				E1B8E2CC2E20257000299046 /* VideoTrack.graphql.swift in Sources */,
+				E1B8E2CD2E20257000299046 /* ClearUserUnseenActivityPayload.graphql.swift in Sources */,
+				E1B8E2CE2E20257000299046 /* PaymentIncrementAmount.graphql.swift in Sources */,
+				E1B8E2CF2E20257000299046 /* FetchUserStoredCardsQuery.graphql.swift in Sources */,
+				E1B8E2D02E20257000299046 /* FetchUserSetupQuery.graphql.swift in Sources */,
+				E1B8E2D12E20257000299046 /* FlaggingKind.graphql.swift in Sources */,
+				E1B8E2D22E20257000299046 /* UpdateUserAccountInput.graphql.swift in Sources */,
+				E1B8E2D32E20257000299046 /* CompleteOnSessionCheckoutMutation.graphql.swift in Sources */,
+				E1B8E2D42E20257000299046 /* FetchRootCategoriesQuery.graphql.swift in Sources */,
+				E1B8E2D52E20257000299046 /* SearchQuery.graphql.swift in Sources */,
+				E1B8E2D62E20257000299046 /* RewardShippingRulesConnection.graphql.swift in Sources */,
+				E1B8E2D72E20257000299046 /* Organization.graphql.swift in Sources */,
+				E1B8E2D82E20257000299046 /* UpdateUserAccountPayload.graphql.swift in Sources */,
+				E1B8E2D92E20257000299046 /* CategorySubcategoriesConnection.graphql.swift in Sources */,
+				E1B8E2DA2E20257000299046 /* PledgeManagerFragment.graphql.swift in Sources */,
+				E1B8E2DB2E20257000299046 /* FetchMyBackedProjectsQuery.graphql.swift in Sources */,
+				E1B8E2DC2E20257000299046 /* FetchUserBackingsQuery.graphql.swift in Sources */,
+				E1B8E2DD2E20257000299046 /* PledgeOverTimeFragment.graphql.swift in Sources */,
+				E1B8E2DE2E20257000299046 /* PPOCardFragment.graphql.swift in Sources */,
+				E1B8E2DF2E20257000299046 /* FetchBackingQuery.graphql.swift in Sources */,
+				E1B8E2E02E20257000299046 /* AdjustmentSummary.graphql.swift in Sources */,
+				E1B8E2E12E20257000299046 /* ProjectCardFragment.graphql.swift in Sources */,
+				E1B8E2E22E20257000299046 /* LastWaveFragment.graphql.swift in Sources */,
+				E1B8E2E32E20257000299046 /* MoneyFragment.graphql.swift in Sources */,
+				E1B8E2E42E20257000299046 /* Checkout.graphql.swift in Sources */,
+				E1B8E2E52E20257000299046 /* BlockUserPayload.graphql.swift in Sources */,
+				E1B8E2E62E20257000299046 /* PaymentPlan.graphql.swift in Sources */,
+				E1B8E2E72E20257000299046 /* WatchProjectPayload.graphql.swift in Sources */,
+				E1B8E2E82E20257000299046 /* AppDataInput.graphql.swift in Sources */,
+				E1B8E2E92E20257000299046 /* UserSavedProjectsConnection.graphql.swift in Sources */,
+				E1B8E2EA2E20257000299046 /* CreateSetupIntentMutation.graphql.swift in Sources */,
+				E1B8E2EB2E20257000299046 /* CommentBadge.graphql.swift in Sources */,
+				E1B8E2EC2E20257000299046 /* PledgedProjectsOverviewPledgesConnection.graphql.swift in Sources */,
+				E1B8E2ED2E20257000299046 /* Email.swift in Sources */,
+				E1B8E2EE2E20257000299046 /* CreatePaymentSourceMutation.graphql.swift in Sources */,
+				E1B8E2EF2E20257000299046 /* Backing.graphql.swift in Sources */,
+				E1B8E2F02E20257000299046 /* CreateAttributionEventInput.graphql.swift in Sources */,
+				E1B8E2F12E20257000299046 /* InterviewQuestion.graphql.swift in Sources */,
+				E1B8E2F22E20257000299046 /* Survey.graphql.swift in Sources */,
+				E1B8E2F32E20257000299046 /* UserBackingsConnection.graphql.swift in Sources */,
+				E1B8E2F42E20257000299046 /* ProjectSort.graphql.swift in Sources */,
+				E1B8E2F52E20257000299046 /* PaymentTypes.graphql.swift in Sources */,
+				E1B8E2F62E20257000299046 /* SimpleShippingRule.graphql.swift in Sources */,
+				E1B8E2F72E20257000299046 /* CommentBaseFragment.graphql.swift in Sources */,
+				E1B8E2F82E20257000299046 /* BackingFragment.graphql.swift in Sources */,
+				E1B8E2F92E20257000299046 /* FetchProjectRewardsByIdQuery.graphql.swift in Sources */,
+				E1B8E2FA2E20257000299046 /* PPOUserSetupFragment.graphql.swift in Sources */,
+				E1B8E2FB2E20257000299046 /* PaymentSourceDeleteInput.graphql.swift in Sources */,
+				E1B8E2FC2E20257000299046 /* DateTime.swift in Sources */,
+				E1B8E2FD2E20257000299046 /* Video.graphql.swift in Sources */,
+				E1B8E2FE2E20257000299046 /* Address.graphql.swift in Sources */,
+				E1B8E2FF2E20257000299046 /* CancelBackingPayload.graphql.swift in Sources */,
+				E1B8E3002E20257000299046 /* ProjectAnalyticsFragment.graphql.swift in Sources */,
+				E1B8E3012E20257000299046 /* Message.graphql.swift in Sources */,
+				E1B8E3022E20257000299046 /* CreateBackingPayload.graphql.swift in Sources */,
+				E1B8E3032E20257000299046 /* UserFragment.graphql.swift in Sources */,
+				E1B8E3042E20257000299046 /* CreateFlaggingPayload.graphql.swift in Sources */,
+				E1B8E3052E20257000299046 /* UpdateUserProfileInput.graphql.swift in Sources */,
+				E1B8E3062E20257000299046 /* DeletePaymentSourceMutation.graphql.swift in Sources */,
+				E1B8E3072E20257000299046 /* SavedSearchSegment.graphql.swift in Sources */,
+				E1B8E3082E20257000299046 /* Project.graphql.swift in Sources */,
+				E1B8E3092E20257000299046 /* BlockUserInput.graphql.swift in Sources */,
+				E1B8E30A2E20257000299046 /* UpdateBackingInput.graphql.swift in Sources */,
+				E1B8E30B2E20257000299046 /* FetchSimilarProjectsQuery.graphql.swift in Sources */,
+				E1B8E30C2E20257000299046 /* CreateSetupIntentInput.graphql.swift in Sources */,
+				E1B8E30D2E20257000299046 /* BackerDashboardProjectCellFragment.graphql.swift in Sources */,
+				E1B8E30E2E20257000299046 /* CreateFlaggingInput.graphql.swift in Sources */,
+				E1B8E30F2E20257000299046 /* CreateOrUpdateBackingAddressInput.graphql.swift in Sources */,
+				E1B8E3102E20257000299046 /* User.graphql.swift in Sources */,
+				E1B8E3112E20257000299046 /* CreateOrUpdateBackingAddressMutation.graphql.swift in Sources */,
+				E1B8E3122E20257000299046 /* CreditCardTypes.graphql.swift in Sources */,
+				E1B8E3132E20257000299046 /* LocationFragment.graphql.swift in Sources */,
+				E1B8E3142E20257000299046 /* Comment.graphql.swift in Sources */,
+				E1B8E3152E20257000299046 /* PostCommentMutation.graphql.swift in Sources */,
+				E1B8E3162E20257000299046 /* PaymentSourceDeletePayload.graphql.swift in Sources */,
+				E1B8E3172E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift in Sources */,
+				E1B8E3182E20257000299046 /* PageInfo.graphql.swift in Sources */,
+				E1B8E3192E20257000299046 /* PaymentIncrement.graphql.swift in Sources */,
+				E1B8E31A2E20257000299046 /* SignInWithAppleMutation.graphql.swift in Sources */,
+				E1B8E31B2E20257000299046 /* CreateOrUpdateBackingAddressPayload.graphql.swift in Sources */,
+				E1B8E31C2E20257000299046 /* GraphAPI.graphql.swift in Sources */,
+				E1B8E31D2E20257000299046 /* Query.graphql.swift in Sources */,
+				E1B8E31E2E20257000299046 /* WatchProjectMutation.graphql.swift in Sources */,
+				E1B8E31F2E20257000299046 /* RewardTotalCountConnection.graphql.swift in Sources */,
+				E1B8E3202E20257000299046 /* Flagging.graphql.swift in Sources */,
+				E1B8E3212E20257000299046 /* CompleteOnSessionCheckoutPayload.graphql.swift in Sources */,
+				E1B8E3222E20257000299046 /* VideoSourceInfo.graphql.swift in Sources */,
+				E1B8E3232E20257000299046 /* ThirdPartyEventItemInput.graphql.swift in Sources */,
+				E1B8E3242E20257000299046 /* CategoryFragment.graphql.swift in Sources */,
+				E1B8E3252E20257000299046 /* RewardItemEdge.graphql.swift in Sources */,
+				E1B8E3262E20257000299046 /* DefaultLocationsQuery.graphql.swift in Sources */,
+				E1B8E3272E20257000299046 /* RewardItem.graphql.swift in Sources */,
+				E1B8E3282E20257000299046 /* PaymentIncrementFragment.graphql.swift in Sources */,
+				E1B8E3292E20257000299046 /* UpdateUserProfilePayload.graphql.swift in Sources */,
+				E1B8E32A2E20257000299046 /* FetchCommentRepliesQuery.graphql.swift in Sources */,
+				E1B8E32B2E20257000299046 /* ProjectFragment.graphql.swift in Sources */,
+				E1B8E32C2E20257000299046 /* CreateCheckoutMutation.graphql.swift in Sources */,
+				E1B8E32D2E20257000299046 /* FetchProjectBySlugQuery.graphql.swift in Sources */,
+				E1B8E32E2E20257000299046 /* AiDisclosure.graphql.swift in Sources */,
+				E1B8E32F2E20257000299046 /* ProjectFaq.graphql.swift in Sources */,
+				E1B8E3302E20257000299046 /* PledgeProjectsOverview.graphql.swift in Sources */,
+				E1B8E3312E20257000299046 /* CheckoutStateEnum.graphql.swift in Sources */,
+				E1B8E3322E20257000299046 /* PledgeManager.graphql.swift in Sources */,
+				E1B8E3332E20257000299046 /* Category.graphql.swift in Sources */,
+				E1B8E3342E20257000299046 /* Country.graphql.swift in Sources */,
+				E1B8E3352E20257000299046 /* Validation.graphql.swift in Sources */,
+				E1B8E3362E20257000299046 /* OrderFragment.graphql.swift in Sources */,
+				E1B8E3372E20257000299046 /* UserEmailFragment.graphql.swift in Sources */,
+				E1B8E3382E20257000299046 /* Mutation.graphql.swift in Sources */,
+				E1B8E3392E20257000299046 /* CreateSetupIntentPayload.graphql.swift in Sources */,
+				E1B8E33A2E20257000299046 /* CreatePaymentIntentPayload.graphql.swift in Sources */,
+				E1B8E33B2E20257000299046 /* UserNotificationTopic.graphql.swift in Sources */,
+				E1B8E33C2E20257000299046 /* RaisedBuckets.graphql.swift in Sources */,
+				E1B8E33D2E20257000299046 /* UserSendEmailVerificationInput.graphql.swift in Sources */,
+				E1B8E33E2E20257000299046 /* Reward.graphql.swift in Sources */,
+				E1B8E33F2E20257000299046 /* FetchProjectByIdQuery.graphql.swift in Sources */,
+				E1B8E3402E20257000299046 /* Refund.graphql.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				478E31C326C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift in Sources */,
