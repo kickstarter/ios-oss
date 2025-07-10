@@ -12,88 +12,6 @@ struct FilterRootView: View {
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
-  private var selectedCategory: Binding<SearchFiltersCategory> {
-    Binding {
-      self.searchFilters.category.selectedCategory
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.category(newValue))
-      }
-    }
-  }
-
-  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
-    Binding {
-      self.searchFilters.percentRaised.selectedBucket
-    } set: { newValue in
-      if let action = self.onFilter,
-         let bucket = newValue {
-        action(.percentRaised(bucket))
-      }
-    }
-  }
-
-  private var selectedLocation: Binding<Location?> {
-    Binding {
-      self.searchFilters.location.selectedLocation
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.location(newValue))
-      }
-    }
-  }
-
-  private var selectedAmountRaisedBucket: Binding<DiscoveryParams.AmountRaisedBucket?> {
-    Binding {
-      self.searchFilters.amountRaised.selectedBucket
-    } set: { newValue in
-      if let action = self.onFilter,
-         let bucket = newValue {
-        action(.amountRaised(bucket))
-      }
-    }
-  }
-
-  private var showRecommended: Binding<Bool> {
-    Binding {
-      self.searchFilters.showOnly.recommended
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.recommended(newValue))
-      }
-    }
-  }
-
-  private var showSavedProjects: Binding<Bool> {
-    Binding {
-      self.searchFilters.showOnly.savedProjects
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.savedProjects(newValue))
-      }
-    }
-  }
-
-  private var showProjectsWeLove: Binding<Bool> {
-    Binding {
-      self.searchFilters.showOnly.projectsWeLove
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.projectsWeLove(newValue))
-      }
-    }
-  }
-
-  private var showFollowing: Binding<Bool> {
-    Binding {
-      self.searchFilters.showOnly.following
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.following(newValue))
-      }
-    }
-  }
-
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
   }
@@ -111,6 +29,8 @@ struct FilterRootView: View {
 
     self.searchFilters = searchFilters
   }
+
+  // MARK: - Subviews
 
   @ViewBuilder
   var projectStateSection: some View {
@@ -261,6 +181,8 @@ struct FilterRootView: View {
     .padding(Constants.sectionPadding)
   }
 
+  // MARK: - Body
+
   public var body: some View {
     VStack(alignment: .leading) {
       NavigationStack(path: self.$navigationState) {
@@ -342,6 +264,94 @@ extension View {
       }
   }
 }
+
+// MARK: - Bindings
+
+extension FilterRootView {
+  private var selectedCategory: Binding<SearchFiltersCategory> {
+    Binding {
+      self.searchFilters.category.selectedCategory
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.category(newValue))
+      }
+    }
+  }
+
+  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
+    Binding {
+      self.searchFilters.percentRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onFilter,
+         let bucket = newValue {
+        action(.percentRaised(bucket))
+      }
+    }
+  }
+
+  private var selectedLocation: Binding<Location?> {
+    Binding {
+      self.searchFilters.location.selectedLocation
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.location(newValue))
+      }
+    }
+  }
+
+  private var selectedAmountRaisedBucket: Binding<DiscoveryParams.AmountRaisedBucket?> {
+    Binding {
+      self.searchFilters.amountRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onFilter,
+         let bucket = newValue {
+        action(.amountRaised(bucket))
+      }
+    }
+  }
+
+  private var showRecommended: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.recommended
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.recommended(newValue))
+      }
+    }
+  }
+
+  private var showSavedProjects: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.savedProjects
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.savedProjects(newValue))
+      }
+    }
+  }
+
+  private var showProjectsWeLove: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.projectsWeLove
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.projectsWeLove(newValue))
+      }
+    }
+  }
+
+  private var showFollowing: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.following
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.following(newValue))
+      }
+    }
+  }
+}
+
+// MARK: - Identifiable extension
 
 extension DiscoveryParams.State: @retroactive Identifiable {
   public var id: String {
