@@ -205,7 +205,11 @@ import KsApi
     internal static let lotsOfFlagsTemplate = PPOProjectCardModel(
       isUnread: true,
       alerts: [
-        .init(type: .warning, icon: .time, message: "This is a very long flag"),
+        .init(
+          type: .warning,
+          icon: .time,
+          message: "This is a very very very very very very very very very very long flag"
+        ),
         .init(
           type: .alert,
           icon: .alert,
