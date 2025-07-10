@@ -60,12 +60,12 @@ extension UserEnvelope {
     guard
       let userFragment = data.me?.fragments.userEmailFragment,
       let featuresFragment = data.me?.fragments.userFeaturesFragment,
-      let ppoUserFragment = data.me?.fragments.ppoUserSetupFragment
+      let ppoUserFragment = data.me?.fragments.pPOUserSetupFragment
     else { return nil }
 
     let graphUser = GraphUserSetup(
       email: userFragment.email,
-      enabledFeatures: Set(featuresFragment.enabledFeatures),
+      enabledFeatures: Set(featuresFragment.enabledFeatures.compactMap { $0.value }),
       ppoHasAction: ppoUserFragment.ppoHasAction,
       backingActionCount: ppoUserFragment.backingActionCount
     )

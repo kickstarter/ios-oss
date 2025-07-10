@@ -8,21 +8,15 @@ public enum DeletePaymentSourceMutationTemplate {
   var data: GraphAPI.DeletePaymentSourceMutation.Data {
     switch self {
     case .valid:
-      return testGraphObject<
-        GraphAPI.DeletePaymentSourceMutation
-          .Data
-      >(data: self.deletePaymentSourceMutationResultMap)
+      return try! testGraphObject(data: self.deletePaymentSourceMutationResultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.DeletePaymentSourceMutation
-          .Data
-      >(data: self.deletePaymentSourceMutationErroredResultMap)
+      return try! testGraphObject(data: self.deletePaymentSourceMutationErroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var deletePaymentSourceMutationResultMap: [String: Any?] {
+  private var deletePaymentSourceMutationResultMap: [String: Any] {
     [
       "paymentSourceDelete": [
         "user": [
@@ -50,7 +44,7 @@ public enum DeletePaymentSourceMutationTemplate {
     ]
   }
 
-  private var deletePaymentSourceMutationErroredResultMap: [String: Any?] {
+  private var deletePaymentSourceMutationErroredResultMap: [String: Any] {
     let resultMap = self.deletePaymentSourceMutationResultMap
 
     let topLevelMap = resultMap["paymentSourceDelete"] ?? [:]

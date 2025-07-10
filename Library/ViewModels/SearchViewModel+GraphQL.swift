@@ -45,11 +45,11 @@ extension GraphAPI.RaisedBuckets {
 
     switch raised {
     case .bucket_0:
-      return GraphAPI.RaisedBuckets.bucket_0
+      return GraphAPI.RaisedBuckets.bucket0
     case .bucket_1:
-      return GraphAPI.RaisedBuckets.bucket_1
+      return GraphAPI.RaisedBuckets.bucket1
     case .bucket_2:
-      return GraphAPI.RaisedBuckets.bucket_2
+      return GraphAPI.RaisedBuckets.bucket2
     }
   }
 }
@@ -62,15 +62,15 @@ extension GraphAPI.PledgedBuckets {
 
     switch pledged {
     case .bucket_0:
-      return GraphAPI.PledgedBuckets.bucket_0
+      return GraphAPI.PledgedBuckets.bucket0
     case .bucket_1:
-      return GraphAPI.PledgedBuckets.bucket_1
+      return GraphAPI.PledgedBuckets.bucket1
     case .bucket_2:
-      return GraphAPI.PledgedBuckets.bucket_2
+      return GraphAPI.PledgedBuckets.bucket2
     case .bucket_3:
-      return GraphAPI.PledgedBuckets.bucket_3
+      return GraphAPI.PledgedBuckets.bucket3
     case .bucket_4:
-      return GraphAPI.PledgedBuckets.bucket_4
+      return GraphAPI.PledgedBuckets.bucket4
     }
   }
 }
@@ -117,12 +117,12 @@ extension GraphAPI.SearchQuery {
 
     return GraphAPI.SearchQuery(
       term: GraphQLNullable.someOrNil(params.query),
-      sort: GraphQLNullable.caseOrNil(sort),
+      sort: GraphQLEnum.caseOrNil(sort),
       categoryId: GraphQLNullable.someOrNil(categoryId),
-      state: GraphQLNullable.caseOrNil(state),
-      raised: GraphQLNullable.caseOrNil(raised),
+      state: GraphQLEnum.caseOrNil(state),
+      raised: GraphQLEnum.caseOrNil(raised),
       locationId: GraphQLNullable.someOrNil(locationId),
-      pledged: GraphQLNullable.someOrNil(pledged),
+      pledged: GraphQLEnum.caseOrNil(pledged),
       showRecommended: GraphQLNullable.someOrNil(showRecommended),
       showSavedProjects: GraphQLNullable.someOrNil(showSavedProjects),
       showProjectsWeLove: GraphQLNullable.someOrNil(showProjectsWeLove),
@@ -164,11 +164,11 @@ extension DiscoveryParams {
   }
 }
 
-extension GraphAPI.SearchQuery.Data.Project.Node: @retroactive Equatable {}
+extension GraphAPI.SearchQuery.Data.Projects.Node: @retroactive Equatable {}
 
 public func == (
-  lhs: GraphAPI.SearchQuery.Data.Project.Node,
-  rhs: GraphAPI.SearchQuery.Data.Project.Node
+  lhs: GraphAPI.SearchQuery.Data.Projects.Node,
+  rhs: GraphAPI.SearchQuery.Data.Projects.Node
 ) -> Bool {
   return lhs.fragments.backerDashboardProjectCellFragment.projectId == rhs.fragments
     .backerDashboardProjectCellFragment.projectId

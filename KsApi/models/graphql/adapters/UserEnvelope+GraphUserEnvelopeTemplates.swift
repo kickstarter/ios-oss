@@ -1,7 +1,7 @@
 @testable import KsApi
 
 public struct GraphUserEnvelopeTemplates {
-  static let userJSONDict: [String: Any?] =
+  static let userJSONDict: [String: Any] =
     [
       "me": [
         "chosenCurrency": nil,

@@ -12,10 +12,10 @@ class GraphAPI_CreatePaymentSourceInput_CreatePaymentSourceInputTests: XCTestCas
 
     let graphInput = GraphAPI.CreatePaymentSourceInput.from(input)
 
-    XCTAssertEqual(graphInput.paymentType, .creditCard)
-    XCTAssertEqual(graphInput.reusable, input.reusable)
-    XCTAssertEqual(graphInput.stripeToken, input.stripeToken)
-    XCTAssertEqual(graphInput.stripeCardId, input.stripeCardId)
+    XCTAssertEqual(graphInput.paymentType.unwrapped?.value, .creditCard)
+    XCTAssertEqual(graphInput.reusable.unwrapped, input.reusable)
+    XCTAssertEqual(graphInput.stripeToken.unwrapped, input.stripeToken)
+    XCTAssertEqual(graphInput.stripeCardId.unwrapped, input.stripeCardId)
   }
 
   func testPaymentSheetPaymentSourceInputCreation_WithValidData_Success() {
@@ -23,7 +23,7 @@ class GraphAPI_CreatePaymentSourceInput_CreatePaymentSourceInputTests: XCTestCas
 
     let graphInput = GraphAPI.CreatePaymentSourceInput.from(input)
 
-    XCTAssertEqual(graphInput.intentClientSecret, input.intentClientSecret)
-    XCTAssertEqual(graphInput.reusable, input.reuseable)
+    XCTAssertEqual(graphInput.intentClientSecret.unwrapped, input.intentClientSecret)
+    XCTAssertEqual(graphInput.reusable.unwrapped, input.reuseable)
   }
 }

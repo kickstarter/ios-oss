@@ -8,21 +8,15 @@ public enum PostCommentMutationTemplate {
   var data: GraphAPI.PostCommentMutation.Data {
     switch self {
     case .valid:
-      return testGraphObject<
-        GraphAPI.PostCommentMutation
-          .Data
-      >(data: self.postCommentMutationSourceResultMap)
+      return try! testGraphObject(data: self.postCommentMutationSourceResultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.PostCommentMutation
-          .Data
-      >(data: self.postCommentMutationSourceErroredResultMap)
+      return try! testGraphObject(data: self.postCommentMutationSourceErroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var postCommentMutationSourceResultMap: [String: Any?] {
+  private var postCommentMutationSourceResultMap: [String: Any] {
     let rawDictionary = [
       "createComment": [
         "__typename": "PostCommentPayload",
@@ -55,7 +49,7 @@ public enum PostCommentMutationTemplate {
     return rawDictionary
   }
 
-  private var postCommentMutationSourceErroredResultMap: [String: Any?] {
+  private var postCommentMutationSourceErroredResultMap: [String: Any] {
     return [:]
   }
 }

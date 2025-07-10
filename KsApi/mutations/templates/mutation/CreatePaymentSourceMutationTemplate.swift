@@ -8,25 +8,19 @@ public enum CreatePaymentSourceMutationTemplate {
   var data: GraphAPI.CreatePaymentSourceMutation.Data {
     switch self {
     case .valid:
-      return testGraphObject<
-        GraphAPI.CreatePaymentSourceMutation
-          .Data
-      >(data: self.createPaymentSourceMutationResultMap)
+      return try! testGraphObject(data: self.createPaymentSourceMutationResultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.CreatePaymentSourceMutation
-          .Data
-      >(data: self.createPaymentSourceMutationErroredResultMap)
+      return try! testGraphObject(data: self.createPaymentSourceMutationErroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var createPaymentSourceMutationResultMap: [String: Any?] {
+  private var createPaymentSourceMutationResultMap: [String: Any] {
     [
       "createPaymentSource": [
         "__typename": "CreatePaymentSourcePayload",
-        "clientMutationId": nil,
+        // "clientMutationId": nil,
         "isSuccessful": true,
         "paymentSource": [
           "__typename": "CreditCard",
@@ -41,8 +35,8 @@ public enum CreatePaymentSourceMutationTemplate {
     ]
   }
 
-  private var createPaymentSourceMutationErroredResultMap: [String: Any?] {
-    guard var modifiedData = createPaymentSourceMutationResultMap["createPaymentSource"] as? [String: Any?]
+  private var createPaymentSourceMutationErroredResultMap: [String: Any] {
+    guard var modifiedData = createPaymentSourceMutationResultMap["createPaymentSource"] as? [String: Any]
     else {
       return self.createPaymentSourceMutationResultMap
     }

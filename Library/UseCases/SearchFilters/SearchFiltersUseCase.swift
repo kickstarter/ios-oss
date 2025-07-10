@@ -298,7 +298,7 @@ public enum SearchFilterEvent {
   case location(Location?)
 }
 
-private extension GraphAPI.LocationsByTermQuery.Data.Location {}
+private extension GraphAPI.LocationsByTermQuery.Data.Locations {}
 
 private extension MutableProperty {
   /// Emits its current value when `takeInitialValueWhen` is sent, and whenever the value changes, too.

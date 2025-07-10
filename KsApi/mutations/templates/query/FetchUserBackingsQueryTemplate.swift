@@ -8,15 +8,15 @@ public enum FetchUserBackingsQueryTemplate {
   var data: GraphAPI.FetchUserBackingsQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchUserBackingsQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchUserBackingsQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var validResultMap: [String: Any?] {
+  private var validResultMap: [String: Any] {
     [
       "data": [
         "me": [
@@ -170,7 +170,7 @@ public enum FetchUserBackingsQueryTemplate {
     ]
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return [:]
   }
 }

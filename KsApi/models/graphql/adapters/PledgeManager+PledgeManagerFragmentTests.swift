@@ -3,7 +3,7 @@ import XCTest
 
 final class PledgeManager_PledgeManagerFragmentTests: XCTestCase {
   func test() {
-    let pmFragment: GraphAPI.PledgeManagerFragment = testGraphObject(
+    let pmFragment: GraphAPI.PledgeManagerFragment = try! testGraphObject(
       data: [
         "id": "UGxlZGdlTWFuYWdlci05MQ==",
         "acceptsNewBackers": true

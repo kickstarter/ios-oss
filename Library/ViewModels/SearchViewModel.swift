@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 
 public typealias SearchResultCard = ProjectCardProperties
-public typealias SearchResult = GraphAPI.SearchQuery.Data.Project.Node
+public typealias SearchResult = GraphAPI.SearchQuery.Data.Projects.Node
 
 public struct SearchResults {
   public let isProjectsTitleVisible: Bool

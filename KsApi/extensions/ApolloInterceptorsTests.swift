@@ -23,7 +23,7 @@ class ApolloInterceptorsTests: XCTestCase {
     )
 
     interceptor.interceptAsync(
-      chain: RequestChain(interceptors: []),
+      chain: InterceptorRequestChain(interceptors: []),
       request: request,
       response: nil
     ) { _ in }
