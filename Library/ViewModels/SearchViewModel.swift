@@ -139,14 +139,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     // DiscoveryParams using the users currently selected query text, sort and filters.
     let queryParams: Signal<DiscoveryParams, Never> = Signal.combineLatest(
       queryText,
-      self.searchFiltersUseCase.selectedSort,
-      self.searchFiltersUseCase.selectedCategory,
-      self.searchFiltersUseCase.selectedState,
-      self.searchFiltersUseCase.selectedPercentRaisedBucket,
-      self.searchFiltersUseCase.selectedLocation,
-      self.searchFiltersUseCase.selectedAmountRaisedBucket
+      self.searchFiltersUseCase.dataOutputs.selectedSort,
+      self.searchFiltersUseCase.dataOutputs.selectedCategory,
+      self.searchFiltersUseCase.dataOutputs.selectedState,
+      self.searchFiltersUseCase.dataOutputs.selectedPercentRaisedBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedLocation,
+      self.searchFiltersUseCase.dataOutputs.selectedAmountRaisedBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedToggles
     )
-    .map { query, sort, category, state, percentRaised, location, amountRaised in
+    .map { query, sort, category, state, percentRaised, location, amountRaised, toggles in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
@@ -154,7 +155,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         state: state,
         percentRaised: percentRaised,
         location: location,
-        amountRaised: amountRaised
+        amountRaised: amountRaised,
+        toggles: toggles
       )
     }
 

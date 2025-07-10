@@ -4323,6 +4323,8 @@ public enum GraphAPI {
     case cancelled
     /// Backer issued a dispute and we (kickstarter) lost the dispute
     case chargebackLost
+    /// Payment increment has been refunded
+    case refunded
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4333,6 +4335,7 @@ public enum GraphAPI {
         case "ERRORED": self = .errored
         case "CANCELLED": self = .cancelled
         case "CHARGEBACK_LOST": self = .chargebackLost
+        case "REFUNDED": self = .refunded
         default: self = .__unknown(rawValue)
       }
     }
@@ -4344,6 +4347,7 @@ public enum GraphAPI {
         case .errored: return "ERRORED"
         case .cancelled: return "CANCELLED"
         case .chargebackLost: return "CHARGEBACK_LOST"
+        case .refunded: return "REFUNDED"
         case .__unknown(let value): return value
       }
     }
@@ -4355,6 +4359,7 @@ public enum GraphAPI {
         case (.errored, .errored): return true
         case (.cancelled, .cancelled): return true
         case (.chargebackLost, .chargebackLost): return true
+        case (.refunded, .refunded): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -4367,6 +4372,7 @@ public enum GraphAPI {
         .errored,
         .cancelled,
         .chargebackLost,
+        .refunded,
       ]
     }
   }
@@ -4642,6 +4648,7 @@ public enum GraphAPI {
     case dkCurrencySelector
     case noCurrencySelector
     case plUsdCurrency_2025
+    case sgUsdCurrency_2025
     case seCurrencySelector
     case datalakeFeEvents
     case creatorDemographicsSurvey
@@ -4695,12 +4702,14 @@ public enum GraphAPI {
     case digitalRewards_2025
     case digitalRewardsUploadButton_2025
     case pledgeOverTimeEditPledge_2025
-    case gatePmForPlot_2025
     case eufymakeBackerReport
     case multiVatIds_2025
     case shopifySyncIntegration_2025
     case creatorTaxReporting_2025
     case allowSurveyResponseEdits_2025
+    case shopifyKickoffSyncJob_2025
+    case taxCategoryImprovements
+    case creatorOptOutFeedback_2025
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -4769,6 +4778,7 @@ public enum GraphAPI {
         case "dk_currency_selector": self = .dkCurrencySelector
         case "no_currency_selector": self = .noCurrencySelector
         case "pl_usd_currency_2025": self = .plUsdCurrency_2025
+        case "sg_usd_currency_2025": self = .sgUsdCurrency_2025
         case "se_currency_selector": self = .seCurrencySelector
         case "datalake_fe_events": self = .datalakeFeEvents
         case "creator_demographics_survey": self = .creatorDemographicsSurvey
@@ -4822,12 +4832,14 @@ public enum GraphAPI {
         case "digital_rewards_2025": self = .digitalRewards_2025
         case "digital_rewards__upload_button_2025": self = .digitalRewardsUploadButton_2025
         case "pledge_over_time_edit_pledge_2025": self = .pledgeOverTimeEditPledge_2025
-        case "gate_pm_for_plot_2025": self = .gatePmForPlot_2025
         case "eufymake_backer_report": self = .eufymakeBackerReport
         case "multi_vat_ids_2025": self = .multiVatIds_2025
         case "shopify_sync_integration_2025": self = .shopifySyncIntegration_2025
         case "creator_tax_reporting_2025": self = .creatorTaxReporting_2025
         case "allow_survey_response_edits_2025": self = .allowSurveyResponseEdits_2025
+        case "shopify_kickoff_sync_job_2025": self = .shopifyKickoffSyncJob_2025
+        case "tax_category_improvements": self = .taxCategoryImprovements
+        case "creator_opt_out_feedback_2025": self = .creatorOptOutFeedback_2025
         default: self = .__unknown(rawValue)
       }
     }
@@ -4897,6 +4909,7 @@ public enum GraphAPI {
         case .dkCurrencySelector: return "dk_currency_selector"
         case .noCurrencySelector: return "no_currency_selector"
         case .plUsdCurrency_2025: return "pl_usd_currency_2025"
+        case .sgUsdCurrency_2025: return "sg_usd_currency_2025"
         case .seCurrencySelector: return "se_currency_selector"
         case .datalakeFeEvents: return "datalake_fe_events"
         case .creatorDemographicsSurvey: return "creator_demographics_survey"
@@ -4950,12 +4963,14 @@ public enum GraphAPI {
         case .digitalRewards_2025: return "digital_rewards_2025"
         case .digitalRewardsUploadButton_2025: return "digital_rewards__upload_button_2025"
         case .pledgeOverTimeEditPledge_2025: return "pledge_over_time_edit_pledge_2025"
-        case .gatePmForPlot_2025: return "gate_pm_for_plot_2025"
         case .eufymakeBackerReport: return "eufymake_backer_report"
         case .multiVatIds_2025: return "multi_vat_ids_2025"
         case .shopifySyncIntegration_2025: return "shopify_sync_integration_2025"
         case .creatorTaxReporting_2025: return "creator_tax_reporting_2025"
         case .allowSurveyResponseEdits_2025: return "allow_survey_response_edits_2025"
+        case .shopifyKickoffSyncJob_2025: return "shopify_kickoff_sync_job_2025"
+        case .taxCategoryImprovements: return "tax_category_improvements"
+        case .creatorOptOutFeedback_2025: return "creator_opt_out_feedback_2025"
         case .__unknown(let value): return value
       }
     }
@@ -5025,6 +5040,7 @@ public enum GraphAPI {
         case (.dkCurrencySelector, .dkCurrencySelector): return true
         case (.noCurrencySelector, .noCurrencySelector): return true
         case (.plUsdCurrency_2025, .plUsdCurrency_2025): return true
+        case (.sgUsdCurrency_2025, .sgUsdCurrency_2025): return true
         case (.seCurrencySelector, .seCurrencySelector): return true
         case (.datalakeFeEvents, .datalakeFeEvents): return true
         case (.creatorDemographicsSurvey, .creatorDemographicsSurvey): return true
@@ -5078,12 +5094,14 @@ public enum GraphAPI {
         case (.digitalRewards_2025, .digitalRewards_2025): return true
         case (.digitalRewardsUploadButton_2025, .digitalRewardsUploadButton_2025): return true
         case (.pledgeOverTimeEditPledge_2025, .pledgeOverTimeEditPledge_2025): return true
-        case (.gatePmForPlot_2025, .gatePmForPlot_2025): return true
         case (.eufymakeBackerReport, .eufymakeBackerReport): return true
         case (.multiVatIds_2025, .multiVatIds_2025): return true
         case (.shopifySyncIntegration_2025, .shopifySyncIntegration_2025): return true
         case (.creatorTaxReporting_2025, .creatorTaxReporting_2025): return true
         case (.allowSurveyResponseEdits_2025, .allowSurveyResponseEdits_2025): return true
+        case (.shopifyKickoffSyncJob_2025, .shopifyKickoffSyncJob_2025): return true
+        case (.taxCategoryImprovements, .taxCategoryImprovements): return true
+        case (.creatorOptOutFeedback_2025, .creatorOptOutFeedback_2025): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -5154,6 +5172,7 @@ public enum GraphAPI {
         .dkCurrencySelector,
         .noCurrencySelector,
         .plUsdCurrency_2025,
+        .sgUsdCurrency_2025,
         .seCurrencySelector,
         .datalakeFeEvents,
         .creatorDemographicsSurvey,
@@ -5207,12 +5226,14 @@ public enum GraphAPI {
         .digitalRewards_2025,
         .digitalRewardsUploadButton_2025,
         .pledgeOverTimeEditPledge_2025,
-        .gatePmForPlot_2025,
         .eufymakeBackerReport,
         .multiVatIds_2025,
         .shopifySyncIntegration_2025,
         .creatorTaxReporting_2025,
         .allowSurveyResponseEdits_2025,
+        .shopifyKickoffSyncJob_2025,
+        .taxCategoryImprovements,
+        .creatorOptOutFeedback_2025,
       ]
     }
   }
@@ -12584,10 +12605,7 @@ public enum GraphAPI {
               }
             }
 
-            /// Simple shipping rules
-            /// expanded as a faster alternative to
-            /// shippingRulesExpanded since connection
-            /// type is slow
+            /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
             public var simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]? {
               get {
                 return (resultMap["simpleShippingRulesExpanded"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [SimpleShippingRulesExpanded?] in value.map { (value: ResultMap?) -> SimpleShippingRulesExpanded? in value.flatMap { (value: ResultMap) -> SimpleShippingRulesExpanded in SimpleShippingRulesExpanded(unsafeResultMap: value) } } }
@@ -23372,8 +23390,7 @@ public enum GraphAPI {
       }
     }
 
-    /// Amount for claiming this reward, in the current user's chosen
-    /// currency
+    /// Amount for claiming this reward, in the current user's chosen currency
     public var convertedAmount: ConvertedAmount {
       get {
         return ConvertedAmount(unsafeResultMap: resultMap["convertedAmount"]! as! ResultMap)
@@ -23405,8 +23422,7 @@ public enum GraphAPI {
       }
     }
 
-    /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't
-    /// have a title.
+    /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
     public var displayName: String {
       get {
         return resultMap["displayName"]! as! String
@@ -23495,8 +23511,7 @@ public enum GraphAPI {
       }
     }
 
-    /// Where the reward can be locally received if local receipt
-    /// is selected as the shipping preference
+    /// Where the reward can be locally received if local receipt is selected as the shipping preference
     public var localReceiptLocation: LocalReceiptLocation? {
       get {
         return (resultMap["localReceiptLocation"] as? ResultMap).flatMap { LocalReceiptLocation(unsafeResultMap: $0) }
@@ -23586,8 +23601,7 @@ public enum GraphAPI {
       }
     }
 
-    /// Shipping rules defined by the creator for
-    /// this reward
+    /// Shipping rules defined by the creator for this reward
     public var shippingRules: [ShippingRule?]? {
       get {
         return (resultMap["shippingRules"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [ShippingRule?] in value.map { (value: ResultMap?) -> ShippingRule? in value.flatMap { (value: ResultMap) -> ShippingRule in ShippingRule(unsafeResultMap: value) } } }
