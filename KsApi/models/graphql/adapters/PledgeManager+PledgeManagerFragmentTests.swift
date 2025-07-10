@@ -4,10 +4,14 @@ import XCTest
 final class PledgeManager_PledgeManagerFragmentTests: XCTestCase {
   func test() {
     let pmFragment: GraphAPI.PledgeManagerFragment = try! testGraphObject(
-      data: [
-        "id": "UGxlZGdlTWFuYWdlci05MQ==",
-        "acceptsNewBackers": true
-      ]
+      jsonString:
+      """
+        {
+              "__typename": "PledgeManager",
+              "id": "UGxlZGdlTWFuYWdlci05MQ==",
+              "acceptsNewBackers": true
+        }
+      """
     )
 
     let pledgeManager = PledgeManager(fromFragment: pmFragment)
