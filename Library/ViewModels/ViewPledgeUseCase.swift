@@ -8,7 +8,7 @@ public protocol ViewPledgeUseCaseInputs {
 
 public protocol ViewPledgeUseCaseOutputs {
   var goToNativePledgeView: Signal<ManagePledgeViewParamConfigData, Never> { get }
-  var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
+  var goToPledgeManagementPledgeView: Signal<String, Never> { get }
 }
 
 public protocol ViewPledgeUseCaseType {
@@ -40,7 +40,7 @@ public final class ViewPledgeUseCase: ViewPledgeUseCaseType,
     self.goToPledgeManagementPledgeView = projectAndBacking
       .takeWhen(shouldGoToPledgeManagementPledgeView.filter { $0 })
       .compactMap { _, backing in
-        URL(string: backing.backingDetailsPageRoute)
+        backing.backingDetailsPageRoute
       }
 
     self.goToNativePledgeView = projectAndBacking
@@ -51,7 +51,7 @@ public final class ViewPledgeUseCase: ViewPledgeUseCaseType,
   }
 
   public let goToNativePledgeView: Signal<ManagePledgeViewParamConfigData, Never>
-  public let goToPledgeManagementPledgeView: Signal<URL, Never>
+  public let goToPledgeManagementPledgeView: Signal<String, Never>
 
   public var inputs: ViewPledgeUseCaseInputs { return self }
   public var outputs: ViewPledgeUseCaseOutputs { return self }
