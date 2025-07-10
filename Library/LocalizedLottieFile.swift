@@ -2,6 +2,7 @@ import Foundation
 
 enum OnboardingLotteFileNames: String {
   case welcome = "onboarding-flow-welcome"
+  case appTracking = "onboarding-flow-activity-tracking"
   case enableNotifications = "onboarding-flow-enable-notifications"
   case saveProjects = "onboarding-flow-save-projects"
   case loginSignup = "onboarding-flow-login-signup"
