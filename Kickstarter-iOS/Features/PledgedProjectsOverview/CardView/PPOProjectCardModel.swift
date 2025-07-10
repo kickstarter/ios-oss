@@ -35,7 +35,11 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 
   // MARK: - Identifiable
 
-  public let id = UUID()
+  // Create the card's id from the project id, tier type, and actions.
+  // If any other fields change, the card should be considered the same card, just modified.
+  public var id: String {
+    "\(self.projectId)-\(self.tierType)-\(self.actions.0.id)-\(self.actions.1?.id ?? "")"
+  }
 
   // MARK: - Equatable
 
