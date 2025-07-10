@@ -13,7 +13,7 @@ internal final class MessagesViewModelTests: TestCase {
   private let emptyStateMessage = TestObserver<String, Never>()
   private let goToBackingProjectParam = TestObserver<Param, Never>()
   private let goToBackingBackingParam = TestObserver<Param?, Never>()
-  private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
+  private let goToPledgeManagementViewPledge = TestObserver<String, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let goToRefTag = TestObserver<RefTag, Never>()
   private let messages = TestObserver<[Message], Never>()
@@ -238,7 +238,7 @@ internal final class MessagesViewModelTests: TestCase {
 
     let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
-    let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+    let backingDetailsPageURL = backing.backingDetailsPageRoute
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [

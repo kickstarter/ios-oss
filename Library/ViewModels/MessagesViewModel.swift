@@ -43,7 +43,7 @@ public protocol MessagesViewModelOutputs {
   var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
   /// Emits when we should go to the Pledge Management View Pledge webview.
-  var goToPledgeManagementViewPledge: Signal<URL, Never> { get }
+  var goToPledgeManagementViewPledge: Signal<String, Never> { get }
 
   /// Emits when we should go to the projet.
   var goToProject: Signal<(Project, RefTag), Never> { get }
@@ -312,7 +312,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.viewPledgeUseCase.goToNativePledgeView
   }
 
-  public var goToPledgeManagementViewPledge: Signal<URL, Never> {
+  public var goToPledgeManagementViewPledge: Signal<String, Never> {
     self.viewPledgeUseCase.goToPledgeManagementPledgeView
   }
 

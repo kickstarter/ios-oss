@@ -40,8 +40,8 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
-  private let goToPledgeManagementViewPledge = TestObserver<URL, Never>()
-  private let goToPledgeManager = TestObserver<URL, Never>()
+  private let goToPledgeManagementViewPledge = TestObserver<String, Never>()
+  private let goToPledgeManager = TestObserver<String, Never>()
   private let goToReportProject = TestObserver<(Bool, String, String), Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
@@ -1138,7 +1138,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+      let backingDetailsPageURL = backing.backingDetailsPageRoute
 
       self.configureInitialState(.left(project))
 
@@ -1171,7 +1171,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      let backingDetailsPageURL = URL(string: backing.backingDetailsPageRoute)!
+      let backingDetailsPageURL = backing.backingDetailsPageRoute
 
       self.configureInitialState(.left(project))
 
@@ -1190,9 +1190,9 @@ final class ProjectPageViewModelTests: TestCase {
   func testGoToPledgeManager() {
     let project = Project.netNewBacker
 
-    let urlString = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
-      .redemptionPageUrl
-    let redemptionPageUrl = URL(string: urlString)!
+    let redemptionPageUrl =
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
+      project.redemptionPageUrl
 
     self.configureInitialState(.left(project))
 
