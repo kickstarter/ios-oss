@@ -2012,6 +2012,7 @@
 		E1B8E33E2E20257000299046 /* Reward.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2222E20257000299046 /* Reward.graphql.swift */; };
 		E1B8E33F2E20257000299046 /* FetchProjectByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E18A2E20257000299046 /* FetchProjectByIdQuery.graphql.swift */; };
 		E1B8E3402E20257000299046 /* Refund.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E2202E20257000299046 /* Refund.graphql.swift */; };
+		E1B8E3462E20263C00299046 /* GraphQLNullable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E3452E20263C00299046 /* GraphQLNullable.swift */; };
 		E1B9F1C92DA46DC400F29E1A /* SearchFiltersHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */; };
 		E1BAA03A2C1A1CCD004F8B06 /* PPOViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */; };
 		E1BAA03B2C1A1CCD004F8B06 /* PPOView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA0342C1A1907004F8B06 /* PPOView.swift */; };
@@ -2023,7 +2024,6 @@
 		E1BBB65F2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
 		E1BBB6712E035BDD00291D48 /* FetchLocationsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66D2E035BDD00291D48 /* FetchLocationsUseCase.swift */; };
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
-		E1C8D79C2E171244006C4750 /* GraphQLInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C8D79B2E171244006C4750 /* GraphQLInput.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
@@ -4092,6 +4092,7 @@
 		E1B8E2462E20257000299046 /* SchemaConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		E1B8E2472E20257000299046 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		E1B8E2492E20257000299046 /* GraphAPI.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphAPI.graphql.swift; sourceTree = "<group>"; };
+		E1B8E3452E20263C00299046 /* GraphQLNullable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLNullable.swift; sourceTree = "<group>"; };
 		E1B9F1C82DA46DC400F29E1A /* SearchFiltersHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderView.swift; sourceTree = "<group>"; };
 		E1BAA0342C1A1907004F8B06 /* PPOView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOView.swift; sourceTree = "<group>"; };
 		E1BAA0362C1A1B13004F8B06 /* PPOViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOViewModel.swift; sourceTree = "<group>"; };
@@ -4101,7 +4102,6 @@
 		E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI+TestHelpers.swift"; sourceTree = "<group>"; };
 		E1BBB66D2E035BDD00291D48 /* FetchLocationsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCase.swift; sourceTree = "<group>"; };
 		E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
-		E1C8D79B2E171244006C4750 /* GraphQLInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLInput.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
 		E1D569B92E09D5CB00C78297 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		E1D569C52E0C787800C78297 /* AmountRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRaisedView.swift; sourceTree = "<group>"; };
@@ -7914,7 +7914,6 @@
 				D01588281EEB2ED7006E7684 /* ServiceTests.swift */,
 				D01588291EEB2ED7006E7684 /* ServiceType.swift */,
 				D015882A1EEB2ED7006E7684 /* ServiceTypeTests.swift */,
-				E1C8D79B2E171244006C4750 /* GraphQLInput.swift */,
 				E1AA8ABE2AEABB1900AC98BF /* combine */,
 				D01587691EEB2ED6006E7684 /* extensions */,
 				8ADCCDAA2656BC020079D308 /* fragments */,
@@ -7930,6 +7929,7 @@
 		D01587691EEB2ED6006E7684 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E1B8E3452E20263C00299046 /* GraphQLNullable.swift */,
 				06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */,
 				8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */,
 				8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */,
@@ -10668,7 +10668,6 @@
 				06232D412795EC3900A81755 /* ViewElementType.swift in Sources */,
 				4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */,
 				06232D3D2795EC2900A81755 /* HTMLRawText.swift in Sources */,
-				E1C8D79C2E171244006C4750 /* GraphQLInput.swift in Sources */,
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				3317467E2E0355DF00C5FC1C /* PledgeManager.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
@@ -10902,6 +10901,7 @@
 				E1B8E3122E20257000299046 /* CreditCardTypes.graphql.swift in Sources */,
 				E1B8E3132E20257000299046 /* LocationFragment.graphql.swift in Sources */,
 				E1B8E3142E20257000299046 /* Comment.graphql.swift in Sources */,
+				E1B8E3462E20263C00299046 /* GraphQLNullable.swift in Sources */,
 				E1B8E3152E20257000299046 /* PostCommentMutation.graphql.swift in Sources */,
 				E1B8E3162E20257000299046 /* PaymentSourceDeletePayload.graphql.swift in Sources */,
 				E1B8E3172E20257000299046 /* FetchProjectFriendsByIdQuery.graphql.swift in Sources */,
