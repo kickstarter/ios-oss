@@ -19,68 +19,47 @@ public enum OnboardingItemType {
 
 public struct OnboardingItem: Identifiable, Equatable {
   public var id: UUID = .init()
-  var title: String
-  var subTitle: String
-  var lottieView: LottieAnimationView = .init()
-  var type: OnboardingItemType
+  let title: String
+  let subTitle: String
+  let lottieView: LottieAnimationView = .init()
+  let type: OnboardingItemType
 
   // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-  public static let allItems: [OnboardingItem] = [
-    .init(
-      title: "Welcome to Kickstarter",
-      subTitle: """
-      Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.
-      """,
-      lottieView: .init(name: localizedOnboardingLottieFile(for: .welcome, in: .main) ?? "", bundle: .main),
-      type: .welcome
-    ),
-    .init(
-      title: "Save projects for later",
-      subTitle: """
-      Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab..
-      """,
-      lottieView: .init(
-        name: localizedOnboardingLottieFile(for: .saveProjects, in: .main) ?? "",
-        bundle: .main
+  public static var allItems: [OnboardingItem] = {
+    var items: [OnboardingItem] = []
+
+    [
+      makeOnboardingItem(
+        title: "Onboarding: Welcome to Kickstarter",
+        subTitle: "Onboarding: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
+        type: .welcome
       ),
-      type: .saveProjects
-    ),
-    .init(
-      title: "Stay in the know",
-      subTitle: """
-      Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.
-      """,
-      lottieView: .init(
-        name: localizedOnboardingLottieFile(for: .enableNotifications, in: .main) ?? "",
-        bundle: .main
+      makeOnboardingItem(
+        title: "Onboarding: Save projects for later",
+        subTitle: "Onboarding: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
+        type: .saveProjects
       ),
-      type: .enableNotifications
-    ),
-    .init(
-      title: "Personalize your experince",
-      subTitle: """
-      Allow tracking to help us improve your 
-      in-app experience. You can change your tracking preference anytime in your
-      device settings.
-      """,
-      lottieView: .init(
-        name: localizedOnboardingLottieFile(for: .appTracking, in: .main) ?? "",
-        bundle: .main
+      makeOnboardingItem(
+        title: "Onboarding: Stay in the know",
+        subTitle: "Onboarding: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
+        type: .enableNotifications
       ),
-      type: .allowTracking
-    ),
-    .init(
-      title: "Join the community",
-      subTitle: """
-      Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.
-      """,
-      lottieView: .init(
-        name: localizedOnboardingLottieFile(for: .loginSignup, in: .main) ?? "",
-        bundle: .main
+      makeOnboardingItem(
+        title: "Onboarding: Personalize your experince",
+        subTitle: "Onboarding: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
+        type: .allowTracking
       ),
-      type: .loginSignUp
-    )
-  ]
+      makeOnboardingItem(
+        title: "Onboarding: Join the community",
+        subTitle: "Onboarding: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
+        type: .loginSignUp
+      )
+    ]
+    .compactMap { $0 }
+    .forEach { items.append($0) }
+
+    return items
+  }()
 }
 
 public protocol OnboardingUseCaseType {
@@ -162,7 +141,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
       }
 
     _ = self.goToNextItemTappedSignal.signal
-      .map { itemType in
+      .observeValues { itemType in
         if itemType.isPermissionType {
           // TODO: Emit analytic tracking events here so that we know that the user opted skipped push notifications and/or AppTrackingTransparency views
         }
@@ -207,4 +186,24 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   public var uiInputs: any OnboardingUseCaseUIInputs { return self }
   public var uiOutputs: any OnboardingUseCaseUIOutputs { return self }
   public var outputs: any OnboardingUseCaseOutputs { return self }
+}
+
+// MARK: - Helpers
+
+private func makeOnboardingItem(
+  title: String,
+  subTitle: String,
+  type: OnboardingItemType
+) -> OnboardingItem? {
+  guard let lottieName = localizedOnboardingLottieFile(for: type, in: .main) else {
+    assertionFailure("Missing Lottie file for onboarding type: \(type)")
+    return nil
+  }
+
+  return OnboardingItem(
+    title: title,
+    subTitle: subTitle,
+    lottieView: .init(name: lottieName, bundle: .main),
+    type: type
+  )
 }
