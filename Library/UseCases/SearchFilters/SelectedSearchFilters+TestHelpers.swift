@@ -28,4 +28,20 @@ extension SearchFilters {
   var locationPill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .location })
   }
+
+  var followingPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .following })
+  }
+
+  var projectsWeLovePill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .projectsWeLove })
+  }
+
+  var recommendedPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .recommended })
+  }
+
+  var savedPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .saved })
+  }
 }
