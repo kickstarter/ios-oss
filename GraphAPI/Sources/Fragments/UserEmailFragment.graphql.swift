@@ -19,4 +19,18 @@ public struct UserEmailFragment: GraphAPI.SelectionSet, Fragment {
 
   /// A user's email address.
   public var email: String? { __data["email"] }
+
+  public init(
+    email: String? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.User.typename,
+        "email": email,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(UserEmailFragment.self)
+      ]
+    ))
+  }
 }

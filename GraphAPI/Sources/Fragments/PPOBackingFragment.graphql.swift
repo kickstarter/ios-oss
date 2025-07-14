@@ -37,6 +37,30 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
   /// If `requires_action` is true, `client_secret` should be used to initiate additional client-side authentication steps
   public var clientSecret: String? { __data["clientSecret"] }
 
+  public init(
+    amount: Amount,
+    id: GraphAPI.ID,
+    project: Project? = nil,
+    backingDetailsPageRoute: String,
+    deliveryAddress: DeliveryAddress? = nil,
+    clientSecret: String? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Backing.typename,
+        "amount": amount._fieldData,
+        "id": id,
+        "project": project._fieldData,
+        "backingDetailsPageRoute": backingDetailsPageRoute,
+        "deliveryAddress": deliveryAddress._fieldData,
+        "clientSecret": clientSecret,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PPOBackingFragment.self)
+      ]
+    ))
+  }
+
   /// Amount
   ///
   /// Parent Type: `Money`
@@ -62,6 +86,25 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PPOBackingFragment.Amount.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 
@@ -144,6 +187,76 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
       public var projectAnalyticsFragment: ProjectAnalyticsFragment { _toFragment() }
     }
 
+    public init(
+      creator: Creator? = nil,
+      image: Image? = nil,
+      name: String,
+      pid: Int,
+      slug: String,
+      addOns: AddOns? = nil,
+      backersCount: Int,
+      backing: Backing? = nil,
+      category: Category? = nil,
+      commentsCount: Int,
+      country: Country,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+      deadlineAt: GraphAPI.DateTime? = nil,
+      launchedAt: GraphAPI.DateTime? = nil,
+      isInPostCampaignPledgingPhase: Bool,
+      isWatched: Bool,
+      percentFunded: Int,
+      isPrelaunchActivated: Bool,
+      projectTags: [ProjectTag?],
+      postCampaignPledgingEnabled: Bool,
+      rewards: Rewards? = nil,
+      state: GraphQLEnum<GraphAPI.ProjectState>,
+      video: Video? = nil,
+      pledged: Pledged,
+      fxRate: Double,
+      usdExchangeRate: Double? = nil,
+      posts: Posts? = nil,
+      goal: Goal? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Project.typename,
+          "creator": creator._fieldData,
+          "image": image._fieldData,
+          "name": name,
+          "pid": pid,
+          "slug": slug,
+          "addOns": addOns._fieldData,
+          "backersCount": backersCount,
+          "backing": backing._fieldData,
+          "category": category._fieldData,
+          "commentsCount": commentsCount,
+          "country": country._fieldData,
+          "currency": currency,
+          "deadlineAt": deadlineAt,
+          "launchedAt": launchedAt,
+          "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+          "isWatched": isWatched,
+          "percentFunded": percentFunded,
+          "isPrelaunchActivated": isPrelaunchActivated,
+          "projectTags": projectTags._fieldData,
+          "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+          "rewards": rewards._fieldData,
+          "state": state,
+          "video": video._fieldData,
+          "pledged": pledged._fieldData,
+          "fxRate": fxRate,
+          "usdExchangeRate": usdExchangeRate,
+          "posts": posts._fieldData,
+          "goal": goal._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PPOBackingFragment.Project.self),
+          ObjectIdentifier(PPOProjectFragment.self),
+          ObjectIdentifier(ProjectAnalyticsFragment.self)
+        ]
+      ))
+    }
+
     /// Project.Creator
     ///
     /// Parent Type: `User`
@@ -160,6 +273,28 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
       public var name: String { __data["name"] }
       /// Projects a user has created.
       public var createdProjects: CreatedProjects? { __data["createdProjects"] }
+
+      public init(
+        email: String? = nil,
+        id: GraphAPI.ID,
+        name: String,
+        createdProjects: CreatedProjects? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.User.typename,
+            "email": email,
+            "id": id,
+            "name": name,
+            "createdProjects": createdProjects._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(PPOBackingFragment.Project.Creator.self),
+            ObjectIdentifier(PPOProjectFragment.Creator.self),
+            ObjectIdentifier(ProjectAnalyticsFragment.Creator.self)
+          ]
+        ))
+      }
 
       public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
     }
@@ -225,5 +360,35 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
     public var recipientName: String? { __data["recipientName"] }
     /// 2-letter country code
     public var countryCode: GraphQLEnum<GraphAPI.CountryCode> { __data["countryCode"] }
+
+    public init(
+      id: GraphAPI.ID,
+      addressLine1: String,
+      addressLine2: String? = nil,
+      city: String,
+      region: String? = nil,
+      postalCode: String? = nil,
+      phoneNumber: String? = nil,
+      recipientName: String? = nil,
+      countryCode: GraphQLEnum<GraphAPI.CountryCode>
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Address.typename,
+          "id": id,
+          "addressLine1": addressLine1,
+          "addressLine2": addressLine2,
+          "city": city,
+          "region": region,
+          "postalCode": postalCode,
+          "phoneNumber": phoneNumber,
+          "recipientName": recipientName,
+          "countryCode": countryCode,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PPOBackingFragment.DeliveryAddress.self)
+        ]
+      ))
+    }
   }
 }

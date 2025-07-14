@@ -97,6 +97,20 @@ public class SearchQuery: GraphQLQuery {
     /// Get some projects
     public var projects: Projects? { __data["projects"] }
 
+    public init(
+      projects: Projects? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "projects": projects._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(SearchQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Projects
     ///
     /// Parent Type: `ProjectsConnectionWithTotalCount`
@@ -117,6 +131,24 @@ public class SearchQuery: GraphQLQuery {
       public var totalCount: Int { __data["totalCount"] }
       /// Information to aid in pagination.
       public var pageInfo: PageInfo { __data["pageInfo"] }
+
+      public init(
+        nodes: [Node?]? = nil,
+        totalCount: Int,
+        pageInfo: PageInfo
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.ProjectsConnectionWithTotalCount.typename,
+            "nodes": nodes._fieldData,
+            "totalCount": totalCount,
+            "pageInfo": pageInfo._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(SearchQuery.Data.Projects.self)
+          ]
+        ))
+      }
 
       /// Projects.Node
       ///
@@ -221,6 +253,100 @@ public class SearchQuery: GraphQLQuery {
           public var projectPamphletMainCellPropertiesFragment: ProjectPamphletMainCellPropertiesFragment { _toFragment() }
         }
 
+        public init(
+          projectId: GraphAPI.ID,
+          name: String,
+          projectState: GraphQLEnum<GraphAPI.ProjectState>,
+          image: Image? = nil,
+          goal: Goal? = nil,
+          pledged: Pledged,
+          isLaunched: Bool,
+          projectPrelaunchActivated: Bool,
+          deadlineAt: GraphAPI.DateTime? = nil,
+          projectLaunchedAt: GraphAPI.DateTime? = nil,
+          isWatched: Bool,
+          addOns: AddOns? = nil,
+          backersCount: Int,
+          backing: Backing? = nil,
+          category: Category? = nil,
+          commentsCount: Int,
+          country: Country,
+          creator: Creator? = nil,
+          currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+          launchedAt: GraphAPI.DateTime? = nil,
+          pid: Int,
+          isInPostCampaignPledgingPhase: Bool,
+          percentFunded: Int,
+          isPrelaunchActivated: Bool,
+          projectTags: [ProjectTag?],
+          postCampaignPledgingEnabled: Bool,
+          rewards: Rewards? = nil,
+          state: GraphQLEnum<GraphAPI.ProjectState>,
+          video: Video? = nil,
+          fxRate: Double,
+          usdExchangeRate: Double? = nil,
+          posts: Posts? = nil,
+          prelaunchActivated: Bool,
+          url: String,
+          projectDescription: String,
+          stateChangedAt: GraphAPI.DateTime,
+          projectUsdExchangeRate: Double,
+          location: Location? = nil,
+          risks: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Project.typename,
+              "projectId": projectId,
+              "name": name,
+              "projectState": projectState,
+              "image": image._fieldData,
+              "goal": goal._fieldData,
+              "pledged": pledged._fieldData,
+              "isLaunched": isLaunched,
+              "projectPrelaunchActivated": projectPrelaunchActivated,
+              "deadlineAt": deadlineAt,
+              "projectLaunchedAt": projectLaunchedAt,
+              "isWatched": isWatched,
+              "addOns": addOns._fieldData,
+              "backersCount": backersCount,
+              "backing": backing._fieldData,
+              "category": category._fieldData,
+              "commentsCount": commentsCount,
+              "country": country._fieldData,
+              "creator": creator._fieldData,
+              "currency": currency,
+              "launchedAt": launchedAt,
+              "pid": pid,
+              "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+              "percentFunded": percentFunded,
+              "isPrelaunchActivated": isPrelaunchActivated,
+              "projectTags": projectTags._fieldData,
+              "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+              "rewards": rewards._fieldData,
+              "state": state,
+              "video": video._fieldData,
+              "fxRate": fxRate,
+              "usdExchangeRate": usdExchangeRate,
+              "posts": posts._fieldData,
+              "prelaunchActivated": prelaunchActivated,
+              "url": url,
+              "projectDescription": projectDescription,
+              "stateChangedAt": stateChangedAt,
+              "projectUsdExchangeRate": projectUsdExchangeRate,
+              "location": location._fieldData,
+              "risks": risks,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(SearchQuery.Data.Projects.Node.self),
+              ObjectIdentifier(BackerDashboardProjectCellFragment.self),
+              ObjectIdentifier(ProjectAnalyticsFragment.self),
+              ObjectIdentifier(ProjectCardFragment.self),
+              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.self)
+            ]
+          ))
+        }
+
         /// Projects.Node.Image
         ///
         /// Parent Type: `Photo`
@@ -233,6 +359,25 @@ public class SearchQuery: GraphQLQuery {
           public var id: GraphAPI.ID { __data["id"] }
           /// URL of the photo
           public var url: String { __data["url"] }
+
+          public init(
+            id: GraphAPI.ID,
+            url: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Photo.typename,
+                "id": id,
+                "url": url,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Image.self),
+                ObjectIdentifier(BackerDashboardProjectCellFragment.Image.self),
+                ObjectIdentifier(ProjectCardFragment.Image.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
+              ]
+            ))
+          }
         }
 
         /// Projects.Node.Goal
@@ -256,6 +401,29 @@ public class SearchQuery: GraphQLQuery {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var moneyFragment: MoneyFragment { _toFragment() }
+          }
+
+          public init(
+            amount: String? = nil,
+            currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+            symbol: String? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Money.typename,
+                "amount": amount,
+                "currency": currency,
+                "symbol": symbol,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Goal.self),
+                ObjectIdentifier(BackerDashboardProjectCellFragment.Goal.self),
+                ObjectIdentifier(MoneyFragment.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Goal.self),
+                ObjectIdentifier(ProjectCardFragment.Goal.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Goal.self)
+              ]
+            ))
           }
         }
 
@@ -281,6 +449,29 @@ public class SearchQuery: GraphQLQuery {
 
             public var moneyFragment: MoneyFragment { _toFragment() }
           }
+
+          public init(
+            amount: String? = nil,
+            currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+            symbol: String? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Money.typename,
+                "amount": amount,
+                "currency": currency,
+                "symbol": symbol,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Pledged.self),
+                ObjectIdentifier(BackerDashboardProjectCellFragment.Pledged.self),
+                ObjectIdentifier(MoneyFragment.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self),
+                ObjectIdentifier(ProjectCardFragment.Pledged.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Pledged.self)
+              ]
+            ))
+          }
         }
 
         public typealias AddOns = ProjectAnalyticsFragment.AddOns
@@ -295,6 +486,22 @@ public class SearchQuery: GraphQLQuery {
           public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
 
           public var id: GraphAPI.ID { __data["id"] }
+
+          public init(
+            id: GraphAPI.ID
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Backing.typename,
+                "id": id,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Backing.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
+              ]
+            ))
+          }
         }
 
         /// Projects.Node.Category
@@ -313,6 +520,26 @@ public class SearchQuery: GraphQLQuery {
           /// Category name.
           public var name: String { __data["name"] }
 
+          public init(
+            analyticsName: String,
+            parentCategory: ParentCategory? = nil,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Category.typename,
+                "analyticsName": analyticsName,
+                "parentCategory": parentCategory._fieldData,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Category.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Category.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Category.self)
+              ]
+            ))
+          }
+
           public typealias ParentCategory = ProjectAnalyticsFragment.Category.ParentCategory
         }
 
@@ -329,6 +556,24 @@ public class SearchQuery: GraphQLQuery {
           public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
           /// Country name.
           public var name: String { __data["name"] }
+
+          public init(
+            code: GraphQLEnum<GraphAPI.CountryCode>,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Country.typename,
+                "code": code,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Country.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Country.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
+              ]
+            ))
+          }
         }
 
         /// Projects.Node.Creator
@@ -350,6 +595,30 @@ public class SearchQuery: GraphQLQuery {
           /// The user's avatar.
           public var imageUrl: String { __data["imageUrl"] }
 
+          public init(
+            id: GraphAPI.ID,
+            createdProjects: CreatedProjects? = nil,
+            name: String,
+            isBlocked: Bool? = nil,
+            imageUrl: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.User.typename,
+                "id": id,
+                "createdProjects": createdProjects._fieldData,
+                "name": name,
+                "isBlocked": isBlocked,
+                "imageUrl": imageUrl,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Creator.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Creator.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Creator.self)
+              ]
+            ))
+          }
+
           public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
         }
 
@@ -369,6 +638,24 @@ public class SearchQuery: GraphQLQuery {
           public var id: GraphAPI.ID { __data["id"] }
           /// A video's sources (hls, high, base)
           public var videoSources: VideoSources? { __data["videoSources"] }
+
+          public init(
+            id: GraphAPI.ID,
+            videoSources: VideoSources? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Video.typename,
+                "id": id,
+                "videoSources": videoSources._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(SearchQuery.Data.Projects.Node.Video.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
+              ]
+            ))
+          }
 
           public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
         }
@@ -396,6 +683,22 @@ public class SearchQuery: GraphQLQuery {
         public var endCursor: String? { __data["endCursor"] }
         /// When paginating forwards, are there more items?
         public var hasNextPage: Bool { __data["hasNextPage"] }
+
+        public init(
+          endCursor: String? = nil,
+          hasNextPage: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.PageInfo.typename,
+              "endCursor": endCursor,
+              "hasNextPage": hasNextPage,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(SearchQuery.Data.Projects.PageInfo.self)
+            ]
+          ))
+        }
       }
     }
   }

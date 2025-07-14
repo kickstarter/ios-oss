@@ -31,6 +31,28 @@ public struct ShippingRuleFragment: GraphAPI.SelectionSet, Fragment {
   /// The estimated maximum shipping cost
   public var estimatedMax: EstimatedMax? { __data["estimatedMax"] }
 
+  public init(
+    cost: Cost? = nil,
+    id: GraphAPI.ID,
+    location: Location,
+    estimatedMin: EstimatedMin? = nil,
+    estimatedMax: EstimatedMax? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.ShippingRule.typename,
+        "cost": cost._fieldData,
+        "id": id,
+        "location": location._fieldData,
+        "estimatedMin": estimatedMin._fieldData,
+        "estimatedMax": estimatedMax._fieldData,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(ShippingRuleFragment.self)
+      ]
+    ))
+  }
+
   /// Cost
   ///
   /// Parent Type: `Money`
@@ -56,6 +78,25 @@ public struct ShippingRuleFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ShippingRuleFragment.Cost.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 
@@ -88,6 +129,29 @@ public struct ShippingRuleFragment: GraphAPI.SelectionSet, Fragment {
 
       public var locationFragment: LocationFragment { _toFragment() }
     }
+
+    public init(
+      country: String,
+      countryName: String? = nil,
+      displayableName: String,
+      id: GraphAPI.ID,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Location.typename,
+          "country": country,
+          "countryName": countryName,
+          "displayableName": displayableName,
+          "id": id,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ShippingRuleFragment.Location.self),
+          ObjectIdentifier(LocationFragment.self)
+        ]
+      ))
+    }
   }
 
   /// EstimatedMin
@@ -108,6 +172,22 @@ public struct ShippingRuleFragment: GraphAPI.SelectionSet, Fragment {
     public var amount: String? { __data["amount"] }
     /// Currency of the monetary amount
     public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ShippingRuleFragment.EstimatedMin.self)
+        ]
+      ))
+    }
   }
 
   /// EstimatedMax
@@ -128,5 +208,21 @@ public struct ShippingRuleFragment: GraphAPI.SelectionSet, Fragment {
     public var amount: String? { __data["amount"] }
     /// Currency of the monetary amount
     public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ShippingRuleFragment.EstimatedMax.self)
+        ]
+      ))
+    }
   }
 }

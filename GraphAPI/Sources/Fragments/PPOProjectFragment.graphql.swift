@@ -32,6 +32,28 @@ public struct PPOProjectFragment: GraphAPI.SelectionSet, Fragment {
   /// The project's unique URL identifier.
   public var slug: String { __data["slug"] }
 
+  public init(
+    creator: Creator? = nil,
+    image: Image? = nil,
+    name: String,
+    pid: Int,
+    slug: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Project.typename,
+        "creator": creator._fieldData,
+        "image": image._fieldData,
+        "name": name,
+        "pid": pid,
+        "slug": slug,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PPOProjectFragment.self)
+      ]
+    ))
+  }
+
   /// Creator
   ///
   /// Parent Type: `User`
@@ -52,6 +74,24 @@ public struct PPOProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var id: GraphAPI.ID { __data["id"] }
     /// The user's provided name.
     public var name: String { __data["name"] }
+
+    public init(
+      email: String? = nil,
+      id: GraphAPI.ID,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.User.typename,
+          "email": email,
+          "id": id,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PPOProjectFragment.Creator.self)
+        ]
+      ))
+    }
   }
 
   /// Image
@@ -71,5 +111,21 @@ public struct PPOProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var id: GraphAPI.ID { __data["id"] }
     /// URL of the photo
     public var url: String { __data["url"] }
+
+    public init(
+      id: GraphAPI.ID,
+      url: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Photo.typename,
+          "id": id,
+          "url": url,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PPOProjectFragment.Image.self)
+        ]
+      ))
+    }
   }
 }

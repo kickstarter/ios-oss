@@ -21,4 +21,20 @@ public struct LastWaveFragment: GraphAPI.SelectionSet, Fragment {
   public var id: GraphAPI.ID { __data["id"] }
   /// Whether the wave is currently active
   public var active: Bool { __data["active"] }
+
+  public init(
+    id: GraphAPI.ID,
+    active: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.CheckoutWave.typename,
+        "id": id,
+        "active": active,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(LastWaveFragment.self)
+      ]
+    ))
+  }
 }

@@ -18,4 +18,18 @@ public struct UserFeaturesFragment: GraphAPI.SelectionSet, Fragment {
   ] }
 
   public var enabledFeatures: [GraphQLEnum<GraphAPI.Feature>] { __data["enabledFeatures"] }
+
+  public init(
+    enabledFeatures: [GraphQLEnum<GraphAPI.Feature>]
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.User.typename,
+        "enabledFeatures": enabledFeatures,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(UserFeaturesFragment.self)
+      ]
+    ))
+  }
 }

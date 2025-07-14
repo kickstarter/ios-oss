@@ -47,6 +47,41 @@ public struct CommentFragment: GraphAPI.SelectionSet, Fragment {
     public var commentBaseFragment: CommentBaseFragment { _toFragment() }
   }
 
+  public init(
+    replies: Replies? = nil,
+    author: Author? = nil,
+    authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+    body: String,
+    createdAt: GraphAPI.DateTime? = nil,
+    deleted: Bool,
+    id: GraphAPI.ID,
+    parentId: String? = nil,
+    hasFlaggings: Bool,
+    removedPerGuidelines: Bool,
+    sustained: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Comment.typename,
+        "replies": replies._fieldData,
+        "author": author._fieldData,
+        "authorBadges": authorBadges,
+        "body": body,
+        "createdAt": createdAt,
+        "deleted": deleted,
+        "id": id,
+        "parentId": parentId,
+        "hasFlaggings": hasFlaggings,
+        "removedPerGuidelines": removedPerGuidelines,
+        "sustained": sustained,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CommentFragment.self),
+        ObjectIdentifier(CommentBaseFragment.self)
+      ]
+    ))
+  }
+
   /// Replies
   ///
   /// Parent Type: `CommentConnection`
@@ -61,6 +96,20 @@ public struct CommentFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var totalCount: Int { __data["totalCount"] }
+
+    public init(
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.CommentConnection.typename,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CommentFragment.Replies.self)
+        ]
+      ))
+    }
   }
 
   public typealias Author = CommentBaseFragment.Author

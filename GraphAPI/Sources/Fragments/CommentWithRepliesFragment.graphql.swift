@@ -50,6 +50,41 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
     public var commentBaseFragment: CommentBaseFragment { _toFragment() }
   }
 
+  public init(
+    replies: Replies? = nil,
+    author: Author? = nil,
+    authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+    body: String,
+    createdAt: GraphAPI.DateTime? = nil,
+    deleted: Bool,
+    id: GraphAPI.ID,
+    parentId: String? = nil,
+    hasFlaggings: Bool,
+    removedPerGuidelines: Bool,
+    sustained: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Comment.typename,
+        "replies": replies._fieldData,
+        "author": author._fieldData,
+        "authorBadges": authorBadges,
+        "body": body,
+        "createdAt": createdAt,
+        "deleted": deleted,
+        "id": id,
+        "parentId": parentId,
+        "hasFlaggings": hasFlaggings,
+        "removedPerGuidelines": removedPerGuidelines,
+        "sustained": sustained,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CommentWithRepliesFragment.self),
+        ObjectIdentifier(CommentBaseFragment.self)
+      ]
+    ))
+  }
+
   /// Replies
   ///
   /// Parent Type: `CommentConnection`
@@ -71,6 +106,24 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
     public var pageInfo: PageInfo { __data["pageInfo"] }
     public var totalCount: Int { __data["totalCount"] }
 
+    public init(
+      edges: [Edge?]? = nil,
+      pageInfo: PageInfo,
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.CommentConnection.typename,
+          "edges": edges._fieldData,
+          "pageInfo": pageInfo._fieldData,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CommentWithRepliesFragment.Replies.self)
+        ]
+      ))
+    }
+
     /// Replies.Edge
     ///
     /// Parent Type: `CommentEdge`
@@ -86,6 +139,20 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
 
       /// The item at the end of the edge.
       public var node: Node? { __data["node"] }
+
+      public init(
+        node: Node? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CommentEdge.typename,
+            "node": node._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CommentWithRepliesFragment.Replies.Edge.self)
+          ]
+        ))
+      }
 
       /// Replies.Edge.Node
       ///
@@ -130,6 +197,42 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
           public var commentBaseFragment: CommentBaseFragment { _toFragment() }
         }
 
+        public init(
+          replies: Replies? = nil,
+          author: Author? = nil,
+          authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+          body: String,
+          createdAt: GraphAPI.DateTime? = nil,
+          deleted: Bool,
+          id: GraphAPI.ID,
+          parentId: String? = nil,
+          hasFlaggings: Bool,
+          removedPerGuidelines: Bool,
+          sustained: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Comment.typename,
+              "replies": replies._fieldData,
+              "author": author._fieldData,
+              "authorBadges": authorBadges,
+              "body": body,
+              "createdAt": createdAt,
+              "deleted": deleted,
+              "id": id,
+              "parentId": parentId,
+              "hasFlaggings": hasFlaggings,
+              "removedPerGuidelines": removedPerGuidelines,
+              "sustained": sustained,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(CommentWithRepliesFragment.Replies.Edge.Node.self),
+              ObjectIdentifier(CommentFragment.self),
+              ObjectIdentifier(CommentBaseFragment.self)
+            ]
+          ))
+        }
+
         public typealias Replies = CommentFragment.Replies
 
         public typealias Author = CommentBaseFragment.Author
@@ -154,6 +257,22 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
       public var hasPreviousPage: Bool { __data["hasPreviousPage"] }
       /// When paginating backwards, the cursor to continue.
       public var startCursor: String? { __data["startCursor"] }
+
+      public init(
+        hasPreviousPage: Bool,
+        startCursor: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PageInfo.typename,
+            "hasPreviousPage": hasPreviousPage,
+            "startCursor": startCursor,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CommentWithRepliesFragment.Replies.PageInfo.self)
+          ]
+        ))
+      }
     }
   }
 

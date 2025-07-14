@@ -43,6 +43,20 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
     /// Fetches a post given its ID.
     public var post: Post? { __data["post"] }
 
+    public init(
+      post: Post? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "post": post._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchUpdateCommentsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Post
     ///
     /// Parent Type: `Postable`
@@ -57,6 +71,19 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
       ] }
 
       public var asFreeformPost: AsFreeformPost? { _asInlineFragment() }
+
+      public init(
+        __typename: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": __typename,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.self)
+          ]
+        ))
+      }
 
       /// Post.AsFreeformPost
       ///
@@ -79,6 +106,23 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
         public var comments: Comments? { __data["comments"] }
         public var id: GraphAPI.ID { __data["id"] }
 
+        public init(
+          comments: Comments? = nil,
+          id: GraphAPI.ID
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.FreeformPost.typename,
+              "comments": comments._fieldData,
+              "id": id,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.self),
+              ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.AsFreeformPost.self)
+            ]
+          ))
+        }
+
         /// Post.AsFreeformPost.Comments
         ///
         /// Parent Type: `CommentConnection`
@@ -100,6 +144,24 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
           public var pageInfo: PageInfo { __data["pageInfo"] }
           public var totalCount: Int { __data["totalCount"] }
 
+          public init(
+            edges: [Edge?]? = nil,
+            pageInfo: PageInfo,
+            totalCount: Int
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.CommentConnection.typename,
+                "edges": edges._fieldData,
+                "pageInfo": pageInfo._fieldData,
+                "totalCount": totalCount,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.AsFreeformPost.Comments.self)
+              ]
+            ))
+          }
+
           /// Post.AsFreeformPost.Comments.Edge
           ///
           /// Parent Type: `CommentEdge`
@@ -115,6 +177,20 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
 
             /// The item at the end of the edge.
             public var node: Node? { __data["node"] }
+
+            public init(
+              node: Node? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.CommentEdge.typename,
+                  "node": node._fieldData,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.AsFreeformPost.Comments.Edge.self)
+                ]
+              ))
+            }
 
             /// Post.AsFreeformPost.Comments.Edge.Node
             ///
@@ -159,6 +235,42 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
                 public var commentBaseFragment: CommentBaseFragment { _toFragment() }
               }
 
+              public init(
+                replies: Replies? = nil,
+                author: Author? = nil,
+                authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+                body: String,
+                createdAt: GraphAPI.DateTime? = nil,
+                deleted: Bool,
+                id: GraphAPI.ID,
+                parentId: String? = nil,
+                hasFlaggings: Bool,
+                removedPerGuidelines: Bool,
+                sustained: Bool
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.Comment.typename,
+                    "replies": replies._fieldData,
+                    "author": author._fieldData,
+                    "authorBadges": authorBadges,
+                    "body": body,
+                    "createdAt": createdAt,
+                    "deleted": deleted,
+                    "id": id,
+                    "parentId": parentId,
+                    "hasFlaggings": hasFlaggings,
+                    "removedPerGuidelines": removedPerGuidelines,
+                    "sustained": sustained,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.AsFreeformPost.Comments.Edge.Node.self),
+                    ObjectIdentifier(CommentFragment.self),
+                    ObjectIdentifier(CommentBaseFragment.self)
+                  ]
+                ))
+              }
+
               public typealias Replies = CommentFragment.Replies
 
               public typealias Author = CommentBaseFragment.Author
@@ -183,6 +295,22 @@ public class FetchUpdateCommentsQuery: GraphQLQuery {
             public var endCursor: String? { __data["endCursor"] }
             /// When paginating forwards, are there more items?
             public var hasNextPage: Bool { __data["hasNextPage"] }
+
+            public init(
+              endCursor: String? = nil,
+              hasNextPage: Bool
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.PageInfo.typename,
+                  "endCursor": endCursor,
+                  "hasNextPage": hasNextPage,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchUpdateCommentsQuery.Data.Post.AsFreeformPost.Comments.PageInfo.self)
+                ]
+              ))
+            }
           }
         }
       }

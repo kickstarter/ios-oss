@@ -109,6 +109,78 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
   /// A user's uid
   public var uid: String { __data["uid"] }
 
+  public init(
+    backings: Backings? = nil,
+    backingsCount: Int,
+    chosenCurrency: String? = nil,
+    createdProjects: CreatedProjects? = nil,
+    email: String? = nil,
+    hasPassword: Bool? = nil,
+    hasUnreadMessages: Bool? = nil,
+    hasUnseenActivity: Bool? = nil,
+    id: GraphAPI.ID,
+    imageUrl: String,
+    isAppleConnected: Bool? = nil,
+    isBlocked: Bool? = nil,
+    isCreator: Bool? = nil,
+    isDeliverable: Bool? = nil,
+    isEmailVerified: Bool? = nil,
+    isFacebookConnected: Bool? = nil,
+    isKsrAdmin: Bool? = nil,
+    isFollowing: Bool,
+    isSocializing: Bool? = nil,
+    location: Location? = nil,
+    name: String,
+    needsFreshFacebookToken: Bool? = nil,
+    newsletterSubscriptions: NewsletterSubscriptions? = nil,
+    notifications: [Notification]? = nil,
+    optedOutOfRecommendations: Bool? = nil,
+    showPublicProfile: Bool? = nil,
+    savedProjects: SavedProjects? = nil,
+    storedCards: StoredCards? = nil,
+    surveyResponses: SurveyResponses? = nil,
+    uid: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.User.typename,
+        "backings": backings._fieldData,
+        "backingsCount": backingsCount,
+        "chosenCurrency": chosenCurrency,
+        "createdProjects": createdProjects._fieldData,
+        "email": email,
+        "hasPassword": hasPassword,
+        "hasUnreadMessages": hasUnreadMessages,
+        "hasUnseenActivity": hasUnseenActivity,
+        "id": id,
+        "imageUrl": imageUrl,
+        "isAppleConnected": isAppleConnected,
+        "isBlocked": isBlocked,
+        "isCreator": isCreator,
+        "isDeliverable": isDeliverable,
+        "isEmailVerified": isEmailVerified,
+        "isFacebookConnected": isFacebookConnected,
+        "isKsrAdmin": isKsrAdmin,
+        "isFollowing": isFollowing,
+        "isSocializing": isSocializing,
+        "location": location._fieldData,
+        "name": name,
+        "needsFreshFacebookToken": needsFreshFacebookToken,
+        "newsletterSubscriptions": newsletterSubscriptions._fieldData,
+        "notifications": notifications._fieldData,
+        "optedOutOfRecommendations": optedOutOfRecommendations,
+        "showPublicProfile": showPublicProfile,
+        "savedProjects": savedProjects._fieldData,
+        "storedCards": storedCards._fieldData,
+        "surveyResponses": surveyResponses._fieldData,
+        "uid": uid,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(UserFragment.self)
+      ]
+    ))
+  }
+
   /// Backings
   ///
   /// Parent Type: `UserBackingsConnection`
@@ -125,6 +197,20 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     /// A list of nodes.
     public var nodes: [Node?]? { __data["nodes"] }
 
+    public init(
+      nodes: [Node?]? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.UserBackingsConnection.typename,
+          "nodes": nodes._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.Backings.self)
+        ]
+      ))
+    }
+
     /// Backings.Node
     ///
     /// Parent Type: `Backing`
@@ -140,6 +226,20 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
 
       /// The reason for an errored backing
       public var errorReason: String? { __data["errorReason"] }
+
+      public init(
+        errorReason: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Backing.typename,
+            "errorReason": errorReason,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(UserFragment.Backings.Node.self)
+          ]
+        ))
+      }
     }
   }
 
@@ -157,6 +257,20 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var totalCount: Int { __data["totalCount"] }
+
+    public init(
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.UserCreatedProjectsConnection.typename,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.CreatedProjects.self)
+        ]
+      ))
+    }
   }
 
   /// Location
@@ -187,6 +301,29 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var locationFragment: LocationFragment { _toFragment() }
+    }
+
+    public init(
+      country: String,
+      countryName: String? = nil,
+      displayableName: String,
+      id: GraphAPI.ID,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Location.typename,
+          "country": country,
+          "countryName": countryName,
+          "displayableName": displayableName,
+          "id": id,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.Location.self),
+          ObjectIdentifier(LocationFragment.self)
+        ]
+      ))
     }
   }
 
@@ -232,6 +369,38 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     public var happeningNewsletter: Bool { __data["happeningNewsletter"] }
     /// The subscription to the AlumniNewsletter newsletter
     public var alumniNewsletter: Bool { __data["alumniNewsletter"] }
+
+    public init(
+      artsCultureNewsletter: Bool,
+      filmNewsletter: Bool,
+      musicNewsletter: Bool,
+      inventNewsletter: Bool,
+      gamesNewsletter: Bool,
+      publishingNewsletter: Bool,
+      promoNewsletter: Bool,
+      weeklyNewsletter: Bool,
+      happeningNewsletter: Bool,
+      alumniNewsletter: Bool
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.NewsletterSubscriptions.typename,
+          "artsCultureNewsletter": artsCultureNewsletter,
+          "filmNewsletter": filmNewsletter,
+          "musicNewsletter": musicNewsletter,
+          "inventNewsletter": inventNewsletter,
+          "gamesNewsletter": gamesNewsletter,
+          "publishingNewsletter": publishingNewsletter,
+          "promoNewsletter": promoNewsletter,
+          "weeklyNewsletter": weeklyNewsletter,
+          "happeningNewsletter": happeningNewsletter,
+          "alumniNewsletter": alumniNewsletter,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.NewsletterSubscriptions.self)
+        ]
+      ))
+    }
   }
 
   /// Notification
@@ -255,6 +424,24 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     public var mobile: Bool { __data["mobile"] }
     /// The topic of the notification
     public var topic: GraphQLEnum<GraphAPI.UserNotificationTopic> { __data["topic"] }
+
+    public init(
+      email: Bool,
+      mobile: Bool,
+      topic: GraphQLEnum<GraphAPI.UserNotificationTopic>
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Notification.typename,
+          "email": email,
+          "mobile": mobile,
+          "topic": topic,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.Notification.self)
+        ]
+      ))
+    }
   }
 
   /// SavedProjects
@@ -271,6 +458,20 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var totalCount: Int { __data["totalCount"] }
+
+    public init(
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.UserSavedProjectsConnection.typename,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.SavedProjects.self)
+        ]
+      ))
+    }
   }
 
   /// StoredCards
@@ -297,6 +498,23 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
       public var userStoredCardsFragment: UserStoredCardsFragment { _toFragment() }
     }
 
+    public init(
+      nodes: [Node?]? = nil,
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+          "nodes": nodes._fieldData,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.StoredCards.self),
+          ObjectIdentifier(UserStoredCardsFragment.self)
+        ]
+      ))
+    }
+
     public typealias Node = UserStoredCardsFragment.Node
   }
 
@@ -314,5 +532,19 @@ public struct UserFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var totalCount: Int { __data["totalCount"] }
+
+    public init(
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.SurveyResponsesConnection.typename,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserFragment.SurveyResponses.self)
+        ]
+      ))
+    }
   }
 }

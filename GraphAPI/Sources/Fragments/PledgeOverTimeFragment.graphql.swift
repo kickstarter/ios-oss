@@ -31,4 +31,26 @@ public struct PledgeOverTimeFragment: GraphAPI.SelectionSet, Fragment {
   public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
   /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
   public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
+
+  public init(
+    isPledgeOverTimeAllowed: Bool,
+    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+    pledgeOverTimeMinimumExplanation: String? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Project.typename,
+        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PledgeOverTimeFragment.self)
+      ]
+    ))
+  }
 }

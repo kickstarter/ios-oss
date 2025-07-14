@@ -100,6 +100,72 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   /// Data related to who can view/access this reward
   public var audienceData: AudienceData { __data["audienceData"] }
 
+  public init(
+    amount: Amount,
+    backersCount: Int? = nil,
+    convertedAmount: ConvertedAmount,
+    allowedAddons: AllowedAddons,
+    description: String,
+    displayName: String,
+    endsAt: GraphAPI.DateTime? = nil,
+    estimatedDeliveryOn: GraphAPI.Date? = nil,
+    id: GraphAPI.ID,
+    isMaxPledge: Bool,
+    available: Bool,
+    items: Items? = nil,
+    limit: Int? = nil,
+    limitPerBacker: Int? = nil,
+    localReceiptLocation: LocalReceiptLocation? = nil,
+    name: String? = nil,
+    pledgeAmount: PledgeAmount,
+    latePledgeAmount: LatePledgeAmount,
+    postCampaignPledgingEnabled: Bool,
+    project: Project? = nil,
+    remainingQuantity: Int? = nil,
+    shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
+    shippingSummary: String? = nil,
+    shippingRules: [ShippingRule?]? = nil,
+    startsAt: GraphAPI.DateTime? = nil,
+    image: Image? = nil,
+    audienceData: AudienceData
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Reward.typename,
+        "amount": amount._fieldData,
+        "backersCount": backersCount,
+        "convertedAmount": convertedAmount._fieldData,
+        "allowedAddons": allowedAddons._fieldData,
+        "description": description,
+        "displayName": displayName,
+        "endsAt": endsAt,
+        "estimatedDeliveryOn": estimatedDeliveryOn,
+        "id": id,
+        "isMaxPledge": isMaxPledge,
+        "available": available,
+        "items": items._fieldData,
+        "limit": limit,
+        "limitPerBacker": limitPerBacker,
+        "localReceiptLocation": localReceiptLocation._fieldData,
+        "name": name,
+        "pledgeAmount": pledgeAmount._fieldData,
+        "latePledgeAmount": latePledgeAmount._fieldData,
+        "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+        "project": project._fieldData,
+        "remainingQuantity": remainingQuantity,
+        "shippingPreference": shippingPreference,
+        "shippingSummary": shippingSummary,
+        "shippingRules": shippingRules._fieldData,
+        "startsAt": startsAt,
+        "image": image._fieldData,
+        "audienceData": audienceData._fieldData,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(RewardFragment.self)
+      ]
+    ))
+  }
+
   /// Amount
   ///
   /// Parent Type: `Money`
@@ -125,6 +191,25 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.Amount.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 
@@ -154,6 +239,25 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.ConvertedAmount.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// AllowedAddons
@@ -172,6 +276,20 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     /// Information to aid in pagination.
     public var pageInfo: PageInfo { __data["pageInfo"] }
 
+    public init(
+      pageInfo: PageInfo
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.RewardConnection.typename,
+          "pageInfo": pageInfo._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.AllowedAddons.self)
+        ]
+      ))
+    }
+
     /// AllowedAddons.PageInfo
     ///
     /// Parent Type: `PageInfo`
@@ -187,6 +305,20 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
       /// When paginating backwards, the cursor to continue.
       public var startCursor: String? { __data["startCursor"] }
+
+      public init(
+        startCursor: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PageInfo.typename,
+            "startCursor": startCursor,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(RewardFragment.AllowedAddons.PageInfo.self)
+          ]
+        ))
+      }
     }
   }
 
@@ -205,6 +337,20 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
     /// A list of edges.
     public var edges: [Edge?]? { __data["edges"] }
+
+    public init(
+      edges: [Edge?]? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.RewardItemsConnection.typename,
+          "edges": edges._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.Items.self)
+        ]
+      ))
+    }
 
     /// Items.Edge
     ///
@@ -225,6 +371,22 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       /// The item at the end of the edge.
       public var node: Node? { __data["node"] }
 
+      public init(
+        quantity: Int,
+        node: Node? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.RewardItemEdge.typename,
+            "quantity": quantity,
+            "node": node._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(RewardFragment.Items.Edge.self)
+          ]
+        ))
+      }
+
       /// Items.Edge.Node
       ///
       /// Parent Type: `RewardItem`
@@ -242,6 +404,22 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         public var id: GraphAPI.ID { __data["id"] }
         /// An item name.
         public var name: String { __data["name"] }
+
+        public init(
+          id: GraphAPI.ID,
+          name: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RewardItem.typename,
+              "id": id,
+              "name": name,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(RewardFragment.Items.Edge.Node.self)
+            ]
+          ))
+        }
       }
     }
   }
@@ -275,6 +453,29 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
       public var locationFragment: LocationFragment { _toFragment() }
     }
+
+    public init(
+      country: String,
+      countryName: String? = nil,
+      displayableName: String,
+      id: GraphAPI.ID,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Location.typename,
+          "country": country,
+          "countryName": countryName,
+          "displayableName": displayableName,
+          "id": id,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
+          ObjectIdentifier(LocationFragment.self)
+        ]
+      ))
+    }
   }
 
   /// PledgeAmount
@@ -302,6 +503,25 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.PledgeAmount.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 
@@ -331,6 +551,25 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// Project
@@ -347,6 +586,20 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var id: GraphAPI.ID { __data["id"] }
+
+    public init(
+      id: GraphAPI.ID
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Project.typename,
+          "id": id,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.Project.self)
+        ]
+      ))
+    }
   }
 
   /// ShippingRule
@@ -379,6 +632,29 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       public var shippingRuleFragment: ShippingRuleFragment { _toFragment() }
     }
 
+    public init(
+      cost: Cost? = nil,
+      id: GraphAPI.ID,
+      location: Location,
+      estimatedMin: EstimatedMin? = nil,
+      estimatedMax: EstimatedMax? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.ShippingRule.typename,
+          "cost": cost._fieldData,
+          "id": id,
+          "location": location._fieldData,
+          "estimatedMin": estimatedMin._fieldData,
+          "estimatedMax": estimatedMax._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.ShippingRule.self),
+          ObjectIdentifier(ShippingRuleFragment.self)
+        ]
+      ))
+    }
+
     /// ShippingRule.Cost
     ///
     /// Parent Type: `Money`
@@ -400,6 +676,26 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         public init(_dataDict: DataDict) { __data = _dataDict }
 
         public var moneyFragment: MoneyFragment { _toFragment() }
+      }
+
+      public init(
+        amount: String? = nil,
+        currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+        symbol: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Money.typename,
+            "amount": amount,
+            "currency": currency,
+            "symbol": symbol,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(RewardFragment.ShippingRule.Cost.self),
+            ObjectIdentifier(ShippingRuleFragment.Cost.self),
+            ObjectIdentifier(MoneyFragment.self)
+          ]
+        ))
       }
     }
 
@@ -428,6 +724,30 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
         public var locationFragment: LocationFragment { _toFragment() }
       }
+
+      public init(
+        country: String,
+        countryName: String? = nil,
+        displayableName: String,
+        id: GraphAPI.ID,
+        name: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Location.typename,
+            "country": country,
+            "countryName": countryName,
+            "displayableName": displayableName,
+            "id": id,
+            "name": name,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(RewardFragment.ShippingRule.Location.self),
+            ObjectIdentifier(ShippingRuleFragment.Location.self),
+            ObjectIdentifier(LocationFragment.self)
+          ]
+        ))
+      }
     }
 
     public typealias EstimatedMin = ShippingRuleFragment.EstimatedMin
@@ -453,6 +773,22 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     public var altText: String { __data["altText"] }
     /// URL of the photo
     public var url: String { __data["url"] }
+
+    public init(
+      altText: String,
+      url: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Photo.typename,
+          "altText": altText,
+          "url": url,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.Image.self)
+        ]
+      ))
+    }
   }
 
   /// AudienceData
@@ -470,5 +806,19 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
 
     /// True if the resource has access restricted by an access rule
     public var secret: Bool { __data["secret"] }
+
+    public init(
+      secret: Bool
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.ResourceAudience.typename,
+          "secret": secret,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(RewardFragment.AudienceData.self)
+        ]
+      ))
+    }
   }
 }

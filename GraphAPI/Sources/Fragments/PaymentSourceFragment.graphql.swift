@@ -21,6 +21,19 @@ public struct PaymentSourceFragment: GraphAPI.SelectionSet, Fragment {
   public var asCreditCard: AsCreditCard? { _asInlineFragment() }
   public var asBankAccount: AsBankAccount? { _asInlineFragment() }
 
+  public init(
+    __typename: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": __typename,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PaymentSourceFragment.self)
+      ]
+    ))
+  }
+
   /// AsCreditCard
   ///
   /// Parent Type: `CreditCard`
@@ -51,6 +64,31 @@ public struct PaymentSourceFragment: GraphAPI.SelectionSet, Fragment {
     public var type: GraphQLEnum<GraphAPI.CreditCardTypes> { __data["type"] }
     /// Stripe card id
     public var stripeCardId: String { __data["stripeCardId"] }
+
+    public init(
+      expirationDate: GraphAPI.Date,
+      id: String,
+      lastFour: String,
+      paymentType: GraphQLEnum<GraphAPI.CreditCardPaymentType>,
+      type: GraphQLEnum<GraphAPI.CreditCardTypes>,
+      stripeCardId: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.CreditCard.typename,
+          "expirationDate": expirationDate,
+          "id": id,
+          "lastFour": lastFour,
+          "paymentType": paymentType,
+          "type": type,
+          "stripeCardId": stripeCardId,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PaymentSourceFragment.self),
+          ObjectIdentifier(PaymentSourceFragment.AsCreditCard.self)
+        ]
+      ))
+    }
   }
 
   /// AsBankAccount
@@ -73,5 +111,24 @@ public struct PaymentSourceFragment: GraphAPI.SelectionSet, Fragment {
     public var lastFour: String { __data["lastFour"] }
     /// The bank name if available.
     public var bankName: String? { __data["bankName"] }
+
+    public init(
+      id: String,
+      lastFour: String,
+      bankName: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.BankAccount.typename,
+          "id": id,
+          "lastFour": lastFour,
+          "bankName": bankName,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PaymentSourceFragment.self),
+          ObjectIdentifier(PaymentSourceFragment.AsBankAccount.self)
+        ]
+      ))
+    }
   }
 }

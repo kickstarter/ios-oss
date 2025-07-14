@@ -30,6 +30,20 @@ public class CreateAttributionEventMutation: GraphQLMutation {
     /// Creates an attribution event. Specifying a project will pass the project properties for attribution events. Sending this request as a logged-in user passes that user's properties as well. Any passed-in property with the same name overwrites the generated properties.
     public var createAttributionEvent: CreateAttributionEvent? { __data["createAttributionEvent"] }
 
+    public init(
+      createAttributionEvent: CreateAttributionEvent? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createAttributionEvent": createAttributionEvent._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreateAttributionEventMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateAttributionEvent
     ///
     /// Parent Type: `CreateAttributionEventPayload`
@@ -44,6 +58,20 @@ public class CreateAttributionEventMutation: GraphQLMutation {
       ] }
 
       public var successful: Bool { __data["successful"] }
+
+      public init(
+        successful: Bool
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreateAttributionEventPayload.typename,
+            "successful": successful,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreateAttributionEventMutation.Data.CreateAttributionEvent.self)
+          ]
+        ))
+      }
     }
   }
 }

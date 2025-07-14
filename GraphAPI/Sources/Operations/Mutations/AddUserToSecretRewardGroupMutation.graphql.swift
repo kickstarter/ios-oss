@@ -30,6 +30,20 @@ public class AddUserToSecretRewardGroupMutation: GraphQLMutation {
     /// Adds a user to a secret reward user group
     public var addUserToSecretRewardGroup: AddUserToSecretRewardGroup? { __data["addUserToSecretRewardGroup"] }
 
+    public init(
+      addUserToSecretRewardGroup: AddUserToSecretRewardGroup? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "addUserToSecretRewardGroup": addUserToSecretRewardGroup._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(AddUserToSecretRewardGroupMutation.Data.self)
+        ]
+      ))
+    }
+
     /// AddUserToSecretRewardGroup
     ///
     /// Parent Type: `AddUserToSecretRewardGroupPayload`
@@ -45,6 +59,20 @@ public class AddUserToSecretRewardGroupMutation: GraphQLMutation {
 
       /// Project data
       public var project: Project { __data["project"] }
+
+      public init(
+        project: Project
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.AddUserToSecretRewardGroupPayload.typename,
+            "project": project._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(AddUserToSecretRewardGroupMutation.Data.AddUserToSecretRewardGroup.self)
+          ]
+        ))
+      }
 
       /// AddUserToSecretRewardGroup.Project
       ///
@@ -64,6 +92,22 @@ public class AddUserToSecretRewardGroupMutation: GraphQLMutation {
         /// Project rewards.
         public var rewards: Rewards? { __data["rewards"] }
 
+        public init(
+          id: GraphAPI.ID,
+          rewards: Rewards? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Project.typename,
+              "id": id,
+              "rewards": rewards._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(AddUserToSecretRewardGroupMutation.Data.AddUserToSecretRewardGroup.Project.self)
+            ]
+          ))
+        }
+
         /// AddUserToSecretRewardGroup.Project.Rewards
         ///
         /// Parent Type: `ProjectRewardConnection`
@@ -79,6 +123,20 @@ public class AddUserToSecretRewardGroupMutation: GraphQLMutation {
 
           /// A list of nodes.
           public var nodes: [Node?]? { __data["nodes"] }
+
+          public init(
+            nodes: [Node?]? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
+                "nodes": nodes._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(AddUserToSecretRewardGroupMutation.Data.AddUserToSecretRewardGroup.Project.Rewards.self)
+              ]
+            ))
+          }
 
           /// AddUserToSecretRewardGroup.Project.Rewards.Node
           ///
@@ -97,6 +155,22 @@ public class AddUserToSecretRewardGroupMutation: GraphQLMutation {
             public var id: GraphAPI.ID { __data["id"] }
             /// A reward title.
             public var name: String? { __data["name"] }
+
+            public init(
+              id: GraphAPI.ID,
+              name: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Reward.typename,
+                  "id": id,
+                  "name": name,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(AddUserToSecretRewardGroupMutation.Data.AddUserToSecretRewardGroup.Project.Rewards.Node.self)
+                ]
+              ))
+            }
           }
         }
       }

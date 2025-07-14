@@ -19,4 +19,18 @@ public struct UserSettingsFragment: GraphAPI.SelectionSet, Fragment {
 
   /// The user's chosen currency
   public var chosenCurrency: String? { __data["chosenCurrency"] }
+
+  public init(
+    chosenCurrency: String? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.User.typename,
+        "chosenCurrency": chosenCurrency,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(UserSettingsFragment.self)
+      ]
+    ))
+  }
 }

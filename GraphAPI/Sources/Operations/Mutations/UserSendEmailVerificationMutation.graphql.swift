@@ -30,6 +30,20 @@ public class UserSendEmailVerificationMutation: GraphQLMutation {
     /// send email verification
     public var userSendEmailVerification: UserSendEmailVerification? { __data["userSendEmailVerification"] }
 
+    public init(
+      userSendEmailVerification: UserSendEmailVerification? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "userSendEmailVerification": userSendEmailVerification._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UserSendEmailVerificationMutation.Data.self)
+        ]
+      ))
+    }
+
     /// UserSendEmailVerification
     ///
     /// Parent Type: `UserSendEmailVerificationPayload`
@@ -45,6 +59,20 @@ public class UserSendEmailVerificationMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+
+      public init(
+        clientMutationId: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.UserSendEmailVerificationPayload.typename,
+            "clientMutationId": clientMutationId,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(UserSendEmailVerificationMutation.Data.UserSendEmailVerification.self)
+          ]
+        ))
+      }
     }
   }
 }

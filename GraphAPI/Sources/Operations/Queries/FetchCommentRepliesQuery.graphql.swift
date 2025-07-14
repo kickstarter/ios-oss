@@ -43,6 +43,20 @@ public class FetchCommentRepliesQuery: GraphQLQuery {
     /// Fetches an object given its ID.
     public var comment: Comment? { __data["comment"] }
 
+    public init(
+      comment: Comment? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "comment": comment._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchCommentRepliesQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Comment
     ///
     /// Parent Type: `Node`
@@ -57,6 +71,19 @@ public class FetchCommentRepliesQuery: GraphQLQuery {
       ] }
 
       public var asComment: AsComment? { _asInlineFragment() }
+
+      public init(
+        __typename: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": __typename,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchCommentRepliesQuery.Data.Comment.self)
+          ]
+        ))
+      }
 
       /// Comment.AsComment
       ///
@@ -99,6 +126,43 @@ public class FetchCommentRepliesQuery: GraphQLQuery {
 
           public var commentWithRepliesFragment: CommentWithRepliesFragment { _toFragment() }
           public var commentBaseFragment: CommentBaseFragment { _toFragment() }
+        }
+
+        public init(
+          replies: Replies? = nil,
+          author: Author? = nil,
+          authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+          body: String,
+          createdAt: GraphAPI.DateTime? = nil,
+          deleted: Bool,
+          id: GraphAPI.ID,
+          parentId: String? = nil,
+          hasFlaggings: Bool,
+          removedPerGuidelines: Bool,
+          sustained: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Comment.typename,
+              "replies": replies._fieldData,
+              "author": author._fieldData,
+              "authorBadges": authorBadges,
+              "body": body,
+              "createdAt": createdAt,
+              "deleted": deleted,
+              "id": id,
+              "parentId": parentId,
+              "hasFlaggings": hasFlaggings,
+              "removedPerGuidelines": removedPerGuidelines,
+              "sustained": sustained,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchCommentRepliesQuery.Data.Comment.self),
+              ObjectIdentifier(FetchCommentRepliesQuery.Data.Comment.AsComment.self),
+              ObjectIdentifier(CommentWithRepliesFragment.self),
+              ObjectIdentifier(CommentBaseFragment.self)
+            ]
+          ))
         }
 
         public typealias Replies = CommentWithRepliesFragment.Replies

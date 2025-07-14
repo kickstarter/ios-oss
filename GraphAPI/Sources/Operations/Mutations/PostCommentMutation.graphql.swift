@@ -31,6 +31,20 @@ public class PostCommentMutation: GraphQLMutation {
     /// Post a comment
     public var createComment: CreateComment? { __data["createComment"] }
 
+    public init(
+      createComment: CreateComment? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createComment": createComment._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PostCommentMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateComment
     ///
     /// Parent Type: `PostCommentPayload`
@@ -45,6 +59,20 @@ public class PostCommentMutation: GraphQLMutation {
       ] }
 
       public var comment: Comment? { __data["comment"] }
+
+      public init(
+        comment: Comment? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PostCommentPayload.typename,
+            "comment": comment._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(PostCommentMutation.Data.CreateComment.self)
+          ]
+        ))
+      }
 
       /// CreateComment.Comment
       ///
@@ -87,6 +115,42 @@ public class PostCommentMutation: GraphQLMutation {
 
           public var commentFragment: CommentFragment { _toFragment() }
           public var commentBaseFragment: CommentBaseFragment { _toFragment() }
+        }
+
+        public init(
+          replies: Replies? = nil,
+          author: Author? = nil,
+          authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+          body: String,
+          createdAt: GraphAPI.DateTime? = nil,
+          deleted: Bool,
+          id: GraphAPI.ID,
+          parentId: String? = nil,
+          hasFlaggings: Bool,
+          removedPerGuidelines: Bool,
+          sustained: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Comment.typename,
+              "replies": replies._fieldData,
+              "author": author._fieldData,
+              "authorBadges": authorBadges,
+              "body": body,
+              "createdAt": createdAt,
+              "deleted": deleted,
+              "id": id,
+              "parentId": parentId,
+              "hasFlaggings": hasFlaggings,
+              "removedPerGuidelines": removedPerGuidelines,
+              "sustained": sustained,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(PostCommentMutation.Data.CreateComment.Comment.self),
+              ObjectIdentifier(CommentFragment.self),
+              ObjectIdentifier(CommentBaseFragment.self)
+            ]
+          ))
         }
 
         public typealias Replies = CommentFragment.Replies

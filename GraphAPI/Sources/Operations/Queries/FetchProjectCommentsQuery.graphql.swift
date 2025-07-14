@@ -43,6 +43,20 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
     /// Fetches a project given its slug or pid.
     public var project: Project? { __data["project"] }
 
+    public init(
+      project: Project? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "project": project._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchProjectCommentsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Project
     ///
     /// Parent Type: `Project`
@@ -67,6 +81,24 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
       /// The project's unique URL identifier.
       public var slug: String { __data["slug"] }
 
+      public init(
+        comments: Comments? = nil,
+        id: GraphAPI.ID,
+        slug: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Project.typename,
+            "comments": comments._fieldData,
+            "id": id,
+            "slug": slug,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchProjectCommentsQuery.Data.Project.self)
+          ]
+        ))
+      }
+
       /// Project.Comments
       ///
       /// Parent Type: `CommentConnection`
@@ -88,6 +120,24 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
         public var pageInfo: PageInfo { __data["pageInfo"] }
         public var totalCount: Int { __data["totalCount"] }
 
+        public init(
+          edges: [Edge?]? = nil,
+          pageInfo: PageInfo,
+          totalCount: Int
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.CommentConnection.typename,
+              "edges": edges._fieldData,
+              "pageInfo": pageInfo._fieldData,
+              "totalCount": totalCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchProjectCommentsQuery.Data.Project.Comments.self)
+            ]
+          ))
+        }
+
         /// Project.Comments.Edge
         ///
         /// Parent Type: `CommentEdge`
@@ -103,6 +153,20 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
 
           /// The item at the end of the edge.
           public var node: Node? { __data["node"] }
+
+          public init(
+            node: Node? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.CommentEdge.typename,
+                "node": node._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchProjectCommentsQuery.Data.Project.Comments.Edge.self)
+              ]
+            ))
+          }
 
           /// Project.Comments.Edge.Node
           ///
@@ -147,6 +211,42 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
               public var commentBaseFragment: CommentBaseFragment { _toFragment() }
             }
 
+            public init(
+              replies: Replies? = nil,
+              author: Author? = nil,
+              authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+              body: String,
+              createdAt: GraphAPI.DateTime? = nil,
+              deleted: Bool,
+              id: GraphAPI.ID,
+              parentId: String? = nil,
+              hasFlaggings: Bool,
+              removedPerGuidelines: Bool,
+              sustained: Bool
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Comment.typename,
+                  "replies": replies._fieldData,
+                  "author": author._fieldData,
+                  "authorBadges": authorBadges,
+                  "body": body,
+                  "createdAt": createdAt,
+                  "deleted": deleted,
+                  "id": id,
+                  "parentId": parentId,
+                  "hasFlaggings": hasFlaggings,
+                  "removedPerGuidelines": removedPerGuidelines,
+                  "sustained": sustained,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchProjectCommentsQuery.Data.Project.Comments.Edge.Node.self),
+                  ObjectIdentifier(CommentFragment.self),
+                  ObjectIdentifier(CommentBaseFragment.self)
+                ]
+              ))
+            }
+
             public typealias Replies = CommentFragment.Replies
 
             public typealias Author = CommentBaseFragment.Author
@@ -171,6 +271,22 @@ public class FetchProjectCommentsQuery: GraphQLQuery {
           public var endCursor: String? { __data["endCursor"] }
           /// When paginating forwards, are there more items?
           public var hasNextPage: Bool { __data["hasNextPage"] }
+
+          public init(
+            endCursor: String? = nil,
+            hasNextPage: Bool
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.PageInfo.typename,
+                "endCursor": endCursor,
+                "hasNextPage": hasNextPage,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchProjectCommentsQuery.Data.Project.Comments.PageInfo.self)
+              ]
+            ))
+          }
         }
       }
     }

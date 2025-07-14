@@ -30,6 +30,20 @@ public class CreatePaymentIntentMutation: GraphQLMutation {
     /// Create a Stripe PaymentIntent in order to collect an on-session payment via the Stripe PaymentElement
     public var createPaymentIntent: CreatePaymentIntent? { __data["createPaymentIntent"] }
 
+    public init(
+      createPaymentIntent: CreatePaymentIntent? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createPaymentIntent": createPaymentIntent._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreatePaymentIntentMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreatePaymentIntent
     ///
     /// Parent Type: `CreatePaymentIntentPayload`
@@ -48,6 +62,22 @@ public class CreatePaymentIntentMutation: GraphQLMutation {
       public var clientSecret: String { __data["clientSecret"] }
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+
+      public init(
+        clientSecret: String,
+        clientMutationId: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreatePaymentIntentPayload.typename,
+            "clientSecret": clientSecret,
+            "clientMutationId": clientMutationId,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreatePaymentIntentMutation.Data.CreatePaymentIntent.self)
+          ]
+        ))
+      }
     }
   }
 }

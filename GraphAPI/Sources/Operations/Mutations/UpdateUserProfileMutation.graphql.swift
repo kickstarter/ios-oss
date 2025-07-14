@@ -30,6 +30,20 @@ public class UpdateUserProfileMutation: GraphQLMutation {
     /// Update user's profile
     public var updateUserProfile: UpdateUserProfile? { __data["updateUserProfile"] }
 
+    public init(
+      updateUserProfile: UpdateUserProfile? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "updateUserProfile": updateUserProfile._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UpdateUserProfileMutation.Data.self)
+        ]
+      ))
+    }
+
     /// UpdateUserProfile
     ///
     /// Parent Type: `UpdateUserProfilePayload`
@@ -45,6 +59,20 @@ public class UpdateUserProfileMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+
+      public init(
+        clientMutationId: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.UpdateUserProfilePayload.typename,
+            "clientMutationId": clientMutationId,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(UpdateUserProfileMutation.Data.UpdateUserProfile.self)
+          ]
+        ))
+      }
     }
   }
 }

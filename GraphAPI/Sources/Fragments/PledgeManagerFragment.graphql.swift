@@ -21,4 +21,20 @@ public struct PledgeManagerFragment: GraphAPI.SelectionSet, Fragment {
   public var id: GraphAPI.ID { __data["id"] }
   /// Whether the pledge manager accepts new backers or not
   public var acceptsNewBackers: Bool { __data["acceptsNewBackers"] }
+
+  public init(
+    id: GraphAPI.ID,
+    acceptsNewBackers: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.PledgeManager.typename,
+        "id": id,
+        "acceptsNewBackers": acceptsNewBackers,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PledgeManagerFragment.self)
+      ]
+    ))
+  }
 }

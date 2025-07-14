@@ -28,6 +28,26 @@ public struct CategoryFragment: GraphAPI.SelectionSet, Fragment {
   /// Category parent
   public var parentCategory: ParentCategory? { __data["parentCategory"] }
 
+  public init(
+    id: GraphAPI.ID,
+    name: String,
+    analyticsName: String,
+    parentCategory: ParentCategory? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Category.typename,
+        "id": id,
+        "name": name,
+        "analyticsName": analyticsName,
+        "parentCategory": parentCategory._fieldData,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CategoryFragment.self)
+      ]
+    ))
+  }
+
   /// ParentCategory
   ///
   /// Parent Type: `Category`
@@ -48,5 +68,23 @@ public struct CategoryFragment: GraphAPI.SelectionSet, Fragment {
     public var name: String { __data["name"] }
     /// Category name in English for analytics use.
     public var analyticsName: String { __data["analyticsName"] }
+
+    public init(
+      id: GraphAPI.ID,
+      name: String,
+      analyticsName: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Category.typename,
+          "id": id,
+          "name": name,
+          "analyticsName": analyticsName,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CategoryFragment.ParentCategory.self)
+        ]
+      ))
+    }
   }
 }

@@ -22,4 +22,20 @@ public struct CountryFragment: GraphAPI.SelectionSet, Fragment {
   public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
   /// Country name.
   public var name: String { __data["name"] }
+
+  public init(
+    code: GraphQLEnum<GraphAPI.CountryCode>,
+    name: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Country.typename,
+        "code": code,
+        "name": name,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CountryFragment.self)
+      ]
+    ))
+  }
 }

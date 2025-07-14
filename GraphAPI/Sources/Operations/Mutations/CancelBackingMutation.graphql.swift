@@ -30,6 +30,20 @@ public class CancelBackingMutation: GraphQLMutation {
     /// Cancel a pledged backing
     public var cancelBacking: CancelBacking? { __data["cancelBacking"] }
 
+    public init(
+      cancelBacking: CancelBacking? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "cancelBacking": cancelBacking._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CancelBackingMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CancelBacking
     ///
     /// Parent Type: `CancelBackingPayload`
@@ -45,6 +59,20 @@ public class CancelBackingMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+
+      public init(
+        clientMutationId: String? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CancelBackingPayload.typename,
+            "clientMutationId": clientMutationId,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CancelBackingMutation.Data.CancelBacking.self)
+          ]
+        ))
+      }
     }
   }
 }

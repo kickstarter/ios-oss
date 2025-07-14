@@ -49,6 +49,40 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
   /// Is the current user watching this project?
   public var isWatched: Bool { __data["isWatched"] }
 
+  public init(
+    projectId: GraphAPI.ID,
+    name: String,
+    projectState: GraphQLEnum<GraphAPI.ProjectState>,
+    image: Image? = nil,
+    goal: Goal? = nil,
+    pledged: Pledged,
+    isLaunched: Bool,
+    projectPrelaunchActivated: Bool,
+    deadlineAt: GraphAPI.DateTime? = nil,
+    projectLaunchedAt: GraphAPI.DateTime? = nil,
+    isWatched: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Project.typename,
+        "projectId": projectId,
+        "name": name,
+        "projectState": projectState,
+        "image": image._fieldData,
+        "goal": goal._fieldData,
+        "pledged": pledged._fieldData,
+        "isLaunched": isLaunched,
+        "projectPrelaunchActivated": projectPrelaunchActivated,
+        "deadlineAt": deadlineAt,
+        "projectLaunchedAt": projectLaunchedAt,
+        "isWatched": isWatched,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(BackerDashboardProjectCellFragment.self)
+      ]
+    ))
+  }
+
   /// Image
   ///
   /// Parent Type: `Photo`
@@ -66,6 +100,22 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
     public var id: GraphAPI.ID { __data["id"] }
     /// URL of the photo
     public var url: String { __data["url"] }
+
+    public init(
+      id: GraphAPI.ID,
+      url: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Photo.typename,
+          "id": id,
+          "url": url,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(BackerDashboardProjectCellFragment.Image.self)
+        ]
+      ))
+    }
   }
 
   /// Goal
@@ -94,6 +144,25 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(BackerDashboardProjectCellFragment.Goal.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// Pledged
@@ -121,6 +190,25 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(BackerDashboardProjectCellFragment.Pledged.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 }

@@ -31,6 +31,20 @@ public class CreateBackingMutation: GraphQLMutation {
     /// Create a backing and checkout and process payment.
     public var createBacking: CreateBacking? { __data["createBacking"] }
 
+    public init(
+      createBacking: CreateBacking? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createBacking": createBacking._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreateBackingMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateBacking
     ///
     /// Parent Type: `CreateBackingPayload`
@@ -45,6 +59,20 @@ public class CreateBackingMutation: GraphQLMutation {
       ] }
 
       public var checkout: Checkout? { __data["checkout"] }
+
+      public init(
+        checkout: Checkout? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreateBackingPayload.typename,
+            "checkout": checkout._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreateBackingMutation.Data.CreateBacking.self)
+          ]
+        ))
+      }
 
       /// CreateBacking.Checkout
       ///
@@ -70,6 +98,25 @@ public class CreateBackingMutation: GraphQLMutation {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var checkoutFragment: CheckoutFragment { _toFragment() }
+        }
+
+        public init(
+          backing: Backing,
+          id: GraphAPI.ID,
+          state: GraphQLEnum<GraphAPI.CheckoutState>
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Checkout.typename,
+              "backing": backing._fieldData,
+              "id": id,
+              "state": state,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(CreateBackingMutation.Data.CreateBacking.Checkout.self),
+              ObjectIdentifier(CheckoutFragment.self)
+            ]
+          ))
         }
 
         public typealias Backing = CheckoutFragment.Backing

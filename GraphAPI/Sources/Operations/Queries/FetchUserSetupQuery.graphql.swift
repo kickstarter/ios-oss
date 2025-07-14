@@ -25,6 +25,20 @@ public class FetchUserSetupQuery: GraphQLQuery {
     /// You.
     public var me: Me? { __data["me"] }
 
+    public init(
+      me: Me? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "me": me._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchUserSetupQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Me
     ///
     /// Parent Type: `User`
@@ -55,6 +69,29 @@ public class FetchUserSetupQuery: GraphQLQuery {
         public var userEmailFragment: UserEmailFragment { _toFragment() }
         public var userFeaturesFragment: UserFeaturesFragment { _toFragment() }
         public var pPOUserSetupFragment: PPOUserSetupFragment { _toFragment() }
+      }
+
+      public init(
+        email: String? = nil,
+        enabledFeatures: [GraphQLEnum<GraphAPI.Feature>],
+        ppoHasAction: Bool? = nil,
+        backingActionCount: Int? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.User.typename,
+            "email": email,
+            "enabledFeatures": enabledFeatures,
+            "ppoHasAction": ppoHasAction,
+            "backingActionCount": backingActionCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchUserSetupQuery.Data.Me.self),
+            ObjectIdentifier(UserEmailFragment.self),
+            ObjectIdentifier(UserFeaturesFragment.self),
+            ObjectIdentifier(PPOUserSetupFragment.self)
+          ]
+        ))
       }
     }
   }

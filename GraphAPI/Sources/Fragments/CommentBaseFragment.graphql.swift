@@ -46,6 +46,38 @@ public struct CommentBaseFragment: GraphAPI.SelectionSet, Fragment {
   /// Whether this comment has been reviewed and sustained by an admin
   public var sustained: Bool { __data["sustained"] }
 
+  public init(
+    author: Author? = nil,
+    authorBadges: [GraphQLEnum<GraphAPI.CommentBadge>?]? = nil,
+    body: String,
+    createdAt: GraphAPI.DateTime? = nil,
+    deleted: Bool,
+    id: GraphAPI.ID,
+    parentId: String? = nil,
+    hasFlaggings: Bool,
+    removedPerGuidelines: Bool,
+    sustained: Bool
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Comment.typename,
+        "author": author._fieldData,
+        "authorBadges": authorBadges,
+        "body": body,
+        "createdAt": createdAt,
+        "deleted": deleted,
+        "id": id,
+        "parentId": parentId,
+        "hasFlaggings": hasFlaggings,
+        "removedPerGuidelines": removedPerGuidelines,
+        "sustained": sustained,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CommentBaseFragment.self)
+      ]
+    ))
+  }
+
   /// Author
   ///
   /// Parent Type: `User`
@@ -72,5 +104,27 @@ public struct CommentBaseFragment: GraphAPI.SelectionSet, Fragment {
     public var isCreator: Bool? { __data["isCreator"] }
     /// The user's provided name.
     public var name: String { __data["name"] }
+
+    public init(
+      id: GraphAPI.ID,
+      imageUrl: String,
+      isBlocked: Bool? = nil,
+      isCreator: Bool? = nil,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.User.typename,
+          "id": id,
+          "imageUrl": imageUrl,
+          "isBlocked": isBlocked,
+          "isCreator": isCreator,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CommentBaseFragment.Author.self)
+        ]
+      ))
+    }
   }
 }

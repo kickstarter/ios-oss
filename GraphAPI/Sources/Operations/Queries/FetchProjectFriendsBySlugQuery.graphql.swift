@@ -39,6 +39,20 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
     /// Fetches a project given its slug or pid.
     public var project: Project? { __data["project"] }
 
+    public init(
+      project: Project? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "project": project._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Project
     ///
     /// Parent Type: `Project`
@@ -55,6 +69,20 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
       /// A project's friendly backers.
       public var friends: Friends? { __data["friends"] }
 
+      public init(
+        friends: Friends? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Project.typename,
+            "friends": friends._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.Project.self)
+          ]
+        ))
+      }
+
       /// Project.Friends
       ///
       /// Parent Type: `ProjectBackerFriendsConnection`
@@ -70,6 +98,20 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+
+        public init(
+          nodes: [Node?]? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.ProjectBackerFriendsConnection.typename,
+              "nodes": nodes._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.Project.Friends.self)
+            ]
+          ))
+        }
 
         /// Project.Friends.Node
         ///
@@ -151,6 +193,79 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
             public var userFragment: UserFragment { _toFragment() }
           }
 
+          public init(
+            backings: Backings? = nil,
+            backingsCount: Int,
+            chosenCurrency: String? = nil,
+            createdProjects: CreatedProjects? = nil,
+            email: String? = nil,
+            hasPassword: Bool? = nil,
+            hasUnreadMessages: Bool? = nil,
+            hasUnseenActivity: Bool? = nil,
+            id: GraphAPI.ID,
+            imageUrl: String,
+            isAppleConnected: Bool? = nil,
+            isBlocked: Bool? = nil,
+            isCreator: Bool? = nil,
+            isDeliverable: Bool? = nil,
+            isEmailVerified: Bool? = nil,
+            isFacebookConnected: Bool? = nil,
+            isKsrAdmin: Bool? = nil,
+            isFollowing: Bool,
+            isSocializing: Bool? = nil,
+            location: Location? = nil,
+            name: String,
+            needsFreshFacebookToken: Bool? = nil,
+            newsletterSubscriptions: NewsletterSubscriptions? = nil,
+            notifications: [Notification]? = nil,
+            optedOutOfRecommendations: Bool? = nil,
+            showPublicProfile: Bool? = nil,
+            savedProjects: SavedProjects? = nil,
+            storedCards: StoredCards? = nil,
+            surveyResponses: SurveyResponses? = nil,
+            uid: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.User.typename,
+                "backings": backings._fieldData,
+                "backingsCount": backingsCount,
+                "chosenCurrency": chosenCurrency,
+                "createdProjects": createdProjects._fieldData,
+                "email": email,
+                "hasPassword": hasPassword,
+                "hasUnreadMessages": hasUnreadMessages,
+                "hasUnseenActivity": hasUnseenActivity,
+                "id": id,
+                "imageUrl": imageUrl,
+                "isAppleConnected": isAppleConnected,
+                "isBlocked": isBlocked,
+                "isCreator": isCreator,
+                "isDeliverable": isDeliverable,
+                "isEmailVerified": isEmailVerified,
+                "isFacebookConnected": isFacebookConnected,
+                "isKsrAdmin": isKsrAdmin,
+                "isFollowing": isFollowing,
+                "isSocializing": isSocializing,
+                "location": location._fieldData,
+                "name": name,
+                "needsFreshFacebookToken": needsFreshFacebookToken,
+                "newsletterSubscriptions": newsletterSubscriptions._fieldData,
+                "notifications": notifications._fieldData,
+                "optedOutOfRecommendations": optedOutOfRecommendations,
+                "showPublicProfile": showPublicProfile,
+                "savedProjects": savedProjects._fieldData,
+                "storedCards": storedCards._fieldData,
+                "surveyResponses": surveyResponses._fieldData,
+                "uid": uid,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.Project.Friends.Node.self),
+                ObjectIdentifier(UserFragment.self)
+              ]
+            ))
+          }
+
           public typealias Backings = UserFragment.Backings
 
           public typealias CreatedProjects = UserFragment.CreatedProjects
@@ -180,6 +295,30 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
 
               public var locationFragment: LocationFragment { _toFragment() }
             }
+
+            public init(
+              country: String,
+              countryName: String? = nil,
+              displayableName: String,
+              id: GraphAPI.ID,
+              name: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Location.typename,
+                  "country": country,
+                  "countryName": countryName,
+                  "displayableName": displayableName,
+                  "id": id,
+                  "name": name,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.Project.Friends.Node.Location.self),
+                  ObjectIdentifier(UserFragment.Location.self),
+                  ObjectIdentifier(LocationFragment.self)
+                ]
+              ))
+            }
           }
 
           public typealias NewsletterSubscriptions = UserFragment.NewsletterSubscriptions
@@ -206,6 +345,24 @@ public class FetchProjectFriendsBySlugQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var userStoredCardsFragment: UserStoredCardsFragment { _toFragment() }
+            }
+
+            public init(
+              nodes: [Node?]? = nil,
+              totalCount: Int
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+                  "nodes": nodes._fieldData,
+                  "totalCount": totalCount,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchProjectFriendsBySlugQuery.Data.Project.Friends.Node.StoredCards.self),
+                  ObjectIdentifier(UserFragment.StoredCards.self),
+                  ObjectIdentifier(UserStoredCardsFragment.self)
+                ]
+              ))
             }
 
             public typealias Node = UserStoredCardsFragment.Node

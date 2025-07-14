@@ -29,6 +29,20 @@ public class UnwatchProjectMutation: GraphQLMutation {
 
     public var watchProject: WatchProject? { __data["watchProject"] }
 
+    public init(
+      watchProject: WatchProject? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "watchProject": watchProject._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(UnwatchProjectMutation.Data.self)
+        ]
+      ))
+    }
+
     /// WatchProject
     ///
     /// Parent Type: `UnwatchProjectPayload`
@@ -46,6 +60,22 @@ public class UnwatchProjectMutation: GraphQLMutation {
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
       public var project: Project? { __data["project"] }
+
+      public init(
+        clientMutationId: String? = nil,
+        project: Project? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.UnwatchProjectPayload.typename,
+            "clientMutationId": clientMutationId,
+            "project": project._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(UnwatchProjectMutation.Data.WatchProject.self)
+          ]
+        ))
+      }
 
       /// WatchProject.Project
       ///
@@ -67,6 +97,24 @@ public class UnwatchProjectMutation: GraphQLMutation {
         public var isWatched: Bool { __data["isWatched"] }
         /// Number of watchers a project has.
         public var watchesCount: Int? { __data["watchesCount"] }
+
+        public init(
+          id: GraphAPI.ID,
+          isWatched: Bool,
+          watchesCount: Int? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Project.typename,
+              "id": id,
+              "isWatched": isWatched,
+              "watchesCount": watchesCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(UnwatchProjectMutation.Data.WatchProject.Project.self)
+            ]
+          ))
+        }
       }
     }
   }

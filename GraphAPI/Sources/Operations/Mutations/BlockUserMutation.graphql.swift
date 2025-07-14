@@ -30,6 +30,20 @@ public class BlockUserMutation: GraphQLMutation {
     /// Block a user
     public var blockUser: BlockUser? { __data["blockUser"] }
 
+    public init(
+      blockUser: BlockUser? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "blockUser": blockUser._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(BlockUserMutation.Data.self)
+        ]
+      ))
+    }
+
     /// BlockUser
     ///
     /// Parent Type: `BlockUserPayload`
@@ -44,6 +58,20 @@ public class BlockUserMutation: GraphQLMutation {
       ] }
 
       public var success: Bool { __data["success"] }
+
+      public init(
+        success: Bool
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.BlockUserPayload.typename,
+            "success": success,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(BlockUserMutation.Data.BlockUser.self)
+          ]
+        ))
+      }
     }
   }
 }

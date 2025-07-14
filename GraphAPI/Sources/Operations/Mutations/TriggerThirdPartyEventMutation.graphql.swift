@@ -30,6 +30,20 @@ public class TriggerThirdPartyEventMutation: GraphQLMutation {
     /// Triggers third party event
     public var triggerThirdPartyEvent: TriggerThirdPartyEvent? { __data["triggerThirdPartyEvent"] }
 
+    public init(
+      triggerThirdPartyEvent: TriggerThirdPartyEvent? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "triggerThirdPartyEvent": triggerThirdPartyEvent._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(TriggerThirdPartyEventMutation.Data.self)
+        ]
+      ))
+    }
+
     /// TriggerThirdPartyEvent
     ///
     /// Parent Type: `TriggerThirdPartyEventPayload`
@@ -44,6 +58,20 @@ public class TriggerThirdPartyEventMutation: GraphQLMutation {
       ] }
 
       public var success: Bool { __data["success"] }
+
+      public init(
+        success: Bool
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.TriggerThirdPartyEventPayload.typename,
+            "success": success,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(TriggerThirdPartyEventMutation.Data.TriggerThirdPartyEvent.self)
+          ]
+        ))
+      }
     }
   }
 }

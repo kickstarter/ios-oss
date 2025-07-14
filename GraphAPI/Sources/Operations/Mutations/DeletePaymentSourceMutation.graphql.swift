@@ -31,6 +31,20 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
     /// Delete a user's payment source
     public var paymentSourceDelete: PaymentSourceDelete? { __data["paymentSourceDelete"] }
 
+    public init(
+      paymentSourceDelete: PaymentSourceDelete? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "paymentSourceDelete": paymentSourceDelete._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(DeletePaymentSourceMutation.Data.self)
+        ]
+      ))
+    }
+
     /// PaymentSourceDelete
     ///
     /// Parent Type: `PaymentSourceDeletePayload`
@@ -45,6 +59,20 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
       ] }
 
       public var user: User? { __data["user"] }
+
+      public init(
+        user: User? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PaymentSourceDeletePayload.typename,
+            "user": user._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(DeletePaymentSourceMutation.Data.PaymentSourceDelete.self)
+          ]
+        ))
+      }
 
       /// PaymentSourceDelete.User
       ///
@@ -61,6 +89,20 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
 
         /// Stored Cards
         public var storedCards: StoredCards? { __data["storedCards"] }
+
+        public init(
+          storedCards: StoredCards? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.User.typename,
+              "storedCards": storedCards._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(DeletePaymentSourceMutation.Data.PaymentSourceDelete.User.self)
+            ]
+          ))
+        }
 
         /// PaymentSourceDelete.User.StoredCards
         ///
@@ -84,6 +126,23 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var userStoredCardsFragment: UserStoredCardsFragment { _toFragment() }
+          }
+
+          public init(
+            nodes: [Node?]? = nil,
+            totalCount: Int
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+                "nodes": nodes._fieldData,
+                "totalCount": totalCount,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(DeletePaymentSourceMutation.Data.PaymentSourceDelete.User.StoredCards.self),
+                ObjectIdentifier(UserStoredCardsFragment.self)
+              ]
+            ))
           }
 
           public typealias Node = UserStoredCardsFragment.Node

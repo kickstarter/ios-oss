@@ -30,6 +30,20 @@ public class CreateSetupIntentMutation: GraphQLMutation {
     /// Create a Stripe SetupIntent in order to render new Stripe Elements
     public var createSetupIntent: CreateSetupIntent? { __data["createSetupIntent"] }
 
+    public init(
+      createSetupIntent: CreateSetupIntent? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createSetupIntent": createSetupIntent._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreateSetupIntentMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateSetupIntent
     ///
     /// Parent Type: `CreateSetupIntentPayload`
@@ -44,6 +58,20 @@ public class CreateSetupIntentMutation: GraphQLMutation {
       ] }
 
       public var clientSecret: String { __data["clientSecret"] }
+
+      public init(
+        clientSecret: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreateSetupIntentPayload.typename,
+            "clientSecret": clientSecret,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreateSetupIntentMutation.Data.CreateSetupIntent.self)
+          ]
+        ))
+      }
     }
   }
 }

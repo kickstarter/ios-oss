@@ -31,6 +31,20 @@ public class FetchCategoryQuery: GraphQLQuery {
     /// Fetches an object given its ID.
     public var node: Node? { __data["node"] }
 
+    public init(
+      node: Node? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "node": node._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchCategoryQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Node
     ///
     /// Parent Type: `Node`
@@ -45,6 +59,19 @@ public class FetchCategoryQuery: GraphQLQuery {
       ] }
 
       public var asCategory: AsCategory? { _asInlineFragment() }
+
+      public init(
+        __typename: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": __typename,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchCategoryQuery.Data.Node.self)
+          ]
+        ))
+      }
 
       /// Node.AsCategory
       ///
@@ -72,6 +99,29 @@ public class FetchCategoryQuery: GraphQLQuery {
         public var subcategories: Subcategories? { __data["subcategories"] }
         public var totalProjectCount: Int { __data["totalProjectCount"] }
 
+        public init(
+          analyticsName: String,
+          id: GraphAPI.ID,
+          name: String,
+          subcategories: Subcategories? = nil,
+          totalProjectCount: Int
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Category.typename,
+              "analyticsName": analyticsName,
+              "id": id,
+              "name": name,
+              "subcategories": subcategories._fieldData,
+              "totalProjectCount": totalProjectCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchCategoryQuery.Data.Node.self),
+              ObjectIdentifier(FetchCategoryQuery.Data.Node.AsCategory.self)
+            ]
+          ))
+        }
+
         /// Node.AsCategory.Subcategories
         ///
         /// Parent Type: `CategorySubcategoriesConnection`
@@ -89,6 +139,22 @@ public class FetchCategoryQuery: GraphQLQuery {
           /// A list of nodes.
           public var nodes: [Node?]? { __data["nodes"] }
           public var totalCount: Int { __data["totalCount"] }
+
+          public init(
+            nodes: [Node?]? = nil,
+            totalCount: Int
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.CategorySubcategoriesConnection.typename,
+                "nodes": nodes._fieldData,
+                "totalCount": totalCount,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchCategoryQuery.Data.Node.AsCategory.Subcategories.self)
+              ]
+            ))
+          }
 
           /// Node.AsCategory.Subcategories.Node
           ///
@@ -121,6 +187,31 @@ public class FetchCategoryQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var categoryFragment: CategoryFragment { _toFragment() }
+            }
+
+            public init(
+              parentId: GraphAPI.ID? = nil,
+              totalProjectCount: Int,
+              id: GraphAPI.ID,
+              name: String,
+              analyticsName: String,
+              parentCategory: ParentCategory? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Category.typename,
+                  "parentId": parentId,
+                  "totalProjectCount": totalProjectCount,
+                  "id": id,
+                  "name": name,
+                  "analyticsName": analyticsName,
+                  "parentCategory": parentCategory._fieldData,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchCategoryQuery.Data.Node.AsCategory.Subcategories.Node.self),
+                  ObjectIdentifier(CategoryFragment.self)
+                ]
+              ))
             }
 
             public typealias ParentCategory = CategoryFragment.ParentCategory

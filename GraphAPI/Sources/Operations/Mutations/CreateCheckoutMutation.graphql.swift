@@ -30,6 +30,20 @@ public class CreateCheckoutMutation: GraphQLMutation {
     /// Create a backing and checkout without syncing to Rosie
     public var createCheckout: CreateCheckout? { __data["createCheckout"] }
 
+    public init(
+      createCheckout: CreateCheckout? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createCheckout": createCheckout._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreateCheckoutMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateCheckout
     ///
     /// Parent Type: `CreateCheckoutPayload`
@@ -47,6 +61,22 @@ public class CreateCheckoutMutation: GraphQLMutation {
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
       public var checkout: Checkout? { __data["checkout"] }
+
+      public init(
+        clientMutationId: String? = nil,
+        checkout: Checkout? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreateCheckoutPayload.typename,
+            "clientMutationId": clientMutationId,
+            "checkout": checkout._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreateCheckoutMutation.Data.CreateCheckout.self)
+          ]
+        ))
+      }
 
       /// CreateCheckout.Checkout
       ///
@@ -68,6 +98,24 @@ public class CreateCheckoutMutation: GraphQLMutation {
         /// The backing that the checkout is modifying.
         public var backing: Backing { __data["backing"] }
 
+        public init(
+          id: GraphAPI.ID,
+          paymentUrl: String? = nil,
+          backing: Backing
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Checkout.typename,
+              "id": id,
+              "paymentUrl": paymentUrl,
+              "backing": backing._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(CreateCheckoutMutation.Data.CreateCheckout.Checkout.self)
+            ]
+          ))
+        }
+
         /// CreateCheckout.Checkout.Backing
         ///
         /// Parent Type: `Backing`
@@ -82,6 +130,20 @@ public class CreateCheckoutMutation: GraphQLMutation {
           ] }
 
           public var id: GraphAPI.ID { __data["id"] }
+
+          public init(
+            id: GraphAPI.ID
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Backing.typename,
+                "id": id,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(CreateCheckoutMutation.Data.CreateCheckout.Checkout.Backing.self)
+              ]
+            ))
+          }
         }
       }
     }

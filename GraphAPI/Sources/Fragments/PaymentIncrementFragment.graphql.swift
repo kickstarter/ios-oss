@@ -26,6 +26,26 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
   public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
 
+  public init(
+    amount: Amount,
+    scheduledCollection: GraphAPI.ISO8601DateTime,
+    state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
+    stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.PaymentIncrement.typename,
+        "amount": amount._fieldData,
+        "scheduledCollection": scheduledCollection,
+        "state": state,
+        "stateReason": stateReason,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PaymentIncrementFragment.self)
+      ]
+    ))
+  }
+
   /// Amount
   ///
   /// Parent Type: `PaymentIncrementAmount`
@@ -44,5 +64,21 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
     public var amountFormattedInProjectNativeCurrency: String { __data["amountFormattedInProjectNativeCurrency"] }
     /// A three-letter currency code for the increment (ie the currency of the project)
     public var currency: String { __data["currency"] }
+
+    public init(
+      amountFormattedInProjectNativeCurrency: String,
+      currency: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.PaymentIncrementAmount.typename,
+          "amountFormattedInProjectNativeCurrency": amountFormattedInProjectNativeCurrency,
+          "currency": currency,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PaymentIncrementFragment.Amount.self)
+        ]
+      ))
+    }
   }
 }

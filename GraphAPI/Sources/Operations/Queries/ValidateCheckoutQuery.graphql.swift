@@ -42,6 +42,20 @@ public class ValidateCheckoutQuery: GraphQLQuery {
     /// Fetches a checkout given its id.
     public var checkout: Checkout? { __data["checkout"] }
 
+    public init(
+      checkout: Checkout? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "checkout": checkout._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ValidateCheckoutQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Checkout
     ///
     /// Parent Type: `Checkout`
@@ -61,6 +75,20 @@ public class ValidateCheckoutQuery: GraphQLQuery {
       /// Checks whether the checkout is valid prior to charging the user's card.
       public var isValidForOnSessionCheckout: IsValidForOnSessionCheckout { __data["isValidForOnSessionCheckout"] }
 
+      public init(
+        isValidForOnSessionCheckout: IsValidForOnSessionCheckout
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Checkout.typename,
+            "isValidForOnSessionCheckout": isValidForOnSessionCheckout._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ValidateCheckoutQuery.Data.Checkout.self)
+          ]
+        ))
+      }
+
       /// Checkout.IsValidForOnSessionCheckout
       ///
       /// Parent Type: `Validation`
@@ -79,6 +107,22 @@ public class ValidateCheckoutQuery: GraphQLQuery {
         public var valid: Bool { __data["valid"] }
         /// Error messages associated with the value
         public var messages: [String] { __data["messages"] }
+
+        public init(
+          valid: Bool,
+          messages: [String]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Validation.typename,
+              "valid": valid,
+              "messages": messages,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ValidateCheckoutQuery.Data.Checkout.IsValidForOnSessionCheckout.self)
+            ]
+          ))
+        }
       }
     }
   }

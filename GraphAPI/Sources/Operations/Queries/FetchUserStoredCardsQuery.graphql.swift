@@ -24,6 +24,20 @@ public class FetchUserStoredCardsQuery: GraphQLQuery {
     /// You.
     public var me: Me? { __data["me"] }
 
+    public init(
+      me: Me? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "me": me._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchUserStoredCardsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Me
     ///
     /// Parent Type: `User`
@@ -54,6 +68,28 @@ public class FetchUserStoredCardsQuery: GraphQLQuery {
       /// A user's uid
       public var uid: String { __data["uid"] }
 
+      public init(
+        id: GraphAPI.ID,
+        imageUrl: String,
+        name: String,
+        storedCards: StoredCards? = nil,
+        uid: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.User.typename,
+            "id": id,
+            "imageUrl": imageUrl,
+            "name": name,
+            "storedCards": storedCards._fieldData,
+            "uid": uid,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchUserStoredCardsQuery.Data.Me.self)
+          ]
+        ))
+      }
+
       /// Me.StoredCards
       ///
       /// Parent Type: `UserCreditCardTypeConnection`
@@ -71,6 +107,22 @@ public class FetchUserStoredCardsQuery: GraphQLQuery {
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
         public var totalCount: Int { __data["totalCount"] }
+
+        public init(
+          nodes: [Node?]? = nil,
+          totalCount: Int
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+              "nodes": nodes._fieldData,
+              "totalCount": totalCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchUserStoredCardsQuery.Data.Me.StoredCards.self)
+            ]
+          ))
+        }
 
         /// Me.StoredCards.Node
         ///
@@ -96,6 +148,26 @@ public class FetchUserStoredCardsQuery: GraphQLQuery {
           public var lastFour: String { __data["lastFour"] }
           /// The card type.
           public var type: GraphQLEnum<GraphAPI.CreditCardTypes> { __data["type"] }
+
+          public init(
+            expirationDate: GraphAPI.Date,
+            id: String,
+            lastFour: String,
+            type: GraphQLEnum<GraphAPI.CreditCardTypes>
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.CreditCard.typename,
+                "expirationDate": expirationDate,
+                "id": id,
+                "lastFour": lastFour,
+                "type": type,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchUserStoredCardsQuery.Data.Me.StoredCards.Node.self)
+              ]
+            ))
+          }
         }
       }
     }

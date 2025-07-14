@@ -31,6 +31,20 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
     /// Create a payment source
     public var createPaymentSource: CreatePaymentSource? { __data["createPaymentSource"] }
 
+    public init(
+      createPaymentSource: CreatePaymentSource? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createPaymentSource": createPaymentSource._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreatePaymentSourceMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreatePaymentSource
     ///
     /// Parent Type: `CreatePaymentSourcePayload`
@@ -50,6 +64,24 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
       public var clientMutationId: String? { __data["clientMutationId"] }
       public var isSuccessful: Bool { __data["isSuccessful"] }
       public var paymentSource: PaymentSource? { __data["paymentSource"] }
+
+      public init(
+        clientMutationId: String? = nil,
+        isSuccessful: Bool,
+        paymentSource: PaymentSource? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreatePaymentSourcePayload.typename,
+            "clientMutationId": clientMutationId,
+            "isSuccessful": isSuccessful,
+            "paymentSource": paymentSource._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreatePaymentSourceMutation.Data.CreatePaymentSource.self)
+          ]
+        ))
+      }
 
       /// CreatePaymentSource.PaymentSource
       ///
@@ -86,6 +118,32 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
           public var paymentSourceFragment: PaymentSourceFragment { _toFragment() }
         }
 
+        public init(
+          expirationDate: GraphAPI.Date,
+          id: String,
+          lastFour: String,
+          paymentType: GraphQLEnum<GraphAPI.CreditCardPaymentType>,
+          type: GraphQLEnum<GraphAPI.CreditCardTypes>,
+          stripeCardId: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.CreditCard.typename,
+              "expirationDate": expirationDate,
+              "id": id,
+              "lastFour": lastFour,
+              "paymentType": paymentType,
+              "type": type,
+              "stripeCardId": stripeCardId,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(CreatePaymentSourceMutation.Data.CreatePaymentSource.PaymentSource.self),
+              ObjectIdentifier(PaymentSourceFragment.self),
+              ObjectIdentifier(PaymentSourceFragment.AsCreditCard.self)
+            ]
+          ))
+        }
+
         /// CreatePaymentSource.PaymentSource.AsBankAccount
         ///
         /// Parent Type: `BankAccount`
@@ -120,6 +178,36 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var paymentSourceFragment: PaymentSourceFragment { _toFragment() }
+          }
+
+          public init(
+            expirationDate: GraphAPI.Date,
+            id: String,
+            lastFour: String,
+            paymentType: GraphQLEnum<GraphAPI.CreditCardPaymentType>,
+            type: GraphQLEnum<GraphAPI.CreditCardTypes>,
+            stripeCardId: String,
+            bankName: String? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.BankAccount.typename,
+                "expirationDate": expirationDate,
+                "id": id,
+                "lastFour": lastFour,
+                "paymentType": paymentType,
+                "type": type,
+                "stripeCardId": stripeCardId,
+                "bankName": bankName,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(CreatePaymentSourceMutation.Data.CreatePaymentSource.PaymentSource.self),
+                ObjectIdentifier(CreatePaymentSourceMutation.Data.CreatePaymentSource.PaymentSource.AsBankAccount.self),
+                ObjectIdentifier(PaymentSourceFragment.self),
+                ObjectIdentifier(PaymentSourceFragment.AsCreditCard.self),
+                ObjectIdentifier(PaymentSourceFragment.AsBankAccount.self)
+              ]
+            ))
           }
         }
       }

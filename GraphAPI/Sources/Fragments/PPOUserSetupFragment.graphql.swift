@@ -22,4 +22,20 @@ public struct PPOUserSetupFragment: GraphAPI.SelectionSet, Fragment {
   public var ppoHasAction: Bool? { __data["ppoHasAction"] }
   /// Count of pledges with pending action
   public var backingActionCount: Int? { __data["backingActionCount"] }
+
+  public init(
+    ppoHasAction: Bool? = nil,
+    backingActionCount: Int? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.User.typename,
+        "ppoHasAction": ppoHasAction,
+        "backingActionCount": backingActionCount,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(PPOUserSetupFragment.self)
+      ]
+    ))
+  }
 }

@@ -10,21 +10,15 @@
   },
   "options": {
     "selectionSetInitializers": {
-      "operations": false,
-      "namedFragments": false,
-      "definitionsNamed": [
-        "ProjectAnalyticsFragment",
-        "MoneyFragment",
-        "FetchSimilarProjects",
-        "FetchUserEmail",
-        "FetchUser",
-        "UserStoredCardsFragment"
-      ]
+      "operations": true,
+      "namedFragments": true
     }
   },
   "output": {
     "testMocks": {
-      "none": {}
+      "swiftPackage": {
+        "targetName": "GraphAPITestMocks"
+      }
     },
     "schemaTypes": {
       "path": "./GraphAPI",

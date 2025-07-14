@@ -30,6 +30,20 @@ public class SignInWithAppleMutation: GraphQLMutation {
     /// Signs in or sign up a user via the Sign in With Apple service
     public var signInWithApple: SignInWithApple? { __data["signInWithApple"] }
 
+    public init(
+      signInWithApple: SignInWithApple? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "signInWithApple": signInWithApple._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(SignInWithAppleMutation.Data.self)
+        ]
+      ))
+    }
+
     /// SignInWithApple
     ///
     /// Parent Type: `SignInWithApplePayload`
@@ -47,6 +61,22 @@ public class SignInWithAppleMutation: GraphQLMutation {
       public var apiAccessToken: String? { __data["apiAccessToken"] }
       public var user: User? { __data["user"] }
 
+      public init(
+        apiAccessToken: String? = nil,
+        user: User? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.SignInWithApplePayload.typename,
+            "apiAccessToken": apiAccessToken,
+            "user": user._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(SignInWithAppleMutation.Data.SignInWithApple.self)
+          ]
+        ))
+      }
+
       /// SignInWithApple.User
       ///
       /// Parent Type: `User`
@@ -62,6 +92,20 @@ public class SignInWithAppleMutation: GraphQLMutation {
 
         /// A user's uid
         public var uid: String { __data["uid"] }
+
+        public init(
+          uid: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.User.typename,
+              "uid": uid,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(SignInWithAppleMutation.Data.SignInWithApple.User.self)
+            ]
+          ))
+        }
       }
     }
   }

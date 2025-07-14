@@ -92,6 +92,68 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   /// A URL to the project's page.
   public var url: String { __data["url"] }
 
+  public init(
+    pid: Int,
+    name: String,
+    projectDescription: String,
+    creator: Creator? = nil,
+    state: GraphQLEnum<GraphAPI.ProjectState>,
+    stateChangedAt: GraphAPI.DateTime,
+    image: Image? = nil,
+    prelaunchActivated: Bool,
+    backing: Backing? = nil,
+    backersCount: Int,
+    percentFunded: Int,
+    goal: Goal? = nil,
+    pledged: Pledged,
+    currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+    fxRate: Double,
+    usdExchangeRate: Double? = nil,
+    projectUsdExchangeRate: Double,
+    category: Category? = nil,
+    location: Location? = nil,
+    deadlineAt: GraphAPI.DateTime? = nil,
+    launchedAt: GraphAPI.DateTime? = nil,
+    country: Country,
+    risks: String,
+    video: Video? = nil,
+    url: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Project.typename,
+        "pid": pid,
+        "name": name,
+        "projectDescription": projectDescription,
+        "creator": creator._fieldData,
+        "state": state,
+        "stateChangedAt": stateChangedAt,
+        "image": image._fieldData,
+        "prelaunchActivated": prelaunchActivated,
+        "backing": backing._fieldData,
+        "backersCount": backersCount,
+        "percentFunded": percentFunded,
+        "goal": goal._fieldData,
+        "pledged": pledged._fieldData,
+        "currency": currency,
+        "fxRate": fxRate,
+        "usdExchangeRate": usdExchangeRate,
+        "projectUsdExchangeRate": projectUsdExchangeRate,
+        "category": category._fieldData,
+        "location": location._fieldData,
+        "deadlineAt": deadlineAt,
+        "launchedAt": launchedAt,
+        "country": country._fieldData,
+        "risks": risks,
+        "video": video._fieldData,
+        "url": url,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.self)
+      ]
+    ))
+  }
+
   /// Creator
   ///
   /// Parent Type: `User`
@@ -115,6 +177,26 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     public var isBlocked: Bool? { __data["isBlocked"] }
     /// The user's avatar.
     public var imageUrl: String { __data["imageUrl"] }
+
+    public init(
+      id: GraphAPI.ID,
+      name: String,
+      isBlocked: Bool? = nil,
+      imageUrl: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.User.typename,
+          "id": id,
+          "name": name,
+          "isBlocked": isBlocked,
+          "imageUrl": imageUrl,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Creator.self)
+        ]
+      ))
+    }
   }
 
   /// Image
@@ -132,6 +214,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
 
     /// URL of the photo
     public var url: String { __data["url"] }
+
+    public init(
+      url: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Photo.typename,
+          "url": url,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
+        ]
+      ))
+    }
   }
 
   /// Backing
@@ -148,6 +244,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     ] }
 
     public var id: GraphAPI.ID { __data["id"] }
+
+    public init(
+      id: GraphAPI.ID
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Backing.typename,
+          "id": id,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
+        ]
+      ))
+    }
   }
 
   /// Goal
@@ -175,6 +285,25 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var moneyFragment: MoneyFragment { _toFragment() }
+    }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Goal.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
     }
   }
 
@@ -204,6 +333,25 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Pledged.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// Category
@@ -221,6 +369,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
 
     /// Category name.
     public var name: String { __data["name"] }
+
+    public init(
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Category.typename,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Category.self)
+        ]
+      ))
+    }
   }
 
   /// Location
@@ -238,6 +400,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
 
     /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
     public var displayableName: String { __data["displayableName"] }
+
+    public init(
+      displayableName: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Location.typename,
+          "displayableName": displayableName,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Location.self)
+        ]
+      ))
+    }
   }
 
   /// Country
@@ -258,6 +434,22 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
     /// Country name.
     public var name: String { __data["name"] }
+
+    public init(
+      code: GraphQLEnum<GraphAPI.CountryCode>,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Country.typename,
+          "code": code,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
+        ]
+      ))
+    }
   }
 
   /// Video
@@ -276,6 +468,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     /// A video's sources (hls, high, base)
     public var videoSources: VideoSources? { __data["videoSources"] }
 
+    public init(
+      videoSources: VideoSources? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Video.typename,
+          "videoSources": videoSources._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
+        ]
+      ))
+    }
+
     /// Video.VideoSources
     ///
     /// Parent Type: `VideoSources`
@@ -293,6 +499,22 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
       public var hls: Hls? { __data["hls"] }
       public var high: High? { __data["high"] }
 
+      public init(
+        hls: Hls? = nil,
+        high: High? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.VideoSources.typename,
+            "hls": hls._fieldData,
+            "high": high._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.self)
+          ]
+        ))
+      }
+
       /// Video.VideoSources.Hls
       ///
       /// Parent Type: `VideoSourceInfo`
@@ -307,6 +529,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         ] }
 
         public var src: String? { __data["src"] }
+
+        public init(
+          src: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
+              "src": src,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.Hls.self)
+            ]
+          ))
+        }
       }
 
       /// Video.VideoSources.High
@@ -323,6 +559,20 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         ] }
 
         public var src: String? { __data["src"] }
+
+        public init(
+          src: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
+              "src": src,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.High.self)
+            ]
+          ))
+        }
       }
     }
   }

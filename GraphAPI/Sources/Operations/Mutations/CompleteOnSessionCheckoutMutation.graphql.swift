@@ -31,6 +31,20 @@ public class CompleteOnSessionCheckoutMutation: GraphQLMutation {
     /// Complete a checkout originating from an session payment
     public var completeOnSessionCheckout: CompleteOnSessionCheckout? { __data["completeOnSessionCheckout"] }
 
+    public init(
+      completeOnSessionCheckout: CompleteOnSessionCheckout? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "completeOnSessionCheckout": completeOnSessionCheckout._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CompleteOnSessionCheckoutMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CompleteOnSessionCheckout
     ///
     /// Parent Type: `CompleteOnSessionCheckoutPayload`
@@ -45,6 +59,20 @@ public class CompleteOnSessionCheckoutMutation: GraphQLMutation {
       ] }
 
       public var checkout: Checkout? { __data["checkout"] }
+
+      public init(
+        checkout: Checkout? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CompleteOnSessionCheckoutPayload.typename,
+            "checkout": checkout._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CompleteOnSessionCheckoutMutation.Data.CompleteOnSessionCheckout.self)
+          ]
+        ))
+      }
 
       /// CompleteOnSessionCheckout.Checkout
       ///
@@ -70,6 +98,25 @@ public class CompleteOnSessionCheckoutMutation: GraphQLMutation {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var checkoutFragment: CheckoutFragment { _toFragment() }
+        }
+
+        public init(
+          backing: Backing,
+          id: GraphAPI.ID,
+          state: GraphQLEnum<GraphAPI.CheckoutState>
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Checkout.typename,
+              "backing": backing._fieldData,
+              "id": id,
+              "state": state,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(CompleteOnSessionCheckoutMutation.Data.CompleteOnSessionCheckout.Checkout.self),
+              ObjectIdentifier(CheckoutFragment.self)
+            ]
+          ))
         }
 
         public typealias Backing = CheckoutFragment.Backing

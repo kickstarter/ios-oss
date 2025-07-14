@@ -25,6 +25,24 @@ public struct CheckoutFragment: GraphAPI.SelectionSet, Fragment {
   /// The current state of the checkout
   public var state: GraphQLEnum<GraphAPI.CheckoutState> { __data["state"] }
 
+  public init(
+    backing: Backing,
+    id: GraphAPI.ID,
+    state: GraphQLEnum<GraphAPI.CheckoutState>
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Checkout.typename,
+        "backing": backing._fieldData,
+        "id": id,
+        "state": state,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(CheckoutFragment.self)
+      ]
+    ))
+  }
+
   /// Backing
   ///
   /// Parent Type: `Backing`
@@ -43,5 +61,21 @@ public struct CheckoutFragment: GraphAPI.SelectionSet, Fragment {
     public var clientSecret: String? { __data["clientSecret"] }
     /// Whether this checkout requires additional client-side authentication steps (e.g. 3DS2) to complete the on-session pledge flow
     public var requiresAction: Bool? { __data["requiresAction"] }
+
+    public init(
+      clientSecret: String? = nil,
+      requiresAction: Bool? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Backing.typename,
+          "clientSecret": clientSecret,
+          "requiresAction": requiresAction,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CheckoutFragment.Backing.self)
+        ]
+      ))
+    }
   }
 }

@@ -29,6 +29,20 @@ public class ClearUserUnseenActivityMutation: GraphQLMutation {
 
     public var clearUserUnseenActivity: ClearUserUnseenActivity? { __data["clearUserUnseenActivity"] }
 
+    public init(
+      clearUserUnseenActivity: ClearUserUnseenActivity? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "clearUserUnseenActivity": clearUserUnseenActivity._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ClearUserUnseenActivityMutation.Data.self)
+        ]
+      ))
+    }
+
     /// ClearUserUnseenActivity
     ///
     /// Parent Type: `ClearUserUnseenActivityPayload`
@@ -46,6 +60,22 @@ public class ClearUserUnseenActivityMutation: GraphQLMutation {
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
       public var activityIndicatorCount: Int { __data["activityIndicatorCount"] }
+
+      public init(
+        clientMutationId: String? = nil,
+        activityIndicatorCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.ClearUserUnseenActivityPayload.typename,
+            "clientMutationId": clientMutationId,
+            "activityIndicatorCount": activityIndicatorCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ClearUserUnseenActivityMutation.Data.ClearUserUnseenActivity.self)
+          ]
+        ))
+      }
     }
   }
 }

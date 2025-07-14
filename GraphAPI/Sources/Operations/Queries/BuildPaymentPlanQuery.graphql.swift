@@ -39,6 +39,20 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
     /// Fetches a project given its slug or pid.
     public var project: Project? { __data["project"] }
 
+    public init(
+      project: Project? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "project": project._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(BuildPaymentPlanQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Project
     ///
     /// Parent Type: `Project`
@@ -54,6 +68,20 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
 
       /// Build a payment plan given a project id and amount
       public var paymentPlan: PaymentPlan? { __data["paymentPlan"] }
+
+      public init(
+        paymentPlan: PaymentPlan? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Project.typename,
+            "paymentPlan": paymentPlan._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(BuildPaymentPlanQuery.Data.Project.self)
+          ]
+        ))
+      }
 
       /// Project.PaymentPlan
       ///
@@ -72,6 +100,22 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
         /// Amount is enough to qualify for pledge over time, if project allows
         public var amountIsPledgeOverTimeEligible: Bool { __data["amountIsPledgeOverTimeEligible"] }
         public var paymentIncrements: [PaymentIncrement]? { __data["paymentIncrements"] }
+
+        public init(
+          amountIsPledgeOverTimeEligible: Bool,
+          paymentIncrements: [PaymentIncrement]? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.PaymentPlan.typename,
+              "amountIsPledgeOverTimeEligible": amountIsPledgeOverTimeEligible,
+              "paymentIncrements": paymentIncrements._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(BuildPaymentPlanQuery.Data.Project.PaymentPlan.self)
+            ]
+          ))
+        }
 
         /// Project.PaymentPlan.PaymentIncrement
         ///
@@ -97,6 +141,27 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var paymentIncrementFragment: PaymentIncrementFragment { _toFragment() }
+          }
+
+          public init(
+            amount: Amount,
+            scheduledCollection: GraphAPI.ISO8601DateTime,
+            state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
+            stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.PaymentIncrement.typename,
+                "amount": amount._fieldData,
+                "scheduledCollection": scheduledCollection,
+                "state": state,
+                "stateReason": stateReason,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(BuildPaymentPlanQuery.Data.Project.PaymentPlan.PaymentIncrement.self),
+                ObjectIdentifier(PaymentIncrementFragment.self)
+              ]
+            ))
           }
 
           public typealias Amount = PaymentIncrementFragment.Amount

@@ -25,6 +25,20 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
     /// Root project categories.
     public var rootCategories: [RootCategory] { __data["rootCategories"] }
 
+    public init(
+      rootCategories: [RootCategory]
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "rootCategories": rootCategories._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchRootCategoriesQuery.Data.self)
+        ]
+      ))
+    }
+
     /// RootCategory
     ///
     /// Parent Type: `Category`
@@ -51,6 +65,28 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
       public var subcategories: Subcategories? { __data["subcategories"] }
       public var totalProjectCount: Int { __data["totalProjectCount"] }
 
+      public init(
+        id: GraphAPI.ID,
+        name: String,
+        analyticsName: String,
+        subcategories: Subcategories? = nil,
+        totalProjectCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Category.typename,
+            "id": id,
+            "name": name,
+            "analyticsName": analyticsName,
+            "subcategories": subcategories._fieldData,
+            "totalProjectCount": totalProjectCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchRootCategoriesQuery.Data.RootCategory.self)
+          ]
+        ))
+      }
+
       /// RootCategory.Subcategories
       ///
       /// Parent Type: `CategorySubcategoriesConnection`
@@ -68,6 +104,22 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
         public var totalCount: Int { __data["totalCount"] }
+
+        public init(
+          nodes: [Node?]? = nil,
+          totalCount: Int
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.CategorySubcategoriesConnection.typename,
+              "nodes": nodes._fieldData,
+              "totalCount": totalCount,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchRootCategoriesQuery.Data.RootCategory.Subcategories.self)
+            ]
+          ))
+        }
 
         /// RootCategory.Subcategories.Node
         ///
@@ -100,6 +152,31 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var categoryFragment: CategoryFragment { _toFragment() }
+          }
+
+          public init(
+            parentId: GraphAPI.ID? = nil,
+            totalProjectCount: Int,
+            id: GraphAPI.ID,
+            name: String,
+            analyticsName: String,
+            parentCategory: ParentCategory? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Category.typename,
+                "parentId": parentId,
+                "totalProjectCount": totalProjectCount,
+                "id": id,
+                "name": name,
+                "analyticsName": analyticsName,
+                "parentCategory": parentCategory._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchRootCategoriesQuery.Data.RootCategory.Subcategories.Node.self),
+                ObjectIdentifier(CategoryFragment.self)
+              ]
+            ))
           }
 
           public typealias ParentCategory = CategoryFragment.ParentCategory

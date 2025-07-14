@@ -39,6 +39,20 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
     /// Provides an overview of pledge projects
     public var pledgeProjectsOverview: PledgeProjectsOverview? { __data["pledgeProjectsOverview"] }
 
+    public init(
+      pledgeProjectsOverview: PledgeProjectsOverview? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "pledgeProjectsOverview": pledgeProjectsOverview._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchPledgedProjectsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// PledgeProjectsOverview
     ///
     /// Parent Type: `PledgeProjectsOverview`
@@ -57,6 +71,20 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
 
       /// List of pledged projects
       public var pledges: Pledges? { __data["pledges"] }
+
+      public init(
+        pledges: Pledges? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.PledgeProjectsOverview.typename,
+            "pledges": pledges._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.self)
+          ]
+        ))
+      }
 
       /// PledgeProjectsOverview.Pledges
       ///
@@ -79,6 +107,24 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
         /// Information to aid in pagination.
         public var pageInfo: PageInfo { __data["pageInfo"] }
 
+        public init(
+          totalCount: Int,
+          edges: [Edge?]? = nil,
+          pageInfo: PageInfo
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.PledgedProjectsOverviewPledgesConnection.typename,
+              "totalCount": totalCount,
+              "edges": edges._fieldData,
+              "pageInfo": pageInfo._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.self)
+            ]
+          ))
+        }
+
         /// PledgeProjectsOverview.Pledges.Edge
         ///
         /// Parent Type: `PledgeProjectOverviewItemEdge`
@@ -97,6 +143,22 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
           public var cursor: String { __data["cursor"] }
           /// The item at the end of the edge.
           public var node: Node? { __data["node"] }
+
+          public init(
+            cursor: String,
+            node: Node? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.PledgeProjectOverviewItemEdge.typename,
+                "cursor": cursor,
+                "node": node._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.self)
+              ]
+            ))
+          }
 
           /// PledgeProjectsOverview.Pledges.Edge.Node
           ///
@@ -127,6 +189,27 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
               public var pPOCardFragment: PPOCardFragment { _toFragment() }
             }
 
+            public init(
+              backing: Backing? = nil,
+              tierType: String? = nil,
+              flags: [Flag]? = nil,
+              webviewUrl: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.PledgeProjectOverviewItem.typename,
+                  "backing": backing._fieldData,
+                  "tierType": tierType,
+                  "flags": flags._fieldData,
+                  "webviewUrl": webviewUrl,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.self),
+                  ObjectIdentifier(PPOCardFragment.self)
+                ]
+              ))
+            }
+
             /// PledgeProjectsOverview.Pledges.Edge.Node.Backing
             ///
             /// Parent Type: `Backing`
@@ -155,6 +238,32 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 public var pPOBackingFragment: PPOBackingFragment { _toFragment() }
               }
 
+              public init(
+                amount: Amount,
+                id: GraphAPI.ID,
+                project: Project? = nil,
+                backingDetailsPageRoute: String,
+                deliveryAddress: DeliveryAddress? = nil,
+                clientSecret: String? = nil
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.Backing.typename,
+                    "amount": amount._fieldData,
+                    "id": id,
+                    "project": project._fieldData,
+                    "backingDetailsPageRoute": backingDetailsPageRoute,
+                    "deliveryAddress": deliveryAddress._fieldData,
+                    "clientSecret": clientSecret,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.self),
+                    ObjectIdentifier(PPOCardFragment.Backing.self),
+                    ObjectIdentifier(PPOBackingFragment.self)
+                  ]
+                ))
+              }
+
               /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Amount
               ///
               /// Parent Type: `Money`
@@ -176,6 +285,26 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   public init(_dataDict: DataDict) { __data = _dataDict }
 
                   public var moneyFragment: MoneyFragment { _toFragment() }
+                }
+
+                public init(
+                  amount: String? = nil,
+                  currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+                  symbol: String? = nil
+                ) {
+                  self.init(_dataDict: DataDict(
+                    data: [
+                      "__typename": GraphAPI.Objects.Money.typename,
+                      "amount": amount,
+                      "currency": currency,
+                      "symbol": symbol,
+                    ],
+                    fulfilledFragments: [
+                      ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Amount.self),
+                      ObjectIdentifier(PPOBackingFragment.Amount.self),
+                      ObjectIdentifier(MoneyFragment.self)
+                    ]
+                  ))
                 }
               }
 
@@ -253,6 +382,77 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   public var projectAnalyticsFragment: ProjectAnalyticsFragment { _toFragment() }
                 }
 
+                public init(
+                  creator: Creator? = nil,
+                  image: Image? = nil,
+                  name: String,
+                  pid: Int,
+                  slug: String,
+                  addOns: AddOns? = nil,
+                  backersCount: Int,
+                  backing: Backing? = nil,
+                  category: Category? = nil,
+                  commentsCount: Int,
+                  country: Country,
+                  currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+                  deadlineAt: GraphAPI.DateTime? = nil,
+                  launchedAt: GraphAPI.DateTime? = nil,
+                  isInPostCampaignPledgingPhase: Bool,
+                  isWatched: Bool,
+                  percentFunded: Int,
+                  isPrelaunchActivated: Bool,
+                  projectTags: [ProjectTag?],
+                  postCampaignPledgingEnabled: Bool,
+                  rewards: Rewards? = nil,
+                  state: GraphQLEnum<GraphAPI.ProjectState>,
+                  video: Video? = nil,
+                  pledged: Pledged,
+                  fxRate: Double,
+                  usdExchangeRate: Double? = nil,
+                  posts: Posts? = nil,
+                  goal: Goal? = nil
+                ) {
+                  self.init(_dataDict: DataDict(
+                    data: [
+                      "__typename": GraphAPI.Objects.Project.typename,
+                      "creator": creator._fieldData,
+                      "image": image._fieldData,
+                      "name": name,
+                      "pid": pid,
+                      "slug": slug,
+                      "addOns": addOns._fieldData,
+                      "backersCount": backersCount,
+                      "backing": backing._fieldData,
+                      "category": category._fieldData,
+                      "commentsCount": commentsCount,
+                      "country": country._fieldData,
+                      "currency": currency,
+                      "deadlineAt": deadlineAt,
+                      "launchedAt": launchedAt,
+                      "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+                      "isWatched": isWatched,
+                      "percentFunded": percentFunded,
+                      "isPrelaunchActivated": isPrelaunchActivated,
+                      "projectTags": projectTags._fieldData,
+                      "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+                      "rewards": rewards._fieldData,
+                      "state": state,
+                      "video": video._fieldData,
+                      "pledged": pledged._fieldData,
+                      "fxRate": fxRate,
+                      "usdExchangeRate": usdExchangeRate,
+                      "posts": posts._fieldData,
+                      "goal": goal._fieldData,
+                    ],
+                    fulfilledFragments: [
+                      ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.self),
+                      ObjectIdentifier(PPOBackingFragment.Project.self),
+                      ObjectIdentifier(PPOProjectFragment.self),
+                      ObjectIdentifier(ProjectAnalyticsFragment.self)
+                    ]
+                  ))
+                }
+
                 /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Creator
                 ///
                 /// Parent Type: `User`
@@ -269,6 +469,28 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   public var name: String { __data["name"] }
                   /// Projects a user has created.
                   public var createdProjects: CreatedProjects? { __data["createdProjects"] }
+
+                  public init(
+                    email: String? = nil,
+                    id: GraphAPI.ID,
+                    name: String,
+                    createdProjects: CreatedProjects? = nil
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.User.typename,
+                        "email": email,
+                        "id": id,
+                        "name": name,
+                        "createdProjects": createdProjects._fieldData,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Creator.self),
+                        ObjectIdentifier(PPOProjectFragment.Creator.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Creator.self)
+                      ]
+                    ))
+                  }
 
                   public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
                 }
@@ -327,6 +549,26 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
           public var hasPreviousPage: Bool { __data["hasPreviousPage"] }
           /// When paginating backwards, the cursor to continue.
           public var startCursor: String? { __data["startCursor"] }
+
+          public init(
+            hasNextPage: Bool,
+            endCursor: String? = nil,
+            hasPreviousPage: Bool,
+            startCursor: String? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.PageInfo.typename,
+                "hasNextPage": hasNextPage,
+                "endCursor": endCursor,
+                "hasPreviousPage": hasPreviousPage,
+                "startCursor": startCursor,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.PageInfo.self)
+              ]
+            ))
+          }
         }
       }
     }

@@ -55,6 +55,20 @@ public class FetchAddOnsQuery: GraphQLQuery {
     /// Fetches a project given its slug or pid.
     public var project: Project? { __data["project"] }
 
+    public init(
+      project: Project? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "project": project._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(FetchAddOnsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Project
     ///
     /// Parent Type: `Project`
@@ -182,6 +196,125 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public var projectFragment: ProjectFragment { _toFragment() }
       }
 
+      public init(
+        addOns: AddOns? = nil,
+        availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
+        backersCount: Int,
+        category: Category? = nil,
+        canComment: Bool,
+        commentsCount: Int,
+        country: Country,
+        creator: Creator? = nil,
+        currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+        deadlineAt: GraphAPI.DateTime? = nil,
+        description: String,
+        environmentalCommitments: [EnvironmentalCommitment?]? = nil,
+        aiDisclosure: AiDisclosure? = nil,
+        faqs: Faqs? = nil,
+        finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
+        fxRate: Double,
+        goal: Goal? = nil,
+        image: Image? = nil,
+        isPledgeOverTimeAllowed: Bool,
+        isProjectWeLove: Bool,
+        isProjectOfTheDay: Bool? = nil,
+        isWatched: Bool,
+        isLaunched: Bool,
+        isInPostCampaignPledgingPhase: Bool,
+        lastWave: LastWave? = nil,
+        launchedAt: GraphAPI.DateTime? = nil,
+        location: Location? = nil,
+        maxPledge: Int,
+        minPledge: Int,
+        name: String,
+        pid: Int,
+        pledgeManager: PledgeManager? = nil,
+        pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+        pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+        pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+        pledgeOverTimeMinimumExplanation: String? = nil,
+        pledged: Pledged,
+        postCampaignPledgingEnabled: Bool,
+        posts: Posts? = nil,
+        prelaunchActivated: Bool,
+        projectNotice: String? = nil,
+        redemptionPageUrl: String,
+        risks: String,
+        sendMetaCapiEvents: Bool,
+        slug: String,
+        state: GraphQLEnum<GraphAPI.ProjectState>,
+        stateChangedAt: GraphAPI.DateTime,
+        story: GraphAPI.HTML,
+        tags: [Tag?],
+        url: String,
+        usdExchangeRate: Double? = nil,
+        video: Video? = nil,
+        watchesCount: Int? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Project.typename,
+            "addOns": addOns._fieldData,
+            "availableCardTypes": availableCardTypes,
+            "backersCount": backersCount,
+            "category": category._fieldData,
+            "canComment": canComment,
+            "commentsCount": commentsCount,
+            "country": country._fieldData,
+            "creator": creator._fieldData,
+            "currency": currency,
+            "deadlineAt": deadlineAt,
+            "description": description,
+            "environmentalCommitments": environmentalCommitments._fieldData,
+            "aiDisclosure": aiDisclosure._fieldData,
+            "faqs": faqs._fieldData,
+            "finalCollectionDate": finalCollectionDate,
+            "fxRate": fxRate,
+            "goal": goal._fieldData,
+            "image": image._fieldData,
+            "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+            "isProjectWeLove": isProjectWeLove,
+            "isProjectOfTheDay": isProjectOfTheDay,
+            "isWatched": isWatched,
+            "isLaunched": isLaunched,
+            "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+            "lastWave": lastWave._fieldData,
+            "launchedAt": launchedAt,
+            "location": location._fieldData,
+            "maxPledge": maxPledge,
+            "minPledge": minPledge,
+            "name": name,
+            "pid": pid,
+            "pledgeManager": pledgeManager._fieldData,
+            "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+            "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+            "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+            "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
+            "pledged": pledged._fieldData,
+            "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+            "posts": posts._fieldData,
+            "prelaunchActivated": prelaunchActivated,
+            "projectNotice": projectNotice,
+            "redemptionPageUrl": redemptionPageUrl,
+            "risks": risks,
+            "sendMetaCapiEvents": sendMetaCapiEvents,
+            "slug": slug,
+            "state": state,
+            "stateChangedAt": stateChangedAt,
+            "story": story,
+            "tags": tags._fieldData,
+            "url": url,
+            "usdExchangeRate": usdExchangeRate,
+            "video": video._fieldData,
+            "watchesCount": watchesCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
+            ObjectIdentifier(ProjectFragment.self)
+          ]
+        ))
+      }
+
       /// Project.AddOns
       ///
       /// Parent Type: `ProjectRewardConnection`
@@ -197,6 +330,20 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+
+        public init(
+          nodes: [Node?]? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
+              "nodes": nodes._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.self)
+            ]
+          ))
+        }
 
         /// Project.AddOns.Node
         ///
@@ -278,6 +425,75 @@ public class FetchAddOnsQuery: GraphQLQuery {
             public var rewardFragment: RewardFragment { _toFragment() }
           }
 
+          public init(
+            shippingRulesExpanded: ShippingRulesExpanded? = nil,
+            amount: Amount,
+            backersCount: Int? = nil,
+            convertedAmount: ConvertedAmount,
+            allowedAddons: AllowedAddons,
+            description: String,
+            displayName: String,
+            endsAt: GraphAPI.DateTime? = nil,
+            estimatedDeliveryOn: GraphAPI.Date? = nil,
+            id: GraphAPI.ID,
+            isMaxPledge: Bool,
+            available: Bool,
+            items: Items? = nil,
+            limit: Int? = nil,
+            limitPerBacker: Int? = nil,
+            localReceiptLocation: LocalReceiptLocation? = nil,
+            name: String? = nil,
+            pledgeAmount: PledgeAmount,
+            latePledgeAmount: LatePledgeAmount,
+            postCampaignPledgingEnabled: Bool,
+            project: Project? = nil,
+            remainingQuantity: Int? = nil,
+            shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
+            shippingSummary: String? = nil,
+            shippingRules: [ShippingRule?]? = nil,
+            startsAt: GraphAPI.DateTime? = nil,
+            image: Image? = nil,
+            audienceData: AudienceData
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Reward.typename,
+                "shippingRulesExpanded": shippingRulesExpanded._fieldData,
+                "amount": amount._fieldData,
+                "backersCount": backersCount,
+                "convertedAmount": convertedAmount._fieldData,
+                "allowedAddons": allowedAddons._fieldData,
+                "description": description,
+                "displayName": displayName,
+                "endsAt": endsAt,
+                "estimatedDeliveryOn": estimatedDeliveryOn,
+                "id": id,
+                "isMaxPledge": isMaxPledge,
+                "available": available,
+                "items": items._fieldData,
+                "limit": limit,
+                "limitPerBacker": limitPerBacker,
+                "localReceiptLocation": localReceiptLocation._fieldData,
+                "name": name,
+                "pledgeAmount": pledgeAmount._fieldData,
+                "latePledgeAmount": latePledgeAmount._fieldData,
+                "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+                "project": project._fieldData,
+                "remainingQuantity": remainingQuantity,
+                "shippingPreference": shippingPreference,
+                "shippingSummary": shippingSummary,
+                "shippingRules": shippingRules._fieldData,
+                "startsAt": startsAt,
+                "image": image._fieldData,
+                "audienceData": audienceData._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.self),
+                ObjectIdentifier(RewardFragment.self)
+              ]
+            ))
+          }
+
           /// Project.AddOns.Node.ShippingRulesExpanded
           ///
           /// Parent Type: `RewardShippingRulesConnection`
@@ -293,6 +509,20 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
             /// A list of nodes.
             public var nodes: [Node?]? { __data["nodes"] }
+
+            public init(
+              nodes: [Node?]? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.RewardShippingRulesConnection.typename,
+                  "nodes": nodes._fieldData,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRulesExpanded.self)
+                ]
+              ))
+            }
 
             /// Project.AddOns.Node.ShippingRulesExpanded.Node
             ///
@@ -324,6 +554,29 @@ public class FetchAddOnsQuery: GraphQLQuery {
                 public var shippingRuleFragment: ShippingRuleFragment { _toFragment() }
               }
 
+              public init(
+                cost: Cost? = nil,
+                id: GraphAPI.ID,
+                location: Location,
+                estimatedMin: EstimatedMin? = nil,
+                estimatedMax: EstimatedMax? = nil
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.ShippingRule.typename,
+                    "cost": cost._fieldData,
+                    "id": id,
+                    "location": location._fieldData,
+                    "estimatedMin": estimatedMin._fieldData,
+                    "estimatedMax": estimatedMax._fieldData,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRulesExpanded.Node.self),
+                    ObjectIdentifier(ShippingRuleFragment.self)
+                  ]
+                ))
+              }
+
               /// Project.AddOns.Node.ShippingRulesExpanded.Node.Cost
               ///
               /// Parent Type: `Money`
@@ -345,6 +598,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
                   public init(_dataDict: DataDict) { __data = _dataDict }
 
                   public var moneyFragment: MoneyFragment { _toFragment() }
+                }
+
+                public init(
+                  amount: String? = nil,
+                  currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+                  symbol: String? = nil
+                ) {
+                  self.init(_dataDict: DataDict(
+                    data: [
+                      "__typename": GraphAPI.Objects.Money.typename,
+                      "amount": amount,
+                      "currency": currency,
+                      "symbol": symbol,
+                    ],
+                    fulfilledFragments: [
+                      ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRulesExpanded.Node.Cost.self),
+                      ObjectIdentifier(ShippingRuleFragment.Cost.self),
+                      ObjectIdentifier(MoneyFragment.self)
+                    ]
+                  ))
                 }
               }
 
@@ -372,6 +645,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
                   public init(_dataDict: DataDict) { __data = _dataDict }
 
                   public var locationFragment: LocationFragment { _toFragment() }
+                }
+
+                public init(
+                  country: String,
+                  countryName: String? = nil,
+                  displayableName: String,
+                  id: GraphAPI.ID,
+                  name: String
+                ) {
+                  self.init(_dataDict: DataDict(
+                    data: [
+                      "__typename": GraphAPI.Objects.Location.typename,
+                      "country": country,
+                      "countryName": countryName,
+                      "displayableName": displayableName,
+                      "id": id,
+                      "name": name,
+                    ],
+                    fulfilledFragments: [
+                      ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRulesExpanded.Node.Location.self),
+                      ObjectIdentifier(ShippingRuleFragment.Location.self),
+                      ObjectIdentifier(LocationFragment.self)
+                    ]
+                  ))
                 }
               }
 
@@ -403,6 +700,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
               public var moneyFragment: MoneyFragment { _toFragment() }
             }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.Amount.self),
+                  ObjectIdentifier(RewardFragment.Amount.self),
+                  ObjectIdentifier(MoneyFragment.self)
+                ]
+              ))
+            }
           }
 
           /// Project.AddOns.Node.ConvertedAmount
@@ -426,6 +743,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var moneyFragment: MoneyFragment { _toFragment() }
+            }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ConvertedAmount.self),
+                  ObjectIdentifier(RewardFragment.ConvertedAmount.self),
+                  ObjectIdentifier(MoneyFragment.self)
+                ]
+              ))
             }
           }
 
@@ -458,6 +795,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
               public var locationFragment: LocationFragment { _toFragment() }
             }
+
+            public init(
+              country: String,
+              countryName: String? = nil,
+              displayableName: String,
+              id: GraphAPI.ID,
+              name: String
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Location.typename,
+                  "country": country,
+                  "countryName": countryName,
+                  "displayableName": displayableName,
+                  "id": id,
+                  "name": name,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.LocalReceiptLocation.self),
+                  ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
+                  ObjectIdentifier(LocationFragment.self)
+                ]
+              ))
+            }
           }
 
           /// Project.AddOns.Node.PledgeAmount
@@ -482,6 +843,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
               public var moneyFragment: MoneyFragment { _toFragment() }
             }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.PledgeAmount.self),
+                  ObjectIdentifier(RewardFragment.PledgeAmount.self),
+                  ObjectIdentifier(MoneyFragment.self)
+                ]
+              ))
+            }
           }
 
           /// Project.AddOns.Node.LatePledgeAmount
@@ -505,6 +886,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var moneyFragment: MoneyFragment { _toFragment() }
+            }
+
+            public init(
+              amount: String? = nil,
+              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+              symbol: String? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Money.typename,
+                  "amount": amount,
+                  "currency": currency,
+                  "symbol": symbol,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.LatePledgeAmount.self),
+                  ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
+                  ObjectIdentifier(MoneyFragment.self)
+                ]
+              ))
             }
           }
 
@@ -536,6 +937,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
               public var shippingRuleFragment: ShippingRuleFragment { _toFragment() }
             }
 
+            public init(
+              cost: Cost? = nil,
+              id: GraphAPI.ID,
+              location: Location,
+              estimatedMin: EstimatedMin? = nil,
+              estimatedMax: EstimatedMax? = nil
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.ShippingRule.typename,
+                  "cost": cost._fieldData,
+                  "id": id,
+                  "location": location._fieldData,
+                  "estimatedMin": estimatedMin._fieldData,
+                  "estimatedMax": estimatedMax._fieldData,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRule.self),
+                  ObjectIdentifier(RewardFragment.ShippingRule.self),
+                  ObjectIdentifier(ShippingRuleFragment.self)
+                ]
+              ))
+            }
+
             /// Project.AddOns.Node.ShippingRule.Cost
             ///
             /// Parent Type: `Money`
@@ -557,6 +982,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
                 public init(_dataDict: DataDict) { __data = _dataDict }
 
                 public var moneyFragment: MoneyFragment { _toFragment() }
+              }
+
+              public init(
+                amount: String? = nil,
+                currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+                symbol: String? = nil
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.Money.typename,
+                    "amount": amount,
+                    "currency": currency,
+                    "symbol": symbol,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRule.Cost.self),
+                    ObjectIdentifier(ShippingRuleFragment.Cost.self),
+                    ObjectIdentifier(MoneyFragment.self)
+                  ]
+                ))
               }
             }
 
@@ -584,6 +1029,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
                 public init(_dataDict: DataDict) { __data = _dataDict }
 
                 public var locationFragment: LocationFragment { _toFragment() }
+              }
+
+              public init(
+                country: String,
+                countryName: String? = nil,
+                displayableName: String,
+                id: GraphAPI.ID,
+                name: String
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.Location.typename,
+                    "country": country,
+                    "countryName": countryName,
+                    "displayableName": displayableName,
+                    "id": id,
+                    "name": name,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.ShippingRule.Location.self),
+                    ObjectIdentifier(ShippingRuleFragment.Location.self),
+                    ObjectIdentifier(LocationFragment.self)
+                  ]
+                ))
               }
             }
 
@@ -622,6 +1091,28 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public var categoryFragment: CategoryFragment { _toFragment() }
         }
 
+        public init(
+          id: GraphAPI.ID,
+          name: String,
+          analyticsName: String,
+          parentCategory: ParentCategory? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Category.typename,
+              "id": id,
+              "name": name,
+              "analyticsName": analyticsName,
+              "parentCategory": parentCategory._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Category.self),
+              ObjectIdentifier(ProjectFragment.Category.self),
+              ObjectIdentifier(CategoryFragment.self)
+            ]
+          ))
+        }
+
         public typealias ParentCategory = CategoryFragment.ParentCategory
       }
 
@@ -644,6 +1135,24 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var countryFragment: CountryFragment { _toFragment() }
+        }
+
+        public init(
+          code: GraphQLEnum<GraphAPI.CountryCode>,
+          name: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Country.typename,
+              "code": code,
+              "name": name,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Country.self),
+              ObjectIdentifier(ProjectFragment.Country.self),
+              ObjectIdentifier(CountryFragment.self)
+            ]
+          ))
         }
       }
 
@@ -723,6 +1232,80 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public var userFragment: UserFragment { _toFragment() }
         }
 
+        public init(
+          backings: Backings? = nil,
+          backingsCount: Int,
+          chosenCurrency: String? = nil,
+          createdProjects: CreatedProjects? = nil,
+          email: String? = nil,
+          hasPassword: Bool? = nil,
+          hasUnreadMessages: Bool? = nil,
+          hasUnseenActivity: Bool? = nil,
+          id: GraphAPI.ID,
+          imageUrl: String,
+          isAppleConnected: Bool? = nil,
+          isBlocked: Bool? = nil,
+          isCreator: Bool? = nil,
+          isDeliverable: Bool? = nil,
+          isEmailVerified: Bool? = nil,
+          isFacebookConnected: Bool? = nil,
+          isKsrAdmin: Bool? = nil,
+          isFollowing: Bool,
+          isSocializing: Bool? = nil,
+          location: Location? = nil,
+          name: String,
+          needsFreshFacebookToken: Bool? = nil,
+          newsletterSubscriptions: NewsletterSubscriptions? = nil,
+          notifications: [Notification]? = nil,
+          optedOutOfRecommendations: Bool? = nil,
+          showPublicProfile: Bool? = nil,
+          savedProjects: SavedProjects? = nil,
+          storedCards: StoredCards? = nil,
+          surveyResponses: SurveyResponses? = nil,
+          uid: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.User.typename,
+              "backings": backings._fieldData,
+              "backingsCount": backingsCount,
+              "chosenCurrency": chosenCurrency,
+              "createdProjects": createdProjects._fieldData,
+              "email": email,
+              "hasPassword": hasPassword,
+              "hasUnreadMessages": hasUnreadMessages,
+              "hasUnseenActivity": hasUnseenActivity,
+              "id": id,
+              "imageUrl": imageUrl,
+              "isAppleConnected": isAppleConnected,
+              "isBlocked": isBlocked,
+              "isCreator": isCreator,
+              "isDeliverable": isDeliverable,
+              "isEmailVerified": isEmailVerified,
+              "isFacebookConnected": isFacebookConnected,
+              "isKsrAdmin": isKsrAdmin,
+              "isFollowing": isFollowing,
+              "isSocializing": isSocializing,
+              "location": location._fieldData,
+              "name": name,
+              "needsFreshFacebookToken": needsFreshFacebookToken,
+              "newsletterSubscriptions": newsletterSubscriptions._fieldData,
+              "notifications": notifications._fieldData,
+              "optedOutOfRecommendations": optedOutOfRecommendations,
+              "showPublicProfile": showPublicProfile,
+              "savedProjects": savedProjects._fieldData,
+              "storedCards": storedCards._fieldData,
+              "surveyResponses": surveyResponses._fieldData,
+              "uid": uid,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Creator.self),
+              ObjectIdentifier(ProjectFragment.Creator.self),
+              ObjectIdentifier(UserFragment.self)
+            ]
+          ))
+        }
+
         public typealias Backings = UserFragment.Backings
 
         public typealias CreatedProjects = UserFragment.CreatedProjects
@@ -752,6 +1335,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
             public var locationFragment: LocationFragment { _toFragment() }
           }
+
+          public init(
+            country: String,
+            countryName: String? = nil,
+            displayableName: String,
+            id: GraphAPI.ID,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Location.typename,
+                "country": country,
+                "countryName": countryName,
+                "displayableName": displayableName,
+                "id": id,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchAddOnsQuery.Data.Project.Creator.Location.self),
+                ObjectIdentifier(UserFragment.Location.self),
+                ObjectIdentifier(LocationFragment.self)
+              ]
+            ))
+          }
         }
 
         public typealias NewsletterSubscriptions = UserFragment.NewsletterSubscriptions
@@ -778,6 +1385,24 @@ public class FetchAddOnsQuery: GraphQLQuery {
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var userStoredCardsFragment: UserStoredCardsFragment { _toFragment() }
+          }
+
+          public init(
+            nodes: [Node?]? = nil,
+            totalCount: Int
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+                "nodes": nodes._fieldData,
+                "totalCount": totalCount,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchAddOnsQuery.Data.Project.Creator.StoredCards.self),
+                ObjectIdentifier(UserFragment.StoredCards.self),
+                ObjectIdentifier(UserStoredCardsFragment.self)
+              ]
+            ))
           }
 
           public typealias Node = UserStoredCardsFragment.Node
@@ -814,6 +1439,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
           public var moneyFragment: MoneyFragment { _toFragment() }
         }
+
+        public init(
+          amount: String? = nil,
+          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+          symbol: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Money.typename,
+              "amount": amount,
+              "currency": currency,
+              "symbol": symbol,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Goal.self),
+              ObjectIdentifier(ProjectFragment.Goal.self),
+              ObjectIdentifier(MoneyFragment.self)
+            ]
+          ))
+        }
       }
 
       public typealias Image = ProjectFragment.Image
@@ -836,6 +1481,24 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var lastWaveFragment: LastWaveFragment { _toFragment() }
+        }
+
+        public init(
+          id: GraphAPI.ID,
+          active: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.CheckoutWave.typename,
+              "id": id,
+              "active": active,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.LastWave.self),
+              ObjectIdentifier(ProjectFragment.LastWave.self),
+              ObjectIdentifier(LastWaveFragment.self)
+            ]
+          ))
         }
       }
 
@@ -864,6 +1527,30 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
           public var locationFragment: LocationFragment { _toFragment() }
         }
+
+        public init(
+          country: String,
+          countryName: String? = nil,
+          displayableName: String,
+          id: GraphAPI.ID,
+          name: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Location.typename,
+              "country": country,
+              "countryName": countryName,
+              "displayableName": displayableName,
+              "id": id,
+              "name": name,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Location.self),
+              ObjectIdentifier(ProjectFragment.Location.self),
+              ObjectIdentifier(LocationFragment.self)
+            ]
+          ))
+        }
       }
 
       /// Project.PledgeManager
@@ -884,6 +1571,24 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var pledgeManagerFragment: PledgeManagerFragment { _toFragment() }
+        }
+
+        public init(
+          id: GraphAPI.ID,
+          acceptsNewBackers: Bool
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.PledgeManager.typename,
+              "id": id,
+              "acceptsNewBackers": acceptsNewBackers,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.PledgeManager.self),
+              ObjectIdentifier(ProjectFragment.PledgeManager.self),
+              ObjectIdentifier(PledgeManagerFragment.self)
+            ]
+          ))
         }
       }
 
@@ -908,6 +1613,26 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var moneyFragment: MoneyFragment { _toFragment() }
+        }
+
+        public init(
+          amount: String? = nil,
+          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+          symbol: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Money.typename,
+              "amount": amount,
+              "currency": currency,
+              "symbol": symbol,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Pledged.self),
+              ObjectIdentifier(ProjectFragment.Pledged.self),
+              ObjectIdentifier(MoneyFragment.self)
+            ]
+          ))
         }
       }
 

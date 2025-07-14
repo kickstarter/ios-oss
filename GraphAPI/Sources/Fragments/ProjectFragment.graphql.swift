@@ -172,6 +172,122 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
 
+  public init(
+    availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
+    backersCount: Int,
+    category: Category? = nil,
+    canComment: Bool,
+    commentsCount: Int,
+    country: Country,
+    creator: Creator? = nil,
+    currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+    deadlineAt: GraphAPI.DateTime? = nil,
+    description: String,
+    environmentalCommitments: [EnvironmentalCommitment?]? = nil,
+    aiDisclosure: AiDisclosure? = nil,
+    faqs: Faqs? = nil,
+    finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
+    fxRate: Double,
+    goal: Goal? = nil,
+    image: Image? = nil,
+    isPledgeOverTimeAllowed: Bool,
+    isProjectWeLove: Bool,
+    isProjectOfTheDay: Bool? = nil,
+    isWatched: Bool,
+    isLaunched: Bool,
+    isInPostCampaignPledgingPhase: Bool,
+    lastWave: LastWave? = nil,
+    launchedAt: GraphAPI.DateTime? = nil,
+    location: Location? = nil,
+    maxPledge: Int,
+    minPledge: Int,
+    name: String,
+    pid: Int,
+    pledgeManager: PledgeManager? = nil,
+    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+    pledgeOverTimeMinimumExplanation: String? = nil,
+    pledged: Pledged,
+    postCampaignPledgingEnabled: Bool,
+    posts: Posts? = nil,
+    prelaunchActivated: Bool,
+    projectNotice: String? = nil,
+    redemptionPageUrl: String,
+    risks: String,
+    sendMetaCapiEvents: Bool,
+    slug: String,
+    state: GraphQLEnum<GraphAPI.ProjectState>,
+    stateChangedAt: GraphAPI.DateTime,
+    story: GraphAPI.HTML,
+    tags: [Tag?],
+    url: String,
+    usdExchangeRate: Double? = nil,
+    video: Video? = nil,
+    watchesCount: Int? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Project.typename,
+        "availableCardTypes": availableCardTypes,
+        "backersCount": backersCount,
+        "category": category._fieldData,
+        "canComment": canComment,
+        "commentsCount": commentsCount,
+        "country": country._fieldData,
+        "creator": creator._fieldData,
+        "currency": currency,
+        "deadlineAt": deadlineAt,
+        "description": description,
+        "environmentalCommitments": environmentalCommitments._fieldData,
+        "aiDisclosure": aiDisclosure._fieldData,
+        "faqs": faqs._fieldData,
+        "finalCollectionDate": finalCollectionDate,
+        "fxRate": fxRate,
+        "goal": goal._fieldData,
+        "image": image._fieldData,
+        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+        "isProjectWeLove": isProjectWeLove,
+        "isProjectOfTheDay": isProjectOfTheDay,
+        "isWatched": isWatched,
+        "isLaunched": isLaunched,
+        "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+        "lastWave": lastWave._fieldData,
+        "launchedAt": launchedAt,
+        "location": location._fieldData,
+        "maxPledge": maxPledge,
+        "minPledge": minPledge,
+        "name": name,
+        "pid": pid,
+        "pledgeManager": pledgeManager._fieldData,
+        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
+        "pledged": pledged._fieldData,
+        "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+        "posts": posts._fieldData,
+        "prelaunchActivated": prelaunchActivated,
+        "projectNotice": projectNotice,
+        "redemptionPageUrl": redemptionPageUrl,
+        "risks": risks,
+        "sendMetaCapiEvents": sendMetaCapiEvents,
+        "slug": slug,
+        "state": state,
+        "stateChangedAt": stateChangedAt,
+        "story": story,
+        "tags": tags._fieldData,
+        "url": url,
+        "usdExchangeRate": usdExchangeRate,
+        "video": video._fieldData,
+        "watchesCount": watchesCount,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(ProjectFragment.self)
+      ]
+    ))
+  }
+
   /// Category
   ///
   /// Parent Type: `Category`
@@ -200,6 +316,27 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public var categoryFragment: CategoryFragment { _toFragment() }
     }
 
+    public init(
+      id: GraphAPI.ID,
+      name: String,
+      analyticsName: String,
+      parentCategory: ParentCategory? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Category.typename,
+          "id": id,
+          "name": name,
+          "analyticsName": analyticsName,
+          "parentCategory": parentCategory._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Category.self),
+          ObjectIdentifier(CategoryFragment.self)
+        ]
+      ))
+    }
+
     public typealias ParentCategory = CategoryFragment.ParentCategory
   }
 
@@ -226,6 +363,23 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var countryFragment: CountryFragment { _toFragment() }
+    }
+
+    public init(
+      code: GraphQLEnum<GraphAPI.CountryCode>,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Country.typename,
+          "code": code,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Country.self),
+          ObjectIdentifier(CountryFragment.self)
+        ]
+      ))
     }
   }
 
@@ -309,6 +463,79 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public var userFragment: UserFragment { _toFragment() }
     }
 
+    public init(
+      backings: Backings? = nil,
+      backingsCount: Int,
+      chosenCurrency: String? = nil,
+      createdProjects: CreatedProjects? = nil,
+      email: String? = nil,
+      hasPassword: Bool? = nil,
+      hasUnreadMessages: Bool? = nil,
+      hasUnseenActivity: Bool? = nil,
+      id: GraphAPI.ID,
+      imageUrl: String,
+      isAppleConnected: Bool? = nil,
+      isBlocked: Bool? = nil,
+      isCreator: Bool? = nil,
+      isDeliverable: Bool? = nil,
+      isEmailVerified: Bool? = nil,
+      isFacebookConnected: Bool? = nil,
+      isKsrAdmin: Bool? = nil,
+      isFollowing: Bool,
+      isSocializing: Bool? = nil,
+      location: Location? = nil,
+      name: String,
+      needsFreshFacebookToken: Bool? = nil,
+      newsletterSubscriptions: NewsletterSubscriptions? = nil,
+      notifications: [Notification]? = nil,
+      optedOutOfRecommendations: Bool? = nil,
+      showPublicProfile: Bool? = nil,
+      savedProjects: SavedProjects? = nil,
+      storedCards: StoredCards? = nil,
+      surveyResponses: SurveyResponses? = nil,
+      uid: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.User.typename,
+          "backings": backings._fieldData,
+          "backingsCount": backingsCount,
+          "chosenCurrency": chosenCurrency,
+          "createdProjects": createdProjects._fieldData,
+          "email": email,
+          "hasPassword": hasPassword,
+          "hasUnreadMessages": hasUnreadMessages,
+          "hasUnseenActivity": hasUnseenActivity,
+          "id": id,
+          "imageUrl": imageUrl,
+          "isAppleConnected": isAppleConnected,
+          "isBlocked": isBlocked,
+          "isCreator": isCreator,
+          "isDeliverable": isDeliverable,
+          "isEmailVerified": isEmailVerified,
+          "isFacebookConnected": isFacebookConnected,
+          "isKsrAdmin": isKsrAdmin,
+          "isFollowing": isFollowing,
+          "isSocializing": isSocializing,
+          "location": location._fieldData,
+          "name": name,
+          "needsFreshFacebookToken": needsFreshFacebookToken,
+          "newsletterSubscriptions": newsletterSubscriptions._fieldData,
+          "notifications": notifications._fieldData,
+          "optedOutOfRecommendations": optedOutOfRecommendations,
+          "showPublicProfile": showPublicProfile,
+          "savedProjects": savedProjects._fieldData,
+          "storedCards": storedCards._fieldData,
+          "surveyResponses": surveyResponses._fieldData,
+          "uid": uid,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Creator.self),
+          ObjectIdentifier(UserFragment.self)
+        ]
+      ))
+    }
+
     public typealias Backings = UserFragment.Backings
 
     public typealias CreatedProjects = UserFragment.CreatedProjects
@@ -338,6 +565,30 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
         public var locationFragment: LocationFragment { _toFragment() }
       }
+
+      public init(
+        country: String,
+        countryName: String? = nil,
+        displayableName: String,
+        id: GraphAPI.ID,
+        name: String
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.Location.typename,
+            "country": country,
+            "countryName": countryName,
+            "displayableName": displayableName,
+            "id": id,
+            "name": name,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectFragment.Creator.Location.self),
+            ObjectIdentifier(UserFragment.Location.self),
+            ObjectIdentifier(LocationFragment.self)
+          ]
+        ))
+      }
     }
 
     public typealias NewsletterSubscriptions = UserFragment.NewsletterSubscriptions
@@ -366,6 +617,24 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         public var userStoredCardsFragment: UserStoredCardsFragment { _toFragment() }
       }
 
+      public init(
+        nodes: [Node?]? = nil,
+        totalCount: Int
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.UserCreditCardTypeConnection.typename,
+            "nodes": nodes._fieldData,
+            "totalCount": totalCount,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectFragment.Creator.StoredCards.self),
+            ObjectIdentifier(UserFragment.StoredCards.self),
+            ObjectIdentifier(UserStoredCardsFragment.self)
+          ]
+        ))
+      }
+
       public typealias Node = UserStoredCardsFragment.Node
     }
 
@@ -392,6 +661,24 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     /// An environmental commitment description
     public var description: String { __data["description"] }
     public var id: GraphAPI.ID { __data["id"] }
+
+    public init(
+      commitmentCategory: GraphQLEnum<GraphAPI.EnvironmentalCommitmentCategory>,
+      description: String,
+      id: GraphAPI.ID
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.EnvironmentalCommitment.typename,
+          "commitmentCategory": commitmentCategory,
+          "description": description,
+          "id": id,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.EnvironmentalCommitment.self)
+        ]
+      ))
+    }
   }
 
   /// AiDisclosure
@@ -428,6 +715,40 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var involvesGeneration: Bool { __data["involvesGeneration"] }
     public var involvesOther: Bool { __data["involvesOther"] }
     public var otherAiDetails: String? { __data["otherAiDetails"] }
+
+    public init(
+      id: GraphAPI.ID,
+      fundingForAiAttribution: Bool? = nil,
+      fundingForAiConsent: Bool? = nil,
+      fundingForAiOption: Bool? = nil,
+      generatedByAiConsent: String? = nil,
+      generatedByAiDetails: String? = nil,
+      involvesAi: Bool,
+      involvesFunding: Bool,
+      involvesGeneration: Bool,
+      involvesOther: Bool,
+      otherAiDetails: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.AiDisclosure.typename,
+          "id": id,
+          "fundingForAiAttribution": fundingForAiAttribution,
+          "fundingForAiConsent": fundingForAiConsent,
+          "fundingForAiOption": fundingForAiOption,
+          "generatedByAiConsent": generatedByAiConsent,
+          "generatedByAiDetails": generatedByAiDetails,
+          "involvesAi": involvesAi,
+          "involvesFunding": involvesFunding,
+          "involvesGeneration": involvesGeneration,
+          "involvesOther": involvesOther,
+          "otherAiDetails": otherAiDetails,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.AiDisclosure.self)
+        ]
+      ))
+    }
   }
 
   /// Faqs
@@ -445,6 +766,20 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
     /// A list of nodes.
     public var nodes: [Node?]? { __data["nodes"] }
+
+    public init(
+      nodes: [Node?]? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.ProjectFaqConnection.typename,
+          "nodes": nodes._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Faqs.self)
+        ]
+      ))
+    }
 
     /// Faqs.Node
     ///
@@ -469,6 +804,26 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public var id: GraphAPI.ID { __data["id"] }
       /// When faq was posted
       public var createdAt: GraphAPI.DateTime? { __data["createdAt"] }
+
+      public init(
+        question: String,
+        answer: String,
+        id: GraphAPI.ID,
+        createdAt: GraphAPI.DateTime? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.ProjectFaq.typename,
+            "question": question,
+            "answer": answer,
+            "id": id,
+            "createdAt": createdAt,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectFragment.Faqs.Node.self)
+          ]
+        ))
+      }
     }
   }
 
@@ -498,6 +853,25 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Goal.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// Image
@@ -517,6 +891,22 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var id: GraphAPI.ID { __data["id"] }
     /// URL of the photo
     public var url: String { __data["url"] }
+
+    public init(
+      id: GraphAPI.ID,
+      url: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Photo.typename,
+          "id": id,
+          "url": url,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Image.self)
+        ]
+      ))
+    }
   }
 
   /// LastWave
@@ -541,6 +931,23 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var lastWaveFragment: LastWaveFragment { _toFragment() }
+    }
+
+    public init(
+      id: GraphAPI.ID,
+      active: Bool
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.CheckoutWave.typename,
+          "id": id,
+          "active": active,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.LastWave.self),
+          ObjectIdentifier(LastWaveFragment.self)
+        ]
+      ))
     }
   }
 
@@ -573,6 +980,29 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
       public var locationFragment: LocationFragment { _toFragment() }
     }
+
+    public init(
+      country: String,
+      countryName: String? = nil,
+      displayableName: String,
+      id: GraphAPI.ID,
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Location.typename,
+          "country": country,
+          "countryName": countryName,
+          "displayableName": displayableName,
+          "id": id,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Location.self),
+          ObjectIdentifier(LocationFragment.self)
+        ]
+      ))
+    }
   }
 
   /// PledgeManager
@@ -597,6 +1027,23 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var pledgeManagerFragment: PledgeManagerFragment { _toFragment() }
+    }
+
+    public init(
+      id: GraphAPI.ID,
+      acceptsNewBackers: Bool
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.PledgeManager.typename,
+          "id": id,
+          "acceptsNewBackers": acceptsNewBackers,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.PledgeManager.self),
+          ObjectIdentifier(PledgeManagerFragment.self)
+        ]
+      ))
     }
   }
 
@@ -626,6 +1073,25 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
       public var moneyFragment: MoneyFragment { _toFragment() }
     }
+
+    public init(
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+      symbol: String? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Money.typename,
+          "amount": amount,
+          "currency": currency,
+          "symbol": symbol,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Pledged.self),
+          ObjectIdentifier(MoneyFragment.self)
+        ]
+      ))
+    }
   }
 
   /// Posts
@@ -642,6 +1108,20 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     ] }
 
     public var totalCount: Int { __data["totalCount"] }
+
+    public init(
+      totalCount: Int
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.PostConnection.typename,
+          "totalCount": totalCount,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Posts.self)
+        ]
+      ))
+    }
   }
 
   /// Tag
@@ -659,6 +1139,20 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
 
     /// Tag name.
     public var name: String { __data["name"] }
+
+    public init(
+      name: String
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Tag.typename,
+          "name": name,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Tag.self)
+        ]
+      ))
+    }
   }
 
   /// Video
@@ -679,6 +1173,22 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     /// A video's sources (hls, high, base)
     public var videoSources: VideoSources? { __data["videoSources"] }
 
+    public init(
+      id: GraphAPI.ID,
+      videoSources: VideoSources? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Video.typename,
+          "id": id,
+          "videoSources": videoSources._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Video.self)
+        ]
+      ))
+    }
+
     /// Video.VideoSources
     ///
     /// Parent Type: `VideoSources`
@@ -696,6 +1206,22 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       public var high: High? { __data["high"] }
       public var hls: Hls? { __data["hls"] }
 
+      public init(
+        high: High? = nil,
+        hls: Hls? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.VideoSources.typename,
+            "high": high._fieldData,
+            "hls": hls._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(ProjectFragment.Video.VideoSources.self)
+          ]
+        ))
+      }
+
       /// Video.VideoSources.High
       ///
       /// Parent Type: `VideoSourceInfo`
@@ -710,6 +1236,20 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         ] }
 
         public var src: String? { __data["src"] }
+
+        public init(
+          src: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
+              "src": src,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectFragment.Video.VideoSources.High.self)
+            ]
+          ))
+        }
       }
 
       /// Video.VideoSources.Hls
@@ -726,6 +1266,20 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         ] }
 
         public var src: String? { __data["src"] }
+
+        public init(
+          src: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
+              "src": src,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ProjectFragment.Video.VideoSources.Hls.self)
+            ]
+          ))
+        }
       }
     }
   }

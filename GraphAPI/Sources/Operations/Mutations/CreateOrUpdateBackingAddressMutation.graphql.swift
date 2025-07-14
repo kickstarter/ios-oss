@@ -29,6 +29,20 @@ public class CreateOrUpdateBackingAddressMutation: GraphQLMutation {
 
     public var createOrUpdateBackingAddress: CreateOrUpdateBackingAddress? { __data["createOrUpdateBackingAddress"] }
 
+    public init(
+      createOrUpdateBackingAddress: CreateOrUpdateBackingAddress? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Mutation.typename,
+          "createOrUpdateBackingAddress": createOrUpdateBackingAddress._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(CreateOrUpdateBackingAddressMutation.Data.self)
+        ]
+      ))
+    }
+
     /// CreateOrUpdateBackingAddress
     ///
     /// Parent Type: `CreateOrUpdateBackingAddressPayload`
@@ -43,6 +57,20 @@ public class CreateOrUpdateBackingAddressMutation: GraphQLMutation {
       ] }
 
       public var success: Bool { __data["success"] }
+
+      public init(
+        success: Bool
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.CreateOrUpdateBackingAddressPayload.typename,
+            "success": success,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(CreateOrUpdateBackingAddressMutation.Data.CreateOrUpdateBackingAddress.self)
+          ]
+        ))
+      }
     }
   }
 }

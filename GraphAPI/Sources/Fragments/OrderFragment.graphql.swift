@@ -27,4 +27,24 @@ public struct OrderFragment: GraphAPI.SelectionSet, Fragment {
   public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
   /// The total cost for the order including taxes and shipping
   public var total: Int? { __data["total"] }
+
+  public init(
+    id: GraphAPI.ID,
+    checkoutState: GraphQLEnum<GraphAPI.CheckoutStateEnum>,
+    currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+    total: Int? = nil
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Order.typename,
+        "id": id,
+        "checkoutState": checkoutState,
+        "currency": currency,
+        "total": total,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(OrderFragment.self)
+      ]
+    ))
+  }
 }

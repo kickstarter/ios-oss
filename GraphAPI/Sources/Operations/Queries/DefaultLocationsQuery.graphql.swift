@@ -35,6 +35,20 @@ public class DefaultLocationsQuery: GraphQLQuery {
     /// Searches locations.
     public var locations: Locations? { __data["locations"] }
 
+    public init(
+      locations: Locations? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Query.typename,
+          "locations": locations._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(DefaultLocationsQuery.Data.self)
+        ]
+      ))
+    }
+
     /// Locations
     ///
     /// Parent Type: `LocationsConnection`
@@ -50,6 +64,20 @@ public class DefaultLocationsQuery: GraphQLQuery {
 
       /// A list of nodes.
       public var nodes: [Node?]? { __data["nodes"] }
+
+      public init(
+        nodes: [Node?]? = nil
+      ) {
+        self.init(_dataDict: DataDict(
+          data: [
+            "__typename": GraphAPI.Objects.LocationsConnection.typename,
+            "nodes": nodes._fieldData,
+          ],
+          fulfilledFragments: [
+            ObjectIdentifier(DefaultLocationsQuery.Data.Locations.self)
+          ]
+        ))
+      }
 
       /// Locations.Node
       ///
@@ -79,6 +107,29 @@ public class DefaultLocationsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var locationFragment: LocationFragment { _toFragment() }
+        }
+
+        public init(
+          country: String,
+          countryName: String? = nil,
+          displayableName: String,
+          id: GraphAPI.ID,
+          name: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Location.typename,
+              "country": country,
+              "countryName": countryName,
+              "displayableName": displayableName,
+              "id": id,
+              "name": name,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(DefaultLocationsQuery.Data.Locations.Node.self),
+              ObjectIdentifier(LocationFragment.self)
+            ]
+          ))
         }
       }
     }

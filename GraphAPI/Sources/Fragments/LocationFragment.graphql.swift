@@ -30,4 +30,26 @@ public struct LocationFragment: GraphAPI.SelectionSet, Fragment {
   public var id: GraphAPI.ID { __data["id"] }
   /// The localized name
   public var name: String { __data["name"] }
+
+  public init(
+    country: String,
+    countryName: String? = nil,
+    displayableName: String,
+    id: GraphAPI.ID,
+    name: String
+  ) {
+    self.init(_dataDict: DataDict(
+      data: [
+        "__typename": GraphAPI.Objects.Location.typename,
+        "country": country,
+        "countryName": countryName,
+        "displayableName": displayableName,
+        "id": id,
+        "name": name,
+      ],
+      fulfilledFragments: [
+        ObjectIdentifier(LocationFragment.self)
+      ]
+    ))
+  }
 }
