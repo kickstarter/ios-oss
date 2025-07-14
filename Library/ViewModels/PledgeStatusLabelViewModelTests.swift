@@ -97,6 +97,26 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     ])
   }
 
+  func testBackingStatus_Dummy_Backer() {
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 0,
+      currencyCode: Project.Country.hk.currencyCode,
+      projectDeadline: 1_476_657_315,
+      projectState: Project.State.successful,
+      backingState: Backing.Status.dummy,
+      paymentIncrements: nil,
+      project: nil
+    )
+
+    self.vm.inputs.configure(with: data)
+
+    self.labelTextString.assertValues([
+      "We collected your pledge for this project."
+    ])
+  }
+
   func testBackingStatus_Dropped_Backer() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
@@ -221,7 +241,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   func testBackingStatus_AllOtherStatuses_Backer() {
     let statuses = Backing.Status.allCases
       .filter {
-        ![.canceled, .collected, .dropped, .errored, .authenticationRequired, .pledged, .preauth]
+        ![.canceled, .collected, .dropped, .dummy, .errored, .authenticationRequired, .pledged, .preauth]
           .contains($0)
       }
 
@@ -429,7 +449,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   func testBackingStatus_AllOtherStatuses_Creator() {
     let statuses = Backing.Status.allCases
       .filter {
-        ![.canceled, .collected, .dropped, .errored, .authenticationRequired, .pledged, .preauth]
+        ![.canceled, .collected, .dropped, .dummy, .errored, .authenticationRequired, .pledged, .preauth]
           .contains($0)
       }
 

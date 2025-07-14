@@ -12,48 +12,6 @@ struct FilterRootView: View {
   var onResults: (() -> Void)? = nil
   var onClose: (() -> Void)? = nil
 
-  private var selectedCategory: Binding<SearchFiltersCategory> {
-    Binding {
-      self.searchFilters.category.selectedCategory
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.category(newValue))
-      }
-    }
-  }
-
-  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
-    Binding {
-      self.searchFilters.percentRaised.selectedBucket
-    } set: { newValue in
-      if let action = self.onFilter,
-         let bucket = newValue {
-        action(.percentRaised(bucket))
-      }
-    }
-  }
-
-  private var selectedLocation: Binding<Location?> {
-    Binding {
-      self.searchFilters.location.selectedLocation
-    } set: { newValue in
-      if let action = self.onFilter {
-        action(.location(newValue))
-      }
-    }
-  }
-
-  private var selectedAmountRaisedBucket: Binding<DiscoveryParams.AmountRaisedBucket?> {
-    Binding {
-      self.searchFilters.amountRaised.selectedBucket
-    } set: { newValue in
-      if let action = self.onFilter,
-         let bucket = newValue {
-        action(.amountRaised(bucket))
-      }
-    }
-  }
-
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
   }
@@ -71,6 +29,8 @@ struct FilterRootView: View {
 
     self.searchFilters = searchFilters
   }
+
+  // MARK: - Subviews
 
   @ViewBuilder
   var projectStateSection: some View {
@@ -100,38 +60,67 @@ struct FilterRootView: View {
 
   @ViewBuilder
   var percentRaisedSection: some View {
-    FilterSectionButton(
-      title: Strings.Percentage_raised(),
-      subtitle:
-      self.searchFilters.percentRaised.selectedBucket?.title
-    )
+    NavigationLink(value: SearchFilterModalType.percentRaised) {
+      FilterSectionButton(
+        title: Strings.Percentage_raised(),
+        subtitle:
+        self.searchFilters.percentRaised.selectedBucket?.title
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var categorySection: some View {
-    FilterSectionButton(
-      title: Strings.Category(),
-      subtitle: self.searchFilters.category.selectedCategory.name
-    )
+    NavigationLink(value: SearchFilterModalType.category) {
+      FilterSectionButton(
+        title: Strings.Category(),
+        subtitle: self.searchFilters.category.selectedCategory.name
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var locationSection: some View {
-    FilterSectionButton(
-      title: Strings.Location(),
-      subtitle: self.searchFilters.location.selectedLocation?.displayableName
-    )
+    NavigationLink(value: SearchFilterModalType.location) {
+      FilterSectionButton(
+        title: Strings.Location(),
+        subtitle: self.searchFilters.location.selectedLocation?.displayableName
+      )
+    }
     .padding(Constants.sectionPadding)
   }
 
   @ViewBuilder
   var amountRaisedSection: some View {
-    FilterSectionButton(
-      title: Strings.Amount_raised(),
-      subtitle: self.searchFilters.amountRaised.selectedBucket?.title
-    )
+    NavigationLink(value: SearchFilterModalType.amountRaised) {
+      FilterSectionButton(
+        title: Strings.Amount_raised(),
+        subtitle: self.searchFilters.amountRaised.selectedBucket?.title
+      )
+    }
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
+  var showOnlySection: some View {
+    VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
+      // FIXME: MBL-2563 Add translated strings
+      Text("FPO: Show only")
+        .font(InterFont.headingLG.swiftUIFont())
+      Group {
+        // FIXME: MBL-2563 Add translated strings
+        Toggle("FPO: Recommended for you", isOn: self.showRecommended)
+        Toggle("FPO: Projects We Love", isOn: self.showProjectsWeLove)
+        Toggle("FPO: Saved projects", isOn: self.showSavedProjects)
+        Toggle("FPO: Following", isOn: self.showFollowing)
+      }
+      .toggleStyle(.switch)
+      .tint(Colors.Text.primary.swiftUIColor())
+      .font(InterFont.bodyMD.swiftUIFont())
+    }
+    .foregroundStyle(Colors.Text.primary.swiftUIColor())
     .padding(Constants.sectionPadding)
   }
 
@@ -192,34 +181,34 @@ struct FilterRootView: View {
     .padding(Constants.sectionPadding)
   }
 
+  // MARK: - Body
+
   public var body: some View {
     VStack(alignment: .leading) {
       NavigationStack(path: self.$navigationState) {
-        VStack {
-          Divider()
-          NavigationLink(value: SearchFilterModalType.category) {
-            self.categorySection
-          }
-          Divider()
-          self.projectStateSection
-          Divider()
-          NavigationLink(value: SearchFilterModalType.percentRaised) {
-            self.percentRaisedSection
-          }
-          if featureSearchFilterByLocation() {
+        ScrollView {
+          VStack {
             Divider()
-            NavigationLink(value: SearchFilterModalType.location) {
+            self.categorySection
+            Divider()
+            self.projectStateSection
+            Divider()
+            self.percentRaisedSection
+            if featureSearchFilterByLocation() {
+              Divider()
               self.locationSection
             }
-          }
-          if featureSearchFilterByAmountRaised() {
-            Divider()
-            NavigationLink(value: SearchFilterModalType.amountRaised) {
+            if featureSearchFilterByAmountRaised() {
+              Divider()
               self.amountRaisedSection
             }
+            if featureSearchFilterByShowOnlyToggles() {
+              Divider()
+              self.showOnlySection
+            }
+            Divider()
+            Spacer()
           }
-          Divider()
-          Spacer()
         }
         .navigationDestination(for: SearchFilterModalType.self, destination: { modalType in
           switch modalType {
@@ -275,6 +264,94 @@ extension View {
       }
   }
 }
+
+// MARK: - Bindings
+
+extension FilterRootView {
+  private var selectedCategory: Binding<SearchFiltersCategory> {
+    Binding {
+      self.searchFilters.category.selectedCategory
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.category(newValue))
+      }
+    }
+  }
+
+  private var selectedPercentRaisedBucket: Binding<DiscoveryParams.PercentRaisedBucket?> {
+    Binding {
+      self.searchFilters.percentRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onFilter,
+         let bucket = newValue {
+        action(.percentRaised(bucket))
+      }
+    }
+  }
+
+  private var selectedLocation: Binding<Location?> {
+    Binding {
+      self.searchFilters.location.selectedLocation
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.location(newValue))
+      }
+    }
+  }
+
+  private var selectedAmountRaisedBucket: Binding<DiscoveryParams.AmountRaisedBucket?> {
+    Binding {
+      self.searchFilters.amountRaised.selectedBucket
+    } set: { newValue in
+      if let action = self.onFilter,
+         let bucket = newValue {
+        action(.amountRaised(bucket))
+      }
+    }
+  }
+
+  private var showRecommended: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.recommended
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.recommended(newValue))
+      }
+    }
+  }
+
+  private var showSavedProjects: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.savedProjects
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.savedProjects(newValue))
+      }
+    }
+  }
+
+  private var showProjectsWeLove: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.projectsWeLove
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.projectsWeLove(newValue))
+      }
+    }
+  }
+
+  private var showFollowing: Binding<Bool> {
+    Binding {
+      self.searchFilters.showOnly.following
+    } set: { newValue in
+      if let action = self.onFilter {
+        action(.following(newValue))
+      }
+    }
+  }
+}
+
+// MARK: - Identifiable extension
 
 extension DiscoveryParams.State: @retroactive Identifiable {
   public var id: String {

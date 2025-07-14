@@ -87,10 +87,16 @@ extension GraphAPI.SearchQuery {
     } else {
       categoryId = nil
     }
+
     let state = GraphAPI.PublicProjectState.from(discovery: params.state ?? .all)
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
     let locationId = params.location?.graphID
     let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
+
+    let showRecommended = params.recommended
+    let showSavedProjects = params.starred
+    let showProjectsWeLove = params.staffPicks
+    let showFollowing = params.social
 
     return GraphAPI.SearchQuery(
       term: GraphQLNullable.someOrNil(params.query),
@@ -100,6 +106,10 @@ extension GraphAPI.SearchQuery {
       raised: GraphQLNullable.caseOrNil(raised),
       locationId: GraphQLNullable.someOrNil(locationId),
       pledged: GraphQLNullable.someOrNil(pledged),
+      showRecommended: GraphQLNullable.someOrNil(showRecommended),
+      showSavedProjects: GraphQLNullable.someOrNil(showSavedProjects),
+      showProjectsWeLove: GraphQLNullable.someOrNil(showProjectsWeLove),
+      showFollowing: GraphQLNullable.someOrNil(showFollowing),
       first: GraphQLNullable.someOrNil(params.perPage),
       cursor: GraphQLNullable.someOrNil(cursor)
     )
@@ -122,7 +132,8 @@ extension DiscoveryParams {
     state: DiscoveryParams.State?,
     percentRaised: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,
-    amountRaised: DiscoveryParams.AmountRaisedBucket?
+    amountRaised: DiscoveryParams.AmountRaisedBucket?,
+    toggles: SearchFilterToggles
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
@@ -133,6 +144,10 @@ extension DiscoveryParams {
     params.percentRaised = percentRaised
     params.location = location
     params.amountRaised = amountRaised
+    params.recommended = toggles.recommended
+    params.starred = toggles.savedProjects
+    params.staffPicks = toggles.projectsWeLove
+    params.social = toggles.following
     return params
   }
 }
