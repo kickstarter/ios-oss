@@ -1,8 +1,19 @@
 @testable import KsApi
 import XCTest
+import ApolloTestSupport
+import GraphAPI
 
 final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
-  func fixable_test_envelopeFrom() {
+  func test_envelopeFrom() {
+    let mock = Mock<WatchProjectPayload>()
+    mock.project = Mock<Project>()
+    mock.project?.id = "id"
+    mock.project?.isWatched = true
+    mock.project?.watchesCount = 100
+
+    
+    let data = GraphAPI.WatchProjectMutation.Data.from(mock)
+
     let envelopeProducer = WatchProjectResponseEnvelope
       .producer(from: WatchProjectResponseMutationTemplate.valid(watched: true).watchData)
 
