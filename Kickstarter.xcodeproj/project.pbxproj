@@ -8602,7 +8602,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$SRCROOT/apollo-ios-cli generate\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$SRCROOT/bin/apollo-ios-cli generate\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
