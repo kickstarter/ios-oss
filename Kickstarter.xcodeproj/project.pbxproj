@@ -1798,6 +1798,8 @@
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
+		E1D63AC72E257A3900CE64A9 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = E1D63AC62E257A3900CE64A9 /* GraphAPITestMocks */; };
+		E1D63AC92E257A3F00CE64A9 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E1D63AC82E257A3F00CE64A9 /* ApolloTestSupport */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
@@ -3726,6 +3728,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E113BD852B7D255000D3A809 /* Library.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1D63AC52E257A3200CE64A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D63AC72E257A3900CE64A9 /* GraphAPITestMocks in Frameworks */,
+				E1D63AC92E257A3F00CE64A9 /* ApolloTestSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8151,6 +8162,7 @@
 			buildPhases = (
 				D01587541EEB2DE4006E7684 /* Sources */,
 				D01587561EEB2DE4006E7684 /* Resources */,
+				E1D63AC52E257A3200CE64A9 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -8159,6 +8171,8 @@
 			);
 			name = KsApiTests;
 			packageProductDependencies = (
+				E1D63AC62E257A3900CE64A9 /* GraphAPITestMocks */,
+				E1D63AC82E257A3F00CE64A9 /* ApolloTestSupport */,
 			);
 			productName = KsApiTests;
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
@@ -12123,6 +12137,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
 			productName = KingfisherWebP;
+		};
+		E1D63AC62E257A3900CE64A9 /* GraphAPITestMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E13425C42E25434E00F1C9A3 /* XCLocalSwiftPackageReference "GraphAPI" */;
+			productName = GraphAPITestMocks;
+		};
+		E1D63AC82E257A3F00CE64A9 /* ApolloTestSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloTestSupport;
 		};
 		E1F1DB3E2B7BC09C004EA80B /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;
