@@ -13,6 +13,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedPercentRaisedBucket = TestObserver<DiscoveryParams.PercentRaisedBucket?, Never>()
   private let selectedLocation = TestObserver<Location?, Never>()
   private let selectedAmountRaisedBucket = TestObserver<DiscoveryParams.AmountRaisedBucket?, Never>()
+  private let selectedToggles = TestObserver<SearchFilterToggles, Never>()
   private let showFilters = TestObserver<SearchFilterModalType, Never>()
 
   private let (initialSignal, initialObserver) = Signal<Void, Never>.pipe()
@@ -36,6 +37,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOutputs.selectedPercentRaisedBucket.observe(self.selectedPercentRaisedBucket.observer)
     self.useCase.dataOutputs.selectedLocation.observe(self.selectedLocation.observer)
     self.useCase.dataOutputs.selectedAmountRaisedBucket.observe(self.selectedAmountRaisedBucket.observer)
+    self.useCase.dataOutputs.selectedToggles.observe(self.selectedToggles.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
 
@@ -61,6 +63,17 @@ final class SearchFiltersUseCaseTests: TestCase {
 
   func assert_selectedAmountRaisedBucket_isDefault() {
     self.selectedAmountRaisedBucket.assertLastValue(nil, "Selected amount raised should be default value")
+  }
+
+  func assert_toggles_areDefaults() {
+    if let toggles = self.selectedToggles.lastValue {
+      XCTAssertFalse(toggles.following)
+      XCTAssertFalse(toggles.projectsWeLove)
+      XCTAssertFalse(toggles.recommended)
+      XCTAssertFalse(toggles.savedProjects)
+    } else {
+      XCTFail("Expected some toggles to be set")
+    }
   }
 
   func test_allFilters_onInitialSignal_areDefaults() {
@@ -371,6 +384,52 @@ final class SearchFiltersUseCaseTests: TestCase {
     )
   }
 
+  func test_selectingToggles_updatesToggles() {
+    self.initialObserver.send(value: ())
+
+    self.assert_toggles_areDefaults()
+
+    self.useCase.inputs.selectedFilter(.following(true))
+    if let toggles = self.selectedToggles.lastValue {
+      XCTAssertTrue(toggles.following)
+      XCTAssertFalse(toggles.projectsWeLove)
+      XCTAssertFalse(toggles.recommended)
+      XCTAssertFalse(toggles.savedProjects)
+    } else {
+      XCTFail()
+    }
+
+    self.useCase.inputs.selectedFilter(.projectsWeLove(true))
+    if let toggles = self.selectedToggles.lastValue {
+      XCTAssertTrue(toggles.following)
+      XCTAssertTrue(toggles.projectsWeLove)
+      XCTAssertFalse(toggles.recommended)
+      XCTAssertFalse(toggles.savedProjects)
+    } else {
+      XCTFail()
+    }
+
+    self.useCase.inputs.selectedFilter(.recommended(true))
+    if let toggles = self.selectedToggles.lastValue {
+      XCTAssertTrue(toggles.following)
+      XCTAssertTrue(toggles.projectsWeLove)
+      XCTAssertTrue(toggles.recommended)
+      XCTAssertFalse(toggles.savedProjects)
+    } else {
+      XCTFail()
+    }
+
+    self.useCase.inputs.selectedFilter(.savedProjects(true))
+    if let toggles = self.selectedToggles.lastValue {
+      XCTAssertTrue(toggles.following)
+      XCTAssertTrue(toggles.projectsWeLove)
+      XCTAssertTrue(toggles.recommended)
+      XCTAssertTrue(toggles.savedProjects)
+    } else {
+      XCTFail()
+    }
+  }
+
   func test_selectingSort_updatesSortPill() {
     self.initialObserver.send(value: ())
 
@@ -594,6 +653,128 @@ final class SearchFiltersUseCaseTests: TestCase {
     }
   }
 
+  func test_userLoggedIn_showsUserTogglePills() {
+    let togglesOn = MockRemoteConfigClient()
+    togglesOn.features = [
+      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
+    ]
+
+    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+      self.initialObserver.send(value: ())
+
+      XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.followingPill)
+      XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.projectsWeLovePill)
+      XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.recommendedPill)
+      XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.savedPill)
+    }
+  }
+
+  func test_userLoggedOut_showsAnonymousTogglePills() {
+    let togglesOn = MockRemoteConfigClient()
+    togglesOn.features = [
+      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
+    ]
+
+    withEnvironment(currentUser: nil, remoteConfigClient: togglesOn) {
+      self.initialObserver.send(value: ())
+
+      XCTAssertNil(self.useCase.uiOutputs.searchFilters.followingPill)
+      XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.projectsWeLovePill)
+      XCTAssertNil(self.useCase.uiOutputs.searchFilters.recommendedPill)
+      XCTAssertNil(self.useCase.uiOutputs.searchFilters.savedPill)
+    }
+  }
+
+  func assert_selectedToggle_updatesTogglePill(
+    _ type: SearchFilterPill.FilterType,
+    onEvent event: SearchFilterEvent
+  ) {
+    let togglesOn = MockRemoteConfigClient()
+    togglesOn.features = [
+      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
+    ]
+
+    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+      self.initialObserver.send(value: ())
+
+      self.assert_toggles_areDefaults()
+
+      if let pill = self.useCase.uiOutputs.searchFilters.pills.first(where: { $0.filterType == type }) {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          false,
+          "Toggle pill should not be highlighted when toggle is off"
+        )
+      } else {
+        XCTFail("Expected toggle pill to be set")
+      }
+
+      self.useCase.inputs.selectedFilter(event)
+
+      if let pill = self.useCase.uiOutputs.searchFilters.pills.first(where: { $0.filterType == type }) {
+        XCTAssertEqual(
+          pill.isHighlighted,
+          true,
+          "Toggle pill should be highlighted when a non-default option is selected"
+        )
+
+      } else {
+        XCTFail("Expected toggle pill to be set")
+      }
+    }
+  }
+
+  func test_selectingToggles_updatesTogglePills() {
+    self.assert_selectedToggle_updatesTogglePill(.following, onEvent: .following(true))
+
+    self.useCase.inputs.resetFilters(for: .allFilters)
+    self.assert_selectedToggle_updatesTogglePill(.projectsWeLove, onEvent: .projectsWeLove(true))
+
+    self.useCase.inputs.resetFilters(for: .allFilters)
+    self.assert_selectedToggle_updatesTogglePill(.recommended, onEvent: .recommended(true))
+
+    self.useCase.inputs.resetFilters(for: .allFilters)
+    self.assert_selectedToggle_updatesTogglePill(.saved, onEvent: .savedProjects(true))
+  }
+
+  func test_tappingOnToggles_changesToggleValue_insteadOfShowingFilters() {
+    let togglesOn = MockRemoteConfigClient()
+    togglesOn.features = [
+      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
+    ]
+
+    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+      self.initialObserver.send(value: ())
+      self.assert_toggles_areDefaults()
+
+      self.useCase.inputs.tappedButton(forFilterType: .following)
+      self.useCase.inputs.tappedButton(forFilterType: .projectsWeLove)
+      self.useCase.inputs.tappedButton(forFilterType: .recommended)
+      self.useCase.inputs.tappedButton(forFilterType: .saved)
+
+      if let toggles = self.selectedToggles.lastValue {
+        XCTAssertTrue(toggles.following)
+        XCTAssertTrue(toggles.projectsWeLove)
+        XCTAssertTrue(toggles.recommended)
+        XCTAssertTrue(toggles.savedProjects)
+      }
+
+      self.useCase.inputs.tappedButton(forFilterType: .following)
+      self.useCase.inputs.tappedButton(forFilterType: .projectsWeLove)
+      self.useCase.inputs.tappedButton(forFilterType: .recommended)
+      self.useCase.inputs.tappedButton(forFilterType: .saved)
+
+      if let toggles = self.selectedToggles.lastValue {
+        XCTAssertFalse(toggles.following)
+        XCTAssertFalse(toggles.projectsWeLove)
+        XCTAssertFalse(toggles.recommended)
+        XCTAssertFalse(toggles.savedProjects)
+      }
+
+      self.showFilters.assertDidNotEmitValue("Tapping on a toggle filter shouldn't show any filter modals")
+    }
+  }
+
   func setAllFilters_toNonDefault_andAssert() {
     self.categoriesObserver.send(value: [
       .art,
@@ -609,6 +790,11 @@ final class SearchFiltersUseCaseTests: TestCase {
 
     self.useCase.inputs.selectedFilter(.percentRaised(.bucket_2))
     self.selectedPercentRaisedBucket.assertLastValue(.bucket_2)
+
+    self.useCase.inputs.selectedFilter(.following(true))
+    self.useCase.inputs.selectedFilter(.projectsWeLove(true))
+    self.useCase.inputs.selectedFilter(.savedProjects(true))
+    self.useCase.inputs.selectedFilter(.recommended(true))
 
     for type in SearchFilterModalType.allCases {
       if type == .sort {
@@ -628,6 +814,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.assert_selectedPercentRaisedBucket_isDefault()
     self.assert_selectedLocation_isDefault()
     self.assert_selectedAmountRaisedBucket_isDefault()
+    self.assert_toggles_areDefaults()
 
     for type in SearchFilterModalType.allCases {
       if type == .sort {
