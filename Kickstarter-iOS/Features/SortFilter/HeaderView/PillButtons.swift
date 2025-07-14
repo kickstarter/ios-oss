@@ -111,7 +111,6 @@ internal struct ImagePillButton: View {
     Button(action: self.action) {
       HStack {
         Image(uiImage: self.image)
-          .renderingMode(.template)
           .aspectRatio(1.0, contentMode: .fill)
           // Always render image pills as square, so the capsule becomes a circle.
           .modifier(ScaledToFontSize(horizontal: true, vertical: true))
@@ -147,6 +146,30 @@ internal struct DropdownPillButton: View {
             .renderingMode(.template)
             .aspectRatio(contentMode: .fill)
         }
+      }
+      .pillHeight()
+    }
+    .buttonStyle(SearchFiltersPillStyle(
+      isHighlighted: self.isHighlighted
+    ))
+  }
+}
+
+internal struct TogglePillButton: View {
+  let action: () -> Void
+  let title: String
+  let isHighlighted: Bool
+  let image: UIImage?
+
+  var body: some View {
+    Button(action: self.action) {
+      HStack(spacing: spacing01) {
+        if let image = self.image {
+          Image(uiImage: image)
+            .aspectRatio(1.0, contentMode: .fill)
+            .modifier(ScaledToFontSize(horizontal: false, vertical: true))
+        }
+        Text(self.title)
       }
       .pillHeight()
     }

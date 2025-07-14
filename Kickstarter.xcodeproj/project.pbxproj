@@ -533,6 +533,8 @@
 		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
 		59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		6005D3A12E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
+		6005D3A52E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
 		6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */; };
 		6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */; };
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
@@ -2374,6 +2376,7 @@
 		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
 		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-activity-tracking-en.json"; sourceTree = "<group>"; };
 		6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserEmailFragment.graphql; sourceTree = "<group>"; };
 		6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserEmail.graphql; sourceTree = "<group>"; };
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
@@ -6148,6 +6151,7 @@
 				605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */,
 				605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */,
 				605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */,
+				6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */,
 				33F55B492D4C70F30007E50E /* Fonts */,
 			);
 			path = Resources;
@@ -8323,6 +8327,7 @@
 				605915052E1590D90030BB90 /* onboarding-flow-login-signup-ja.json in Resources */,
 				605915062E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json in Resources */,
 				605915072E1590D90030BB90 /* onboarding-flow-save-projects-en.json in Resources */,
+				6005D3A52E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */,
 				605915082E1590D90030BB90 /* onboarding-flow-welcome-es.json in Resources */,
 				33F55B4E2D4C711C0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				33F55B4F2D4C711C0007E50E /* Inter-VariableFont.ttf in Resources */,
@@ -8337,6 +8342,7 @@
 				33F55B5A2D59F7EE0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
 				E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */,
 				33F55B582D59F3C10007E50E /* Inter-VariableFont.ttf in Resources */,
+				6005D3A12E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */,
 				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
 				605915092E1590D90030BB90 /* onboarding-flow-save-projects-es.json in Resources */,
 				6059150A2E1590D90030BB90 /* onboarding-flow-login-signup-en.json in Resources */,
@@ -10354,7 +10360,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 5.23.1;
+				MARKETING_VERSION = 5.27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -10390,7 +10396,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.26.1;
+				MARKETING_VERSION = 5.27.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
@@ -10723,7 +10729,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.26.1;
+				MARKETING_VERSION = 5.27.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
@@ -10755,7 +10761,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.26.1;
+				MARKETING_VERSION = 5.27.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
@@ -10869,7 +10875,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 5.23.1;
+				MARKETING_VERSION = 5.27.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -10936,7 +10942,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 5.23.1;
+				MARKETING_VERSION = 5.27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -11202,7 +11208,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 5.23.1;
+				MARKETING_VERSION = 5.27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -11236,7 +11242,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.26.1;
+				MARKETING_VERSION = 5.27.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
