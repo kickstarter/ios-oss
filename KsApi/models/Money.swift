@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import Prelude
 
 public struct Money: Decodable, Equatable {

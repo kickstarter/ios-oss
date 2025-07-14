@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public extension GraphAPI.ApplePayInput {
   static func from(_ input: ApplePayParams?) -> GraphAPI.ApplePayInput? {

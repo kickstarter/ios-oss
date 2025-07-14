@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 
 #if targetEnvironment(simulator)

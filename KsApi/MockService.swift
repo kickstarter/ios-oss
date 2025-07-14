@@ -1,7 +1,9 @@
+import GraphAPI
 #if DEBUG
   import Apollo
   import Combine
   import Foundation
+  import GraphAPI
   import Prelude
   import ReactiveSwift
 

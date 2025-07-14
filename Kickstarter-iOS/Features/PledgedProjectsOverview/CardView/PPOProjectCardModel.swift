@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import Kingfisher
 import KsApi
 import Library
@@ -197,7 +198,7 @@ extension PPOProjectCardModel.Alert {
 }
 
 extension GraphAPI.MoneyFragment: Equatable {
-  public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
+  public static func == (lhs: GraphAPI.MoneyFragment, rhs: GraphAPI.MoneyFragment) -> Bool {
     return lhs.amount == rhs.amount &&
       lhs.currency == rhs.currency &&
       lhs.symbol == rhs.symbol

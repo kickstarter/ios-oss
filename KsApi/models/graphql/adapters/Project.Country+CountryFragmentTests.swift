@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 @testable import KsApi
 import XCTest
 

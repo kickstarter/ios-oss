@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension PledgePaymentIncrement {
   public init?(withGraphQLFragment fragment: GraphAPI.PaymentIncrementFragment) {

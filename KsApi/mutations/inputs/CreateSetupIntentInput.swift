@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public struct CreateSetupIntentInput: GraphMutationInput, Encodable {
   let projectId: String?

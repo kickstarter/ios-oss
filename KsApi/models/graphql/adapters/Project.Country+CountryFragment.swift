@@ -1,3 +1,4 @@
+import GraphAPI
 import Prelude
 
 extension Project.Country {

@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 
 public struct GraphUserEnvelopeTemplates {

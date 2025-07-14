@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension Project {
   fileprivate static var htmlParser = {

@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 import Prelude
 
@@ -189,7 +190,7 @@ public enum Format {
     dateFormat: String,
     timeZone: TimeZone? = nil,
     env: Environment = AppEnvironment.current
-  ) -> Date? {
+  ) -> Foundation.Date? {
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
         dateFormat: dateFormat,

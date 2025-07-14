@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public protocol HasProjectAnalyticsProperties {
   var projectAnalyticsProperties: ProjectAnalyticsProperties { get }
@@ -17,7 +18,7 @@ public protocol ProjectAnalyticsProperties {
   var datesDeadline: TimeInterval? { get }
   var datesLaunchedAt: TimeInterval? { get }
   func datesDuration(using calendar: Calendar) -> Int?
-  func datesHoursRemaining(from date: Date, using calendar: Calendar) -> Int?
+  func datesHoursRemaining(from date: Foundation.Date, using calendar: Foundation.Calendar) -> Int?
 
   var id: Int { get }
   var hasAddOns: Bool { get }
@@ -88,7 +89,7 @@ extension Project: ProjectAnalyticsProperties {
     self.dates.duration(using: calendar)
   }
 
-  public func datesHoursRemaining(from date: Date, using calendar: Calendar) -> Int? {
+  public func datesHoursRemaining(from date: Foundation.Date, using calendar: Foundation.Calendar) -> Int? {
     self.dates.hoursRemaining(from: date, using: calendar)
   }
 
@@ -194,7 +195,10 @@ extension GraphAPI.ProjectAnalyticsFragment: ProjectAnalyticsProperties {
     return calendar.dateComponents([.day], from: launchedAtDate, to: deadlineDate).day
   }
 
-  public func datesHoursRemaining(from date: Date = Date(), using calendar: Calendar = .current) -> Int? {
+  public func datesHoursRemaining(
+    from date: Foundation.Date = Date(),
+    using calendar: Foundation.Calendar = .current
+  ) -> Int? {
     guard let deadlineDateValue = self.datesDeadline else {
       return nil
     }

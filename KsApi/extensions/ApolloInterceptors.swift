@@ -1,4 +1,5 @@
 import Apollo
+import ApolloAPI
 import Foundation
 
 /// This is based on `LegacyInterceptorProvider` from Apollo version 0.x.

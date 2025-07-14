@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import Kingfisher
 import KsApi
 
@@ -13,7 +14,7 @@ extension ProjectCardProperties {
       return nil
     }
 
-    func timestamp(from: String?) -> Date? {
+    func timestamp(from: String?) -> Foundation.Date? {
       from
         .flatMap { timestamp in Int(timestamp) }
         .flatMap { timestamp in Date(timeIntervalSince1970: TimeInterval(timestamp)) }

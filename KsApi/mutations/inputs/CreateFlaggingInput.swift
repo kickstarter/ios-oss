@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public struct CreateFlaggingInput: GraphMutationInput {
   let contentId: String

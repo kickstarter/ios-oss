@@ -1,3 +1,5 @@
+import GraphAPI
+
 extension GraphAPI.CreateFlaggingInput {
   static func from(_ input: CreateFlaggingInput) -> GraphAPI.CreateFlaggingInput {
     return GraphAPI.CreateFlaggingInput(

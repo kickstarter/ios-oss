@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchUpdateCommentsQueryTemplate {

@@ -1,6 +1,7 @@
 import Apollo
 import Combine
 import Foundation
+import GraphAPI
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift

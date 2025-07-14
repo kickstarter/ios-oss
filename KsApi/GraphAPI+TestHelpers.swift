@@ -1,6 +1,7 @@
 import Apollo
 import ApolloAPI
 import Foundation
+import GraphAPI
 import KsApi
 
 public enum GraphQLSelectionSetStringError: Error {

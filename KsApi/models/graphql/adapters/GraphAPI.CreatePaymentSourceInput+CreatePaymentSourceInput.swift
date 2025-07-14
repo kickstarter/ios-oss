@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension GraphAPI.CreatePaymentSourceInput {
   static func from(_ input: CreatePaymentSourceInput) -> GraphAPI.CreatePaymentSourceInput {

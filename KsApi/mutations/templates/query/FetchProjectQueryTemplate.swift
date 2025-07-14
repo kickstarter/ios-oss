@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchProjectQueryTemplate {
@@ -329,18 +330,18 @@ public enum FetchProjectQueryTemplate {
 
     var updatedCountryResultMap = countryResultMap
     var updatedCreatorResultMap = creatorResultMap
-    updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.ca
+    updatedCountryResultMap["code"] = GraphAPI.CountryCode.ca
     projectResultMap["country"] = updatedCountryResultMap
     projectResultMap["deadlineAt"] = "1628622000"
     projectResultMap["launchedAt"] = "1625118948"
     projectResultMap["stateChangedAt"] = "1625118950"
     projectResultMap["availableCardTypes"] = [
-      KsApi.GraphAPI.CreditCardTypes.visa,
-      KsApi.GraphAPI.CreditCardTypes.amex,
-      KsApi.GraphAPI.CreditCardTypes.mastercard
+      GraphAPI.CreditCardTypes.visa,
+      GraphAPI.CreditCardTypes.amex,
+      GraphAPI.CreditCardTypes.mastercard
     ]
-    projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
-    projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.eur
+    projectResultMap["state"] = GraphAPI.ProjectState.live
+    projectResultMap["currency"] = GraphAPI.CurrencyCode.eur
 
     updatedCreatorResultMap["notifications"] = [
       [

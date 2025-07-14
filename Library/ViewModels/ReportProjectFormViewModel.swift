@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import GraphAPI
 import KsApi
 import ReactiveSwift
 

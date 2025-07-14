@@ -1,3 +1,5 @@
+import GraphAPI
+
 extension GraphAPI.UpdateUserProfileInput {
   /**
    Maps a `CreatePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
