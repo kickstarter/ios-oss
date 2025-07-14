@@ -6,6 +6,22 @@
 	objectVersion = 60;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		E194DD202E254C6300235AEB /* Generate GraphQL Library */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E194DD252E254C6300235AEB /* Build configuration list for PBXAggregateTarget "Generate GraphQL Library" */;
+			buildPhases = (
+				E194DD262E254C7200235AEB /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Generate GraphQL Library";
+			packageProductDependencies = (
+			);
+			productName = "Generate GraphQL Library";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
 		013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */; };
@@ -8245,6 +8261,9 @@
 						CreatedOnToolsVersion = 15.2;
 						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
+					E194DD202E254C6300235AEB = {
+						CreatedOnToolsVersion = 16.0;
+					};
 				};
 			};
 			buildConfigurationList = A7E06C741C5A6EB300EBDCC2 /* Build configuration list for PBXProject "Kickstarter" */;
@@ -8289,6 +8308,7 @@
 				D015874F1EEB2DE4006E7684 /* KsApi */,
 				D01587571EEB2DE4006E7684 /* KsApiTests */,
 				E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */,
+				E194DD202E254C6300235AEB /* Generate GraphQL Library */,
 			);
 		};
 /* End PBXProject section */
@@ -8566,6 +8586,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n  ${SRCROOT}/bin/firebase-crashlytics-run.sh\nfi\n";
+		};
+		E194DD262E254C7200235AEB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$SRCROOT/apollo-ios-cli generate\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -11680,6 +11717,38 @@
 			};
 			name = "Internal Alpha";
 		};
+		E194DD212E254C6300235AEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E194DD222E254C6300235AEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E194DD232E254C6300235AEB /* Internal Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Internal Beta";
+		};
+		E194DD242E254C6300235AEB /* Internal Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Internal Alpha";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -11789,6 +11858,17 @@
 				E113BD892B7D255000D3A809 /* Release */,
 				E113BD8A2B7D255000D3A809 /* Internal Beta */,
 				E113BD8B2B7D255000D3A809 /* Internal Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E194DD252E254C6300235AEB /* Build configuration list for PBXAggregateTarget "Generate GraphQL Library" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E194DD212E254C6300235AEB /* Debug */,
+				E194DD222E254C6300235AEB /* Release */,
+				E194DD232E254C6300235AEB /* Internal Beta */,
+				E194DD242E254C6300235AEB /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
