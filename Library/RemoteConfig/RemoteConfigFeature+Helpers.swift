@@ -78,3 +78,7 @@ public func featureSearchFilterByAmountRaised() -> Bool {
 public func featureSearchFilterByShowOnlyToggles() -> Bool {
   featureEnabled(feature: .searchFilterByShowOnlyToggles)
 }
+
+public func featureSearchFilterByGoal() -> Bool {
+  featureEnabled(feature: .searchFilterByGoal)
+}

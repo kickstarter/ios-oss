@@ -17,6 +17,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case netNewBackersGoToPM = "net_new_backers_go_to_pm"
   case searchFilterByAmountRaised = "search_filter_by_amount_raised"
   case searchFilterByShowOnlyToggles = "search_filter_by_show_only_toggles"
+  case searchFilterByGoal = "search_filter_by_goal"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -38,6 +39,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .netNewBackersGoToPM: return "Net New Backers Go To PM"
     case .searchFilterByAmountRaised: return "Filter Search by Amount Raised"
     case .searchFilterByShowOnlyToggles: return "Filter Search by 'Show Only' Toggles"
+    case .searchFilterByGoal: return "Filter Search by Goal"
     }
   }
 }
