@@ -11,8 +11,8 @@ let package = Package(
     .watchOS(.v5),
   ],
   products: [
-    .library(name: "GraphAPI", targets: ["GraphAPI"]),
-    .library(name: "GraphAPITestMocks", targets: ["GraphAPITestMocks"]),
+    .library(name: "GraphAPI", type: .dynamic, targets: ["GraphAPI"]),
+    .library(name: "GraphAPITestMocks", type: .dynamic, targets: ["GraphAPITestMocks"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apollographql/apollo-ios.git", from: "1.0.0"),
@@ -21,7 +21,7 @@ let package = Package(
     .target(
       name: "GraphAPI",
       dependencies: [
-        .product(name: "ApolloAPI", package: "apollo-ios"),
+        .product(name: "Apollo-Dynamic", package: "apollo-ios"),
       ],
       path: "./Sources"
     ),
@@ -29,7 +29,6 @@ let package = Package(
       name: "GraphAPITestMocks",
       dependencies: [
         .product(name: "ApolloTestSupport", package: "apollo-ios"),
-        .target(name: "GraphAPI"),
       ],
       path: "./GraphAPITestMocks"
     ),

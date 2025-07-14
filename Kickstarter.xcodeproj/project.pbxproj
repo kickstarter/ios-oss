@@ -131,8 +131,6 @@
 		065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
 		065E6BAA26B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA926B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift */; };
 		065E6BAC26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */; };
-		06634FBE2807A4C300950F60 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBD2807A4C300950F60 /* Apollo */; };
-		06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBF2807A4C300950F60 /* ApolloAPI */; };
 		06634FC52807A4EB00950F60 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC42807A4EB00950F60 /* Prelude */; };
 		06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC62807A4EB00950F60 /* Prelude_UIKit */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
@@ -1262,6 +1260,8 @@
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
+		AA3B204C2E259E8E00AB4CF4 /* Apollo-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AA3B204B2E259E8E00AB4CF4 /* Apollo-Dynamic */; };
+		AA3B204E2E259E8E00AB4CF4 /* Apollo-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = AA3B204B2E259E8E00AB4CF4 /* Apollo-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AA3EB8432CF687680018C880 /* ServerFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */; };
 		AA5480E92D77ECB200EC2849 /* SimilarProjectQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA5480E82D77ECB200EC2849 /* SimilarProjectQuery.graphql */; };
 		AA5480EB2D77F9DE00EC2849 /* ProjectCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = AA5480EA2D77F9DA00EC2849 /* ProjectCardFragment.graphql */; };
@@ -1799,7 +1799,6 @@
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
 		E1D63AC72E257A3900CE64A9 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = E1D63AC62E257A3900CE64A9 /* GraphAPITestMocks */; };
-		E1D63AC92E257A3F00CE64A9 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E1D63AC82E257A3F00CE64A9 /* ApolloTestSupport */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
@@ -1891,6 +1890,17 @@
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA3B204D2E259E8E00AB4CF4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AA3B204E2E259E8E00AB4CF4 /* Apollo-Dynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3708,11 +3718,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E13425C62E25434E00F1C9A3 /* GraphAPI in Frameworks */,
-				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
-				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
+				AA3B204C2E259E8E00AB4CF4 /* Apollo-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3736,7 +3745,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1D63AC72E257A3900CE64A9 /* GraphAPITestMocks in Frameworks */,
-				E1D63AC92E257A3F00CE64A9 /* ApolloTestSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8138,6 +8146,7 @@
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
 				D015874D1EEB2DE4006E7684 /* Headers */,
 				D015874E1EEB2DE4006E7684 /* Resources */,
+				AA3B204D2E259E8E00AB4CF4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -8151,6 +8160,7 @@
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
 				E13425C52E25434E00F1C9A3 /* GraphAPI */,
+				AA3B204B2E259E8E00AB4CF4 /* Apollo-Dynamic */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -12118,6 +12128,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		AA3B204B2E259E8E00AB4CF4 /* Apollo-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = "Apollo-Dynamic";
 		};
 		AA645E9F2C772DC90034705A /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
