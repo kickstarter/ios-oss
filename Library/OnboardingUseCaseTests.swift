@@ -15,12 +15,13 @@ final class OnboardingUseCaseTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    self.useCase = OnboardingUseCase()
+    self.useCase = OnboardingUseCase(for: Bundle(for: type(of: self)))
 
     self.useCase.uiOutputs.onboardingItems.start(self.onboardingItems.observer)
     self.useCase.uiOutputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.useCase.outputs.completedGetNotifiedRequest.observe(self.completedGetNotifiedRequest.observer)
-    self.useCase.outputs.completedAllowTrackingRequest.observe(self.completedAllowTrackingRequest.observer)
+    self.useCase.outputs.triggerAppTrackingTransparencyPopup
+      .observe(self.completedAllowTrackingRequest.observer)
   }
 
   func testUseCase_onboardingItems_EmitsAListOfAll5OboardingItemTypes_Once() {
@@ -67,28 +68,7 @@ final class OnboardingUseCaseTests: XCTestCase {
 
       self.useCase.uiInputs.allowTrackingTapped()
 
-      XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
       self.completedAllowTrackingRequest.assertValueCount(1)
-    }
-  }
-
-  func testUseCase_completedAllowTrackingRequest_DoesNotSetAdvertisingID_WhenShouldRequestAuthStatus_isFalse(
-  ) {
-    let appTrackingTransparency = MockAppTrackingTransparency()
-    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = false
-    appTrackingTransparency.shouldRequestAuthStatus = false
-
-    withEnvironment(
-      appTrackingTransparency: appTrackingTransparency
-    ) {
-      self.completedAllowTrackingRequest.assertValueCount(0)
-
-      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
-
-      self.useCase.uiInputs.allowTrackingTapped()
-
-      self.completedAllowTrackingRequest.assertValueCount(1)
-      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
     }
   }
 
