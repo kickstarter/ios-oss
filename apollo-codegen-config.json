@@ -29,10 +29,7 @@
     "schemaTypes": {
       "path": "./GraphAPI",
       "moduleType": {
-        "embeddedInTarget": {
-          "accessModifier": "public",
-          "name": "KsApi"
-        }
+        "swiftPackageManager": {}
       }
     },
     "operations": {
