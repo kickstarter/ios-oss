@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension LastWave {
   init(fromFragment fragment: GraphAPI.LastWaveFragment) {

@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -11,8 +12,8 @@ class GraphAPI_WatchProjectInput_WatchProjectInputTests: XCTestCase {
 
     let graphInput = GraphAPI.WatchProjectInput.from(input)
 
-    XCTAssertEqual(graphInput.clientMutationId, input.clientMutationId)
+    XCTAssertEqual(graphInput.clientMutationId.unwrapped, input.clientMutationId)
     XCTAssertEqual(graphInput.id, input.id)
-    XCTAssertEqual(graphInput.trackingContext, input.trackingContext)
+    XCTAssertEqual(graphInput.trackingContext.unwrapped, input.trackingContext)
   }
 }

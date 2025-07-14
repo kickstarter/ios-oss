@@ -8,8 +8,7 @@ import XCTest
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
-  fileprivate let fetchUserQueryData: GraphAPI.FetchUserQuery
-    .Data = testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+  fileprivate let fetchUserQueryData = GraphUserEnvelopeTemplates.fetchUser
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
   private let didChangeEmail = TestObserver<Void, Never>()
   private let didFailToChangeEmail = TestObserver<String, Never>()

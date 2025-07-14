@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -25,11 +26,11 @@ class GraphAPI_TriggerThirdPartyEventInput_TriggerThirdPartyEventInputTests: XCT
     XCTAssertEqual(graphInput.deviceId, input.deviceId)
     XCTAssertEqual(graphInput.eventName, input.eventName)
     XCTAssertEqual(graphInput.projectId, input.projectId)
-    XCTAssertEqual(graphInput.pledgeAmount, input.pledgeAmount)
-    XCTAssertEqual(graphInput.shipping, input.shipping)
-    XCTAssertEqual(graphInput.transactionId, input.transactionId)
-    XCTAssertEqual(graphInput.userId, input.userId)
+    XCTAssertEqual(graphInput.pledgeAmount.unwrapped, input.pledgeAmount)
+    XCTAssertEqual(graphInput.shipping.unwrapped, input.shipping)
+    XCTAssertEqual(graphInput.transactionId.unwrapped, input.transactionId)
+    XCTAssertEqual(graphInput.userId.unwrapped, input.userId)
     XCTAssertNotNil(graphInput.appData)
-    XCTAssertEqual(graphInput.clientMutationId, input.clientMutationId)
+    XCTAssertEqual(graphInput.clientMutationId.unwrapped, input.clientMutationId)
   }
 }

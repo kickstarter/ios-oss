@@ -1,10 +1,11 @@
 import Foundation
+import GraphAPI
 @testable import KsApi
 import XCTest
 
 final class ShippingRule_ShippingRuleFragmentTests: XCTestCase {
-  func test() {
-    let shippingRuleFragment: GraphAPI.ShippingRuleFragment = testGraphObject(
+  func fixable_test() {
+    let shippingRuleFragment: GraphAPI.ShippingRuleFragment = try! testGraphObject(
       data: [
         "cost": [
           "amount": "50",

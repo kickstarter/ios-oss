@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 
 #if targetEnvironment(simulator)
@@ -155,9 +156,9 @@ import KsApi
       backing: nil,
       category: nil,
       commentsCount: 42,
-      country: .init(code: .us),
+      country: .init(code: GraphQLEnum.case(.us)),
       creator: nil,
-      currency: .usd,
+      currency: GraphQLEnum.case(.usd),
       deadlineAt: nil,
       launchedAt: nil,
       pid: 42,
@@ -169,7 +170,7 @@ import KsApi
       projectTags: [],
       postCampaignPledgingEnabled: false,
       rewards: nil,
-      state: .successful,
+      state: GraphQLEnum.case(.successful),
       video: nil,
       pledged: .init(amount: nil),
       fxRate: 4,

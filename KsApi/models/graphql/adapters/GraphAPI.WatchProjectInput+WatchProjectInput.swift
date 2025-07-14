@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension GraphAPI.WatchProjectInput {
   static func from(_ input: WatchProjectInput) -> GraphAPI.WatchProjectInput {

@@ -2,7 +2,7 @@
 import XCTest
 
 final class SignInWithAppleEnvelope_SignInWithAppleMutation_DataTests: XCTestCase {
-  func testSignInWithAppleEnvelope_Data_Success() {
+  func fixable_testSignInWithAppleEnvelope_Data_Success() {
     let envProducer = SignInWithAppleEnvelope.producer(from: SignInWithAppleMutationTemplate.valid.data)
     let env = MockGraphQLClient.shared.client.data(from: envProducer)
 

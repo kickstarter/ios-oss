@@ -1,3 +1,4 @@
+import GraphAPI
 import KsApi
 
 extension PledgePaymentPlansAndSelectionData {

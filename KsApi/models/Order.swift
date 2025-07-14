@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public struct Order: Equatable, Decodable {
   public let checkoutState: CheckoutState

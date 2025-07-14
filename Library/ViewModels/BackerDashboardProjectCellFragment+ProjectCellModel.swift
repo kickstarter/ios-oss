@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 
 extension GraphAPI.BackerDashboardProjectCellFragment: BackerDashboardProjectCellViewModel.ProjectCellModel {

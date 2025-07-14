@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 
 public enum WatchProjectResponseMutationTemplate {
@@ -8,36 +9,24 @@ public enum WatchProjectResponseMutationTemplate {
   var watchData: GraphAPI.WatchProjectMutation.Data {
     switch self {
     case let .valid(watched):
-      return testGraphObject<
-        GraphAPI.WatchProjectMutation
-          .Data
-      >(data: self.watchProjectMutationResultMap(watched: watched))
+      return try! testGraphObject(data: self.watchProjectMutationResultMap(watched: watched))
     case let .errored(watched):
-      return testGraphObject<
-        GraphAPI.WatchProjectMutation
-          .Data
-      >(data: self.watchProjectMutationErroredResultMap(watched: watched))
+      return try! testGraphObject(data: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
 
   var unwatchData: GraphAPI.UnwatchProjectMutation.Data {
     switch self {
     case let .valid(watched):
-      return testGraphObject<
-        GraphAPI.UnwatchProjectMutation
-          .Data
-      >(data: self.watchProjectMutationResultMap(watched: watched))
+      return try! testGraphObject(data: self.watchProjectMutationResultMap(watched: watched))
     case let .errored(watched):
-      return testGraphObject<
-        GraphAPI.UnwatchProjectMutation
-          .Data
-      >(data: self.watchProjectMutationErroredResultMap(watched: watched))
+      return try! testGraphObject(data: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
 
   // MARK: Private Properties
 
-  func watchProjectMutationResultMap(watched: Bool) -> [String: Any?] {
+  func watchProjectMutationResultMap(watched: Bool) -> [String: Any] {
     [
       "watchProject": [
         "clientMutationId": nil,
@@ -50,7 +39,7 @@ public enum WatchProjectResponseMutationTemplate {
     ]
   }
 
-  func watchProjectMutationErroredResultMap(watched: Bool) -> [String: Any?] {
+  func watchProjectMutationErroredResultMap(watched: Bool) -> [String: Any] {
     [
       "wrongKey": [
         "clientMutationId": nil,

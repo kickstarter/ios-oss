@@ -112,7 +112,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   func testNoProjects() {
     let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
 
-    withEnvironment(apiService: MockService(fetchBackerSavedProjectsResponse: env), currentUser: .template) {
+    withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .saved, sort: .endingSoon)
       self.vm.inputs.viewDidAppear(false)
 

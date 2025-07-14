@@ -1,3 +1,5 @@
+import GraphAPI
+
 /**
  Returns a minimal `Location` from a `LocationFragment`
  */

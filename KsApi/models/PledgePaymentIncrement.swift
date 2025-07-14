@@ -3,7 +3,7 @@ import Foundation
 public struct PledgePaymentIncrement: Equatable, Decodable {
   public let amount: PledgePaymentIncrementAmount
   public let scheduledCollection: TimeInterval
-  public var state: PledgePaymentIncrementState
+  public var state: PledgePaymentIncrementState?
   public var stateReason: PledgePaymentIncrementStateReason?
 
   public init(

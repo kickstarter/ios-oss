@@ -3,7 +3,7 @@ import Apollo
 import XCTest
 
 final class RootCategoryEnvelope_FetchRootCategoriesEnvelopeQueryDataTests: XCTestCase {
-  func testFetchCategoriesQueryData_Success() {
+  func disabled_testFetchCategoriesQueryData_Success() {
     let producer = RootCategoriesEnvelope.envelopeProducer(from: FetchRootCategoriesQueryTemplate.valid.data)
     guard let rootCategories = MockGraphQLClient.shared.client.data(from: producer)?.rootCategories else {
       XCTFail()

@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -14,8 +15,8 @@ class GraphAPI_CreateFlaggingInput_CreateFlaggingInputTests: XCTestCase {
     let graphInput = GraphAPI.CreateFlaggingInput.from(input)
 
     XCTAssertEqual(graphInput.contentId, input.contentId)
-    XCTAssertEqual(graphInput.kind, input.kind)
-    XCTAssertEqual(graphInput.details, input.details)
-    XCTAssertEqual(graphInput.clientMutationId, input.clientMutationId)
+    XCTAssertEqual(graphInput.kind.value, input.kind)
+    XCTAssertEqual(graphInput.details.unwrapped, input.details)
+    XCTAssertEqual(graphInput.clientMutationId.unwrapped, input.clientMutationId)
   }
 }

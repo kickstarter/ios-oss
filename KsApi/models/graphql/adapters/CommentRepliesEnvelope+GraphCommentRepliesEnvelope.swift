@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import ReactiveSwift
 
 extension CommentRepliesEnvelope {
@@ -8,9 +9,9 @@ extension CommentRepliesEnvelope {
   static func commentRepliesEnvelope(
     from data: GraphAPI.FetchCommentRepliesQuery.Data
   ) -> CommentRepliesEnvelope? {
-    guard let parentCommentFragment = data.comment?.fragments.commentWithRepliesFragment?.fragments
+    guard let parentCommentFragment = data.comment?.asComment?.fragments.commentWithRepliesFragment.fragments
       .commentBaseFragment,
-      let repliesData = data.comment?.fragments.commentWithRepliesFragment?.replies,
+      let repliesData = data.comment?.asComment?.fragments.commentWithRepliesFragment.replies,
       let parentComment = Comment.comment(from: parentCommentFragment, replyCount: repliesData.totalCount)
     else {
       return nil

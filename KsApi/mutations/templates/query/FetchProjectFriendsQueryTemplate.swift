@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchProjectFriendsQueryTemplate {
@@ -10,9 +11,9 @@ public enum FetchProjectFriendsQueryTemplate {
   var data: GraphAPI.FetchProjectFriendsByIdQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchProjectFriendsByIdQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchProjectFriendsByIdQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
@@ -123,7 +124,7 @@ public enum FetchProjectFriendsQueryTemplate {
     return resultMap
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return [:]
   }
 }

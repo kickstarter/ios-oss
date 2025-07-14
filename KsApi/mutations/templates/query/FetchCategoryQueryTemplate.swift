@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchCategoryQueryTemplate {
@@ -9,9 +10,9 @@ public enum FetchCategoryQueryTemplate {
   var data: GraphAPI.FetchCategoryQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchCategoryQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchCategoryQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
@@ -107,12 +108,12 @@ public enum FetchCategoryQueryTemplate {
     """
 
     let data = Data(json.utf8)
-    var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+    let resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
 
     return resultMap
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return [:]
   }
 }

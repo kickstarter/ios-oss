@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 import XCTest
 

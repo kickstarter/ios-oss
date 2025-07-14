@@ -1,9 +1,10 @@
 import Foundation
+import GraphAPI
 
 extension GraphAPI.CreatePaymentSourceInput {
   static func from(_ input: CreatePaymentSourceInput) -> GraphAPI.CreatePaymentSourceInput {
     return GraphAPI.CreatePaymentSourceInput(
-      paymentType: GraphQLNullable.caseOrNil(.creditCard),
+      paymentType: GraphQLEnum.caseOrNil(.creditCard),
       stripeToken: GraphQLNullable.someOrNil(input.stripeToken),
       stripeCardId: GraphQLNullable.someOrNil(input.stripeCardId),
       reusable: GraphQLNullable.someOrNil(input.reusable)

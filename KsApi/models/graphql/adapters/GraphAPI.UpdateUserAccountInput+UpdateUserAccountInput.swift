@@ -1,5 +1,5 @@
-
 import Foundation
+import GraphAPI
 
 extension GraphAPI.UpdateUserAccountInput {
   /**

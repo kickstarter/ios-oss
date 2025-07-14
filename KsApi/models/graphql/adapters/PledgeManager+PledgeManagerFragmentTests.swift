@@ -1,13 +1,18 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
 final class PledgeManager_PledgeManagerFragmentTests: XCTestCase {
   func test() {
-    let pmFragment: GraphAPI.PledgeManagerFragment = testGraphObject(
-      data: [
-        "id": "UGxlZGdlTWFuYWdlci05MQ==",
-        "acceptsNewBackers": true
-      ]
+    let pmFragment: GraphAPI.PledgeManagerFragment = try! testGraphObject(
+      jsonString:
+      """
+        {
+              "__typename": "PledgeManager",
+              "id": "UGxlZGdlTWFuYWdlci05MQ==",
+              "acceptsNewBackers": true
+        }
+      """
     )
 
     let pledgeManager = PledgeManager(fromFragment: pmFragment)

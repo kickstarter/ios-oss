@@ -1,0 +1,33 @@
+{
+  "schemaNamespace": "GraphAPI",
+  "input": {
+    "operationSearchPaths": [
+      "**/*.graphql"
+    ],
+    "schemaSearchPaths": [
+      "KsApi/graphql-schema.json"
+    ]
+  },
+  "options": {
+    "selectionSetInitializers": {
+      "operations": true,
+      "namedFragments": true
+    }
+  },
+  "output": {
+    "testMocks": {
+      "swiftPackage": {
+        "targetName": "GraphAPITestMocks"
+      }
+    },
+    "schemaTypes": {
+      "path": "./GraphAPI",
+      "moduleType": {
+        "swiftPackageManager": {}
+      }
+    },
+    "operations": {
+      "inSchemaModule": {}
+    }
+  }
+}

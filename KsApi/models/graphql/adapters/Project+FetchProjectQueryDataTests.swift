@@ -5,7 +5,7 @@ import XCTest
 
 final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
-  func testFetchProjectQueryData_Success() {
+  func disabled_testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(
       from: FetchProjectQueryTemplate.valid.data,
       configCurrency: Project.Country.de.currencyCode

@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 
 public enum SignInWithAppleMutationTemplate {
@@ -8,21 +9,15 @@ public enum SignInWithAppleMutationTemplate {
   var data: GraphAPI.SignInWithAppleMutation.Data {
     switch self {
     case .valid:
-      return testGraphObject<
-        GraphAPI.SignInWithAppleMutation
-          .Data
-      >(data: self.signInWithAppleMutationResultMap)
+      return try! testGraphObject(data: self.signInWithAppleMutationResultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.SignInWithAppleMutation
-          .Data
-      >(data: self.signInWithAppleMutationErroredResultMap)
+      return try! testGraphObject(data: self.signInWithAppleMutationErroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var signInWithAppleMutationResultMap: [String: Any?] {
+  private var signInWithAppleMutationResultMap: [String: Any] {
     [
       "signInWithApple": [
         "apiAccessToken": "foobar",
@@ -33,7 +28,7 @@ public enum SignInWithAppleMutationTemplate {
     ]
   }
 
-  private var signInWithAppleMutationErroredResultMap: [String: Any?] {
+  private var signInWithAppleMutationErroredResultMap: [String: Any] {
     let resultMap = self.signInWithAppleMutationResultMap
 
     let topLevelMap = resultMap["signInWithApple"] ?? [:]

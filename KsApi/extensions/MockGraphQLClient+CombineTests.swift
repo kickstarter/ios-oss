@@ -1,4 +1,5 @@
 import Combine
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -8,8 +9,7 @@ final class MockGraphQLClient_CombineTests: XCTestCase {
     let observer = CombineTestObserver<UserEnvelope<GraphUserEmail>, ErrorEnvelope>()
 
     let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
-    let fetchUserEmailQueryData: GraphAPI.FetchUserEmailQuery
-      .Data = testGraphObject(data: GraphUserEnvelopeTemplates.userJSONDict)
+    let fetchUserEmailQueryData = GraphUserEnvelopeTemplates.fetchUserEmail
 
     guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
       XCTFail()

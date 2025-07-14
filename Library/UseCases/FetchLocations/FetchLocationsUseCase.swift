@@ -1,3 +1,4 @@
+import GraphAPI
 import KsApi
 import ReactiveSwift
 
@@ -44,7 +45,7 @@ public final class FetchLocationsUseCase: FetchLocationsUseCaseType, FetchLocati
 
     let suggestedLocationsQuery = locationQuery
       .switchMap { queryText in
-        let query = GraphAPI.LocationsByTermQuery(term: queryText, first: 10)
+        let query = GraphAPI.LocationsByTermQuery(term: GraphQLNullable.some(queryText), first: 10)
         return AppEnvironment.current.apiService.fetch(query: query).materialize()
       }
       .values()

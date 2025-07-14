@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchAddsOnsQueryTemplate {
@@ -9,9 +10,9 @@ public enum FetchAddsOnsQueryTemplate {
   var data: GraphAPI.FetchAddOnsQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchAddOnsQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchAddOnsQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
@@ -673,18 +674,18 @@ public enum FetchAddsOnsQueryTemplate {
     }
 
     var updatedCountryResultMap = countryResultMap
-    updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.au
+    updatedCountryResultMap["code"] = GraphAPI.CountryCode.au
     projectResultMap["country"] = updatedCountryResultMap
     projectResultMap["deadlineAt"] = "1622195758"
     projectResultMap["launchedAt"] = "1619603758"
     projectResultMap["stateChangedAt"] = "1619603760"
     projectResultMap["availableCardTypes"] = [
-      KsApi.GraphAPI.CreditCardTypes.visa,
-      KsApi.GraphAPI.CreditCardTypes.amex,
-      KsApi.GraphAPI.CreditCardTypes.mastercard
+      GraphAPI.CreditCardTypes.visa,
+      GraphAPI.CreditCardTypes.amex,
+      GraphAPI.CreditCardTypes.mastercard
     ]
-    projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
-    projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.aud
+    projectResultMap["state"] = GraphAPI.ProjectState.live
+    projectResultMap["currency"] = GraphAPI.CurrencyCode.aud
 
     projectResultMap["environmentalCommitments"] =
       [
@@ -698,7 +699,7 @@ public enum FetchAddsOnsQueryTemplate {
     return resultMap
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return [:]
   }
 }

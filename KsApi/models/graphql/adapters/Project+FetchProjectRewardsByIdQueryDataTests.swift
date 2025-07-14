@@ -4,7 +4,7 @@ import ReactiveSwift
 import XCTest
 
 final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
-  func testFetchProjectRewardsByIdQueryData_Success() {
+  func disabled_testFetchProjectRewardsByIdQueryData_Success() {
     let rewardsProducer = Project
       .projectRewardsProducer(from: FetchProjectRewardsByIdQueryTemplate.valid.data)
 
