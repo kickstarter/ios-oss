@@ -102,6 +102,8 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
     string = Strings.You_canceled_your_pledge_for_this_project()
   case (.collected, false, _):
     string = Strings.We_collected_your_pledge_for_this_project()
+  case (.dummy, _, _):
+    string = Strings.We_collected_your_pledge_for_this_project()
   case (.dropped, false, _):
     string = Strings.Your_pledge_was_dropped_because_of_payment_errors()
   case (.errored, false, false):

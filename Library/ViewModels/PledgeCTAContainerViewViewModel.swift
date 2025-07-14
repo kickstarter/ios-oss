@@ -211,7 +211,8 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
     return .prelaunch(saved: projectIsSaved, watchCount: project.watchesCount ?? 0)
   }
 
-  if featureNetNewBackersGoToPMEnabled() && project.pledgeManagementAvailable {
+  if backing?.status == .dummy ||
+    (featureNetNewBackersGoToPMEnabled() && project.pledgeManagementAvailable) {
     return PledgeStateCTAType.pledgeManager
   }
 
