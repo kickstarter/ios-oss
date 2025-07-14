@@ -25,16 +25,14 @@ struct SearchFiltersHeaderView: View {
         ForEach(self.pills) { pill in
           switch pill.buttonType {
           case let .image(image):
-            if let uiImage = Library.image(named: image) {
-              ImagePillButton(
-                action: {
-                  self.didTapPill(pill)
-                },
-                image: uiImage,
-                isHighlighted: pill.isHighlighted,
-                count: pill.count
-              )
-            }
+            ImagePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              image: image,
+              isHighlighted: pill.isHighlighted,
+              count: pill.count
+            )
           case let .dropdown(title):
             DropdownPillButton(
               action: {
@@ -43,6 +41,24 @@ struct SearchFiltersHeaderView: View {
               title: title,
               isHighlighted: pill.isHighlighted,
               count: pill.count
+            )
+          case let .toggle(title):
+            TogglePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              image: nil
+            )
+          case let .toggleWithImage(title, image):
+            TogglePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              image: image
             )
           }
         }
@@ -70,12 +86,22 @@ let previewPills = [
   SearchFilterPill(
     isHighlighted: true,
     filterType: .sort,
-    buttonType: .image("icon-sort")
+    buttonType: .image(UIImage.checkmark)
   ),
   SearchFilterPill(
     isHighlighted: false,
     filterType: .category,
     buttonType: .dropdown("Hello world")
+  ),
+  SearchFilterPill(
+    isHighlighted: false,
+    filterType: .recommended,
+    buttonType: .toggle("I'm a toggle")
+  ),
+  SearchFilterPill(
+    isHighlighted: true,
+    filterType: .projectsWeLove,
+    buttonType: .toggleWithImage("Switch me", UIImage.add)
   )
 ]
 

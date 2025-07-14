@@ -268,6 +268,14 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
     modalType = .location
   case .amountRaised:
     modalType = .amountRaised
+  case .projectsWeLove:
+    modalType = .allFilters
+  case .saved:
+    modalType = .allFilters
+  case .following:
+    modalType = .allFilters
+  case .recommended:
+    modalType = .allFilters
   }
   return modalType
 }

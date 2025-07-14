@@ -184,18 +184,22 @@ public class SearchFilters: ObservableObject {
   private func updatePills() {
     var pills: [SearchFilterPill] = []
 
-    pills.append(SearchFilterPill(
-      isHighlighted: self.hasSort,
-      filterType: .sort,
-      buttonType: .image("icon-sort")
-    ))
+    if let sortIcon = Library.image(named: "icon-sort")?.withRenderingMode(.alwaysTemplate) {
+      pills.append(SearchFilterPill(
+        isHighlighted: self.hasSort,
+        filterType: .sort,
+        buttonType: .image(sortIcon)
+      ))
+    }
 
-    pills.append(SearchFilterPill(
-      isHighlighted: self.hasFilters,
-      filterType: .allFilters,
-      buttonType: .image("icon-filters"),
-      count: self.filterCount
-    ))
+    if let filterIcon = Library.image(named: "icon-filters")?.withRenderingMode(.alwaysTemplate) {
+      pills.append(SearchFilterPill(
+        isHighlighted: self.hasFilters,
+        filterType: .allFilters,
+        buttonType: .image(filterIcon),
+        count: self.filterCount
+      ))
+    }
 
     let selectedCategory = self.category.selectedCategory.category
     let categoryPillTitle = selectedCategory?.name ?? Strings.Category()
@@ -244,6 +248,45 @@ public class SearchFilters: ObservableObject {
           isHighlighted: self.hasAmountRaised,
           filterType: .amountRaised,
           buttonType: .dropdown(amountRaisedTitle)
+        )
+      )
+    }
+
+    if featureSearchFilterByShowOnlyToggles() {
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: false,
+          filterType: .recommended,
+          // FIXME: MBL-2563 Add translations
+          buttonType: .toggle("FPO: Recommended")
+        )
+      )
+
+      if let pwlIcon = Library.image(named: "icon-pwl") {
+        pills.append(
+          SearchFilterPill(
+            isHighlighted: false,
+            filterType: .projectsWeLove,
+            // FIXME: MBL-2563 Add translations
+            buttonType: .toggleWithImage("FPO: Projects We Love", pwlIcon)
+          )
+        )
+      }
+
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: false,
+          filterType: .saved,
+          // FIXME: MBL-2563 Add translations
+          buttonType: .toggle("FPO: Saved")
+        )
+      )
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: false,
+          filterType: .following,
+          // FIXME: MBL-2563 Add translations
+          buttonType: .toggle("FPO: Following")
         )
       )
     }

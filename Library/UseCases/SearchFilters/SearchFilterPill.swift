@@ -24,12 +24,18 @@ public struct SearchFilterPill: Identifiable {
     case percentRaised
     case location
     case amountRaised
+    case projectsWeLove
+    case saved
+    case following
+    case recommended
   }
 
   /// How the pill should be rendered.
   public enum ButtonType {
-    case image(String)
+    case image(UIImage)
     case dropdown(String)
+    case toggle(String)
+    case toggleWithImage(String, UIImage)
   }
 
   public init(
