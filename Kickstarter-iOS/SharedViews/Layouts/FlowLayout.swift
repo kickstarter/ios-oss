@@ -35,7 +35,7 @@ public struct FlowLayout: Layout {
 
     // Calculate positions and determine size
     for subview in subviews {
-      let size = subview.sizeThatFits(.unspecified)
+      let size = subview.sizeThatFits(.init(width: containerWidth, height: .infinity))
 
       // If this view doesn't fit on the current row, move to the next row
       if rowWidths[currentRowIndex] + size.width > containerWidth && rowWidths[currentRowIndex] > 0 {
@@ -79,7 +79,7 @@ public struct FlowLayout: Layout {
     var currentRowViewCount = 0
 
     for subview in subviews {
-      let size = subview.sizeThatFits(.unspecified)
+      let size = subview.sizeThatFits(.init(width: containerWidth, height: .infinity))
       viewSizes.append(size)
 
       // Check if this view needs to go on a new row
