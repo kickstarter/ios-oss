@@ -144,16 +144,12 @@ extension DiscoveryParams {
     params.percentRaised = percentRaised
     params.location = location
     params.amountRaised = amountRaised
-    params.recommended = trueOrNil(toggles.recommended)
-    params.starred = trueOrNil(toggles.savedProjects)
-    params.staffPicks = trueOrNil(toggles.projectsWeLove)
-    params.social = trueOrNil(toggles.following)
+    params.recommended = toggles.recommended
+    params.starred = toggles.savedProjects
+    params.staffPicks = toggles.projectsWeLove
+    params.social = toggles.following
     return params
   }
-}
-
-func trueOrNil(_ value: Bool) -> Bool? {
-  value ? true : nil
 }
 
 extension GraphAPI.SearchQuery.Data.Project.Node: @retroactive Equatable {}
