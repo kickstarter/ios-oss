@@ -93,27 +93,10 @@ extension GraphAPI.SearchQuery {
     let locationId = params.location?.graphID
     let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
 
-    let showRecommended = params.social
+    let showRecommended = params.recommended
     let showSavedProjects = params.starred
     let showProjectsWeLove = params.staffPicks
     let showFollowing = params.social
-
-    assert(
-      showRecommended != .some(false),
-      "Setting showRecommended to false would return only non-recommended results. Did you mean to set it to nil?"
-    )
-    assert(
-      showSavedProjects != .some(false),
-      "Setting showSavedProjects to false would return only unsaved results. Did you mean to set it to nil?"
-    )
-    assert(
-      showProjectsWeLove != .some(false),
-      "Setting showProjectsWeLove to false would return only unloved results. Did you mean to set it to nil?"
-    )
-    assert(
-      showFollowing != .some(false),
-      "Setting showFollowing to false would return only unfollowed results. Did you mean to set it to nil?"
-    )
 
     return GraphAPI.SearchQuery(
       term: GraphQLNullable.someOrNil(params.query),
@@ -149,7 +132,8 @@ extension DiscoveryParams {
     state: DiscoveryParams.State?,
     percentRaised: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,
-    amountRaised: DiscoveryParams.AmountRaisedBucket?
+    amountRaised: DiscoveryParams.AmountRaisedBucket?,
+    toggles: SearchFilterToggles
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
     params.sort = sort
@@ -160,6 +144,10 @@ extension DiscoveryParams {
     params.percentRaised = percentRaised
     params.location = location
     params.amountRaised = amountRaised
+    params.recommended = toggles.recommended
+    params.starred = toggles.savedProjects
+    params.staffPicks = toggles.projectsWeLove
+    params.social = toggles.following
     return params
   }
 }

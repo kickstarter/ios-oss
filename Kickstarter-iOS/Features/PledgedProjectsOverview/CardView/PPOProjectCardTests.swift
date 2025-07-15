@@ -127,6 +127,6 @@ final class PPOProjectCardTests: TestCase {
         .padding()
     }.frame(height: 500)
     try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "testShortTemplateText")
+    assertSnapshot(matching: card, as: .image, named: "testLotsOfFlags")
   }
 }
