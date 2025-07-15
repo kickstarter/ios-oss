@@ -664,6 +664,27 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
+		60CC7CA42E26AFD70055BE8F /* onboarding-flow-welcome-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */; };
+		60CC7CA52E26B0A30055BE8F /* onboarding-flow-save-projects-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */; };
+		60CC7CA62E26B0A30055BE8F /* onboarding-flow-enable-notifications-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */; };
+		60CC7CA72E26B0A30055BE8F /* onboarding-flow-login-signup-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */; };
+		60CC7CA82E26B0A30055BE8F /* onboarding-flow-welcome-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */; };
+		60CC7CA92E26B0A30055BE8F /* onboarding-flow-welcome-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */; };
+		60CC7CAA2E26B0A30055BE8F /* onboarding-flow-save-projects-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */; };
+		60CC7CAB2E26B0A30055BE8F /* onboarding-flow-login-signup-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */; };
+		60CC7CAC2E26B0A30055BE8F /* onboarding-flow-enable-notifications-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */; };
+		60CC7CAD2E26B0A30055BE8F /* onboarding-flow-login-signup-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */; };
+		60CC7CAE2E26B0A30055BE8F /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
+		60CC7CAF2E26B0A30055BE8F /* onboarding-flow-save-projects-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */; };
+		60CC7CB02E26B0A30055BE8F /* onboarding-flow-save-projects-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */; };
+		60CC7CB12E26B0A30055BE8F /* onboarding-flow-login-signup-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */; };
+		60CC7CB22E26B0A30055BE8F /* onboarding-flow-enable-notifications-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */; };
+		60CC7CB32E26B0A30055BE8F /* onboarding-flow-enable-notifications-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */; };
+		60CC7CB42E26B0A30055BE8F /* onboarding-flow-enable-notifications-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */; };
+		60CC7CB52E26B0A30055BE8F /* onboarding-flow-welcome-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */; };
+		60CC7CB62E26B0A30055BE8F /* onboarding-flow-save-projects-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */; };
+		60CC7CB72E26B0A30055BE8F /* onboarding-flow-login-signup-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */; };
+		60CC7CB82E26B0A30055BE8F /* onboarding-flow-welcome-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
@@ -8409,8 +8430,29 @@
 				8A86D7F524FED02A00037A7B /* GoogleService-Info.plist in Resources */,
 				60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */,
 				33F55B502D4C711C0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
+				60CC7CA42E26AFD70055BE8F /* onboarding-flow-welcome-en.json in Resources */,
 				33F55B512D4C711C0007E50E /* Inter-VariableFont.ttf in Resources */,
 				194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */,
+				60CC7CA52E26B0A30055BE8F /* onboarding-flow-save-projects-ja.json in Resources */,
+				60CC7CA62E26B0A30055BE8F /* onboarding-flow-enable-notifications-ja.json in Resources */,
+				60CC7CA72E26B0A30055BE8F /* onboarding-flow-login-signup-en.json in Resources */,
+				60CC7CA82E26B0A30055BE8F /* onboarding-flow-welcome-ja.json in Resources */,
+				60CC7CA92E26B0A30055BE8F /* onboarding-flow-welcome-fr.json in Resources */,
+				60CC7CAA2E26B0A30055BE8F /* onboarding-flow-save-projects-es.json in Resources */,
+				60CC7CAB2E26B0A30055BE8F /* onboarding-flow-login-signup-fr.json in Resources */,
+				60CC7CAC2E26B0A30055BE8F /* onboarding-flow-enable-notifications-fr.json in Resources */,
+				60CC7CAD2E26B0A30055BE8F /* onboarding-flow-login-signup-de.json in Resources */,
+				60CC7CAE2E26B0A30055BE8F /* onboarding-flow-activity-tracking-en.json in Resources */,
+				60CC7CAF2E26B0A30055BE8F /* onboarding-flow-save-projects-de.json in Resources */,
+				60CC7CB02E26B0A30055BE8F /* onboarding-flow-save-projects-fr.json in Resources */,
+				60CC7CB12E26B0A30055BE8F /* onboarding-flow-login-signup-ja.json in Resources */,
+				60CC7CB22E26B0A30055BE8F /* onboarding-flow-enable-notifications-de.json in Resources */,
+				60CC7CB32E26B0A30055BE8F /* onboarding-flow-enable-notifications-es.json in Resources */,
+				60CC7CB42E26B0A30055BE8F /* onboarding-flow-enable-notifications-en.json in Resources */,
+				60CC7CB52E26B0A30055BE8F /* onboarding-flow-welcome-de.json in Resources */,
+				60CC7CB62E26B0A30055BE8F /* onboarding-flow-save-projects-en.json in Resources */,
+				60CC7CB72E26B0A30055BE8F /* onboarding-flow-login-signup-es.json in Resources */,
+				60CC7CB82E26B0A30055BE8F /* onboarding-flow-welcome-es.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
