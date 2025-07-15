@@ -75,6 +75,7 @@ public class SearchFilters: ObservableObject {
       self.hasPercentRaised,
       self.hasLocation,
       self.hasAmountRaised,
+      self.hasGoal,
       self.showOnly.following,
       self.showOnly.projectsWeLove,
       self.showOnly.recommended,
@@ -306,6 +307,18 @@ public class SearchFilters: ObservableObject {
             filterType: .projectsWeLove,
             // FIXME: MBL-2563 Add translations
             buttonType: .toggleWithImage("FPO: Projects We Love", pwlIcon)
+          )
+        )
+      }
+
+      if featureSearchFilterByGoal() {
+        // TODO(MBL-2576): Add translated strings.
+        let goalTitle = self.goal.selectedBucket?.pillTitle ?? "FPO: Goal"
+        pills.append(
+          SearchFilterPill(
+            isHighlighted: self.hasGoal,
+            filterType: .goal,
+            buttonType: .dropdown(goalTitle)
           )
         )
       }

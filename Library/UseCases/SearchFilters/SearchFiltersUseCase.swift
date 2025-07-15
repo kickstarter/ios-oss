@@ -354,6 +354,8 @@ private func filterModal(toShowForPill pill: SearchFilterPill.FilterType) -> Sea
     modalType = .location
   case .amountRaised:
     modalType = .amountRaised
+  case .goal:
+    modalType = .goal
   case .projectsWeLove:
     modalType = .allFilters
   case .saved:
