@@ -41,12 +41,20 @@ public class SearchFilters: ObservableObject {
     public var selectedBucket: DiscoveryParams.AmountRaisedBucket?
   }
 
+  public struct ShowOnlyOptions {
+    public var recommended: Bool
+    public var savedProjects: Bool
+    public var projectsWeLove: Bool
+    public var following: Bool
+  }
+
   public private(set) var category: CategoryOptions
   public private(set) var sort: SortOptions
   public private(set) var projectState: ProjectStateOptions
   public private(set) var percentRaised: PercentRaisedOptions
   public private(set) var location: LocationOptions
   public private(set) var amountRaised: AmountRaisedOptions
+  public private(set) var showOnly: ShowOnlyOptions
 
   public fileprivate(set) var pills: [SearchFilterPill]
 
@@ -60,7 +68,11 @@ public class SearchFilters: ObservableObject {
       self.hasProjectState,
       self.hasPercentRaised,
       self.hasLocation,
-      self.hasAmountRaised
+      self.hasAmountRaised,
+      self.showOnly.following,
+      self.showOnly.projectsWeLove,
+      self.showOnly.recommended,
+      self.showOnly.savedProjects
     ]
     .count(where: { $0 == true })
   }
@@ -106,7 +118,8 @@ public class SearchFilters: ObservableObject {
     projectState: ProjectStateOptions,
     percentRaised: PercentRaisedOptions,
     location: LocationOptions,
-    amountRaised: AmountRaisedOptions
+    amountRaised: AmountRaisedOptions,
+    showOnly: ShowOnlyOptions
   ) {
     self.sort = sort
     self.category = category
@@ -114,6 +127,7 @@ public class SearchFilters: ObservableObject {
     self.percentRaised = percentRaised
     self.location = location
     self.amountRaised = amountRaised
+    self.showOnly = showOnly
 
     self.pills = []
     self.updatePills()
@@ -125,7 +139,8 @@ public class SearchFilters: ObservableObject {
     projectState: DiscoveryParams.State,
     percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,
-    amountRaisedBucket: DiscoveryParams.AmountRaisedBucket?
+    amountRaisedBucket: DiscoveryParams.AmountRaisedBucket?,
+    toggles: SearchFilterToggles
   ) {
     self.objectWillChange.send()
 
@@ -135,6 +150,10 @@ public class SearchFilters: ObservableObject {
     self.percentRaised.selectedBucket = percentRaisedBucket
     self.location.selectedLocation = location
     self.amountRaised.selectedBucket = amountRaisedBucket
+    self.showOnly.recommended = toggles.recommended
+    self.showOnly.savedProjects = toggles.savedProjects
+    self.showOnly.projectsWeLove = toggles.projectsWeLove
+    self.showOnly.following = toggles.following
 
     self.updatePills()
   }
@@ -232,6 +251,17 @@ public class SearchFilters: ObservableObject {
       )
     }
 
+    if featureSearchFilterByShowOnlyToggles() && AppEnvironment.current.currentUser.isSome {
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.showOnly.recommended,
+          filterType: .recommended,
+          // FIXME: MBL-2563 Add translations
+          buttonType: .toggle("FPO: Recommended for you")
+        )
+      )
+    }
+
     let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
     pills.append(
       SearchFilterPill(
@@ -253,19 +283,10 @@ public class SearchFilters: ObservableObject {
     }
 
     if featureSearchFilterByShowOnlyToggles() {
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: false,
-          filterType: .recommended,
-          // FIXME: MBL-2563 Add translations
-          buttonType: .toggle("FPO: Recommended")
-        )
-      )
-
       if let pwlIcon = Library.image(named: "icon-pwl") {
         pills.append(
           SearchFilterPill(
-            isHighlighted: false,
+            isHighlighted: self.showOnly.projectsWeLove,
             filterType: .projectsWeLove,
             // FIXME: MBL-2563 Add translations
             buttonType: .toggleWithImage("FPO: Projects We Love", pwlIcon)
@@ -273,22 +294,24 @@ public class SearchFilters: ObservableObject {
         )
       }
 
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: false,
-          filterType: .saved,
-          // FIXME: MBL-2563 Add translations
-          buttonType: .toggle("FPO: Saved")
+      if AppEnvironment.current.currentUser.isSome {
+        pills.append(
+          SearchFilterPill(
+            isHighlighted: self.showOnly.savedProjects,
+            filterType: .saved,
+            // FIXME: MBL-2563 Add translations
+            buttonType: .toggle("FPO: Saved")
+          )
         )
-      )
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: false,
-          filterType: .following,
-          // FIXME: MBL-2563 Add translations
-          buttonType: .toggle("FPO: Following")
+        pills.append(
+          SearchFilterPill(
+            isHighlighted: self.showOnly.following,
+            filterType: .following,
+            // FIXME: MBL-2563 Add translations
+            buttonType: .toggle("FPO: Following")
+          )
         )
-      )
+      }
     }
 
     self.pills = pills
