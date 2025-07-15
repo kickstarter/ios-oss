@@ -145,9 +145,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.searchFiltersUseCase.dataOutputs.selectedPercentRaisedBucket,
       self.searchFiltersUseCase.dataOutputs.selectedLocation,
       self.searchFiltersUseCase.dataOutputs.selectedAmountRaisedBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedGoalBucket,
       self.searchFiltersUseCase.dataOutputs.selectedToggles
     )
-    .map { query, sort, category, state, percentRaised, location, amountRaised, toggles in
+    .map { query, sort, category, state, percentRaised, location, amountRaised, goal, toggles in
       DiscoveryParams.withQuery(
         query,
         sort: sort,
@@ -156,6 +157,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         percentRaised: percentRaised,
         location: location,
         amountRaised: amountRaised,
+        goal: goal,
         toggles: toggles
       )
     }
