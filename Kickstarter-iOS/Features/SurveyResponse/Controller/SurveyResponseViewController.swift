@@ -33,6 +33,12 @@ internal final class SurveyResponseViewController: WebViewController {
       )
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.title = title
+      }
   }
 
   deinit {
