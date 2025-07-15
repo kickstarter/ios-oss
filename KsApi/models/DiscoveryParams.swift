@@ -87,6 +87,12 @@ public struct DiscoveryParams {
 
     /// Range from 10,000 to 100,000 USD
     case bucket_2
+
+    /// Range from 100,000 to 1,000,000 USD
+    case bucket_3
+
+    /// Range from 1,000,000 to Infinity USD
+    case bucket_4
   }
 
   public static let defaults = DiscoveryParams(
