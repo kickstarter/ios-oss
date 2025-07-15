@@ -175,7 +175,6 @@
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */; };
 		06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */; };
-		06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */; };
 		06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */; };
 		06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */; };
 		06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */; };
@@ -2050,7 +2049,6 @@
 		06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserProfile.graphql; sourceTree = "<group>"; };
 		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
-		06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFragmentTemplate.swift; sourceTree = "<group>"; };
 		06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryData.swift"; sourceTree = "<group>"; };
 		06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryDataTests.swift"; sourceTree = "<group>"; };
 		06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectFriendsQueryTemplate.swift; sourceTree = "<group>"; };
@@ -3840,7 +3838,6 @@
 			isa = PBXGroup;
 			children = (
 				06032A8D26CEB3E50013AAB9 /* CommentFragmentTemplate.swift */,
-				06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */,
 			);
 			path = fragment;
 			sourceTree = "<group>";
@@ -10103,7 +10100,6 @@
 				06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
 				06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */,
-				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
