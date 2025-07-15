@@ -87,7 +87,6 @@
 		0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */; };
 		0622C92A273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */; };
 		0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */; };
-		0622C92E27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */; };
 		06232D392795D26600A81755 /* TextViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16F82773AD9F009E4354 /* TextViewElementCell.swift */; };
 		06232D3A2795D37600A81755 /* ProjectPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */; };
 		06232D3B2795EC2100A81755 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16F22773A944009E4354 /* HTMLParser.swift */; };
@@ -1977,7 +1976,6 @@
 		0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCategoryQueryTemplate.swift; sourceTree = "<group>"; };
 		0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift"; sourceTree = "<group>"; };
 		0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift"; sourceTree = "<group>"; };
-		0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRootCategoriesQueryTemplate.swift; sourceTree = "<group>"; };
 		06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		06261602273B0E1500389981 /* PostComment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PostComment.graphql; sourceTree = "<group>"; };
 		06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInput.swift"; sourceTree = "<group>"; };
@@ -3836,7 +3834,6 @@
 				06032A9326CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift */,
 				06032A9526CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift */,
 				0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */,
-				0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */,
 			);
 			path = query;
 			sourceTree = "<group>";
@@ -10067,7 +10064,6 @@
 				8AC3E00C26961E8A00168BF8 /* Reward+RewardFragmentTests.swift in Sources */,
 				47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */,
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
-				0622C92E27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift in Sources */,
 				06032A9626CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift in Sources */,
 				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
 				19047FC32889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift in Sources */,
