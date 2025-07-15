@@ -25,6 +25,10 @@ extension SearchFilters {
     return self.pills.first(where: { $0.filterType == .amountRaised })
   }
 
+  var goalPill: SearchFilterPill? {
+    return self.pills.first(where: { $0.filterType == .goal })
+  }
+
   var locationPill: SearchFilterPill? {
     return self.pills.first(where: { $0.filterType == .location })
   }
