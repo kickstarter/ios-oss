@@ -36,6 +36,10 @@ public protocol SurveyResponseViewModelOutputs {
   /// Emits a login intent that should be used to log in.
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
 
+  /// Emits a title, if any, that should be shown in the top bar.
+  /// `nil` should reset the view to have no title.
+  var title: Signal<String?, Never> { get }
+
   /// Emits a request that should be loaded by the webview.
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
@@ -78,6 +82,25 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     let newNavigationAction = self.policyForNavigationActionProperty.signal.skipNil()
 
     let newRequest = newNavigationAction.map { action in action.request }
+
+    self.title = Signal.merge(initialRequest, newRequest)
+      .compactMap { request in
+        if isSurvey(request: request) {
+          // Only update the title based on the main survey url.
+          return request.url
+        }
+        return nil
+      }
+      .map { (surveyUrl: URL) -> String? in
+        // The pledge management flow has its own url, so show a title for this url.
+        // The other urls shown in this dashboard are not unique (navigating between
+        // the pages they load doesn't change the url), so show no title instead.
+        if surveyUrl.lastPathComponent == "redeem" {
+          return Strings.Pledge_manager()
+        } else {
+          return nil
+        }
+      }
 
     let newSurveyRequest = newRequest
       .filter { request in
@@ -179,6 +202,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let goToPledge: Signal<Param, Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
+  public let title: Signal<String?, Never>
 
   public var inputs: SurveyResponseViewModelInputs { return self }
   public var outputs: SurveyResponseViewModelOutputs { return self }

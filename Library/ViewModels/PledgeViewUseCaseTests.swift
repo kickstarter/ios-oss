@@ -10,7 +10,7 @@ final class PledgeViewUseCaseTests: TestCase {
 
   private let goToNativePledgeViewProjectParam = TestObserver<Param, Never>()
   private let goToNativePledgeViewBackingParam = TestObserver<Param?, Never>()
-  private let goToPledgeManagementPledgeView = TestObserver<URL, Never>()
+  private let goToPledgeManagementPledgeView = TestObserver<String, Never>()
 
   private let (projectAndBackingSignal, projectAndBackingObserver) = Signal<(Project, Backing), Never>.pipe()
 
@@ -31,7 +31,7 @@ final class PledgeViewUseCaseTests: TestCase {
     project.personalization.isBacking = .some(true)
 
     let backing = Backing.templateMadeWithPledgeManagment
-    let expectedURL = URL(string: backing.backingDetailsPageRoute)!
+    let expectedURL = backing.backingDetailsPageRoute
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.netNewBackersWebView.rawValue: true
