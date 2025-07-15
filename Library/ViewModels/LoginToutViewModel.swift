@@ -347,7 +347,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Please_log_in_or_sign_up_to_back_this_project()
   case .messageCreator:
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
-  case .discoveryOnboarding, .generic, .activity, .loginTab, .erroredPledge:
+  case .discoveryOnboarding, .onboarding, .generic, .activity, .loginTab, .erroredPledge:
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   }
 }
