@@ -145,9 +145,6 @@
 		066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */; };
 		066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */; };
 		066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */; };
-		066C0AE726CC17610048F4D8 /* WatchProjectMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */; };
-		066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */; };
-		066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */; };
 		067A445026F9135D00A65F46 /* ExtendedProjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */; };
 		067E7EC927BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067E7EC827BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift */; };
 		068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */; };
@@ -2019,9 +2016,6 @@
 		066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityMutationTemplate.swift; sourceTree = "<group>"; };
 		066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutationTemplate.swift; sourceTree = "<group>"; };
 		066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentSourceMutationTemplate.swift; sourceTree = "<group>"; };
-		066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectMutationTemplate.swift; sourceTree = "<group>"; };
-		066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleMutationTemplate.swift; sourceTree = "<group>"; };
-		066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutationTemplate.swift; sourceTree = "<group>"; };
 		067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedProjectProperties.swift; sourceTree = "<group>"; };
 		067E7EC827BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVideoViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
@@ -3865,9 +3859,6 @@
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
 				066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */,
 				06962F8C273B36A700FB0B3D /* PostCommentMutationTemplate.swift */,
-				066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */,
-				066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */,
-				066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */,
 			);
 			path = mutation;
 			sourceTree = "<group>";
@@ -10097,7 +10088,6 @@
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
 				06032A8C26CEADED0013AAB9 /* FetchProjectCommentsQueryTemplate.swift in Sources */,
 				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
-				066C0AE726CC17610048F4D8 /* WatchProjectMutationTemplate.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */,
 				06962F8D273B36A700FB0B3D /* PostCommentMutationTemplate.swift in Sources */,
@@ -10114,7 +10104,6 @@
 				06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
 				0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */,
-				066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */,
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */,
@@ -10202,7 +10191,6 @@
 				6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */,
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				331746852E09AC5C00C5FC1C /* LastWave+LastWaveFragmentTests.swift in Sources */,
-				066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
 				06032A9026CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,

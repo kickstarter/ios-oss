@@ -1,10 +1,27 @@
+import ApolloTestSupport
+import GraphAPI
+import GraphAPITestMocks
 @testable import KsApi
 import XCTest
 
 final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
-  func fixable_test_SCA() {
+  func mockData(checkoutState: GraphAPI.CheckoutState, sca: Bool) -> GraphAPI.UpdateBackingMutation.Data {
+    let mock = Mock<GraphAPITestMocks.Mutation>()
+
+    mock.updateBacking = Mock<GraphAPITestMocks.UpdateBackingPayload>()
+    mock.updateBacking?.checkout = Mock<GraphAPITestMocks.Checkout>()
+    mock.updateBacking?.checkout?.id = "id"
+    mock.updateBacking?.checkout?.state = .case(checkoutState)
+    mock.updateBacking?.checkout?.backing = Mock<GraphAPITestMocks.Backing>()
+    mock.updateBacking?.checkout?.backing?.clientSecret = sca ? "client-secret" : nil
+    mock.updateBacking?.checkout?.backing?.requiresAction = sca
+
+    return GraphAPI.UpdateBackingMutation.Data.from(mock)
+  }
+
+  func test_SCA() {
     let envProducer = UpdateBackingEnvelope
-      .producer(from: UpdateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
+      .producer(from: self.mockData(checkoutState: .authorizing, sca: true))
     let env = MockGraphQLClient.shared.client.data(from: envProducer)
 
     XCTAssertEqual(env?.updateBacking.checkout.id, "id")
@@ -13,9 +30,9 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
     XCTAssertEqual(env?.updateBacking.checkout.state, .authorizing)
   }
 
-  func fixable_test_NonSCA_Successful() {
+  func test_NonSCA_Successful() {
     let env = UpdateBackingEnvelope
-      .from(UpdateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
+      .from(self.mockData(checkoutState: .successful, sca: false))
 
     XCTAssertEqual(env?.updateBacking.checkout.id, "id")
     XCTAssertEqual(env?.updateBacking.checkout.backing.clientSecret, nil)
@@ -23,9 +40,9 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
     XCTAssertEqual(env?.updateBacking.checkout.state, .successful)
   }
 
-  func fixable_test_NonSCA_Failed() {
+  func test_NonSCA_Failed() {
     let env = UpdateBackingEnvelope
-      .from(UpdateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
+      .from(self.mockData(checkoutState: .failed, sca: false))
 
     XCTAssertEqual(env?.updateBacking.checkout.id, "id")
     XCTAssertEqual(env?.updateBacking.checkout.backing.clientSecret, nil)
@@ -34,7 +51,8 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
   }
 
   func test_BadResponse_Error() {
-    let errorProducer = UpdateBackingEnvelope.producer(from: UpdateBackingMutationTemplate.errored.data)
+    let erroredData: GraphAPI.UpdateBackingMutation.Data = try! testGraphObject(jsonString: "{}")
+    let errorProducer = UpdateBackingEnvelope.producer(from: erroredData)
     let error = MockGraphQLClient.shared.client.error(from: errorProducer)
 
     XCTAssertNotNil(error?.ksrCode)
