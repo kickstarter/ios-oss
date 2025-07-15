@@ -93,8 +93,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .map { (surveyUrl: URL) -> String? in
         // The pledge management flow has its own url, so show a title for this url.
-        // The other urls shown in this dashboard are not unique (navigating between the pages
-        // they load doesn't change the url), so show no title instead.
+        // The other urls shown in this dashboard are not unique (navigating between
+        // the pages they load doesn't change the url), so show no title instead.
         if surveyUrl.lastPathComponent == "redeem" {
           return Strings.Pledge_manager()
         } else {
