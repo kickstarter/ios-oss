@@ -33,11 +33,11 @@ public enum OnboardingItemType {
 }
 
 public struct OnboardingItem: Identifiable, Equatable {
-  public var id: UUID = .init()
-  let title: String
-  let subTitle: String
-  var lottieView: LottieAnimationView = .init()
-  let type: OnboardingItemType
+  public let id: UUID = .init()
+  public let title: String
+  public let subtitle: String
+  public var lottieView: LottieAnimationView = .init()
+  public let type: OnboardingItemType
 }
 
 public protocol OnboardingUseCaseType {
@@ -98,7 +98,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - Initialization
 
   /// Injecting a bundle so that we can test that the correct Lottie JSON files are being loaded as expected.
-  init(for bundle: Bundle) {
+  init(for bundle: Bundle = .main) {
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
@@ -222,7 +222,7 @@ private func makeOnboardingItem(
 
   return OnboardingItem(
     title: title,
-    subTitle: subTitle,
+    subtitle: subTitle,
     lottieView: .init(name: lottieName, bundle: bundle),
     type: type
   )

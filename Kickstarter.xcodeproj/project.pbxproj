@@ -3642,6 +3642,10 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -5207,6 +5211,7 @@
 				1937A6ED28C92EC700DD732D /* MessageBanner */,
 				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				60CC7C9C2E269D270055BE8F /* Onboarding */,
 				E11835202B75799F007B42E6 /* PaginationExample */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
@@ -8049,6 +8054,9 @@
 			);
 			dependencies = (
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				60CC7C9C2E269D270055BE8F /* Onboarding */,
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
