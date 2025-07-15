@@ -142,9 +142,9 @@ public protocol ProjectPageViewModelOutputs {
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
   /// Emits `URL` to take the user to the `PledgeManagementDetailsWebViewController`
-  var goToPledgeManagementPledgeView: Signal<URL, Never> { get }
+  var goToPledgeManagementPledgeView: Signal<String, Never> { get }
 
-  var goToPledgeManager: Signal<URL, Never> { get }
+  var goToPledgeManager: Signal<String, Never> { get }
 
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
@@ -697,11 +697,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToPledgeManager = project
       .takeWhen(shouldGoToPledgeManager)
-      .compactMap { project -> URL? in
-        let urlString = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
+      .compactMap { project -> String in
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
           .redemptionPageUrl
-
-        return URL(string: urlString)
       }
 
     self.viewPledgeUseCase = .init(with: projectAndBacking)
@@ -877,9 +875,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewPledgeUseCase.goToNativePledgeView
   }
 
-  public let goToPledgeManager: Signal<URL, Never>
+  public let goToPledgeManager: Signal<String, Never>
 
-  public var goToPledgeManagementPledgeView: Signal<URL, Never> {
+  public var goToPledgeManagementPledgeView: Signal<String, Never> {
     self.viewPledgeUseCase.goToPledgeManagementPledgeView
   }
 
