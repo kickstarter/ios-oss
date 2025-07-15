@@ -41,6 +41,11 @@ public class SearchFilters: ObservableObject {
     public var selectedBucket: DiscoveryParams.AmountRaisedBucket?
   }
 
+  public struct GoalOptions {
+    public let buckets: [DiscoveryParams.GoalBucket]
+    public var selectedBucket: DiscoveryParams.GoalBucket?
+  }
+
   public struct ShowOnlyOptions {
     public var recommended: Bool
     public var savedProjects: Bool
@@ -54,6 +59,7 @@ public class SearchFilters: ObservableObject {
   public private(set) var percentRaised: PercentRaisedOptions
   public private(set) var location: LocationOptions
   public private(set) var amountRaised: AmountRaisedOptions
+  public private(set) var goal: GoalOptions
   public private(set) var showOnly: ShowOnlyOptions
 
   public fileprivate(set) var pills: [SearchFilterPill]
@@ -112,6 +118,10 @@ public class SearchFilters: ObservableObject {
     return self.amountRaised.selectedBucket != nil
   }
 
+  var hasGoal: Bool {
+    return self.goal.selectedBucket != nil
+  }
+
   init(
     sort: SortOptions,
     category: CategoryOptions,
@@ -119,6 +129,7 @@ public class SearchFilters: ObservableObject {
     percentRaised: PercentRaisedOptions,
     location: LocationOptions,
     amountRaised: AmountRaisedOptions,
+    goal: GoalOptions,
     showOnly: ShowOnlyOptions
   ) {
     self.sort = sort
@@ -127,6 +138,7 @@ public class SearchFilters: ObservableObject {
     self.percentRaised = percentRaised
     self.location = location
     self.amountRaised = amountRaised
+    self.goal = goal
     self.showOnly = showOnly
 
     self.pills = []
@@ -140,6 +152,7 @@ public class SearchFilters: ObservableObject {
     percentRaisedBucket: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,
     amountRaisedBucket: DiscoveryParams.AmountRaisedBucket?,
+    goalBucket: DiscoveryParams.GoalBucket?,
     toggles: SearchFilterToggles
   ) {
     self.objectWillChange.send()
@@ -150,6 +163,7 @@ public class SearchFilters: ObservableObject {
     self.percentRaised.selectedBucket = percentRaisedBucket
     self.location.selectedLocation = location
     self.amountRaised.selectedBucket = amountRaisedBucket
+    self.goal.selectedBucket = goalBucket
     self.showOnly.recommended = toggles.recommended
     self.showOnly.savedProjects = toggles.savedProjects
     self.showOnly.projectsWeLove = toggles.projectsWeLove
@@ -193,6 +207,8 @@ public class SearchFilters: ObservableObject {
       return self.hasLocation
     case .amountRaised:
       return self.hasAmountRaised
+    case .goal:
+      return self.hasGoal
     }
   }
 

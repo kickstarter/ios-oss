@@ -41,6 +41,8 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedLocation: Signal<Location?, Never> { get }
   /// The currently selected amount raised bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
   var selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never> { get }
+  /// The currently selected goal bucket. Defaults to `nil`. Default value only sent after `initialSignal` occurs.
+  var selectedGoalBucket: Signal<DiscoveryParams.GoalBucket?, Never> { get }
   /// The currently selected 'Show Only' toggles. All toggles default to `false`. Default value only sent after `initialSignal` occurs.
   var selectedToggles: Signal<SearchFilterToggles, Never> { get }
 }
@@ -67,6 +69,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       .signal(takeInitialValueWhen: initialSignal)
     self.selectedLocation = self.selectedLocationProperty.signal(takeInitialValueWhen: initialSignal)
     self.selectedAmountRaisedBucket = self.selectedAmountRaisedBucketProperty
+      .signal(takeInitialValueWhen: initialSignal)
+    self.selectedGoalBucket = self.selectedGoalBucketProperty
       .signal(takeInitialValueWhen: initialSignal)
 
     self.selectedToggles = Signal.combineLatest(
@@ -107,6 +111,9 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       amountRaised: SearchFilters.AmountRaisedOptions(
         buckets: DiscoveryParams.AmountRaisedBucket.allCases
       ),
+      goal: SearchFilters.GoalOptions(
+        buckets: DiscoveryParams.GoalBucket.allCases
+      ),
       showOnly: SearchFilters.ShowOnlyOptions(
         recommended: self.recommendedProperty.value,
         savedProjects: self.savedProjectsProperty.value,
@@ -136,12 +143,13 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.dataOutputs.selectedPercentRaisedBucket,
       self.dataOutputs.selectedLocation,
       self.dataOutputs.selectedAmountRaisedBucket,
+      self.dataOutputs.selectedGoalBucket,
       self.dataOutputs.selectedToggles
     )
     .observeForUI()
     .observeValues { [
       weak searchFilters
-    ] sort, category, state, percentRaisedBucket, location, amountRaisedBucket, toggles in
+    ] sort, category, state, percentRaisedBucket, location, amountRaisedBucket, goalBucket, toggles in
       searchFilters?.update(
         withSort: sort,
         category: category,
@@ -149,6 +157,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
         percentRaisedBucket: percentRaisedBucket,
         location: location,
         amountRaisedBucket: amountRaisedBucket,
+        goalBucket: goalBucket,
         toggles: toggles
       )
     }
@@ -198,6 +207,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   fileprivate let selectedLocationProperty = MutableProperty<Location?>(nil)
   fileprivate let selectedAmountRaisedBucketProperty =
     MutableProperty<DiscoveryParams.AmountRaisedBucket?>(nil)
+  fileprivate let selectedGoalBucketProperty = MutableProperty<DiscoveryParams.GoalBucket?>(nil)
 
   fileprivate let categoriesProperty = MutableProperty<[KsApi.Category]>([])
   fileprivate let defaultLocationsProperty = MutableProperty<[KsApi.Location]>([])
@@ -237,6 +247,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
   public let selectedPercentRaisedBucket: Signal<DiscoveryParams.PercentRaisedBucket?, Never>
   public let selectedLocation: Signal<Location?, Never>
   public let selectedAmountRaisedBucket: Signal<DiscoveryParams.AmountRaisedBucket?, Never>
+  public let selectedGoalBucket: Signal<DiscoveryParams.GoalBucket?, Never>
   public let selectedToggles: Signal<SearchFilterToggles, Never>
 
   public private(set) var searchFilters: SearchFilters
@@ -255,6 +266,7 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedPercentRaisedBucketProperty.value = nil
       self.selectedLocationProperty.value = nil
       self.selectedAmountRaisedBucketProperty.value = nil
+      self.selectedGoalBucketProperty.value = nil
       self.followingProperty.value = false
       self.recommendedProperty.value = false
       self.projectsWeLoveProperty.value = false
@@ -269,6 +281,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedLocationProperty.value = nil
     case .amountRaised:
       self.selectedAmountRaisedBucketProperty.value = nil
+    case .goal:
+      self.selectedGoalBucketProperty.value = nil
     }
   }
 
@@ -284,6 +298,8 @@ public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFilters
       self.selectedPercentRaisedBucketProperty.value = bucket
     case let .amountRaised(bucket):
       self.selectedAmountRaisedBucketProperty.value = bucket
+    case let .goal(bucket):
+      self.selectedGoalBucketProperty.value = bucket
     case let .location(location):
       self.selectedLocationProperty.value = location
     case let .recommended(showRecommended):
@@ -357,6 +373,7 @@ public enum SearchFilterModalType: Hashable, CaseIterable {
   case percentRaised
   case location
   case amountRaised
+  case goal
 }
 
 public enum SearchFilterEvent {
@@ -365,6 +382,7 @@ public enum SearchFilterEvent {
   case projectState(DiscoveryParams.State)
   case percentRaised(DiscoveryParams.PercentRaisedBucket)
   case amountRaised(DiscoveryParams.AmountRaisedBucket)
+  case goal(DiscoveryParams.GoalBucket)
   case location(Location?)
   case recommended(Bool)
   case savedProjects(Bool)
