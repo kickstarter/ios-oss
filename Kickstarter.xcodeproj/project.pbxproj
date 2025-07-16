@@ -687,6 +687,7 @@
 		60CC7CB62E26B0A30055BE8F /* onboarding-flow-save-projects-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */; };
 		60CC7CB72E26B0A30055BE8F /* onboarding-flow-login-signup-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */; };
 		60CC7CB82E26B0A30055BE8F /* onboarding-flow-welcome-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */; };
+		60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
@@ -2506,6 +2507,7 @@
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
 		60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
 		60E1BB262C6D230A007D723B /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		60E1BB282C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
@@ -6832,6 +6834,7 @@
 				609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */,
 				609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */,
 				60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */,
+				60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */,
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
 				E16ECA6E2C245A12002A1D25 /* PagedContainer */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -9160,6 +9163,7 @@
 				D79970B723EC88CB00584911 /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */,
 				D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */,
+				60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */,
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
 				06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,

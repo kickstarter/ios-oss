@@ -6,16 +6,14 @@ import ReactiveSwift
 public protocol OnboardingViewModelInputs {
   func getNotifiedTapped()
   func allowTrackingTapped()
-  func goToNextItemTapped(currentItem: OnboardingItem)
   func goToLoginSignupTapped()
 }
 
 public protocol OnboardingViewModelOutputs {
   var onboardingItems: [OnboardingItem] { get }
-  var completedGetNotifiedRequest: AnyPublisher<Void, Never> { get }
+  var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> { get }
   var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> { get }
   var goToLoginSignup: AnyPublisher<LoginIntent, Never> { get }
-  var currentIndex: Int { get }
 }
 
 // MARK: - Combined Type
@@ -39,21 +37,13 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
   // MARK: - Init
 
-  public init() {
-    self.useCase = OnboardingUseCase()
+  public init(with bundle: Bundle = .main) {
+    self.useCase = OnboardingUseCase(for: bundle)
 
-    // Bind onboarding items
     self.useCase.uiOutputs.onboardingItems
       .observe(on: UIScheduler())
       .startWithValues { [weak self] items in
         self?.onboardingItems = items
-      }
-
-    // Forward permission triggers
-    self.useCase.outputs.completedGetNotifiedRequest
-      .observe(on: UIScheduler())
-      .observeValues { [weak self] in
-        self?.completedGetNotifiedRequestSubject.send()
       }
 
     self.useCase.outputs.triggerAppTrackingTransparencyPopup
@@ -73,14 +63,14 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     lhs.id == rhs.id
   }
 
-  private let completedGetNotifiedRequestSubject = PassthroughSubject<Void, Never>()
+  private let triggerPushNotificationPermissionPopupSubject = PassthroughSubject<Void, Never>()
   private let triggerAppTrackingTransparencyPopupSubject = PassthroughSubject<Void, Never>()
   private let goToLoginSignupSubject = PassthroughSubject<LoginIntent, Never>()
 
   // MARK: - Outputs
 
-  public var completedGetNotifiedRequest: AnyPublisher<Void, Never> {
-    self.completedGetNotifiedRequestSubject.eraseToAnyPublisher()
+  public var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> {
+    self.triggerPushNotificationPermissionPopupSubject.eraseToAnyPublisher()
   }
 
   public var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> {
@@ -94,22 +84,11 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   // MARK: - Inputs
 
   public func getNotifiedTapped() {
-    self.useCase.uiInputs.getNotifiedTapped()
+    self.triggerPushNotificationPermissionPopupSubject.send()
   }
 
   public func allowTrackingTapped() {
     self.useCase.uiInputs.allowTrackingTapped()
-  }
-
-  public func goToNextItemTapped(currentItem: OnboardingItem) {
-    self.useCase.uiInputs.goToNextItemTapped(item: currentItem.type)
-
-    guard let currentIndex = onboardingItems.firstIndex(where: { $0.id == currentItem.id }) else { return }
-
-    let nextIndex = currentIndex + 1
-    if self.onboardingItems.indices.contains(nextIndex) {
-      self.currentIndex = nextIndex
-    }
   }
 
   public func goToLoginSignupTapped() {
