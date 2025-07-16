@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -1715,7 +1715,6 @@
 		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
 		E12C88392C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12C88382C07CE16008AACCA /* CreateOrUpdateBackingAddressMutation.graphql */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
-		E13425C62E25434E00F1C9A3 /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E13425C52E25434E00F1C9A3 /* GraphAPI */; };
 		E135005C2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E135005B2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift */; };
 		E13D76712D4011BF00FB58CE /* PaymentMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76702D4011BF00FB58CE /* PaymentMethodsUseCase.swift */; };
 		E13D76742D404F1600FB58CE /* PaymentMethodsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */; };
@@ -1754,6 +1753,18 @@
 		E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E18A64632E28224A00BA0376 /* GraphAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E18A645D2E28224A00BA0376 /* GraphAPI.framework */; };
+		E18A64642E28224A00BA0376 /* GraphAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E18A645D2E28224A00BA0376 /* GraphAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E18A67462E2822EA00BA0376 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E18A67452E2822EA00BA0376 /* ApolloAPI */; };
+		E18A67472E28234900BA0376 /* GraphAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E18A645D2E28224A00BA0376 /* GraphAPI.framework */; };
+		E18A67482E28236800BA0376 /* GraphAPITestMocks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E18A66672E28225E00BA0376 /* GraphAPITestMocks.framework */; };
+		E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A674D2E28236D00BA0376 /* ApolloTestSupport */; };
+		E18A67522E28240300BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A67512E28240300BA0376 /* ApolloTestSupport */; };
+		E18A67532E28241F00BA0376 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
+		E18A67552E2824ED00BA0376 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E18A67542E2824ED00BA0376 /* ApolloAPI */; };
+		E18A67572E28253100BA0376 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = E18A67562E28253100BA0376 /* Apollo */; };
+		E18A67592E2826D900BA0376 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = E18A67582E2826D900BA0376 /* Apollo */; };
+		E18A675B2E2826DD00BA0376 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E18A675A2E2826DD00BA0376 /* ApolloAPI */; };
 		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
 		E19900A62DDF9BFD0082F05E /* FilterSectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A52DDF9BFD0082F05E /* FilterSectionButton.swift */; };
 		E19900A82DDFA4F10082F05E /* MessageBannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E19900A72DDFA4F10082F05E /* MessageBannerViewController.xib */; };
@@ -1768,8 +1779,6 @@
 		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
-		E1A365192E26A9510035C25C /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E1A365182E26A9510035C25C /* ApolloTestSupport */; };
-		E1A3651B2E26A9590035C25C /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = E1A3651A2E26A9590035C25C /* GraphAPITestMocks */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */; };
 		E1AACA872DDBB3AA005C38F1 /* LegacyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AACA862DDBB3AA005C38F1 /* LegacyColors.swift */; };
@@ -1863,6 +1872,27 @@
 			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
 			remoteInfo = "Kickstarter-iOS";
 		};
+		E14104FB2E28369E0044AC97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E18A645C2E28224A00BA0376;
+			remoteInfo = GraphAPI;
+		};
+		E18A64612E28224A00BA0376 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E18A645C2E28224A00BA0376;
+			remoteInfo = GraphAPI;
+		};
+		E18A674A2E28236800BA0376 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E18A66662E28225E00BA0376;
+			remoteInfo = GraphAPITestMocks;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1884,6 +1914,7 @@
 			files = (
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */,
+				E18A64642E28224A00BA0376 /* GraphAPI.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -3587,6 +3618,8 @@
 		E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams+SearchFilters.swift"; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
+		E18A645D2E28224A00BA0376 /* GraphAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E18A66672E28225E00BA0376 /* GraphAPITestMocks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphAPITestMocks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E19900A22DDE26C10082F05E /* PercentRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentRaisedView.swift; sourceTree = "<group>"; };
 		E19900A52DDF9BFD0082F05E /* FilterSectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSectionButton.swift; sourceTree = "<group>"; };
 		E19900A72DDFA4F10082F05E /* MessageBannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageBannerViewController.xib; sourceTree = "<group>"; };
@@ -3626,6 +3659,28 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				GraphAPI.h,
+			);
+			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
+		};
+		E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				GraphAPITestMocks.h,
+			);
+			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
+		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -3675,8 +3730,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
+				E18A67592E2826D900BA0376 /* Apollo in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				E18A64632E28224A00BA0376 /* GraphAPI.framework in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
+				E18A675B2E2826DD00BA0376 /* ApolloAPI in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3695,9 +3753,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E13425C62E25434E00F1C9A3 /* GraphAPI in Frameworks */,
-				E1A365192E26A9510035C25C /* ApolloTestSupport in Frameworks */,
-				E1A3651B2E26A9590035C25C /* GraphAPITestMocks in Frameworks */,
+				E18A67472E28234900BA0376 /* GraphAPI.framework in Frameworks */,
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
@@ -3721,10 +3777,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E18A645A2E28224A00BA0376 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E18A67462E2822EA00BA0376 /* ApolloAPI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E18A66642E28225E00BA0376 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E18A67552E2824ED00BA0376 /* ApolloAPI in Frameworks */,
+				E18A67522E28240300BA0376 /* ApolloTestSupport in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1D63AC52E257A3200CE64A9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E18A67532E28241F00BA0376 /* KsApi.framework in Frameworks */,
+				E18A67572E28253100BA0376 /* Apollo in Frameworks */,
+				E18A67482E28236800BA0376 /* GraphAPITestMocks.framework in Frameworks */,
+				E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6970,6 +7047,8 @@
 				802800561C88F62500141235 /* Configs */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
+				E18A645E2E28224A00BA0376 /* GraphAPI */,
+				E18A66682E28225E00BA0376 /* GraphAPITestMocks */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
@@ -6993,6 +7072,8 @@
 				D01587581EEB2DE4006E7684 /* KsApiTests.xctest */,
 				E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */,
 				E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */,
+				E18A645D2E28224A00BA0376 /* GraphAPI.framework */,
+				E18A66672E28225E00BA0376 /* GraphAPITestMocks.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7979,6 +8060,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E18A64582E28224A00BA0376 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E18A66622E28225E00BA0376 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -8079,11 +8174,14 @@
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
 				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
 				E10BE8D32B02975C00F73DC9 /* PBXTargetDependency */,
+				E18A64622E28224A00BA0376 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				19821C84299D392400EF312F /* AppboySegment */,
+				E18A67582E2826D900BA0376 /* Apollo */,
+				E18A675A2E2826DD00BA0376 /* ApolloAPI */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -8124,6 +8222,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E14104FC2E28369E0044AC97 /* PBXTargetDependency */,
 			);
 			name = KsApi;
 			packageProductDependencies = (
@@ -8133,8 +8232,6 @@
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
 				E13425C52E25434E00F1C9A3 /* GraphAPI */,
-				E1A365182E26A9510035C25C /* ApolloTestSupport */,
-				E1A3651A2E26A9590035C25C /* GraphAPITestMocks */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -8152,9 +8249,12 @@
 			);
 			dependencies = (
 				D015875B1EEB2DE4006E7684 /* PBXTargetDependency */,
+				E18A674B2E28236800BA0376 /* PBXTargetDependency */,
 			);
 			name = KsApiTests;
 			packageProductDependencies = (
+				E18A674D2E28236D00BA0376 /* ApolloTestSupport */,
+				E18A67562E28253100BA0376 /* Apollo */,
 			);
 			productName = KsApiTests;
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
@@ -8195,6 +8295,55 @@
 			productName = "Library-Keychain-iOSTests";
 			productReference = E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E18A645C2E28224A00BA0376 /* GraphAPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E18A646A2E28224A00BA0376 /* Build configuration list for PBXNativeTarget "GraphAPI" */;
+			buildPhases = (
+				E18A64582E28224A00BA0376 /* Headers */,
+				E18A64592E28224A00BA0376 /* Sources */,
+				E18A645A2E28224A00BA0376 /* Frameworks */,
+				E18A645B2E28224A00BA0376 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E18A645E2E28224A00BA0376 /* GraphAPI */,
+			);
+			name = GraphAPI;
+			packageProductDependencies = (
+				E18A67452E2822EA00BA0376 /* ApolloAPI */,
+			);
+			productName = GraphAPI;
+			productReference = E18A645D2E28224A00BA0376 /* GraphAPI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E18A66662E28225E00BA0376 /* GraphAPITestMocks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E18A666C2E28225E00BA0376 /* Build configuration list for PBXNativeTarget "GraphAPITestMocks" */;
+			buildPhases = (
+				E18A66622E28225E00BA0376 /* Headers */,
+				E18A66632E28225E00BA0376 /* Sources */,
+				E18A66642E28225E00BA0376 /* Frameworks */,
+				E18A66652E28225E00BA0376 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E18A66682E28225E00BA0376 /* GraphAPITestMocks */,
+			);
+			name = GraphAPITestMocks;
+			packageProductDependencies = (
+				E18A67512E28240300BA0376 /* ApolloTestSupport */,
+				E18A67542E2824ED00BA0376 /* ApolloAPI */,
+			);
+			productName = GraphAPITestMocks;
+			productReference = E18A66672E28225E00BA0376 /* GraphAPITestMocks.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -8257,6 +8406,12 @@
 						CreatedOnToolsVersion = 15.2;
 						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
+					E18A645C2E28224A00BA0376 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					E18A66662E28225E00BA0376 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					E194DD202E254C6300235AEB = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -8289,7 +8444,6 @@
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				E13425C42E25434E00F1C9A3 /* XCLocalSwiftPackageReference "GraphAPI" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8305,6 +8459,8 @@
 				D01587571EEB2DE4006E7684 /* KsApiTests */,
 				E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */,
 				E194DD202E254C6300235AEB /* Generate GraphQL Library */,
+				E18A645C2E28224A00BA0376 /* GraphAPI */,
+				E18A66662E28225E00BA0376 /* GraphAPITestMocks */,
 			);
 		};
 /* End PBXProject section */
@@ -8556,6 +8712,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E113BD7F2B7D255000D3A809 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E18A645B2E28224A00BA0376 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E18A66652E28225E00BA0376 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -10214,6 +10384,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E18A64592E28224A00BA0376 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E18A66632E28225E00BA0376 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -10262,6 +10446,21 @@
 			isa = PBXTargetDependency;
 			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
 			targetProxy = E113BD8E2B7D256100D3A809 /* PBXContainerItemProxy */;
+		};
+		E14104FC2E28369E0044AC97 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
+			targetProxy = E14104FB2E28369E0044AC97 /* PBXContainerItemProxy */;
+		};
+		E18A64622E28224A00BA0376 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
+			targetProxy = E18A64612E28224A00BA0376 /* PBXContainerItemProxy */;
+		};
+		E18A674B2E28236800BA0376 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
+			targetProxy = E18A674A2E28236800BA0376 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -11053,7 +11252,6 @@
 		D01587661EEB2DE4006E7684 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -11078,7 +11276,6 @@
 		D01587671EEB2DE4006E7684 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -11105,7 +11302,6 @@
 		D01587681EEB2DE4006E7684 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -11389,7 +11585,6 @@
 		D083B10A1F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -11707,6 +11902,399 @@
 			};
 			name = "Internal Alpha";
 		};
+		E18A64652E28224A00BA0376 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E18A64662E28224A00BA0376 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E18A64672E28224A00BA0376 /* Internal Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Internal Beta";
+		};
+		E18A64682E28224A00BA0376 /* Internal Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Internal Alpha";
+		};
+		E18A666D2E28225E00BA0376 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E18A666E2E28225E00BA0376 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E18A666F2E28225E00BA0376 /* Internal Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Internal Beta";
+		};
+		E18A66702E28225E00BA0376 /* Internal Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Internal Alpha";
+		};
 		E194DD212E254C6300235AEB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -11852,6 +12440,28 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E18A646A2E28224A00BA0376 /* Build configuration list for PBXNativeTarget "GraphAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E18A64652E28224A00BA0376 /* Debug */,
+				E18A64662E28224A00BA0376 /* Release */,
+				E18A64672E28224A00BA0376 /* Internal Beta */,
+				E18A64682E28224A00BA0376 /* Internal Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E18A666C2E28225E00BA0376 /* Build configuration list for PBXNativeTarget "GraphAPITestMocks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E18A666D2E28225E00BA0376 /* Debug */,
+				E18A666E2E28225E00BA0376 /* Release */,
+				E18A666F2E28225E00BA0376 /* Internal Beta */,
+				E18A66702E28225E00BA0376 /* Internal Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E194DD252E254C6300235AEB /* Build configuration list for PBXAggregateTarget "Generate GraphQL Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -11864,13 +12474,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		E13425C42E25434E00F1C9A3 /* XCLocalSwiftPackageReference "GraphAPI" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = GraphAPI;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
@@ -12109,15 +12712,40 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = GraphAPI;
 		};
-		E1A365182E26A9510035C25C /* ApolloTestSupport */ = {
+		E18A67452E2822EA00BA0376 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		E18A674D2E28236D00BA0376 /* ApolloTestSupport */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloTestSupport;
 		};
-		E1A3651A2E26A9590035C25C /* GraphAPITestMocks */ = {
+		E18A67512E28240300BA0376 /* ApolloTestSupport */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E13425C42E25434E00F1C9A3 /* XCLocalSwiftPackageReference "GraphAPI" */;
-			productName = GraphAPITestMocks;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloTestSupport;
+		};
+		E18A67542E2824ED00BA0376 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		E18A67562E28253100BA0376 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		E18A67582E2826D900BA0376 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		E18A675A2E2826DD00BA0376 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
 		};
 		E1B214702BFD184500109961 /* KingfisherWebP */ = {
 			isa = XCSwiftPackageProductDependency;

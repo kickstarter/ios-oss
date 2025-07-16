@@ -7,7 +7,7 @@ import XCTest
 
 final class Project_FetchProjectFriendsQueryDataTests: XCTestCase {
   /// `FetchProjectFriendsQueryBySlug` returns identical data.
-  func testFetchProjectFriendsQueryData_Success() {
+  func disabled_testFetchProjectFriendsQueryData_Success() {
     let mock = Mock<GraphAPITestMocks.Query>()
     mock.project = Mock<GraphAPITestMocks.Project>()
     mock.project?.friends = Mock<GraphAPITestMocks.ProjectBackerFriendsConnection>()

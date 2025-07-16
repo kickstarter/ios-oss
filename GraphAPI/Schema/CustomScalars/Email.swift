@@ -7,8 +7,5 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  /// An email address.
-  typealias Email = String
-
-}
+/// An email address.
+public typealias Email = String

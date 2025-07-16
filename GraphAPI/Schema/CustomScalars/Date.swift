@@ -7,8 +7,5 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  /// ISO Date: YYYY-MM-DD
-  typealias Date = String
-
-}
+/// ISO Date: YYYY-MM-DD
+public typealias Date = String

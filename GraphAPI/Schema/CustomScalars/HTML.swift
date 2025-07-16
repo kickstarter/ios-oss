@@ -7,8 +7,5 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  /// An HTML string.
-  typealias HTML = String
-
-}
+/// An HTML string.
+public typealias HTML = String

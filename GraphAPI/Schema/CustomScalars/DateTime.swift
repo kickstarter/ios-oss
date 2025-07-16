@@ -7,8 +7,5 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  /// Epoch time stamp.
-  typealias DateTime = String
-
-}
+/// Epoch time stamp.
+public typealias DateTime = String

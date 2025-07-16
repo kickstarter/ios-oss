@@ -146,7 +146,7 @@ extension DiscoveryParams {
   static func withQuery(
     _ query: String,
     sort: DiscoveryParams.Sort,
-    category: Category?,
+    category: KsApi.Category?,
     state: DiscoveryParams.State?,
     percentRaised: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,

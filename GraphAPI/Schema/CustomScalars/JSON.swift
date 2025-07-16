@@ -7,7 +7,4 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  typealias JSON = String
-
-}
+public typealias JSON = String

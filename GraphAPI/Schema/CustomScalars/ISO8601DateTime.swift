@@ -7,8 +7,5 @@
 
 import ApolloAPI
 
-public extension GraphAPI {
-  /// An ISO 8601-encoded datetime
-  typealias ISO8601DateTime = String
-
-}
+/// An ISO 8601-encoded datetime
+public typealias ISO8601DateTime = String
