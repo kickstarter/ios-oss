@@ -104,6 +104,17 @@ struct FilterRootView: View {
   }
 
   @ViewBuilder
+  var goalSection: some View {
+    NavigationLink(value: SearchFilterModalType.goal) {
+      FilterSectionButton(
+        title: "FPO: Goal", // TODO(MBL-2576): Add translated string.
+        subtitle: self.searchFilters.goal.selectedBucket?.title
+      )
+    }
+    .padding(Constants.sectionPadding)
+  }
+
+  @ViewBuilder
   var showOnlySection: some View {
     VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
       // FIXME: MBL-2563 Add translated strings
@@ -159,6 +170,14 @@ struct FilterRootView: View {
   }
 
   @ViewBuilder
+  var goalModal: some View {
+    GoalView(
+      buckets: self.searchFilters.goal.buckets,
+      selectedBucket: self.selectedGoalBucket
+    )
+  }
+
+  @ViewBuilder
   var footerView: some View {
     HStack(spacing: Styles.grid(2)) {
       Button(self.navigationState == [] ? Strings.Reset_all_filters() : Strings.Reset_filters()) {
@@ -206,6 +225,10 @@ struct FilterRootView: View {
               Divider()
               self.showOnlySection
             }
+            if featureSearchFilterByGoal() {
+              Divider()
+              self.goalSection
+            }
             Divider()
             Spacer()
           }
@@ -224,6 +247,10 @@ struct FilterRootView: View {
           case .amountRaised:
             self.amountRaisedModal
               .modalHeader(withTitle: Strings.Amount_raised(), onClose: self.onClose)
+          case .goal:
+            self.goalModal
+              // TODO(MBL-2576): Add translated string.
+              .modalHeader(withTitle: "FPO: Goal", onClose: self.onClose)
           default:
             EmptyView()
           }
@@ -306,6 +333,17 @@ extension FilterRootView {
       if let action = self.onFilter,
          let bucket = newValue {
         action(.amountRaised(bucket))
+      }
+    }
+  }
+
+  private var selectedGoalBucket: Binding<DiscoveryParams.GoalBucket?> {
+    Binding {
+      self.searchFilters.goal.selectedBucket
+    } set: { newValue in
+      if let action = self.onFilter,
+         let bucket = newValue {
+        action(.goal(bucket))
       }
     }
   }

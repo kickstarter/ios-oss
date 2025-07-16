@@ -24,6 +24,7 @@ public struct SearchFilterPill: Identifiable {
     case percentRaised
     case location
     case amountRaised
+    case goal
     case projectsWeLove
     case saved
     case following
