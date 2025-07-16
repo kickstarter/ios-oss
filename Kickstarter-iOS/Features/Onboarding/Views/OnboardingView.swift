@@ -29,6 +29,10 @@ struct OnboardingView: View {
 
       ZStack {
         OnboardingStyles.backgroundColor.ignoresSafeArea()
+        Image(OnboardingStyles.backgroundImage)
+          .resizable()
+          .scaledToFit()
+          .ignoresSafeArea()
 
         VStack {
           self.ProgressBarView()

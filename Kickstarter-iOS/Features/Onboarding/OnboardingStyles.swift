@@ -12,4 +12,5 @@ enum OnboardingStyles {
   static let progressBarTintColor = Color(.hex(0x00743D))
 
   static let closeImage = ImageResource.closeIconNoBackground
+  static let backgroundImage = ImageResource.onboardingSquiggleBackground
 }
