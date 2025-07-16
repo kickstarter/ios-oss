@@ -46,3 +46,21 @@ extension DiscoveryParams.AmountRaisedBucket {
     }
   }
 }
+
+extension DiscoveryParams.GoalBucket {
+  // TODO(MBL-2576): Add translated strings.
+  public var title: String {
+    switch self {
+    case .bucket_0:
+      return "FPO: Under $1000"
+    case .bucket_1:
+      return "FPO: $1,000 to $10,000"
+    case .bucket_2:
+      return "FPO: $10,000 to $100,000"
+    case .bucket_3:
+      return "FPO: $100,000 to $1,000,000"
+    case .bucket_4:
+      return "FPO: More than $1,000,000"
+    }
+  }
+}
