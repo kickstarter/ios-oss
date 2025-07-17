@@ -65,6 +65,9 @@ public struct OnboardingView: View {
         }
         .padding(.top)
       }
+      .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
+        self.presentAppTrackingPopup()
+      }
     }
   }
 
@@ -115,5 +118,11 @@ public struct OnboardingView: View {
     guard self.currentIndex < self.viewModel.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
+  }
+
+  private func presentAppTrackingPopup() {
+    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+      self.goToNextItem()
+    }
   }
 }
