@@ -942,7 +942,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRegisterPushNotifications_PreviouslyAccepted() {
+  func testRegisterPushNotifications_PreviouslyAccepted_WhenOnboardingFlowFeatureFlagDisabled() {
     let segmentClient = MockTrackingClient()
 
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
@@ -961,6 +961,41 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.userSessionStarted()
 
       self.pushRegistrationStarted.assertValueCount(1)
+
+      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.pushTokenSuccessfullyRegistered.assertValueCount(1)
+
+      XCTAssertEqual([], segmentClient.events)
+    }
+  }
+
+  func testRegisterPushNotifications_PreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
+    let segmentClient = MockTrackingClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    withEnvironment(
+      apiService: MockService(),
+      currentUser: .template,
+      ksrAnalytics: KSRAnalytics(segmentClient: segmentClient),
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
+      self.vm.inputs.userSessionStarted()
+
+      self.pushRegistrationStarted.assertValueCount(0)
 
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
 
@@ -2152,7 +2187,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_ShowsConsentDialogAndUpdatesAdId(
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
@@ -2173,6 +2208,36 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
       self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
+  }
+
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagEnabled_DoesNot_ShowConsentDialogAndUpdateAdId(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
     }
   }
 

@@ -291,7 +291,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
-      pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
+      pushNotificationsPreviouslyAuthorized
+        .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+        .ignoreValues()
     )
     .flatMap {
       AppEnvironment.current.pushRegistrationType.register(for: [.alert, .sound, .badge])
@@ -752,7 +754,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(second)
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .filter(isTrue)
+      .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
         if
