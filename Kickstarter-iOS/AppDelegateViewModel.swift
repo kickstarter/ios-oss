@@ -338,7 +338,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
     )
     .filter { _ in
-      AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() == false
+      AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() == true
     }
     .mapConst(())
 
@@ -775,7 +775,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         if
           appTrackingTransparency.advertisingIdentifier == nil &&
           appTrackingTransparency.shouldRequestAuthorizationStatus() {
-          appTrackingTransparency.requestAndSetAuthorizationStatus()
+          appTrackingTransparency.requestAndSetAuthorizationStatus {}
         }
         return ()
       }

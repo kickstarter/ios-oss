@@ -2278,8 +2278,8 @@ final class AppDelegateViewModelTests: TestCase {
     MockPushRegistration.registerProducer = .init(value: true)
 
     let appTrackingTransparency = MockAppTrackingTransparency()
-    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = false
-    appTrackingTransparency.shouldRequestAuthStatus = false
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
 
     withEnvironment(
       appTrackingTransparency: appTrackingTransparency,
@@ -2319,7 +2319,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
-    appTrackingTransparency.shouldRequestAuthStatus = true
+    appTrackingTransparency.shouldRequestAuthStatus = false
 
     withEnvironment(
       appTrackingTransparency: appTrackingTransparency,
