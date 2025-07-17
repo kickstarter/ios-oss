@@ -36,7 +36,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project
     XCTAssertEqual(project.name, "The Quiet")
     XCTAssertEqual(project.id, 904_702_116)
-    XCTAssertEqual(project.availableCardTypes, ["VISA", "AMEX", "MASTERCARD"])
+    XCTAssertEqual(project.availableCardTypes, ["VISA", "MASTERCARD", "AMEX"])
     XCTAssertEqual(
       project.blurb,
       "A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic."
