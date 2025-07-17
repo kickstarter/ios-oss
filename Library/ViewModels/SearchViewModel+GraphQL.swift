@@ -75,6 +75,27 @@ extension GraphAPI.PledgedBuckets {
   }
 }
 
+extension GraphAPI.GoalBuckets {
+  static func from(discovery goal: DiscoveryParams.GoalBucket?) -> GraphAPI.GoalBuckets? {
+    guard let goal = goal else {
+      return nil
+    }
+
+    switch goal {
+    case .bucket_0:
+      return GraphAPI.GoalBuckets.bucket_0
+    case .bucket_1:
+      return GraphAPI.GoalBuckets.bucket_1
+    case .bucket_2:
+      return GraphAPI.GoalBuckets.bucket_2
+    case .bucket_3:
+      return GraphAPI.GoalBuckets.bucket_3
+    case .bucket_4:
+      return GraphAPI.GoalBuckets.bucket_4
+    }
+  }
+}
+
 extension GraphAPI.SearchQuery {
   static func from(
     discoveryParams params: DiscoveryParams,
@@ -92,6 +113,7 @@ extension GraphAPI.SearchQuery {
     let raised = GraphAPI.RaisedBuckets.from(discovery: params.percentRaised)
     let locationId = params.location?.graphID
     let pledged = GraphAPI.PledgedBuckets.from(discovery: params.amountRaised)
+    let goal = GraphAPI.GoalBuckets.from(discovery: params.goal)
 
     let showRecommended = params.recommended
     let showSavedProjects = params.starred
@@ -106,6 +128,7 @@ extension GraphAPI.SearchQuery {
       raised: GraphQLNullable.caseOrNil(raised),
       locationId: GraphQLNullable.someOrNil(locationId),
       pledged: GraphQLNullable.someOrNil(pledged),
+      goal: GraphQLNullable.someOrNil(goal),
       showRecommended: GraphQLNullable.someOrNil(showRecommended),
       showSavedProjects: GraphQLNullable.someOrNil(showSavedProjects),
       showProjectsWeLove: GraphQLNullable.someOrNil(showProjectsWeLove),
@@ -133,6 +156,7 @@ extension DiscoveryParams {
     percentRaised: DiscoveryParams.PercentRaisedBucket?,
     location: Location?,
     amountRaised: DiscoveryParams.AmountRaisedBucket?,
+    goal: DiscoveryParams.GoalBucket?,
     toggles: SearchFilterToggles
   ) -> DiscoveryParams {
     var params = DiscoveryParams.defaults
@@ -144,6 +168,7 @@ extension DiscoveryParams {
     params.percentRaised = percentRaised
     params.location = location
     params.amountRaised = amountRaised
+    params.goal = goal
     params.recommended = toggles.recommended
     params.starred = toggles.savedProjects
     params.staffPicks = toggles.projectsWeLove

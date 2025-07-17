@@ -13,6 +13,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   private let selectedPercentRaisedBucket = TestObserver<DiscoveryParams.PercentRaisedBucket?, Never>()
   private let selectedLocation = TestObserver<Location?, Never>()
   private let selectedAmountRaisedBucket = TestObserver<DiscoveryParams.AmountRaisedBucket?, Never>()
+  private let selectedGoalBucket = TestObserver<DiscoveryParams.GoalBucket?, Never>()
   private let selectedToggles = TestObserver<SearchFilterToggles, Never>()
   private let showFilters = TestObserver<SearchFilterModalType, Never>()
 
@@ -37,6 +38,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     self.useCase.dataOutputs.selectedPercentRaisedBucket.observe(self.selectedPercentRaisedBucket.observer)
     self.useCase.dataOutputs.selectedLocation.observe(self.selectedLocation.observer)
     self.useCase.dataOutputs.selectedAmountRaisedBucket.observe(self.selectedAmountRaisedBucket.observer)
+    self.useCase.dataOutputs.selectedGoalBucket.observe(self.selectedGoalBucket.observer)
     self.useCase.dataOutputs.selectedToggles.observe(self.selectedToggles.observer)
     self.useCase.uiOutputs.showFilters.observe(self.showFilters.observer)
   }
@@ -62,6 +64,10 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func assert_selectedAmountRaisedBucket_isDefault() {
+    self.selectedAmountRaisedBucket.assertLastValue(nil, "Selected amount raised should be default value")
+  }
+
+  func assert_selectedGoalBucket_isDefault() {
     self.selectedAmountRaisedBucket.assertLastValue(nil, "Selected amount raised should be default value")
   }
 
@@ -269,6 +275,31 @@ final class SearchFiltersUseCaseTests: TestCase {
         "No option should be selected by default"
       )
     }
+  }
+
+  func test_tappedGoal_showsGoal() {
+    self.initialObserver.send(value: ())
+
+    self.showFilters.assertDidNotEmitValue()
+
+    self.useCase.inputs.tappedButton(forFilterType: .goal)
+
+    self.showFilters.assertDidEmitValue()
+
+    if let type = self.showFilters.lastValue {
+      XCTAssertEqual(type, .goal, "Tapping goal button should show goal options")
+      XCTAssertGreaterThan(
+        self.useCase.uiOutputs.searchFilters.goal.buckets.count,
+        0,
+        "There should be multiple goal options"
+      )
+    }
+
+    XCTAssertEqual(
+      self.useCase.uiOutputs.searchFilters.goal.selectedBucket,
+      nil,
+      "No option should be selected by default"
+    )
   }
 
   func test_selectingCategory_updatesCategory() {

@@ -63,4 +63,9 @@ extension DiscoveryParams.GoalBucket {
       return "FPO: More than $1,000,000"
     }
   }
+
+  // TODO(MBL-2576): Add translated strings.
+  public var pillTitle: String {
+    return "FPO: Goal: \(self.title)"
+  }
 }
