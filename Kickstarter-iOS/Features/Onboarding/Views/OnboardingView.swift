@@ -16,7 +16,7 @@ private enum Constants {
   static let verticalSpacing: CGFloat = 24
 }
 
-struct OnboardingView: View {
+public struct OnboardingView: View {
   @ObservedObject var viewModel: OnboardingViewModel
   @State private var currentIndex: Int = 0
   @Namespace private var animation
@@ -25,7 +25,11 @@ struct OnboardingView: View {
     Double(self.currentIndex + 1) / Double(self.viewModel.onboardingItems.count)
   }
 
-  var body: some View {
+  public init(viewModel: OnboardingViewModel) {
+    self.viewModel = viewModel
+  }
+
+  public var body: some View {
     GeometryReader { geo in
       let width = geo.size.width
 
