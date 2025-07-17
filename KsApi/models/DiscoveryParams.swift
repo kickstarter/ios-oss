@@ -22,6 +22,7 @@ public struct DiscoveryParams {
   public var percentRaised: PercentRaisedBucket?
   public var location: Location?
   public var amountRaised: AmountRaisedBucket?
+  public var goal: GoalBucket?
 
   public enum State: String, Decodable {
     case all
@@ -61,6 +62,23 @@ public struct DiscoveryParams {
   }
 
   public enum AmountRaisedBucket: Int, CaseIterable {
+    /// Range from 0 to 1,000 USD
+    case bucket_0
+
+    /// Range from 1,000 to 10,000 USD
+    case bucket_1
+
+    /// Range from 10,000 to 100,000 USD
+    case bucket_2
+
+    /// Range from 100,000 to 1,000,000 USD
+    case bucket_3
+
+    /// Range from 1,000,000 to Infinity USD
+    case bucket_4
+  }
+
+  public enum GoalBucket: Int, CaseIterable {
     /// Range from 0 to 1,000 USD
     case bucket_0
 
@@ -248,6 +266,10 @@ extension DiscoveryParams {
     }
 
     if let _ = self.amountRaised {
+      return false
+    }
+
+    if let _ = self.goal {
       return false
     }
 
