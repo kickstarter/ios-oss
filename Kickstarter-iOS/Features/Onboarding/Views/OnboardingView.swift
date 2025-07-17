@@ -85,6 +85,9 @@ public struct OnboardingView: View {
       self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
+      .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
+        self.presentAppTrackingPopup()
+      }
     }
   }
 
