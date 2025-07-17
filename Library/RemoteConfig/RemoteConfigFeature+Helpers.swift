@@ -31,7 +31,7 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
 
-public func onboardingFlowEnabled() -> Bool {
+public func featureOnboardingFlowEnabled() -> Bool {
   featureEnabled(feature: .onboardingFlow)
 }
 
