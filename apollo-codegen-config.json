@@ -5,7 +5,7 @@
       "**/*.graphql"
     ],
     "schemaSearchPaths": [
-      "KsApi/graphql-schema.json"
+      "graphql/graphql-schema.json"
     ]
   },
   "options": {
