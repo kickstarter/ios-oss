@@ -6,11 +6,13 @@ private enum Constants {
   static let animationDuration: Double = 0.35
   static let closeIconPadding: CGFloat = 8
   static let ctaBottomPadding: CGFloat = 60
-  static let verticalPadding: CGFloat = 20
   static let horizontalPadding: CGFloat = 20
   static let lottieViewTopPadding: CGFloat = 16
+  static let progressViewHeight: CGFloat = 8
+  static let rootStackViewCornerRadius: CGFloat = 20
   static let rootStackViewTopPadding: CGFloat = 20
   static let titleSubtitleSpacing: CGFloat = 12
+  static let verticalPadding: CGFloat = 20
   static let verticalSpacing: CGFloat = 24
 }
 
@@ -29,6 +31,7 @@ struct OnboardingView: View {
 
       ZStack {
         OnboardingStyles.backgroundColor.ignoresSafeArea()
+
         Image(OnboardingStyles.backgroundImage)
           .resizable()
           .scaledToFit()
@@ -43,8 +46,8 @@ struct OnboardingView: View {
                 OnboardingItemView(
                   item: item,
                   progress: self.progress,
-                  onPrimaryTap: { self.handlePrimaryTap(for: item, viewWidth: width) },
-                  onSecondaryTap: { self.handleNext(viewWidth: width) },
+                  onPrimaryTap: { self.handlePrimaryTap(for: item) },
+                  onSecondaryTap: { self.goToNextItem() },
                   onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
                 )
                 .transition(.asymmetric(
@@ -70,8 +73,8 @@ struct OnboardingView: View {
         .progressViewStyle(LinearProgressViewStyle(tint: OnboardingStyles.progressBarTintColor))
         .scaleEffect(x: 1, y: 2)
         .animation(.easeInOut(duration: Constants.animationDuration), value: self.progress)
-        .frame(height: 8)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .frame(height: Constants.progressViewHeight)
+        .clipShape(RoundedRectangle(cornerRadius: Constants.rootStackViewCornerRadius))
 
       Button(action: {
         withAnimation {
@@ -91,23 +94,22 @@ struct OnboardingView: View {
 
   // MARK: - Helpers
 
-  private func handlePrimaryTap(for item: OnboardingItem, viewWidth: CGFloat) {
+  private func handlePrimaryTap(for item: OnboardingItem) {
     switch item.type {
-    case .welcome, .saveProjects, .enableNotifications, .allowTracking:
-      self.handleNext(viewWidth: viewWidth)
+    case .welcome, .saveProjects:
+      self.goToNextItem()
+    case .enableNotifications:
+      self.viewModel.getNotifiedTapped()
+    case .allowTracking:
+      self.viewModel.allowTrackingTapped()
     case .loginSignUp:
       self.viewModel.goToLoginSignupTapped()
     }
   }
 
-  private func handleNext(viewWidth _: CGFloat) {
+  private func goToNextItem() {
     guard self.currentIndex < self.viewModel.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
-    self.playAnimation()
-  }
-
-  private func playAnimation() {
-    self.viewModel.onboardingItems[self.currentIndex].lottieView.play()
   }
 }
