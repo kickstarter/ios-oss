@@ -33,11 +33,11 @@ public enum OnboardingItemType {
 }
 
 public struct OnboardingItem: Identifiable, Equatable {
-  public var id: UUID = .init()
-  let title: String
-  let subTitle: String
-  var lottieView: LottieAnimationView = .init()
-  let type: OnboardingItemType
+  public let id: UUID = .init()
+  public let title: String
+  public let subtitle: String
+  public var lottieView: LottieAnimationView = .init()
+  public let type: OnboardingItemType
 }
 
 public protocol OnboardingUseCaseType {
@@ -47,9 +47,6 @@ public protocol OnboardingUseCaseType {
 }
 
 public protocol OnboardingUseCaseUIInputs {
-  /// Triggers the PN permissions system dialog.
-  func getNotifiedTapped()
-
   /// Triggers the AppTrackingTransparency system dialog.
   func allowTrackingTapped()
 
@@ -66,9 +63,6 @@ public protocol OnboardingUseCaseUIOutputs {
 }
 
 public protocol OnboardingUseCaseOutputs {
-  /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
-  var completedGetNotifiedRequest: Signal<Void, Never> { get }
-
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
   var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
 }
@@ -98,19 +92,13 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - Initialization
 
   /// Injecting a bundle so that we can test that the correct Lottie JSON files are being loaded as expected.
-  init(for bundle: Bundle) {
+  init(for bundle: Bundle = .main) {
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
 
     self.goToLoginSignup = self.goToLoginSignupTappedSignal
       .mapConst(LoginIntent.onboarding)
-
-    self.completedGetNotifiedRequest = self.getNotifiedSignal.signal
-      .flatMap(.latest) {
-        AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications()
-          .ignoreValues()
-      }
 
     self.triggerAppTrackingTransparencyPopup = self.allowTrackingTappedSignal.signal
       .filter {
@@ -130,11 +118,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - Inputs
 
-  private let (getNotifiedSignal, getNotifiedObserver) = Signal<Void, Never>.pipe()
-  public func getNotifiedTapped() {
-    self.getNotifiedObserver.send(value: ())
-  }
-
   private let (allowTrackingTappedSignal, allowTrackingTappedObserver) = Signal<Void, Never>.pipe()
   public func allowTrackingTapped() {
     self.allowTrackingTappedObserver.send(value: ())
@@ -153,7 +136,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - UI Outputs
 
-  public let completedGetNotifiedRequest: Signal<Void, Never>
   public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
@@ -222,7 +204,7 @@ private func makeOnboardingItem(
 
   return OnboardingItem(
     title: title,
-    subTitle: subTitle,
+    subtitle: subTitle,
     lottieView: .init(name: lottieName, bundle: bundle),
     type: type
   )

@@ -9,7 +9,6 @@ final class OnboardingUseCaseTests: XCTestCase {
 
   let onboardingItems = TestObserver<[OnboardingItem], Never>()
   let goToLoginSignup = TestObserver<LoginIntent, Never>()
-  let completedGetNotifiedRequest = TestObserver<Void, Never>()
   let completedAllowTrackingRequest = TestObserver<Void, Never>()
 
   override func setUp() {
@@ -19,7 +18,6 @@ final class OnboardingUseCaseTests: XCTestCase {
 
     self.useCase.uiOutputs.onboardingItems.start(self.onboardingItems.observer)
     self.useCase.uiOutputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-    self.useCase.outputs.completedGetNotifiedRequest.observe(self.completedGetNotifiedRequest.observer)
     self.useCase.outputs.triggerAppTrackingTransparencyPopup
       .observe(self.completedAllowTrackingRequest.observer)
   }
@@ -28,30 +26,6 @@ final class OnboardingUseCaseTests: XCTestCase {
     self.onboardingItems.assertValueCount(1)
 
     XCTAssertEqual(self.onboardingItems.lastValue?.count, 5)
-  }
-
-  func testUseCase_completedGetNotifiedRequest_Emits_WhenHasAuthorizedPermission() {
-    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
-
-    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.completedGetNotifiedRequest.assertValueCount(0)
-
-      self.useCase.uiInputs.getNotifiedTapped()
-
-      self.completedGetNotifiedRequest.assertValueCount(1)
-    }
-  }
-
-  func testUseCase_completedGetNotifiedRequest_Emits_HasDeniedAuthorization() {
-    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
-
-    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.completedGetNotifiedRequest.assertValueCount(0)
-
-      self.useCase.uiInputs.getNotifiedTapped()
-
-      self.completedGetNotifiedRequest.assertValueCount(1)
-    }
   }
 
   func testUseCase_completedAllowTrackingRequest_SetsAdvertisingID_WhenShouldRequestAuthStatus_isTrue() {
