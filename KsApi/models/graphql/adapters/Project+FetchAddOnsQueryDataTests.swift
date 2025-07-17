@@ -3,7 +3,7 @@ import Apollo
 import XCTest
 
 final class Project_FetchAddOnsQueryDataTests: XCTestCase {
-  func disabled_testFetchAddOnsQueryData_Success() {
+  func testFetchAddOnsQueryData_Success() {
     let producer = Project.projectProducer(from: FetchAddsOnsQueryTemplate.valid.data)
     guard let envelope = MockGraphQLClient.shared.client.data(from: producer) else {
       XCTFail()

@@ -4,7 +4,9 @@ import ReactiveSwift
 import XCTest
 
 final class ErroredBackingsEnvelopeTests: XCTestCase {
-  // We don't use ErroredBackingsEnvelope.producer, so no real reason to fix this one.
+  // TODO: This test can be removed once these API calls are cleaned up.
+  // https://kickstarter.atlassian.net/browse/MBL-2255
+  // It's currently broken because of the Apollo upgrade.
   func disabled_testErroredBackingsEnvelope_Success() {
     let producer = ErroredBackingsEnvelope.producer(from: FetchUserBackingsQueryTemplate.valid.data)
 

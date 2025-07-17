@@ -10,7 +10,7 @@ public enum FetchAddsOnsQueryTemplate {
   var data: GraphAPI.FetchAddOnsQuery.Data {
     switch self {
     case .valid:
-      return try! testGraphObject(data: self.validResultMap)
+      return try! testGraphObject(jsonString: self.validResultJson, variables: ["shippingEnabled": true])
     case .errored:
       return try! testGraphObject(data: self.erroredResultMap)
     }
@@ -18,8 +18,8 @@ public enum FetchAddsOnsQueryTemplate {
 
   // MARK: Private Properties
 
-  private var validResultMap: [String: Any] {
-    let json = """
+  private var validResultJson: String {
+    return """
     {
       "project": {
           "__typename": "Project",
@@ -548,6 +548,7 @@ public enum FetchAddsOnsQueryTemplate {
             "isFollowing": true,
             "name": "Peppermint Fox",
             "location": {
+              "__typename": "Country",
               "country": "US",
               "countryName": "United States",
               "displayableName": "Las Vegas, NV",
@@ -661,42 +662,6 @@ public enum FetchAddsOnsQueryTemplate {
         }
     }
     """
-
-    let data = Data(json.utf8)
-    var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
-
-    /** NOTE: A lot of these mappings had to be customized to `GraphAPI` types from their raw data because the `ApolloClient` `fetch` and `perform` functions return `Query.Data` not raw json into their result handlers. This means that Apollo creates the models itself from the raw json returned before we can access them after the network request.
-     */
-
-    guard var projectResultMap = resultMap["project"] as? [String: Any],
-          let countryResultMap = projectResultMap["country"] as? [String: Any] else {
-      return resultMap
-    }
-
-    var updatedCountryResultMap = countryResultMap
-    updatedCountryResultMap["code"] = GraphAPI.CountryCode.au
-    projectResultMap["country"] = updatedCountryResultMap
-    projectResultMap["deadlineAt"] = "1622195758"
-    projectResultMap["launchedAt"] = "1619603758"
-    projectResultMap["stateChangedAt"] = "1619603760"
-    projectResultMap["availableCardTypes"] = [
-      GraphAPI.CreditCardTypes.visa,
-      GraphAPI.CreditCardTypes.amex,
-      GraphAPI.CreditCardTypes.mastercard
-    ]
-    projectResultMap["state"] = GraphAPI.ProjectState.live
-    projectResultMap["currency"] = GraphAPI.CurrencyCode.aud
-
-    projectResultMap["environmentalCommitments"] =
-      [
-        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
-        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
-        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
-      ]
-
-    resultMap["project"] = projectResultMap
-
-    return resultMap
   }
 
   private var erroredResultMap: [String: Any] {

@@ -1,16 +1,18 @@
+import ApolloTestSupport
 import Foundation
 import GraphAPI
+import GraphAPITestMocks
 @testable import KsApi
 import XCTest
 
 final class Country_CountryFragmentTests: XCTestCase {
-  private let countryFragment: GraphAPI.CountryFragment = try! testGraphObject(
-    data: [
-      "__typename": "Country",
-      "code": "us",
-      "name": "United States"
-    ]
-  )
+  private var countryFragment: GraphAPI.CountryFragment {
+    let mock = Mock<GraphAPITestMocks.Country>()
+    mock.code = GraphQLEnum.case(GraphAPI.CountryCode.us)
+    mock.name = "United States"
+
+    return GraphAPI.CountryFragment.from(mock)
+  }
 
   func testCurrency_WhenItsTheSameAsCountrysCurrency_Success() {
     let country = Project.Country.country(
