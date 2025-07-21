@@ -26,21 +26,26 @@ final class OnboardingViewModelTest: XCTestCase {
   }
 
   func testTriggerPushNotificationPopup_IsCalled_OnGetNotifiedTapped() throws {
-    var cancellables: [AnyCancellable] = []
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
 
-    let expectation = expectation(description: "Waiting for action to be performed")
-    var triggeredPushNotificationPopup = false
-    self.viewModel.triggerPushNotificationPermissionPopup
-      .sink { () in
-        triggeredPushNotificationPopup = true
-        expectation.fulfill()
-      }
-      .store(in: &cancellables)
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      var cancellables: [AnyCancellable] = []
 
-    self.viewModel.getNotifiedTapped()
-    waitForExpectations(timeout: 0.1)
+      let expectation = expectation(description: "Waiting for action to be performed")
+      var triggeredPushNotificationPopup = false
+      self.viewModel.triggerPushNotificationPermissionDialog
+        .sink { () in
+          triggeredPushNotificationPopup = true
+          expectation.fulfill()
+        }
+        .store(in: &cancellables)
 
-    XCTAssertTrue(triggeredPushNotificationPopup)
+      self.viewModel.getNotifiedTapped()
+      waitForExpectations(timeout: 0.1)
+
+      XCTAssertTrue(triggeredPushNotificationPopup)
+    }
   }
 
   func testAppTrackingTransparencyPopup_IsCalled_OnAllowTrackingTapped() throws {

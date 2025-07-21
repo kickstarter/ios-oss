@@ -50,6 +50,9 @@ public protocol OnboardingUseCaseUIInputs {
   /// Triggers the AppTrackingTransparency system dialog.
   func allowTrackingTapped()
 
+  /// Triggers the Push notifications  system dialog.
+  func getNotifiedTapped()
+
   /// Call when a user taps on the "Next", "Not right now", or "Explore the app" buttons.
   func goToNextItemTapped(item: OnboardingItemType)
 
@@ -64,7 +67,10 @@ public protocol OnboardingUseCaseUIOutputs {
 
 public protocol OnboardingUseCaseOutputs {
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
-  var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
+  var triggerAppTrackingTransparencyDialog: Signal<Void, Never> { get }
+
+  /// Emits when the user should be shown the Push Notification system permission dialog
+  var triggerPushNotificationSystemDialog: Signal<Void, Never> { get }
 }
 
 /**
@@ -100,13 +106,28 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
     self.goToLoginSignup = self.goToLoginSignupTappedSignal
       .mapConst(LoginIntent.onboarding)
 
-    self.triggerAppTrackingTransparencyPopup = self.allowTrackingTappedSignal.signal
+    self.triggerAppTrackingTransparencyDialog = self.allowTrackingTappedSignal.signal
       .filter {
         let appTrackingTransparency = AppEnvironment.current.appTrackingTransparency
         return appTrackingTransparency.advertisingIdentifier == nil && appTrackingTransparency
           .shouldRequestAuthorizationStatus()
       }
       .map { _ in () }
+
+    self.triggerPushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
+      .flatMap(.latest) {
+        let pushRegistrationType = AppEnvironment.current.pushRegistrationType
+
+        return pushRegistrationType.hasAuthorizedNotifications()
+          .flatMap { isAuthorized -> SignalProducer<Bool, Never> in
+            if isAuthorized {
+              return .empty
+            } else {
+              return pushRegistrationType.register(for: [.alert, .sound, .badge])
+            }
+          }
+      }
+      .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
       .observeValues { itemType in
@@ -117,6 +138,11 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   }
 
   // MARK: - Inputs
+
+  private let (getNotifiedTappedSignal, getNotifiedTappedObserver) = Signal<Void, Never>.pipe()
+  public func getNotifiedTapped() {
+    self.getNotifiedTappedObserver.send(value: ())
+  }
 
   private let (allowTrackingTappedSignal, allowTrackingTappedObserver) = Signal<Void, Never>.pipe()
   public func allowTrackingTapped() {
@@ -136,7 +162,8 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - UI Outputs
 
-  public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
+  public let triggerAppTrackingTransparencyDialog: Signal<Void, Never>
+  public let triggerPushNotificationSystemDialog: Signal<Void, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Data Outputs
