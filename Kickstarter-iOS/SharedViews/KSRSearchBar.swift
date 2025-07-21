@@ -52,8 +52,6 @@ final class KSRSearchBar: UIView {
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    self.setupUI()
-    self.setupConstraints()
   }
 
   override func bindViewModel() {
@@ -197,6 +195,7 @@ final class KSRSearchBar: UIView {
 
   @objc private func cancelTapped() {
     self.viewModel.inputs.cancelButtonPressed()
+    self.onCancel?()
   }
 }
 
@@ -214,7 +213,6 @@ extension KSRSearchBar: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_: UITextField) {
     self.viewModel.inputs.searchTextEditingDidEnd()
-//    self.updateAppearance(isFocused: false)
   }
 }
 

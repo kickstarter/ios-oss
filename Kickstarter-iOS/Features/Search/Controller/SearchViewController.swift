@@ -98,11 +98,6 @@ internal final class SearchViewController: UITableViewController {
         self?.goTo(projectId: projectId, refTag: refTag)
       }
 
-//    self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
-//    self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
-//
-//    self.clearButton.rac.hidden = self.viewModel.outputs.isClearButtonHidden
-
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
 
     self.viewModel.outputs.showFilters

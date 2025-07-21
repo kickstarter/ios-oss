@@ -3,7 +3,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class KSRSearchBarViewModelTests: XCTestCase {
-  private let viewModel = KSRSearchBarViewModel()
+  private let vm = KSRSearchBarViewModel()
 
   private let changeSearchFieldFocusObserver = TestObserver<Bool, Never>()
   private let resignFirstResponderObserver = TestObserver<(), Never>()
@@ -12,42 +12,42 @@ final class KSRSearchBarViewModelTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    self.viewModel.outputs.changeSearchFieldFocus.observe(self.changeSearchFieldFocusObserver.observer)
-    self.viewModel.outputs.resignFirstResponder.observe(self.resignFirstResponderObserver.observer)
-    self.viewModel.outputs.searchFieldText.observe(self.searchFieldTextObserver.observer)
+    self.vm.outputs.changeSearchFieldFocus.observe(self.changeSearchFieldFocusObserver.observer)
+    self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponderObserver.observer)
+    self.vm.outputs.searchFieldText.observe(self.searchFieldTextObserver.observer)
   }
 
   func testSearchFieldFocus_OnBeginEditing() {
-    self.viewModel.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.searchFieldDidBeginEditing()
     self.changeSearchFieldFocusObserver.assertValues([true])
   }
 
   func testSearchFieldFocus_OnEditingDidEnd() {
-    self.viewModel.inputs.searchTextEditingDidEnd()
+    self.vm.inputs.searchTextEditingDidEnd()
     self.changeSearchFieldFocusObserver.assertValues([false])
   }
 
   func testSearchTextChanged() {
-    self.viewModel.inputs.searchTextChanged("hello world")
+    self.vm.inputs.searchTextChanged("hello world")
     self.searchFieldTextObserver.assertValues(["hello world"])
   }
 
   func testClearSearchText() {
-    self.viewModel.inputs.searchTextChanged("hello world")
-    self.viewModel.inputs.clearSearchText()
+    self.vm.inputs.searchTextChanged("hello world")
+    self.vm.inputs.clearSearchText()
     self.searchFieldTextObserver.assertValues(["hello world", ""])
     self.resignFirstResponderObserver.assertDidNotEmitValue()
   }
 
   func testCancelButtonPressed() {
-    self.viewModel.inputs.searchTextChanged("hello world")
-    self.viewModel.inputs.cancelButtonPressed()
+    self.vm.inputs.searchTextChanged("hello world")
+    self.vm.inputs.cancelButtonPressed()
     self.searchFieldTextObserver.assertValues(["hello world", ""])
     self.resignFirstResponderObserver.assertValueCount(1)
   }
 
   func testSearchTextEditingDidEnd_ResignsFirstResponder() {
-    self.viewModel.inputs.searchTextEditingDidEnd()
+    self.vm.inputs.searchTextEditingDidEnd()
     self.resignFirstResponderObserver.assertValueCount(1)
   }
 }
