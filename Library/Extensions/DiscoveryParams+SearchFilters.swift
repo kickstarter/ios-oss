@@ -28,6 +28,17 @@ extension DiscoveryParams.PercentRaisedBucket {
       return Strings.Percentage_raised_bucket_2()
     }
   }
+
+  public var pillTitle: String {
+    switch self {
+    case .bucket_0:
+      return Strings.Percentage_raised_pill_bucket_0()
+    case .bucket_1:
+      return Strings.Percentage_raised_pill_bucket_1()
+    case .bucket_2:
+      return Strings.Percentage_raised_pill_bucket_2()
+    }
+  }
 }
 
 extension DiscoveryParams.AmountRaisedBucket {
@@ -43,6 +54,21 @@ extension DiscoveryParams.AmountRaisedBucket {
       return Strings.Amount_raised_bucket_3()
     case .bucket_4:
       return Strings.Amount_raised_bucket_4()
+    }
+  }
+
+  public var pillTitle: String {
+    switch self {
+    case .bucket_0:
+      return Strings.Amount_raised_pill_bucket_0()
+    case .bucket_1:
+      return Strings.Amount_raised_pill_bucket_1()
+    case .bucket_2:
+      return Strings.Amount_raised_pill_bucket_2()
+    case .bucket_3:
+      return Strings.Amount_raised_pill_bucket_3()
+    case .bucket_4:
+      return Strings.Amount_raised_pill_bucket_4()
     }
   }
 }

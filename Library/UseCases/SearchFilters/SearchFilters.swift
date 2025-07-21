@@ -278,7 +278,7 @@ public class SearchFilters: ObservableObject {
       )
     }
 
-    let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
+    let percentRaisedTitle = self.percentRaised.selectedBucket?.pillTitle ?? Strings.Percentage_raised()
     pills.append(
       SearchFilterPill(
         isHighlighted: self.hasPercentRaised,
@@ -288,7 +288,7 @@ public class SearchFilters: ObservableObject {
     )
 
     if featureSearchFilterByAmountRaised() {
-      let amountRaisedTitle = self.amountRaised.selectedBucket?.title ?? Strings.Amount_raised()
+      let amountRaisedTitle = self.amountRaised.selectedBucket?.pillTitle ?? Strings.Amount_raised()
       pills.append(
         SearchFilterPill(
           isHighlighted: self.hasAmountRaised,
