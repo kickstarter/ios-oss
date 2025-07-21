@@ -1,6 +1,7 @@
 import Apollo
 import Combine
 import Foundation
+import GraphAPI
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -250,7 +251,7 @@ public struct Service: ServiceType {
           .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
             projectId: input.projectId,
             amount: input.amountDollars,
-            paymentIntentContext: GraphQLNullable.caseOrNil(input.paymentIntentContext),
+            paymentIntentContext: GraphQLEnum.caseOrNil(input.paymentIntentContext),
             digitalMarketingAttributed: GraphQLNullable.someOrNil(input.digitalMarketingAttributed),
             checkoutId: GraphQLNullable.someOrNil(input.checkoutId)
           ))
@@ -502,7 +503,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchUserBackingsQuery(
-            status: GraphQLEnum.someCase(status),
+            status: GraphQLEnum.case(status),
             withStoredCards: false,
             includeShippingRules: true,
             includeLocalPickup: false

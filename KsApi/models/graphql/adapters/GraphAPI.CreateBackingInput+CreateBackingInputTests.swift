@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -17,15 +18,15 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
 
     let graphInput = GraphAPI.CreateBackingInput.from(input)
 
-    XCTAssertEqual(graphInput.amount, input.amount)
-    XCTAssertNil(graphInput.applePay??.token)
-    XCTAssertEqual(graphInput.incremental, input.incremental)
-    XCTAssertEqual(graphInput.locationId, input.locationId)
-    XCTAssertEqual(graphInput.paymentSourceId, input.paymentSourceId)
+    XCTAssertEqual(graphInput.amount.unwrapped, input.amount)
+    XCTAssertEqual(graphInput.applePay.token, .none)
+    XCTAssertEqual(graphInput.incremental.unwrapped, input.incremental)
+    XCTAssertEqual(graphInput.locationId.unwrapped, input.locationId)
+    XCTAssertEqual(graphInput.paymentSourceId.unwrapped, input.paymentSourceId)
     XCTAssertEqual(graphInput.projectId, input.projectId)
-    XCTAssertEqual(graphInput.refParam, input.refParam)
-    XCTAssertEqual(graphInput.rewardIds, input.rewardIds)
-    XCTAssertEqual(graphInput.setupIntentClientSecret!, input.setupIntentClientSecret)
+    XCTAssertEqual(graphInput.refParam.unwrapped, input.refParam)
+    XCTAssertEqual(graphInput.rewardIds.unwrapped, input.rewardIds)
+    XCTAssertEqual(graphInput.setupIntentClientSecret.unwrapped, input.setupIntentClientSecret)
   }
 
   func test_ApplePay() {
@@ -48,17 +49,17 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
 
     let graphInput = GraphAPI.CreateBackingInput.from(input)
 
-    XCTAssertEqual(graphInput.amount, input.amount)
-    XCTAssertEqual(graphInput.applePay??.token, "token")
-    XCTAssertEqual(graphInput.applePay??.paymentInstrumentName, "instrument-name")
-    XCTAssertEqual(graphInput.applePay??.paymentNetwork, "payment-network")
-    XCTAssertEqual(graphInput.applePay??.transactionIdentifier, "transaction-identifier")
-    XCTAssertEqual(graphInput.incremental, input.incremental)
-    XCTAssertEqual(graphInput.locationId, input.locationId)
-    XCTAssertEqual(graphInput.paymentSourceId, input.paymentSourceId)
+    XCTAssertEqual(graphInput.amount.unwrapped, input.amount)
+    XCTAssertEqual(graphInput.applePay.token, "token")
+    XCTAssertEqual(graphInput.applePay.paymentInstrumentName, "instrument-name")
+    XCTAssertEqual(graphInput.applePay.paymentNetwork, "payment-network")
+    XCTAssertEqual(graphInput.applePay.transactionIdentifier, "transaction-identifier")
+    XCTAssertEqual(graphInput.incremental.unwrapped, input.incremental)
+    XCTAssertEqual(graphInput.locationId.unwrapped, input.locationId)
+    XCTAssertEqual(graphInput.paymentSourceId.unwrapped, input.paymentSourceId)
     XCTAssertEqual(graphInput.projectId, input.projectId)
-    XCTAssertEqual(graphInput.refParam, input.refParam)
-    XCTAssertEqual(graphInput.rewardIds, input.rewardIds)
-    XCTAssertNil(graphInput.setupIntentClientSecret as? String)
+    XCTAssertEqual(graphInput.refParam.unwrapped, input.refParam)
+    XCTAssertEqual(graphInput.rewardIds.unwrapped, input.rewardIds)
+    XCTAssertEqual(graphInput.setupIntentClientSecret, .none)
   }
 }

@@ -1,7 +1,9 @@
+import GraphAPI
 #if DEBUG
   import Apollo
   import Combine
   import Foundation
+  import GraphAPI
   import Prelude
   import ReactiveSwift
 
@@ -65,7 +67,7 @@
     fileprivate let facebookConnectResponse: User?
     fileprivate let facebookConnectError: ErrorEnvelope?
 
-    fileprivate let fetchGraphQLResponses: [(any GraphQLQuery.Type, GraphQLSelectionSet)]?
+    fileprivate let fetchGraphQLResponses: [(any GraphQLQuery.Type, any GraphAPI.SelectionSet)]?
 
     fileprivate let fetchActivitiesResponse: [Activity]?
     fileprivate let fetchActivitiesError: ErrorEnvelope?
@@ -270,7 +272,7 @@
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
-      fetchGraphQLResponses: [(any GraphQLQuery.Type, GraphQLSelectionSet)]? = nil,
+      fetchGraphQLResponses: [(any GraphQLQuery.Type, any GraphAPI.SelectionSet)]? = nil,
       fetchActivitiesResponse: [Activity]? = nil,
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,

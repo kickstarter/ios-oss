@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchProjectCommentsQueryTemplate {
@@ -9,15 +10,15 @@ public enum FetchProjectCommentsQueryTemplate {
   var data: GraphAPI.FetchProjectCommentsQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchProjectCommentsQuery.Data>(data: self.validResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     case .errored:
-      return testGraphObject<GraphAPI.FetchProjectCommentsQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.erroredResultMap)
     }
   }
 
   // MARK: Private Properties
 
-  private var validResultMap: [String: Any?] {
+  private var validResultMap: [String: Any] {
     let json = """
     {
       "project": {
@@ -232,10 +233,10 @@ public enum FetchProjectCommentsQueryTemplate {
 
     let data = Data(json.utf8)
 
-    return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any?]) ?? [:]
+    return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
   }
 
-  private var erroredResultMap: [String: Any?] {
+  private var erroredResultMap: [String: Any] {
     return CommentFragmentTemplate.valid.data
   }
 }

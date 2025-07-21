@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -2323,15 +2324,12 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testUserSessionStarted_fetchesUserEmail_andClearsOnLogout() {
-    let fetchUserSetupQueryData: GraphAPI.FetchUserSetupQuery
-      .Data = testGraphObject(
-        data: [
-          "me": [
-            "email": "user@example.com",
-            "enabledFeatures": []
-          ]
-        ]
+    let fetchUserSetupQueryData = GraphAPI.FetchUserSetupQuery.Data(
+      me: GraphAPI.FetchUserSetupQuery.Data.Me(
+        email: "user@example.com",
+        enabledFeatures: []
       )
+    )
 
     guard let envelope = UserEnvelope<GraphUserSetup>.userEnvelope(from: fetchUserSetupQueryData) else {
       XCTFail()

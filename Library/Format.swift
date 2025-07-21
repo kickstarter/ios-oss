@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 import Prelude
 
@@ -189,7 +190,7 @@ public enum Format {
     dateFormat: String,
     timeZone: TimeZone? = nil,
     env: Environment = AppEnvironment.current
-  ) -> Date? {
+  ) -> Foundation.Date? {
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
         dateFormat: dateFormat,
@@ -413,13 +414,13 @@ public enum Format {
     env: Environment = AppEnvironment.current
   ) -> String? {
     guard
-      let currencyCode = money.currency?.rawValue,
+      case let .case(currency) = money.currency,
       let amountString = money.amount,
       let decimal = try? Decimal(amountString, format: .number)
     else { return nil }
 
     return decimal.formatted(
-      .currency(code: currencyCode)
+      .currency(code: currency.rawValue)
         .locale(env.locale)
     )
   }

@@ -1,8 +1,13 @@
 import Foundation
+import GraphAPI
 
 extension PledgePaymentIncrement {
   public init?(withGraphQLFragment fragment: GraphAPI.PaymentIncrementFragment) {
     guard let intervalAsTime = TimeInterval.from(ISO8601DateTimeString: fragment.scheduledCollection) else {
+      return nil
+    }
+
+    guard let stateValue = fragment.state.value else {
       return nil
     }
 
@@ -11,7 +16,6 @@ extension PledgePaymentIncrement {
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )
     self.scheduledCollection = intervalAsTime
-    let stateValue = fragment.state
     self.state = PledgePaymentIncrementState(stateValue: stateValue)
 
     if let stateReason = fragment.stateReason?.rawValue {

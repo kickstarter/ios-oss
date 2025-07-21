@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -589,8 +590,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     """
     let completeSessionJson = try! JSONSerialization
       .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
-    let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
-      .Data(jsonObject: completeSessionJson as! JSONObject)
+    let completeSessionData: GraphAPI.CompleteOnSessionCheckoutMutation
+      .Data = try! testGraphObject(jsonObject: completeSessionJson as! JSONObject)
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let userResponse = UserEnvelope<GraphUser>(me: graphUser)

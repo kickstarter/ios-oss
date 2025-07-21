@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 import Prelude
 import XCTest
@@ -6,7 +7,7 @@ import XCTest
 final class Category_CategoryFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables: Apollo.GraphQLMap = [
+      let variables = [
         "id": "Q2F0ZWdvcnktMw=="
       ]
       let fragment: GraphAPI.CategoryFragment = try testGraphObject(
