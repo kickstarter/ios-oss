@@ -98,6 +98,9 @@ public struct OnboardingView: View {
       .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
         self.presentAppTrackingPopup()
       }
+      .onReceive(self.viewModel.triggerPushNotificationPermissionDialog) {
+        self.goToNextItem()
+      }
     }
   }
 
