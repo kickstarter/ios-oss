@@ -251,64 +251,13 @@
                         <view key="titleView" contentMode="scaleToFill" id="NPH-XZ-f4a">
                             <rect key="frame" x="41.5" y="5.5" width="317" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gh5-2a-Hll">
-                                    <rect key="frame" x="0.0" y="0.0" width="317" height="33"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Nmw-GJ-mcG">
-                                            <rect key="frame" x="0.0" y="6" width="287" height="21"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QmQ-49-wVe">
-                                                    <rect key="frame" x="135.5" y="0.0" width="16" height="21"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="search-icon" translatesAutoresizingMaskIntoConstraints="NO" id="iEk-Dl-6an">
-                                                            <rect key="frame" x="0.0" y="5" width="11" height="11"/>
-                                                        </imageView>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bEa-Dn-fhp">
-                                                            <rect key="frame" x="11" y="0.0" width="5" height="21"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="21" id="qsG-s1-2RO"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="webSearch" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
-                                                        </textField>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                        </stackView>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxx-0l-p9U">
-                                            <rect key="frame" x="287" y="0.0" width="30" height="33"/>
-                                            <state key="normal">
-                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="317" id="xtI-95-XcY"/>
-                                    </constraints>
-                                </stackView>
-                            </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="gh5-2a-Hll" secondAttribute="trailing" id="0eu-xb-Clh"/>
-                                <constraint firstItem="gh5-2a-Hll" firstAttribute="leading" secondItem="NPH-XZ-f4a" secondAttribute="leading" id="OBj-HM-4M3"/>
-                                <constraint firstAttribute="bottom" secondItem="gh5-2a-Hll" secondAttribute="bottom" id="Rxw-Qm-toa"/>
-                                <constraint firstItem="gh5-2a-Hll" firstAttribute="top" secondItem="NPH-XZ-f4a" secondAttribute="top" id="edG-jo-NgH"/>
-                            </constraints>
                         </view>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="800"/>
                     <connections>
-                        <outlet property="cancelButton" destination="jxx-0l-p9U" id="PaY-ff-uCa"/>
-                        <outlet property="centeringStackView" destination="Nmw-GJ-mcG" id="Q03-qJ-SGj"/>
-                        <outlet property="innerSearchStackView" destination="QmQ-49-wVe" id="VgH-Mk-qmF"/>
                         <outlet property="searchBarContainerView" destination="NPH-XZ-f4a" id="2yH-JZ-gEn"/>
-                        <outlet property="searchIconImageView" destination="iEk-Dl-6an" id="eLP-wz-WYr"/>
-                        <outlet property="searchStackView" destination="gh5-2a-Hll" id="yd8-zz-bke"/>
-                        <outlet property="searchStackViewWidthConstraint" destination="xtI-95-XcY" id="zcu-fB-8Kb"/>
-                        <outlet property="searchTextField" destination="bEa-Dn-fhp" id="QIe-Uf-Xyg"/>
-                        <outlet property="searchTextFieldHeightConstraint" destination="qsG-s1-2RO" id="8Ib-br-ofk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HVB-g6-L0q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -317,7 +266,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="search-icon" width="11" height="11"/>
         <image name="timer-icon" width="14" height="14"/>
     </resources>
 </document>

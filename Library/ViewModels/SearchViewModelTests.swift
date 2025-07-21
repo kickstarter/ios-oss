@@ -18,8 +18,6 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let hasProjects = TestObserver<Bool, Never>()
   fileprivate let isPopularTitleVisible = TestObserver<Bool, Never>()
   fileprivate var noProjects = TestObserver<Bool, Never>()
-  fileprivate let resignFirstResponder = TestObserver<(), Never>()
-  fileprivate let searchFieldText = TestObserver<String, Never>()
   fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
@@ -29,8 +27,6 @@ internal final class SearchViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
-    self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.goToProject.map { _, refTag in refTag }.observe(self.goToRefTag.observer)
     self.vm.outputs.searchResults.map { $0.isProjectsTitleVisible }
       .observe(self.isPopularTitleVisible.observer)
@@ -38,8 +34,6 @@ internal final class SearchViewModelTests: TestCase {
       .observe(self.hasProjects.observer)
     self.vm.outputs.searchResults.map { $0.projects.isEmpty }.skipRepeats(==)
       .observe(self.noProjects.observer)
-    self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
-    self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
     self.vm.outputs.searchLoaderIndicatorIsAnimating.observe(self.searchLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
     self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
@@ -103,7 +97,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
-        self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
         self.vm.inputs.tapped(projectAtIndex: 0)
@@ -130,7 +123,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
-        self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
         self.vm.inputs.tapped(projectAtIndex: 2)
@@ -157,7 +149,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
-        self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
         self.scheduler.advance()
         self.vm.inputs.tapped(projectAtIndex: 0)
@@ -175,57 +166,6 @@ internal final class SearchViewModelTests: TestCase {
         XCTAssertEqual("search_results", segmentProperties?["context_location"] as? String)
       }
     }
-  }
-
-  func testCancelSearchField() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events, "Impression tracked")
-
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.searchTextChanged("a")
-    self.vm.inputs.cancelButtonPressed()
-
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.segmentTrackingClient.events,
-      "Search input and cancel not tracked"
-    )
-  }
-
-  func testChangeSearchFieldFocus() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-
-    self.changeSearchFieldFocusFocused.assertValues([false])
-    self.changeSearchFieldFocusAnimated.assertValues([false])
-
-    self.vm.inputs.searchFieldDidBeginEditing()
-
-    self.changeSearchFieldFocusFocused.assertValues([false, true])
-    self.changeSearchFieldFocusAnimated.assertValues([false, true])
-    self.resignFirstResponder.assertValueCount(0)
-
-    self.vm.inputs.cancelButtonPressed()
-
-    self.changeSearchFieldFocusFocused.assertValues([false, true, false])
-    self.changeSearchFieldFocusAnimated.assertValues([false, true, true])
-    self.resignFirstResponder.assertValueCount(1)
-  }
-
-  func testClearSearchText() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.searchTextChanged("b")
-    self.vm.inputs.clearSearchText()
-
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.segmentTrackingClient.events,
-      "Clear search text not tracked"
-    )
   }
 
   func testClearSearchText_clearsFilters() {
@@ -248,7 +188,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
@@ -281,7 +220,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and category pills to be set")
       }
 
-      self.vm.inputs.clearSearchText()
+      self.vm.inputs.searchTextChanged("")
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -313,7 +252,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
@@ -346,8 +284,6 @@ internal final class SearchViewModelTests: TestCase {
       } else {
         XCTFail("Expected sort and category pills to be set")
       }
-
-      self.vm.inputs.cancelButtonPressed()
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -379,9 +315,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
-      self.vm.inputs.searchTextEditingDidEnd()
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -414,9 +348,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTFail("Expected sort and filter pills to be set")
       }
 
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("")
-      self.vm.inputs.searchTextEditingDidEnd()
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -448,9 +380,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test")
-      self.vm.inputs.searchTextEditingDidEnd()
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -488,9 +418,7 @@ internal final class SearchViewModelTests: TestCase {
       }
 
       self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchFieldDidBeginEditing()
       self.vm.inputs.searchTextChanged("test two")
-      self.vm.inputs.searchTextEditingDidEnd()
 
       if let sortPill = self.vm.outputs.searchFilters.sortPill,
          let categoryPill = self.vm.outputs.searchFilters.categoryPill {
@@ -1121,36 +1049,6 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
-  func testSearchFieldText() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.searchFieldDidBeginEditing()
-
-    self.searchFieldText.assertValueCount(0)
-
-    self.vm.inputs.searchTextChanged("HELLO")
-
-    self.searchFieldText.assertValueCount(0)
-
-    self.vm.inputs.cancelButtonPressed()
-
-    self.searchFieldText.assertValues([""])
-
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-  }
-
-  func testSearchFieldEditingDidEnd() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.searchFieldDidBeginEditing()
-
-    self.resignFirstResponder.assertValueCount(0)
-
-    self.vm.inputs.searchTextEditingDidEnd()
-
-    self.resignFirstResponder.assertValueCount(1)
-  }
-
   func testSlowTyping() {
     let apiDelay = DispatchTimeInterval.seconds(2)
     let debounceDelay = DispatchTimeInterval.seconds(1)
@@ -1167,8 +1065,6 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
-
-      self.vm.inputs.searchFieldDidBeginEditing()
 
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
       XCTAssertEqual([""], self.segmentTrackingClient.properties(forKey: "discover_search_term"))

@@ -298,6 +298,10 @@
 		33AF66CA2DDE505D00558D49 /* AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */; };
 		33AF66CC2DDE545500558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */; };
 		33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */; };
+		33B098762DCAF96D000CE6AE /* CommentBaseFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */; };
+		33C2FB6C2E203B640083B5FB /* KSRSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */; };
+		33C2FB6E2E2978E20083B5FB /* KSRSearchBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6D2E2978D20083B5FB /* KSRSearchBarViewModel.swift */; };
+		33C2FB712E2E8FE00083B5FB /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */; };
 		33C9F0BF2CF5105700B62E14 /* PledgePaymentPlanOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */; };
 		33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */; };
 		33D11D462D6EFFB500CC88A3 /* KSRButtonStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */; };
@@ -2152,6 +2156,10 @@
 		33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInput.swift; sourceTree = "<group>"; };
 		33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift"; sourceTree = "<group>"; };
 		33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInputTests.swift; sourceTree = "<group>"; };
+		33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentBaseFragment.graphql; sourceTree = "<group>"; };
+		33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBar.swift; sourceTree = "<group>"; };
+		33C2FB6D2E2978D20083B5FB /* KSRSearchBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModel.swift; sourceTree = "<group>"; };
+		33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModelTests.swift; sourceTree = "<group>"; };
 		33C9F0BC2CED6DEF00B62E14 /* PledgePaymentPlanOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlanOptionView.swift; sourceTree = "<group>"; };
 		33D11D412D68C56700CC88A3 /* KSRButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyle.swift; sourceTree = "<group>"; };
 		33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonStyleConfiguration.swift; sourceTree = "<group>"; };
@@ -6650,6 +6658,7 @@
 		A751A51B1C85EAD8009C5DEA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
+				33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */,
 				33F85BD72D8BAB7900CD1834 /* Presenters */,
 				19C8E56729A923F4007C3504 /* SwiftUIHelpers */,
 				39F48E222D543A2700090D6C /* AlertBanner.swift */,
@@ -7132,6 +7141,8 @@
 				A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
+				33C2FB6D2E2978D20083B5FB /* KSRSearchBarViewModel.swift */,
+				33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */,
 				06232D4C27962FAA00A81755 /* HTML Parser */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
@@ -8800,6 +8811,7 @@
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
+				33C2FB6E2E2978E20083B5FB /* KSRSearchBarViewModel.swift in Sources */,
 				A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */,
 				60E5FF112D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift in Sources */,
 				60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */,
@@ -9137,6 +9149,7 @@
 				D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
 				D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
+				33C2FB712E2E8FE00083B5FB /* KSRSearchBarViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
 				1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
@@ -9498,6 +9511,7 @@
 				8A864ACD24429A5B0026BF13 /* PledgePaymentMethodLoadingCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
 				D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */,
+				33C2FB6C2E203B640083B5FB /* KSRSearchBar.swift in Sources */,
 				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
 				8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */,
@@ -10872,9 +10886,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 48YBP49Y5N;
 				ENABLE_MODULE_VERIFIER = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
@@ -10890,6 +10906,7 @@
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.kickstarter.kickstarter.debug";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_WORKSPACE = NO;
